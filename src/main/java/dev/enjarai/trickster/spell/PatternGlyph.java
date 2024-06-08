@@ -8,16 +8,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public record PatternGlyph(List<Byte> pattern) implements Glyph {
-    public static final Codec<PatternGlyph> CODEC = Codec.BYTE.listOf(0, 9).comapFlatMap(p -> {
-        if (p.stream().anyMatch(b -> b < 0 || b > 8)) {
-            return DataResult.error(() -> "Incorrect index value in pattern");
-        }
-        return DataResult.success(new PatternGlyph(p));
-    }, PatternGlyph::pattern);
+public record PatternGlyph(Pattern pattern, List<Byte> orderedPattern) implements Glyph {
+    public static final Codec<PatternGlyph> CODEC = Codec.BYTE.listOf().xmap(PatternGlyph::new, PatternGlyph::orderedPattern);
 
     public PatternGlyph(int... pattern) {
         this(Stream.of(ArrayUtils.toObject(pattern)).map(Integer::byteValue).toList());
+    }
+
+    public PatternGlyph(List<Byte> pattern) {
+        this(Pattern.from(pattern), pattern);
     }
 
     @Override

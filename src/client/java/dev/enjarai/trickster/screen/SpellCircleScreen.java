@@ -11,7 +11,6 @@ import java.util.Optional;
 public class SpellCircleScreen extends Screen {
     public SpellPartWidget partWidget;
 
-    private double amountDragged;
 
     public SpellCircleScreen() {
         super(Text.empty());
@@ -66,48 +65,7 @@ public class SpellCircleScreen extends Screen {
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
-        if (super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount)) {
-            return true;
-        }
-
-        var intensity = verticalAmount * partWidget.size / 10;
-        partWidget.size += intensity;
-        partWidget.x += verticalAmount * (partWidget.x - mouseX) / 10;
-        partWidget.y += verticalAmount * (partWidget.y - mouseY) / 10;
-
-        return true;
-    }
-
-    @Override
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-        if (super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY)) {
-            return true;
-        }
-
-        if (!partWidget.isDrawing()) {
-            partWidget.x += deltaX;
-            partWidget.y += deltaY;
-
-            amountDragged += Math.abs(deltaX) + Math.abs(deltaY);
-
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        return super.mouseClicked(mouseX, mouseY, button);
-    }
-
-    @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        var dragged = amountDragged;
-        amountDragged = 0;
-        if (dragged <= 5) {
-            return super.mouseReleased(mouseX, mouseY, button);
-        }
-        return false;
+    public void mouseMoved(double mouseX, double mouseY) {
+        partWidget.mouseMoved(mouseX, mouseY);
     }
 }

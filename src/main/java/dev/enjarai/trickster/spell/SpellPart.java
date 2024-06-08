@@ -25,6 +25,11 @@ public final class SpellPart implements Glyph {
         this.subParts = new ArrayList<>(subParts);
     }
 
+    public SpellPart() {
+        glyph = new PatternGlyph();
+        subParts = new ArrayList<>();
+    }
+
     @Override
     public Fragment activateGlyph(SpellContext ctx, List<Optional<Fragment>> fragments) {
         ctx.pushPartGlyph(fragments);
