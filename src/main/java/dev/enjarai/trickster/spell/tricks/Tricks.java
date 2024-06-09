@@ -15,6 +15,9 @@ public class Tricks {
     public static final Registry<Trick> REGISTRY = new SimpleRegistry<>(REGISTRY_KEY, Lifecycle.stable());
     private static final HashMap<Pattern, Trick> LOOKUP = new HashMap<>();
 
+    public static final RevealTrick REVEAL = register("reveal", new RevealTrick());
+    public static final AddTrick ADD = register("add", new AddTrick());
+    public static final OnePonyTrick ONE = register("one", new OnePonyTrick());
 
     private static <T extends Trick> T register(String path, T trick) {
         LOOKUP.put(trick.getPattern(), trick);

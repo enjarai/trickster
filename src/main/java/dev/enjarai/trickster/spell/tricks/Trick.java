@@ -6,8 +6,9 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
-import dev.enjarai.trickster.spell.tricks.blunder.IncorrectFragmentException;
-import dev.enjarai.trickster.spell.tricks.blunder.MissingFragmentException;
+import dev.enjarai.trickster.spell.tricks.blunder.IncompatibleTypesBlunder;
+import dev.enjarai.trickster.spell.tricks.blunder.IncorrectFragmentBlunder;
+import dev.enjarai.trickster.spell.tricks.blunder.MissingFragmentBlunder;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
@@ -28,14 +29,37 @@ public abstract class Trick {
 
     protected <T extends Fragment> T expectInput(List<Fragment> fragments, FragmentType<T> type, int index) throws BlunderException {
         if (fragments.size() <= index) {
-            throw new MissingFragmentException(this, index, type);
+            throw new MissingFragmentBlunder(this, index, type.getName());
         }
         var fragment = fragments.get(index);
         if (fragment.type() != type) {
-            throw new IncorrectFragmentException(this, index, type, fragment.type());
+            throw new IncorrectFragmentBlunder(this, index, type.getName(), fragment.type());
         }
         //noinspection unchecked
         return (T) fragment;
+    }
+
+    protected <T extends Fragment> T expectInput(List<Fragment> fragments, Class<T> type, int index) throws BlunderException {
+        if (fragments.size() <= index) {
+            throw new MissingFragmentBlunder(this, index, Text.of(type.getName()));
+        }
+        var fragment = fragments.get(index);
+        return expectType(fragment, type);
+    }
+
+    protected <T extends Fragment> T expectType(Fragment fragment, Class<T> type) throws BlunderException {
+        if (!type.isInstance(fragment)) {
+            throw new IncompatibleTypesBlunder(this);
+        }
+        //noinspection unchecked
+        return (T) fragment;
+    }
+
+    protected Fragment expectInput(List<Fragment> fragments, int index) throws BlunderException {
+        if (fragments.size() <= index) {
+            throw new MissingFragmentBlunder(this, index, Text.of("any"));
+        }
+        return fragments.get(index);
     }
 
     public MutableText getName() {

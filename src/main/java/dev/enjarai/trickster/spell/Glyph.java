@@ -2,11 +2,12 @@ package dev.enjarai.trickster.spell;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
+import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 
 import java.util.List;
 import java.util.Optional;
 
-public sealed interface Glyph permits PatternGlyph, SpellPart {
+public sealed interface Glyph extends Fragment permits PatternGlyph, SpellPart {
     Codec<Glyph> CODEC = Codec.either(PatternGlyph.CODEC, SpellPart.CODEC)
             .xmap(e -> e.right().isPresent() ? e.right().orElseThrow() : e.left().orElseThrow(), g -> {
                 if (g instanceof PatternGlyph patternGlyph) {
@@ -15,5 +16,5 @@ public sealed interface Glyph permits PatternGlyph, SpellPart {
                 return Either.right((SpellPart) g);
             });
 
-    Fragment activateGlyph(SpellContext ctx, List<Optional<Fragment>> fragments);
+    Fragment activateGlyph(SpellContext ctx, List<Optional<Fragment>> fragments) throws BlunderException;
 }

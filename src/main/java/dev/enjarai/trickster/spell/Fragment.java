@@ -7,4 +7,6 @@ public interface Fragment {
     MapCodec<Fragment> CODEC = FragmentType.REGISTRY.getCodec().dispatchMap(Fragment::type, FragmentType::codec);
 
     FragmentType<?> type();
+
+    String asString();
 }
