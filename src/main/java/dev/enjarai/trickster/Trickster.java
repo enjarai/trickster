@@ -1,5 +1,10 @@
 package dev.enjarai.trickster;
 
+import dev.enjarai.trickster.block.ModBlocks;
+import dev.enjarai.trickster.item.ModItems;
+import dev.enjarai.trickster.item.component.ModComponents;
+import dev.enjarai.trickster.screen.ModScreenHandlers;
+import dev.enjarai.trickster.spell.tricks.Tricks;
 import net.fabricmc.api.ModInitializer;
 
 import net.minecraft.util.Identifier;
@@ -19,7 +24,11 @@ public class Trickster implements ModInitializer {
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
 
-		LOGGER.info("Hello Fabric world!");
+		ModBlocks.register();
+		ModComponents.register();
+		ModItems.register();
+		ModScreenHandlers.register();
+		Tricks.register();
 	}
 
 	public static Identifier id(String path) {

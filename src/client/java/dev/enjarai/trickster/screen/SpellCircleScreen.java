@@ -60,7 +60,7 @@ public class SpellCircleScreen extends Screen {
                 )
         );
 
-        partWidget = new SpellPartWidget(part, width / 2d, height / 2d, 64);
+        partWidget = new SpellPartWidget(part, width / 2d, height / 2d, 64, spell -> {});
         addDrawableChild(partWidget);
     }
 

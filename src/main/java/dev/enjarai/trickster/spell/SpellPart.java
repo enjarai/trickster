@@ -3,6 +3,8 @@ package dev.enjarai.trickster.spell;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.wispforest.endec.Endec;
+import io.wispforest.owo.serialization.CodecUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,7 @@ public final class SpellPart implements Glyph {
                     .xmap(e -> e.left(), o -> o.<Either<SpellPart, Boolean>>map(Either::left).orElse(Either.right(false)))
                     .listOf().fieldOf("sub_parts").forGetter(SpellPart::getSubParts)
     ).apply(instance, SpellPart::new)));
+    public static final Endec<SpellPart> ENDEC = CodecUtils.ofCodec(CODEC);
 
     public Glyph glyph;
     public List<Optional<SpellPart>> subParts;

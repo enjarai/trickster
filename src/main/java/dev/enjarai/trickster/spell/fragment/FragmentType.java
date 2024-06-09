@@ -7,6 +7,8 @@ import dev.enjarai.trickster.spell.Fragment;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.SimpleRegistry;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
 
 public record FragmentType<T extends Fragment>(MapCodec<T> codec) {
     public static final RegistryKey<Registry<FragmentType<?>>> REGISTRY_KEY = RegistryKey.ofRegistry(Trickster.id("fragment_type"));
@@ -17,5 +19,13 @@ public record FragmentType<T extends Fragment>(MapCodec<T> codec) {
 
     private static <T extends Fragment> FragmentType<T> register(String name, MapCodec<T> codec) {
         return Registry.register(REGISTRY, Trickster.id(name), new FragmentType<>(codec));
+    }
+
+    public MutableText getName() {
+        var id = REGISTRY.getId(this);
+        if (id == null) {
+            return Text.literal("Unregistered");
+        }
+        return Text.translatable(Trickster.MOD_ID + ".fragment." + id.getNamespace() + "." + id.getPath());
     }
 }

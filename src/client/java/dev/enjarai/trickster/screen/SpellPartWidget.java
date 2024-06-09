@@ -36,17 +36,19 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     public double x;
     public double y;
     public double size;
-
     private double amountDragged;
+
+    private Consumer<SpellPart> updateListener;
 
     private SpellPart drawingPart;
     private List<Byte> drawingPattern;
 
-    public SpellPartWidget(SpellPart spellPart, double x, double y, double size) {
+    public SpellPartWidget(SpellPart spellPart, double x, double y, double size, Consumer<SpellPart> updateListener) {
         this.spellPart = spellPart;
         this.x = x;
         this.y = y;
         this.size = size;
+        this.updateListener = updateListener;
     }
 
     @Override
@@ -54,7 +56,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         return List.of();
     }
 
-    public void setSpellPart(SpellPart spellPart) {
+    public void setSpell(SpellPart spellPart) {
         this.spellPart = spellPart;
 //        partWidgets.clear();
 //        spellPart.
@@ -392,6 +394,8 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
         drawingPart = null;
         drawingPattern = null;
+
+        updateListener.accept(spellPart);
     }
 
     public boolean isDrawing() {
