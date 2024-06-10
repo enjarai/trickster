@@ -1,6 +1,5 @@
 package dev.enjarai.trickster.screen;
 
-import dev.enjarai.trickster.spell.SpellPart;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
 import net.minecraft.entity.player.PlayerInventory;
@@ -20,7 +19,7 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
     protected void init() {
         super.init();
 
-        partWidget = new SpellPartWidget(new SpellPart(), width / 2d, height / 2d, 64, handler::updateSpell);
+        partWidget = new SpellPartWidget(handler.spell.get(), width / 2d, height / 2d, 64, handler::updateSpell);
         addDrawableChild(partWidget);
 
         this.handler.spell.observe(spell -> partWidget.setSpell(spell));

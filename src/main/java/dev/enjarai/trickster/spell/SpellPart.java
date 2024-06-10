@@ -43,14 +43,17 @@ public final class SpellPart implements Glyph {
         if (fragments.isEmpty()) {
             return this;
         } else {
-            ctx.pushPartGlyph(fragments);
+            ctx.pushPartGlyph(fragments.stream()
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .toList());
             var result = run(ctx);
             ctx.popPartGlyph();
             return result;
         }
     }
 
-    private Fragment run(SpellContext ctx) throws BlunderException {
+    public Fragment run(SpellContext ctx) throws BlunderException {
         var fragments = new ArrayList<Optional<Fragment>>();
 
         for (var part : subParts) {

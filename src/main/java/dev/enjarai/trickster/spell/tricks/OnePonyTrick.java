@@ -10,7 +10,7 @@ import java.util.List;
 
 public class OnePonyTrick extends Trick {
     protected OnePonyTrick() {
-        super(Pattern.of(1, 4, 7));
+        super(Pattern.of(7, 4, 1));
     }
 
     @Override

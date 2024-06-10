@@ -8,13 +8,13 @@ import java.util.*;
 public class SpellContext {
     @Nullable
     private final ServerPlayerEntity player;
-    private final Deque<List<Optional<Fragment>>> partGlyphStack = new ArrayDeque<>();
+    private final Deque<List<Fragment>> partGlyphStack = new ArrayDeque<>();
 
     public SpellContext(@Nullable ServerPlayerEntity player) {
         this.player = player;
     }
 
-    public void pushPartGlyph(List<Optional<Fragment>> fragments) {
+    public void pushPartGlyph(List<Fragment> fragments) {
         partGlyphStack.push(fragments);
     }
 
@@ -22,7 +22,7 @@ public class SpellContext {
         partGlyphStack.pop();
     }
 
-    public List<Optional<Fragment>> peekPartGlyph() {
+    public List<Fragment> peekPartGlyph() {
         var result = partGlyphStack.peek();
         if (result != null) {
             return result;
