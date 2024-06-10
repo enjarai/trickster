@@ -1,0 +1,38 @@
+<owo-ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/wisp-forest/owo-lib/1.20/owo-ui.xsd">
+    <templates>
+        <template name="glyph">
+            <flow-layout direction="vertical">
+                <children>
+                    <label>
+                        <text>{{title}}</text>
+                    </label>
+                    <label>
+                        <text>{{trick-id}}</text>
+                    </label>
+<!--                    <label>-->
+<!--                        <text>{{title}}</text>-->
+<!--                        <color>dark-gray</color>-->
+
+<!--                        <horizontal-text-alignment>center</horizontal-text-alignment>-->
+
+<!--                        <margins>-->
+<!--                            <top>2</top>-->
+<!--                            <bottom>2</bottom>-->
+<!--                        </margins>-->
+<!--                        <sizing>-->
+<!--                            <horizontal method="fill">100</horizontal>-->
+<!--                        </sizing>-->
+<!--                    </label>-->
+
+<!--                    <trickster.glyph trick-id="{{trick-id}}" size="50">-->
+<!--                    </trickster.glyph>-->
+                </children>
+                <horizontal-alignment>center</horizontal-alignment>
+                <sizing>
+                    <horizontal method="fill">100</horizontal>
+                </sizing>
+            </flow-layout>
+        </template>
+    </templates>
+</owo-ui>

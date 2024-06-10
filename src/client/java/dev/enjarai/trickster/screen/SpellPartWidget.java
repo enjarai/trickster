@@ -182,19 +182,19 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             for (var b : patternList) {
                 var now = getPatternDotPosition(x, y, b, patternSize);
                 if (last != null) {
-                    drawGlyphLine(context, last, now, pixelSize, isDrawing);
+                    drawGlyphLine(context, last, now, pixelSize, isDrawing, 1, 0.5f);
                 }
                 last = now;
             }
 
             if (isDrawing && last != null) {
                 var now = new Vector2f(mouseX, mouseY);
-                drawGlyphLine(context, last, now, pixelSize, true);
+                drawGlyphLine(context, last, now, pixelSize, true, 1, 0.5f);
             }
         }
     }
 
-    protected void drawGlyphLine(DrawContext context, Vector2f last, Vector2f now, float pixelSize, boolean isDrawing) {
+    public static void drawGlyphLine(DrawContext context, Vector2f last, Vector2f now, float pixelSize, boolean isDrawing, float tone, float opacity) {
         var parallelVec = new Vector2f(last.y - now.y, now.x - last.x).normalize().mul(pixelSize / 2);
         var directionVec = new Vector2f(last.x - now.x, last.y - now.y).normalize().mul(pixelSize * 3);
 
@@ -203,10 +203,10 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             c.accept(last.x + parallelVec.x - directionVec.x, last.y + parallelVec.y - directionVec.y);
             c.accept(now.x + parallelVec.x + directionVec.x, now.y + parallelVec.y + directionVec.y);
             c.accept(now.x - parallelVec.x + directionVec.x, now.y - parallelVec.y + directionVec.y);
-        }, 0, isDrawing ? 0.5f : 1, isDrawing ? 0.5f : 1, 1, 0.5f);
+        }, 0, isDrawing ? 0.5f : tone, isDrawing ? 0.5f : tone, tone, opacity);
     }
 
-    static Vector2f getPatternDotPosition(float x, float y, int i, float size) {
+    public static Vector2f getPatternDotPosition(float x, float y, int i, float size) {
         float xSign = (float) (i % 3 - 1);
         float ySign = (float) (i / 3 - 1);
 
@@ -242,7 +242,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         RenderSystem.setShaderColor(1, 1, 1, 1);
     }
 
-    static void drawFlatPolygon(DrawContext context, Consumer<BiConsumer<Float, Float>> vertexProvider, float z, float r, float g, float b, float alpha) {
+    public static void drawFlatPolygon(DrawContext context, Consumer<BiConsumer<Float, Float>> vertexProvider, float z, float r, float g, float b, float alpha) {
         Matrix4f matrix4f = context.getMatrices().peek().getPositionMatrix();
         VertexConsumer vertexConsumer = context.getVertexConsumers().getBuffer(RenderLayer.getGui());
         vertexProvider.accept((x, y) -> vertexConsumer.vertex(matrix4f, x, y, z).color(r, g, b, alpha));

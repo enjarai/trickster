@@ -1,7 +1,5 @@
 package dev.enjarai.trickster.screen;
 
-import com.mojang.serialization.JsonOps;
-import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.SpellComponent;
 import dev.enjarai.trickster.spell.SpellPart;
