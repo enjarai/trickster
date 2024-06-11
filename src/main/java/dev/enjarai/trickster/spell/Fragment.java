@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.spell;
 
 import com.mojang.serialization.MapCodec;
+import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 
 public interface Fragment {
@@ -9,4 +10,6 @@ public interface Fragment {
     FragmentType<?> type();
 
     String asString();
+
+    BooleanFragment asBoolean();
 }

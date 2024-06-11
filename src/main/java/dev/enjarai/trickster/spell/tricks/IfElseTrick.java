@@ -3,18 +3,25 @@ package dev.enjarai.trickster.spell.tricks;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 
 import java.util.List;
 
-public class OnePonyTrick extends Trick {
-    protected OnePonyTrick() {
-        super(Pattern.of(7, 4, 1));
+public class IfElseTrick extends Trick {
+    protected IfElseTrick() {
+        super(Pattern.of(3, 4, 0, 2, 4, 5));
     }
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        return new NumberFragment(2);
+        var check = expectInput(fragments, 0);
+        var params1 = expectInput(fragments, 1);
+        var params2 = expectInput(fragments, 2);
+
+        if (check.asBoolean().bool()) {
+            return params1;
+        } else {
+            return params2;
+        }
     }
 }

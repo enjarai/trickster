@@ -17,10 +17,13 @@ public record FragmentType<T extends Fragment>(MapCodec<T> codec) {
     public static final Registry<FragmentType<?>> REGISTRY = new SimpleRegistry<>(REGISTRY_KEY, Lifecycle.stable());
 
     public static final FragmentType<NumberFragment> NUMBER = register("number", NumberFragment.CODEC);
+    public static final FragmentType<BooleanFragment> BOOLEAN = register("boolean", BooleanFragment.CODEC);
+    public static final FragmentType<VectorFragment> VECTOR = register("vector", VectorFragment.CODEC);
     public static final FragmentType<ListFragment> LIST = register("list", ListFragment.CODEC);
     public static final FragmentType<VoidFragment> VOID = register("void", VoidFragment.CODEC);
     public static final FragmentType<PatternGlyph> PATTERN = register("pattern", PatternGlyph.MAP_CODEC);
     public static final FragmentType<SpellPart> SPELL_PART = register("spell_part", SpellPart.MAP_CODEC);
+    public static final FragmentType<EntityFragment> ENTITY = register("entity", EntityFragment.CODEC);
 
     private static <T extends Fragment> FragmentType<T> register(String name, MapCodec<T> codec) {
         return Registry.register(REGISTRY, Trickster.id(name), new FragmentType<>(codec));

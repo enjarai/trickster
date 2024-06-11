@@ -15,6 +15,7 @@ public class Tricks {
     public static final Registry<Trick> REGISTRY = new SimpleRegistry<>(REGISTRY_KEY, Lifecycle.stable());
     private static final HashMap<Pattern, Trick> LOOKUP = new HashMap<>();
 
+    // Meta-programming
     public static final ExecuteTrick EXECUTE = register("execute", new ExecuteTrick());
     public static final LoadArgumentTrick LOAD_ARGUMENT_1 = register("load_argument_1", new LoadArgumentTrick(Pattern.of(4, 1), 0));
     public static final LoadArgumentTrick LOAD_ARGUMENT_2 = register("load_argument_2", new LoadArgumentTrick(Pattern.of(4, 2), 1));
@@ -24,12 +25,26 @@ public class Tricks {
     public static final LoadArgumentTrick LOAD_ARGUMENT_6 = register("load_argument_6", new LoadArgumentTrick(Pattern.of(4, 6), 5));
     public static final LoadArgumentTrick LOAD_ARGUMENT_7 = register("load_argument_7", new LoadArgumentTrick(Pattern.of(4, 3), 6));
     public static final LoadArgumentTrick LOAD_ARGUMENT_8 = register("load_argument_8", new LoadArgumentTrick(Pattern.of(4, 0), 7));
+
+    // Basic
+    public static final OnePonyTrick TWO = register("two", new OnePonyTrick());
     public static final RevealTrick REVEAL = register("reveal", new RevealTrick());
+    public static final ReflectionTrick REFLECTION = register("reflection", new ReflectionTrick());
+
+    // Math
     public static final AddTrick ADD = register("add", new AddTrick());
     public static final SubtractTrick SUBTRACT = register("subtract", new SubtractTrick());
     public static final MultiplyTrick MULTIPLY = register("multiply", new MultiplyTrick());
     public static final DivideTrick DIVIDE = register("divide", new DivideTrick());
-    public static final OnePonyTrick ONE = register("one", new OnePonyTrick());
+    public static final ModuloTrick MODULO = register("modulo", new ModuloTrick());
+    public static final FloorTrick FLOOR = register("floor", new FloorTrick());
+    public static final CeilTrick CEIL = register("ceil", new CeilTrick());
+    public static final RoundTrick ROUND = register("round", new RoundTrick());
+    public static final MaxTrick MAX = register("max", new MaxTrick());
+    public static final MinTrick MIN = register("min", new MinTrick());
+
+    // Boolean
+    public static final IfElseTrick IF_ELSE = register("if_else", new IfElseTrick());
 
     private static <T extends Trick> T register(String path, T trick) {
         LOOKUP.put(trick.getPattern(), trick);

@@ -16,4 +16,9 @@ public record VoidFragment() implements Fragment {
     public String asString() {
         return "void";
     }
+
+    @Override
+    public BooleanFragment asBoolean() {
+        return BooleanFragment.FALSE;
+    }
 }

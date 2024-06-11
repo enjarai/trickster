@@ -48,6 +48,7 @@ dependencies {
 
 	modImplementation "io.wispforest:lavender:${project.lavender_version}"
 //	implementation "io.wispforest:endec:0.1.0-pre.8"
+	modLocalRuntime "io.wispforest.lavender-md:owo-ui:0.1.2+1.21"
 }
 
 processResources {

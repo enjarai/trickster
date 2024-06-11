@@ -6,27 +6,21 @@
                 <children>
                     <label>
                         <text>{{title}}</text>
+                        <color>dark-gray</color>
+
+                        <horizontal-text-alignment>center</horizontal-text-alignment>
+
+                        <margins>
+                            <top>2</top>
+                            <bottom>2</bottom>
+                        </margins>
+                        <sizing>
+                            <horizontal method="fill">100</horizontal>
+                        </sizing>
                     </label>
-                    <label>
-                        <text>{{trick-id}}</text>
-                    </label>
-<!--                    <label>-->
-<!--                        <text>{{title}}</text>-->
-<!--                        <color>dark-gray</color>-->
 
-<!--                        <horizontal-text-alignment>center</horizontal-text-alignment>-->
-
-<!--                        <margins>-->
-<!--                            <top>2</top>-->
-<!--                            <bottom>2</bottom>-->
-<!--                        </margins>-->
-<!--                        <sizing>-->
-<!--                            <horizontal method="fill">100</horizontal>-->
-<!--                        </sizing>-->
-<!--                    </label>-->
-
-<!--                    <trickster.glyph trick-id="{{trick-id}}" size="50">-->
-<!--                    </trickster.glyph>-->
+                    <trickster.glyph trick-id="{{trick-id}}" size="50">
+                    </trickster.glyph>
                 </children>
                 <horizontal-alignment>center</horizontal-alignment>
                 <sizing>

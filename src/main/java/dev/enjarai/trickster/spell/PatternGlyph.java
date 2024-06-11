@@ -3,6 +3,7 @@ package dev.enjarai.trickster.spell;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
+import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.tricks.Tricks;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
@@ -42,5 +43,10 @@ public record PatternGlyph(Pattern pattern, List<Byte> orderedPattern) implement
     @Override
     public String asString() {
         return "TODO"; // TODO
+    }
+
+    @Override
+    public BooleanFragment asBoolean() {
+        return BooleanFragment.TRUE;
     }
 }

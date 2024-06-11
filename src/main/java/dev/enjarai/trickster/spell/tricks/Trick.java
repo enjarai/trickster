@@ -32,8 +32,12 @@ public abstract class Trick {
             throw new MissingFragmentBlunder(this, index, type.getName());
         }
         var fragment = fragments.get(index);
+        return expectType(fragment, type);
+    }
+
+    protected <T extends Fragment> T expectType(Fragment fragment, FragmentType<T> type) throws BlunderException {
         if (fragment.type() != type) {
-            throw new IncorrectFragmentBlunder(this, index, type.getName(), fragment.type());
+            throw new IncompatibleTypesBlunder(this);
         }
         //noinspection unchecked
         return (T) fragment;

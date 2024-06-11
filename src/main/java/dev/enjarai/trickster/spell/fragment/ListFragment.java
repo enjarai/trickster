@@ -19,4 +19,9 @@ public record ListFragment(List<Fragment> fragments) implements Fragment {
     public String asString() {
         return "[" + fragments.stream().map(Fragment::asString).collect(Collectors.joining(", ")) + "]";
     }
+
+    @Override
+    public BooleanFragment asBoolean() {
+        return new BooleanFragment(!fragments.isEmpty());
+    }
 }

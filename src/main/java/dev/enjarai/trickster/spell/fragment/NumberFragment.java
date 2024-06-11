@@ -8,7 +8,7 @@ import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import dev.enjarai.trickster.spell.tricks.blunder.DivideByZeroBlunder;
 import dev.enjarai.trickster.spell.tricks.blunder.IncompatibleTypesBlunder;
 
-public record NumberFragment(double number) implements Fragment, AddableFragment, SubtractableFragment, MultiplicableFragment, DivisibleFragment {
+public record NumberFragment(double number) implements Fragment, AddableFragment, SubtractableFragment, MultiplicableFragment, DivisibleFragment, RoundableFragment {
     public static final MapCodec<NumberFragment> CODEC =
             Codec.DOUBLE.fieldOf("number").xmap(NumberFragment::new, NumberFragment::number);
 
@@ -20,6 +20,11 @@ public record NumberFragment(double number) implements Fragment, AddableFragment
     @Override
     public String asString() {
         return String.valueOf(number);
+    }
+
+    @Override
+    public BooleanFragment asBoolean() {
+        return new BooleanFragment(number == 0);
     }
 
     @Override
@@ -56,5 +61,20 @@ public record NumberFragment(double number) implements Fragment, AddableFragment
             return new NumberFragment(number / num.number);
         }
         throw new IncompatibleTypesBlunder(Tricks.DIVIDE);
+    }
+
+    @Override
+    public RoundableFragment floor() throws BlunderException {
+        return new NumberFragment(Math.floor(number));
+    }
+
+    @Override
+    public RoundableFragment ceil() throws BlunderException {
+        return new NumberFragment(Math.ceil(number));
+    }
+
+    @Override
+    public RoundableFragment round() throws BlunderException {
+        return new NumberFragment(Math.round(number));
     }
 }

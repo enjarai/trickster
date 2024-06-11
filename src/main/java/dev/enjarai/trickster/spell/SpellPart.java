@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import io.wispforest.endec.Endec;
@@ -112,5 +113,10 @@ public final class SpellPart implements Glyph {
     @Override
     public String asString() {
         return "TODO"; // TODO
+    }
+
+    @Override
+    public BooleanFragment asBoolean() {
+        return BooleanFragment.TRUE; // TODO
     }
 }
