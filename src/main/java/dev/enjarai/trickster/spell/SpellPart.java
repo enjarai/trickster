@@ -15,10 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-public final class SpellPart implements Glyph {
+public final class SpellPart implements Fragment {
     public static final Codec<SpellPart> CODEC = Codec.recursive("spell_part", self -> RecordCodecBuilder.create(instance -> instance.group(
-            Glyph.CODEC.fieldOf("glyph").forGetter(SpellPart::getGlyph),
+            Fragment.CODEC.get().fieldOf("glyph").forGetter(SpellPart::getGlyph),
             Codec.either(self, Codec.BOOL)
                     .xmap(e -> e.left(), o -> o.<Either<SpellPart, Boolean>>map(Either::left).orElse(Either.right(false)))
                     .listOf().fieldOf("sub_parts").forGetter(SpellPart::getSubParts)
@@ -26,10 +27,10 @@ public final class SpellPart implements Glyph {
     public static final MapCodec<SpellPart> MAP_CODEC = MapCodec.assumeMapUnsafe(CODEC);
     public static final Endec<SpellPart> ENDEC = CodecUtils.ofCodec(CODEC);
 
-    public Glyph glyph;
+    public Fragment glyph;
     public List<Optional<SpellPart>> subParts;
 
-    public SpellPart(Glyph glyph, List<Optional<SpellPart>> subParts) {
+    public SpellPart(Fragment glyph, List<Optional<SpellPart>> subParts) {
         this.glyph = glyph;
         this.subParts = new ArrayList<>(subParts);
     }
@@ -40,7 +41,7 @@ public final class SpellPart implements Glyph {
     }
 
     @Override
-    public Fragment activateGlyph(SpellContext ctx, List<Optional<Fragment>> fragments) throws BlunderException {
+    public Fragment activateAsGlyph(SpellContext ctx, List<Optional<Fragment>> fragments) throws BlunderException {
         if (fragments.isEmpty()) {
             return this;
         } else {
@@ -61,7 +62,7 @@ public final class SpellPart implements Glyph {
             fragments.add(part.map(p -> p.run(ctx)));
         }
 
-        return glyph.activateGlyph(ctx, fragments);
+        return glyph.activateAsGlyph(ctx, fragments);
     }
 
     public Optional<Fragment> runSafely(SpellContext ctx) throws BlunderException {
@@ -76,7 +77,7 @@ public final class SpellPart implements Glyph {
         return Optional.empty();
     }
 
-    public Glyph getGlyph() {
+    public Fragment getGlyph() {
         return glyph;
     }
 
@@ -111,12 +112,19 @@ public final class SpellPart implements Glyph {
     }
 
     @Override
-    public String asString() {
-        return "TODO"; // TODO
+    public Text asText() {
+        return Text.of("TODO"); // TODO
     }
 
     @Override
     public BooleanFragment asBoolean() {
-        return BooleanFragment.TRUE; // TODO
+        return new BooleanFragment(glyph.asBoolean().bool() || !subParts.isEmpty());
+    }
+
+    public SpellPart deepClone() {
+        var glyph = this.glyph instanceof SpellPart spell ? spell.deepClone() : this.glyph;
+
+        return new SpellPart(glyph, subParts.stream()
+                .map(o -> o.map(SpellPart::deepClone)).collect(Collectors.toList()));
     }
 }

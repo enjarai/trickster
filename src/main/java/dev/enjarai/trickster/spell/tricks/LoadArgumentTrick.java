@@ -12,7 +12,7 @@ import java.util.List;
 public class LoadArgumentTrick extends Trick {
     private final int index;
 
-    protected LoadArgumentTrick(Pattern pattern, int index) {
+    public LoadArgumentTrick(Pattern pattern, int index) {
         super(pattern);
         this.index = index;
     }

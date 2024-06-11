@@ -2,13 +2,14 @@ package dev.enjarai.trickster.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.enjarai.trickster.Trickster;
-import dev.enjarai.trickster.spell.Pattern;
-import dev.enjarai.trickster.spell.PatternGlyph;
-import dev.enjarai.trickster.spell.SpellPart;
+import dev.enjarai.trickster.spell.*;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.render.*;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class SpellPartWidget extends AbstractParentElement implements Drawable, Selectable {
     public static final Identifier CIRCLE_TEXTURE = Trickster.id("textures/gui/circle_48.png");
@@ -29,6 +31,8 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     public static final Pattern CREATE_GLYPH_CIRCLE_GLYPH = Pattern.of(0, 4, 8, 5);
     public static final Pattern DELETE_CIRCLE_GLYPH = Pattern.of(0, 4, 8);
     public static final Pattern CLEAR_DISABLED_GLYPH = Pattern.of(0, 4, 8, 5, 2, 1, 0, 3, 6, 7, 8);
+    public static final Pattern COPY_OFFHAND_LITERAL = Pattern.of(4, 0, 1, 4, 2, 1);
+    public static final Pattern COPY_OFFHAND_EXECUTE = Pattern.of(4, 3, 0, 4, 5, 2, 4, 1);
 
     private SpellPart spellPart;
 //    private List<SpellPartWidget> partWidgets;
@@ -39,16 +43,22 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     private double amountDragged;
 
     private Consumer<SpellPart> updateListener;
+    private Supplier<SpellPart> otherHandSpellSupplier;
+    @Nullable
+    private SpellPart toBeReplaced;
+    private Runnable initializeReplace;
 
     private SpellPart drawingPart;
     private List<Byte> drawingPattern;
 
-    public SpellPartWidget(SpellPart spellPart, double x, double y, double size, Consumer<SpellPart> updateListener) {
+    public SpellPartWidget(SpellPart spellPart, double x, double y, double size, Consumer<SpellPart> updateListener, Supplier<SpellPart> otherHandSpellSupplier, Runnable initializeReplace) {
         this.spellPart = spellPart;
         this.x = x;
         this.y = y;
         this.size = size;
         this.updateListener = updateListener;
+        this.otherHandSpellSupplier = otherHandSpellSupplier;
+        this.initializeReplace = initializeReplace;
     }
 
     @Override
@@ -191,6 +201,28 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
                 var now = new Vector2f(mouseX, mouseY);
                 drawGlyphLine(context, last, now, pixelSize, true, 1, 0.5f);
             }
+        } else {
+            var matrices = context.getMatrices();
+            var textRenderer = MinecraftClient.getInstance().textRenderer;
+
+//            var height = textRenderer.wrapLines(Text.literal(glyph.asString()), ) // TODO
+            var text = glyph.asText();
+            var height = 7;
+            var width = textRenderer.getWidth(text);
+
+            matrices.push();
+            matrices.translate(x, y, 0);
+            matrices.scale(size / 1.3f / width, size / 1.3f / width, 1);
+
+            textRenderer.draw(
+                    text,
+                    -width / 2f, -height / 2f, 0x88ffffff, false,
+                    matrices.peek().getPositionMatrix(),
+                    context.getVertexConsumers(), TextRenderer.TextLayerType.NORMAL,
+                    0, 0xf000f0
+            );
+
+            matrices.pop();
         }
     }
 
@@ -250,7 +282,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     }
 
     protected static boolean isCircleClickable(float size) {
-        return size >= 16;
+        return size >= 16 && size <= 256;
     }
 
     @Override
@@ -385,9 +417,18 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         } else if (compiled.equals(CREATE_GLYPH_CIRCLE_GLYPH)) {
             drawingPart.glyph = new SpellPart();
         } else if (compiled.equals(DELETE_CIRCLE_GLYPH)) {
-            deleteSubPartFromTree(drawingPart, spellPart);
+            setSubPartInTree(drawingPart, Optional.empty(), spellPart);
         } else if (compiled.equals(CLEAR_DISABLED_GLYPH)) {
             drawingPart.subParts.removeIf(Optional::isEmpty);
+        } else if (compiled.equals(COPY_OFFHAND_LITERAL)) {
+            if (drawingPart == spellPart) {
+                spellPart = otherHandSpellSupplier.get().deepClone();
+            } else {
+                setSubPartInTree(drawingPart, Optional.of(otherHandSpellSupplier.get().deepClone()), spellPart);
+            }
+        } else if (compiled.equals(COPY_OFFHAND_EXECUTE)) {
+            toBeReplaced = drawingPart;
+            initializeReplace.run();
         } else if (drawingPattern.size() > 1) {
             drawingPart.glyph = new PatternGlyph(compiled, drawingPattern);
         }
@@ -398,18 +439,26 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         updateListener.accept(spellPart);
     }
 
+    public void replaceCallback(Fragment fragment) {
+        if (toBeReplaced != null) {
+            toBeReplaced.glyph = fragment;
+            toBeReplaced = null;
+            updateListener.accept(spellPart);
+        }
+    }
+
     public boolean isDrawing() {
         return drawingPart != null;
     }
 
-    protected boolean deleteSubPartFromTree(SpellPart target, SpellPart current) {
+    protected boolean setSubPartInTree(SpellPart target, Optional<SpellPart> replacement, SpellPart current) {
         if (current.glyph instanceof SpellPart part) {
             if (part == target) {
                 current.glyph = new PatternGlyph();
                 return true;
             }
 
-            if (deleteSubPartFromTree(target, part)) {
+            if (setSubPartInTree(target, replacement, part)) {
                 return true;
             }
         }
@@ -418,11 +467,11 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         for (var part : current.subParts) {
             if (part.isPresent()) {
                 if (part.get() == target) {
-                    current.subParts.set(i, Optional.empty());
+                    current.subParts.set(i, replacement);
                     return true;
                 }
 
-                if (deleteSubPartFromTree(target, part.get())) {
+                if (setSubPartInTree(target, replacement, part.get())) {
                     return true;
                 }
             }
@@ -457,10 +506,11 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         var initialDiffX = x - mouseX;
         var initialDiffY = y - mouseY;
 
-        var closestDistanceSquared = initialDiffX * initialDiffX + initialDiffY * initialDiffY;
+        var centerAvailable = isCircleClickable(size) || part.glyph instanceof SpellPart;
+        var closestDistanceSquared = centerAvailable ? initialDiffX * initialDiffX + initialDiffY * initialDiffY : Double.MAX_VALUE;
 
         int partCount = part.getSubParts().size();
-        // Dont change this, its the same for all subcircles
+        // We dont change this, its the same for all subcircles
         var nextSize = Math.min(size / 2, size / (float) (partCount / 2));
         int i = 0;
         for (var child : part.getSubParts()) {
@@ -488,7 +538,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             i++;
         }
 
-        if (Math.sqrt(closestDistanceSquared) <= size && isCircleClickable(closestSize)) {
+        if (Math.sqrt(closestDistanceSquared) <= size && size >= 16) {
             if (closest == part) {
                 // Special handling for part glyphs, because of course
                 // This makes it impossible to interact with direct parents of part glyphs, but thats not an issue

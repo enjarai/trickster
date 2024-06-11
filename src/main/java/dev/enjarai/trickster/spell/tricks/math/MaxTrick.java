@@ -1,26 +1,26 @@
-package dev.enjarai.trickster.spell.tricks;
+package dev.enjarai.trickster.spell.tricks.math;
 
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.fragment.AddableFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
+import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import dev.enjarai.trickster.spell.tricks.blunder.MissingInputsBlunder;
 
 import java.util.List;
 
-public class ModuloTrick extends Trick {
-    protected ModuloTrick() {
-        super(Pattern.of(0, 4, 1, 2, 4, 6, 7, 4, 8));
+public class MaxTrick extends Trick {
+    public MaxTrick() {
+        super(Pattern.of(3, 1, 5));
     }
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var param1 = expectInput(fragments, FragmentType.NUMBER, 0);
-        var param2 = expectInput(fragments, FragmentType.NUMBER, 1);
-
-        return new NumberFragment(param1.number() % param2.number());
+        return new NumberFragment(fragments.stream()
+                .mapToDouble(frag -> expectType(frag, FragmentType.NUMBER).number())
+                .max()
+                .orElseThrow(() -> new MissingInputsBlunder(this)));
     }
 }

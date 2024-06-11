@@ -10,7 +10,7 @@ import dev.enjarai.trickster.spell.tricks.blunder.NoPlayerBlunder;
 import java.util.List;
 
 public class ReflectionTrick extends Trick {
-    protected ReflectionTrick() {
+    public ReflectionTrick() {
         super(Pattern.of(1, 5, 7, 3, 1));
     }
 

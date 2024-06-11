@@ -1,24 +1,25 @@
-package dev.enjarai.trickster.spell.tricks;
+package dev.enjarai.trickster.spell.tricks.math;
 
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.fragment.AddableFragment;
+import dev.enjarai.trickster.spell.fragment.MultiplicableFragment;
+import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import dev.enjarai.trickster.spell.tricks.blunder.MissingInputsBlunder;
 
 import java.util.List;
 
-public class AddTrick extends Trick {
-    protected AddTrick() {
-        super(Pattern.of(7, 4, 0, 1, 2, 4));
+public class MultiplyTrick extends Trick {
+    public MultiplyTrick() {
+        super(Pattern.of(2, 1, 0, 4, 8, 7, 6));
     }
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         return fragments.stream()
-                .map(a -> expectType(a, AddableFragment.class))
-                .reduce(AddableFragment::add)
+                .map(a -> expectType(a, MultiplicableFragment.class))
+                .reduce(MultiplicableFragment::multiply)
                 .orElseThrow(() -> new MissingInputsBlunder(this));
     }
 }

@@ -3,6 +3,7 @@ package dev.enjarai.trickster.spell.fragment;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import dev.enjarai.trickster.spell.Fragment;
+import net.minecraft.text.Text;
 
 public record BooleanFragment(boolean bool) implements Fragment {
     public static final MapCodec<BooleanFragment> CODEC = Codec.BOOL
@@ -16,8 +17,8 @@ public record BooleanFragment(boolean bool) implements Fragment {
     }
 
     @Override
-    public String asString() {
-        return "" + bool;
+    public Text asText() {
+        return Text.of("" + bool);
     }
 
     @Override

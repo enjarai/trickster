@@ -9,7 +9,7 @@ import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import java.util.List;
 
 public class ExecuteTrick extends Trick {
-    protected ExecuteTrick() {
+    public ExecuteTrick() {
         super(Pattern.of(3, 4, 5, 8, 7, 6, 3, 0, 1, 4, 7));
     }
 

@@ -1,13 +1,13 @@
 package dev.enjarai.trickster.spell.fragment;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.tricks.Tricks;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import dev.enjarai.trickster.spell.tricks.blunder.DivideByZeroBlunder;
 import dev.enjarai.trickster.spell.tricks.blunder.IncompatibleTypesBlunder;
+import net.minecraft.text.Text;
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
 
@@ -25,8 +25,8 @@ public record VectorFragment(Vector3dc vector) implements Fragment, AddableFragm
     }
 
     @Override
-    public String asString() {
-        return "(" + vector.x() + ", " + vector.y() + ", " + vector.z() + ")";
+    public Text asText() {
+        return Text.of("(" + vector.x() + ", " + vector.y() + ", " + vector.z() + ")");
     }
 
     @Override

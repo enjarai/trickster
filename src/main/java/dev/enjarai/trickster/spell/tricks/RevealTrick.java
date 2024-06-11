@@ -11,19 +11,29 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class RevealTrick extends Trick {
-    protected RevealTrick() {
+    public RevealTrick() {
         super(Pattern.of(3, 4, 5, 8, 7, 6, 3));
     }
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var result = expectInput(fragments, 0).asString();
+        var result = expectInput(fragments, 0).asText();
 
         if (fragments.size() > 1) {
-            result = "(" + fragments.stream().map(Fragment::asString).collect(Collectors.joining(", ")) + ")";
+            var building = Text.literal("(");
+
+            for (int i = 0; i < fragments.size(); i++) {
+                var frag = fragments.get(i);
+                if (i != 0) {
+                    building = building.append(", ");
+                }
+                building = building.append(frag.asText());
+            }
+
+            result = building.append(")");;
         }
 
-        String finalResult = result;
+        Text finalResult = result;
         ctx.getPlayer().ifPresent(player -> {
             player.sendMessage(Text.of(finalResult));
         });

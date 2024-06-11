@@ -3,7 +3,6 @@
 	"package": "dev.enjarai.trickster.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"ExampleMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

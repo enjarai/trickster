@@ -12,6 +12,7 @@ import java.util.stream.Stream;
 public record Pattern(List<PatternEntry> entries) {
     public static final Codec<Pattern> CODEC = PatternEntry.CODEC
             .listOf(1, Integer.MAX_VALUE).xmap(Pattern::new, Pattern::entries);
+    public static final Pattern EMPTY = Pattern.of();
 
     public static Pattern from(List<Byte> pattern) {
         var list = new ArrayList<PatternEntry>();

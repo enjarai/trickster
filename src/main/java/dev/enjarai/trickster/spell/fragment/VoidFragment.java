@@ -2,6 +2,8 @@ package dev.enjarai.trickster.spell.fragment;
 
 import com.mojang.serialization.MapCodec;
 import dev.enjarai.trickster.spell.Fragment;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
 
 public record VoidFragment() implements Fragment {
     public static final VoidFragment INSTANCE = new VoidFragment();
@@ -13,8 +15,8 @@ public record VoidFragment() implements Fragment {
     }
 
     @Override
-    public String asString() {
-        return "void";
+    public Text asText() {
+        return Text.literal("void").fillStyle(Style.EMPTY.withColor(0x4400aa));
     }
 
     @Override

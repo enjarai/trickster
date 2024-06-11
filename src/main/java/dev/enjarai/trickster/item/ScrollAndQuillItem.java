@@ -23,6 +23,7 @@ public class ScrollAndQuillItem extends Item {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         var stack = user.getStackInHand(hand);
+        var otherStack = user.getStackInHand(hand == Hand.MAIN_HAND ? Hand.OFF_HAND : Hand.MAIN_HAND);
 
         if (user.isSneaking()) {
             user.openHandledScreen(new NamedScreenHandlerFactory() {
@@ -33,7 +34,7 @@ public class ScrollAndQuillItem extends Item {
 
                 @Override
                 public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-                    return new ScrollAndQuillScreenHandler(syncId, playerInventory, stack);
+                    return new ScrollAndQuillScreenHandler(syncId, playerInventory, stack, otherStack);
                 }
             });
         } else if (!world.isClient()) {

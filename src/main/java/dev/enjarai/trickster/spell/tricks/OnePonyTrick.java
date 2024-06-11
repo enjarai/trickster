@@ -9,7 +9,7 @@ import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import java.util.List;
 
 public class OnePonyTrick extends Trick {
-    protected OnePonyTrick() {
+    public OnePonyTrick() {
         super(Pattern.of(7, 4, 1));
     }
 

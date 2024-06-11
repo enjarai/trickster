@@ -1,20 +1,21 @@
 package dev.enjarai.trickster.spell;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
+import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.tricks.Tricks;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import dev.enjarai.trickster.spell.tricks.blunder.UnknownTrickBlunder;
+import net.minecraft.text.Text;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public record PatternGlyph(Pattern pattern, List<Byte> orderedPattern) implements Glyph {
+public record PatternGlyph(Pattern pattern, List<Byte> orderedPattern) implements Fragment {
     public static final Codec<PatternGlyph> CODEC = Codec.BYTE.listOf().xmap(PatternGlyph::new, PatternGlyph::orderedPattern);
     public static final MapCodec<PatternGlyph> MAP_CODEC = CODEC.fieldOf("pattern");
 
@@ -27,7 +28,11 @@ public record PatternGlyph(Pattern pattern, List<Byte> orderedPattern) implement
     }
 
     @Override
-    public Fragment activateGlyph(SpellContext ctx, List<Optional<Fragment>> fragments) throws BlunderException {
+    public Fragment activateAsGlyph(SpellContext ctx, List<Optional<Fragment>> fragments) throws BlunderException {
+        if (pattern.equals(Pattern.EMPTY)) {
+            return VoidFragment.INSTANCE;
+        }
+
         var trick = Tricks.lookup(pattern);
         if (trick != null) {
             return trick.activate(ctx, fragments.stream().filter(Optional::isPresent).map(Optional::get).toList());
@@ -41,8 +46,8 @@ public record PatternGlyph(Pattern pattern, List<Byte> orderedPattern) implement
     }
 
     @Override
-    public String asString() {
-        return "TODO"; // TODO
+    public Text asText() {
+        return Text.of("TODO"); // TODO
     }
 
     @Override

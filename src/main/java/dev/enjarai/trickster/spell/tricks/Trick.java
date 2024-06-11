@@ -7,7 +7,6 @@ import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import dev.enjarai.trickster.spell.tricks.blunder.IncompatibleTypesBlunder;
-import dev.enjarai.trickster.spell.tricks.blunder.IncorrectFragmentBlunder;
 import dev.enjarai.trickster.spell.tricks.blunder.MissingFragmentBlunder;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -17,7 +16,7 @@ import java.util.List;
 public abstract class Trick {
     protected final Pattern pattern;
 
-    protected Trick(Pattern pattern) {
+    public Trick(Pattern pattern) {
         this.pattern = pattern;
     }
 

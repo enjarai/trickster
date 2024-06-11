@@ -8,7 +8,7 @@ import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import java.util.List;
 
 public class IfElseTrick extends Trick {
-    protected IfElseTrick() {
+    public IfElseTrick() {
         super(Pattern.of(3, 4, 0, 2, 4, 5));
     }
 

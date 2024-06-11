@@ -7,6 +7,7 @@ import dev.enjarai.trickster.spell.tricks.Tricks;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import dev.enjarai.trickster.spell.tricks.blunder.DivideByZeroBlunder;
 import dev.enjarai.trickster.spell.tricks.blunder.IncompatibleTypesBlunder;
+import net.minecraft.text.Text;
 
 public record NumberFragment(double number) implements Fragment, AddableFragment, SubtractableFragment, MultiplicableFragment, DivisibleFragment, RoundableFragment {
     public static final MapCodec<NumberFragment> CODEC =
@@ -18,8 +19,8 @@ public record NumberFragment(double number) implements Fragment, AddableFragment
     }
 
     @Override
-    public String asString() {
-        return String.valueOf(number);
+    public Text asText() {
+        return Text.of(String.valueOf(number));
     }
 
     @Override

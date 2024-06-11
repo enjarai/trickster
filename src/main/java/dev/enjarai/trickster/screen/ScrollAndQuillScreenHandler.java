@@ -2,24 +2,33 @@ package dev.enjarai.trickster.screen;
 
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.SpellComponent;
+import dev.enjarai.trickster.spell.Fragment;
+import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.SpellPart;
+import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import io.wispforest.endec.Endec;
 import io.wispforest.owo.client.screens.SyncedProperty;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.server.network.ServerPlayerEntity;
+
+import java.util.function.Consumer;
 
 public class ScrollAndQuillScreenHandler extends ScreenHandler {
     private final ItemStack scrollStack;
 
     public final SyncedProperty<SpellPart> spell = createProperty(SpellPart.class, SpellPart.ENDEC, new SpellPart());
+    public final SyncedProperty<SpellPart> otherHandSpell = createProperty(SpellPart.class, SpellPart.ENDEC, new SpellPart());
+
+    public Consumer<Fragment> replacerCallback;
 
     public ScrollAndQuillScreenHandler(int syncId, PlayerInventory playerInventory) {
-        this(syncId, playerInventory, null);
+        this(syncId, playerInventory, null, null);
     }
 
-    public ScrollAndQuillScreenHandler(int syncId, PlayerInventory playerInventory, ItemStack scrollStack) {
+    public ScrollAndQuillScreenHandler(int syncId, PlayerInventory playerInventory, ItemStack scrollStack, ItemStack otherHandStack) {
         super(ModScreenHandlers.SCROLL_AND_QUILL, syncId);
 
         this.scrollStack = scrollStack;
@@ -31,7 +40,20 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
             }
         }
 
+        if (otherHandStack != null) {
+            var spell = otherHandStack.get(ModComponents.SPELL);
+            if (spell != null) {
+                this.otherHandSpell.set(spell.spell());
+            }
+        }
+
         addServerboundMessage(SpellMessage.class, SpellMessage.ENDEC, msg -> updateSpell(msg.spell()));
+        addServerboundMessage(ExecuteOffhand.class, msg -> executeOffhand());
+        addClientboundMessage(Replace.class, Replace.ENDEC, msg -> {
+            if (replacerCallback != null) {
+                replacerCallback.accept(msg.fragment());
+            }
+        });
     }
 
     public void updateSpell(SpellPart spell) {
@@ -41,6 +63,20 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
 //            var result = SpellPart.CODEC.encodeStart(JsonOps.INSTANCE, spell).result().get();
 //            Trickster.LOGGER.warn(result.toString());
             sendMessage(new SpellMessage(spell));
+        }
+    }
+
+    public void executeOffhand() {
+        var server = player().getServer();
+        if (server != null) {
+            server.execute(() -> {
+                var fragment = otherHandSpell.get()
+                        .runSafely(new SpellContext((ServerPlayerEntity) player()))
+                        .orElse(VoidFragment.INSTANCE);
+                sendMessage(new Replace(fragment));
+            });
+        } else {
+            sendMessage(new ExecuteOffhand());
         }
     }
 
@@ -56,5 +92,12 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
 
     public record SpellMessage(SpellPart spell) {
         public static final Endec<SpellMessage> ENDEC = SpellPart.ENDEC.xmap(SpellMessage::new, SpellMessage::spell);
+    }
+
+    public record ExecuteOffhand() {
+    }
+
+    public record Replace(Fragment fragment) {
+        public static final Endec<Replace> ENDEC = Fragment.ENDEC.get().xmap(Replace::new, Replace::fragment);
     }
 }

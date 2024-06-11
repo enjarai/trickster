@@ -17,8 +17,8 @@ public record EntityFragment(UUID uuid, Text name) implements Fragment {
     }
 
     @Override
-    public String asString() {
-        return name.getString();
+    public Text asText() {
+        return name;
     }
 
     @Override
