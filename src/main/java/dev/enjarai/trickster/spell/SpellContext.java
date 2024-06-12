@@ -2,22 +2,17 @@ package dev.enjarai.trickster.spell;
 
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import dev.enjarai.trickster.spell.tricks.blunder.RecursionLimitReachedBlunder;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class SpellContext {
+public abstract class SpellContext {
     public static final int MAX_RECURSION_DEPTH = 1000;
 
-    @Nullable
-    private final ServerPlayerEntity player;
     private final Deque<List<Fragment>> partGlyphStack = new ArrayDeque<>();
     private int recursions = 0;
-
-    public SpellContext(@Nullable ServerPlayerEntity player) {
-        this.player = player;
-    }
+    private boolean destructive = false;
 
     public void pushPartGlyph(List<Fragment> fragments) throws BlunderException {
         partGlyphStack.push(fragments);
@@ -41,6 +36,19 @@ public class SpellContext {
     }
 
     public Optional<ServerPlayerEntity> getPlayer() {
-        return Optional.ofNullable(player);
+        return Optional.empty();
+    }
+
+    public Optional<ItemStack> getOtherHandSpellStack() {
+        return Optional.empty();
+    }
+
+    public boolean isDestructive() {
+        return destructive;
+    }
+
+    public SpellContext setDestructive() {
+        destructive = true;
+        return this;
     }
 }

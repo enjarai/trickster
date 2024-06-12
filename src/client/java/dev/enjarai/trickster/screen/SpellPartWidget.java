@@ -32,6 +32,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     public static final Pattern DELETE_CIRCLE_GLYPH = Pattern.of(0, 4, 8);
     public static final Pattern CLEAR_DISABLED_GLYPH = Pattern.of(0, 4, 8, 5, 2, 1, 0, 3, 6, 7, 8);
     public static final Pattern COPY_OFFHAND_LITERAL = Pattern.of(4, 0, 1, 4, 2, 1);
+    public static final Pattern COPY_OFFHAND_LITERAL_INNER = Pattern.of(1, 2, 4, 1, 0, 4, 7);
     public static final Pattern COPY_OFFHAND_EXECUTE = Pattern.of(4, 3, 0, 4, 5, 2, 4, 1);
 
     private SpellPart spellPart;
@@ -426,6 +427,8 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             } else {
                 setSubPartInTree(drawingPart, Optional.of(otherHandSpellSupplier.get().deepClone()), spellPart);
             }
+        } else if (compiled.equals(COPY_OFFHAND_LITERAL_INNER)) {
+            drawingPart.glyph = otherHandSpellSupplier.get().deepClone();
         } else if (compiled.equals(COPY_OFFHAND_EXECUTE)) {
             toBeReplaced = drawingPart;
             initializeReplace.run();

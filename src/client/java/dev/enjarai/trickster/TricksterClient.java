@@ -9,6 +9,7 @@ public class TricksterClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		ModHandledScreens.register();
+		ModKeyBindings.register();
 
 		UIParsing.registerFactory(Trickster.id("glyph"), GlyphComponent::parse);
 	}

@@ -1,18 +1,22 @@
 package dev.enjarai.trickster.screen;
 
+import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.SpellComponent;
 import dev.enjarai.trickster.spell.Fragment;
+import dev.enjarai.trickster.spell.PlayerSpellContext;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import io.wispforest.endec.Endec;
 import io.wispforest.owo.client.screens.SyncedProperty;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Hand;
 
 import java.util.function.Consumer;
 
@@ -24,14 +28,19 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
 
     public Consumer<Fragment> replacerCallback;
 
+    public final EquipmentSlot slot;
+    public final boolean greedyEvaluation;
+
     public ScrollAndQuillScreenHandler(int syncId, PlayerInventory playerInventory) {
-        this(syncId, playerInventory, null, null);
+        this(syncId, playerInventory, null, null, null, false);
     }
 
-    public ScrollAndQuillScreenHandler(int syncId, PlayerInventory playerInventory, ItemStack scrollStack, ItemStack otherHandStack) {
+    public ScrollAndQuillScreenHandler(int syncId, PlayerInventory playerInventory, ItemStack scrollStack, ItemStack otherHandStack, EquipmentSlot slot, boolean greedyEvaluation) {
         super(ModScreenHandlers.SCROLL_AND_QUILL, syncId);
 
         this.scrollStack = scrollStack;
+        this.slot = slot;
+        this.greedyEvaluation = greedyEvaluation;
 
         if (scrollStack != null) {
             var spell = scrollStack.get(ModComponents.SPELL);
@@ -58,7 +67,17 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
 
     public void updateSpell(SpellPart spell) {
         if (scrollStack != null) {
-            scrollStack.set(ModComponents.SPELL, new SpellComponent(spell));
+            var server = player().getServer();
+            if (server != null) {
+                server.execute(() -> {
+                    if (greedyEvaluation) {
+                        spell.runSafely(new PlayerSpellContext((ServerPlayerEntity) player(), slot).setDestructive(), err -> {});
+                        this.spell.set(spell);
+                    }
+
+                    scrollStack.set(ModComponents.SPELL, new SpellComponent(spell));
+                });
+            }
         } else {
 //            var result = SpellPart.CODEC.encodeStart(JsonOps.INSTANCE, spell).result().get();
 //            Trickster.LOGGER.warn(result.toString());
@@ -70,10 +89,12 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
         var server = player().getServer();
         if (server != null) {
             server.execute(() -> {
-                var fragment = otherHandSpell.get()
-                        .runSafely(new SpellContext((ServerPlayerEntity) player()))
-                        .orElse(VoidFragment.INSTANCE);
-                sendMessage(new Replace(fragment));
+                if (player().getInventory().contains(ModItems.CAN_EVALUATE_DYNAMICALLY)) {
+                    var fragment = otherHandSpell.get()
+                            .runSafely(new PlayerSpellContext((ServerPlayerEntity) player(), slot))
+                            .orElse(VoidFragment.INSTANCE);
+                    sendMessage(new Replace(fragment));
+                }
             });
         } else {
             sendMessage(new ExecuteOffhand());

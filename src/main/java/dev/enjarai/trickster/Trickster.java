@@ -3,6 +3,7 @@ package dev.enjarai.trickster;
 import dev.enjarai.trickster.block.ModBlocks;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
+import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.screen.ModScreenHandlers;
 import dev.enjarai.trickster.spell.tricks.Tricks;
 import net.fabricmc.api.ModInitializer;
@@ -28,6 +29,7 @@ public class Trickster implements ModInitializer {
 		ModComponents.register();
 		ModItems.register();
 		ModScreenHandlers.register();
+		ModNetworking.register();
 		Tricks.register();
 	}
 

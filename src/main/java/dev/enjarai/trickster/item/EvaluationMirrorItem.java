@@ -1,9 +1,9 @@
 package dev.enjarai.trickster.item;
 
 import dev.enjarai.trickster.item.component.ModComponents;
+import dev.enjarai.trickster.item.component.SpellComponent;
 import dev.enjarai.trickster.screen.ScrollAndQuillScreenHandler;
-import dev.enjarai.trickster.spell.PlayerSpellContext;
-import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.SpellPart;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -11,14 +11,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
-public class ScrollAndQuillItem extends Item {
-    public ScrollAndQuillItem(Settings settings) {
+public class EvaluationMirrorItem extends Item {
+    public EvaluationMirrorItem(Settings settings) {
         super(settings);
     }
 
@@ -26,25 +25,24 @@ public class ScrollAndQuillItem extends Item {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         var stack = user.getStackInHand(hand);
         var otherStack = user.getStackInHand(hand == Hand.MAIN_HAND ? Hand.OFF_HAND : Hand.MAIN_HAND);
-        var slot = hand == Hand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
 
-        if (user.isSneaking()) {
+        if (!user.isSneaking()) {
             user.openHandledScreen(new NamedScreenHandlerFactory() {
                 @Override
                 public Text getDisplayName() {
-                    return Text.translatable("trickster.screen.scroll_and_quill");
+                    return Text.translatable("trickster.screen.mirror_of_evaluation");
                 }
 
                 @Override
                 public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-                    return new ScrollAndQuillScreenHandler(syncId, playerInventory, stack, otherStack, slot, false);
+                    return new ScrollAndQuillScreenHandler(
+                            syncId, playerInventory, stack, otherStack,
+                            hand == Hand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND, true
+                    );
                 }
             });
-        } else if (!world.isClient()) { // TODO remove
-            var spell = stack.get(ModComponents.SPELL);
-            if (spell != null) {
-                spell.spell().runSafely(new PlayerSpellContext((ServerPlayerEntity) user, slot));
-            }
+        } else {
+            stack.set(ModComponents.SPELL, new SpellComponent(new SpellPart()));
         }
 
         return TypedActionResult.success(stack);

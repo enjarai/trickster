@@ -6,6 +6,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
+import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import io.wispforest.endec.Endec;
 import io.wispforest.owo.serialization.CodecUtils;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public final class SpellPart implements Fragment {
@@ -62,19 +64,31 @@ public final class SpellPart implements Fragment {
             fragments.add(part.map(p -> p.run(ctx)));
         }
 
-        return glyph.activateAsGlyph(ctx, fragments);
+        var value = glyph.activateAsGlyph(ctx, fragments);
+
+        if (ctx.isDestructive() && !value.equals(VoidFragment.INSTANCE)) {
+            if (glyph != value) {
+                subParts.clear();
+            }
+            glyph = value;
+        }
+
+        return value;
     }
 
-    public Optional<Fragment> runSafely(SpellContext ctx) throws BlunderException {
+    public Optional<Fragment> runSafely(SpellContext ctx, Consumer<Text> onError) {
         try {
             return Optional.of(run(ctx));
         } catch (BlunderException e) {
-            ctx.getPlayer().ifPresent(player -> player.sendMessage(e.createMessage()));
+            onError.accept(e.createMessage());
         } catch (Exception e) {
-            ctx.getPlayer().ifPresent(player -> player.sendMessage(
-                    Text.literal("Uncaught exception in spell: " + e.getMessage())));
+            onError.accept(Text.literal("Uncaught exception in spell: " + e.getMessage()));
         }
         return Optional.empty();
+    }
+
+    public Optional<Fragment> runSafely(SpellContext ctx) {
+        return runSafely(ctx, err -> ctx.getPlayer().ifPresent(player -> player.sendMessage(err)));
     }
 
     public Fragment getGlyph() {
