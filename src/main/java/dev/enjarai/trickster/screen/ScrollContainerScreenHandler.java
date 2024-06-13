@@ -3,6 +3,9 @@ package dev.enjarai.trickster.screen;
 import com.mojang.datafixers.util.Pair;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.item.ModItems;
+import io.wispforest.owo.client.screens.SyncedProperty;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ContainerComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -15,14 +18,43 @@ import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
 public class ScrollContainerScreenHandler extends ScreenHandler {
-    private final Inventory inventory;
+    private final SimpleInventory inventory;
     private final int rows;
 
+    @Nullable
+    private final ItemStack containerStack;
+
+    private final SyncedProperty<Integer> lockedSlot = createProperty(Integer.class, -1);
+
     public ScrollContainerScreenHandler(int syncId, PlayerInventory playerInventory) {
+        this(syncId, playerInventory, null);
+    }
+
+    public ScrollContainerScreenHandler(int syncId, PlayerInventory playerInventory, @Nullable ItemStack containerStack) {
         super(ModScreenHandlers.SCROLL_CONTAINER, syncId);
+        this.containerStack = containerStack;
         this.rows = 3;
         this.inventory = new SimpleInventory(9 * rows);
         inventory.onOpen(playerInventory.player);
+
+        if (containerStack != null) {
+            var container = containerStack.get(DataComponentTypes.CONTAINER);
+            if (container != null) {
+                container.copyTo(inventory.getHeldStacks());
+                inventory.addListener(i -> {
+                    this.containerStack.set(DataComponentTypes.CONTAINER,
+                            ContainerComponent.fromStacks(this.inventory.getHeldStacks()));
+                });
+            }
+
+            for (int j = 0; j < 9; ++j) {
+                if (playerInventory.getStack(j) == containerStack) {
+                    lockedSlot.set(j);
+                    break;
+                }
+            }
+        }
+
         int i = (this.rows - 4) * 18;
 
         for(int j = 0; j < this.rows; ++j) {
@@ -33,12 +65,18 @@ public class ScrollContainerScreenHandler extends ScreenHandler {
 
         for(int j = 0; j < 3; ++j) {
             for(int k = 0; k < 9; ++k) {
-                this.addSlot(new ScrollSlot(playerInventory, k + j * 9 + 9, 8 + k * 18, 103 + j * 18 + i));
+                this.addSlot(new Slot(playerInventory, k + j * 9 + 9, 8 + k * 18, 103 + j * 18 + i));
             }
         }
 
         for(int j = 0; j < 9; ++j) {
-            this.addSlot(new ScrollSlot(playerInventory, j, 8 + j * 18, 161 + i));
+            var index = j;
+            this.addSlot(new Slot(playerInventory, j, 8 + j * 18, 161 + i) {
+                @Override
+                public boolean canTakeItems(PlayerEntity playerEntity) {
+                    return lockedSlot.get() != index;
+                }
+            });
         }
     }
 

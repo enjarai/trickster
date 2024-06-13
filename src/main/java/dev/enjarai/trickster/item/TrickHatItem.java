@@ -1,10 +1,17 @@
 package dev.enjarai.trickster.item;
 
+import dev.enjarai.trickster.screen.ScrollAndQuillScreenHandler;
+import dev.enjarai.trickster.screen.ScrollContainerScreenHandler;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Equipment;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
@@ -23,7 +30,21 @@ public class TrickHatItem extends Item implements Equipment {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         var stack = user.getStackInHand(hand);
 
-        // TODO
+        user.openHandledScreen(new NamedScreenHandlerFactory() {
+            @Override
+            public Text getDisplayName() {
+                if (stack.contains(DataComponentTypes.CUSTOM_NAME)) {
+                    return stack.getName();
+                } else {
+                    return Text.translatable("trickster.screen.scroll_container");
+                }
+            }
+
+            @Override
+            public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+                return new ScrollContainerScreenHandler(syncId, playerInventory, stack);
+            }
+        });
 
         return TypedActionResult.success(stack);
     }
