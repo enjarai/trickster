@@ -3,6 +3,7 @@ package dev.enjarai.trickster.screen;
 import com.mojang.datafixers.util.Pair;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.item.ModItems;
+import dev.enjarai.trickster.item.component.ModComponents;
 import io.wispforest.owo.client.screens.SyncedProperty;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ContainerComponent;
@@ -25,6 +26,7 @@ public class ScrollContainerScreenHandler extends ScreenHandler {
     private final ItemStack containerStack;
 
     private final SyncedProperty<Integer> lockedSlot = createProperty(Integer.class, -1);
+    public final SyncedProperty<Integer> selectedSlot = createProperty(Integer.class, 0);
 
     public ScrollContainerScreenHandler(int syncId, PlayerInventory playerInventory) {
         this(syncId, playerInventory, null);
@@ -45,6 +47,11 @@ public class ScrollContainerScreenHandler extends ScreenHandler {
                     this.containerStack.set(DataComponentTypes.CONTAINER,
                             ContainerComponent.fromStacks(this.inventory.getHeldStacks()));
                 });
+            }
+
+            var selected = containerStack.get(ModComponents.SELECTED_SLOT);
+            if (selected != null) {
+                selectedSlot.set(selected.slot());
             }
 
             for (int j = 0; j < 9; ++j) {

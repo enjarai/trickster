@@ -2,6 +2,7 @@ package dev.enjarai.trickster.item;
 
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.item.component.ModComponents;
+import dev.enjarai.trickster.item.component.SelectedSlotComponent;
 import dev.enjarai.trickster.item.component.SpellComponent;
 import dev.enjarai.trickster.spell.SpellPart;
 import io.wispforest.lavender.book.LavenderBookItem;
@@ -27,7 +28,8 @@ public class ModItems {
     public static final TrickHatItem TOP_HAT = register("top_hat",
             new TrickHatItem(new Item.Settings().maxCount(1)
                     .component(DataComponentTypes.CONTAINER,
-                            ContainerComponent.fromStacks(DefaultedList.ofSize(27, ItemStack.EMPTY)))));
+                            ContainerComponent.fromStacks(DefaultedList.ofSize(27, ItemStack.EMPTY)))
+                    .component(ModComponents.SELECTED_SLOT, new SelectedSlotComponent(0, 27))));
 
     public static final TagKey<Item> CAN_EVALUATE_DYNAMICALLY = TagKey.of(RegistryKeys.ITEM, Trickster.id("can_evaluate_dynamically"));
     public static final TagKey<Item> HOLDABLE_HAT = TagKey.of(RegistryKeys.ITEM, Trickster.id("holdable_hat"));

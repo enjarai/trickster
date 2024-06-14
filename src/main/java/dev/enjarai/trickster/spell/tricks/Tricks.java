@@ -3,6 +3,7 @@ package dev.enjarai.trickster.spell.tricks;
 import com.mojang.serialization.Lifecycle;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.tricks.bool.*;
 import dev.enjarai.trickster.spell.tricks.math.*;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -46,6 +47,11 @@ public class Tricks {
 
     // Boolean
     public static final IfElseTrick IF_ELSE = register("if_else", new IfElseTrick());
+    public static final EqualsTrick EQUALS = register("equals", new EqualsTrick());
+    public static final NotEqualsTrick NOT_EQUALS = register("not_equals", new NotEqualsTrick());
+    public static final AllTrick ALL = register("all", new AllTrick());
+    public static final AnyTrick ANY = register("any", new AnyTrick());
+    public static final NoneTrick NONE = register("none", new NoneTrick());
 
     private static <T extends Trick> T register(String path, T trick) {
         LOOKUP.put(trick.getPattern(), trick);

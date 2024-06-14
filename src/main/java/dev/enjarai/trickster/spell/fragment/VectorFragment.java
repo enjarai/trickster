@@ -92,4 +92,12 @@ public record VectorFragment(Vector3dc vector) implements Fragment, AddableFragm
     public RoundableFragment round() throws BlunderException {
         return new VectorFragment(vector.round(new Vector3d()));
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof VectorFragment v) {
+            return v.vector.equals(vector, 1 / 16d);
+        }
+        return false;
+    }
 }

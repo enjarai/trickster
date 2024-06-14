@@ -78,4 +78,13 @@ public record NumberFragment(double number) implements Fragment, AddableFragment
     public RoundableFragment round() throws BlunderException {
         return new NumberFragment(Math.round(number));
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof NumberFragment n) {
+            var precision = 1 / 16d;
+            return n.number > number - precision && n.number < number + precision;
+        }
+        return false;
+    }
 }

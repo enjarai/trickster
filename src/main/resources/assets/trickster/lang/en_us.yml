@@ -1,0 +1,21 @@
+trickster:
+  screen:
+    scroll_container: Scroll Storage
+
+  trick.trickster:
+    add: Annexation Stratagem
+    subtract: Desertion Stratagem
+    multiply: Domination Stratagem
+    divide: Submission Stratagem
+    modulo: Distortion of Wholes
+    max: Noble Stratagem
+    min: Insignificance Stratagem
+    ceil: Distortion of Grandeur
+    floor: Distortion of Humility
+    round: Distortion of Objectivity
+
+item.trickster:
+  tome_of_tomfoolery: Tome of Tomfoolery
+  mirror_of_evaluation: Mirror of Evaluation
+  scroll_and_quill: Scroll and Quill
+  top_hat: Top Hat
