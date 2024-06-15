@@ -18,8 +18,12 @@ repositories {
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
 
-	repositories {
-		maven { url 'https://maven.wispforest.io' }
+	maven {
+		url 'https://maven.wispforest.io'
+	}
+
+	maven {
+		url "https://maven.enjarai.dev/releases"
 	}
 }
 
@@ -37,19 +41,23 @@ loom {
 
 dependencies {
 	// To change the versions see the gradle.properties file
-	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+	minecraft "com.mojang:minecraft:${property('deps.minecraft')}"
+	mappings "net.fabricmc:yarn:${property('deps.yarn')}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${property('deps.fabric-api')}"
 
-	modImplementation "io.wispforest:owo-lib:${project.owo_version}"
-	include "io.wispforest:owo-sentinel:${project.owo_version}"
+	modImplementation "io.wispforest:owo-lib:${property('deps.owo-lib')}"
+	include "io.wispforest:owo-sentinel:${property('deps.owo-lib')}"
 
-	modImplementation "io.wispforest:lavender:${project.lavender_version}"
+	modImplementation "io.wispforest:lavender:${property('deps.lavender')}"
 //	implementation "io.wispforest:endec:0.1.0-pre.8"
 	modLocalRuntime "io.wispforest.lavender-md:owo-ui:0.1.2+1.21"
+
+	modImplementation("nl.enjarai:cicada-lib:${property('deps.cicada')}") {
+		exclude group: "net.fabricmc.fabric-api"
+	}
 }
 
 processResources {

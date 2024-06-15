@@ -16,14 +16,16 @@ public class NotEqualsTrick extends Trick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        Fragment last = null;
-        for (Fragment fragment : fragments) {
-            if (last != null && !fragment.equals(last)) {
-                return BooleanFragment.TRUE;
+        for (int i = 0; i < fragments.size(); i++) {
+            for (int j = 0; j < fragments.size(); j++) {
+                if (i == j) continue;
+
+                if (fragments.get(i).equals(fragments.get(j))) {
+                    return BooleanFragment.FALSE;
+                }
             }
-            last = fragment;
         }
 
-        return BooleanFragment.FALSE;
+        return BooleanFragment.TRUE;
     }
 }

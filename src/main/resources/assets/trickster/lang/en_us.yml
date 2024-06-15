@@ -1,6 +1,7 @@
 trickster:
   screen:
     scroll_container: Scroll Storage
+    scroll_and_quill: Scroll and Quill
 
   trick.trickster:
     add: Annexation Stratagem
@@ -19,3 +20,4 @@ item.trickster:
   mirror_of_evaluation: Mirror of Evaluation
   scroll_and_quill: Scroll and Quill
   top_hat: Top Hat
+  wand: Wand

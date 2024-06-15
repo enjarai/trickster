@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import dev.enjarai.trickster.ModSounds;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.*;
 import net.minecraft.client.MinecraftClient;
@@ -8,6 +9,7 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.render.*;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
@@ -397,10 +399,18 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
                 if (drawingPattern.size() >= 2 && drawingPattern.get(drawingPattern.size() - 2) == (byte) i) {
                     drawingPattern.removeLast();
+                    MinecraftClient.getInstance().player.playSoundToPlayer(
+                            ModSounds.DRAW, SoundCategory.MASTER,
+                            1f, ModSounds.randomPitch(0.6f, 0.2f)
+                    );
                 } else if (drawingPattern.isEmpty() ||
                         (drawingPattern.getLast() != (byte) i && !hasOverlappingLines(drawingPattern, drawingPattern.getLast(), (byte) i))) {
                     drawingPattern.add((byte) i);
                     // TODO click sound?
+                    MinecraftClient.getInstance().player.playSoundToPlayer(
+                            ModSounds.DRAW, SoundCategory.MASTER,
+                            1f, ModSounds.randomPitch(1f, 0.2f)
+                    );
                 }
 
                 return true;
@@ -412,6 +422,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
     protected void stopDrawing() {
         var compiled = Pattern.from(drawingPattern);
+        var patternSize = drawingPattern.size();
 
         if (compiled.equals(CREATE_SUBCIRCLE_GLYPH)) {
             drawingPart.subParts.add(Optional.of(new SpellPart()));
@@ -432,7 +443,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         } else if (compiled.equals(COPY_OFFHAND_EXECUTE)) {
             toBeReplaced = drawingPart;
             initializeReplace.run();
-        } else if (drawingPattern.size() > 1) {
+        } else if (patternSize > 1) {
             drawingPart.glyph = new PatternGlyph(compiled, drawingPattern);
         }
 
@@ -440,6 +451,11 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         drawingPattern = null;
 
         updateListener.accept(spellPart);
+
+        MinecraftClient.getInstance().player.playSoundToPlayer(
+                ModSounds.COMPLETE, SoundCategory.MASTER,
+                1f, patternSize > 1 ? 1f : 0.6f
+        );
     }
 
     public void replaceCallback(Fragment fragment) {

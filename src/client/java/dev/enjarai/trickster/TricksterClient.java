@@ -10,7 +10,9 @@ public class TricksterClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		ModHandledScreens.register();
 		ModKeyBindings.register();
+		ModSounds.register();
 
-		UIParsing.registerFactory(Trickster.id("glyph"), GlyphComponent::parse);
+		UIParsing.registerFactory(Trickster.id("glyph"), GlyphComponent::parseTrick);
+		UIParsing.registerFactory(Trickster.id("pattern"), GlyphComponent::parseList);
 	}
 }

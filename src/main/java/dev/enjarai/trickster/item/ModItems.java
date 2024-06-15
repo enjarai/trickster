@@ -30,6 +30,9 @@ public class ModItems {
                     .component(DataComponentTypes.CONTAINER,
                             ContainerComponent.fromStacks(DefaultedList.ofSize(27, ItemStack.EMPTY)))
                     .component(ModComponents.SELECTED_SLOT, new SelectedSlotComponent(0, 27))));
+    public static final WandItem WAND = register("wand",
+            new WandItem(new Item.Settings().maxCount(1)
+                    .component(ModComponents.SPELL, new SpellComponent(new SpellPart()))));
 
     public static final TagKey<Item> CAN_EVALUATE_DYNAMICALLY = TagKey.of(RegistryKeys.ITEM, Trickster.id("can_evaluate_dynamically"));
     public static final TagKey<Item> HOLDABLE_HAT = TagKey.of(RegistryKeys.ITEM, Trickster.id("holdable_hat"));

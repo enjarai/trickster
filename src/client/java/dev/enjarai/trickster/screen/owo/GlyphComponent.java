@@ -1,29 +1,34 @@
 package dev.enjarai.trickster.screen.owo;
 
+import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.Tricks;
 import io.wispforest.owo.ui.base.BaseComponent;
 import io.wispforest.owo.ui.core.OwoUIDrawContext;
 import io.wispforest.owo.ui.core.Sizing;
 import io.wispforest.owo.ui.parsing.UIParsing;
-import org.joml.Vector2f;
 import org.w3c.dom.Element;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
 
 import static dev.enjarai.trickster.screen.SpellPartWidget.*;
 
 public class GlyphComponent extends BaseComponent {
-    protected Trick trick;
+    protected Pattern pattern;
     protected List<Integer> patternList;
     protected int size;
 
     public GlyphComponent(Trick trick, int size) {
+        this(trick.getPattern(), size);
+    }
+
+    public GlyphComponent(Pattern pattern, int size) {
         super();
-        this.trick = trick;
+        this.pattern = pattern;
         this.size = size;
-        this.patternList = trick.getPattern()
+        this.patternList = pattern
                 .entries().stream()
                 .flatMapToInt(e -> IntStream.of(e.p1(), e.p2()))
                 .distinct()
@@ -49,7 +54,7 @@ public class GlyphComponent extends BaseComponent {
             }, 0, 0, 0, 0, isLinked ? 0.9f : 0.5f);
         }
 
-        for (var line : trick.getPattern().entries()) {
+        for (var line : pattern.entries()) {
             var now = getPatternDotPosition(x + patternSize + 4, y + patternSize + 4, line.p1(), patternSize);
             var last = getPatternDotPosition(x + patternSize + 4, y + patternSize + 4, line.p2(), patternSize);
             drawGlyphLine(context, last, now, 1, false, 0, 0.9f);
@@ -66,7 +71,7 @@ public class GlyphComponent extends BaseComponent {
         return size + 8;
     }
 
-    public static GlyphComponent parse(Element element) {
+    public static GlyphComponent parseTrick(Element element) {
         UIParsing.expectAttributes(element, "trick-id");
         UIParsing.expectAttributes(element, "size");
 
@@ -80,5 +85,19 @@ public class GlyphComponent extends BaseComponent {
         var size = UIParsing.parseUnsignedInt(element.getAttributeNode("size"));
 
         return new GlyphComponent(trick, size);
+    }
+
+    public static GlyphComponent parseList(Element element) {
+        UIParsing.expectAttributes(element, "pattern");
+        UIParsing.expectAttributes(element, "size");
+
+        var patternString = element.getAttributeNode("pattern").getTextContent();
+
+        var pattern = Pattern.from(Arrays.stream(patternString.split(","))
+                .map(s -> Byte.valueOf(s, 10)).toList());
+
+        var size = UIParsing.parseUnsignedInt(element.getAttributeNode("size"));
+
+        return new GlyphComponent(pattern, size);
     }
 }

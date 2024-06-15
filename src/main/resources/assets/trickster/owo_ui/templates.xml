@@ -28,5 +28,32 @@
                 </sizing>
             </flow-layout>
         </template>
+        <template name="pattern">
+            <flow-layout direction="vertical">
+                <children>
+                    <label>
+                        <text>{{title}}</text>
+                        <color>dark-gray</color>
+
+                        <horizontal-text-alignment>center</horizontal-text-alignment>
+
+                        <margins>
+                            <top>2</top>
+                            <bottom>2</bottom>
+                        </margins>
+                        <sizing>
+                            <horizontal method="fill">100</horizontal>
+                        </sizing>
+                    </label>
+
+                    <trickster.pattern pattern="{{pattern}}" size="50">
+                    </trickster.pattern>
+                </children>
+                <horizontal-alignment>center</horizontal-alignment>
+                <sizing>
+                    <horizontal method="fill">100</horizontal>
+                </sizing>
+            </flow-layout>
+        </template>
     </templates>
 </owo-ui>

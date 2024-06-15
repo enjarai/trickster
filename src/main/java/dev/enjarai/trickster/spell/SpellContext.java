@@ -4,6 +4,7 @@ import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import dev.enjarai.trickster.spell.tricks.blunder.RecursionLimitReachedBlunder;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
+import org.joml.Vector3d;
 
 import java.util.*;
 
@@ -42,6 +43,8 @@ public abstract class SpellContext {
     public Optional<ItemStack> getOtherHandSpellStack() {
         return Optional.empty();
     }
+
+    public abstract Vector3d getPosition();
 
     public boolean isDestructive() {
         return destructive;

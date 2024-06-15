@@ -4,6 +4,7 @@ import com.mojang.serialization.Lifecycle;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.tricks.bool.*;
+import dev.enjarai.trickster.spell.tricks.list.*;
 import dev.enjarai.trickster.spell.tricks.math.*;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -32,6 +33,8 @@ public class Tricks {
     public static final OnePonyTrick TWO = register("two", new OnePonyTrick());
     public static final RevealTrick REVEAL = register("reveal", new RevealTrick());
     public static final ReflectionTrick REFLECTION = register("reflection", new ReflectionTrick());
+    public static final ReadSpellTrick READ_SPELL = register("read_spell", new ReadSpellTrick());
+    public static final WriteSpellTrick WRITE_SPELL = register("write_spell", new WriteSpellTrick());
 
     // Math
     public static final AddTrick ADD = register("add", new AddTrick());
@@ -52,6 +55,14 @@ public class Tricks {
     public static final AllTrick ALL = register("all", new AllTrick());
     public static final AnyTrick ANY = register("any", new AnyTrick());
     public static final NoneTrick NONE = register("none", new NoneTrick());
+
+    // List
+    public static final ListAddTrick LIST_ADD = register("list_add", new ListAddTrick());
+    public static final ListGetTrick LIST_GET = register("list_get", new ListGetTrick());
+    public static final ListIndexOfTrick LIST_INDEX_OF = register("list_index_of", new ListIndexOfTrick());
+    public static final ListInsertTrick LIST_INSERT = register("list_insert", new ListInsertTrick());
+    public static final ListRemoveElementTrick LIST_REMOVE_ELEMENT = register("list_remove_element", new ListRemoveElementTrick());
+    public static final ListRemoveTrick LIST_REMOVE = register("list_remove", new ListRemoveTrick());
 
     private static <T extends Trick> T register(String path, T trick) {
         LOOKUP.put(trick.getPattern(), trick);

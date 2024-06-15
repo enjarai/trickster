@@ -1,9 +1,6 @@
 package dev.enjarai.trickster.item;
 
-import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.screen.ScrollAndQuillScreenHandler;
-import dev.enjarai.trickster.spell.PlayerSpellContext;
-import dev.enjarai.trickster.spell.SpellContext;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -11,7 +8,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -28,24 +24,17 @@ public class ScrollAndQuillItem extends Item {
         var otherStack = user.getStackInHand(hand == Hand.MAIN_HAND ? Hand.OFF_HAND : Hand.MAIN_HAND);
         var slot = hand == Hand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
 
-        if (user.isSneaking()) {
-            user.openHandledScreen(new NamedScreenHandlerFactory() {
-                @Override
-                public Text getDisplayName() {
-                    return Text.translatable("trickster.screen.scroll_and_quill");
-                }
-
-                @Override
-                public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-                    return new ScrollAndQuillScreenHandler(syncId, playerInventory, stack, otherStack, slot, false);
-                }
-            });
-        } else if (!world.isClient()) { // TODO remove
-            var spell = stack.get(ModComponents.SPELL);
-            if (spell != null) {
-                spell.spell().runSafely(new PlayerSpellContext((ServerPlayerEntity) user, slot));
+        user.openHandledScreen(new NamedScreenHandlerFactory() {
+            @Override
+            public Text getDisplayName() {
+                return Text.translatable("trickster.screen.scroll_and_quill");
             }
-        }
+
+            @Override
+            public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+                return new ScrollAndQuillScreenHandler(syncId, playerInventory, stack, otherStack, slot, false);
+            }
+        });
 
         return TypedActionResult.success(stack);
     }
