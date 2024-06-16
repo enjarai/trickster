@@ -1,11 +1,15 @@
 package dev.enjarai.trickster.block;
 
 import dev.enjarai.trickster.Trickster;
+import dev.enjarai.trickster.spell.BlockSpellContext;
+import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.PatternGlyph;
 import dev.enjarai.trickster.spell.SpellPart;
+import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.world.SpellCircleEvent;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.listener.ClientPlayPacketListener;
@@ -13,14 +17,22 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.poi.PointOfInterest;
+import net.minecraft.world.poi.PointOfInterestStorage;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class SpellCircleBlockEntity extends BlockEntity {
+    public static final int LISTENER_RADIUS = 16;
+
 //    public SpellPart spell = new SpellPart(
 //            new PatternGlyph(1, 2, 3, 4),
 //            List.of(
@@ -64,6 +76,7 @@ public class SpellCircleBlockEntity extends BlockEntity {
 //    );
     public SpellPart spell = new SpellPart();
     public SpellCircleEvent event = SpellCircleEvent.NONE;
+    public Text lastError;
 
     public SpellCircleBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlocks.SPELL_CIRCLE_ENTITY, pos, state);
@@ -105,5 +118,36 @@ public class SpellCircleBlockEntity extends BlockEntity {
     @Override
     public NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup registryLookup) {
         return createNbt(registryLookup);
+    }
+
+    public boolean callEvent(List<Fragment> arguments) {
+        var ctx = new BlockSpellContext((ServerWorld) getWorld(), getPos());
+        ctx.pushPartGlyph(arguments);
+        var result = spell.runSafely(ctx, err -> lastError = err);
+        ctx.popPartGlyph();
+        return result.orElse(BooleanFragment.FALSE).asBoolean().bool();
+    }
+
+    public static boolean fireAllNearby(ServerWorld world, BlockPos pos, SpellCircleEvent event, List<Fragment> arguments) {
+        var pois = world.getPointOfInterestStorage().getInSquare(
+                entry -> entry.value().equals(ModBlocks.SPELL_CIRCLE_POI), pos,
+                LISTENER_RADIUS, PointOfInterestStorage.OccupationStatus.ANY
+        ).collect(Collectors.toCollection(ArrayList::new));
+
+        if (pois.isEmpty()) {
+            return false;
+        }
+
+        for (var poi : pois) {
+            var entity = world.getBlockEntity(poi.getPos());
+            if (entity instanceof SpellCircleBlockEntity circleEntity &&
+                    circleEntity.event.equals(event) &&
+                    circleEntity.callEvent(arguments)) {
+
+                return true;
+            }
+        }
+
+        return false;
     }
 }

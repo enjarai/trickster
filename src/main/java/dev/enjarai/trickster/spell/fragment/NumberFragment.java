@@ -25,7 +25,7 @@ public record NumberFragment(double number) implements Fragment, AddableFragment
 
     @Override
     public BooleanFragment asBoolean() {
-        return new BooleanFragment(number == 0);
+        return new BooleanFragment(number != 0);
     }
 
     @Override

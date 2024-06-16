@@ -5,6 +5,7 @@ import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.tricks.bool.*;
 import dev.enjarai.trickster.spell.tricks.event.CreateSpellCircleTrick;
+import dev.enjarai.trickster.spell.tricks.event.DeleteSpellCircleTrick;
 import dev.enjarai.trickster.spell.tricks.list.*;
 import dev.enjarai.trickster.spell.tricks.math.*;
 import net.minecraft.registry.Registry;
@@ -77,6 +78,7 @@ public class Tricks {
 
     // Events
     public static final CreateSpellCircleTrick CREATE_SPELL_CIRCLE = register("create_spell_circle", new CreateSpellCircleTrick());
+    public static final DeleteSpellCircleTrick DELETE_SPELL_CIRCLE = register("delete_spell_circle", new DeleteSpellCircleTrick());
 
     private static <T extends Trick> T register(String path, T trick) {
         return Registry.register(REGISTRY, Trickster.id(path), trick);

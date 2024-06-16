@@ -8,6 +8,7 @@ import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import dev.enjarai.trickster.spell.tricks.blunder.DivideByZeroBlunder;
 import dev.enjarai.trickster.spell.tricks.blunder.IncompatibleTypesBlunder;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.BlockPos;
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
 
@@ -99,5 +100,9 @@ public record VectorFragment(Vector3dc vector) implements Fragment, AddableFragm
             return v.vector.equals(vector, 1 / 16d);
         }
         return false;
+    }
+
+    public static VectorFragment of(BlockPos pos) {
+        return new VectorFragment(new Vector3d(pos.getX(), pos.getY(), pos.getZ()));
     }
 }
