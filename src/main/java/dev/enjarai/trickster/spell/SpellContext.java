@@ -4,6 +4,8 @@ import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import dev.enjarai.trickster.spell.tricks.blunder.RecursionLimitReachedBlunder;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.math.BlockPos;
 import org.joml.Vector3d;
 
 import java.util.*;
@@ -44,7 +46,14 @@ public abstract class SpellContext {
         return Optional.empty();
     }
 
-    public abstract Vector3d getPosition();
+    public abstract Vector3d getPos();
+
+    public BlockPos getBlockPos() {
+        var pos = getPos();
+        return new BlockPos((int) pos.x, (int) pos.y, (int) pos.z);
+    }
+
+    public abstract ServerWorld getWorld();
 
     public boolean isDestructive() {
         return destructive;

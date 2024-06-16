@@ -15,6 +15,6 @@ public class ReflectionTrick extends Trick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        return new VectorFragment(ctx.getPosition());
+        return new VectorFragment(ctx.getPos());
     }
 }

@@ -4,19 +4,30 @@ import com.mojang.serialization.Lifecycle;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.tricks.bool.*;
+import dev.enjarai.trickster.spell.tricks.event.CreateSpellCircleTrick;
 import dev.enjarai.trickster.spell.tricks.list.*;
 import dev.enjarai.trickster.spell.tricks.math.*;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.SimpleRegistry;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.entry.RegistryEntryInfo;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Tricks {
+    private static final Map<Pattern, Trick> LOOKUP = new HashMap<>();
+
     public static final RegistryKey<Registry<Trick>> REGISTRY_KEY = RegistryKey.ofRegistry(Trickster.id("trick"));
-    public static final Registry<Trick> REGISTRY = new SimpleRegistry<>(REGISTRY_KEY, Lifecycle.stable());
-    private static final HashMap<Pattern, Trick> LOOKUP = new HashMap<>();
+    public static final Registry<Trick> REGISTRY = new SimpleRegistry<>(REGISTRY_KEY, Lifecycle.stable()) {
+        @Override
+        public RegistryEntry.Reference<Trick> add(RegistryKey<Trick> key, Trick value, RegistryEntryInfo info) {
+            LOOKUP.put(value.getPattern(), value);
+            return super.add(key, value, info);
+        }
+    };
 
     // Meta-programming
     public static final ExecuteTrick EXECUTE = register("execute", new ExecuteTrick());
@@ -64,8 +75,10 @@ public class Tricks {
     public static final ListRemoveElementTrick LIST_REMOVE_ELEMENT = register("list_remove_element", new ListRemoveElementTrick());
     public static final ListRemoveTrick LIST_REMOVE = register("list_remove", new ListRemoveTrick());
 
+    // Events
+    public static final CreateSpellCircleTrick CREATE_SPELL_CIRCLE = register("create_spell_circle", new CreateSpellCircleTrick());
+
     private static <T extends Trick> T register(String path, T trick) {
-        LOOKUP.put(trick.getPattern(), trick);
         return Registry.register(REGISTRY, Trickster.id(path), trick);
     }
 

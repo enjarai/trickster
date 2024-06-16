@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static dev.enjarai.trickster.screen.SpellPartWidget.*;
+import static dev.enjarai.trickster.render.SpellCircleRenderer.*;
 
 public class GlyphComponent extends BaseComponent {
     protected Pattern pattern;
@@ -46,7 +46,7 @@ public class GlyphComponent extends BaseComponent {
             var isLinked = patternList.contains(i);
             var dotSize = 1;
 
-            drawFlatPolygon(context, c -> {
+            drawFlatPolygon(context.getMatrices(), context.getVertexConsumers(), c -> {
                 c.accept(pos.x - dotSize, pos.y - dotSize);
                 c.accept(pos.x - dotSize, pos.y + dotSize);
                 c.accept(pos.x + dotSize, pos.y + dotSize);
@@ -57,7 +57,7 @@ public class GlyphComponent extends BaseComponent {
         for (var line : pattern.entries()) {
             var now = getPatternDotPosition(x + patternSize + 4, y + patternSize + 4, line.p1(), patternSize);
             var last = getPatternDotPosition(x + patternSize + 4, y + patternSize + 4, line.p2(), patternSize);
-            drawGlyphLine(context, last, now, 1, false, 0, 0.9f);
+            drawGlyphLine(context.getMatrices(), context.getVertexConsumers(), last, now, 1, false, 0, 0.9f);
         }
     }
 

@@ -5,6 +5,7 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import org.joml.Vector3d;
 
 import java.util.Optional;
@@ -45,7 +46,12 @@ public class PlayerSpellContext extends SpellContext {
     }
 
     @Override
-    public Vector3d getPosition() {
+    public Vector3d getPos() {
         return new Vector3d(player.getX(), player.getY(), player.getZ());
+    }
+
+    @Override
+    public ServerWorld getWorld() {
+        return player.getServerWorld();
     }
 }

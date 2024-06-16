@@ -6,6 +6,7 @@ import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.screen.ModScreenHandlers;
 import dev.enjarai.trickster.spell.tricks.Tricks;
+import dev.enjarai.trickster.spell.world.SpellCircleEvent;
 import net.fabricmc.api.ModInitializer;
 
 import net.minecraft.util.Identifier;
@@ -31,6 +32,7 @@ public class Trickster implements ModInitializer {
 		ModScreenHandlers.register();
 		ModNetworking.register();
 		Tricks.register();
+		SpellCircleEvent.register();
 	}
 
 	public static Identifier id(String path) {
