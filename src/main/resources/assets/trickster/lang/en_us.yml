@@ -2,6 +2,7 @@ trickster:
   screen:
     scroll_container: Scroll Storage
     scroll_and_quill: Scroll and Quill
+    mirror_of_evaluation: Mirror of Evaluation
 
   trick.trickster:
     add: Annexation Stratagem
@@ -14,6 +15,13 @@ trickster:
     ceil: Distortion of Grandeur
     floor: Distortion of Humility
     round: Distortion of Objectivity
+
+    if_else: Decision Distortion
+    equals: Parity Stratagem
+    not_equals: Disparity Stratagem
+    all: Stratagem Bar None
+    any: Stratagem In General
+    none: Stratagem In Absence
 
 item.trickster:
   tome_of_tomfoolery: Tome of Tomfoolery

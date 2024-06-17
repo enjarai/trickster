@@ -9,6 +9,7 @@ import net.minecraft.util.math.random.Random;
 public class ModSounds {
     public static final SoundEvent DRAW = register("draw");
     public static final SoundEvent COMPLETE = register("complete");
+    public static final SoundEvent CAST = register("cast");
 
     private static SoundEvent register(String path) {
         var id = Trickster.id(path);

@@ -127,27 +127,4 @@ public class SpellCircleBlockEntity extends BlockEntity {
         ctx.popPartGlyph();
         return result.orElse(BooleanFragment.FALSE).asBoolean().bool();
     }
-
-    public static boolean fireAllNearby(ServerWorld world, BlockPos pos, SpellCircleEvent event, List<Fragment> arguments) {
-        var pois = world.getPointOfInterestStorage().getInSquare(
-                entry -> entry.value().equals(ModBlocks.SPELL_CIRCLE_POI), pos,
-                LISTENER_RADIUS, PointOfInterestStorage.OccupationStatus.ANY
-        ).collect(Collectors.toCollection(ArrayList::new));
-
-        if (pois.isEmpty()) {
-            return false;
-        }
-
-        for (var poi : pois) {
-            var entity = world.getBlockEntity(poi.getPos());
-            if (entity instanceof SpellCircleBlockEntity circleEntity &&
-                    circleEntity.event.equals(event) &&
-                    circleEntity.callEvent(arguments)) {
-
-                return true;
-            }
-        }
-
-        return false;
-    }
 }

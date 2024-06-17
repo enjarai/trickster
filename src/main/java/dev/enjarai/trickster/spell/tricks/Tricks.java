@@ -3,6 +3,10 @@ package dev.enjarai.trickster.spell.tricks;
 import com.mojang.serialization.Lifecycle;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.tricks.basic.OnePonyTrick;
+import dev.enjarai.trickster.spell.tricks.basic.RaycastTrick;
+import dev.enjarai.trickster.spell.tricks.basic.ReflectionTrick;
+import dev.enjarai.trickster.spell.tricks.basic.RevealTrick;
 import dev.enjarai.trickster.spell.tricks.bool.*;
 import dev.enjarai.trickster.spell.tricks.event.CreateSpellCircleTrick;
 import dev.enjarai.trickster.spell.tricks.event.DeleteSpellCircleTrick;
@@ -45,6 +49,7 @@ public class Tricks {
     public static final OnePonyTrick TWO = register("two", new OnePonyTrick());
     public static final RevealTrick REVEAL = register("reveal", new RevealTrick());
     public static final ReflectionTrick REFLECTION = register("reflection", new ReflectionTrick());
+    public static final RaycastTrick RAYCAST = register("raycast", new RaycastTrick());
     public static final ReadSpellTrick READ_SPELL = register("read_spell", new ReadSpellTrick());
     public static final WriteSpellTrick WRITE_SPELL = register("write_spell", new WriteSpellTrick());
 

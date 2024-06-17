@@ -8,5 +8,10 @@
     "sounds": [
       "trickster:complete"
     ]
+  },
+  "cast": {
+    "sounds": [
+      "trickster:cast"
+    ]
   }
 }

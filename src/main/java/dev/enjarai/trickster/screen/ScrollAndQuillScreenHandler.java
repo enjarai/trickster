@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.screen;
 
+import dev.enjarai.trickster.ModSounds;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.SpellComponent;
@@ -16,6 +17,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Hand;
 
 import java.util.function.Consumer;
@@ -71,7 +73,12 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
             if (server != null) {
                 server.execute(() -> {
                     if (greedyEvaluation) {
-                        spell.runSafely(new PlayerSpellContext((ServerPlayerEntity) player(), slot).setDestructive(), err -> {});
+                        var ctx = new PlayerSpellContext((ServerPlayerEntity) player(), slot).setDestructive();
+                        spell.runSafely(ctx, err -> {});
+                        if (ctx.hasAffectedWorld()) {
+                            ((ServerPlayerEntity) player()).getServerWorld().playSoundFromEntity(
+                                    null, player(), ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f));
+                        }
                         this.spell.set(spell);
                     }
 
@@ -93,6 +100,8 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
                     var fragment = otherHandSpell.get()
                             .runSafely(new PlayerSpellContext((ServerPlayerEntity) player(), slot))
                             .orElse(VoidFragment.INSTANCE);
+                    ((ServerPlayerEntity) player()).getServerWorld().playSoundFromEntity(
+                            null, player(), ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f));
                     sendMessage(new Replace(fragment));
                 }
             });

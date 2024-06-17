@@ -16,6 +16,7 @@ public abstract class SpellContext {
     private final Deque<List<Fragment>> partGlyphStack = new ArrayDeque<>();
     private int recursions = 0;
     private boolean destructive = false;
+    private boolean hasAffectedWorld = false;
 
     public void pushPartGlyph(List<Fragment> fragments) throws BlunderException {
         partGlyphStack.push(fragments);
@@ -62,5 +63,13 @@ public abstract class SpellContext {
     public SpellContext setDestructive() {
         destructive = true;
         return this;
+    }
+
+    public void setWorldAffected() {
+        hasAffectedWorld = true;
+    }
+
+    public boolean hasAffectedWorld() {
+        return hasAffectedWorld;
     }
 }

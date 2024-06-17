@@ -12,7 +12,9 @@ import net.minecraft.world.poi.PointOfInterestType;
 import java.util.Arrays;
 
 public class ModBlocks {
-    public static final SpellCircleBlock SPELL_CIRCLE = new SpellCircleBlock(AbstractBlock.Settings.create().noCollision());
+    public static final SpellCircleBlock SPELL_CIRCLE = new SpellCircleBlock(AbstractBlock.Settings.create()
+            .strength(0.5f)
+            .noCollision());
 
     public static final BlockEntityType<SpellCircleBlockEntity> SPELL_CIRCLE_ENTITY =
             BlockEntityType.Builder.create(SpellCircleBlockEntity::new, SPELL_CIRCLE).build(null);

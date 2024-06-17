@@ -39,10 +39,11 @@ public class CreateSpellCircleTrick extends Trick {
             throw new UnknownEventBlunder(this);
         }
 
-        var blockPos = new BlockPos((int) position.vector().x(), (int) position.vector().y(), (int) position.vector().z());
+        var blockPos = position.toBlockPos();
 
         if (ctx.getWorld().getBlockState(blockPos).isAir()) {
             ctx.getWorld().setBlockState(blockPos, ModBlocks.SPELL_CIRCLE.getDefaultState());
+            ctx.setWorldAffected();
             var entity = (SpellCircleBlockEntity) ctx.getWorld().getBlockEntity(blockPos);
 
             entity.event = event;

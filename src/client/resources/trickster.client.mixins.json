@@ -3,7 +3,9 @@
   "package": "dev.enjarai.trickster.mixin.client",
   "compatibilityLevel": "JAVA_21",
   "client": [
+    "AbstractClientPlayerEntityMixin",
     "HeldItemRendererMixin",
+    "InGameHudMixin",
     "MouseMixin"
   ],
   "injectors": {
