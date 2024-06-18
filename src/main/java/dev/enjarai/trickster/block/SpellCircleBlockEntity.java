@@ -6,6 +6,7 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.PatternGlyph;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
+import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.world.SpellCircleEvent;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -33,50 +34,10 @@ import java.util.stream.Collectors;
 public class SpellCircleBlockEntity extends BlockEntity {
     public static final int LISTENER_RADIUS = 16;
 
-//    public SpellPart spell = new SpellPart(
-//            new PatternGlyph(1, 2, 3, 4),
-//            List.of(
-//                    Optional.of(new SpellPart(
-//                            new PatternGlyph(2, 3, 6, 7),
-//                            List.of()
-//                    )),
-//                    Optional.of(new SpellPart(
-//                            new PatternGlyph(2, 3, 6, 7),
-//                            List.of(
-//                                    Optional.of(new SpellPart(
-//                                            new PatternGlyph(8, 6, 4),
-//                                            List.of()
-//                                    )),
-//                                    Optional.of(new SpellPart(
-//                                            new SpellPart(
-//                                                    new PatternGlyph(8, 6, 4),
-//                                                    List.of()
-//                                            ),
-//                                            List.of(
-//                                                    Optional.of(new SpellPart(
-//                                                            new PatternGlyph(8, 6, 4),
-//                                                            List.of()
-//                                                    ))
-//                                            )
-//                                    )),
-//                                    Optional.empty(),
-//                                    Optional.empty()
-//                            )
-//                    )),
-//                    Optional.of(new SpellPart(
-//                            new PatternGlyph(1, 7, 5, 8),
-//                            List.of(
-//                                    Optional.of(new SpellPart(
-//                                            new PatternGlyph(8, 6, 4),
-//                                            List.of()
-//                                    ))
-//                            )
-//                    ))
-//            )
-//    );
     public SpellPart spell = new SpellPart();
     public SpellCircleEvent event = SpellCircleEvent.NONE;
     public Text lastError;
+    public int age;
 
     public SpellCircleBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlocks.SPELL_CIRCLE_ENTITY, pos, state);
@@ -107,6 +68,17 @@ public class SpellCircleBlockEntity extends BlockEntity {
                 .ifPresent(element -> nbt.put("spell", element));
 
         nbt.putString("event", event.id().toString());
+    }
+
+    public void tick() {
+        if (event == SpellCircleEvent.TICK) {
+            if (age % 10 == 0) {
+                var iterations = age / 10;
+                callEvent(List.of(new NumberFragment(iterations)));
+            }
+
+            age++;
+        }
     }
 
     @Nullable

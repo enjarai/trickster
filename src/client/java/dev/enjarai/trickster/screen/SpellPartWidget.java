@@ -42,6 +42,8 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     public double size;
     private double amountDragged;
 
+    private boolean isMutable = true;
+
     private Consumer<SpellPart> updateListener;
     private Supplier<SpellPart> otherHandSpellSupplier;
     @Nullable
@@ -51,7 +53,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     private SpellPart drawingPart;
     private List<Byte> drawingPattern;
 
-    private SpellCircleRenderer renderer;
+    private final SpellCircleRenderer renderer;
 
     public SpellPartWidget(SpellPart spellPart, double x, double y, double size, Consumer<SpellPart> updateListener, Supplier<SpellPart> otherHandSpellSupplier, Runnable initializeReplace) {
         this.spellPart = spellPart;
@@ -77,7 +79,9 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        this.renderer.setMousePosition(mouseX, mouseY);
+        if (isMutable) {
+            this.renderer.setMousePosition(mouseX, mouseY);
+        }
         this.renderer.renderPart(
                 context.getMatrices(), context.getVertexConsumers(), Optional.of(spellPart),
                 (float) x, (float) y, (float) size, 0, delta,
@@ -97,6 +101,13 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     @Override
     public SelectionType getType() {
         return SelectionType.NONE;
+    }
+
+    public void setMutable(boolean mutable) {
+        isMutable = mutable;
+        if (!mutable) {
+            this.renderer.setMousePosition(Double.MIN_VALUE, Double.MIN_VALUE);
+        }
     }
 
     @Override
@@ -137,33 +148,38 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        // We need to return true on the mouse down event to make sure the screen knows if we're on a clickable node
-        if (propagateMouseEvent(spellPart, (float) x, (float) y, (float) size, 0, mouseX, mouseY,
-                (part, x, y, size) -> true)) {
+        if (isMutable || isDrawing()) {
+            // We need to return true on the mouse down event to make sure the screen knows if we're on a clickable node
+            if (propagateMouseEvent(spellPart, (float) x, (float) y, (float) size, 0, mouseX, mouseY,
+                    (part, x, y, size) -> true)) {
+                return true;
+            }
+
             return true;
         }
-
-        return true;
+        return false;
     }
 
     @Override
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        var dragged = amountDragged;
-        amountDragged = 0;
-        if (dragged > 5) {
-            return false;
-        }
+        if (isMutable || isDrawing()) {
+            var dragged = amountDragged;
+            amountDragged = 0;
+            if (dragged > 5) {
+                return false;
+            }
 
-        if (button == 0 && !isDrawing()) {
-            if (propagateMouseEvent(spellPart, (float) x, (float) y, (float) size, 0, mouseX, mouseY,
-                    (part, x, y, size) -> selectPattern(part, x, y, size, mouseX, mouseY))) {
+            if (button == 0 && !isDrawing()) {
+                if (propagateMouseEvent(spellPart, (float) x, (float) y, (float) size, 0, mouseX, mouseY,
+                        (part, x, y, size) -> selectPattern(part, x, y, size, mouseX, mouseY))) {
+                    return true;
+                }
+            }
+
+            if (drawingPart != null) {
+                stopDrawing();
                 return true;
             }
-        }
-
-        if (drawingPart != null) {
-            stopDrawing();
-            return true;
         }
 
         return super.mouseReleased(mouseX, mouseY, button);

@@ -12,6 +12,7 @@ import dev.enjarai.trickster.spell.tricks.event.CreateSpellCircleTrick;
 import dev.enjarai.trickster.spell.tricks.event.DeleteSpellCircleTrick;
 import dev.enjarai.trickster.spell.tricks.list.*;
 import dev.enjarai.trickster.spell.tricks.math.*;
+import dev.enjarai.trickster.spell.tricks.vector.*;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.SimpleRegistry;
@@ -64,6 +65,14 @@ public class Tricks {
     public static final RoundTrick ROUND = register("round", new RoundTrick());
     public static final MaxTrick MAX = register("max", new MaxTrick());
     public static final MinTrick MIN = register("min", new MinTrick());
+    public static final SqrtTrick SQRT = register("sqrt", new SqrtTrick());
+
+    // Vector
+    public static final ExtractXTrick EXTRACT_X = register("extract_x", new ExtractXTrick());
+    public static final ExtractYTrick EXTRACT_Y = register("extract_y", new ExtractYTrick());
+    public static final ExtractZTrick EXTRACT_Z = register("extract_z", new ExtractZTrick());
+    public static final LengthTrick LENGTH = register("length", new LengthTrick());
+    public static final MergeVectorTrick MERGE_VECTOR = register("merge_vector", new MergeVectorTrick());
 
     // Boolean
     public static final IfElseTrick IF_ELSE = register("if_else", new IfElseTrick());

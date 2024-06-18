@@ -27,6 +27,7 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
 
     public final SyncedProperty<SpellPart> spell = createProperty(SpellPart.class, SpellPart.ENDEC, new SpellPart());
     public final SyncedProperty<SpellPart> otherHandSpell = createProperty(SpellPart.class, SpellPart.ENDEC, new SpellPart());
+    public final SyncedProperty<Boolean> isMutable = createProperty(Boolean.class, true);
 
     public Consumer<Fragment> replacerCallback;
 
@@ -34,10 +35,10 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
     public final boolean greedyEvaluation;
 
     public ScrollAndQuillScreenHandler(int syncId, PlayerInventory playerInventory) {
-        this(syncId, playerInventory, null, null, null, false);
+        this(syncId, playerInventory, null, null, null, false, true);
     }
 
-    public ScrollAndQuillScreenHandler(int syncId, PlayerInventory playerInventory, ItemStack scrollStack, ItemStack otherHandStack, EquipmentSlot slot, boolean greedyEvaluation) {
+    public ScrollAndQuillScreenHandler(int syncId, PlayerInventory playerInventory, ItemStack scrollStack, ItemStack otherHandStack, EquipmentSlot slot, boolean greedyEvaluation, boolean isMutable) {
         super(ModScreenHandlers.SCROLL_AND_QUILL, syncId);
 
         this.scrollStack = scrollStack;
@@ -58,6 +59,8 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
             }
         }
 
+        this.isMutable.set(isMutable);
+
         addServerboundMessage(SpellMessage.class, SpellMessage.ENDEC, msg -> updateSpell(msg.spell()));
         addServerboundMessage(ExecuteOffhand.class, msg -> executeOffhand());
         addClientboundMessage(Replace.class, Replace.ENDEC, msg -> {
@@ -68,27 +71,30 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
     }
 
     public void updateSpell(SpellPart spell) {
-        if (scrollStack != null) {
-            var server = player().getServer();
-            if (server != null) {
-                server.execute(() -> {
-                    if (greedyEvaluation) {
-                        var ctx = new PlayerSpellContext((ServerPlayerEntity) player(), slot).setDestructive();
-                        spell.runSafely(ctx, err -> {});
-                        if (ctx.hasAffectedWorld()) {
-                            ((ServerPlayerEntity) player()).getServerWorld().playSoundFromEntity(
-                                    null, player(), ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f));
+        if (isMutable.get()) {
+            if (scrollStack != null) {
+                var server = player().getServer();
+                if (server != null) {
+                    server.execute(() -> {
+                        if (greedyEvaluation) {
+                            var ctx = new PlayerSpellContext((ServerPlayerEntity) player(), slot).setDestructive();
+                            spell.runSafely(ctx, err -> {
+                            });
+                            if (ctx.hasAffectedWorld()) {
+                                ((ServerPlayerEntity) player()).getServerWorld().playSoundFromEntity(
+                                        null, player(), ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f));
+                            }
+                            this.spell.set(spell);
                         }
-                        this.spell.set(spell);
-                    }
 
-                    scrollStack.set(ModComponents.SPELL, new SpellComponent(spell));
-                });
-            }
-        } else {
+                        scrollStack.set(ModComponents.SPELL, new SpellComponent(spell));
+                    });
+                }
+            } else {
 //            var result = SpellPart.CODEC.encodeStart(JsonOps.INSTANCE, spell).result().get();
 //            Trickster.LOGGER.warn(result.toString());
-            sendMessage(new SpellMessage(spell));
+                sendMessage(new SpellMessage(spell));
+            }
         }
     }
 

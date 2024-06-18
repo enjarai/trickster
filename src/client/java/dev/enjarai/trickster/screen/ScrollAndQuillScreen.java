@@ -27,6 +27,7 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
         addDrawableChild(partWidget);
 
         this.handler.spell.observe(spell -> partWidget.setSpell(spell));
+        this.handler.isMutable.observe(mutable -> partWidget.setMutable(mutable));
     }
 
     @Override

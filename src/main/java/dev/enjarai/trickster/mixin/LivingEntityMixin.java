@@ -3,6 +3,7 @@ package dev.enjarai.trickster.mixin;
 import com.google.common.collect.Multimaps;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.particle.ModParticles;
+import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.world.SpellCircleEvent;
 import net.minecraft.entity.Entity;
@@ -38,18 +39,20 @@ public abstract class LivingEntityMixin extends Entity {
     private void checkMovementEvent(CallbackInfo ci) {
         if (!getWorld().isClient && age % 10 == 0) {
             if (SpellCircleEvent.ENTITY_MOVE.fireAllNearby((ServerWorld) getWorld(), getBlockPos(), List.of(
-                    VectorFragment.of(getPos()) // TODO held item
+                    VectorFragment.of(getPos()),
+                    new NumberFragment(getHeight())
             ))) {
                 attributes.addTemporaryModifiers(Multimaps.forMap(Map.of(
                         EntityAttributes.GENERIC_MOVEMENT_SPEED, Trickster.NEGATE_ATTRIBUTE,
                         EntityAttributes.GENERIC_JUMP_STRENGTH, Trickster.NEGATE_ATTRIBUTE
                 )));
             } else {
-                // TODO do some has checks for performance
-                attributes.removeModifiers(Multimaps.forMap(Map.of(
-                        EntityAttributes.GENERIC_MOVEMENT_SPEED, Trickster.NEGATE_ATTRIBUTE,
-                        EntityAttributes.GENERIC_JUMP_STRENGTH, Trickster.NEGATE_ATTRIBUTE
-                )));
+                if (attributes.hasModifierForAttribute(EntityAttributes.GENERIC_MOVEMENT_SPEED, Trickster.NEGATE_ATTRIBUTE.id())) {
+                    attributes.removeModifiers(Multimaps.forMap(Map.of(
+                            EntityAttributes.GENERIC_MOVEMENT_SPEED, Trickster.NEGATE_ATTRIBUTE,
+                            EntityAttributes.GENERIC_JUMP_STRENGTH, Trickster.NEGATE_ATTRIBUTE
+                    )));
+                }
             }
         }
     }

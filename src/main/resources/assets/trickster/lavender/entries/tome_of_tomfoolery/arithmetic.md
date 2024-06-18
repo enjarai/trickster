@@ -1,7 +1,8 @@
 ```json
 {
   "title": "Arithmetic",
-  "icon": "minecraft:copper_bulb"
+  "icon": "minecraft:copper_bulb",
+  "category": "trickster:tricks"
 }
 ```
 
@@ -117,3 +118,13 @@ number -> number
 ---
 
 Returns the rounded value of the input.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:sqrt,title=Distortion of Decline|>
+
+number -> number
+
+---
+
+Returns the square root of the input.

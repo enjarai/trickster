@@ -6,6 +6,7 @@ import dev.enjarai.trickster.spell.tricks.Tricks;
 import io.wispforest.owo.ui.base.BaseComponent;
 import io.wispforest.owo.ui.core.OwoUIDrawContext;
 import io.wispforest.owo.ui.core.Sizing;
+import io.wispforest.owo.ui.parsing.UIModelParsingException;
 import io.wispforest.owo.ui.parsing.UIParsing;
 import org.w3c.dom.Element;
 
@@ -79,7 +80,7 @@ public class GlyphComponent extends BaseComponent {
         var trick = Tricks.REGISTRY.get(trickId);
 
         if (trick == null) {
-            throw new IllegalArgumentException("Not a valid trick: " + trickId);
+            throw new UIModelParsingException("Not a valid trick: " + trickId);
         }
 
         var size = UIParsing.parseUnsignedInt(element.getAttributeNode("size"));

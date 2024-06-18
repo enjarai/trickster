@@ -1,7 +1,8 @@
 ```json
 {
   "title": "Boolean Logic",
-  "icon": "minecraft:comparator"
+  "icon": "minecraft:comparator",
+  "category": "trickster:tricks"
 }
 ```
 
