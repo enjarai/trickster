@@ -27,7 +27,7 @@ public final class SpellPart implements Fragment {
                     .listOf().fieldOf("sub_parts").forGetter(SpellPart::getSubParts)
     ).apply(instance, SpellPart::new)));
     public static final MapCodec<SpellPart> MAP_CODEC = MapCodec.assumeMapUnsafe(CODEC);
-    public static final Endec<SpellPart> ENDEC = CodecUtils.ofCodec(CODEC);
+    public static final Endec<SpellPart> ENDEC = CodecUtils.toEndec(CODEC);
 
     public Fragment glyph;
     public List<Optional<SpellPart>> subParts;

@@ -38,6 +38,7 @@ public class Trickster implements ModInitializer {
 		ModNetworking.register();
 		ModParticles.register();
 		ModSounds.register();
+		ModAttachments.register();
 		Tricks.register();
 		SpellCircleEvent.register();
 	}

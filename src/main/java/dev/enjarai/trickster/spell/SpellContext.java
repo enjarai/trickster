@@ -56,6 +56,10 @@ public abstract class SpellContext {
 
     public abstract ServerWorld getWorld();
 
+    public abstract Fragment getCrowMind();
+
+    public abstract void setCrowMind(Fragment fragment);
+
     public boolean isDestructive() {
         return destructive;
     }

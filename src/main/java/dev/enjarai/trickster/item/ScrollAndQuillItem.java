@@ -32,7 +32,10 @@ public class ScrollAndQuillItem extends Item {
 
             @Override
             public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-                return new ScrollAndQuillScreenHandler(syncId, playerInventory, stack, otherStack, slot, false);
+                return new ScrollAndQuillScreenHandler(
+                        syncId, playerInventory, stack, otherStack, slot,
+                        false, true
+                );
             }
         });
 

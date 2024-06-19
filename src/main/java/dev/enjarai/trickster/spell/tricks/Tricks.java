@@ -3,10 +3,7 @@ package dev.enjarai.trickster.spell.tricks;
 import com.mojang.serialization.Lifecycle;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Pattern;
-import dev.enjarai.trickster.spell.tricks.basic.OnePonyTrick;
-import dev.enjarai.trickster.spell.tricks.basic.RaycastTrick;
-import dev.enjarai.trickster.spell.tricks.basic.ReflectionTrick;
-import dev.enjarai.trickster.spell.tricks.basic.RevealTrick;
+import dev.enjarai.trickster.spell.tricks.basic.*;
 import dev.enjarai.trickster.spell.tricks.bool.*;
 import dev.enjarai.trickster.spell.tricks.event.CreateSpellCircleTrick;
 import dev.enjarai.trickster.spell.tricks.event.DeleteSpellCircleTrick;
@@ -50,9 +47,13 @@ public class Tricks {
     public static final OnePonyTrick TWO = register("two", new OnePonyTrick());
     public static final RevealTrick REVEAL = register("reveal", new RevealTrick());
     public static final ReflectionTrick REFLECTION = register("reflection", new ReflectionTrick());
+    public static final HeightReflectionTrick HEIGHT_REFLECTION = register("height_reflection", new HeightReflectionTrick());
+    public static final SneakingReflectionTrick SNEAKING_REFLECTION = register("sneaking_reflection", new SneakingReflectionTrick());
     public static final RaycastTrick RAYCAST = register("raycast", new RaycastTrick());
     public static final ReadSpellTrick READ_SPELL = register("read_spell", new ReadSpellTrick());
     public static final WriteSpellTrick WRITE_SPELL = register("write_spell", new WriteSpellTrick());
+    public static final ReadCrowMindTrick READ_CROW_MIND = register("read_crow_mind", new ReadCrowMindTrick());
+    public static final WriteCrowMindTrick WRITE_CROW_MIND = register("write_crow_mind", new WriteCrowMindTrick());
 
     // Math
     public static final AddTrick ADD = register("add", new AddTrick());
@@ -84,6 +85,7 @@ public class Tricks {
 
     // List
     public static final ListAddTrick LIST_ADD = register("list_add", new ListAddTrick());
+    public static final ListCreateTrick LIST_CREATE = register("list_create", new ListCreateTrick());
     public static final ListGetTrick LIST_GET = register("list_get", new ListGetTrick());
     public static final ListIndexOfTrick LIST_INDEX_OF = register("list_index_of", new ListIndexOfTrick());
     public static final ListInsertTrick LIST_INSERT = register("list_insert", new ListInsertTrick());

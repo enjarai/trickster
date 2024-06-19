@@ -1,12 +1,10 @@
 package dev.enjarai.trickster.block;
 
 import dev.enjarai.trickster.Trickster;
-import dev.enjarai.trickster.spell.BlockSpellContext;
-import dev.enjarai.trickster.spell.Fragment;
-import dev.enjarai.trickster.spell.PatternGlyph;
-import dev.enjarai.trickster.spell.SpellPart;
+import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
+import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.world.SpellCircleEvent;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -38,6 +36,7 @@ public class SpellCircleBlockEntity extends BlockEntity {
     public SpellCircleEvent event = SpellCircleEvent.NONE;
     public Text lastError;
     public int age;
+    public CrowMind crowMind = new CrowMind(VoidFragment.INSTANCE);
 
     public SpellCircleBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlocks.SPELL_CIRCLE_ENTITY, pos, state);
@@ -75,6 +74,7 @@ public class SpellCircleBlockEntity extends BlockEntity {
             if (age % 10 == 0) {
                 var iterations = age / 10;
                 callEvent(List.of(new NumberFragment(iterations)));
+                markDirty();
             }
 
             age++;
@@ -93,7 +93,7 @@ public class SpellCircleBlockEntity extends BlockEntity {
     }
 
     public boolean callEvent(List<Fragment> arguments) {
-        var ctx = new BlockSpellContext((ServerWorld) getWorld(), getPos());
+        var ctx = new BlockSpellContext((ServerWorld) getWorld(), getPos(), this);
         ctx.pushPartGlyph(arguments);
         var result = spell.runSafely(ctx, err -> lastError = err);
         ctx.popPartGlyph();

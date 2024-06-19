@@ -48,6 +48,7 @@ public class CreateSpellCircleTrick extends Trick {
 
             entity.event = event;
             entity.spell = executable;
+            entity.markDirty();
 
             return BooleanFragment.TRUE;
         } else {

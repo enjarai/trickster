@@ -37,7 +37,8 @@ public class EvaluationMirrorItem extends Item {
                 public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
                     return new ScrollAndQuillScreenHandler(
                             syncId, playerInventory, stack, otherStack,
-                            hand == Hand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND, true
+                            hand == Hand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND,
+                            true, true
                     );
                 }
             });

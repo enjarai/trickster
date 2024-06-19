@@ -15,7 +15,7 @@ import java.util.function.Supplier;
 
 public interface Fragment {
     Supplier<MapCodec<Fragment>> CODEC = Suppliers.memoize(() -> FragmentType.REGISTRY.getCodec().dispatchMap(Fragment::type, FragmentType::codec));
-    Supplier<Endec<Fragment>> ENDEC = Suppliers.memoize(() -> CodecUtils.ofCodec(CODEC.get().codec()));
+    Supplier<Endec<Fragment>> ENDEC = Suppliers.memoize(() -> CodecUtils.toEndec(CODEC.get().codec()));
 
     FragmentType<?> type();
 

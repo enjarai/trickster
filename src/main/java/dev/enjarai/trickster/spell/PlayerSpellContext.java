@@ -1,6 +1,8 @@
 package dev.enjarai.trickster.spell;
 
+import dev.enjarai.trickster.ModAttachments;
 import dev.enjarai.trickster.item.component.ModComponents;
+import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -10,6 +12,7 @@ import org.joml.Vector3d;
 
 import java.util.Optional;
 
+@SuppressWarnings("UnstableApiUsage")
 public class PlayerSpellContext extends SpellContext {
     private final ServerPlayerEntity player;
     private final EquipmentSlot slot;
@@ -53,5 +56,19 @@ public class PlayerSpellContext extends SpellContext {
     @Override
     public ServerWorld getWorld() {
         return player.getServerWorld();
+    }
+
+    @Override
+    public Fragment getCrowMind() {
+        var crow = player.getAttached(ModAttachments.CROW_MIND);
+        if (crow == null) {
+            return VoidFragment.INSTANCE;
+        }
+        return crow.fragment();
+    }
+
+    @Override
+    public void setCrowMind(Fragment fragment) {
+        player.setAttached(ModAttachments.CROW_MIND, new CrowMind(fragment));
     }
 }
