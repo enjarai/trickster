@@ -20,11 +20,11 @@ public class ListRemoveElementTrick extends Trick {
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var list = expectInput(fragments, FragmentType.LIST, 0);
-        var el = expectInput(fragments, 1);
+        var toRemove = fragments.subList(1, fragments.size());
 
         var newList = new ArrayList<Fragment>(list.fragments().size());
         newList.addAll(list.fragments());
-        newList.remove(el);
+        newList.removeAll(toRemove);
         return new ListFragment(ImmutableList.copyOf(newList));
     }
 }

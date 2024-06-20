@@ -6,11 +6,16 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
+import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
+import dev.enjarai.trickster.spell.tricks.blunder.IncorrectFragmentBlunder;
+import dev.enjarai.trickster.spell.tricks.blunder.IndexOutOfBoundsBlunder;
+import net.minecraft.util.math.MathHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ListRemoveTrick extends Trick {
     public ListRemoveTrick() {
@@ -20,11 +25,29 @@ public class ListRemoveTrick extends Trick {
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var list = expectInput(fragments, FragmentType.LIST, 0);
-        var index = expectInput(fragments, FragmentType.NUMBER, 1);
+        var indexes = fragments.subList(1, fragments.size());
+
+        for (int i = 0, indexesSize = indexes.size(); i < indexesSize; i++) {
+            var index = indexes.get(i);
+            if (index.type() != FragmentType.LIST) {
+                throw new IncorrectFragmentBlunder(this, i, FragmentType.NUMBER.getName(), index.type());
+            }
+
+            var numberIndex = (NumberFragment) index;
+            if (numberIndex.number() < 0 || numberIndex.number() >= list.fragments().size()) {
+                throw new IndexOutOfBoundsBlunder(this, MathHelper.floor(numberIndex.number()));
+            }
+        }
 
         var newList = new ArrayList<Fragment>(list.fragments().size());
         newList.addAll(list.fragments());
-        newList.remove((int) Math.floor(index.number()));
+
+        for (var index : indexes) {
+            var indexValue = MathHelper.floor(((NumberFragment) index).number());
+            newList.set(indexValue, null);
+        }
+        newList.removeIf(Objects::isNull);
+
         return new ListFragment(ImmutableList.copyOf(newList));
     }
 }

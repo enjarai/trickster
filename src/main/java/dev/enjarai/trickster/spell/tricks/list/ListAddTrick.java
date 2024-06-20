@@ -19,8 +19,8 @@ public class ListAddTrick extends Trick {
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var list = expectInput(fragments, FragmentType.LIST, 0);
-        var el = expectInput(fragments, 1);
+        var toAdd = fragments.subList(1, fragments.size());
 
-        return new ListFragment(ImmutableList.<Fragment>builder().addAll(list.fragments()).add(el).build());
+        return new ListFragment(ImmutableList.<Fragment>builder().addAll(list.fragments()).addAll(toAdd).build());
     }
 }

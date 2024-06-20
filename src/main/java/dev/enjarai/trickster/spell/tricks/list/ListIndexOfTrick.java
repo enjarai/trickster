@@ -5,6 +5,7 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
+import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 
@@ -20,6 +21,8 @@ public class ListIndexOfTrick extends Trick {
         var list = expectInput(fragments, FragmentType.LIST, 0);
         var el = expectInput(fragments, 1);
 
-        return new NumberFragment(list.fragments().indexOf(el));
+        var index = list.fragments().indexOf(el);
+
+        return index == -1 ? VoidFragment.INSTANCE : new NumberFragment(index);
     }
 }
