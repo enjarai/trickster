@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "b": {
+      "item": "minecraft:black_wool"
+    },
+    "w": {
+      "item": "minecraft:white_wool"
+    },
+    "s": {
+      "item": "trickster:scroll_and_quill"
+    }
+  },
+  "pattern": [
+    "bbb",
+    "wsw",
+    "b b"
+  ],
+  "result": {
+    "count": 1,
+    "id": "trickster:top_hat"
+  }
+}

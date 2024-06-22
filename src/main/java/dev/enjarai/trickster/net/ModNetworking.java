@@ -67,7 +67,7 @@ public class ModNetworking {
                         stack.set(ModComponents.SELECTED_SLOT,
                                 new SelectedSlotComponent(newSlot, current.maxSlot()));
 
-                        player.sendMessage(Text.of("TODO: " + newSlot), true);
+                        player.sendMessage(Text.of("Selected slot: " + newSlot), true);
                     }
                 }
             }

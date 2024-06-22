@@ -29,3 +29,10 @@ item.trickster:
   scroll_and_quill: Scroll and Quill
   top_hat: Top Hat
   wand: Wand
+
+key:
+  categories:
+    trickster: Trickster
+
+  trickster:
+    take_hat: Take Hat

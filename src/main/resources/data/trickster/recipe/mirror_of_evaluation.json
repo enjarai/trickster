@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "g": {
+      "item": "minecraft:gold_ingot"
+    },
+    "p": {
+      "item": "minecraft:glass_pane"
+    },
+    "a": {
+      "item": "minecraft:amethyst_shard"
+    }
+  },
+  "pattern": [
+    " a ",
+    "gpg",
+    " g "
+  ],
+  "result": {
+    "count": 1,
+    "id": "trickster:mirror_of_evaluation"
+  }
+}

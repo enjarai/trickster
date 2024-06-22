@@ -1,0 +1,12 @@
+```json
+{
+  "title": "Wand",
+  "icon": "trickster:wand",
+  "category": "trickster:basics"
+}
+```
+
+A wand is a very simple magical tool that will cast a spell inscribed into it when right-clicked.
+
+
+<recipe;trickster:wand>

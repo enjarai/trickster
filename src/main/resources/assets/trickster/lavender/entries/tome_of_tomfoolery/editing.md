@@ -50,59 +50,70 @@ This is because while empty circles perform no operation on their inputs, they s
 
 As such, a spell with multiple effects may use an empty root node to evaluate multiple trees of logic.
 
+
+The following pages will list some potentially useful scribing patterns.
+
 ;;;;;
 
+<|pattern@trickster:templates|pattern=0\,4\,8\,5,title=Inner Revision|>
 
-;;;;;
-
-<|pattern@trickster:templates|pattern=0\,4\,8\,5,title=Test|>
-
-any... -> boolean
+{gray}(Scribing pattern){}
 
 ---
 
-Checks for equality between many inputs. Will only return true if all inputs are equal.
+Adds a new inner circle to an existing circle.
+Inner circles act like glyphs, and can be activated as such.
+See [Spell Fragments](^trickster:functions).
 
 ;;;;;
 
-<|pattern@trickster:templates|pattern=0\,4\,8,title=Test|>
+<|pattern@trickster:templates|pattern=0\,4\,8,title=Absence Revision|>
 
-any... -> boolean
+{gray}(Scribing pattern){}
 
 ---
 
-Checks for inequality between many inputs. Will return false if any input is equal to any other.
+Removes the circle it is drawn in, and any attached subcircles, 
+so long as that circle is not the root node.
 
 ;;;;;
 
-<|pattern@trickster:templates|pattern=0\,4\,8\,5\,2\,1\,0\,3\,6\,7\,8,title=Test|>
+<|pattern@trickster:templates|pattern=0\,4\,8\,5\,2\,1\,0\,3\,6\,7\,8,title=Housekeeping Revision|>
 
-boolean... -> boolean
+{gray}(Scribing pattern){}
 
 ---
 
-Will only return true if all inputs are true.
+Removes any empty subcircle slots around a circle that may be left over from removed subcircles.
 
 ;;;;;
 
-<|pattern@trickster:templates|pattern=4\,0\,1\,4\,2\,1,title=Test|>
+<|pattern@trickster:templates|pattern=4\,0\,1\,4\,2\,1,title=Notulist's Revision|>
 
-boolean... -> boolean
+{gray}(Scribing pattern){}
 
 ---
 
-Will return true if any provided input is true.
+Reads a spell from the user's offhand and grafts it onto the spell currently being edited,
+replacing the circle it is drawn in.
 
 ;;;;;
 
-<|pattern@trickster:templates|pattern=1\,2\,4\,1\,0\,4\,7,title=Test|>
+<|pattern@trickster:templates|pattern=1\,2\,4\,1\,0\,4\,7,title=Inner Notulist's Revision|>
 
-;;;;;
-
-<|pattern@trickster:templates|pattern=4\,3\,0\,4\,5\,2\,4\,1,title=Test|>
-
-boolean... -> boolean
+{gray}(Scribing pattern){}
 
 ---
 
-Will return true if none of the provided inputs are true.
+Reads a spell from the user's offhand and places it as a glyph in the center of the circle it is drawn in.
+
+;;;;;
+
+<|pattern@trickster:templates|pattern=4\,3\,0\,4\,5\,2\,4\,1,title=Grand Revision|>
+
+{gray}(Scribing pattern){}
+
+---
+
+Reads a spell from the user's offhand, casts it, 
+and puts the result as a glyph in the center of the circle it is drawn in.
