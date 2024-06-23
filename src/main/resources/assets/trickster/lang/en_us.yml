@@ -23,6 +23,47 @@ trickster:
     any: Stratagem In General
     none: Stratagem In Absence
 
+    extract_x: Primary Distortion
+    extract_y: Secondary Distortion
+    extract_z: Tertiary Distortion
+    merge_vector: Absorption Distortion
+    length: Magnitude Distortion
+
+    two: Foundational Delusion
+    read_spell: Notulist's Delusion
+    write_spell: Notulist's Ploy
+    reveal: Showcase Stratagem
+    read_crow_mind: Crow Mind Delusion
+    write_crow_mind: Crow Mind Ploy
+
+    reflection: Positioning Delusion
+    height_reflection: Stature Delusion
+    sneaking_reflection: Alternative Delusion
+    raycast: Scout's Delusion
+
+    create_spell_circle: Perceptive Ploy
+    delete_spell_circle: Cancellation Ploy
+
+    execute: Grand Stratagem
+    load_argument_1: Primary Delusion
+    load_argument_2: Secondary Delusion
+    load_argument_3: Tertiary Delusion
+    load_argument_4: Quaternary Delusion
+    load_argument_5: Quinary Delusion
+    load_argument_6: Senary Delusion
+    load_argument_7: Septenary Delusion
+    load_argument_8: Octonary Delusion
+
+    list_create: Catalogue Delusion
+    list_add: Expansion Stratagem
+    list_insert: Inflation Stratagem
+    list_get: Extraction Distortion
+    list_index_of: Locating Distortion
+    list_remove: Expulsion Stratagem
+    list_remove_element: Eviction Stratagem
+
+    swap_block: Ploy of Exchange
+
 item.trickster:
   tome_of_tomfoolery: Tome of Tomfoolery
   mirror_of_evaluation: Mirror of Evaluation

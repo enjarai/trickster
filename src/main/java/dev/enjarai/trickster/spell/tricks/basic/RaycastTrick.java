@@ -22,7 +22,7 @@ public class RaycastTrick extends Trick {
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var player = ctx.getPlayer().orElseThrow(() -> new NoPlayerBlunder(this));
         var hit = player.getWorld().raycast(new RaycastContext(
-                player.getEyePos(), player.getEyePos().add(player.getRotationVector().multiply(24d)),
+                player.getEyePos(), player.getEyePos().add(player.getRotationVector().multiply(128d)),
                 RaycastContext.ShapeType.OUTLINE, RaycastContext.FluidHandling.NONE, player
         ));
         return hit.getType() == HitResult.Type.MISS ? VoidFragment.INSTANCE : VectorFragment.of(hit.getBlockPos());

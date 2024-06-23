@@ -13,7 +13,7 @@ import java.util.List;
 
 public class SneakingReflectionTrick extends Trick {
     public SneakingReflectionTrick() {
-        super(Pattern.of(0, 4, 7));
+        super(Pattern.of(2, 4, 7));
     }
 
     @Override

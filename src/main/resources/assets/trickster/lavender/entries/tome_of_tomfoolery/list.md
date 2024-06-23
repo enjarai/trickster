@@ -80,4 +80,3 @@ any[], any... -> any[]
 ---
 
 Removes one or many elements from the given list by checking their equality with the set of given fragments.
-

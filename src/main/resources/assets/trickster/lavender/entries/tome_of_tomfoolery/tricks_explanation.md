@@ -1,7 +1,7 @@
 ```json
 {
-  "title": "Tricks",
-  "icon": "minecraft:grass_block",
+  "title": "Trick Types",
+  "icon": "minecraft:oak_leaves",
   "category": "trickster:basics"
 }
 ```
@@ -12,5 +12,5 @@ Trick types:
 - Stratagem: pure tricks operating on many inputs at once
 - Distortion: fixed-input pure tricks
 - Ploy: input-only tricks
-- Ambush: event type
+- Ambush: event types
 - Revision: scribing patterns
