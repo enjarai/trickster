@@ -42,3 +42,5 @@ Aside from that, there are a bunch of other trinkets to use that can manipulate 
 ## Credits
 
 Many of the item textures are courtesy of @midnightcartridge on Discord.
+
+Thanks to @crephan as well for help with the Top Hat model.
