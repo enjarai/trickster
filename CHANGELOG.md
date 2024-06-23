@@ -1,0 +1,2 @@
+- Fix broken pattern rendering in guidebook.
+- Fixed wand rendering in hand incorrectly.

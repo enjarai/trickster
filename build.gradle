@@ -2,6 +2,7 @@ plugins {
 	id 'fabric-loom' version '1.6-SNAPSHOT'
 	id 'maven-publish'
 	id 'me.fallenbreath.yamlang' version '1.3.1'
+	id "me.modmuss50.mod-publish-plugin" version "0.4.4"
 }
 
 version = project.mod_version
@@ -53,7 +54,7 @@ dependencies {
 
 	modImplementation "io.wispforest:lavender:${property('deps.lavender')}"
 //	implementation "io.wispforest:endec:0.1.0-pre.8"
-	modLocalRuntime "io.wispforest.lavender-md:owo-ui:0.1.2+1.21"
+	include modLocalRuntime("io.wispforest.lavender-md:owo-ui:0.1.2+1.21")
 
 	modImplementation("nl.enjarai:cicada-lib:${property('deps.cicada')}") {
 		exclude group: "net.fabricmc.fabric-api"
@@ -108,5 +109,56 @@ publishing {
 		// Notice: This block does NOT have the same function as the block in the top level.
 		// The repositories here will be used for publishing your artifact, not for
 		// retrieving dependencies.
+	}
+}
+
+publishMods {
+	file = remapJar.archiveFile
+	displayName = "${property('mod_version')} for ${property('deps.minecraft')}"
+	version = project.version
+	changelog = getRootProject().file("CHANGELOG.md").text
+	type = STABLE
+	modLoaders.add("fabric")
+
+	def min = property('publish_target_min')
+	def max = property('publish_target_max')
+
+	if (providers.gradleProperty('enjaraiModrinthToken').present) {
+		modrinth {
+			projectId = property('mod_modrinth')
+			accessToken = providers.gradleProperty('enjaraiModrinthToken').get()
+
+			if (min == max) {
+				minecraftVersions.add(min)
+			} else {
+				minecraftVersionRange {
+					start = min
+					end = max
+				}
+			}
+
+			requires {
+				slug = "fabric-api"
+			}
+			requires {
+				slug = "cicada"
+			}
+			requires {
+				slug = "owo-lib"
+			}
+			requires {
+				slug = "lavender"
+			}
+		}
+	}
+
+	if (providers.gradleProperty('enjaraiGithubToken').present) {
+		github {
+			repository = property('mod_github')
+			accessToken = providers.gradleProperty('enjaraiGithubToken').get()
+
+			commitish = property('git_branch')
+			tagName = project.version
+		}
 	}
 }
