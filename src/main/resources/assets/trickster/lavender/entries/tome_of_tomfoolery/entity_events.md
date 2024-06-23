@@ -6,7 +6,11 @@
 }
 ```
 
-TODO
+This entry lists available event patterns relating to entities.
+
+
+These can easily trap an unaware magician in their own 
+net so to speak, **use with caution**.
 
 ;;;;;
 
