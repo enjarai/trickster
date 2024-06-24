@@ -20,13 +20,13 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public final class SpellPart implements Fragment {
-    public static final Codec<SpellPart> CODEC = Codec.recursive("spell_part", self -> RecordCodecBuilder.create(instance -> instance.group(
+    public static final MapCodec<SpellPart> MAP_CODEC = MapCodec.recursive("spell_part", self -> RecordCodecBuilder.mapCodec(instance -> instance.group(
             Fragment.CODEC.get().fieldOf("glyph").forGetter(SpellPart::getGlyph),
             Codec.either(self, Codec.BOOL)
                     .xmap(e -> e.left(), o -> o.<Either<SpellPart, Boolean>>map(Either::left).orElse(Either.right(false)))
                     .listOf().fieldOf("sub_parts").forGetter(SpellPart::getSubParts)
     ).apply(instance, SpellPart::new)));
-    public static final MapCodec<SpellPart> MAP_CODEC = MapCodec.assumeMapUnsafe(CODEC);
+    public static final Codec<SpellPart> CODEC = MAP_CODEC.codec();
     public static final Endec<SpellPart> ENDEC = CodecUtils.toEndec(CODEC);
 
     public Fragment glyph;

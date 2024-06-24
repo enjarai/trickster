@@ -1,3 +1,1 @@
-- Added conjure water and conjure flower tricks.
-- Fixed missing entries in creative inventory.
-- Added a check for adventure mode to prevent block editing.
+- Fixed being kicked from the server when opening the creative inventory while holding a complicated scroll.
