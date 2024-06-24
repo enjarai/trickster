@@ -6,14 +6,19 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
+import dev.enjarai.trickster.spell.tricks.blunder.CantEditBlockBlunder;
 import dev.enjarai.trickster.spell.tricks.blunder.IncompatibleTypesBlunder;
 import dev.enjarai.trickster.spell.tricks.blunder.MissingFragmentBlunder;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.List;
 
 public abstract class Trick {
+    public static final Identifier TRICK_RANDOM = Trickster.id("trick");
+
     protected final Pattern pattern;
 
     public Trick(Pattern pattern) {
@@ -63,6 +68,24 @@ public abstract class Trick {
             throw new MissingFragmentBlunder(this, index, Text.of("any"));
         }
         return fragments.get(index);
+    }
+
+    protected void expectCanBuild(SpellContext ctx, BlockPos... positions) {
+        if (ctx.getPlayer().isEmpty()) {
+            return;
+        }
+
+        var player = ctx.getPlayer().get();
+
+        if (player.interactionManager.getGameMode().isBlockBreakingRestricted()) {
+            throw new CantEditBlockBlunder(this, positions[0]);
+        }
+
+        for (var pos : positions) {
+            if (!player.canModifyAt(ctx.getWorld(), pos)) {
+                throw new CantEditBlockBlunder(this, pos);
+            }
+        }
     }
 
     public MutableText getName() {

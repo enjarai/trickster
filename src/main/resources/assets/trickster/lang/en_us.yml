@@ -4,6 +4,8 @@ trickster:
     scroll_and_quill: Scroll and Quill
     mirror_of_evaluation: Mirror of Evaluation
 
+  item_group: Trickster
+
   trick.trickster:
     add: Annexation Stratagem
     subtract: Desertion Stratagem
@@ -63,6 +65,8 @@ trickster:
     list_remove_element: Eviction Stratagem
 
     swap_block: Ploy of Exchange
+    conjure_flower: Floral Ploy
+    conjure_water: Aquatic Ploy
 
 item.trickster:
   tome_of_tomfoolery: Tome of Tomfoolery

@@ -41,6 +41,7 @@ public class CreateSpellCircleTrick extends Trick {
 
         var blockPos = position.toBlockPos();
 
+        expectCanBuild(ctx, blockPos);
         if (ctx.getWorld().getBlockState(blockPos).isAir()) {
             ctx.getWorld().setBlockState(blockPos, ModBlocks.SPELL_CIRCLE.getDefaultState());
             ctx.setWorldAffected();

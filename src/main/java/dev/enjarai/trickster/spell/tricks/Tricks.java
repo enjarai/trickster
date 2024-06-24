@@ -4,6 +4,8 @@ import com.mojang.serialization.Lifecycle;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.tricks.basic.*;
+import dev.enjarai.trickster.spell.tricks.block.ConjureFlowerTrick;
+import dev.enjarai.trickster.spell.tricks.block.ConjureWaterTrick;
 import dev.enjarai.trickster.spell.tricks.block.SwapBlockTrick;
 import dev.enjarai.trickster.spell.tricks.bool.*;
 import dev.enjarai.trickster.spell.tricks.event.CreateSpellCircleTrick;
@@ -101,6 +103,8 @@ public class Tricks {
 
     // Blocks
     public static final SwapBlockTrick SWAP_BLOCK = register("swap_block", new SwapBlockTrick());
+    public static final ConjureFlowerTrick CONJURE_FLOWER = register("conjure_flower", new ConjureFlowerTrick());
+    public static final ConjureWaterTrick CONJURE_WATER = register("conjure_water", new ConjureWaterTrick());
 
     private static <T extends Trick> T register(String path, T trick) {
         return Registry.register(REGISTRY, Trickster.id(path), trick);

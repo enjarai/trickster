@@ -1,2 +1,3 @@
-- Fix broken pattern rendering in guidebook.
-- Fixed wand rendering in hand incorrectly.
+- Added conjure water and conjure flower tricks.
+- Fixed missing entries in creative inventory.
+- Added a check for adventure mode to prevent block editing.

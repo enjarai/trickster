@@ -23,6 +23,7 @@ public class DeleteSpellCircleTrick extends Trick {
 
         var blockPos = position.toBlockPos();
 
+        expectCanBuild(ctx, blockPos);
         if (ctx.getWorld().getBlockState(blockPos).isOf(ModBlocks.SPELL_CIRCLE)) {
             ctx.getWorld().setBlockState(blockPos, Blocks.AIR.getDefaultState());
             ctx.setWorldAffected();
