@@ -1,1 +1,5 @@
-- Fixed being kicked from the server when opening the creative inventory while holding a complicated scroll.
+- Fixed being able to crash the server with a fork-bomb-like spell.
+- Made a few fixes to conjure water: (Thanks @Master_Bw3!)
+  - Fixed conjure water working in the nether.
+  - Fixed conjure water not working on waterloggable blocks.
+  - Fixed conjure water not working on cauldrons.
