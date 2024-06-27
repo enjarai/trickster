@@ -6,6 +6,7 @@
     "AbstractClientPlayerEntityMixin",
     "HeldItemRendererMixin",
     "InGameHudMixin",
+    "MixinPlayerRenderer",
     "MouseMixin"
   ],
   "injectors": {
