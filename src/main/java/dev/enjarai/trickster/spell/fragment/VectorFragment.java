@@ -28,7 +28,7 @@ public record VectorFragment(Vector3dc vector) implements Fragment, AddableFragm
 
     @Override
     public Text asText() {
-        return Text.of("(" + vector.x() + ", " + vector.y() + ", " + vector.z() + ")");
+        return Text.literal("(" + vector.x() + ", " + vector.y() + ", " + vector.z() + ")").withColor(0xddaa00);
     }
 
     @Override

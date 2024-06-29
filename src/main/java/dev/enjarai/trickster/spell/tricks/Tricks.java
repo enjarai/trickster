@@ -4,10 +4,12 @@ import com.mojang.serialization.Lifecycle;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.tricks.basic.*;
+import dev.enjarai.trickster.spell.tricks.block.CheckBlockTrick;
 import dev.enjarai.trickster.spell.tricks.block.ConjureFlowerTrick;
 import dev.enjarai.trickster.spell.tricks.block.ConjureWaterTrick;
 import dev.enjarai.trickster.spell.tricks.block.SwapBlockTrick;
 import dev.enjarai.trickster.spell.tricks.bool.*;
+import dev.enjarai.trickster.spell.tricks.entity.*;
 import dev.enjarai.trickster.spell.tricks.event.CreateSpellCircleTrick;
 import dev.enjarai.trickster.spell.tricks.event.DeleteSpellCircleTrick;
 import dev.enjarai.trickster.spell.tricks.list.*;
@@ -56,9 +58,16 @@ public class Tricks {
 
     // Caster
     public static final ReflectionTrick REFLECTION = register("reflection", new ReflectionTrick());
+    public static final CasterReflection CASTER_REFLECTION = register("caster_reflection", new CasterReflection());
+
+    // Entity
+    public static final GetPositionTrick GET_POSITION = register("get_position", new GetPositionTrick());
+    public static final GetFacingTrick GET_FACING = register("get_facing", new GetFacingTrick());
     public static final HeightReflectionTrick HEIGHT_REFLECTION = register("height_reflection", new HeightReflectionTrick());
     public static final SneakingReflectionTrick SNEAKING_REFLECTION = register("sneaking_reflection", new SneakingReflectionTrick());
     public static final RaycastTrick RAYCAST = register("raycast", new RaycastTrick());
+    public static final RaycastEntityTrick RAYCAST_ENTITY = register("raycast_entity", new RaycastEntityTrick());
+    public static final AddVelocityTrick ADD_VELOCITY = register("add_velocity", new AddVelocityTrick());
 
     // Math
     public static final AddTrick ADD = register("add", new AddTrick());
@@ -105,6 +114,7 @@ public class Tricks {
     public static final SwapBlockTrick SWAP_BLOCK = register("swap_block", new SwapBlockTrick());
     public static final ConjureFlowerTrick CONJURE_FLOWER = register("conjure_flower", new ConjureFlowerTrick());
     public static final ConjureWaterTrick CONJURE_WATER = register("conjure_water", new ConjureWaterTrick());
+    public static final CheckBlockTrick CHECK_BLOCK = register("check_block", new CheckBlockTrick());
 
     private static <T extends Trick> T register(String path, T trick) {
         return Registry.register(REGISTRY, Trickster.id(path), trick);

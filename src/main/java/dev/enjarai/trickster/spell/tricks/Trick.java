@@ -5,10 +5,7 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
-import dev.enjarai.trickster.spell.tricks.blunder.CantEditBlockBlunder;
-import dev.enjarai.trickster.spell.tricks.blunder.IncompatibleTypesBlunder;
-import dev.enjarai.trickster.spell.tricks.blunder.MissingFragmentBlunder;
+import dev.enjarai.trickster.spell.tricks.blunder.*;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -36,12 +33,16 @@ public abstract class Trick {
             throw new MissingFragmentBlunder(this, index, type.getName());
         }
         var fragment = fragments.get(index);
-        return expectType(fragment, type);
+        if (fragment.type() != type) {
+            throw new IncorrectFragmentBlunder(this, index, type.getName(), fragment);
+        }
+        //noinspection unchecked
+        return (T) fragment;
     }
 
     protected <T extends Fragment> T expectType(Fragment fragment, FragmentType<T> type) throws BlunderException {
         if (fragment.type() != type) {
-            throw new IncompatibleTypesBlunder(this);
+            throw new IncorrectFragmentBlunder(this, -1, type.getName(), fragment);
         }
         //noinspection unchecked
         return (T) fragment;
@@ -52,12 +53,16 @@ public abstract class Trick {
             throw new MissingFragmentBlunder(this, index, Text.of(type.getName()));
         }
         var fragment = fragments.get(index);
-        return expectType(fragment, type);
+        if (!type.isInstance(fragment)) {
+            throw new IncorrectFragmentBlunder(this, index, Text.literal(type.getTypeName()), fragment);
+        }
+        //noinspection unchecked
+        return (T) fragment;
     }
 
     protected <T extends Fragment> T expectType(Fragment fragment, Class<T> type) throws BlunderException {
         if (!type.isInstance(fragment)) {
-            throw new IncompatibleTypesBlunder(this);
+            throw new IncorrectFragmentBlunder(this, -1, Text.literal(type.getTypeName()), fragment);
         }
         //noinspection unchecked
         return (T) fragment;

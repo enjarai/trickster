@@ -1,7 +1,8 @@
 package dev.enjarai.trickster.spell;
 
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
-import dev.enjarai.trickster.spell.tricks.blunder.RecursionLimitReachedBlunder;
+import dev.enjarai.trickster.spell.tricks.blunder.ExecutionLimitReachedBlunder;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -11,7 +12,7 @@ import org.joml.Vector3d;
 import java.util.*;
 
 public abstract class SpellContext {
-    public static final int MAX_RECURSION_DEPTH = 1000;
+    public static final int MAX_RECURSION_DEPTH = 256;
 
     private final Deque<List<Fragment>> partGlyphStack = new ArrayDeque<>();
     private int recursions = 0;
@@ -22,13 +23,13 @@ public abstract class SpellContext {
         partGlyphStack.push(fragments);
         recursions++;
         if (recursions > MAX_RECURSION_DEPTH) {
-            throw new RecursionLimitReachedBlunder();
+            throw new ExecutionLimitReachedBlunder();
         }
     }
 
     public void popPartGlyph() {
         partGlyphStack.pop();
-        recursions--;
+//        recursions--; // For now, we'll actually have a maximum of 256 "function" calls in one spell execution, period.
     }
 
     public List<Fragment> peekPartGlyph() {
@@ -40,6 +41,10 @@ public abstract class SpellContext {
     }
 
     public Optional<ServerPlayerEntity> getPlayer() {
+        return Optional.empty();
+    }
+
+    public Optional<Entity> getCaster() {
         return Optional.empty();
     }
 

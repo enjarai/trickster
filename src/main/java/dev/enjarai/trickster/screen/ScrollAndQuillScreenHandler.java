@@ -6,7 +6,6 @@ import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.SpellComponent;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.PlayerSpellContext;
-import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import io.wispforest.endec.Endec;
@@ -18,7 +17,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.util.Hand;
 
 import java.util.function.Consumer;
 
@@ -85,6 +83,8 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
                                         null, player(), ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f));
                             }
                             this.spell.set(spell);
+                        } else {
+                            spell.brutallyMurderEphemerals();
                         }
 
                         scrollStack.set(ModComponents.SPELL, new SpellComponent(spell));

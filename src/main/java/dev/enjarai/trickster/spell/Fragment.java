@@ -26,4 +26,8 @@ public interface Fragment {
     default Fragment activateAsGlyph(SpellContext ctx, List<Optional<Fragment>> fragments) throws BlunderException {
         return this;
     }
+
+    default boolean isEphemeral() {
+        return false;
+    }
 }

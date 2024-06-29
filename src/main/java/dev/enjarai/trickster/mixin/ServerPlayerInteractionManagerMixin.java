@@ -1,6 +1,8 @@
 package dev.enjarai.trickster.mixin;
 
 import dev.enjarai.trickster.particle.ModParticles;
+import dev.enjarai.trickster.spell.fragment.BlockTypeFragment;
+import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.world.SpellCircleEvent;
 import net.minecraft.item.BlockItem;
@@ -40,7 +42,9 @@ public abstract class ServerPlayerInteractionManagerMixin {
 	)
 	private void fireBlockBreakEvent(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
 		if (SpellCircleEvent.BREAK_BLOCK.fireAllNearby(world, pos, List.of(
-				VectorFragment.of(pos) // TODO held item
+				VectorFragment.of(pos),
+				EntityFragment.from(player),
+				new BlockTypeFragment(world.getBlockState(pos).getBlock())
 		))) {
 			var particlePos = pos.toCenterPos();
 			world.spawnParticles(
@@ -80,8 +84,10 @@ public abstract class ServerPlayerInteractionManagerMixin {
 	)
 	private void fireBlockPlaceEvent(ServerPlayerEntity player, World world, ItemStack stack, Hand hand, BlockHitResult hitResult, CallbackInfoReturnable<ActionResult> cir) {
 		var pos = hitResult.getBlockPos().offset(hitResult.getSide());
-		if (stack.getItem() instanceof BlockItem && SpellCircleEvent.PLACE_BLOCK.fireAllNearby((ServerWorld) world, pos, List.of(
-				VectorFragment.of(pos) // TODO held item
+		if (stack.getItem() instanceof BlockItem blockItem && SpellCircleEvent.PLACE_BLOCK.fireAllNearby((ServerWorld) world, pos, List.of(
+				VectorFragment.of(pos),
+				EntityFragment.from(player),
+				new BlockTypeFragment(blockItem.getBlock())
 		))) {
 			var particlePos = pos.toCenterPos();
 			((ServerWorld) world).spawnParticles(

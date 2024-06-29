@@ -24,6 +24,9 @@ public record FragmentType<T extends Fragment>(MapCodec<T> codec) {
     public static final FragmentType<PatternGlyph> PATTERN = register("pattern", PatternGlyph.MAP_CODEC);
     public static final FragmentType<SpellPart> SPELL_PART = register("spell_part", SpellPart.MAP_CODEC);
     public static final FragmentType<EntityFragment> ENTITY = register("entity", EntityFragment.CODEC);
+    public static final FragmentType<ZalgoFragment> ZALGO = register("zalgo", ZalgoFragment.CODEC);
+    public static final FragmentType<ItemTypeFragment> ITEM_TYPE = register("item_type", ItemTypeFragment.CODEC);
+    public static final FragmentType<BlockTypeFragment> BLOCK_TYPE = register("block_type", BlockTypeFragment.CODEC);
 
     private static <T extends Fragment> FragmentType<T> register(String name, MapCodec<T> codec) {
         return Registry.register(REGISTRY, Trickster.id(name), new FragmentType<>(codec));
