@@ -68,6 +68,9 @@ trickster:
     conjure_flower: Floral Ploy
     conjure_water: Aquatic Ploy
 
+  blunder:
+    incorrect_fragment: Incorrect argument at index %d. Expected %s, got %s
+
 item.trickster:
   tome_of_tomfoolery: Tome of Tomfoolery
   mirror_of_evaluation: Mirror of Evaluation

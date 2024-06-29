@@ -7,6 +7,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
+import dev.enjarai.trickster.spell.fragment.ZalgoFragment;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import io.wispforest.endec.Endec;
 import io.wispforest.owo.serialization.CodecUtils;
@@ -89,6 +90,18 @@ public final class SpellPart implements Fragment {
 
     public Optional<Fragment> runSafely(SpellContext ctx) {
         return runSafely(ctx, err -> ctx.getPlayer().ifPresent(player -> player.sendMessage(err)));
+    }
+
+    public void brutallyMurderEphemerals() {
+        subParts.forEach(part -> part.ifPresent(SpellPart::brutallyMurderEphemerals));
+
+        if (glyph instanceof SpellPart spellPart) {
+            spellPart.brutallyMurderEphemerals();
+        } else {
+            if (glyph.isEphemeral()) {
+                glyph = new ZalgoFragment();
+            }
+        }
     }
 
     public Fragment getGlyph() {

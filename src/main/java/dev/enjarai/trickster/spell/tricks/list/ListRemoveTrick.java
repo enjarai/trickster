@@ -30,7 +30,7 @@ public class ListRemoveTrick extends Trick {
         for (int i = 0, indexesSize = indexes.size(); i < indexesSize; i++) {
             var index = indexes.get(i);
             if (index.type() != FragmentType.LIST) {
-                throw new IncorrectFragmentBlunder(this, i, FragmentType.NUMBER.getName(), index.type());
+                throw new IncorrectFragmentBlunder(this, i, FragmentType.NUMBER.getName(), index);
             }
 
             var numberIndex = (NumberFragment) index;

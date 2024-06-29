@@ -25,16 +25,19 @@ public class WriteSpellTrick extends Trick {
         var spell = expectInput(fragments, FragmentType.SPELL_PART, 0);
 
         return ctx.getOtherHandSpellStack().map(stack -> {
+            var newSpell = spell.deepClone();
+            newSpell.brutallyMurderEphemerals();
+
             if (stack.contains(DataComponentTypes.CONTAINER) && stack.contains(ModComponents.SELECTED_SLOT)) {
                 var stacks = stack.get(DataComponentTypes.CONTAINER).stream().collect(Collectors.toCollection(ArrayList::new));
                 var index = stack.get(ModComponents.SELECTED_SLOT).slot();
 
                 var stack2 = stacks.get(index);
-                stack2.set(ModComponents.SPELL, new SpellComponent(spell));
+                stack2.set(ModComponents.SPELL, new SpellComponent(newSpell));
 
                 stack.set(DataComponentTypes.CONTAINER, ContainerComponent.fromStacks(stacks));
             } else {
-                stack.set(ModComponents.SPELL, new SpellComponent(spell));
+                stack.set(ModComponents.SPELL, new SpellComponent(newSpell));
             }
             return BooleanFragment.TRUE;
         }).orElse(BooleanFragment.FALSE);

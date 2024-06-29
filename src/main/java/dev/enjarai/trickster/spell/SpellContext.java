@@ -2,6 +2,7 @@ package dev.enjarai.trickster.spell;
 
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import dev.enjarai.trickster.spell.tricks.blunder.ExecutionLimitReachedBlunder;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -40,6 +41,10 @@ public abstract class SpellContext {
     }
 
     public Optional<ServerPlayerEntity> getPlayer() {
+        return Optional.empty();
+    }
+
+    public Optional<Entity> getCaster() {
         return Optional.empty();
     }
 

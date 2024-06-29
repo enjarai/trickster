@@ -4,6 +4,7 @@ import dev.enjarai.trickster.ModAttachments;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -25,6 +26,11 @@ public class PlayerSpellContext extends SpellContext {
 
     @Override
     public Optional<ServerPlayerEntity> getPlayer() {
+        return Optional.of(player);
+    }
+
+    @Override
+    public Optional<Entity> getCaster() {
         return Optional.of(player);
     }
 

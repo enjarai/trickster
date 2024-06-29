@@ -14,7 +14,6 @@ import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import dev.enjarai.trickster.spell.tricks.blunder.InvalidEventBlunder;
 import dev.enjarai.trickster.spell.tricks.blunder.UnknownEventBlunder;
 import dev.enjarai.trickster.spell.world.SpellCircleEvent;
-import net.minecraft.util.math.BlockPos;
 
 import java.util.List;
 
@@ -43,12 +42,15 @@ public class CreateSpellCircleTrick extends Trick {
 
         expectCanBuild(ctx, blockPos);
         if (ctx.getWorld().getBlockState(blockPos).isAir()) {
+            var spell = executable.deepClone();
+            spell.brutallyMurderEphemerals();
+
             ctx.getWorld().setBlockState(blockPos, ModBlocks.SPELL_CIRCLE.getDefaultState());
             ctx.setWorldAffected();
             var entity = (SpellCircleBlockEntity) ctx.getWorld().getBlockEntity(blockPos);
 
             entity.event = event;
-            entity.spell = executable;
+            entity.spell = spell;
             entity.markDirty();
 
             return BooleanFragment.TRUE;

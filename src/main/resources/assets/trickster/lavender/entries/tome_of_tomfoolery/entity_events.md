@@ -18,6 +18,8 @@ net so to speak, **use with caution**.
 
 {gray}(Event pattern){}
 
+vector, entity, block
+
 ---
 
 Responds to block breaking in its range. Return true to cancel.
@@ -28,6 +30,8 @@ Responds to block breaking in its range. Return true to cancel.
 
 {gray}(Event pattern){}
 
+vector, entity, block
+
 ---
 
 Responds to block placing in its range. Return true to cancel.
@@ -37,6 +41,8 @@ Responds to block placing in its range. Return true to cancel.
 <|pattern@trickster:templates|pattern=3\,4\,5\,8\,4,title=Motive Ambush|>
 
 {gray}(Event pattern){}
+
+entity
 
 ---
 
