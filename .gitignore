@@ -41,4 +41,5 @@ replay_*.log
 
 # direnv
 
+.envrc
 .direnv/
