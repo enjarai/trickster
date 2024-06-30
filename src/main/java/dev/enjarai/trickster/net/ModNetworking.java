@@ -10,6 +10,8 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 
+import java.util.Optional;
+
 public class ModNetworking {
     public static final OwoNetChannel CHANNEL = OwoNetChannel.create(Trickster.id("main"));
 
@@ -67,7 +69,15 @@ public class ModNetworking {
                         stack.set(ModComponents.SELECTED_SLOT,
                                 new SelectedSlotComponent(newSlot, current.maxSlot()));
 
-                        player.sendMessage(Text.of("Selected slot: " + newSlot), true);
+                        var name = container.stream().skip(newSlot).findFirst()
+                                .flatMap(s -> Optional.ofNullable(s.get(DataComponentTypes.CUSTOM_NAME)));
+                        var message = Text.translatable("trickster.scroll_hat", newSlot);
+
+                        if (name.isPresent()) {
+                            message = message.append(" [").append(name.get()).append("]");
+                        }
+
+                        player.sendMessage(message, true);
                     }
                 }
             }

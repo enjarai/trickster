@@ -47,7 +47,11 @@ public record PatternGlyph(Pattern pattern, List<Byte> orderedPattern) implement
 
     @Override
     public Text asText() {
-        return Text.of("TODO"); // TODO
+        var trick = Tricks.lookup(pattern);
+        if (trick != null) {
+            return trick.getName();
+        }
+        return Text.of("Unknown");
     }
 
     @Override

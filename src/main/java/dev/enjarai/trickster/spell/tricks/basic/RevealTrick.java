@@ -17,7 +17,7 @@ public class RevealTrick extends Trick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var result = expectInput(fragments, 0).asText();
+        var result = expectInput(fragments, 0).asFormattedText();
 
         if (fragments.size() > 1) {
             var building = Text.literal("(");
@@ -27,7 +27,7 @@ public class RevealTrick extends Trick {
                 if (i != 0) {
                     building = building.append(", ");
                 }
-                building = building.append(frag.asText());
+                building = building.append(frag.asFormattedText());
             }
 
             result = building.append(")");;

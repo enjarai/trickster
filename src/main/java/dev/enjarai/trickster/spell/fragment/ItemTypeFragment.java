@@ -17,7 +17,7 @@ public record ItemTypeFragment(Item item) implements Fragment {
 
     @Override
     public Text asText() {
-        return item.getName().copy().withColor(0x2266aa);
+        return item.getName();
     }
 
     @Override

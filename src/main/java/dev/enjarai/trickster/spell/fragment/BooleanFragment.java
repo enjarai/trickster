@@ -18,7 +18,7 @@ public record BooleanFragment(boolean bool) implements Fragment {
 
     @Override
     public Text asText() {
-        return Text.literal("" + bool).withColor(0xaa3355);
+        return Text.literal("" + bool);
     }
 
     @Override

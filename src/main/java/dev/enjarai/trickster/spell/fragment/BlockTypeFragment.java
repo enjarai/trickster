@@ -18,7 +18,7 @@ public record BlockTypeFragment(Block block) implements Fragment {
 
     @Override
     public Text asText() {
-        return block.getName().withColor(0x44aa33);
+        return block.getName();
     }
 
     @Override

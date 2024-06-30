@@ -13,6 +13,6 @@ public class IndexOutOfBoundsBlunder extends TrickBlunderException {
 
     @Override
     public MutableText createMessage() {
-        return super.createMessage().append("Index out of bounds: " + index);
+        return super.createMessage().append("Index out of bounds: ").append(formatInt(index));
     }
 }

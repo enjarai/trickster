@@ -20,7 +20,7 @@ public record NumberFragment(double number) implements Fragment, AddableFragment
 
     @Override
     public Text asText() {
-        return Text.literal(String.valueOf(number)).withColor(0xbb3300);
+        return Text.literal(String.format("%.2f", number));
     }
 
     @Override

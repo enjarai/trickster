@@ -14,6 +14,6 @@ public class BlockUnoccupiedBlunder extends TrickBlunderException {
 
     @Override
     public MutableText createMessage() {
-        return super.createMessage().append("Block ").append(pos.asText()).append(" unoccupied");
+        return super.createMessage().append("Block ").append(pos.asFormattedText()).append(" unoccupied");
     }
 }

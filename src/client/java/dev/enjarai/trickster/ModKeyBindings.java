@@ -21,12 +21,10 @@ public class ModKeyBindings {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             var player = client.player;
             if (player != null && client.currentScreen == null) {
-                if (TAKE_HAT.isPressed()) {
+                if (TAKE_HAT.wasPressed()) {
                     if (player.getEquippedStack(EquipmentSlot.HEAD).isIn(ModItems.HOLDABLE_HAT) && player.getEquippedStack(EquipmentSlot.OFFHAND).isEmpty()) {
                         ModNetworking.CHANNEL.clientHandle().send(new MladyPacket(true));
-                    }
-                } else {
-                    if (player.getEquippedStack(EquipmentSlot.HEAD).isEmpty() && player.getOffHandStack().isIn(ModItems.HOLDABLE_HAT)) {
+                    } else if (player.getEquippedStack(EquipmentSlot.HEAD).isEmpty() && player.getOffHandStack().isIn(ModItems.HOLDABLE_HAT)) {
                         ModNetworking.CHANNEL.clientHandle().send(new MladyPacket(false));
                     }
                 }

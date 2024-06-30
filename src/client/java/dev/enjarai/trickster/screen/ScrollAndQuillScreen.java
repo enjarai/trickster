@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.screen;
 
+import dev.enjarai.trickster.item.ModItems;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
 import net.minecraft.entity.player.PlayerInventory;
@@ -50,5 +51,13 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
     @Override
     public ScrollAndQuillScreenHandler getScreenHandler() {
         return handler;
+    }
+
+    @SuppressWarnings("DataFlowIssue")
+    @Override
+    protected void applyBlur(float delta) {
+        if (!this.client.player.getOffHandStack().isOf(ModItems.TOME_OF_TOMFOOLERY)) {
+            super.applyBlur(delta);
+        }
     }
 }

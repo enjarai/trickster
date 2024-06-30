@@ -21,6 +21,13 @@ public interface Fragment {
 
     Text asText();
 
+    default Text asFormattedText() {
+        if (type().color().isPresent()) {
+            return asText().copy().withColor(type().color().getAsInt());
+        }
+        return asText();
+    }
+
     BooleanFragment asBoolean();
 
     default Fragment activateAsGlyph(SpellContext ctx, List<Optional<Fragment>> fragments) throws BlunderException {

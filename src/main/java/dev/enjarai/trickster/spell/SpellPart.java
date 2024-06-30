@@ -140,7 +140,21 @@ public final class SpellPart implements Fragment {
 
     @Override
     public Text asText() {
-        return Text.of("TODO"); // TODO
+        var text = Text.literal("").append(glyph.asFormattedText()).append("{");
+        for (int i = 0; i < subParts.size(); i++) {
+            var subPart = subParts.get(i);
+            if (i > 0) {
+                text.append(", ");
+            }
+            text.append(subPart.map(Fragment::asFormattedText).orElse(VoidFragment.INSTANCE.asFormattedText()));
+        }
+        text.append("}");
+        return text;
+    }
+
+    @Override
+    public Text asFormattedText() {
+        return asText();
     }
 
     @Override

@@ -70,7 +70,7 @@ public record ZalgoFragment(String string) implements Fragment {
 
     @Override
     public Text asText() {
-        return Text.literal(string).fillStyle(Style.EMPTY.withObfuscated(true).withColor(0x444444));
+        return Text.literal(string).fillStyle(Style.EMPTY.withObfuscated(true));
     }
 
     @Override

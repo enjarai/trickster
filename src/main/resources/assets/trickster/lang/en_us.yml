@@ -6,6 +6,8 @@ trickster:
 
   item_group: Trickster
 
+  scroll_hat: 'Selected slot: %d'
+
   trick.trickster:
     add: Annexation Stratagem
     subtract: Desertion Stratagem
@@ -72,6 +74,19 @@ trickster:
     conjure_flower: Floral Ploy
     conjure_water: Aquatic Ploy
 
+  fragment.trickster:
+    number: Number
+    boolean: Boolean
+    vector: Vector
+    list: List
+    void: Void
+    pattern: Pattern
+    spell_part: Spell
+    entity: Entity
+    zalgo: §kZalgo
+    item_type: Item
+    block_type: Block
+
   blunder:
     incorrect_fragment: Incorrect argument at index %d. Expected %s, got %s
 
@@ -81,6 +96,12 @@ item.trickster:
   scroll_and_quill: Scroll and Quill
   top_hat: Top Hat
   wand: Wand
+
+tag.item.trickster:
+  can_evaluate_dynamically: Can Evaluate Dynamically
+  holdable_hat: Holdable Hats
+  scrolls: Scrolls
+  spell_cost: Spell Cost
 
 key:
   categories:

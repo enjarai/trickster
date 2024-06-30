@@ -25,7 +25,7 @@ public record ListFragment(List<Fragment> fragments) implements Fragment {
             if (i != 0) {
                 result = result.append(", ");
             }
-            result = result.append(frag.asText());
+            result = result.append(frag.asFormattedText());
         }
 
         return result.append("]");

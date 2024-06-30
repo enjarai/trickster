@@ -182,7 +182,7 @@ public class SpellCircleRenderer {
             var textRenderer = MinecraftClient.getInstance().textRenderer;
 
 //            var height = textRenderer.wrapLines(Text.literal(glyph.asString()), ) // TODO
-            var text = glyph.asText();
+            var text = glyph.asFormattedText();
             var height = 7;
             var width = textRenderer.getWidth(text);
 

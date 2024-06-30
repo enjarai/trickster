@@ -17,6 +17,6 @@ public class OverlapBlunder extends TrickBlunderException {
     @Override
     public MutableText createMessage() {
         return super.createMessage().append("Overlapping positions: ")
-                .append(pos1.asText()).append(", ").append(pos2.asText());
+                .append(pos1.asFormattedText()).append(", ").append(pos2.asFormattedText());
     }
 }

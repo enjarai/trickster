@@ -7,6 +7,7 @@ import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.tricks.blunder.*;
 import net.minecraft.text.MutableText;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -50,11 +51,11 @@ public abstract class Trick {
 
     protected <T extends Fragment> T expectInput(List<Fragment> fragments, Class<T> type, int index) throws BlunderException {
         if (fragments.size() <= index) {
-            throw new MissingFragmentBlunder(this, index, Text.of(type.getName()));
+            throw new MissingFragmentBlunder(this, index, Text.of(type.getSimpleName()));
         }
         var fragment = fragments.get(index);
         if (!type.isInstance(fragment)) {
-            throw new IncorrectFragmentBlunder(this, index, Text.literal(type.getTypeName()), fragment);
+            throw new IncorrectFragmentBlunder(this, index, Text.literal(type.getSimpleName()), fragment);
         }
         //noinspection unchecked
         return (T) fragment;
@@ -62,7 +63,7 @@ public abstract class Trick {
 
     protected <T extends Fragment> T expectType(Fragment fragment, Class<T> type) throws BlunderException {
         if (!type.isInstance(fragment)) {
-            throw new IncorrectFragmentBlunder(this, -1, Text.literal(type.getTypeName()), fragment);
+            throw new IncorrectFragmentBlunder(this, -1, Text.literal(type.getSimpleName()), fragment);
         }
         //noinspection unchecked
         return (T) fragment;
@@ -98,6 +99,8 @@ public abstract class Trick {
         if (id == null) {
             return Text.literal("Unregistered");
         }
-        return Text.translatable(Trickster.MOD_ID + ".trick." + id.getNamespace() + "." + id.getPath());
+        return Text.literal("").append(
+                Text.translatable(Trickster.MOD_ID + ".trick." + id.getNamespace() + "." + id.getPath())
+                        .withColor(FragmentType.PATTERN.color().getAsInt()));
     }
 }

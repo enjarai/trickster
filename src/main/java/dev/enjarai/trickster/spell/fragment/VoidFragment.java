@@ -16,7 +16,7 @@ public record VoidFragment() implements Fragment {
 
     @Override
     public Text asText() {
-        return Text.literal("void").fillStyle(Style.EMPTY.withColor(0x4400aa));
+        return Text.literal("void");
     }
 
     @Override
