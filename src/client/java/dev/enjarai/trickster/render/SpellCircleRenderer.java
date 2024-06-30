@@ -9,6 +9,7 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Vec3d;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 
@@ -49,7 +50,7 @@ public class SpellCircleRenderer {
         this.mouseY = mouseY;
     }
 
-    public void renderPart(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Optional<SpellPart> entry, float x, float y, float size, double startingAngle, float delta, Function<Float, Float> alphaGetter) {
+    public void renderPart(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Optional<SpellPart> entry, float x, float y, float size, double startingAngle, float delta, Function<Float, Float> alphaGetter, Vec3d normal) {
         var alpha = alphaGetter.apply(size);
 
         if (entry.isPresent()) {
@@ -59,12 +60,12 @@ public class SpellCircleRenderer {
                     matrices, vertexConsumers, CIRCLE_TEXTURE,
                     x - size, x + size, y - size, y + size,
                     0,
-                    1f, 1f, 1f, alpha
+                    1f, 1f, 1f, alpha, normal
             );
             drawGlyph(
                     matrices, vertexConsumers, part,
                     x, y, size, startingAngle,
-                    delta, alphaGetter
+                    delta, alphaGetter, normal
             );
 
             int partCount = part.getSubParts().size();
@@ -84,7 +85,7 @@ public class SpellCircleRenderer {
 
                 var nextSize = Math.min(size / 2, size / (float) (partCount / 2));
 
-                renderPart(matrices, vertexConsumers, child, (float) nextX, (float) nextY, nextSize, angle, delta, alphaGetter);
+                renderPart(matrices, vertexConsumers, child, (float) nextX, (float) nextY, nextSize, angle, delta, alphaGetter, normal);
 
                 i++;
             }
@@ -94,7 +95,7 @@ public class SpellCircleRenderer {
                     matrices, vertexConsumers, CIRCLE_TEXTURE_HALF,
                     x - size / 2, x + size / 2, y - size / 2, y + size / 2,
                     0,
-                    1f, 1f, 1f, (float) alpha
+                    1f, 1f, 1f, (float) alpha, normal
             );
         }
     }
@@ -126,10 +127,10 @@ public class SpellCircleRenderer {
 //        );
     }
 
-    protected void drawGlyph(MatrixStack matrices, VertexConsumerProvider vertexConsumers, SpellPart parent, float x, float y, float size, double startingAngle, float delta, Function<Float, Float> alphaGetter) {
+    protected void drawGlyph(MatrixStack matrices, VertexConsumerProvider vertexConsumers, SpellPart parent, float x, float y, float size, double startingAngle, float delta, Function<Float, Float> alphaGetter, Vec3d normal) {
         var glyph = parent.getGlyph();
         if (glyph instanceof SpellPart part) {
-            renderPart(matrices, vertexConsumers, Optional.of(part), x, y, size / 3, startingAngle, delta, alphaGetter);
+            renderPart(matrices, vertexConsumers, Optional.of(part), x, y, size / 3, startingAngle, delta, alphaGetter, normal);
         } else if (glyph instanceof PatternGlyph pattern) {
             var patternSize = size / PATTERN_TO_PART_RATIO;
             var pixelSize = patternSize / PART_PIXEL_RADIUS;
@@ -235,7 +236,7 @@ public class SpellCircleRenderer {
                 mouseY >= pos.y - hitboxSize && mouseY <= pos.y + hitboxSize;
     }
 
-    protected void drawTexturedQuad(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Identifier texture, float x1, float x2, float y1, float y2, float z, float r, float g, float b, float alpha) {
+    protected void drawTexturedQuad(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Identifier texture, float x1, float x2, float y1, float y2, float z, float r, float g, float b, float alpha, Vec3d normal) {
         if (inUI) {
             RenderSystem.setShaderTexture(0, texture);
             RenderSystem.setShader(GameRenderer::getPositionTexProgram);
@@ -257,13 +258,13 @@ public class SpellCircleRenderer {
             var position = matrixEntry.getPositionMatrix();
             var vertexConsumer = vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(texture));
             vertexConsumer.vertex(position, x1, y1, z).texture(0, 0).overlay(OverlayTexture.DEFAULT_UV)
-                    .light(LightmapTextureManager.MAX_LIGHT_COORDINATE).color(r, g, b, alpha).normal(matrixEntry, 0, 0, -1);
+                    .light(LightmapTextureManager.MAX_LIGHT_COORDINATE).color(r, g, b, alpha).normal(matrixEntry, (float) normal.x, (float) normal.y, (float) normal.z);
             vertexConsumer.vertex(position, x1, y2, z).texture(0, 1).overlay(OverlayTexture.DEFAULT_UV)
-                    .light(LightmapTextureManager.MAX_LIGHT_COORDINATE).color(r, g, b, alpha).normal(matrixEntry, 0, 0, -1);
+                    .light(LightmapTextureManager.MAX_LIGHT_COORDINATE).color(r, g, b, alpha).normal(matrixEntry, (float) normal.x, (float) normal.y, (float) normal.z);
             vertexConsumer.vertex(position, x2, y2, z).texture(1, 1).overlay(OverlayTexture.DEFAULT_UV)
-                    .light(LightmapTextureManager.MAX_LIGHT_COORDINATE).color(r, g, b, alpha).normal(matrixEntry, 0, 0, -1);
+                    .light(LightmapTextureManager.MAX_LIGHT_COORDINATE).color(r, g, b, alpha).normal(matrixEntry, (float) normal.x, (float) normal.y, (float) normal.z);
             vertexConsumer.vertex(position, x2, y1, z).texture(1, 0).overlay(OverlayTexture.DEFAULT_UV)
-                    .light(LightmapTextureManager.MAX_LIGHT_COORDINATE).color(r, g, b, alpha).normal(matrixEntry, 0, 0, -1);
+                    .light(LightmapTextureManager.MAX_LIGHT_COORDINATE).color(r, g, b, alpha).normal(matrixEntry, (float) normal.x, (float) normal.y, (float) normal.z);
 //        BufferRenderer.drawWithGlobalProgram(vertexConsumer.end());
 //        RenderSystem.setShaderColor(1, 1, 1, 1);
         }

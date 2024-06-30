@@ -11,6 +11,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.RotationAxis;
+import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Optional;
 
 @Mixin(PlayerEntityRenderer.class)
-public abstract class MixinPlayerRenderer {
+public abstract class PlayerRendererMixin {
     @Unique
     public SpellCircleRenderer trickster$renderer = new SpellCircleRenderer();
 
@@ -39,7 +40,9 @@ public abstract class MixinPlayerRenderer {
             //push forward from eyes a bit
             matrices.translate(0f, 0f, -1f);
 
-            this.trickster$renderer.renderPart(matrices, vertexConsumers, spell, 0, 0, 0.5f, 0, tickDelta, size -> 1f);
+            var rot = new Vec3d(-1, -1, -player.getRotationVector().y);;
+
+            this.trickster$renderer.renderPart(matrices, vertexConsumers, spell, 0, 0, 0.5f, 0, tickDelta, size -> 1f, rot);
             matrices.pop();
         }
     }

@@ -6,7 +6,7 @@
     "AbstractClientPlayerEntityMixin",
     "HeldItemRendererMixin",
     "InGameHudMixin",
-    "MixinPlayerRenderer",
+    "PlayerRendererMixin",
     "MouseMixin",
     "SillyHairsFeatureRendererMixin"
   ],

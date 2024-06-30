@@ -1,25 +1,19 @@
 package dev.enjarai.trickster.screen;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import dev.enjarai.trickster.ModSounds;
-import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.render.SpellCircleRenderer;
 import dev.enjarai.trickster.spell.*;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
-import net.minecraft.client.render.*;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Matrix4f;
-import org.joml.Vector2f;
+
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -85,7 +79,8 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         this.renderer.renderPart(
                 context.getMatrices(), context.getVertexConsumers(), Optional.of(spellPart),
                 (float) x, (float) y, (float) size, 0, delta,
-                size -> (float) Math.clamp(1 / (size / context.getScaledWindowHeight() * 2) - 0.2, 0, 1)
+                size -> (float) Math.clamp(1 / (size / context.getScaledWindowHeight() * 2) - 0.2, 0, 1),
+                new Vec3d(0, 0, -1)
         );
     }
 
