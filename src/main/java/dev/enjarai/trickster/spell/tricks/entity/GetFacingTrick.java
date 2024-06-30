@@ -9,6 +9,7 @@ import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import dev.enjarai.trickster.spell.tricks.blunder.UnknownEntityBlunder;
+import org.joml.Vector3d;
 
 import java.util.List;
 
@@ -23,6 +24,6 @@ public class GetFacingTrick extends Trick {
 
         var facing = entity.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this)).getRotationVector();
 
-        return new VectorFragment(facing.toVector3d());
+        return new VectorFragment(new Vector3d(facing.x, facing.y, facing.z));
     }
 }

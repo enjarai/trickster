@@ -6,9 +6,13 @@
     "AbstractClientPlayerEntityMixin",
     "HeldItemRendererMixin",
     "InGameHudMixin",
-    "MouseMixin"
+    "MouseMixin",
+    "SillyHairsFeatureRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-	}
+  },
+  "mixins": [
+    "PlayerEntityMixin"
+  ]
 }

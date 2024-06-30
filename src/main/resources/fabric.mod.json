@@ -21,6 +21,14 @@
 		],
 		"client": [
 			"dev.enjarai.trickster.TricksterClient"
+		],
+		"cardinal-components": [
+          "dev.enjarai.trickster.cca.ModCumponents"
+		]
+	},
+	"custom": {
+		"cardinal-components": [
+			"trickster:disguise"
 		]
 	},
 	"mixins": [

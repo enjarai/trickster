@@ -3,8 +3,8 @@
   "package": "dev.enjarai.trickster.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "LivingEntityMixin",
-    "ServerPlayerInteractionManagerMixin"
+    "event.LivingEntityMixin",
+    "event.ServerPlayerInteractionManagerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
