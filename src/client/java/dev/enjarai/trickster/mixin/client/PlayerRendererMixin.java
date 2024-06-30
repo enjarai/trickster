@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.mixin.client;
 
 
+import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.render.SpellCircleRenderer;
 import dev.enjarai.trickster.spell.SpellPart;
@@ -34,13 +35,14 @@ public abstract class PlayerRendererMixin {
             matrices.translate(0f, player.getEyeHeight(player.getPose()), 0f);
 
             //rotate to match direction player is facing
-            matrices.multiply(RotationAxis.NEGATIVE_Y.rotationDegrees(player.getYaw()));
-            matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(180 +  player.getPitch()));
+            matrices.multiply(RotationAxis.NEGATIVE_Y.rotationDegrees(player.getYaw(tickDelta)));
+            matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(player.getPitch(tickDelta)));
+            matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(180));
 
             //push forward from eyes a bit
-            matrices.translate(0f, 0f, -1f);
+            matrices.translate(0f, 0f, 1f);
 
-            var rot = new Vec3d(-1, -1, -player.getRotationVector().y);;
+            var rot = new Vec3d(-1, -1, player.getRotationVector().y);;
 
             this.trickster$renderer.renderPart(matrices, vertexConsumers, spell, 0, 0, 0.5f, 0, tickDelta, size -> 1f, rot);
             matrices.pop();
@@ -49,12 +51,17 @@ public abstract class PlayerRendererMixin {
 
     @Unique
     private Optional<SpellPart> trickster$get_spell(PlayerEntity entity) {
-        var mainHandSpell = entity.getStackInHand(Hand.MAIN_HAND).get(ModComponents.SPELL);
-        var offHandSpell = entity.getStackInHand(Hand.OFF_HAND).get(ModComponents.SPELL);
+        var mainHandStack = entity.getMainHandStack();
+        var offHandStack = entity.getOffHandStack();
 
-        if (mainHandSpell != null) {
+        var mainHandSpell = mainHandStack.get(ModComponents.SPELL);
+        var offHandSpell = offHandStack.get(ModComponents.SPELL);
+
+        // TODO only appear when scroll is being edited
+
+        if (mainHandStack.isIn(ModItems.SCROLLS) && mainHandSpell != null) {
             return Optional.of(mainHandSpell.spell());
-        } else if (offHandSpell != null) {
+        } else if (offHandStack.isIn(ModItems.SCROLLS) && offHandSpell != null) {
             return Optional.of(offHandSpell.spell());
         } else {
             return Optional.empty();
