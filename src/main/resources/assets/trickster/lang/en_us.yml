@@ -37,11 +37,15 @@ trickster:
     reveal: Showcase Stratagem
     read_crow_mind: Crow Mind Delusion
     write_crow_mind: Crow Mind Ploy
+    cost: Cost Ploy
 
     reflection: Positioning Delusion
-    height_reflection: Stature Delusion
-    sneaking_reflection: Alternative Delusion
-    raycast: Scout's Delusion
+    height_reflection: Stature Distortion
+    sneaking_reflection: Alternative Distortion
+    raycast: Scout's Distortion
+    get_position: Locational Distortion
+    get_facing: Directional Distortion
+    add_velocity: Impulse Ploy
 
     create_spell_circle: Perceptive Ploy
     delete_spell_circle: Cancellation Ploy

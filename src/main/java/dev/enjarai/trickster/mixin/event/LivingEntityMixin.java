@@ -1,17 +1,13 @@
-package dev.enjarai.trickster.mixin;
+package dev.enjarai.trickster.mixin.event;
 
 import com.google.common.collect.Multimaps;
 import dev.enjarai.trickster.Trickster;
-import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
-import dev.enjarai.trickster.spell.fragment.NumberFragment;
-import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.world.SpellCircleEvent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.AttributeContainer;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;

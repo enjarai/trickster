@@ -1,4 +1,4 @@
-package dev.enjarai.trickster.mixin;
+package dev.enjarai.trickster.mixin.event;
 
 import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.spell.fragment.BlockTypeFragment;

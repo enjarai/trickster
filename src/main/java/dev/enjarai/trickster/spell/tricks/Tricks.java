@@ -59,6 +59,7 @@ public class Tricks {
     // Caster
     public static final ReflectionTrick REFLECTION = register("reflection", new ReflectionTrick());
     public static final CasterReflection CASTER_REFLECTION = register("caster_reflection", new CasterReflection());
+    public static final CostTrick COST = register("cost", new CostTrick());
 
     // Entity
     public static final GetPositionTrick GET_POSITION = register("get_position", new GetPositionTrick());
@@ -68,6 +69,8 @@ public class Tricks {
     public static final RaycastTrick RAYCAST = register("raycast", new RaycastTrick());
     public static final RaycastEntityTrick RAYCAST_ENTITY = register("raycast_entity", new RaycastEntityTrick());
     public static final AddVelocityTrick ADD_VELOCITY = register("add_velocity", new AddVelocityTrick());
+    public static final PolymorphTrick POLYMORPH = register("polymorph", new PolymorphTrick());
+    public static final DispelPolymorphTrick DISPEL_POLYMORPH = register("dispel_polymorph", new DispelPolymorphTrick());
 
     // Math
     public static final AddTrick ADD = register("add", new AddTrick());
