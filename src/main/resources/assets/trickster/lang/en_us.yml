@@ -37,6 +37,7 @@ trickster:
     reveal: Showcase Stratagem
     read_crow_mind: Crow Mind Delusion
     write_crow_mind: Crow Mind Ploy
+    cost: Cost Ploy
 
     reflection: Positioning Delusion
     height_reflection: Stature Distortion

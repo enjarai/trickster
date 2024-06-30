@@ -21,8 +21,7 @@ Returns the number two, always.
 
 ;;;;;
 
-<|page-title@lavender:book_components|title=Note: Inscribed Spells|>
-A spell can be inscribed onto any item that a player can hold in their inventory.
+<|page-title@lavender:book_components|title=Note: Inscribed Spells|>A spell can be inscribed onto any item that a player can hold in their inventory.
 If inscribed on a block, the spell will be removed if the block is placed.
 
 
@@ -63,8 +62,7 @@ Shows all given values as a chat message to the caster.
 
 ;;;;;
 
-<|page-title@lavender:book_components|title=Note: The Crow Mind|>
-The Crow Mind, not to be confused with other black bird related minds, 
+<|page-title@lavender:book_components|title=Note: The Crow Mind|>The Crow Mind, not to be confused with other black bird related minds, 
 lets spells store and retrieve any one fragment, **persistently**, between casts.
 
 
@@ -90,3 +88,24 @@ any ->
 ---
 
 Stores the supplied value in the caster's Crow Mind, overwriting any value that might already be present.
+
+;;;;;
+
+;;;;;
+
+<|page-title@lavender:book_components|title=Note: Casting Cost|>After receiving multiple complaints at Tomfoolery Inc. HQ about the balance of this mod,
+we've decided to properly implement spell casting costs.
+
+
+However, player freedom and choice is also very important to us.
+As such, this system operates on an opt-in basis.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:cost,title=Cost Ploy|>
+
+->
+
+---
+
+Consumes one amethyst shard from the caster's inventory. Will cause a blunder if none are available.
