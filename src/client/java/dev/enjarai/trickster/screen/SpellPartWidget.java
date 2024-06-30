@@ -223,6 +223,8 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
                 } else if (drawingPattern.isEmpty() ||
                         (drawingPattern.getLast() != (byte) i && !hasOverlappingLines(drawingPattern, drawingPattern.getLast(), (byte) i))) {
                     drawingPattern.add((byte) i);
+                    if(drawingPattern.size() > 1 && drawingPattern.get(drawingPattern.size() - 2) == (byte) (8 - i))
+                        drawingPattern.add(drawingPattern.size() - 1, (byte) 4);
                     // TODO click sound?
                     MinecraftClient.getInstance().player.playSoundToPlayer(
                             ModSounds.DRAW, SoundCategory.MASTER,
