@@ -2,6 +2,7 @@ package dev.enjarai.trickster.render;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.enjarai.trickster.Trickster;
+import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.PatternGlyph;
 import dev.enjarai.trickster.spell.SpellPart;
 import net.minecraft.client.MinecraftClient;
@@ -9,6 +10,7 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
@@ -131,7 +133,20 @@ public class SpellCircleRenderer {
         var glyph = parent.getGlyph();
         if (glyph instanceof SpellPart part) {
             renderPart(matrices, vertexConsumers, Optional.of(part), x, y, size / 3, startingAngle, delta, alphaGetter, normal);
-        } else if (glyph instanceof PatternGlyph pattern) {
+        } else {
+            matrices.push();
+            drawSide(matrices, vertexConsumers, parent, x, y, size, glyph);
+            matrices.pop();
+
+            matrices.push();
+            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
+            drawSide(matrices, vertexConsumers, parent, -x, y, size, glyph);
+            matrices.pop();
+        }
+    }
+
+    private void drawSide(MatrixStack matrices, VertexConsumerProvider vertexConsumers, SpellPart parent, float x, float y, float size, Fragment glyph) {
+        if (glyph instanceof PatternGlyph pattern) {
             var patternSize = size / PATTERN_TO_PART_RATIO;
             var pixelSize = patternSize / PART_PIXEL_RADIUS;
 

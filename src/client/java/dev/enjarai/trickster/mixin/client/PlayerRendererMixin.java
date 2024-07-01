@@ -1,10 +1,13 @@
 package dev.enjarai.trickster.mixin.client;
 
 
+import dev.enjarai.trickster.cca.ModCumponents;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.render.SpellCircleRenderer;
+import dev.enjarai.trickster.screen.ScrollAndQuillScreen;
 import dev.enjarai.trickster.spell.SpellPart;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.PlayerEntityRenderer;
@@ -58,13 +61,14 @@ public abstract class PlayerRendererMixin {
         var offHandSpell = offHandStack.get(ModComponents.SPELL);
 
         // TODO only appear when scroll is being edited
-
-        if (mainHandStack.isIn(ModItems.SCROLLS) && mainHandSpell != null) {
-            return Optional.of(mainHandSpell.spell());
-        } else if (offHandStack.isIn(ModItems.SCROLLS) && offHandSpell != null) {
-            return Optional.of(offHandSpell.spell());
-        } else {
-            return Optional.empty();
+        if (entity.getComponent(ModCumponents.IS_EDITING_SCROLL).isEditing()) {
+            if (mainHandStack.get(ModComponents.SPELL) != null && mainHandSpell != null) {
+                return Optional.of(mainHandSpell.spell());
+            } else if (mainHandStack.get(ModComponents.SPELL) != null && offHandSpell != null) {
+                return Optional.of(offHandSpell.spell());
+            }
         }
+        return Optional.empty();
+
     }
 }
