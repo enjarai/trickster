@@ -350,7 +350,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         int i = 0;
         for (var part : current.subParts) {
             if (part.isPresent()) {
-                if (!targetIsInner && part.get() == target) {
+                if (targetIsInner ? part.get().glyph == target : part.get() == target) {
                     if (replacement.isPresent()) {
                         current.subParts.set(i, replacement);
                     } else {
