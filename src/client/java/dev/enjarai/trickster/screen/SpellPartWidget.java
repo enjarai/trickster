@@ -278,7 +278,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             }
         } else if (compiled.equals(EXPAND_TO_OUTER_CIRCLE_GLYPH)) {
             if (drawingPart != spellPart) {
-                boolean b = setSubPartInTree(drawingPart, Optional.of(drawingPart), spellPart, true);
+                setSubPartInTree(drawingPart, Optional.of(drawingPart), spellPart, true);
             }
         } else if (compiled.equals(DELETE_CIRCLE_GLYPH)) {
             var firstSubpart = drawingPart.getSubParts().stream().filter(Optional::isPresent).map(Optional::get).findFirst();
