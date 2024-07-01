@@ -28,7 +28,8 @@
 	},
 	"custom": {
 		"cardinal-components": [
-			"trickster:disguise"
+			"trickster:disguise",
+			"trickster:is_editing_scroll"
 		]
 	},
 	"mixins": [

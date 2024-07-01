@@ -11,8 +11,13 @@ public class ModCumponents implements EntityComponentInitializer {
     public static final ComponentKey<DisguiseCumponent> DISGUISE =
             ComponentRegistry.getOrCreate(Trickster.id("disguise"), DisguiseCumponent.class);
 
+    public static final ComponentKey<IsEditingScrollComponent> IS_EDITING_SCROLL =
+            ComponentRegistry.getOrCreate(Trickster.id("is_editing_scroll"), IsEditingScrollComponent.class);
+
     @Override
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
         registry.registerForPlayers(DISGUISE, DisguiseCumponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
+        registry.registerForPlayers(IS_EDITING_SCROLL, IsEditingScrollComponent::new, RespawnCopyStrategy.NEVER_COPY);
+
     }
 }
