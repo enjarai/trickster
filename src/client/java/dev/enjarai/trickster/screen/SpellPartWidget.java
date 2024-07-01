@@ -265,7 +265,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             if (drawingPart == spellPart) {
                 spellPart = newPart;
             } else {
-                setSubPartInTree(drawingPart, Optional.of(newPart), spellPart);
+                setSubPartInTree(drawingPart, Optional.of(newPart), spellPart, false);
             }
         } else if (compiled.equals(CREATE_PARENT_GLYPH_GLYPH)) {
             var newPart = new SpellPart();
@@ -273,7 +273,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             if (drawingPart == spellPart) {
                 spellPart = newPart;
             } else {
-                setSubPartInTree(drawingPart, Optional.of(newPart), spellPart);
+                setSubPartInTree(drawingPart, Optional.of(newPart), spellPart, false);
             }
         } else if (compiled.equals(EXPAND_TO_OUTER_CIRCLE_GLYPH)) {
             //TODO
@@ -282,19 +282,19 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             if (drawingPart == spellPart) {
                 spellPart = firstSubpart.orElse(new SpellPart());
             } else {
-                setSubPartInTree(drawingPart, firstSubpart, spellPart);
+                setSubPartInTree(drawingPart, firstSubpart, spellPart, false);
             }
         } else if (compiled.equals(DELETE_BRANCH_GLYPH)) {
             if (drawingPart == spellPart) {
                 spellPart = new SpellPart();
             } else {
-                setSubPartInTree(drawingPart, Optional.empty(), spellPart);
+                setSubPartInTree(drawingPart, Optional.empty(), spellPart, false);
             }
         } else if (compiled.equals(COPY_OFFHAND_LITERAL)) {
             if (drawingPart == spellPart) {
                 spellPart = otherHandSpellSupplier.get().deepClone();
             } else {
-                setSubPartInTree(drawingPart, Optional.of(otherHandSpellSupplier.get().deepClone()), spellPart);
+                setSubPartInTree(drawingPart, Optional.of(otherHandSpellSupplier.get().deepClone()), spellPart, false);
             }
         } else if (compiled.equals(COPY_OFFHAND_LITERAL_INNER)) {
             drawingPart.glyph = otherHandSpellSupplier.get().deepClone();
@@ -328,9 +328,9 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         return drawingPart != null;
     }
 
-    protected boolean setSubPartInTree(SpellPart target, Optional<SpellPart> replacement, SpellPart current) {
+    protected boolean setSubPartInTree(SpellPart target, Optional<SpellPart> replacement, SpellPart current, boolean targetIsInner) {
         if (current.glyph instanceof SpellPart part) {
-            if (part == target) {
+            if (targetIsInner ? part.glyph == target : part == target) {
                 if (replacement.isPresent()) {
                     current.glyph = replacement.get();
                 } else {
@@ -339,7 +339,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
                 return true;
             }
 
-            if (setSubPartInTree(target, replacement, part)) {
+            if (setSubPartInTree(target, replacement, part, targetIsInner)) {
                 return true;
             }
         }
@@ -347,7 +347,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         int i = 0;
         for (var part : current.subParts) {
             if (part.isPresent()) {
-                if (part.get() == target) {
+                if (!targetIsInner && part.get() == target) {
                     if (replacement.isPresent()) {
                         current.subParts.set(i, replacement);
                     } else {
@@ -356,7 +356,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
                     return true;
                 }
 
-                if (setSubPartInTree(target, replacement, part.get())) {
+                if (setSubPartInTree(target, replacement, part.get(), targetIsInner)) {
                     return true;
                 }
             }
