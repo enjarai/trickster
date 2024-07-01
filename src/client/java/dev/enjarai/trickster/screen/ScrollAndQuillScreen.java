@@ -49,6 +49,23 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
     }
 
     @Override
+    public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+        return super.mouseDragged(mouseX, mouseY, 0, deltaX, deltaY);
+    }
+
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        this.setDragging(true);
+        return super.mouseClicked(mouseX, mouseY, button);
+    }
+
+    @Override
+    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+        if (this.isDragging()) this.setDragging(false);
+        return super.mouseReleased(mouseX, mouseY, button);
+    }
+
+    @Override
     public ScrollAndQuillScreenHandler getScreenHandler() {
         return handler;
     }

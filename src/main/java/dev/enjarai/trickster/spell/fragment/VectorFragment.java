@@ -10,6 +10,7 @@ import dev.enjarai.trickster.spell.tricks.blunder.IncompatibleTypesBlunder;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
 
@@ -115,6 +116,10 @@ public record VectorFragment(Vector3dc vector) implements Fragment, AddableFragm
     }
 
     public static VectorFragment of(Vec3d pos) {
+        return new VectorFragment(new Vector3d(pos.getX(), pos.getY(), pos.getZ()));
+    }
+
+    public static VectorFragment of(Vec3i pos) {
         return new VectorFragment(new Vector3d(pos.getX(), pos.getY(), pos.getZ()));
     }
 

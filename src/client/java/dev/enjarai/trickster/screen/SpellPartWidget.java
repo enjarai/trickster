@@ -37,6 +37,8 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     private double amountDragged;
 
     private boolean isMutable = true;
+    private boolean drawToggle = true; //TODO: I (Aurora) added this to toggle between click-and-hold drawing and click-toggle drawing,
+                                       //TODO: to be toggleable once there is a config
 
     private Consumer<SpellPart> updateListener;
     private Supplier<SpellPart> otherHandSpellSupplier;
@@ -135,23 +137,31 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             y += deltaY;
 
             amountDragged += Math.abs(deltaX) + Math.abs(deltaY);
-
             return true;
         }
+
         return false;
     }
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (isMutable || isDrawing()) {
-            // We need to return true on the mouse down event to make sure the screen knows if we're on a clickable node
-            if (propagateMouseEvent(spellPart, (float) x, (float) y, (float) size, 0, mouseX, mouseY,
-                    (part, x, y, size) -> true)) {
-                return true;
+            if (!drawToggle && button == 0 && !isDrawing()) {
+                if (propagateMouseEvent(spellPart, (float) x, (float) y, (float) size, 0, mouseX, mouseY,
+                        (part, x, y, size) -> selectPattern(part, x, y, size, mouseX, mouseY))) {
+                    return true;
+                }
+            } else {
+                // We need to return true on the mouse down event to make sure the screen knows if we're on a clickable node
+                if (propagateMouseEvent(spellPart, (float) x, (float) y, (float) size, 0, mouseX, mouseY,
+                        (part, x, y, size) -> true)) {
+                    return true;
+                }
             }
 
             return true;
         }
+
         return false;
     }
 
@@ -160,11 +170,12 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         if (isMutable || isDrawing()) {
             var dragged = amountDragged;
             amountDragged = 0;
+
             if (dragged > 5) {
                 return false;
             }
 
-            if (button == 0 && !isDrawing()) {
+            if (drawToggle && button == 0 && !isDrawing()) {
                 if (propagateMouseEvent(spellPart, (float) x, (float) y, (float) size, 0, mouseX, mouseY,
                         (part, x, y, size) -> selectPattern(part, x, y, size, mouseX, mouseY))) {
                     return true;

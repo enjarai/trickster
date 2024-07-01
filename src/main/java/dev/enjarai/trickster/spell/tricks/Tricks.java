@@ -63,7 +63,8 @@ public class Tricks {
     public static final GetFacingTrick GET_FACING = register("get_facing", new GetFacingTrick());
     public static final HeightReflectionTrick HEIGHT_REFLECTION = register("height_reflection", new HeightReflectionTrick());
     public static final SneakingReflectionTrick SNEAKING_REFLECTION = register("sneaking_reflection", new SneakingReflectionTrick());
-    public static final RaycastTrick RAYCAST = register("raycast", new RaycastTrick());
+    public static final RaycastBlockPosTrick RAYCAST = register("raycast", new RaycastBlockPosTrick());
+    public static final RaycastBlockSideTrick RAYCAST_SIDE = register("raycast_side", new RaycastBlockSideTrick());
     public static final RaycastEntityTrick RAYCAST_ENTITY = register("raycast_entity", new RaycastEntityTrick());
     public static final AddVelocityTrick ADD_VELOCITY = register("add_velocity", new AddVelocityTrick());
     public static final PolymorphTrick POLYMORPH = register("polymorph", new PolymorphTrick());
