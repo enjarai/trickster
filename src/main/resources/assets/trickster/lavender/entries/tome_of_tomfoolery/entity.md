@@ -50,7 +50,7 @@ Given an entity, returns whether the entity is crouching.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:raycast,title=Scout's Distortion|>
+<|glyph@trickster:templates|trick-id=trickster:raycast,title=Archer's Distortion|>
 
 entity -> vector
 
@@ -60,7 +60,17 @@ Given an entity, returns the block the entity is looking at.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:raycast_entity,title=Archer's Distortion|>
+<|glyph@trickster:templates|trick-id=trickster:raycast_side,title=Architect's Distortion|>
+
+entity -> vector
+
+---
+
+Given an entity, returns a vector representing the side of the block the entity is looking at.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:raycast_entity,title=Scout's Distortion|>
 
 entity -> entity
 
