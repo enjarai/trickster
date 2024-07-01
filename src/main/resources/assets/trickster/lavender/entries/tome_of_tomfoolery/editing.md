@@ -67,24 +67,43 @@ See [Spell Fragments](^trickster:functions).
 
 ;;;;;
 
-<|pattern@trickster:templates|pattern=0\,4\,8,title=Absence Revision|>
+<|pattern@trickster:templates|pattern=3\,0\,4\,8,title=Split Revision|>
 
 {gray}(Scribing pattern){}
 
 ---
 
-Removes the circle it is drawn in, and any attached subcircles, 
-so long as that circle is not the root node.
+Replaces the circle it is drawn in with a new circle, with the old circle as a subcircle.
 
 ;;;;;
 
-<|pattern@trickster:templates|pattern=0\,4\,8\,5\,2\,1\,0\,3\,6\,7\,8,title=Housekeeping Revision|>
+<|pattern@trickster:templates|pattern=1\,0\,4\,8,title=Growth Revision|>
 
 {gray}(Scribing pattern){}
 
 ---
 
-Removes any empty subcircle slots around a circle that may be left over from removed subcircles.
+Nests the circle it is drawn in inside another circle as its inner circle.
+
+;;;;;
+
+<|pattern@trickster:templates|pattern=0\,4\,8,title=Grafting Revision|>
+
+{gray}(Scribing pattern){}
+
+---
+
+Removes the circle it is drawn in. Will Replace it with the original circle's first subcircle if available.
+
+;;;;;
+
+<|pattern@trickster:templates|pattern=0\,4\,8\,5\,2\,1\,0\,3\,6\,7\,8,title=Pruning Revision|>
+
+{gray}(Scribing pattern){}
+
+---
+
+Removes the circle it is drawn in and any attached subcircles.
 
 ;;;;;
 

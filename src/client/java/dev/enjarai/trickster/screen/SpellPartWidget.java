@@ -22,8 +22,10 @@ import static dev.enjarai.trickster.render.SpellCircleRenderer.*;
 public class SpellPartWidget extends AbstractParentElement implements Drawable, Selectable {
     public static final Pattern CREATE_SUBCIRCLE_GLYPH = Pattern.of(0, 4, 8, 7);
     public static final Pattern CREATE_GLYPH_CIRCLE_GLYPH = Pattern.of(0, 4, 8, 5);
+    public static final Pattern CREATE_PARENT_GLYPH = Pattern.of(3, 0, 4, 8);
+    public static final Pattern CREATE_PARENT_GLYPH_GLYPH = Pattern.of(1, 0, 4, 8);
     public static final Pattern DELETE_CIRCLE_GLYPH = Pattern.of(0, 4, 8);
-    public static final Pattern CLEAR_DISABLED_GLYPH = Pattern.of(0, 4, 8, 5, 2, 1, 0, 3, 6, 7, 8);
+    public static final Pattern DELETE_BRANCH_GLYPH = Pattern.of(0, 4, 8, 5, 2, 1, 0, 3, 6, 7, 8);
     public static final Pattern COPY_OFFHAND_LITERAL = Pattern.of(4, 0, 1, 4, 2, 1);
     public static final Pattern COPY_OFFHAND_LITERAL_INNER = Pattern.of(1, 2, 4, 1, 0, 4, 7);
     public static final Pattern COPY_OFFHAND_EXECUTE = Pattern.of(4, 3, 0, 4, 5, 2, 4, 1);
@@ -256,10 +258,35 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             drawingPart.subParts.add(Optional.of(new SpellPart()));
         } else if (compiled.equals(CREATE_GLYPH_CIRCLE_GLYPH)) {
             drawingPart.glyph = new SpellPart();
+        } else if (compiled.equals(CREATE_PARENT_GLYPH)) {
+            var newPart = new SpellPart();
+            newPart.subParts.add(Optional.of(drawingPart));
+            if (drawingPart == spellPart) {
+                spellPart = newPart;
+            } else {
+                setSubPartInTree(drawingPart, Optional.of(newPart), spellPart);
+            }
+        } else if (compiled.equals(CREATE_PARENT_GLYPH_GLYPH)) {
+            var newPart = new SpellPart();
+            newPart.glyph = drawingPart;
+            if (drawingPart == spellPart) {
+                spellPart = newPart;
+            } else {
+                setSubPartInTree(drawingPart, Optional.of(newPart), spellPart);
+            }
         } else if (compiled.equals(DELETE_CIRCLE_GLYPH)) {
-            setSubPartInTree(drawingPart, Optional.empty(), spellPart);
-        } else if (compiled.equals(CLEAR_DISABLED_GLYPH)) {
-            drawingPart.subParts.removeIf(Optional::isEmpty);
+            var firstSubpart = drawingPart.getSubParts().stream().filter(Optional::isPresent).map(Optional::get).findFirst();
+            if (drawingPart == spellPart) {
+                spellPart = firstSubpart.orElse(new SpellPart());
+            } else {
+                setSubPartInTree(drawingPart, firstSubpart, spellPart);
+            }
+        } else if (compiled.equals(DELETE_BRANCH_GLYPH)) {
+            if (drawingPart == spellPart) {
+                spellPart = new SpellPart();
+            } else {
+                setSubPartInTree(drawingPart, Optional.empty(), spellPart);
+            }
         } else if (compiled.equals(COPY_OFFHAND_LITERAL)) {
             if (drawingPart == spellPart) {
                 spellPart = otherHandSpellSupplier.get().deepClone();
@@ -301,7 +328,11 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     protected boolean setSubPartInTree(SpellPart target, Optional<SpellPart> replacement, SpellPart current) {
         if (current.glyph instanceof SpellPart part) {
             if (part == target) {
-                current.glyph = new PatternGlyph();
+                if (replacement.isPresent()) {
+                    current.glyph = replacement.get();
+                } else {
+                    current.glyph = new PatternGlyph();
+                }
                 return true;
             }
 
@@ -314,7 +345,11 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         for (var part : current.subParts) {
             if (part.isPresent()) {
                 if (part.get() == target) {
-                    current.subParts.set(i, replacement);
+                    if (replacement.isPresent()) {
+                        current.subParts.set(i, replacement);
+                    } else {
+                        current.subParts.remove(i);
+                    }
                     return true;
                 }
 
