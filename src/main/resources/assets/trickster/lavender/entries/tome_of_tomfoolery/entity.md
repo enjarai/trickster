@@ -30,16 +30,6 @@ Given an entity, returns its facing as a vector.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:add_velocity,title=Impulse Ploy|>
-
-entity, vector ->
-
----
-
-Applies the given vector as velocity to the given entity.
-
-;;;;;
-
 <|glyph@trickster:templates|trick-id=trickster:height_reflection,title=Stature Distortion|>
 
 entity -> number
