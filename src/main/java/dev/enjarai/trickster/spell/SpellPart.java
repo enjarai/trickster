@@ -39,8 +39,7 @@ public final class SpellPart implements Fragment {
     }
 
     public SpellPart() {
-        glyph = new PatternGlyph();
-        subParts = new ArrayList<>();
+        this(new PatternGlyph(), new ArrayList<>());
     }
 
     @Override

@@ -24,6 +24,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     public static final Pattern CREATE_GLYPH_CIRCLE_GLYPH = Pattern.of(0, 4, 8, 5);
     public static final Pattern CREATE_PARENT_GLYPH = Pattern.of(3, 0, 4, 8);
     public static final Pattern CREATE_PARENT_GLYPH_GLYPH = Pattern.of(1, 0, 4, 8);
+    public static final Pattern EXPAND_TO_OUTER_CIRCLE_GLYPH = Pattern.of(2, 3, 4, 6);
     public static final Pattern DELETE_CIRCLE_GLYPH = Pattern.of(0, 4, 8);
     public static final Pattern DELETE_BRANCH_GLYPH = Pattern.of(0, 4, 8, 5, 2, 1, 0, 3, 6, 7, 8);
     public static final Pattern COPY_OFFHAND_LITERAL = Pattern.of(4, 0, 1, 4, 2, 1);
@@ -274,6 +275,8 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             } else {
                 setSubPartInTree(drawingPart, Optional.of(newPart), spellPart);
             }
+        } else if (compiled.equals(EXPAND_TO_OUTER_CIRCLE_GLYPH)) {
+            //TODO
         } else if (compiled.equals(DELETE_CIRCLE_GLYPH)) {
             var firstSubpart = drawingPart.getSubParts().stream().filter(Optional::isPresent).map(Optional::get).findFirst();
             if (drawingPart == spellPart) {
