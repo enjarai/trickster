@@ -38,3 +38,13 @@ vector ->
 ---
 
 Conjures a small splash of water at the given position.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:destabilize_block,title=Earthquake Ploy|>
+
+vector ->
+
+---
+
+Makes the target block temporarily affected by gravity as if it were sand.

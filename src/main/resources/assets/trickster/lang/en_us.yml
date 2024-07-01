@@ -74,6 +74,7 @@ trickster:
     swap_block: Ploy of Exchange
     conjure_flower: Floral Ploy
     conjure_water: Aquatic Ploy
+    destabilize_block: Earthquake Ploy
 
   fragment.trickster:
     number: Number
@@ -90,6 +91,7 @@ trickster:
 
   blunder:
     incorrect_fragment: Incorrect argument at index %d. Expected %s, got %s
+    missing_fragment: Missing at index %d, expected %s
 
 item.trickster:
   tome_of_tomfoolery: Tome of Tomfoolery

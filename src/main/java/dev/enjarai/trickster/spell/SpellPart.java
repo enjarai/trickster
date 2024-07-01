@@ -48,12 +48,14 @@ public final class SpellPart implements Fragment {
         if (fragments.isEmpty()) {
             return this;
         } else {
+            ctx.pushStackTrace(-1);
             ctx.pushPartGlyph(fragments.stream()
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .toList());
             var result = run(ctx);
             ctx.popPartGlyph();
+            ctx.popStackTrace();
             return result;
         }
     }
@@ -61,8 +63,12 @@ public final class SpellPart implements Fragment {
     public Fragment run(SpellContext ctx) throws BlunderException {
         var fragments = new ArrayList<Optional<Fragment>>();
 
+        int i = 0;
         for (var part : subParts) {
+            ctx.pushStackTrace(i);
             fragments.add(part.map(p -> p.run(ctx)));
+            ctx.popStackTrace();
+            i++;
         }
 
         var value = glyph.activateAsGlyph(ctx, fragments);
@@ -81,7 +87,7 @@ public final class SpellPart implements Fragment {
         try {
             return Optional.of(run(ctx));
         } catch (BlunderException e) {
-            onError.accept(e.createMessage());
+            onError.accept(e.createMessage().append(" (").append(ctx.formatStackTrace()).append(")"));
         } catch (Exception e) {
             onError.accept(Text.literal("Uncaught exception in spell: " + e.getMessage()));
         }

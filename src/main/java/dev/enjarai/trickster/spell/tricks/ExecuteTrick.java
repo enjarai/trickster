@@ -17,7 +17,9 @@ public class ExecuteTrick extends Trick {
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var executable = expectInput(fragments, FragmentType.SPELL_PART, 0);
         ctx.pushPartGlyph(fragments.subList(1, fragments.size()));
+        ctx.pushStackTrace(-2);
         var result = executable.run(ctx);
+        ctx.popStackTrace();
         ctx.popPartGlyph();
         return result;
     }
