@@ -52,13 +52,13 @@ public class GlyphComponent extends BaseComponent {
                 c.accept(pos.x - dotSize, pos.y + dotSize);
                 c.accept(pos.x + dotSize, pos.y + dotSize);
                 c.accept(pos.x + dotSize, pos.y - dotSize);
-            }, 0, 0, 0, 0, isLinked ? 0.9f : 0.5f, true);
+            }, 0, 0, 0, 0, isLinked ? 0.9f : 0.5f);
         }
 
         for (var line : pattern.entries()) {
             var now = getPatternDotPosition(x + patternSize + 4, y + patternSize + 4, line.p1(), patternSize);
             var last = getPatternDotPosition(x + patternSize + 4, y + patternSize + 4, line.p2(), patternSize);
-            drawGlyphLine(context.getMatrices(), context.getVertexConsumers(), last, now, 1, false, 0, 0.9f, true);
+            drawGlyphLine(context.getMatrices(), context.getVertexConsumers(), last, now, 1, false, 0, 0.9f);
         }
     }
 

@@ -119,7 +119,7 @@ public class SpellCircleRenderer {
             c.accept(lineX + perpendicularVec.x + toCenterVec.x * 0.5f, lineY + perpendicularVec.y + toCenterVec.y * 0.5f);
             c.accept(lineX + perpendicularVec.x - toCenterVec.x, lineY + perpendicularVec.y - toCenterVec.y);
             c.accept(lineX - perpendicularVec.x - toCenterVec.x, lineY - perpendicularVec.y - toCenterVec.y);
-        }, 0, 0.5f, 0.5f, 1, alpha * 0.2f, inUI);
+        }, 0, 0.5f, 0.5f, 1, alpha * 0.2f);
 
 //        drawTexturedQuad(
 //                context, CIRCLE_TEXTURE_HALF,
@@ -138,10 +138,12 @@ public class SpellCircleRenderer {
             drawSide(matrices, vertexConsumers, parent, x, y, size, glyph);
             matrices.pop();
 
-            matrices.push();
-            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
-            drawSide(matrices, vertexConsumers, parent, -x, y, size, glyph);
-            matrices.pop();
+            if (!inUI) {
+                matrices.push();
+                matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
+                drawSide(matrices, vertexConsumers, parent, -x, y, size, glyph);
+                matrices.pop();
+            }
         }
     }
 
@@ -178,21 +180,21 @@ public class SpellCircleRenderer {
                     c.accept(pos.x - dotSize, pos.y + dotSize);
                     c.accept(pos.x + dotSize, pos.y + dotSize);
                     c.accept(pos.x + dotSize, pos.y - dotSize);
-                }, 0, isDrawing && isLinked ? 0.5f : 1, isDrawing && isLinked ? 0.5f : 1, 1, 0.5f, inUI);
+                }, 0, isDrawing && isLinked ? 0.5f : 1, isDrawing && isLinked ? 0.5f : 1, 1, 0.5f);
             }
 
             Vector2f last = null;
             for (var b : patternList) {
                 var now = getPatternDotPosition(x, y, b, patternSize);
                 if (last != null) {
-                    drawGlyphLine(matrices, vertexConsumers, last, now, pixelSize, isDrawing, 1, 0.5f, inUI);
+                    drawGlyphLine(matrices, vertexConsumers, last, now, pixelSize, isDrawing, 1, 0.5f);
                 }
                 last = now;
             }
 
             if (inUI && isDrawing && last != null) {
                 var now = new Vector2f((float) mouseX, (float) mouseY);
-                drawGlyphLine(matrices, vertexConsumers, last, now, pixelSize, true, 1, 0.5f, inUI);
+                drawGlyphLine(matrices, vertexConsumers, last, now, pixelSize, true, 1, 0.5f);
             }
         } else {
             var textRenderer = MinecraftClient.getInstance().textRenderer;
@@ -218,7 +220,7 @@ public class SpellCircleRenderer {
         }
     }
 
-    public static void drawGlyphLine(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Vector2f last, Vector2f now, float pixelSize, boolean isDrawing, float tone, float opacity, boolean inUI) {
+    public static void drawGlyphLine(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Vector2f last, Vector2f now, float pixelSize, boolean isDrawing, float tone, float opacity) {
         var parallelVec = new Vector2f(last.y - now.y, now.x - last.x).normalize().mul(pixelSize / 2);
         var directionVec = new Vector2f(last.x - now.x, last.y - now.y).normalize().mul(pixelSize * 3);
 
@@ -227,7 +229,7 @@ public class SpellCircleRenderer {
             c.accept(last.x + parallelVec.x - directionVec.x, last.y + parallelVec.y - directionVec.y);
             c.accept(now.x + parallelVec.x + directionVec.x, now.y + parallelVec.y + directionVec.y);
             c.accept(now.x - parallelVec.x + directionVec.x, now.y - parallelVec.y + directionVec.y);
-        }, 0, isDrawing ? 0.5f : tone, isDrawing ? 0.5f : tone, tone, opacity, inUI);
+        }, 0, isDrawing ? 0.5f : tone, isDrawing ? 0.5f : tone, tone, opacity);
     }
 
     public static Vector2f getPatternDotPosition(float x, float y, int i, float size) {
@@ -285,14 +287,9 @@ public class SpellCircleRenderer {
         }
     }
 
-    public static void drawFlatPolygon(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Consumer<BiConsumer<Float, Float>> vertexProvider, float z, float r, float g, float b, float alpha, boolean inUI) {
+    public static void drawFlatPolygon(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Consumer<BiConsumer<Float, Float>> vertexProvider, float z, float r, float g, float b, float alpha) {
         Matrix4f matrix4f = matrices.peek().getPositionMatrix();
         VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderLayer.getGui());
         vertexProvider.accept((x, y) -> vertexConsumer.vertex(matrix4f, x, y, z).color(r, g, b, alpha));
-
-        if (!inUI) {
-//            vertexProvider.accept((x, y) -> vertexConsumer
-//                    .vertex(matrix4f.scale(1, 1, -1, new Matrix4f()), x, y, z).color(r, g, b, alpha));
-        }
     }
 }
