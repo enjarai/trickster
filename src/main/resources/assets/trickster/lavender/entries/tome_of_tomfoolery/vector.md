@@ -44,11 +44,13 @@ Returns the Z component of the given vector.
 
 <|glyph@trickster:templates|trick-id=trickster:merge_vector,title=Absorption Distortion|>
 
-number, number, number -> vector
+number, number, number |
+
+number[] -> vector
 
 ---
 
-Merges three input numbers into a vector.
+Merges three input numbers into a vector. Inputs may be provided by a list.
 
 ;;;;;
 
