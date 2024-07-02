@@ -10,7 +10,6 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -310,8 +309,10 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             toBeReplaced = drawingPart;
             initializeReplace.run();
             eraseGlyph = true;
-        } else if (patternSize > 1) {
-            drawingPart.glyph = new PatternGlyph(compiled, drawingPattern);
+        } else {
+            if (patternSize > 1) {
+                drawingPart.glyph = new PatternGlyph(compiled, drawingPattern);
+            }
             eraseGlyph = true;
         }
 
