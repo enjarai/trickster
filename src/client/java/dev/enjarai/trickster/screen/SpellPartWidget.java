@@ -308,7 +308,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         } else if (compiled.equals(COPY_OFFHAND_EXECUTE)) {
             toBeReplaced = drawingPart;
             initializeReplace.run();
-        } else if (patternSize > 1) {
+        } else {
             drawingPart.glyph = new PatternGlyph(compiled, drawingPattern);
         }
 
