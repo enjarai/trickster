@@ -35,7 +35,7 @@ providing it with all other passed in fragments as arguments.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:clojure,title=Clojure Stratagem|>
+<|glyph@trickster:templates|trick-id=trickster:closure,title=Closure Stratagem|>
 
 spell, [spell, any]... -> spell
 

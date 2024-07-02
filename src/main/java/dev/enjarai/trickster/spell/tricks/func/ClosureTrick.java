@@ -14,8 +14,8 @@ import net.minecraft.text.Text;
 import java.util.HashMap;
 import java.util.List;
 
-public class ClojureTrick extends Trick {
-    public ClojureTrick() {
+public class ClosureTrick extends Trick {
+    public ClosureTrick() {
         super(Pattern.of(5, 8, 7, 6, 3, 0, 1));
     }
 

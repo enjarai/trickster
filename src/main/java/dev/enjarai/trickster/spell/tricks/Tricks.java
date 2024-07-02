@@ -3,7 +3,7 @@ package dev.enjarai.trickster.spell.tricks;
 import com.mojang.serialization.Lifecycle;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Pattern;
-import dev.enjarai.trickster.spell.tricks.func.ClojureTrick;
+import dev.enjarai.trickster.spell.tricks.func.ClosureTrick;
 import dev.enjarai.trickster.spell.tricks.func.ExecuteTrick;
 import dev.enjarai.trickster.spell.tricks.func.LoadArgumentTrick;
 import dev.enjarai.trickster.spell.tricks.basic.*;
@@ -39,7 +39,7 @@ public class Tricks {
 
     // Functions
     public static final ExecuteTrick EXECUTE = register("execute", new ExecuteTrick());
-    public static final ClojureTrick CLOJURE = register("clojure", new ClojureTrick());
+    public static final ClosureTrick CLOSURE = register("closure", new ClosureTrick());
     public static final LoadArgumentTrick LOAD_ARGUMENT_1 = register("load_argument_1", new LoadArgumentTrick(Pattern.of(4, 1), 0));
     public static final LoadArgumentTrick LOAD_ARGUMENT_2 = register("load_argument_2", new LoadArgumentTrick(Pattern.of(4, 2), 1));
     public static final LoadArgumentTrick LOAD_ARGUMENT_3 = register("load_argument_3", new LoadArgumentTrick(Pattern.of(4, 5), 2));
