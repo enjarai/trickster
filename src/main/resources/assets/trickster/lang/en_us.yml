@@ -54,6 +54,7 @@ trickster:
     delete_spell_circle: Cancellation Ploy
 
     execute: Grand Stratagem
+    clojure: Clojure Stratagem
     load_argument_1: Primary Delusion
     load_argument_2: Secondary Delusion
     load_argument_3: Tertiary Delusion

@@ -35,8 +35,18 @@ providing it with all other passed in fragments as arguments.
 
 ;;;;;
 
-<|page-title@lavender:book_components|title=Note: Arguments|>
-Fragments can be passed into executed spell fragments as arguments.
+<|glyph@trickster:templates|trick-id=trickster:clojure,title=Clojure Stratagem|>
+
+spell, [spell, any]... -> spell
+
+---
+
+Replaces any occurrence of any of the latter spell's patterns inside the first spell 
+with the fragment immediately following them.
+
+;;;;;
+
+<|page-title@lavender:book_components|title=Note: Arguments|>Fragments can be passed into executed spell fragments as arguments.
 
 
 These fragments can be retrieved within the spell fragment using a set of specific glyphs.

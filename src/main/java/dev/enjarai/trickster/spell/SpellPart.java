@@ -13,10 +13,7 @@ import io.wispforest.endec.Endec;
 import io.wispforest.owo.serialization.CodecUtils;
 import net.minecraft.text.Text;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -105,6 +102,19 @@ public final class SpellPart implements Fragment {
         } else {
             if (glyph.isEphemeral()) {
                 glyph = new ZalgoFragment();
+            }
+        }
+    }
+
+    public void buildClosure(Map<Pattern, Fragment> replacements) {
+        subParts.forEach(part -> part.ifPresent(p -> p.buildClosure(replacements)));
+
+        if (glyph instanceof SpellPart spellPart) {
+            spellPart.buildClosure(replacements);
+        } else if (glyph instanceof PatternGlyph patternGlyph) {
+            var replacement = replacements.get(patternGlyph.pattern());
+            if (replacement != null) {
+                glyph = replacement;
             }
         }
     }
