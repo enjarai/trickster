@@ -10,7 +10,6 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +23,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     public static final Pattern CREATE_GLYPH_CIRCLE_GLYPH = Pattern.of(0, 4, 8, 5);
     public static final Pattern CREATE_PARENT_GLYPH = Pattern.of(3, 0, 4, 8);
     public static final Pattern CREATE_PARENT_GLYPH_GLYPH = Pattern.of(1, 0, 4, 8);
+    public static final Pattern EXPAND_TO_OUTER_CIRCLE_GLYPH = Pattern.of(1, 2, 4, 6);
     public static final Pattern DELETE_CIRCLE_GLYPH = Pattern.of(0, 4, 8);
     public static final Pattern DELETE_BRANCH_GLYPH = Pattern.of(0, 4, 8, 5, 2, 1, 0, 3, 6, 7, 8);
     public static final Pattern COPY_OFFHAND_LITERAL = Pattern.of(4, 0, 1, 4, 2, 1);
@@ -49,6 +49,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     private Runnable initializeReplace;
 
     private SpellPart drawingPart;
+    private Fragment oldGlyph;
     private List<Byte> drawingPattern;
 
     private final SpellCircleRenderer renderer;
@@ -218,6 +219,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             if (isInsideHitbox(pos, pixelSize, mouseX, mouseY)) {
                 if (drawingPart == null) {
                     drawingPart = part;
+                    oldGlyph = part.glyph;
                     part.glyph = new PatternGlyph(List.of());
                     drawingPattern = new ArrayList<>();
                 }
@@ -253,6 +255,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     protected void stopDrawing() {
         var compiled = Pattern.from(drawingPattern);
         var patternSize = drawingPattern.size();
+        var tryReset = true;
 
         if (compiled.equals(CREATE_SUBCIRCLE_GLYPH)) {
             drawingPart.subParts.add(Optional.of(new SpellPart()));
@@ -273,6 +276,14 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
                 spellPart = newPart;
             } else {
                 setSubPartInTree(drawingPart, Optional.of(newPart), spellPart, false);
+            }
+        } else if (compiled.equals(EXPAND_TO_OUTER_CIRCLE_GLYPH)) {
+            if (drawingPart != spellPart) {
+                if (spellPart.glyph == drawingPart) {
+                    spellPart = drawingPart;
+                } else {
+                    setSubPartInTree(drawingPart, Optional.of(drawingPart), spellPart, true);
+                }
             }
         } else if (compiled.equals(DELETE_CIRCLE_GLYPH)) {
             var firstSubpart = drawingPart.getSubParts().stream().filter(Optional::isPresent).map(Optional::get).findFirst();
@@ -298,8 +309,13 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         } else if (compiled.equals(COPY_OFFHAND_EXECUTE)) {
             toBeReplaced = drawingPart;
             initializeReplace.run();
-        } else if (patternSize > 1) {
+        } else {
             drawingPart.glyph = new PatternGlyph(compiled, drawingPattern);
+            tryReset = false;
+        }
+
+        if (tryReset && drawingPart.glyph instanceof PatternGlyph patternGlyph && patternGlyph.pattern().isEmpty()) {
+            drawingPart.glyph = oldGlyph;
         }
 
         drawingPart = null;

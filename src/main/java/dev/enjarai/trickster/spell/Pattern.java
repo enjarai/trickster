@@ -35,6 +35,10 @@ public record Pattern(List<PatternEntry> entries) {
         return from(Stream.of(ArrayUtils.toObject(pattern)).map(Integer::byteValue).toList());
     }
 
+    public boolean isEmpty() {
+        return entries().isEmpty();
+    }
+
     public record PatternEntry(byte p1, byte p2) implements Comparable<PatternEntry> {
         public static final Codec<PatternEntry> CODEC = Codec.BYTE.listOf(2, 2)
                 .xmap(list -> new PatternEntry(list.getFirst(), list.getLast()), entry -> List.of(entry.p1, entry.p2));
