@@ -14,6 +14,8 @@ import dev.enjarai.trickster.spell.tricks.event.CreateSpellCircleTrick;
 import dev.enjarai.trickster.spell.tricks.event.DeleteSpellCircleTrick;
 import dev.enjarai.trickster.spell.tricks.list.*;
 import dev.enjarai.trickster.spell.tricks.math.*;
+import dev.enjarai.trickster.spell.tricks.tree.LocateGlyphTrick;
+import dev.enjarai.trickster.spell.tricks.tree.LocateGlyphsTrick;
 import dev.enjarai.trickster.spell.tricks.vector.*;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -111,6 +113,11 @@ public class Tricks {
     public static final ListInsertTrick LIST_INSERT = register("list_insert", new ListInsertTrick());
     public static final ListRemoveElementTrick LIST_REMOVE_ELEMENT = register("list_remove_element", new ListRemoveElementTrick());
     public static final ListRemoveTrick LIST_REMOVE = register("list_remove", new ListRemoveTrick());
+
+    // Tree
+    public static final LocateGlyphTrick LOCATE_GLYPH = register("locate_glyph", new LocateGlyphTrick());
+    public static final LocateGlyphsTrick LOCATE_GLYPHS = register("locate_glyphs", new LocateGlyphsTrick());
+
 
     // Events
     public static final CreateSpellCircleTrick CREATE_SPELL_CIRCLE = register("create_spell_circle", new CreateSpellCircleTrick());

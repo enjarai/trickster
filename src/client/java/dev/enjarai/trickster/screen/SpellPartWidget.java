@@ -267,7 +267,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             if (drawingPart == spellPart) {
                 spellPart = newPart;
             } else {
-                setSubPartInTree(drawingPart, Optional.of(newPart), spellPart, false);
+                drawingPart.setSubPartInTree(Optional.of(newPart), spellPart, false);
             }
         } else if (compiled.equals(CREATE_PARENT_GLYPH_GLYPH)) {
             var newPart = new SpellPart();
@@ -275,14 +275,14 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             if (drawingPart == spellPart) {
                 spellPart = newPart;
             } else {
-                setSubPartInTree(drawingPart, Optional.of(newPart), spellPart, false);
+                drawingPart.setSubPartInTree(Optional.of(newPart), spellPart, false);
             }
         } else if (compiled.equals(EXPAND_TO_OUTER_CIRCLE_GLYPH)) {
             if (drawingPart != spellPart) {
                 if (spellPart.glyph == drawingPart) {
                     spellPart = drawingPart;
                 } else {
-                    setSubPartInTree(drawingPart, Optional.of(drawingPart), spellPart, true);
+                    drawingPart.setSubPartInTree(Optional.of(drawingPart), spellPart, true);
                 }
             }
         } else if (compiled.equals(DELETE_CIRCLE_GLYPH)) {
@@ -290,19 +290,19 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             if (drawingPart == spellPart) {
                 spellPart = firstSubpart.orElse(new SpellPart());
             } else {
-                setSubPartInTree(drawingPart, firstSubpart, spellPart, false);
+                drawingPart.setSubPartInTree(firstSubpart, spellPart, false);
             }
         } else if (compiled.equals(DELETE_BRANCH_GLYPH)) {
             if (drawingPart == spellPart) {
                 spellPart = new SpellPart();
             } else {
-                setSubPartInTree(drawingPart, Optional.empty(), spellPart, false);
+                drawingPart.setSubPartInTree(Optional.empty(), spellPart, false);
             }
         } else if (compiled.equals(COPY_OFFHAND_LITERAL)) {
             if (drawingPart == spellPart) {
                 spellPart = otherHandSpellSupplier.get().deepClone();
             } else {
-                setSubPartInTree(drawingPart, Optional.of(otherHandSpellSupplier.get().deepClone()), spellPart, false);
+                drawingPart.setSubPartInTree(Optional.of(otherHandSpellSupplier.get().deepClone()), spellPart, false);
             }
         } else if (compiled.equals(COPY_OFFHAND_LITERAL_INNER)) {
             drawingPart.glyph = otherHandSpellSupplier.get().deepClone();
@@ -339,44 +339,6 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
     public boolean isDrawing() {
         return drawingPart != null;
-    }
-
-    protected boolean setSubPartInTree(SpellPart target, Optional<SpellPart> replacement, SpellPart current, boolean targetIsInner) {
-        if (current.glyph instanceof SpellPart part) {
-            if (targetIsInner ? part.glyph == target : part == target) {
-                if (replacement.isPresent()) {
-                    current.glyph = replacement.get();
-                } else {
-                    current.glyph = new PatternGlyph();
-                }
-                return true;
-            }
-
-            if (setSubPartInTree(target, replacement, part, targetIsInner)) {
-                return true;
-            }
-        }
-
-        int i = 0;
-        for (var part : current.subParts) {
-            if (part.isPresent()) {
-                if (targetIsInner ? part.get().glyph == target : part.get() == target) {
-                    if (replacement.isPresent()) {
-                        current.subParts.set(i, replacement);
-                    } else {
-                        current.subParts.remove(i);
-                    }
-                    return true;
-                }
-
-                if (setSubPartInTree(target, replacement, part.get(), targetIsInner)) {
-                    return true;
-                }
-            }
-            i++;
-        }
-
-        return false;
     }
 
     protected static boolean hasOverlappingLines(List<Byte> pattern, byte p1, byte p2) {
