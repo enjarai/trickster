@@ -31,10 +31,12 @@ public final class SpellPart implements Fragment {
     public static final Endec<SpellPart> ENDEC = CodecUtils.toEndec(CODEC);
 
     public Fragment glyph;
+    public Fragment oldGlyph;
     public List<Optional<SpellPart>> subParts;
 
     public SpellPart(Fragment glyph, List<Optional<SpellPart>> subParts) {
         this.glyph = glyph;
+        this.oldGlyph = glyph;
         this.subParts = new ArrayList<>(subParts);
     }
 
