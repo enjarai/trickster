@@ -100,6 +100,7 @@ public class Tricks {
 
     // List
     public static final ListAddTrick LIST_ADD = register("list_add", new ListAddTrick());
+    public static final ListAddRangeTrick LIST_ADD_RANGE = register("list_add_range", new ListAddRangeTrick());
     public static final ListCreateTrick LIST_CREATE = register("list_create", new ListCreateTrick());
     public static final ListGetTrick LIST_GET = register("list_get", new ListGetTrick());
     public static final ListIndexOfTrick LIST_INDEX_OF = register("list_index_of", new ListIndexOfTrick());

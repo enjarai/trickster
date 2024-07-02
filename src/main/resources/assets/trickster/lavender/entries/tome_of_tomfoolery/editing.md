@@ -87,6 +87,16 @@ Nests the circle it is drawn in inside another circle as its inner circle.
 
 ;;;;;
 
+<|pattern@trickster:templates|pattern=1\,2\,4\,6,title=Ascension Revision|>
+
+{gray}(Scribing pattern){}
+
+---
+
+Expands the circle it is drawn in to replace its parent circle. 
+
+;;;;;
+
 <|pattern@trickster:templates|pattern=0\,4\,8,title=Grafting Revision|>
 
 {gray}(Scribing pattern){}
