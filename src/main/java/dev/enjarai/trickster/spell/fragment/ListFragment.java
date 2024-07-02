@@ -1,7 +1,11 @@
 package dev.enjarai.trickster.spell.fragment;
 
+import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.MapCodec;
 import dev.enjarai.trickster.spell.Fragment;
+import dev.enjarai.trickster.spell.tricks.Tricks;
+import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
+import dev.enjarai.trickster.spell.tricks.blunder.IncompatibleTypesBlunder;
 import net.minecraft.text.Text;
 
 import java.util.List;
@@ -34,5 +38,9 @@ public record ListFragment(List<Fragment> fragments) implements Fragment {
     @Override
     public BooleanFragment asBoolean() {
         return new BooleanFragment(!fragments.isEmpty());
+    }
+
+    public ListFragment addRange(ListFragment other) throws BlunderException {
+        return new ListFragment(ImmutableList.<Fragment>builder().addAll(fragments).addAll(other.fragments).build());
     }
 }
