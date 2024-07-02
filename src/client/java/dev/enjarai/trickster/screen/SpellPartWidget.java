@@ -255,6 +255,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     protected void stopDrawing() {
         var compiled = Pattern.from(drawingPattern);
         var patternSize = drawingPattern.size();
+        var tryReset = true;
 
         if (compiled.equals(CREATE_SUBCIRCLE_GLYPH)) {
             drawingPart.subParts.add(Optional.of(new SpellPart()));
@@ -310,9 +311,10 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             initializeReplace.run();
         } else {
             drawingPart.glyph = new PatternGlyph(compiled, drawingPattern);
+            tryReset = false;
         }
 
-        if (drawingPart.glyph instanceof PatternGlyph patternGlyph && patternGlyph.pattern().isEmpty()) {
+        if (tryReset && drawingPart.glyph instanceof PatternGlyph patternGlyph && patternGlyph.pattern().isEmpty()) {
             drawingPart.glyph = oldGlyph;
         }
 
