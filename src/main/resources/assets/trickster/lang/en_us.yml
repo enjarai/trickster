@@ -89,6 +89,7 @@ trickster:
     zalgo: §kZalgo
     item_type: Item
     block_type: Block
+    integer_list: List of Integers
 
   blunder:
     incorrect_fragment: Incorrect argument at index %d. Expected %s, got %s

@@ -87,4 +87,8 @@ public record NumberFragment(double number) implements Fragment, AddableFragment
         }
         return false;
     }
+
+    public boolean isInteger() {
+        return number - Math.floor(number) == 0;
+    }
 }
