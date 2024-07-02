@@ -279,9 +279,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         } else if (compiled.equals(EXPAND_TO_OUTER_CIRCLE_GLYPH)) {
             if (drawingPart != spellPart) {
                 if (spellPart.glyph == drawingPart) {
-                    spellPart.glyph = drawingPart.glyph;
-                    spellPart.subParts = drawingPart.subParts;
-                    drawingPart = spellPart;
+                    spellPart = drawingPart;
                 } else {
                     setSubPartInTree(drawingPart, Optional.of(drawingPart), spellPart, true);
                 }
@@ -293,30 +291,28 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             } else {
                 setSubPartInTree(drawingPart, firstSubpart, spellPart, false);
             }
-            drawingPart.glyph = oldGlyph;
         } else if (compiled.equals(DELETE_BRANCH_GLYPH)) {
             if (drawingPart == spellPart) {
                 spellPart = new SpellPart();
             } else {
                 setSubPartInTree(drawingPart, Optional.empty(), spellPart, false);
             }
-            drawingPart.glyph = oldGlyph;
         } else if (compiled.equals(COPY_OFFHAND_LITERAL)) {
             if (drawingPart == spellPart) {
                 spellPart = otherHandSpellSupplier.get().deepClone();
             } else {
                 setSubPartInTree(drawingPart, Optional.of(otherHandSpellSupplier.get().deepClone()), spellPart, false);
             }
-            drawingPart.glyph = oldGlyph;
         } else if (compiled.equals(COPY_OFFHAND_LITERAL_INNER)) {
             drawingPart.glyph = otherHandSpellSupplier.get().deepClone();
         } else if (compiled.equals(COPY_OFFHAND_EXECUTE)) {
             toBeReplaced = drawingPart;
             initializeReplace.run();
-            drawingPart.glyph = oldGlyph;
         } else if (patternSize > 1) {
             drawingPart.glyph = new PatternGlyph(compiled, drawingPattern);
-        } else {
+        }
+
+        if (drawingPart.glyph instanceof PatternGlyph patternGlyph && patternGlyph.pattern().isEmpty()) {
             drawingPart.glyph = oldGlyph;
         }
 
@@ -345,16 +341,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
     protected boolean setSubPartInTree(SpellPart target, Optional<SpellPart> replacement, SpellPart current, boolean targetIsInner) {
         if (current.glyph instanceof SpellPart part) {
-            if (targetIsInner && part == target) {
-                if (replacement.isPresent()) {
-                    current.glyph = replacement.get().glyph;
-                    current.subParts = replacement.get().subParts;
-                } else {
-                    current.glyph = new PatternGlyph();
-                    current.subParts = new ArrayList<>();
-                }
-                return true;
-            } else if (targetIsInner ? part.glyph == target : part == target) {
+            if (targetIsInner ? part.glyph == target : part == target) {
                 if (replacement.isPresent()) {
                     current.glyph = replacement.get();
                 } else {
