@@ -15,9 +15,6 @@ import org.lwjgl.glfw.GLFW;
 public class ModKeyBindings {
     public static final KeyBinding TAKE_HAT = new KeyBinding("key.trickster.take_hat", GLFW.GLFW_KEY_G, "trickster");
 
-    private static boolean requireSneakForScrollIntercept = false; //TODO: I (Aurora) added this to disable mouse scroll behaviour override while holding a top hat
-                                                                   //TODO: in the offhand, for players who heavily rely on mouse scroll to select items.
-
     public static void register() {
         KeyBindingHelper.registerKeyBinding(TAKE_HAT);
 
@@ -38,7 +35,7 @@ public class ModKeyBindings {
     public static boolean interceptScroll(float amount) {
         var player = MinecraftClient.getInstance().player;
         if (player != null
-                && (((!requireSneakForScrollIntercept || player.isSneaking())
+                && (((Trickster.CONFIG.topHatInterceptScrolling() || player.isSneaking())
                         && player.getOffHandStack().contains(ModComponents.SELECTED_SLOT))
                     || (player.isSneaking()
                         && player.getMainHandStack().contains(ModComponents.SELECTED_SLOT)))

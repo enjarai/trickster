@@ -34,6 +34,10 @@ repositories {
 		name = "Ladysnake Mods"
 		url = 'https://maven.ladysnake.org/releases'
 	}
+	maven {
+		name "Terraformers Maven"
+		url 'https://maven.terraformersmc.com'
+	}
 }
 
 loom {
@@ -57,7 +61,7 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${property('deps.fabric-api')}"
 
-	modImplementation "io.wispforest:owo-lib:${property('deps.owo-lib')}"
+	annotationProcessor modImplementation("io.wispforest:owo-lib:${property('deps.owo-lib')}")
 	include "io.wispforest:owo-sentinel:${property('deps.owo-lib')}"
 
 	modImplementation "io.wispforest:lavender:${property('deps.lavender')}"
@@ -70,6 +74,8 @@ dependencies {
 
 	include modImplementation("org.ladysnake.cardinal-components-api:cardinal-components-base:${property('deps.cardinal-components-api')}")
 	include modImplementation("org.ladysnake.cardinal-components-api:cardinal-components-entity:${property('deps.cardinal-components-api')}")
+
+	modImplementation "com.terraformersmc:modmenu:${property('deps.modmenu')}"
 }
 
 processResources {
