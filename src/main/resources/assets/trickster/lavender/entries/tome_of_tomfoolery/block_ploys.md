@@ -53,8 +53,18 @@ Makes the target block temporarily affected by gravity as if it were sand.
 
 <|glyph@trickster:templates|trick-id=trickster:disguise_block,title=Shadow Ploy|>
 
-vector, block ->
+vector, block -> boolean
 
 ---
 
-Places a fake version of the given block at the given position. 
+Places a shadow of the given block at the given position and returns whether there was any change.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:dispel_block_disguise,title=Revelation Ploy|>
+
+vector -> boolean
+
+---
+
+Dispels any shadow block at the given position and returns whether there was one initially.

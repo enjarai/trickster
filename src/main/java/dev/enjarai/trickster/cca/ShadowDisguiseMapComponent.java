@@ -62,16 +62,18 @@ public class ShadowDisguiseMapComponent implements AutoSyncedComponent {
         return null;
     }
 
-    public void setFunnyState(BlockPos pos, Block block) {
-        disguises.put(encodePos(pos), block);
-        chunk.setNeedsSaving(true);
-        ModChunkCumponents.SHADOW_DISGUISE_MAP.sync(chunk);
+    public boolean setFunnyState(BlockPos pos, Block block) {
+        if (disguises.put(encodePos(pos), block) != block) {
+            chunk.setNeedsSaving(true);
+            ModChunkCumponents.SHADOW_DISGUISE_MAP.sync(chunk);
+            return true;
+        }
+
+        return false;
     }
 
     public boolean clearFunnyState(BlockPos pos) {
-        var key = encodePos(pos);
-
-        if (disguises.remove(key) != null) {
+        if (disguises.remove(encodePos(pos)) != null) {
             chunk.setNeedsSaving(true);
             ModChunkCumponents.SHADOW_DISGUISE_MAP.sync(chunk);
             return true;
