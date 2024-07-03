@@ -48,3 +48,13 @@ vector ->
 ---
 
 Makes the target block temporarily affected by gravity as if it were sand.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:disguise_block,title=Shadow Ploy|>
+
+vector, block ->
+
+---
+
+Places a fake version of the given block at the given position. 

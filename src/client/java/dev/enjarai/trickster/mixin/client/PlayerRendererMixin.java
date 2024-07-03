@@ -1,6 +1,5 @@
 package dev.enjarai.trickster.mixin.client;
 
-
 import dev.enjarai.trickster.cca.ModCumponents;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;

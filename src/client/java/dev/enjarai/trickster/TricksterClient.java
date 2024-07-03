@@ -7,6 +7,7 @@ import dev.enjarai.trickster.net.MladyPacket;
 import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.particle.ProtectedBlockParticle;
+import dev.enjarai.trickster.render.ShadowBlockEntityRenderer;
 import dev.enjarai.trickster.render.SpellCircleBlockEntityRenderer;
 import dev.enjarai.trickster.screen.ModHandledScreens;
 import dev.enjarai.trickster.screen.ScrollAndQuillScreen;
@@ -16,7 +17,9 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 
 public class TricksterClient implements ClientModInitializer {
@@ -26,6 +29,7 @@ public class TricksterClient implements ClientModInitializer {
 		ModKeyBindings.register();
 
 		BlockEntityRendererFactories.register(ModBlocks.SPELL_CIRCLE_ENTITY, SpellCircleBlockEntityRenderer::new);
+		BlockEntityRendererFactories.register(ModBlocks.SHADOW_ENTITY, ShadowBlockEntityRenderer::new);
 
 		UIParsing.registerFactory(Trickster.id("glyph"), GlyphComponent::parseTrick);
 		UIParsing.registerFactory(Trickster.id("pattern"), GlyphComponent::parseList);

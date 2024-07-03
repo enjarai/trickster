@@ -6,10 +6,7 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import net.minecraft.util.math.Direction;
 import net.minecraft.world.poi.PointOfInterestType;
-
-import java.util.Arrays;
 
 public class ModBlocks {
     public static final SpellCircleBlock SPELL_CIRCLE = new SpellCircleBlock(AbstractBlock.Settings.create()
@@ -22,8 +19,17 @@ public class ModBlocks {
     public static final PointOfInterestType SPELL_CIRCLE_POI =
             PointOfInterestHelper.register(Trickster.id("spell_circle"), 0, 2, SPELL_CIRCLE);
 
+    public static final ShadowBlock SHADOW = new ShadowBlock(AbstractBlock.Settings.create()
+            .noCollision());
+
+    public static final BlockEntityType<ShadowBlockEntity> SHADOW_ENTITY =
+            BlockEntityType.Builder.create(ShadowBlockEntity::new, SHADOW).build(null);
+
     public static void register() {
         Registry.register(Registries.BLOCK, Trickster.id("spell_circle"), SPELL_CIRCLE);
         Registry.register(Registries.BLOCK_ENTITY_TYPE, Trickster.id("spell_circle"), SPELL_CIRCLE_ENTITY);
+
+        Registry.register(Registries.BLOCK, Trickster.id("shadow"), SHADOW);
+        Registry.register(Registries.BLOCK_ENTITY_TYPE, Trickster.id("shadow"), SHADOW_ENTITY);
     }
 }
