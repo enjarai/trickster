@@ -55,8 +55,7 @@ public abstract class PlayerRendererMixin {
         var mainHandSpell = mainHandStack.get(ModComponents.SPELL);
         var offHandSpell = offHandStack.get(ModComponents.SPELL);
 
-        // TODO only appear when scroll is being edited
-        if (entity.getComponent(ModEntityCumponents.IS_EDITING_SCROLL).isEditing()) {
+        if (entity.getComponent(ModCumponents.IS_EDITING_SCROLL).isEditing()) {
             if (mainHandStack.get(ModComponents.SPELL) != null && mainHandSpell != null) {
                 return Optional.of(mainHandSpell.spell());
             } else if (mainHandStack.get(ModComponents.SPELL) != null && offHandSpell != null) {
