@@ -60,7 +60,7 @@ public class Tricks {
     // Caster
     public static final ReflectionTrick REFLECTION = register("reflection", new ReflectionTrick());
     public static final CasterReflection CASTER_REFLECTION = register("caster_reflection", new CasterReflection());
-    public static final CostTrick COST = register("cost", new CostTrick());
+//    public static final CostTrick COST = register("cost", new CostTrick());
 
     // Entity
     public static final GetPositionTrick GET_POSITION = register("get_position", new GetPositionTrick());
@@ -68,11 +68,11 @@ public class Tricks {
     public static final HeightReflectionTrick HEIGHT_REFLECTION = register("height_reflection", new HeightReflectionTrick());
     public static final SneakingReflectionTrick SNEAKING_REFLECTION = register("sneaking_reflection", new SneakingReflectionTrick());
     public static final RaycastBlockPosTrick RAYCAST = register("raycast", new RaycastBlockPosTrick());
-    public static final RaycastBlockSideTrick RAYCAST_SIDE = register("raycast_side", new RaycastBlockSideTrick());
-    public static final RaycastEntityTrick RAYCAST_ENTITY = register("raycast_entity", new RaycastEntityTrick());
-    public static final AddVelocityTrick ADD_VELOCITY = register("add_velocity", new AddVelocityTrick());
-    public static final PolymorphTrick POLYMORPH = register("polymorph", new PolymorphTrick());
-    public static final DispelPolymorphTrick DISPEL_POLYMORPH = register("dispel_polymorph", new DispelPolymorphTrick());
+//    public static final RaycastBlockSideTrick RAYCAST_SIDE = register("raycast_side", new RaycastBlockSideTrick());
+//    public static final RaycastEntityTrick RAYCAST_ENTITY = register("raycast_entity", new RaycastEntityTrick());
+//    public static final AddVelocityTrick ADD_VELOCITY = register("add_velocity", new AddVelocityTrick());
+//    public static final PolymorphTrick POLYMORPH = register("polymorph", new PolymorphTrick());
+//    public static final DispelPolymorphTrick DISPEL_POLYMORPH = register("dispel_polymorph", new DispelPolymorphTrick());
 
     // Math
     public static final AddTrick ADD = register("add", new AddTrick());
@@ -118,10 +118,10 @@ public class Tricks {
 
     // Blocks
     public static final SwapBlockTrick SWAP_BLOCK = register("swap_block", new SwapBlockTrick());
-    public static final ConjureFlowerTrick CONJURE_FLOWER = register("conjure_flower", new ConjureFlowerTrick());
-    public static final ConjureWaterTrick CONJURE_WATER = register("conjure_water", new ConjureWaterTrick());
+//    public static final ConjureFlowerTrick CONJURE_FLOWER = register("conjure_flower", new ConjureFlowerTrick());
+//    public static final ConjureWaterTrick CONJURE_WATER = register("conjure_water", new ConjureWaterTrick());
     public static final CheckBlockTrick CHECK_BLOCK = register("check_block", new CheckBlockTrick());
-    public static final DestabilizeBlockTrick DESTABILIZE_BLOCK = register("destabilize_block", new DestabilizeBlockTrick());
+//    public static final DestabilizeBlockTrick DESTABILIZE_BLOCK = register("destabilize_block", new DestabilizeBlockTrick());
 
     private static <T extends Trick> T register(String path, T trick) {
         return Registry.register(REGISTRY, Trickster.id(path), trick);

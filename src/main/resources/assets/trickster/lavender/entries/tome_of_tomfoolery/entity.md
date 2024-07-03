@@ -58,22 +58,3 @@ entity -> vector
 
 Given an entity, returns the block the entity is looking at.
 
-;;;;;
-
-<|glyph@trickster:templates|trick-id=trickster:raycast_side,title=Architect's Distortion|>
-
-entity -> vector
-
----
-
-Given an entity, returns a vector representing the side of the block the entity is looking at.
-
-;;;;;
-
-<|glyph@trickster:templates|trick-id=trickster:raycast_entity,title=Scout's Distortion|>
-
-entity -> entity
-
----
-
-Given an entity, returns the entity this entity is looking at.
