@@ -70,7 +70,7 @@ public class SpellCircleBlockEntity extends BlockEntity {
     }
 
     public void tick() {
-        if (event == SpellCircleEvent.TICK) {
+        if (!getWorld().isClient && event == SpellCircleEvent.TICK) {
             if (age % 10 == 0) {
                 var iterations = age / 10;
                 callEvent(List.of(new NumberFragment(iterations)));
