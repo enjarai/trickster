@@ -89,23 +89,3 @@ any ->
 
 Stores the supplied value in the caster's Crow Mind, overwriting any value that might already be present.
 
-;;;;;
-
-;;;;;
-
-<|page-title@lavender:book_components|title=Note: Casting Cost|>After receiving multiple complaints at Tomfoolery Inc. HQ about the balance of this mod,
-we've decided to properly implement spell casting costs.
-
-
-However, player freedom and choice is also very important to us.
-As such, this system operates on an opt-in basis.
-
-;;;;;
-
-<|glyph@trickster:templates|trick-id=trickster:cost,title=Cost Ploy|>
-
-->
-
----
-
-Consumes one amethyst shard from the caster's inventory. Will cause a blunder if none are available.
