@@ -2,6 +2,7 @@ package dev.enjarai.trickster;
 
 import dev.enjarai.trickster.block.ModBlocks;
 import dev.enjarai.trickster.net.IsEditingScrollPacket;
+import dev.enjarai.trickster.net.ModClientNetworking;
 import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.particle.ProtectedBlockParticle;
@@ -20,6 +21,7 @@ public class TricksterClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		ModHandledScreens.register();
 		ModKeyBindings.register();
+		ModClientNetworking.register();
 
 		BlockEntityRendererFactories.register(ModBlocks.SPELL_CIRCLE_ENTITY, SpellCircleBlockEntityRenderer::new);
 

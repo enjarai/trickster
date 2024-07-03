@@ -88,5 +88,7 @@ public class ModNetworking {
             var player = access.player();
             player.getComponent(ModEntityCumponents.IS_EDITING_SCROLL).setEditing(packet.isEditing());
         });
+
+        CHANNEL.registerClientboundDeferred(RebuildChunkPacket.class);
     }
 }

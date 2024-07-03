@@ -3,13 +3,14 @@
   "package": "dev.enjarai.trickster.mixin.client",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "ChunkRendererRegionMixin",
     "AbstractClientPlayerEntityMixin",
     "HeldItemRendererMixin",
     "InGameHudMixin",
     "MouseMixin",
     "PlayerRendererMixin",
-    "SillyHairsFeatureRendererMixin"
+    "RenderedChunkMixin",
+    "SillyHairsFeatureRendererMixin",
+    "WorldRendererAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

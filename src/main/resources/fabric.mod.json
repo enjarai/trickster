@@ -23,7 +23,7 @@
 			"dev.enjarai.trickster.TricksterClient"
 		],
 		"cardinal-components-chunk": [
-			"dev.enjarai.trickster.cca.ModChunkComponents"
+          "dev.enjarai.trickster.cca.ModChunkCumponents"
 		],
 		"cardinal-components-entity": [
 			"dev.enjarai.trickster.cca.ModEntityCumponents"

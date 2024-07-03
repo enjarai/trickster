@@ -1,6 +1,8 @@
 package dev.enjarai.trickster.spell.tricks.block;
 
-import dev.enjarai.trickster.cca.ModChunkComponents;
+import dev.enjarai.trickster.cca.ModChunkCumponents;
+import dev.enjarai.trickster.net.ModNetworking;
+import dev.enjarai.trickster.net.RebuildChunkPacket;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
@@ -37,10 +39,10 @@ public class IllusoryBlockTrick extends Trick {
         var chunk = ctx.getWorld().getChunk(blockPos);
 
         if (!(chunk instanceof EmptyChunk)) {
-            var map = ModChunkComponents.SHADOW_DISGUISE_MAP.get(chunk).value(); //TODO: getting cleared?
-            map.putIfAbsent(blockPos, blockType.block());
-            ModChunkComponents.SHADOW_DISGUISE_MAP.sync(chunk);
-            chunk.setNeedsSaving(true);
+            var component = ModChunkCumponents.SHADOW_DISGUISE_MAP.get(chunk);
+            component.setFunnyState(blockPos, blockType.block());
+
+            ModNetworking.CHANNEL.serverHandle(ctx.getWorld(), blockPos).send(new RebuildChunkPacket(blockPos));
         }
 
         return VoidFragment.INSTANCE;
