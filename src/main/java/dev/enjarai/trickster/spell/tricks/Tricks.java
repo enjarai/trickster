@@ -122,7 +122,7 @@ public class Tricks {
     public static final ConjureWaterTrick CONJURE_WATER = register("conjure_water", new ConjureWaterTrick());
     public static final CheckBlockTrick CHECK_BLOCK = register("check_block", new CheckBlockTrick());
     public static final DestabilizeBlockTrick DESTABILIZE_BLOCK = register("destabilize_block", new DestabilizeBlockTrick());
-    public static final IllusoryBlockTrick DISGUISE_BLOCK = register("disguise_block", new IllusoryBlockTrick());
+    public static final DisguiseBlockTrick DISGUISE_BLOCK = register("disguise_block", new DisguiseBlockTrick());
 
     private static <T extends Trick> T register(String path, T trick) {
         return Registry.register(REGISTRY, Trickster.id(path), trick);

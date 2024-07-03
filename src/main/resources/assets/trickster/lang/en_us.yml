@@ -76,6 +76,7 @@ trickster:
     conjure_flower: Floral Ploy
     conjure_water: Aquatic Ploy
     destabilize_block: Earthquake Ploy
+    disguise_block: Shadow Ploy
 
   fragment.trickster:
     number: Number

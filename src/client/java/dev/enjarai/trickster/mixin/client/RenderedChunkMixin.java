@@ -21,7 +21,8 @@ public class RenderedChunkMixin {
     @Shadow @Final
     private WorldChunk chunk;
     @Unique
-    private final Supplier<ShadowDisguiseMapComponent> disguises = Suppliers.memoize(() -> ModChunkCumponents.SHADOW_DISGUISE_MAP.getNullable(chunk));
+    private final Supplier<ShadowDisguiseMapComponent> disguises =
+            Suppliers.memoize(() -> ModChunkCumponents.SHADOW_DISGUISE_MAP.getNullable(chunk));
 
     @Inject(
             method = "getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;",

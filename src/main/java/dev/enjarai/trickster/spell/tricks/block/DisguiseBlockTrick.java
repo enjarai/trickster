@@ -3,12 +3,16 @@ package dev.enjarai.trickster.spell.tricks.block;
 import dev.enjarai.trickster.cca.ModChunkCumponents;
 import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.net.RebuildChunkPacket;
+import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.tricks.Trick;
+import dev.enjarai.trickster.spell.tricks.blunder.BlockInvalidBlunder;
+import dev.enjarai.trickster.spell.tricks.blunder.BlockUnoccupiedBlunder;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -16,8 +20,8 @@ import net.minecraft.world.chunk.EmptyChunk;
 
 import java.util.List;
 
-public class IllusoryBlockTrick extends Trick {
-    public IllusoryBlockTrick() {
+public class DisguiseBlockTrick extends Trick {
+    public DisguiseBlockTrick() {
         super(Pattern.of(0, 2, 8, 6, 3, 0, 1, 2, 5, 8, 7, 6, 0));
     }
 
@@ -28,12 +32,10 @@ public class IllusoryBlockTrick extends Trick {
         var blockPos = pos.toBlockPos();
 
         if (blockType.block().getDefaultState().isAir()) {
-            throw new BlunderException() {
-                @Override
-                public MutableText createMessage() {
-                    return Text.literal("Cannot make invisible shadow block.");
-                }
-            };
+            throw new BlockInvalidBlunder(this);
+        }
+        if (ctx.getWorld().getBlockState(blockPos).isAir()) {
+            throw new BlockUnoccupiedBlunder(this, pos);
         }
 
         var chunk = ctx.getWorld().getChunk(blockPos);
@@ -45,6 +47,12 @@ public class IllusoryBlockTrick extends Trick {
             ModNetworking.CHANNEL.serverHandle(ctx.getWorld(), blockPos).send(new RebuildChunkPacket(blockPos));
         }
 
-        return VoidFragment.INSTANCE;
+        var particlePos = blockPos.toCenterPos();
+        ctx.getWorld().spawnParticles(
+                ModParticles.PROTECTED_BLOCK, particlePos.x, particlePos.y, particlePos.z,
+                1, 0, 0, 0, 0
+        );
+
+        return BooleanFragment.TRUE;
     }
 }
