@@ -22,8 +22,8 @@
 		"client": [
 			"dev.enjarai.trickster.TricksterClient"
 		],
-		"cardinal-components-block": [
-			"dev.enjarai.trickster.cca.ModBlockComponents"
+		"cardinal-components-chunk": [
+			"dev.enjarai.trickster.cca.ModChunkComponents"
 		],
 		"cardinal-components-entity": [
 			"dev.enjarai.trickster.cca.ModEntityCumponents"
@@ -31,7 +31,7 @@
 	},
 	"custom": {
 		"cardinal-components": [
-			"trickster:shadow_disguise",
+			"trickster:shadow_disguise_map",
 			"trickster:disguise",
 			"trickster:is_editing_scroll"
 		]

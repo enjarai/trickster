@@ -5,7 +5,6 @@ import dev.enjarai.trickster.net.IsEditingScrollPacket;
 import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.particle.ProtectedBlockParticle;
-import dev.enjarai.trickster.render.ShadowBlockEntityRenderer;
 import dev.enjarai.trickster.render.SpellCircleBlockEntityRenderer;
 import dev.enjarai.trickster.screen.ModHandledScreens;
 import dev.enjarai.trickster.screen.ScrollAndQuillScreen;
@@ -23,7 +22,6 @@ public class TricksterClient implements ClientModInitializer {
 		ModKeyBindings.register();
 
 		BlockEntityRendererFactories.register(ModBlocks.SPELL_CIRCLE_ENTITY, SpellCircleBlockEntityRenderer::new);
-		BlockEntityRendererFactories.register(ModBlocks.SHADOW_ENTITY, ShadowBlockEntityRenderer::new);
 
 		UIParsing.registerFactory(Trickster.id("glyph"), GlyphComponent::parseTrick);
 		UIParsing.registerFactory(Trickster.id("pattern"), GlyphComponent::parseList);
