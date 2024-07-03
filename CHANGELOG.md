@@ -1,5 +1,1 @@
-- Fixed being able to crash the server with a fork-bomb-like spell.
-- Made a few fixes to conjure water: (Thanks @Master_Bw3!)
-  - Fixed conjure water working in the nether.
-  - Fixed conjure water not working on waterloggable blocks.
-  - Fixed conjure water not working on cauldrons.
+This version is a modfest-safe version of the latest build of this mod, as such, it should not include any new features over the previous version, only bugfixes and internal improvements.
