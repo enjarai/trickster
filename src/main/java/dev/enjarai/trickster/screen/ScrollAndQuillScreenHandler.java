@@ -22,6 +22,8 @@ import java.util.function.Consumer;
 
 public class ScrollAndQuillScreenHandler extends ScreenHandler {
     private final ItemStack scrollStack;
+    private final ItemStack otherHandStack;
+
 
     public final SyncedProperty<SpellPart> spell = createProperty(SpellPart.class, SpellPart.ENDEC, new SpellPart());
     public final SyncedProperty<SpellPart> otherHandSpell = createProperty(SpellPart.class, SpellPart.ENDEC, new SpellPart());
@@ -40,6 +42,8 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
         super(ModScreenHandlers.SCROLL_AND_QUILL, syncId);
 
         this.scrollStack = scrollStack;
+        this.otherHandStack = otherHandStack;
+
         this.slot = slot;
         this.greedyEvaluation = greedyEvaluation;
 
@@ -60,6 +64,8 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
         this.isMutable.set(isMutable);
 
         addServerboundMessage(SpellMessage.class, SpellMessage.ENDEC, msg -> updateSpell(msg.spell()));
+        addServerboundMessage(OtherHandSpellMessage.class, OtherHandSpellMessage.ENDEC, msg -> updateOtherHandSpell(msg.spell()));
+
         addServerboundMessage(ExecuteOffhand.class, msg -> executeOffhand());
         addClientboundMessage(Replace.class, Replace.ENDEC, msg -> {
             if (replacerCallback != null) {
@@ -98,6 +104,23 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
         }
     }
 
+    public void updateOtherHandSpell(SpellPart spell) {
+        if (isMutable.get()) {
+            if (scrollStack != null) {
+                var server = player().getServer();
+                if (server != null) {
+                    server.execute(() -> {
+                        if (otherHandStack.isIn(ModItems.SCROLLS)) {
+                            otherHandStack.set(ModComponents.SPELL, new SpellComponent(spell));
+                        }
+                    });
+                }
+            } else {
+                sendMessage(new OtherHandSpellMessage(spell));
+            }
+        }
+    }
+
     public void executeOffhand() {
         var server = player().getServer();
         if (server != null) {
@@ -128,6 +151,10 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
 
     public record SpellMessage(SpellPart spell) {
         public static final Endec<SpellMessage> ENDEC = SpellPart.ENDEC.xmap(SpellMessage::new, SpellMessage::spell);
+    }
+
+    public record OtherHandSpellMessage(SpellPart spell) {
+        public static final Endec<OtherHandSpellMessage> ENDEC = SpellPart.ENDEC.xmap(OtherHandSpellMessage::new, OtherHandSpellMessage::spell);
     }
 
     public record ExecuteOffhand() {

@@ -157,6 +157,41 @@ public final class SpellPart implements Fragment {
         return false;
     }
 
+    /**
+     * Searches for a subPart in the spell and returns the address of it
+     * @return
+     */
+    public Optional<List<Integer>> locateSubPartInTree(Fragment target) {
+        var address = new LinkedList<Integer>();
+        var found =  locateSubPartInTree(this, target, address);
+        if (found) {
+            return Optional.of(address);
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    private static boolean locateSubPartInTree(SpellPart node, Fragment target, List<Integer> address) {
+        if (node == target) {
+            return true;
+        }
+
+        var subParts = node.subParts;
+        if (subParts.stream().map(Optional::isPresent).findAny().isEmpty() && !address.isEmpty()) {
+            address.removeLast();
+        } else {
+            for (int i = 0; i < subParts.size(); i++) {
+                if (subParts.get(i).isPresent()) {
+                    address.add(i);
+                    var found = locateSubPartInTree(subParts.get(i).get(), target, address);
+                    if (found) return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     public Fragment getGlyph() {
         return glyph;
     }

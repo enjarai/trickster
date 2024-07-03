@@ -3,6 +3,9 @@ package dev.enjarai.trickster.screen;
 import dev.enjarai.trickster.ModSounds;
 import dev.enjarai.trickster.render.SpellCircleRenderer;
 import dev.enjarai.trickster.spell.*;
+import dev.enjarai.trickster.spell.fragment.ListFragment;
+import dev.enjarai.trickster.spell.fragment.NumberFragment;
+import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
@@ -29,6 +32,8 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     public static final Pattern COPY_OFFHAND_LITERAL = Pattern.of(4, 0, 1, 4, 2, 1);
     public static final Pattern COPY_OFFHAND_LITERAL_INNER = Pattern.of(1, 2, 4, 1, 0, 4, 7);
     public static final Pattern COPY_OFFHAND_EXECUTE = Pattern.of(4, 3, 0, 4, 5, 2, 4, 1);
+    public static final Pattern WRITE_OFFHAND_ADDRESS = Pattern.of(1, 0, 4, 8, 7, 6, 4, 2, 1, 4);
+
 
     private SpellPart spellPart;
 //    private List<SpellPartWidget> partWidgets;
@@ -43,6 +48,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
                                        //TODO: to be toggleable once there is a config
 
     private Consumer<SpellPart> updateListener;
+    private Consumer<SpellPart> otherHandSpellUpdateListener;
     private Supplier<SpellPart> otherHandSpellSupplier;
     @Nullable
     private SpellPart toBeReplaced;
@@ -54,12 +60,13 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
     private final SpellCircleRenderer renderer;
 
-    public SpellPartWidget(SpellPart spellPart, double x, double y, double size, Consumer<SpellPart> updateListener, Supplier<SpellPart> otherHandSpellSupplier, Runnable initializeReplace) {
+    public SpellPartWidget(SpellPart spellPart, double x, double y, double size, Consumer<SpellPart> spellUpdateListener, Consumer<SpellPart> otherHandSpellUpdateListener, Supplier<SpellPart> otherHandSpellSupplier, Runnable initializeReplace) {
         this.spellPart = spellPart;
         this.x = x;
         this.y = y;
         this.size = size;
-        this.updateListener = updateListener;
+        this.updateListener = spellUpdateListener;
+        this.otherHandSpellUpdateListener = otherHandSpellUpdateListener;
         this.otherHandSpellSupplier = otherHandSpellSupplier;
         this.initializeReplace = initializeReplace;
         this.renderer = new SpellCircleRenderer(() -> this.drawingPart, () -> this.drawingPattern);
@@ -309,6 +316,12 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         } else if (compiled.equals(COPY_OFFHAND_EXECUTE)) {
             toBeReplaced = drawingPart;
             initializeReplace.run();
+        } else if (compiled.equals(WRITE_OFFHAND_ADDRESS)) {
+            var address = spellPart.locateSubPartInTree(drawingPart);
+            if (address.isPresent()) {
+                var addressFragment = new ListFragment(address.get().stream().map(num -> (Fragment) new NumberFragment(num)).toList());
+                otherHandSpellUpdateListener.accept(new SpellPart(addressFragment, List.of()));
+            }
         } else {
             drawingPart.glyph = new PatternGlyph(compiled, drawingPattern);
             tryReset = false;

@@ -14,9 +14,7 @@ import dev.enjarai.trickster.spell.tricks.event.CreateSpellCircleTrick;
 import dev.enjarai.trickster.spell.tricks.event.DeleteSpellCircleTrick;
 import dev.enjarai.trickster.spell.tricks.list.*;
 import dev.enjarai.trickster.spell.tricks.math.*;
-import dev.enjarai.trickster.spell.tricks.tree.LocateGlyphTrick;
-import dev.enjarai.trickster.spell.tricks.tree.LocateGlyphsTrick;
-import dev.enjarai.trickster.spell.tricks.tree.RetrieveGlyphTrick;
+import dev.enjarai.trickster.spell.tricks.tree.*;
 import dev.enjarai.trickster.spell.tricks.vector.*;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -119,6 +117,8 @@ public class Tricks {
     public static final LocateGlyphTrick LOCATE_GLYPH = register("locate_glyph", new LocateGlyphTrick());
     public static final LocateGlyphsTrick LOCATE_GLYPHS = register("locate_glyphs", new LocateGlyphsTrick());
     public static final RetrieveGlyphTrick RETRIEVE_GLYPH = register("retrieve_glyphs", new RetrieveGlyphTrick());
+    public static final SetGlyphTrick SET_GLYPH = register("set_glyph", new SetGlyphTrick());
+    public static final SetSubtreeTrick SET_SUBTREE = register("set_subtree", new SetSubtreeTrick());
 
 
     // Events
