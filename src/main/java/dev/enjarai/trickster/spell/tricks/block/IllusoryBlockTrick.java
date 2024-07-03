@@ -1,13 +1,15 @@
 package dev.enjarai.trickster.spell.tricks.block;
 
-import dev.enjarai.trickster.block.ShadowBlockEntity;
+import dev.enjarai.trickster.block.ModBlocks;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.tricks.Trick;
+import dev.enjarai.trickster.spell.tricks.blunder.BlockOccupiedBlunder;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
+import dev.enjarai.trickster.spell.tricks.blunder.UnknownEntityBlunder;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
@@ -30,14 +32,32 @@ public class IllusoryBlockTrick extends Trick {
             throw new BlunderException() {
                 @Override
                 public MutableText createMessage() {
-                    return Text.literal("Cannot make block invisible.");
+                    return Text.literal("Cannot make invisible shadow block.");
                 }
             };
         }
 
         var state = ctx.getWorld().getBlockState(blockPos);
-        var entity = new ShadowBlockEntity(blockPos, state, blockType.block());
-        ctx.getWorld().addBlockEntity(entity);
+
+        if (!state.isAir()) {
+            throw new BlockOccupiedBlunder(this);
+        }
+
+        ctx.getWorld().setBlockState(blockPos, ModBlocks.SHADOW.getDefaultState());
+        var blockEntity = ctx.getWorld().getBlockEntity(blockPos, ModBlocks.SHADOW_ENTITY);
+
+        if (blockEntity.isPresent()) {
+            blockEntity.get().disguise(blockType.block());
+            blockEntity.get().markDirty();
+        }
+        else {
+            throw new BlunderException() {
+                @Override
+                public MutableText createMessage() {
+                    return Text.literal("Shadow block was not placed.");
+                }
+            };
+        }
 
         return VoidFragment.INSTANCE;
     }

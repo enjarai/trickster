@@ -7,7 +7,7 @@ import org.ladysnake.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import org.ladysnake.cca.api.v3.entity.EntityComponentInitializer;
 import org.ladysnake.cca.api.v3.entity.RespawnCopyStrategy;
 
-public class ModCumponents implements EntityComponentInitializer {
+public class ModEntityCumponents implements EntityComponentInitializer {
     public static final ComponentKey<DisguiseCumponent> DISGUISE =
             ComponentRegistry.getOrCreate(Trickster.id("disguise"), DisguiseCumponent.class);
 
@@ -18,6 +18,5 @@ public class ModCumponents implements EntityComponentInitializer {
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
         registry.registerForPlayers(DISGUISE, DisguiseCumponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
         registry.registerForPlayers(IS_EDITING_SCROLL, IsEditingScrollComponent::new, RespawnCopyStrategy.NEVER_COPY);
-
     }
 }

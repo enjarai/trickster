@@ -1,18 +1,14 @@
 package dev.enjarai.trickster.mixin.client;
 
-import dev.enjarai.trickster.cca.ModCumponents;
-import dev.enjarai.trickster.item.ModItems;
+import dev.enjarai.trickster.cca.ModEntityCumponents;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.render.SpellCircleRenderer;
-import dev.enjarai.trickster.screen.ScrollAndQuillScreen;
 import dev.enjarai.trickster.spell.SpellPart;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.PlayerEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.Hand;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
@@ -60,7 +56,7 @@ public abstract class PlayerRendererMixin {
         var offHandSpell = offHandStack.get(ModComponents.SPELL);
 
         // TODO only appear when scroll is being edited
-        if (entity.getComponent(ModCumponents.IS_EDITING_SCROLL).isEditing()) {
+        if (entity.getComponent(ModEntityCumponents.IS_EDITING_SCROLL).isEditing()) {
             if (mainHandStack.get(ModComponents.SPELL) != null && mainHandSpell != null) {
                 return Optional.of(mainHandSpell.spell());
             } else if (mainHandStack.get(ModComponents.SPELL) != null && offHandSpell != null) {

@@ -1,7 +1,7 @@
 package dev.enjarai.trickster.net;
 
 import dev.enjarai.trickster.Trickster;
-import dev.enjarai.trickster.cca.ModCumponents;
+import dev.enjarai.trickster.cca.ModEntityCumponents;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.SelectedSlotComponent;
@@ -86,7 +86,7 @@ public class ModNetworking {
 
         CHANNEL.registerServerbound(IsEditingScrollPacket.class, (packet, access) -> {
             var player = access.player();
-            player.getComponent(ModCumponents.IS_EDITING_SCROLL).setEditing(packet.isEditing());
+            player.getComponent(ModEntityCumponents.IS_EDITING_SCROLL).setEditing(packet.isEditing());
         });
     }
 }

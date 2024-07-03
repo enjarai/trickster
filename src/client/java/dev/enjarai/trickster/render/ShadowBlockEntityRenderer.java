@@ -15,7 +15,7 @@ public class ShadowBlockEntityRenderer implements BlockEntityRenderer<ShadowBloc
     @Override
     public void render(ShadowBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         matrices.push();
-        MinecraftClient.getInstance().getBlockRenderManager().renderBlockAsEntity(entity.disguise.getDefaultState(), matrices, vertexConsumers, light, overlay);
+        MinecraftClient.getInstance().getBlockRenderManager().renderBlockAsEntity(entity.disguise().getDefaultState(), matrices, vertexConsumers, light, overlay);
         matrices.pop();
     }
 }

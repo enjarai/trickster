@@ -1,14 +1,11 @@
 package dev.enjarai.trickster.cca;
 
-import dev.enjarai.trickster.Trickster;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
-
-import java.util.UUID;
 
 public class IsEditingScrollComponent implements AutoSyncedComponent {
     private final PlayerEntity player;
@@ -52,7 +49,7 @@ public class IsEditingScrollComponent implements AutoSyncedComponent {
 
     public void setEditing(Boolean editing) {
         this.editing = editing;
-        ModCumponents.IS_EDITING_SCROLL.sync(player);
+        ModEntityCumponents.IS_EDITING_SCROLL.sync(player);
     }
 
 }
