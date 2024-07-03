@@ -131,7 +131,7 @@ publishing {
 
 publishMods {
 	file = remapJar.archiveFile
-	displayName = "${property('mod_version')} for ${property('deps.minecraft')}"
+	displayName = "1.1.0 (Modfest Edition) for ${property('deps.minecraft')}"
 	version = project.version
 	changelog = getRootProject().file("CHANGELOG.md").text
 	type = ALPHA
