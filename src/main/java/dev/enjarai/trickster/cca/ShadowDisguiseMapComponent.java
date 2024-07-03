@@ -28,8 +28,6 @@ public class ShadowDisguiseMapComponent implements AutoSyncedComponent {
 
     public ShadowDisguiseMapComponent(Chunk chunk) {
         this.chunk = chunk;
-        // TODO remove
-        disguises.put(encodePos(new BlockPos(0, 0, 0)), Blocks.DIAMOND_BLOCK);
     }
 
     @Override
