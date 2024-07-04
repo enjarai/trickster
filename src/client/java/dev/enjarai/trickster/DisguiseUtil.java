@@ -22,16 +22,4 @@ public class DisguiseUtil {
         }
         return result.profile();
     }
-
-    public static boolean inShadowBlock(ClientWorld world, BlockPos blockPos) {
-        var chunk = world.getChunk(blockPos);
-
-        if (chunk instanceof EmptyChunk)
-            return false;
-
-        var shadowBlocks = ModChunkCumponents.SHADOW_DISGUISE_MAP.get(chunk);
-        var funnyState = shadowBlocks.getFunnyState(blockPos);
-
-        return funnyState != null;
-    }
 }

@@ -5,13 +5,11 @@
   "plugin": "dev.enjarai.trickster.ConditionalMixins",
   "client": [
     "AbstractClientPlayerEntityMixin",
-    "BackgroundRenderer_StatusEffectFogModifierMixin",
     "HeldItemRendererMixin",
     "InGameHudMixin",
     "MouseMixin",
     "PlayerRendererMixin",
     "RenderedChunkMixin",
-    "WorldRendererMixin",
     "SillyHairsFeatureRendererMixin",
     "WorldRendererAccessor",
     "sodium.WorldSliceMixin"
