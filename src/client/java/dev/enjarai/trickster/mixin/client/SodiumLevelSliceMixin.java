@@ -1,39 +1,42 @@
 package dev.enjarai.trickster.mixin.client;
 
-import com.google.common.base.Suppliers;
 import dev.enjarai.trickster.cca.ModChunkCumponents;
-import dev.enjarai.trickster.cca.ShadowDisguiseMapComponent;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.util.math.BlockPos;
-import org.spongepowered.asm.mixin.Mixin;
 import me.jellysquid.mods.sodium.client.world.WorldSlice;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.util.math.BlockBox;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.chunk.EmptyChunk;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.function.Supplier;
+import static me.jellysquid.mods.sodium.client.world.WorldSlice.getLocalBlockIndex;
+import static me.jellysquid.mods.sodium.client.world.WorldSlice.getLocalSectionIndex;
 
+@Debug(export = true) //TODO: remove when done
 @Mixin(WorldSlice.class)
 public abstract class SodiumLevelSliceMixin {
     @Shadow
+    @Final
+    private static BlockState EMPTY_BLOCK_STATE;
+
+    @Shadow
+    @Final
     private ClientWorld world;
+    @Shadow
+    @Final
+    private BlockState[][] blockArrays;
+    @Shadow
+    @Final
+    private BlockBox volume;
     @Shadow
     private int originX;
     @Shadow
     private int originY;
     @Shadow
     private int originZ;
-    @Unique
-    private final Supplier<ShadowDisguiseMapComponent> disguises =
-            Suppliers.memoize(() -> ModChunkCumponents.SHADOW_DISGUISE_MAP.getNullable(world.getChunk(new BlockPos(originX, originY, originZ))));
-
-    public SodiumLevelSliceMixin(ClientWorld world) {
-        this.world = world;
-    }
 
     @Inject(
             method = "getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;",
@@ -41,6 +44,30 @@ public abstract class SodiumLevelSliceMixin {
             cancellable = true
     )
     private void disguiseBlockState(BlockPos pos, CallbackInfoReturnable<BlockState> cir) {
+        int x = pos.getX();
+        int y = pos.getY();
+        int z = pos.getZ();
 
+        if (!this.volume.contains(x, y, z)) {
+            cir.setReturnValue(EMPTY_BLOCK_STATE);
+        } else {
+            int relX = x - this.originX;
+            int relY = y - this.originY;
+            int relZ = z - this.originZ;
+
+            var chunk = world.getChunk(pos);
+
+            if (chunk instanceof EmptyChunk) {
+                return;
+            }
+
+            var disguises = ModChunkCumponents.SHADOW_DISGUISE_MAP.get(chunk); // can't cache here
+            var funnyState = disguises.getFunnyState(pos);
+
+            if (funnyState != null) {
+                this.blockArrays[getLocalSectionIndex(relX >> 4, relY >> 4, relZ >> 4)]
+                        [getLocalBlockIndex(relX & 15, relY & 15, relZ & 15)] = funnyState;
+            }
+        }
     }
 }

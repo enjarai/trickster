@@ -18,7 +18,8 @@ import java.util.function.Supplier;
 
 @Mixin(targets = "net.minecraft.client.render.chunk.RenderedChunk")
 public class RenderedChunkMixin {
-    @Shadow @Final
+    @Shadow
+    @Final
     private WorldChunk chunk;
     @Unique
     private final Supplier<ShadowDisguiseMapComponent> disguises =
