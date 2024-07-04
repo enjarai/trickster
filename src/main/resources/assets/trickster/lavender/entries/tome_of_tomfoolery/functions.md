@@ -70,6 +70,16 @@ which is the result of this glyph.
 
 ;;;;;
 
+<|glyph@trickster:templates|trick-id=trickster:supplier,title=Supply Distortion|>
+
+any -> spell
+
+---
+
+Creates a new spell fragment which returns the previously provided fragment when executed.
+
+;;;;;
+
 <|page-title@lavender:book_components|title=Note: Arguments|>Fragments can be passed into executed spell fragments as arguments.
 
 
