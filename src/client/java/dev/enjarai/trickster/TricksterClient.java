@@ -1,6 +1,7 @@
 package dev.enjarai.trickster;
 
 import dev.enjarai.trickster.block.ModBlocks;
+import dev.enjarai.trickster.cca.ModEntityCumponents;
 import dev.enjarai.trickster.net.IsEditingScrollPacket;
 import dev.enjarai.trickster.net.ModClientNetworking;
 import dev.enjarai.trickster.net.ModNetworking;
@@ -32,8 +33,11 @@ public class TricksterClient implements ClientModInitializer {
 
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			if (client.player != null) {
-				var is_editing = client.currentScreen instanceof ScrollAndQuillScreen;
-				ModNetworking.CHANNEL.clientHandle().send(new IsEditingScrollPacket(is_editing));
+				var editing = client.currentScreen instanceof ScrollAndQuillScreen;
+				var serverEditing = ModEntityCumponents.IS_EDITING_SCROLL.get(client.player).isEditing();
+				if (editing != serverEditing) {
+					ModNetworking.CHANNEL.clientHandle().send(new IsEditingScrollPacket(editing));
+				}
 			}
 		});
 	}
