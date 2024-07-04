@@ -41,8 +41,29 @@ spell, [spell, any]... -> spell
 
 ---
 
-Replaces any occurrence of any of the latter spell's patterns inside the first spell 
+Replaces any occurrence of any of the latter spell's patterns inside the first spell
 with the fragment immediately following them.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:iterator,title=Iteration Stratagem|>
+
+spell, any[], any... -> any[]
+
+---
+
+For each item in the given list, execute the given spell, creating a new list from the results.
+
+;;;;;
+
+any, number, any[], any...
+
+---
+
+These arguments are provided to each execution of the given spell, 
+where the first argument is the item, the second is its index in the given list, 
+the third is the given list, followed by up to five more arguments provided by this glyph's inputs. 
+The results of each execution are collected into a new list, which is the result of this glyph.
 
 ;;;;;
 
