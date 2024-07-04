@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.function.Supplier;
 
-@Mixin(targets = "net.minecraft.client.render.chunk.RenderedChunk")
+@Mixin(targets = "net/minecraft/client/render/chunk/RenderedChunk")
 public class RenderedChunkMixin {
     @Shadow
     @Final
