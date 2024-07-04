@@ -28,7 +28,7 @@ public class IteratorTrick extends Trick {
             var args = new ArrayList<Fragment>();
             args.add(item);
             args.add(new NumberFragment(index));
-            args.addAll(fragments.subList(1, fragments.size()));
+            args.add(list);
             ctx.pushPartGlyph(args);
             ctx.pushStackTrace(-2);
             result.add(executable.run(ctx));
