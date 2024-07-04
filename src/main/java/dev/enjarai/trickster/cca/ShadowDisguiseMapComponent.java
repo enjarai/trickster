@@ -62,6 +62,15 @@ public class ShadowDisguiseMapComponent implements AutoSyncedComponent {
         return null;
     }
 
+    @Nullable
+    public BlockState getFunnyState(int x, int y, int z) {
+        var block = disguises.get(encodePos(x, y, z));
+        if (block != null) {
+            return block.getDefaultState();
+        }
+        return null;
+    }
+
     public boolean setFunnyState(BlockPos pos, Block block) {
         if (disguises.put(encodePos(pos), block) != block) {
             chunk.setNeedsSaving(true);
@@ -83,9 +92,13 @@ public class ShadowDisguiseMapComponent implements AutoSyncedComponent {
     }
 
     public int encodePos(BlockPos pos) {
-        var x = pos.getX() & 15;
-        var z = (pos.getZ() & 15) << 4;
-        var y = pos.getY() << 8;
-        return y | z | x;
+        return encodePos(pos.getX(), pos.getY(), pos.getZ());
+    }
+
+    public int encodePos(int x, int y, int z) {
+        var xe = x & 15;
+        var ze = (z & 15) << 4;
+        var ye = y << 8;
+        return ye | ze | xe;
     }
 }

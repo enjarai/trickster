@@ -8,7 +8,7 @@
     "HeldItemRendererMixin",
     "InGameHudMixin",
     "MouseMixin",
-    "SodiumLevelSliceMixin",
+    "sodium.WorldSliceMixin",
     "PlayerRendererMixin",
     "RenderedChunkMixin",
     "SillyHairsFeatureRendererMixin",

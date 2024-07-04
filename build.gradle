@@ -119,7 +119,7 @@ dependencies {
 	include modImplementation("org.ladysnake.cardinal-components-api:cardinal-components-entity:${property('deps.cardinal-components-api')}")
 
 	modImplementation "com.terraformersmc:modmenu:${property('deps.modmenu')}"
-	modClientCompileOnly "maven.modrinth:sodium:${property('deps.sodium')}"
+	modClientImplementation "maven.modrinth:sodium:${property('deps.sodium')}"
 }
 
 processResources {
