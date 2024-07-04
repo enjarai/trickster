@@ -20,6 +20,14 @@ repositories {
 	// for more information about repositories.
 
 	maven {
+		name = "Modrinth"
+		url = "https://api.modrinth.com/maven"
+		content {
+			includeGroup "maven.modrinth"
+		}
+	}
+
+	maven {
 		url 'https://maven.wispforest.io'
 	}
 
@@ -50,6 +58,40 @@ loom {
 		}
 	}
 
+	runs {
+		client_mixin {
+			client()
+			ideConfigGenerated true
+			name = "Minecraft Client - (Mixin Swap)"
+			source sourceSets.main
+			source sourceSets.client
+			vmArg "-Dmixin.debug.export=true"
+
+			try {
+				afterEvaluate {
+					def mixinDep = this.configurations.compileClasspath
+							.allDependencies
+							.findAll { it.name == "sponge-mixin" }
+							.first()
+
+					if (mixin != null) {
+						def mixinPath = this.configurations.compileClasspath.files(mixinDep).first().path;
+
+						println(mixinPath)
+
+						vmArg("-javaagent:\"${mixinPath}\"")
+
+						println("[Info]: Mixin Hotswap Run should be working")
+					} else {
+						println("[Warning]: Unable to locate file path for Mixin Jar, HotSwap Run will not work!!!")
+					}
+				}
+			} catch (Exception e) {
+				println("[Error]: MixinHotswap Run had a issue!")
+				e.printStackTrace()
+			}
+		}
+	}
 }
 
 dependencies {
@@ -73,9 +115,11 @@ dependencies {
 	}
 
 	include modImplementation("org.ladysnake.cardinal-components-api:cardinal-components-base:${property('deps.cardinal-components-api')}")
+	include modImplementation("org.ladysnake.cardinal-components-api:cardinal-components-chunk:${property('deps.cardinal-components-api')}")
 	include modImplementation("org.ladysnake.cardinal-components-api:cardinal-components-entity:${property('deps.cardinal-components-api')}")
 
 	modImplementation "com.terraformersmc:modmenu:${property('deps.modmenu')}"
+	modClientImplementation "maven.modrinth:sodium:${property('deps.sodium')}"
 }
 
 processResources {

@@ -1,10 +1,9 @@
 package dev.enjarai.trickster.spell.tricks.entity;
 
-import dev.enjarai.trickster.cca.ModCumponents;
+import dev.enjarai.trickster.cca.ModEntityCumponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.tricks.Trick;
@@ -28,10 +27,10 @@ public class PolymorphTrick extends Trick {
         var realSource = source.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this));
 
         if (realTarget instanceof ServerPlayerEntity targetPlayer && realSource instanceof ServerPlayerEntity sourcePlayer) {
-            var cumpoonent = targetPlayer.getComponent(ModCumponents.DISGUISE);
+            var cumpoonent = targetPlayer.getComponent(ModEntityCumponents.DISGUISE);
 
             var uuid = sourcePlayer.getUuid();
-            var sourceCumponent = sourcePlayer.getComponent(ModCumponents.DISGUISE);
+            var sourceCumponent = sourcePlayer.getComponent(ModEntityCumponents.DISGUISE);
             if (sourceCumponent.getUuid() != null) {
                 uuid = sourceCumponent.getUuid();
             }

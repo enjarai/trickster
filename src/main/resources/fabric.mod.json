@@ -22,12 +22,16 @@
 		"client": [
 			"dev.enjarai.trickster.TricksterClient"
 		],
-		"cardinal-components": [
-          "dev.enjarai.trickster.cca.ModCumponents"
+		"cardinal-components-chunk": [
+          "dev.enjarai.trickster.cca.ModChunkCumponents"
+		],
+		"cardinal-components-entity": [
+			"dev.enjarai.trickster.cca.ModEntityCumponents"
 		]
 	},
 	"custom": {
 		"cardinal-components": [
+			"trickster:shadow_disguise_map",
 			"trickster:disguise",
 			"trickster:is_editing_scroll"
 		]
@@ -47,5 +51,8 @@
 		"owo": "*",
 		"lavender": "*",
 		"cicada": ">=0.8.0"
+	},
+	"breaks": {
+		"sodium": "<0.5.11"
 	}
 }

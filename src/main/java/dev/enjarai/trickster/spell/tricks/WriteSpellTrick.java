@@ -8,6 +8,7 @@ import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
+import dev.enjarai.trickster.spell.tricks.blunder.ImmutableItemBlunder;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ContainerComponent;
 
@@ -33,10 +34,16 @@ public class WriteSpellTrick extends Trick {
                 var index = stack.get(ModComponents.SELECTED_SLOT).slot();
 
                 var stack2 = stacks.get(index);
+                if (stack2.contains(ModComponents.SPELL) && stack2.get(ModComponents.SPELL).immutable()) {
+                    throw new ImmutableItemBlunder(this);
+                }
                 stack2.set(ModComponents.SPELL, new SpellComponent(newSpell));
 
                 stack.set(DataComponentTypes.CONTAINER, ContainerComponent.fromStacks(stacks));
             } else {
+                if (stack.contains(ModComponents.SPELL) && stack.get(ModComponents.SPELL).immutable()) {
+                    throw new ImmutableItemBlunder(this);
+                }
                 stack.set(ModComponents.SPELL, new SpellComponent(newSpell));
             }
             return BooleanFragment.TRUE;
