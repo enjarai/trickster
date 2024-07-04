@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 // stole this impl from https://github.com/Juuxel/Adorn/blob/bd70a2955640897bc68ff1f4f201fe5e6c10bc32/fabric/src/main/java/juuxel/adorn/AdornMixinPlugin.java
-public class ClientConditionalMixins implements IMixinConfigPlugin {
+public class ConditionalMixins implements IMixinConfigPlugin {
     private static final Supplier<Boolean> TRUE = () -> true;
 
     private static final Map<String, Supplier<Boolean>> CONDITIONS = ImmutableMap.of(

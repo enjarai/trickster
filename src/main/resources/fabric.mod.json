@@ -51,5 +51,8 @@
 		"owo": "*",
 		"lavender": "*",
 		"cicada": ">=0.8.0"
+	},
+	"breaks": {
+		"sodium": "<0.5.11"
 	}
 }

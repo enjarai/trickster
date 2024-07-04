@@ -2,11 +2,13 @@
   "required": true,
   "package": "dev.enjarai.trickster.mixin.client",
   "compatibilityLevel": "JAVA_21",
+  "plugin": "dev.enjarai.trickster.ConditionalMixins",
   "client": [
     "AbstractClientPlayerEntityMixin",
     "HeldItemRendererMixin",
     "InGameHudMixin",
     "MouseMixin",
+    "SodiumLevelSliceMixin",
     "PlayerRendererMixin",
     "RenderedChunkMixin",
     "SillyHairsFeatureRendererMixin",
