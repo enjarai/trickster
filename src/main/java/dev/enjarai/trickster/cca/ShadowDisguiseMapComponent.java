@@ -23,7 +23,7 @@ public class ShadowDisguiseMapComponent implements AutoSyncedComponent {
         MinecraftEndecs.ofRegistry(Registries.BLOCK)
     ).xmap(Int2ObjectOpenHashMap::new, map -> map).keyed("disguises", Int2ObjectOpenHashMap::new);
 
-    private Int2ObjectOpenHashMap<Block> disguises = new Int2ObjectOpenHashMap<>();
+    private Int2ObjectOpenHashMap<Block> disguises = new Int2ObjectOpenHashMap<>(0);
     private final Chunk chunk;
 
     public ShadowDisguiseMapComponent(Chunk chunk) {

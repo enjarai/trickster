@@ -40,9 +40,6 @@ public abstract class WorldSliceMixin {
 
             if (chunk != null && !(chunk instanceof EmptyChunk)) {
                 disguises = ModChunkCumponents.SHADOW_DISGUISE_MAP.get(chunk);
-            }
-
-            if (disguises != null) {
                 componentCache.put(chunkId, disguises);
             }
         }
