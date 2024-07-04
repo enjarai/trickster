@@ -17,7 +17,6 @@ public abstract class WorldSliceMixin {
     @Shadow
     @Final
     private ClientWorld world;
-
     @Unique
     private final Long2ObjectOpenHashMap<ShadowDisguiseMapComponent> componentCache = new Long2ObjectOpenHashMap<>();
 
