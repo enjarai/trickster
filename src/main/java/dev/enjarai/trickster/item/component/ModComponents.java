@@ -13,7 +13,7 @@ public class ModComponents {
     public static final ComponentType<SelectedSlotComponent> SELECTED_SLOT =
             register("selected_slot", builder -> builder.codec(SelectedSlotComponent.CODEC).cache());
     public static final ComponentType<WrittenScrollMetaComponent> WRITTEN_SCROLL_META =
-            register("selected_slot", builder -> builder
+            register("written_scroll_meta", builder -> builder
                     .codec(WrittenScrollMetaComponent.CODEC)
                     .packetCodec(WrittenScrollMetaComponent.PACKET_CODEC)
                     .cache());

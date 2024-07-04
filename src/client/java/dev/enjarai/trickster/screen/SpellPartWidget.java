@@ -160,11 +160,9 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
                     return true;
                 }
             }
-
-            return true;
         }
 
-        return false;
+        return true;
     }
 
     @Override
