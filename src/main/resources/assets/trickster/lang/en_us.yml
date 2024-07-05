@@ -3,6 +3,15 @@ trickster:
     scroll_container: Scroll Storage
     scroll_and_quill: Scroll and Quill
     mirror_of_evaluation: Mirror of Evaluation
+    sign_scroll: Sign Scroll
+    written_scroll: Written Scroll
+
+  widget:
+    scroll_name: Scroll Name...
+    enter_scroll_name: 'Enter Scroll Name:'
+    scroll_sign_note:
+      line0: Note! When you sign the scroll,
+      line1: it will no longer be editable.
 
   item_group: Trickster
 
