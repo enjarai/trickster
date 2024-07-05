@@ -79,6 +79,8 @@ public class Tricks {
     public static final AddVelocityTrick ADD_VELOCITY = register("add_velocity", new AddVelocityTrick());
     public static final PolymorphTrick POLYMORPH = register("polymorph", new PolymorphTrick());
     public static final DispelPolymorphTrick DISPEL_POLYMORPH = register("dispel_polymorph", new DispelPolymorphTrick());
+    public static final GetEntityManaTrick GET_MANA = register("get_mana", new GetEntityManaTrick());
+    public static final LeechEntityManaTrick LEECH_MANA = register("leech_mana", new LeechEntityManaTrick());
 
     // Math
     public static final AddTrick ADD = register("add", new AddTrick());

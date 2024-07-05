@@ -17,6 +17,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import org.joml.Vector3d;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @SuppressWarnings("UnstableApiUsage")
@@ -58,6 +59,31 @@ public class PlayerSpellContext extends SpellContext {
 
     @Override
     public void useMana(Trick source, float amount) throws BlunderException {
+        if (!manaLinks.isEmpty()) {
+            float totalAvailable = 0;
+            float leftOver = 0;
+            var toUnlink = new ArrayList<ManaLink>();
+
+            for (var link : manaLinks) {
+                totalAvailable += link.getAvailable();
+            }
+
+            for (var link : manaLinks) {
+                float available = link.getAvailable();
+                float ratio = available / totalAvailable;
+                float ratioD = amount * ratio;
+                float used = link.useMana(ratioD);
+
+                if (used < ratioD) {
+                    leftOver += ratioD - used;
+                    toUnlink.add(link);
+                }
+            }
+
+            manaLinks.removeAll(toUnlink);
+            amount = leftOver;
+        }
+
         if (!manaPool.decrease(amount)) {
             throw new EntityInvalidBlunder(source); //TODO: make proper blunder
         }

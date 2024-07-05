@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.spell;
 
+import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import dev.enjarai.trickster.spell.tricks.blunder.ExecutionLimitReachedBlunder;
@@ -22,6 +23,8 @@ public abstract class SpellContext {
     private boolean destructive = false;
     private boolean hasAffectedWorld = false;
     private final Deque<Integer> stacktrace = new ArrayDeque<>();
+
+    protected final List<ManaLink> manaLinks = new ArrayList<>();
 
     public void pushPartGlyph(List<Fragment> fragments) throws BlunderException {
         partGlyphStack.push(fragments);
@@ -75,6 +78,10 @@ public abstract class SpellContext {
         }
 
         return result == null ? Text.of("") : result;
+    }
+
+    public void addManaLink(ManaLink link) {
+        manaLinks.add(link);
     }
 
     public Optional<ServerPlayerEntity> getPlayer() {
