@@ -23,6 +23,7 @@ public class CostTrick extends Trick {
         if (!player.getInventory().contains(ModItems.SPELL_COST)) {
             throw new MissingCostBlunder(this);
         }
+
         player.getInventory().remove(i -> i.isIn(ModItems.SPELL_COST), 1, player.playerScreenHandler.getCraftingInput());
         return VoidFragment.INSTANCE;
     }
