@@ -27,6 +27,8 @@ public class PolymorphTrick extends Trick {
         var realSource = source.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this));
 
         if (realTarget instanceof ServerPlayerEntity targetPlayer && realSource instanceof ServerPlayerEntity sourcePlayer) {
+            ctx.useMana(this, 480);
+
             var cumpoonent = targetPlayer.getComponent(ModEntityCumponents.DISGUISE);
 
             var uuid = sourcePlayer.getUuid();
@@ -39,6 +41,7 @@ public class PolymorphTrick extends Trick {
         } else {
             throw new UnknownEntityBlunder(this);
         }
+
         return VoidFragment.INSTANCE;
     }
 }

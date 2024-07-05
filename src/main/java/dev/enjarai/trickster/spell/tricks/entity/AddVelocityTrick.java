@@ -22,6 +22,9 @@ public class AddVelocityTrick extends Trick {
         var velocity = expectInput(fragments, FragmentType.VECTOR, 1);
 
         var player = entity.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this));
+
+        ctx.useMana(this, (float)velocity.vector().length() * 4);
+
         player.addVelocity(velocity.vector().x(), velocity.vector().y(), velocity.vector().z());
         player.velocityModified = true;
 

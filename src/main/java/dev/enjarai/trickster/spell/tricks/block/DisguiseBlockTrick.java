@@ -42,6 +42,8 @@ public class DisguiseBlockTrick extends AbstractBlockDisguiseTrick {
         var chunk = ctx.getWorld().getChunk(blockPos);
 
         if (!(chunk instanceof EmptyChunk)) {
+            ctx.useMana(this, 280);
+
             var component = ModChunkCumponents.SHADOW_DISGUISE_MAP.get(chunk);
 
             if (component.setFunnyState(blockPos, blockType.block())) {

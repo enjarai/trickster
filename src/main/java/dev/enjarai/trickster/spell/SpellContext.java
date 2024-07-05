@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.spell;
 
+import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import dev.enjarai.trickster.spell.tricks.blunder.ExecutionLimitReachedBlunder;
 import net.minecraft.entity.Entity;
@@ -87,6 +88,12 @@ public abstract class SpellContext {
     public Optional<ItemStack> getOtherHandSpellStack() {
         return Optional.empty();
     }
+
+    public abstract void useMana(Trick source, float amount);
+
+    public abstract float getMana();
+
+    public abstract float getMaxMana();
 
     public abstract Vector3d getPos();
 

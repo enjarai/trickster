@@ -29,8 +29,10 @@ public class BreakBlockTrick extends Trick {
 
         float hardness = state.getBlock().getHardness();
 
-        if (hardness >= 0 && hardness < 55.5f)
+        if (hardness >= 0 && hardness < 55.5f) {
+            ctx.useMana(this, hardness);
             ctx.getCaster().ifPresentOrElse(c -> world.breakBlock(blockPos, true, c), () -> world.breakBlock(blockPos, true));
+        }
 
         return VoidFragment.INSTANCE;
     }

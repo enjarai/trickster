@@ -25,6 +25,8 @@ public class DispelPolymorphTrick extends Trick {
         var realEntity = entity.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this));
 
         if (realEntity instanceof ServerPlayerEntity player) {
+            ctx.useMana(this, 120);
+
             var cumpoonent = player.getComponent(ModEntityCumponents.DISGUISE);
 
             if (cumpoonent.getUuid() != null) {

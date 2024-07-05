@@ -48,12 +48,15 @@ trickster:
     raycast: Scout's Distortion
     get_position: Locational Distortion
     get_facing: Directional Distortion
+    get_health: Fettle Distortion
+    get_armour: Bulwark Distortion
     add_velocity: Impulse Ploy
 
     create_spell_circle: Perceptive Ploy
     delete_spell_circle: Cancellation Ploy
 
     execute: Grand Stratagem
+    iterator: Iteration Stratagem
     closure: Closure Stratagem
     supplier: Supply Distortion
     load_argument_1: Primary Delusion
@@ -78,6 +81,10 @@ trickster:
     conjure_water: Aquatic Ploy
     destabilize_block: Earthquake Ploy
     disguise_block: Shadow Ploy
+
+    get_block_hardness: Distortion of Hardness
+    check_block: Distortion of Validation
+    can_place_block: Distortion of Suitability
 
   fragment.trickster:
     number: Number

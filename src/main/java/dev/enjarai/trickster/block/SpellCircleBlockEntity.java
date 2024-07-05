@@ -37,6 +37,7 @@ public class SpellCircleBlockEntity extends BlockEntity {
     public Text lastError;
     public int age;
     public CrowMind crowMind = new CrowMind(VoidFragment.INSTANCE);
+    public ManaPool manaPool = new ManaPool();
 
     public SpellCircleBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlocks.SPELL_CIRCLE_ENTITY, pos, state);
