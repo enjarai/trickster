@@ -14,15 +14,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class AddLeafNodeTrick extends Trick {
-    public AddLeafNodeTrick() {
-        super(Pattern.of(4, 6, 7, 8, 2, 1, 0, 4, 3));
+public class AddSubtreeTrick extends Trick {
+    public AddSubtreeTrick() {
+        super(Pattern.of(2, 1, 0, 4, 8, 7, 6, 4, 2, 5, 8));
     }
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var spell = expectInput(fragments, SpellPart.class, 0);
         var addressFragment = expectInput(fragments, ListFragment.class, 1);
+        var subtree = expectInput(fragments, SpellPart.class, 2);
 
         var address = sanitizeAddress(addressFragment);
         var newSpell = spell.deepClone();
@@ -36,7 +37,7 @@ public class AddLeafNodeTrick extends Trick {
                 throw new AddressNotInTreeBlunder(this, address);
             }
         }
-        node.subParts.add(Optional.of(new SpellPart(new PatternGlyph(), List.of())));
+        node.subParts.add(Optional.of(subtree));
 
         return newSpell;
     }

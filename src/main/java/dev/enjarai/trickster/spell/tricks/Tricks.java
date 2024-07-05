@@ -119,7 +119,7 @@ public class Tricks {
     public static final RetrieveGlyphTrick RETRIEVE_GLYPH = register("retrieve_glyphs", new RetrieveGlyphTrick());
     public static final SetGlyphTrick SET_GLYPH = register("set_glyph", new SetGlyphTrick());
     public static final SetSubtreeTrick SET_SUBTREE = register("set_subtree", new SetSubtreeTrick());
-    public static final AddLeafNodeTrick ADD_LEAF = register("add_leaf", new AddLeafNodeTrick());
+    public static final AddSubtreeTrick ADD_LEAF = register("add_subtree", new AddSubtreeTrick());
     public static final RemoveSubtreeTrick REMOVE_SUBTREE = register("remove_subtree", new RemoveSubtreeTrick());
 
 
