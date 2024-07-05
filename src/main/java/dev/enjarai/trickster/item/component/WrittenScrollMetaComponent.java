@@ -22,6 +22,10 @@ public record WrittenScrollMetaComponent(String title, String author, int genera
             WrittenScrollMetaComponent::new
     );
 
+    public WrittenScrollMetaComponent(String title, String author, int generation) {
+        this(title, author, generation, false);
+    }
+
     @Nullable
     public WrittenScrollMetaComponent copy() {
         return this.generation >= 2 ? null : new WrittenScrollMetaComponent(title, author, generation + 1, false);
