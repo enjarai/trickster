@@ -13,9 +13,9 @@ import net.minecraft.entity.LivingEntity;
 
 import java.util.List;
 
-public class GetEntityHealthTrick extends Trick {
-    public GetEntityHealthTrick() {
-        super(Pattern.of(0, 3, 7, 5, 2, 4, 0));
+public class GetEntityArmourTrick extends Trick {
+    public GetEntityArmourTrick() {
+        super(Pattern.of(6, 4, 0, 3, 6, 7, 8, 5, 2, 4, 8));
     }
 
     @Override
@@ -26,8 +26,8 @@ public class GetEntityHealthTrick extends Trick {
             var entity2 = entity.get();
 
             if (entity2 instanceof LivingEntity living) {
-                float health = living.getHealth();
-                return new NumberFragment(health);
+                int armour = living.getArmor();
+                return new NumberFragment(armour);
             }
 
             throw new EntityInvalidBlunder(this);

@@ -50,6 +50,16 @@ Given an entity, returns its current health.
 
 ;;;;;
 
+<|glyph@trickster:templates|trick-id=trickster:get_armour,title=Bulwark Distortion|>
+
+entity -> number
+
+---
+
+Given an entity, returns its total armour value.
+
+;;;;;
+
 <|glyph@trickster:templates|trick-id=trickster:sneaking_reflection,title=Alternative Distortion|>
 
 entity -> number

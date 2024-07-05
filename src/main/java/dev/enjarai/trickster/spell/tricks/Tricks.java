@@ -14,6 +14,10 @@ import dev.enjarai.trickster.spell.tricks.entity.*;
 import dev.enjarai.trickster.spell.tricks.event.CreateSpellCircleTrick;
 import dev.enjarai.trickster.spell.tricks.event.DeleteSpellCircleTrick;
 import dev.enjarai.trickster.spell.tricks.func.SupplierTrick;
+import dev.enjarai.trickster.spell.tricks.item.GetArmourStackTrick;
+import dev.enjarai.trickster.spell.tricks.item.GetInventoryStackTrick;
+import dev.enjarai.trickster.spell.tricks.item.MoveStackTrick;
+import dev.enjarai.trickster.spell.tricks.item.StackToItemTrick;
 import dev.enjarai.trickster.spell.tricks.list.*;
 import dev.enjarai.trickster.spell.tricks.math.*;
 import dev.enjarai.trickster.spell.tricks.vector.*;
@@ -70,6 +74,7 @@ public class Tricks {
     public static final GetPositionTrick GET_POSITION = register("get_position", new GetPositionTrick());
     public static final GetFacingTrick GET_FACING = register("get_facing", new GetFacingTrick());
     public static final GetEntityHealthTrick GET_HEALTH = register("get_health", new GetEntityHealthTrick());
+    public static final GetEntityArmourTrick GET_ARMOUR_VALUE = register("get_armour", new GetEntityArmourTrick());
     public static final HeightReflectionTrick HEIGHT_REFLECTION = register("height_reflection", new HeightReflectionTrick());
     public static final SneakingReflectionTrick SNEAKING_REFLECTION = register("sneaking_reflection", new SneakingReflectionTrick());
     public static final RaycastBlockPosTrick RAYCAST = register("raycast", new RaycastBlockPosTrick());
@@ -78,6 +83,12 @@ public class Tricks {
     public static final AddVelocityTrick ADD_VELOCITY = register("add_velocity", new AddVelocityTrick());
     public static final PolymorphTrick POLYMORPH = register("polymorph", new PolymorphTrick());
     public static final DispelPolymorphTrick DISPEL_POLYMORPH = register("dispel_polymorph", new DispelPolymorphTrick());
+
+    // Item
+    public static final MoveStackTrick MOVE_STACK = register("move_stack", new MoveStackTrick());
+    public static final StackToItemTrick STACK_TO_ITEM = register("stack_to_item", new StackToItemTrick());
+    public static final GetInventoryStackTrick GET_INVENTORY_STACK = register("get_inventory_stack", new GetInventoryStackTrick());
+    public static final GetArmourStackTrick GET_ARMOUR_STACK = register("get_armour_stack", new GetArmourStackTrick());
 
     // Math
     public static final AddTrick ADD = register("add", new AddTrick());
