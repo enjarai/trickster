@@ -10,6 +10,16 @@ This entry contains tricks that operate directly on blocks in the world.
 
 ;;;;;
 
+<|glyph@trickster:templates|trick-id=trickster:break_block,title=Ploy of Destruction|>
+
+vector -> 
+
+---
+
+Breaks the block at the given position. 
+
+;;;;;
+
 <|glyph@trickster:templates|trick-id=trickster:swap_block,title=Ploy of Exchange|>
 
 vector, vector ->

@@ -40,6 +40,16 @@ Given an entity, returns its height in blocks.
 
 ;;;;;
 
+<|glyph@trickster:templates|trick-id=trickster:get_health,title=Fettle Distortion|>
+
+entity -> number
+
+---
+
+Given an entity, returns its current health.
+
+;;;;;
+
 <|glyph@trickster:templates|trick-id=trickster:sneaking_reflection,title=Alternative Distortion|>
 
 entity -> number
