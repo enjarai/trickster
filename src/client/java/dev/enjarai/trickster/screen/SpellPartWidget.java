@@ -14,6 +14,7 @@ import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -317,7 +318,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             toBeReplaced = drawingPart;
             initializeReplace.run();
         } else if (compiled.equals(WRITE_OFFHAND_ADDRESS)) {
-            var address = spellPart.locateSubPartInTree(drawingPart);
+            var address = getAddress(spellPart, drawingPart);
             if (address.isPresent()) {
                 var addressFragment = new ListFragment(address.get().stream().map(num -> (Fragment) new NumberFragment(num)).toList());
                 otherHandSpellUpdateListener.accept(new SpellPart(addressFragment, List.of()));
@@ -352,6 +353,44 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
     public boolean isDrawing() {
         return drawingPart != null;
+    }
+
+    protected Optional<List<Integer>> getAddress(SpellPart node, SpellPart target) {
+        var address = new LinkedList<Integer>();
+        var found =  getAddress(node, target, address, new LinkedList<>());
+        if (found) {
+            return Optional.of(address);
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    protected boolean getAddress(SpellPart node, SpellPart target, List<Integer> address, List<SpellPart> glyphSpells) {
+        if (node == target) {
+            return true;
+        }
+        if (node.glyph instanceof SpellPart glyph) {
+            glyphSpells.add(glyph);
+        }
+
+        var subParts = node.subParts;
+        if (subParts.stream().map(Optional::isPresent).findAny().isEmpty() && !address.isEmpty()) {
+            address.removeLast();
+        } else {
+            for (int i = 0; i < subParts.size(); i++) {
+                if (subParts.get(i).isPresent()) {
+                    address.add(i);
+                    var found = getAddress(subParts.get(i).get(), target, address, glyphSpells);
+                    if (found) return true;
+                }
+            }
+            for (var glyph : glyphSpells) {
+                var found = getAddress(glyph, target, address, new LinkedList<>());
+                if (found) return true;
+            }
+        }
+
+        return false;
     }
 
     protected static boolean hasOverlappingLines(List<Byte> pattern, byte p1, byte p2) {

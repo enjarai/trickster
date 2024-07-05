@@ -161,7 +161,7 @@ public final class SpellPart implements Fragment {
      * Searches for a subPart in the spell and returns the address of it
      * @return
      */
-    public Optional<List<Integer>> locateSubPartInTree(Fragment target) {
+    public Optional<List<Integer>> locateSubPartInTree(SpellPart target) {
         var address = new LinkedList<Integer>();
         var found =  locateSubPartInTree(this, target, address);
         if (found) {
@@ -171,7 +171,7 @@ public final class SpellPart implements Fragment {
         }
     }
 
-    private static boolean locateSubPartInTree(SpellPart node, Fragment target, List<Integer> address) {
+    private static boolean locateSubPartInTree(SpellPart node, SpellPart target, List<Integer> address) {
         if (node == target) {
             return true;
         }
