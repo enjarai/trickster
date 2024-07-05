@@ -14,10 +14,6 @@ import dev.enjarai.trickster.spell.tricks.entity.*;
 import dev.enjarai.trickster.spell.tricks.event.CreateSpellCircleTrick;
 import dev.enjarai.trickster.spell.tricks.event.DeleteSpellCircleTrick;
 import dev.enjarai.trickster.spell.tricks.func.SupplierTrick;
-import dev.enjarai.trickster.spell.tricks.item.GetArmourStackTrick;
-import dev.enjarai.trickster.spell.tricks.item.GetInventoryStackTrick;
-import dev.enjarai.trickster.spell.tricks.item.MoveStackTrick;
-import dev.enjarai.trickster.spell.tricks.item.StackToItemTrick;
 import dev.enjarai.trickster.spell.tricks.list.*;
 import dev.enjarai.trickster.spell.tricks.math.*;
 import dev.enjarai.trickster.spell.tricks.vector.*;
@@ -83,12 +79,6 @@ public class Tricks {
     public static final AddVelocityTrick ADD_VELOCITY = register("add_velocity", new AddVelocityTrick());
     public static final PolymorphTrick POLYMORPH = register("polymorph", new PolymorphTrick());
     public static final DispelPolymorphTrick DISPEL_POLYMORPH = register("dispel_polymorph", new DispelPolymorphTrick());
-
-    // Item
-    public static final MoveStackTrick MOVE_STACK = register("move_stack", new MoveStackTrick());
-    public static final StackToItemTrick STACK_TO_ITEM = register("stack_to_item", new StackToItemTrick());
-    public static final GetInventoryStackTrick GET_INVENTORY_STACK = register("get_inventory_stack", new GetInventoryStackTrick());
-    public static final GetArmourStackTrick GET_ARMOUR_STACK = register("get_armour_stack", new GetArmourStackTrick());
 
     // Math
     public static final AddTrick ADD = register("add", new AddTrick());

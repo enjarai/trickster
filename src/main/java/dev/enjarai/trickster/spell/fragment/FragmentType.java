@@ -28,7 +28,6 @@ public record FragmentType<T extends Fragment>(MapCodec<T> codec, OptionalInt co
     public static final FragmentType<EntityFragment> ENTITY = register("entity", EntityFragment.CODEC, 0x338888);
     public static final FragmentType<ZalgoFragment> ZALGO = register("zalgo", ZalgoFragment.CODEC, 0x444444);
     public static final FragmentType<ItemTypeFragment> ITEM_TYPE = register("item_type", ItemTypeFragment.CODEC, 0x2266aa);
-    public static final FragmentType<ItemStackFragment> ITEM_STACK = register("item_stack", ItemStackFragment.CODEC, 0x2266aa);
     public static final FragmentType<BlockTypeFragment> BLOCK_TYPE = register("block_type", BlockTypeFragment.CODEC, 0x44aa33);
 
     private static <T extends Fragment> FragmentType<T> register(String name, MapCodec<T> codec, int color) {
