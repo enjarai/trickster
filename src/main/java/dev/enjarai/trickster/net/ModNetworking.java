@@ -108,6 +108,7 @@ public class ModNetworking {
                 newStack.set(ModComponents.WRITTEN_SCROLL_META, new WrittenScrollMetaComponent(
                         packet.name(), player.getName().getString(), 0
                 ));
+                newStack.setCount(stack.getCount());
 
                 player.setStackInHand(packet.hand(), newStack);
                 player.swingHand(packet.hand());

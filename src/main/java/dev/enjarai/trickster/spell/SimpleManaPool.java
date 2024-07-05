@@ -40,4 +40,8 @@ public class SimpleManaPool implements ManaPool {
     protected void stdIncrease() {
         increase(maxMana / 4000);
     }
+
+    public static SimpleManaPool getSingleUse(float mana) {
+        return new SimpleManaPool(mana, mana);
+    }
 }

@@ -4,6 +4,7 @@ import dev.enjarai.trickster.ModSounds;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.screen.ScrollAndQuillScreenHandler;
 import dev.enjarai.trickster.spell.PlayerSpellContext;
+import dev.enjarai.trickster.spell.SimpleManaPool;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -36,13 +37,17 @@ public class WrittenScrollItem extends Item {
 
         var meta = stack.get(ModComponents.WRITTEN_SCROLL_META);
 
-        if (!user.isSneaking() && meta != null && meta.executable()) {
+        if (meta != null && meta.executable()) {
             if (!world.isClient()) {
                 var spell = stack.get(ModComponents.SPELL);
                 if (spell != null) {
-                    spell.spell().runSafely(new PlayerSpellContext((ServerPlayerEntity) user, slot));
+                    var singleUseManaPool = SimpleManaPool.getSingleUse(500);
+                    spell.spell().runSafely(new PlayerSpellContext((ServerPlayerEntity) user, singleUseManaPool, slot));
                     ((ServerPlayerEntity) user).getServerWorld().playSoundFromEntity(
                             null, user, ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f));
+
+                    stack.decrement(1);
+                    return TypedActionResult.success(stack);
                 }
             }
         } else {
@@ -87,8 +92,22 @@ public class WrittenScrollItem extends Item {
             }
 
             tooltip.add(Text.translatable("book.generation." + meta.generation()).formatted(Formatting.GRAY));
+
+            if (meta.executable()) {
+                tooltip.add(Text.translatable("trickster.scroll_executable").formatted(Formatting.GRAY));
+            }
         }
 
         super.appendTooltip(stack, context, tooltip, type);
+    }
+
+    @Override
+    public boolean hasGlint(ItemStack stack) {
+        var meta = stack.get(ModComponents.WRITTEN_SCROLL_META);
+        if (meta != null && meta.executable()) {
+            return true;
+        }
+
+        return super.hasGlint(stack);
     }
 }

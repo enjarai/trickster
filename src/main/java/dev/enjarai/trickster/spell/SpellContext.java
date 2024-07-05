@@ -4,6 +4,7 @@ import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import dev.enjarai.trickster.spell.tricks.blunder.EntityInvalidBlunder;
 import dev.enjarai.trickster.spell.tricks.blunder.ExecutionLimitReachedBlunder;
+import dev.enjarai.trickster.spell.tricks.blunder.NotEnoughManaBlunder;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -128,7 +129,7 @@ public abstract class SpellContext {
         }
 
         if (!manaPool.decrease(amount)) {
-            throw new EntityInvalidBlunder(source); //TODO: make proper blunder
+            throw new NotEnoughManaBlunder(source, amount);
         }
     }
 

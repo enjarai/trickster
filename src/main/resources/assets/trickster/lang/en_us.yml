@@ -16,6 +16,7 @@ trickster:
   item_group: Trickster
 
   scroll_hat: 'Selected slot: %d'
+  scroll_executable: Single-use
 
   trick.trickster:
     add: Annexation Stratagem

@@ -10,4 +10,8 @@ public abstract class BlunderException extends RuntimeException {
     protected Text formatInt(int number) {
         return Text.literal("" + number).withColor(FragmentType.NUMBER.color().getAsInt());
     }
+
+    protected Text formatFloat(float number) {
+        return Text.literal(String.format("%f", number)).withColor(FragmentType.NUMBER.color().getAsInt());
+    }
 }
