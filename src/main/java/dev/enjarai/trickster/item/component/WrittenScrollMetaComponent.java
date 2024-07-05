@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
+import org.jetbrains.annotations.Nullable;
 
 public record WrittenScrollMetaComponent(String title, String author, int generation) {
     public static final Codec<WrittenScrollMetaComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -18,4 +19,9 @@ public record WrittenScrollMetaComponent(String title, String author, int genera
             PacketCodecs.INTEGER, WrittenScrollMetaComponent::generation,
             WrittenScrollMetaComponent::new
     );
+
+    @Nullable
+    public WrittenScrollMetaComponent copy() {
+        return this.generation >= 2 ? null : new WrittenScrollMetaComponent(title, author, generation + 1);
+    }
 }
