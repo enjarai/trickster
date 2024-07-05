@@ -17,7 +17,7 @@ import java.util.Optional;
 
 public class RemoveSubtreeTrick extends Trick {
     public RemoveSubtreeTrick() {
-        super(Pattern.of(0, 3, 6, 4, 2, 5, 8));
+        super(Pattern.of(6, 3, 0, 4, 8, 5, 2, 4, 6, 7, 8));
     }
 
     @Override

@@ -116,8 +116,9 @@ public class Tricks {
     // Tree
     public static final LocateGlyphTrick LOCATE_GLYPH = register("locate_glyph", new LocateGlyphTrick());
     public static final LocateGlyphsTrick LOCATE_GLYPHS = register("locate_glyphs", new LocateGlyphsTrick());
-    public static final RetrieveGlyphTrick RETRIEVE_GLYPH = register("retrieve_glyphs", new RetrieveGlyphTrick());
+    public static final RetrieveGlyphTrick RETRIEVE_GLYPH = register("retrieve_glyph", new RetrieveGlyphTrick());
     public static final SetGlyphTrick SET_GLYPH = register("set_glyph", new SetGlyphTrick());
+    public static final RetrieveSubtreeTrick RETRIEVE_SUBTREE= register("retrieve_subtree", new RetrieveSubtreeTrick());
     public static final SetSubtreeTrick SET_SUBTREE = register("set_subtree", new SetSubtreeTrick());
     public static final AddSubtreeTrick ADD_LEAF = register("add_subtree", new AddSubtreeTrick());
     public static final RemoveSubtreeTrick REMOVE_SUBTREE = register("remove_subtree", new RemoveSubtreeTrick());
