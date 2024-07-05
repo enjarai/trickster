@@ -2,7 +2,11 @@
   "required": true,
   "package": "dev.enjarai.trickster.mixin",
   "compatibilityLevel": "JAVA_21",
+  "plugin": "dev.enjarai.trickster.ConditionalMixins",
   "mixins": [
+    "AbstractBlockStateMixin",
+    "LivingEntityMixin",
+    "WorldChunkMixin",
     "event.LivingEntityMixin",
     "event.ServerPlayerInteractionManagerMixin"
   ],

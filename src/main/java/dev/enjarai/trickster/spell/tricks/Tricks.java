@@ -5,6 +5,7 @@ import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.tricks.func.ClosureTrick;
 import dev.enjarai.trickster.spell.tricks.func.ExecuteTrick;
+import dev.enjarai.trickster.spell.tricks.func.IteratorTrick;
 import dev.enjarai.trickster.spell.tricks.func.LoadArgumentTrick;
 import dev.enjarai.trickster.spell.tricks.basic.*;
 import dev.enjarai.trickster.spell.tricks.block.*;
@@ -12,6 +13,7 @@ import dev.enjarai.trickster.spell.tricks.bool.*;
 import dev.enjarai.trickster.spell.tricks.entity.*;
 import dev.enjarai.trickster.spell.tricks.event.CreateSpellCircleTrick;
 import dev.enjarai.trickster.spell.tricks.event.DeleteSpellCircleTrick;
+import dev.enjarai.trickster.spell.tricks.func.SupplierTrick;
 import dev.enjarai.trickster.spell.tricks.list.*;
 import dev.enjarai.trickster.spell.tricks.math.*;
 import dev.enjarai.trickster.spell.tricks.tree.*;
@@ -40,7 +42,9 @@ public class Tricks {
 
     // Functions
     public static final ExecuteTrick EXECUTE = register("execute", new ExecuteTrick());
+    public static final IteratorTrick ITERATOR = register("iterator", new IteratorTrick());
     public static final ClosureTrick CLOSURE = register("closure", new ClosureTrick());
+    public static final SupplierTrick SUPPLIER = register("supplier", new SupplierTrick());
     public static final LoadArgumentTrick LOAD_ARGUMENT_1 = register("load_argument_1", new LoadArgumentTrick(Pattern.of(4, 1), 0));
     public static final LoadArgumentTrick LOAD_ARGUMENT_2 = register("load_argument_2", new LoadArgumentTrick(Pattern.of(4, 2), 1));
     public static final LoadArgumentTrick LOAD_ARGUMENT_3 = register("load_argument_3", new LoadArgumentTrick(Pattern.of(4, 5), 2));
@@ -134,6 +138,8 @@ public class Tricks {
     public static final ConjureWaterTrick CONJURE_WATER = register("conjure_water", new ConjureWaterTrick());
     public static final CheckBlockTrick CHECK_BLOCK = register("check_block", new CheckBlockTrick());
     public static final DestabilizeBlockTrick DESTABILIZE_BLOCK = register("destabilize_block", new DestabilizeBlockTrick());
+    public static final DisguiseBlockTrick DISGUISE_BLOCK = register("disguise_block", new DisguiseBlockTrick());
+    public static final DispelBlockDisguiseTrick DISPEL_BLOCK_DISGUISE = register("dispel_block_disguise", new DispelBlockDisguiseTrick());
 
     private static <T extends Trick> T register(String path, T trick) {
         return Registry.register(REGISTRY, Trickster.id(path), trick);

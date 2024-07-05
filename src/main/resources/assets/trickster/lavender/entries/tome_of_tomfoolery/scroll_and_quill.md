@@ -20,3 +20,5 @@ The written spell can be read from the scroll by means of [Notulist's Delusion](
 It is also possible to write to a scroll programmatically using [Notulist's Ploy](^trickster:basic_tricks)
 
 <recipe;trickster:scroll_and_quill>
+
+A Scroll and Quill can be signed by shift-right-clicking it.

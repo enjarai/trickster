@@ -25,7 +25,7 @@ public class DisguiseCumponent implements AutoSyncedComponent {
 
     public void setUuid(@Nullable UUID targetUuid) {
         this.targetUuid = targetUuid;
-        ModCumponents.DISGUISE.sync(player);
+        ModEntityCumponents.DISGUISE.sync(player);
     }
 
     @Override

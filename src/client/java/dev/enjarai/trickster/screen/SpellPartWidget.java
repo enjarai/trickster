@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.screen;
 
 import dev.enjarai.trickster.ModSounds;
+import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.render.SpellCircleRenderer;
 import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
@@ -44,8 +45,6 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     private double amountDragged;
 
     private boolean isMutable = true;
-    private boolean drawToggle = true; //TODO: I (Aurora) added this to toggle between click-and-hold drawing and click-toggle drawing,
-                                       //TODO: to be toggleable once there is a config
 
     private Consumer<SpellPart> updateListener;
     private Consumer<SpellPart> otherHandSpellUpdateListener;
@@ -156,7 +155,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (isMutable || isDrawing()) {
-            if (!drawToggle && button == 0 && !isDrawing()) {
+            if (Trickster.CONFIG.dragDrawing() && button == 0 && !isDrawing()) {
                 if (propagateMouseEvent(spellPart, (float) x, (float) y, (float) size, 0, mouseX, mouseY,
                         (part, x, y, size) -> selectPattern(part, x, y, size, mouseX, mouseY))) {
                     return true;
@@ -168,11 +167,9 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
                     return true;
                 }
             }
-
-            return true;
         }
 
-        return false;
+        return true;
     }
 
     @Override
@@ -185,7 +182,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
                 return false;
             }
 
-            if (drawToggle && button == 0 && !isDrawing()) {
+            if (!Trickster.CONFIG.dragDrawing() && button == 0 && !isDrawing()) {
                 if (propagateMouseEvent(spellPart, (float) x, (float) y, (float) size, 0, mouseX, mouseY,
                         (part, x, y, size) -> selectPattern(part, x, y, size, mouseX, mouseY))) {
                     return true;

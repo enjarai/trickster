@@ -9,10 +9,7 @@ import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.blunder.BlockUnoccupiedBlunder;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
-import dev.enjarai.trickster.spell.tricks.blunder.OverlapBlunder;
-import net.minecraft.block.FallingBlock;
 import net.minecraft.entity.FallingBlockEntity;
-import net.minecraft.nbt.NbtCompound;
 
 import java.util.List;
 

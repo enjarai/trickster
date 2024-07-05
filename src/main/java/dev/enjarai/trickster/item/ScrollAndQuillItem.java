@@ -13,7 +13,11 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
+import java.util.function.BiConsumer;
+
 public class ScrollAndQuillItem extends Item {
+    public static BiConsumer<Text, Hand> screenOpener;
+
     public ScrollAndQuillItem(Settings settings) {
         super(settings);
     }
@@ -24,20 +28,26 @@ public class ScrollAndQuillItem extends Item {
         var otherStack = user.getStackInHand(hand == Hand.MAIN_HAND ? Hand.OFF_HAND : Hand.MAIN_HAND);
         var slot = hand == Hand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
 
-        user.openHandledScreen(new NamedScreenHandlerFactory() {
-            @Override
-            public Text getDisplayName() {
-                return Text.translatable("trickster.screen.scroll_and_quill");
+        if (user.isSneaking()) {
+            if (world.isClient()) {
+                screenOpener.accept(Text.of("trickster.screen.sign_scroll"), hand);
             }
+        } else {
+            user.openHandledScreen(new NamedScreenHandlerFactory() {
+                @Override
+                public Text getDisplayName() {
+                    return Text.translatable("trickster.screen.scroll_and_quill");
+                }
 
-            @Override
-            public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-                return new ScrollAndQuillScreenHandler(
-                        syncId, playerInventory, stack, otherStack, slot,
-                        false, true
-                );
-            }
-        });
+                @Override
+                public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+                    return new ScrollAndQuillScreenHandler(
+                            syncId, playerInventory, stack, otherStack, slot,
+                            false, true
+                    );
+                }
+            });
+        }
 
         return TypedActionResult.success(stack);
     }

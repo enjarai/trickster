@@ -8,6 +8,7 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.PlayerSpellContext;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
+import dev.enjarai.trickster.spell.tricks.blunder.ImmutableItemBlunder;
 import io.wispforest.endec.Endec;
 import io.wispforest.owo.client.screens.SyncedProperty;
 import net.minecraft.entity.EquipmentSlot;
@@ -93,6 +94,9 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
                             spell.brutallyMurderEphemerals();
                         }
 
+                        if (scrollStack.contains(ModComponents.SPELL) && scrollStack.get(ModComponents.SPELL).immutable()) {
+                            return;
+                        }
                         scrollStack.set(ModComponents.SPELL, new SpellComponent(spell));
                     });
                 }

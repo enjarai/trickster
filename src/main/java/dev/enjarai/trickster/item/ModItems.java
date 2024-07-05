@@ -4,6 +4,7 @@ import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.SelectedSlotComponent;
 import dev.enjarai.trickster.item.component.SpellComponent;
+import dev.enjarai.trickster.item.component.WrittenScrollMetaComponent;
 import dev.enjarai.trickster.spell.SpellPart;
 import io.wispforest.lavender.book.LavenderBookItem;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
@@ -26,6 +27,11 @@ public class ModItems {
     public static final ScrollAndQuillItem SCROLL_AND_QUILL = register("scroll_and_quill",
             new ScrollAndQuillItem(new Item.Settings().maxCount(16)
                     .component(ModComponents.SPELL, new SpellComponent(new SpellPart()))));
+    public static final WrittenScrollItem WRITTEN_SCROLL = register("written_scroll",
+            new WrittenScrollItem(new Item.Settings().maxCount(16)
+                    .component(ModComponents.SPELL, new SpellComponent(new SpellPart(), true))
+                    .component(ModComponents.WRITTEN_SCROLL_META,
+                            new WrittenScrollMetaComponent("Unknown", "Unknown", 0))));
     public static final EvaluationMirrorItem MIRROR_OF_EVALUATION = register("mirror_of_evaluation",
             new EvaluationMirrorItem(new Item.Settings().maxCount(1)
                     .component(ModComponents.SPELL, new SpellComponent(new SpellPart()))));
@@ -41,6 +47,7 @@ public class ModItems {
     public static final TagKey<Item> CAN_EVALUATE_DYNAMICALLY = TagKey.of(RegistryKeys.ITEM, Trickster.id("can_evaluate_dynamically"));
     public static final TagKey<Item> HOLDABLE_HAT = TagKey.of(RegistryKeys.ITEM, Trickster.id("holdable_hat"));
     public static final TagKey<Item> SCROLLS = TagKey.of(RegistryKeys.ITEM, Trickster.id("scrolls"));
+//    public static final TagKey<Item> IMMUTABLE_SPELL_HOLDERS = TagKey.of(RegistryKeys.ITEM, Trickster.id("immutable_spell_holders"));
     public static final TagKey<Item> SPELL_COST = TagKey.of(RegistryKeys.ITEM, Trickster.id("spell_cost"));
     public static final TagKey<Block> CONJURABLE_FLOWERS = TagKey.of(RegistryKeys.BLOCK, Trickster.id("conjurable_flowers"));
 

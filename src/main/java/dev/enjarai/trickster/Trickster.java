@@ -1,8 +1,10 @@
 package dev.enjarai.trickster;
 
 import dev.enjarai.trickster.block.ModBlocks;
+import dev.enjarai.trickster.config.TricksterConfig;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
+import dev.enjarai.trickster.item.recipe.ModRecipes;
 import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.screen.ModScreenHandlers;
@@ -25,6 +27,8 @@ public class Trickster implements ModInitializer {
 	public static final Identifier SPELL_CIRCLE_ATTRIBUTE = id("spell_circle");
 	public static final EntityAttributeModifier NEGATE_ATTRIBUTE = new EntityAttributeModifier(Trickster.SPELL_CIRCLE_ATTRIBUTE, -1d, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
 
+	public static final TricksterConfig CONFIG = TricksterConfig.createAndLoad();
+
 	@Override
 	public void onInitialize() {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
@@ -39,6 +43,7 @@ public class Trickster implements ModInitializer {
 		ModParticles.register();
 		ModSounds.register();
 		ModAttachments.register();
+		ModRecipes.register();
 		Tricks.register();
 		SpellCircleEvent.register();
 	}

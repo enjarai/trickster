@@ -6,10 +6,7 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import net.minecraft.util.math.Direction;
 import net.minecraft.world.poi.PointOfInterestType;
-
-import java.util.Arrays;
 
 public class ModBlocks {
     public static final SpellCircleBlock SPELL_CIRCLE = new SpellCircleBlock(AbstractBlock.Settings.create()

@@ -1,10 +1,12 @@
 package dev.enjarai.trickster.net;
 
 import dev.enjarai.trickster.Trickster;
-import dev.enjarai.trickster.cca.ModCumponents;
+import dev.enjarai.trickster.cca.ModEntityCumponents;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.SelectedSlotComponent;
+import dev.enjarai.trickster.item.component.SpellComponent;
+import dev.enjarai.trickster.item.component.WrittenScrollMetaComponent;
 import io.wispforest.owo.network.OwoNetChannel;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.EquipmentSlot;
@@ -86,7 +88,32 @@ public class ModNetworking {
 
         CHANNEL.registerServerbound(IsEditingScrollPacket.class, (packet, access) -> {
             var player = access.player();
-            player.getComponent(ModCumponents.IS_EDITING_SCROLL).setEditing(packet.isEditing());
+            player.getComponent(ModEntityCumponents.IS_EDITING_SCROLL).setEditing(packet.isEditing());
         });
+
+        CHANNEL.registerServerbound(SignScrollPacket.class, (packet, access) -> {
+            var player = access.player();
+            var stack = player.getStackInHand(packet.hand());
+
+            if (stack.isOf(ModItems.SCROLL_AND_QUILL)) {
+                var component = stack.get(ModComponents.SPELL);
+                if (component == null) {
+                    return;
+                }
+
+                var spell = component.spell();
+                var newStack = ModItems.WRITTEN_SCROLL.getDefaultStack();
+
+                newStack.set(ModComponents.SPELL, new SpellComponent(spell, true));
+                newStack.set(ModComponents.WRITTEN_SCROLL_META, new WrittenScrollMetaComponent(
+                        packet.name(), player.getName().getString(), 0
+                ));
+
+                player.setStackInHand(packet.hand(), newStack);
+                player.swingHand(packet.hand());
+            }
+        });
+
+        CHANNEL.registerClientboundDeferred(RebuildChunkPacket.class);
     }
 }

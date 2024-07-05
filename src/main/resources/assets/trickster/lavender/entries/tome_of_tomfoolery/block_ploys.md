@@ -48,3 +48,31 @@ vector ->
 ---
 
 Makes the target block temporarily affected by gravity as if it were sand.
+
+;;;;;
+
+<|page-title@lavender:book_components|title=Note: Shadow Blocks|>Shadow blocks, 
+sometimes also referred to as echoes or echo blocks, 
+are illusions superimposed onto a material block. 
+They are dispelled when the state of the material block changes, 
+but can also be removed using a Revelation Ploy.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:disguise_block,title=Shadow Ploy|>
+
+vector, block -> boolean
+
+---
+
+Places a shadow of the given block at the given position and returns whether there was any change.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:dispel_block_disguise,title=Revelation Ploy|>
+
+vector -> boolean
+
+---
+
+Dispels any shadow block at the given position and returns whether there was one initially.

@@ -11,7 +11,6 @@ import dev.enjarai.trickster.spell.tricks.blunder.BlockUnoccupiedBlunder;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import dev.enjarai.trickster.spell.tricks.blunder.OverlapBlunder;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
 
 import java.util.List;
 
