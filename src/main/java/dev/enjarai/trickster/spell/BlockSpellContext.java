@@ -13,26 +13,10 @@ public class BlockSpellContext extends SpellContext {
     public final SpellCircleBlockEntity blockEntity;
 
     public BlockSpellContext(ServerWorld world, BlockPos pos, SpellCircleBlockEntity blockEntity) {
-        super();
+        super(blockEntity.manaPool);
         this.world = world;
         this.pos = pos;
         this.blockEntity = blockEntity;
-    }
-
-    @Override
-    public void useMana(Trick source, float amount) {
-        if (!blockEntity.manaPool.decrease(amount))
-            throw new EntityInvalidBlunder(source);
-    }
-
-    @Override
-    public float getMana() {
-        return blockEntity.manaPool.get();
-    }
-
-    @Override
-    public float getMaxMana() {
-        return blockEntity.manaPool.getMax();
     }
 
     @Override

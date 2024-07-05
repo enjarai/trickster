@@ -1,7 +1,9 @@
 package dev.enjarai.trickster.item;
 
+import dev.enjarai.trickster.ModSounds;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.screen.ScrollAndQuillScreenHandler;
+import dev.enjarai.trickster.spell.PlayerSpellContext;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -10,6 +12,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
@@ -30,20 +34,33 @@ public class WrittenScrollItem extends Item {
         var otherStack = user.getStackInHand(hand == Hand.MAIN_HAND ? Hand.OFF_HAND : Hand.MAIN_HAND);
         var slot = hand == Hand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
 
-        user.openHandledScreen(new NamedScreenHandlerFactory() {
-            @Override
-            public Text getDisplayName() {
-                return Text.translatable("trickster.screen.written_scroll");
-            }
+        var meta = stack.get(ModComponents.WRITTEN_SCROLL_META);
 
-            @Override
-            public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-                return new ScrollAndQuillScreenHandler(
-                        syncId, playerInventory, stack, otherStack, slot,
-                        false, false
-                );
+        if (!user.isSneaking() && meta != null && meta.executable()) {
+            if (!world.isClient()) {
+                var spell = stack.get(ModComponents.SPELL);
+                if (spell != null) {
+                    spell.spell().runSafely(new PlayerSpellContext((ServerPlayerEntity) user, slot));
+                    ((ServerPlayerEntity) user).getServerWorld().playSoundFromEntity(
+                            null, user, ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f));
+                }
             }
-        });
+        } else {
+            user.openHandledScreen(new NamedScreenHandlerFactory() {
+                @Override
+                public Text getDisplayName() {
+                    return Text.translatable("trickster.screen.written_scroll");
+                }
+
+                @Override
+                public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+                    return new ScrollAndQuillScreenHandler(
+                            syncId, playerInventory, stack, otherStack, slot,
+                            false, false
+                    );
+                }
+            });
+        }
 
         return TypedActionResult.success(stack);
     }

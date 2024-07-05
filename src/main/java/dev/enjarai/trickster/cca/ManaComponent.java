@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.cca;
 
 import dev.enjarai.trickster.spell.ManaPool;
+import dev.enjarai.trickster.spell.SimpleManaPool;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageTypes;
@@ -11,10 +12,11 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
-public class ManaComponent extends ManaPool implements AutoSyncedComponent, CommonTickingComponent {
+public class ManaComponent extends SimpleManaPool implements AutoSyncedComponent, CommonTickingComponent {
     private final LivingEntity entity;
 
     public ManaComponent(LivingEntity entity) {
+        super(0); // Max mana gets updated later
         this.entity = entity;
     }
 

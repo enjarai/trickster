@@ -1,8 +1,8 @@
 package dev.enjarai.trickster.spell;
 
-import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
+import dev.enjarai.trickster.spell.tricks.blunder.EntityInvalidBlunder;
 import dev.enjarai.trickster.spell.tricks.blunder.ExecutionLimitReachedBlunder;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
@@ -24,7 +24,12 @@ public abstract class SpellContext {
     private boolean hasAffectedWorld = false;
     private final Deque<Integer> stacktrace = new ArrayDeque<>();
 
+    protected final ManaPool manaPool;
     protected final List<ManaLink> manaLinks = new ArrayList<>();
+
+    protected SpellContext(ManaPool manaPool) {
+        this.manaPool = manaPool;
+    }
 
     public void pushPartGlyph(List<Fragment> fragments) throws BlunderException {
         partGlyphStack.push(fragments);
@@ -96,11 +101,44 @@ public abstract class SpellContext {
         return Optional.empty();
     }
 
-    public abstract void useMana(Trick source, float amount);
+    public void useMana(Trick source, float amount) throws BlunderException {
+        if (!manaLinks.isEmpty()) {
+            float totalAvailable = 0;
+            float leftOver = 0;
+            var toUnlink = new ArrayList<ManaLink>();
 
-    public abstract float getMana();
+            for (var link : manaLinks) {
+                totalAvailable += link.getAvailable();
+            }
 
-    public abstract float getMaxMana();
+            for (var link : manaLinks) {
+                float available = link.getAvailable();
+                float ratio = available / totalAvailable;
+                float ratioD = amount * ratio;
+                float used = link.useMana(ratioD);
+
+                if (used < ratioD) {
+                    leftOver += ratioD - used;
+                    toUnlink.add(link);
+                }
+            }
+
+            manaLinks.removeAll(toUnlink);
+            amount = leftOver;
+        }
+
+        if (!manaPool.decrease(amount)) {
+            throw new EntityInvalidBlunder(source); //TODO: make proper blunder
+        }
+    }
+
+    public float getMana() {
+        return manaPool.get();
+    }
+
+    public float getMaxMana() {
+        return manaPool.getMax();
+    }
 
     public abstract Vector3d getPos();
 
