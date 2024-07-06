@@ -29,7 +29,7 @@ public class LeechEntityManaTrick extends Trick {
             var entity2 = entity.get();
 
             if (entity2 instanceof LivingEntity living) {
-                ctx.addManaLink(new ManaLink(ModEntityCumponents.MANA.get(living), (float)limit));
+                ctx.addManaLink(this, new ManaLink(ModEntityCumponents.MANA.get(living), (float)limit));
                 return VoidFragment.INSTANCE;
             }
 

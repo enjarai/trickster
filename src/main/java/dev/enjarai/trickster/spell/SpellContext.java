@@ -86,7 +86,13 @@ public abstract class SpellContext {
         return result == null ? Text.of("") : result;
     }
 
-    public void addManaLink(ManaLink link) {
+    public void addManaLink(Trick source, ManaLink link) throws BlunderException {
+        for (var registeredLink : manaLinks) {
+            if (registeredLink.manaPool.equals(link.manaPool)) {
+                throw new EntityInvalidBlunder(source); //TODO: better exception
+            }
+        }
+
         manaLinks.add(link);
     }
 
@@ -106,7 +112,6 @@ public abstract class SpellContext {
         if (!manaLinks.isEmpty()) {
             float totalAvailable = 0;
             float leftOver = 0;
-            var toUnlink = new ArrayList<ManaLink>();
 
             for (var link : manaLinks) {
                 totalAvailable += link.getAvailable();
@@ -120,11 +125,9 @@ public abstract class SpellContext {
 
                 if (used < ratioD) {
                     leftOver += ratioD - used;
-                    toUnlink.add(link);
                 }
             }
 
-            manaLinks.removeAll(toUnlink);
             amount = leftOver;
         }
 

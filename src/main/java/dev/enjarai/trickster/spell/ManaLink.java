@@ -5,7 +5,7 @@ import dev.enjarai.trickster.cca.ManaComponent;
 public class ManaLink {
     public static float FACTOR = 1.7f;
 
-    private final ManaComponent manaPool;
+    public final ManaComponent manaPool;
     private float availableMana;
 
     public ManaLink(ManaComponent manaPool, float availableMana) {

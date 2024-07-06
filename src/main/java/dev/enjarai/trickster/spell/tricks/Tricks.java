@@ -3,6 +3,7 @@ package dev.enjarai.trickster.spell.tricks;
 import com.mojang.serialization.Lifecycle;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.tricks.event.WardTrick;
 import dev.enjarai.trickster.spell.tricks.func.ClosureTrick;
 import dev.enjarai.trickster.spell.tricks.func.ExecuteTrick;
 import dev.enjarai.trickster.spell.tricks.func.IteratorTrick;
@@ -123,6 +124,7 @@ public class Tricks {
     // Events
     public static final CreateSpellCircleTrick CREATE_SPELL_CIRCLE = register("create_spell_circle", new CreateSpellCircleTrick());
     public static final DeleteSpellCircleTrick DELETE_SPELL_CIRCLE = register("delete_spell_circle", new DeleteSpellCircleTrick());
+    public static final WardTrick WARD = register("ward", new WardTrick());
 
     // Blocks
     public static final BreakBlockTrick BREAK_BLOCK = register("break_block", new BreakBlockTrick());

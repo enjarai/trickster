@@ -30,7 +30,7 @@ public class BreakBlockTrick extends Trick {
         float hardness = state.getBlock().getHardness();
 
         if (hardness >= 0 && hardness < 55.5f) {
-            ctx.useMana(this, hardness);
+            ctx.useMana(this, Math.max(hardness, 8));
             ctx.getCaster().ifPresentOrElse(c -> world.breakBlock(blockPos, true, c), () -> world.breakBlock(blockPos, true));
         }
 

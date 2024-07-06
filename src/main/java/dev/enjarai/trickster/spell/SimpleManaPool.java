@@ -4,7 +4,7 @@ import io.wispforest.endec.Endec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 
 public class SimpleManaPool implements ManaPool {
-    public static final Endec<ManaPool> ENDEC = StructEndecBuilder.of(
+    public static final Endec<SimpleManaPool> ENDEC = StructEndecBuilder.of(
             Endec.FLOAT.fieldOf("mana", ManaPool::get),
             Endec.FLOAT.fieldOf("max_mana", ManaPool::getMax),
             SimpleManaPool::new
@@ -37,7 +37,7 @@ public class SimpleManaPool implements ManaPool {
         return maxMana;
     }
 
-    protected void stdIncrease() {
+    public void stdIncrease() {
         increase(maxMana / 4000);
     }
 

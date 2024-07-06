@@ -27,7 +27,7 @@ import java.util.List;
 public class SpellCircleBlockEntity extends BlockEntity {
     public static final int LISTENER_RADIUS = 16;
     public static final float MAX_MANA = 450;
-    public static final KeyedEndec<ManaPool> MANA_POOL_ENDEC =
+    public static final KeyedEndec<SimpleManaPool> MANA_POOL_ENDEC =
             SimpleManaPool.ENDEC.keyed("mana_pool", () -> new SimpleManaPool(MAX_MANA));
 
     public SpellPart spell = new SpellPart();
@@ -35,11 +35,16 @@ public class SpellCircleBlockEntity extends BlockEntity {
     public Text lastError;
     public int age;
     public CrowMind crowMind = new CrowMind(VoidFragment.INSTANCE);
-    public ManaPool manaPool = new SimpleManaPool(MAX_MANA) {
+    public SimpleManaPool manaPool = new SimpleManaPool(MAX_MANA) {
         @Override
         public void set(float value) {
             super.set(value);
             markDirty();
+        }
+
+        @Override
+        public void stdIncrease() {
+            increase(maxMana / 2000);
         }
     };
 
@@ -79,6 +84,8 @@ public class SpellCircleBlockEntity extends BlockEntity {
     }
 
     public void tick() {
+        manaPool.stdIncrease();
+
         if (event == SpellCircleEvent.TICK) {
             if (age % 10 == 0) {
                 var iterations = age / 10;
