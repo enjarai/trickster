@@ -38,14 +38,14 @@ public record PatternGlyph(Pattern pattern) implements Fragment {
     }
 
     @Override
-    public Fragment activateAsGlyph(SpellContext ctx, List<Optional<Fragment>> fragments) throws BlunderException {
+    public Fragment activateAsGlyph(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         if (pattern.equals(Pattern.EMPTY)) {
             return VoidFragment.INSTANCE;
         }
 
         var trick = Tricks.lookup(pattern);
         if (trick != null) {
-            return trick.activate(ctx, fragments.stream().filter(Optional::isPresent).map(Optional::get).toList());
+            return trick.activate(ctx, fragments);
         }
         throw new UnknownTrickBlunder(); // TODO more detail
     }

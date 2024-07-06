@@ -30,7 +30,7 @@ public interface Fragment {
 
     BooleanFragment asBoolean();
 
-    default Fragment activateAsGlyph(SpellContext ctx, List<Optional<Fragment>> fragments) throws BlunderException {
+    default Fragment activateAsGlyph(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         return this;
     }
 

@@ -53,54 +53,43 @@ public class SpellCircleRenderer {
         this.mouseY = mouseY;
     }
 
-    public void renderPart(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Optional<SpellPart> entry, float x, float y, float size, double startingAngle, float delta, Function<Float, Float> alphaGetter, Vec3d normal) {
+    public void renderPart(MatrixStack matrices, VertexConsumerProvider vertexConsumers, SpellPart entry, float x, float y, float size, double startingAngle, float delta, Function<Float, Float> alphaGetter, Vec3d normal) {
         var alpha = alphaGetter.apply(size);
 
-        if (entry.isPresent()) {
-            var part = entry.get();
+        drawTexturedQuad(
+                matrices, vertexConsumers, CIRCLE_TEXTURE,
+                x - size, x + size, y - size, y + size,
+                0,
+                1f, 1f, 1f, alpha, normal
+        );
+        drawGlyph(
+                matrices, vertexConsumers, entry,
+                x, y, size, startingAngle,
+                delta, alphaGetter, normal
+        );
 
-            drawTexturedQuad(
-                    matrices, vertexConsumers, CIRCLE_TEXTURE,
-                    x - size, x + size, y - size, y + size,
-                    0,
-                    1f, 1f, 1f, alpha, normal
-            );
-            drawGlyph(
-                    matrices, vertexConsumers, part,
-                    x, y, size, startingAngle,
-                    delta, alphaGetter, normal
-            );
+        int partCount = entry.getSubParts().size();
 
-            int partCount = part.getSubParts().size();
+        drawDivider(matrices, vertexConsumers, x, y, startingAngle, size, partCount, alpha);
 
-            drawDivider(matrices, vertexConsumers, x, y, startingAngle, size, partCount, alpha);
-
-            matrices.push();
-            if (!inUI) {
-                matrices.translate(0, 0, -1 / 16f);
-            }
-            int i = 0;
-            for (var child : part.getSubParts()) {
-                var angle = startingAngle + (2 * Math.PI) / partCount * i - (Math.PI / 2);
-
-                var nextX = x + (size * Math.cos(angle));
-                var nextY = y + (size * Math.sin(angle));
-
-                var nextSize = Math.min(size / 2, size / (float) (partCount / 2));
-
-                renderPart(matrices, vertexConsumers, child, (float) nextX, (float) nextY, nextSize, angle, delta, alphaGetter, normal);
-
-                i++;
-            }
-            matrices.pop();
-        } else {
-            drawTexturedQuad(
-                    matrices, vertexConsumers, CIRCLE_TEXTURE_HALF,
-                    x - size / 2, x + size / 2, y - size / 2, y + size / 2,
-                    0,
-                    1f, 1f, 1f, (float) alpha, normal
-            );
+        matrices.push();
+        if (!inUI) {
+            matrices.translate(0, 0, -1 / 16f);
         }
+        int i = 0;
+        for (var child : entry.getSubParts()) {
+            var angle = startingAngle + (2 * Math.PI) / partCount * i - (Math.PI / 2);
+
+            var nextX = x + (size * Math.cos(angle));
+            var nextY = y + (size * Math.sin(angle));
+
+            var nextSize = Math.min(size / 2, size / (float) (partCount / 2));
+
+            renderPart(matrices, vertexConsumers, child, (float) nextX, (float) nextY, nextSize, angle, delta, alphaGetter, normal);
+
+            i++;
+        }
+        matrices.pop();
     }
 
     protected void drawDivider(MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, double startingAngle, float size, float partCount, float alpha) {
@@ -133,7 +122,7 @@ public class SpellCircleRenderer {
     protected void drawGlyph(MatrixStack matrices, VertexConsumerProvider vertexConsumers, SpellPart parent, float x, float y, float size, double startingAngle, float delta, Function<Float, Float> alphaGetter, Vec3d normal) {
         var glyph = parent.getGlyph();
         if (glyph instanceof SpellPart part) {
-            renderPart(matrices, vertexConsumers, Optional.of(part), x, y, size / 3, startingAngle, delta, alphaGetter, normal);
+            renderPart(matrices, vertexConsumers, part, x, y, size / 3, startingAngle, delta, alphaGetter, normal);
         } else {
             matrices.push();
             drawSide(matrices, vertexConsumers, parent, x, y, size, glyph);

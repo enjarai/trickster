@@ -81,7 +81,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             this.renderer.setMousePosition(mouseX, mouseY);
         }
         this.renderer.renderPart(
-                context.getMatrices(), context.getVertexConsumers(), Optional.of(spellPart),
+                context.getMatrices(), context.getVertexConsumers(), spellPart,
                 (float) x, (float) y, (float) size, 0, delta,
                 size -> (float) Math.clamp(1 / (size / context.getScaledWindowHeight() * 2) - 0.2, 0, 1),
                 new Vec3d(0, 0, -1)
@@ -232,7 +232,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
                     drawingPattern.add((byte) i);
 
                     //add middle point to path if connecting opposite corners
-                    if(drawingPattern.size() > 1 && drawingPattern.get(drawingPattern.size() - 2) == (byte) (8 - i))
+                    if (drawingPattern.size() > 1 && drawingPattern.get(drawingPattern.size() - 2) == (byte) (8 - i))
                         drawingPattern.add(drawingPattern.size() - 1, (byte) 4);
 
                     // TODO click sound?
@@ -255,12 +255,12 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         var tryReset = true;
 
         if (compiled.equals(CREATE_SUBCIRCLE_GLYPH)) {
-            drawingPart.subParts.add(Optional.of(new SpellPart()));
+            drawingPart.subParts.add(new SpellPart());
         } else if (compiled.equals(CREATE_GLYPH_CIRCLE_GLYPH)) {
             drawingPart.glyph = new SpellPart();
         } else if (compiled.equals(CREATE_PARENT_GLYPH)) {
             var newPart = new SpellPart();
-            newPart.subParts.add(Optional.of(drawingPart));
+            newPart.subParts.add(drawingPart);
             if (drawingPart == spellPart) {
                 spellPart = newPart;
             } else {
@@ -283,7 +283,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
                 }
             }
         } else if (compiled.equals(DELETE_CIRCLE_GLYPH)) {
-            var firstSubpart = drawingPart.getSubParts().stream().filter(Optional::isPresent).map(Optional::get).findFirst();
+            var firstSubpart = drawingPart.getSubParts().stream().findFirst();
             if (drawingPart == spellPart) {
                 spellPart = firstSubpart.orElse(new SpellPart());
             } else {
@@ -358,19 +358,17 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
         int i = 0;
         for (var part : current.subParts) {
-            if (part.isPresent()) {
-                if (targetIsInner ? part.get().glyph == target : part.get() == target) {
-                    if (replacement.isPresent()) {
-                        current.subParts.set(i, replacement);
-                    } else {
-                        current.subParts.remove(i);
-                    }
-                    return true;
+            if (targetIsInner ? part.glyph == target : part == target) {
+                if (replacement.isPresent()) {
+                    current.subParts.set(i, replacement.get());
+                } else {
+                    current.subParts.remove(i);
                 }
+                return true;
+            }
 
-                if (setSubPartInTree(target, replacement, part.get(), targetIsInner)) {
-                    return true;
-                }
+            if (setSubPartInTree(target, replacement, part, targetIsInner)) {
+                return true;
             }
             i++;
         }
@@ -411,25 +409,21 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         var nextSize = Math.min(size / 2, size / (float) (partCount / 2));
         int i = 0;
         for (var child : part.getSubParts()) {
-            if (child.isPresent()) {
-                var childPart = child.get();
+            var angle = startingAngle + (2 * Math.PI) / partCount * i - (Math.PI / 2);
 
-                var angle = startingAngle + (2 * Math.PI) / partCount * i - (Math.PI / 2);
+            var nextX = x + (size * Math.cos(angle));
+            var nextY = y + (size * Math.sin(angle));
+            var diffX = nextX - mouseX;
+            var diffY = nextY - mouseY;
+            var distanceSquared = diffX * diffX + diffY * diffY;
 
-                var nextX = x + (size * Math.cos(angle));
-                var nextY = y + (size * Math.sin(angle));
-                var diffX = nextX - mouseX;
-                var diffY = nextY - mouseY;
-                var distanceSquared = diffX * diffX + diffY * diffY;
-
-                if (distanceSquared < closestDistanceSquared) {
-                    closest = childPart;
-                    closestAngle = (float) angle;
-                    closestX = (float) nextX;
-                    closestY = (float) nextY;
-                    closestSize = nextSize;
-                    closestDistanceSquared = distanceSquared;
-                }
+            if (distanceSquared < closestDistanceSquared) {
+                closest = child;
+                closestAngle = (float) angle;
+                closestX = (float) nextX;
+                closestY = (float) nextY;
+                closestSize = nextSize;
+                closestDistanceSquared = distanceSquared;
             }
 
             i++;
