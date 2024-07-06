@@ -18,7 +18,7 @@ public class SpellTooltipComponent implements TooltipComponent {
 
     public SpellTooltipComponent(SpellPart spell) {
         this.spell = spell;
-        this.renderer = new SpellCircleRenderer();
+        this.renderer = new SpellCircleRenderer(true);
     }
 
     @Override
@@ -44,7 +44,6 @@ public class SpellTooltipComponent implements TooltipComponent {
         var size = 30f;
 
         matrices.push();
-        matrices.translate(0, 0, 10);
         renderer.renderPart(matrices, vertexConsumers, Optional.of(spell), x + (float) getWidth(textRenderer) / 2, y + (float) getHeight() / 2, size,
                 0.0, delta, a -> a/size, new Vec3d(0, 0, -1) );
         matrices.pop();

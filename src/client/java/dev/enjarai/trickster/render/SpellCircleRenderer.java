@@ -33,19 +33,23 @@ public class SpellCircleRenderer {
     public static final int CLICK_HITBOX_SIZE = 6;
 
     private final boolean inUI;
+    private final boolean inEditor;
+
     private Supplier<SpellPart> drawingPartGetter;
     private Supplier<List<Byte>> drawingPatternGetter;
     private double mouseX;
     private double mouseY;
 
-    public SpellCircleRenderer() {
-        this.inUI = false;
+    public SpellCircleRenderer(Boolean inUI) {
+        this.inUI = inUI;
+        this.inEditor = false;
     }
 
     public SpellCircleRenderer(Supplier<SpellPart> drawingPartGetter, Supplier<List<Byte>> drawingPatternGetter) {
         this.drawingPartGetter = drawingPartGetter;
         this.drawingPatternGetter = drawingPatternGetter;
         this.inUI = true;
+        this.inEditor = true;
     }
 
     public void setMousePosition(double mouseX, double mouseY) {
@@ -155,7 +159,7 @@ public class SpellCircleRenderer {
             var patternSize = size / PATTERN_TO_PART_RATIO;
             var pixelSize = patternSize / PART_PIXEL_RADIUS;
 
-            var isDrawing = inUI && drawingPartGetter.get() == parent;
+            var isDrawing = inEditor && drawingPartGetter.get() == parent;
             var patternList = isDrawing ? drawingPatternGetter.get() : pattern.orderedPattern();
 
             for (int i = 0; i < 9; i++) {
@@ -164,10 +168,10 @@ public class SpellCircleRenderer {
                 var isLinked = patternList.contains(Integer.valueOf(i).byteValue());
                 float dotScale = 1;
 
-                if (inUI && isInsideHitbox(pos, pixelSize, mouseX, mouseY) && isCircleClickable(size)) {
+                if (inEditor && isInsideHitbox(pos, pixelSize, mouseX, mouseY) && isCircleClickable(size)) {
                     dotScale = 1.6f;
                 } else if (!isLinked) {
-                    if (inUI && isCircleClickable(size)) {
+                    if (inEditor && isCircleClickable(size)) {
                         var mouseDistance = new Vector2f((float) (mouseX - pos.x), (float) (mouseY - pos.y)).length();
                         dotScale = Math.clamp(patternSize / mouseDistance - 0.2f, 0, 1);
                     } else {
@@ -195,7 +199,7 @@ public class SpellCircleRenderer {
                 last = now;
             }
 
-            if (inUI && isDrawing && last != null) {
+            if (inEditor && isDrawing && last != null) {
                 var now = new Vector2f((float) mouseX, (float) mouseY);
                 drawGlyphLine(matrices, vertexConsumers, last, now, pixelSize, true, 1, 0.5f * alpha);
             }
