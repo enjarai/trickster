@@ -1,11 +1,14 @@
 package dev.enjarai.trickster.spell.tricks;
 
 import dev.enjarai.trickster.Trickster;
+import dev.enjarai.trickster.cca.ModEntityCumponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.tricks.blunder.*;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
@@ -92,6 +95,16 @@ public abstract class Trick {
                 throw new CantEditBlockBlunder(this, pos);
             }
         }
+    }
+
+    protected List<Fragment> tryWard(SpellContext ctx, EntityFragment target, List<Fragment> fragments) throws BlunderException {
+        var entity = target.getEntity(ctx);
+
+        if (entity.isPresent() && entity.get() instanceof PlayerEntity player) {
+            return ModEntityCumponents.WARD.get(player)
+                    .run(ctx, this, fragments);
+        }
+        return fragments;
     }
 
     public MutableText getName() {

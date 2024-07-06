@@ -7,13 +7,18 @@
 ```
 
 Spell failures are referred to as *blunders*. When a spell blunders, a stack trace is printed out, 
-signifying *where* in the spell did the failure occur. Stack traces are colon-separated lists of characters. 
-They come in three kinds: # (pound/hashtag), > (chevron/angle bracket), and numbers.
+signifying *where* in the spell the failure occurred. Stack traces are colon-separated lists of characters of three varieties: 
+
+- # (pound/hashtag) 
+- \> (chevron/angle bracket)
+- any number
 
 ;;;;;
 
-The numbers are input indexes, the chevrons indicate a change of context into a spell fragment provided by the current spell, 
-and the pounds indicate a change of context into a spell fragment provided by an exterior source.
+The numbers are input indexes, 
+while both the chevrons and hashtags indicate a change of context into a different spell fragment.
+The former indicates a fragment provided by the current spell, 
+while the latter means the fragment came from elsewhere.
 
 ;;;;;
 
