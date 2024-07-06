@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.spell.tricks.event;
 
+import dev.enjarai.trickster.cca.ModEntityCumponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
@@ -21,8 +22,10 @@ public class WardTrick extends Trick {
         if (ctx.getPlayer().isEmpty())
             throw new NoPlayerBlunder(this);
 
-        var ward = expectInput(fragments, FragmentType.SPELL_PART, 0);
+        var player = ctx.getPlayer().get();
+        var wardHandler = expectInput(fragments, FragmentType.SPELL_PART, 0);
 
+        ModEntityCumponents.WARD.get(player).register(wardHandler.deepClone());
         return VoidFragment.INSTANCE;
     }
 }

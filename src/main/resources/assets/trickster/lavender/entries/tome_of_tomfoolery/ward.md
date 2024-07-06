@@ -6,7 +6,7 @@
 }
 ```
 
-Wards are defensive spells that are cast when you are target by a ploy. 
+Wards are defensive spells that are cast when you are the target of a ploy. 
 Your warding handler receives the glyph that is targeting you and a list containing the inputs the caster is passing to the glyph. 
 The expected signature for a warding handler is the following: 
 

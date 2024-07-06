@@ -14,7 +14,7 @@ and you have 250 kilogandalfs of blood mana.
 ;;;;;
 
 Mana regenerates over time at 0.5%/s. Maximum mana is always equivalent to maximum health times 24. 
-Current blood mana is always equivalent to current health times 24.
+Current blood mana is always equivalent to current health times 25.
 
 ;;;;;
 

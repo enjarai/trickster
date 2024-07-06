@@ -41,7 +41,7 @@ public class WrittenScrollItem extends Item {
             if (!world.isClient()) {
                 var spell = stack.get(ModComponents.SPELL);
                 if (spell != null) {
-                    var singleUseManaPool = SimpleManaPool.getSingleUse(500);
+                    var singleUseManaPool = SimpleManaPool.getSingleUse(meta.mana());
                     spell.spell().runSafely(new PlayerSpellContext((ServerPlayerEntity) user, singleUseManaPool, slot));
                     ((ServerPlayerEntity) user).getServerWorld().playSoundFromEntity(
                             null, user, ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f));
@@ -94,7 +94,7 @@ public class WrittenScrollItem extends Item {
             tooltip.add(Text.translatable("book.generation." + meta.generation()).formatted(Formatting.GRAY));
 
             if (meta.executable()) {
-                tooltip.add(Text.translatable("trickster.scroll_executable").formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("trickster.scroll_executable").append(": " + meta.mana()).formatted(Formatting.GRAY));
             }
         }
 
