@@ -10,6 +10,7 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
 import org.joml.Matrix4f;
@@ -32,19 +33,23 @@ public class SpellCircleRenderer {
     public static final int CLICK_HITBOX_SIZE = 6;
 
     private final boolean inUI;
+    private final boolean inEditor;
+
     private Supplier<SpellPart> drawingPartGetter;
     private Supplier<List<Byte>> drawingPatternGetter;
     private double mouseX;
     private double mouseY;
 
-    public SpellCircleRenderer() {
-        this.inUI = false;
+    public SpellCircleRenderer(Boolean inUI) {
+        this.inUI = inUI;
+        this.inEditor = false;
     }
 
     public SpellCircleRenderer(Supplier<SpellPart> drawingPartGetter, Supplier<List<Byte>> drawingPatternGetter) {
         this.drawingPartGetter = drawingPartGetter;
         this.drawingPatternGetter = drawingPatternGetter;
         this.inUI = true;
+        this.inEditor = true;
     }
 
     public void setMousePosition(double mouseX, double mouseY) {
@@ -135,25 +140,27 @@ public class SpellCircleRenderer {
             renderPart(matrices, vertexConsumers, Optional.of(part), x, y, size / 3, startingAngle, delta, alphaGetter, normal);
         } else {
             matrices.push();
-            drawSide(matrices, vertexConsumers, parent, x, y, size, glyph);
+            drawSide(matrices, vertexConsumers, parent, x, y, size, alphaGetter, glyph);
             matrices.pop();
 
             if (!inUI) {
                 matrices.push();
                 matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
-                drawSide(matrices, vertexConsumers, parent, -x, y, size, glyph);
+                drawSide(matrices, vertexConsumers, parent, -x, y, size, alphaGetter, glyph);
                 matrices.pop();
             }
         }
     }
 
-    private void drawSide(MatrixStack matrices, VertexConsumerProvider vertexConsumers, SpellPart parent, float x, float y, float size, Fragment glyph) {
+    private void drawSide(MatrixStack matrices, VertexConsumerProvider vertexConsumers, SpellPart parent, float x, float y, float size, Function<Float, Float> alphaGetter, Fragment glyph) {
+        var alpha = alphaGetter.apply(size);
         var patternSize = size / PATTERN_TO_PART_RATIO;
         var pixelSize = patternSize / PART_PIXEL_RADIUS;
 
         if (glyph instanceof PatternGlyph pattern) {
 
-            var isDrawing = inUI && drawingPartGetter.get() == parent;
+
+            var isDrawing = inEditor && drawingPartGetter.get() == parent;
             var patternList = isDrawing ? drawingPatternGetter.get() : pattern.orderedPattern();
 
             for (int i = 0; i < 9; i++) {
@@ -162,10 +169,10 @@ public class SpellCircleRenderer {
                 var isLinked = patternList.contains(Integer.valueOf(i).byteValue());
                 float dotScale = 1;
 
-                if (inUI && isInsideHitbox(pos, pixelSize, mouseX, mouseY) && isCircleClickable(size)) {
+                if (inEditor && isInsideHitbox(pos, pixelSize, mouseX, mouseY) && isCircleClickable(size)) {
                     dotScale = 1.6f;
                 } else if (!isLinked) {
-                    if (inUI && isCircleClickable(size)) {
+                    if (inEditor && isCircleClickable(size)) {
                         var mouseDistance = new Vector2f((float) (mouseX - pos.x), (float) (mouseY - pos.y)).length();
                         dotScale = Math.clamp(patternSize / mouseDistance - 0.2f, 0, 1);
                     } else {
@@ -181,21 +188,21 @@ public class SpellCircleRenderer {
                     c.accept(pos.x - dotSize, pos.y + dotSize);
                     c.accept(pos.x + dotSize, pos.y + dotSize);
                     c.accept(pos.x + dotSize, pos.y - dotSize);
-                }, 0, isDrawing && isLinked ? 0.5f : 1, isDrawing && isLinked ? 0.5f : 1, 1, 0.5f);
+                }, 0, isDrawing && isLinked ? 0.5f : 1, isDrawing && isLinked ? 0.5f : 1, 1, 0.5f * alpha);
             }
 
             Vector2f last = null;
             for (var b : patternList) {
                 var now = getPatternDotPosition(x, y, b, patternSize);
                 if (last != null) {
-                    drawGlyphLine(matrices, vertexConsumers, last, now, pixelSize, isDrawing, 1, 0.5f);
+                    drawGlyphLine(matrices, vertexConsumers, last, now, pixelSize, isDrawing, 1, 0.5f * alpha);
                 }
                 last = now;
             }
 
-            if (inUI && isDrawing && last != null) {
+            if (inEditor && isDrawing && last != null) {
                 var now = new Vector2f((float) mouseX, (float) mouseY);
-                drawGlyphLine(matrices, vertexConsumers, last, now, pixelSize, true, 1, 0.5f);
+                drawGlyphLine(matrices, vertexConsumers, last, now, pixelSize, true, 1, 0.5f * alpha);
             }
         } else {
             var textRenderer = MinecraftClient.getInstance().textRenderer;
@@ -209,9 +216,11 @@ public class SpellCircleRenderer {
             matrices.translate(x, y, 0);
             matrices.scale(size / 1.3f / width, size / 1.3f / width, 1);
 
+            var color = ColorHelper.Argb.withAlpha((int) (alpha * 0xff), 0xffffff);
+
             textRenderer.draw(
                     text,
-                    -width / 2f, -height / 2f, 0x88ffffff, false,
+                    -width / 2f, -height / 2f, color, false,
                     matrices.peek().getPositionMatrix(),
                     vertexConsumers, TextRenderer.TextLayerType.NORMAL,
                     0, 0xf000f0
@@ -219,7 +228,7 @@ public class SpellCircleRenderer {
 
             matrices.pop();
 
-            if (inUI) {
+            if (inEditor && inUI) {
                 for (int i = 0; i < 9; i++) {
                     var pos = getPatternDotPosition(x, y, i, patternSize);
 
@@ -248,7 +257,6 @@ public class SpellCircleRenderer {
                 }
             }
         }
-
     }
 
     public static void drawGlyphLine(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Vector2f last, Vector2f now, float pixelSize, boolean isDrawing, float tone, float opacity) {
