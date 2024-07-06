@@ -11,9 +11,9 @@ import dev.enjarai.trickster.spell.tricks.blunder.UnknownEntityBlunder;
 
 import java.util.List;
 
-public class getEntityTypeTrick extends Trick {
-    public getEntityTypeTrick() {
-        super(Pattern.of(3, 5, 6, 7)); // TODO
+public class GetEntityTypeTrick extends Trick {
+    public GetEntityTypeTrick() {
+        super(Pattern.of(2, 4, 1, 0, 3, 4, 6));
     }
 
     @Override

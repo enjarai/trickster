@@ -69,6 +69,7 @@ public class Tricks {
 
     // Entity
     public static final GetPositionTrick GET_POSITION = register("get_position", new GetPositionTrick());
+    public static final GetEntityTypeTrick GET_ENTITY_TYPE = register("get_entity_type", new GetEntityTypeTrick());
     public static final GetFacingTrick GET_FACING = register("get_facing", new GetFacingTrick());
     public static final GetEntityHealthTrick GET_HEALTH = register("get_health", new GetEntityHealthTrick());
     public static final GetEntityArmourTrick GET_ARMOUR_VALUE = register("get_armour", new GetEntityArmourTrick());

@@ -16,7 +16,7 @@ import java.util.List;
 
 public class GetEntityManaTrick extends Trick {
     public GetEntityManaTrick() {
-        super(Pattern.of(6, 7, 3, 8, 4, 0, 5, 1, 2, 4, 6));
+        super(Pattern.of(3, 4, 0, 3, 6, 8, 5, 2, 4, 5));
     }
 
     @Override

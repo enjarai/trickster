@@ -29,10 +29,6 @@ Wards which successfully modify a glyph's inputs will incur a cost of 9 kilogand
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:ward,title=Ploy of Warding|>
-
-spell ->
-
----
-
-Registers the given spell as the warding handler for the caster. Can only be cast by a player.
+To create a personal ward, you can take any charm-type accessory, commonly a [Warding Charm](^trickster:warding_charm),
+and inscribe a spell onto it.
+While such an accessory is equipped, it will act as a ward for the player wearing it.

@@ -10,6 +10,16 @@ Various tricks related to gathering data about entities.
 
 ;;;;;
 
+<|glyph@trickster:templates|trick-id=trickster:get_entity_type,title=Motive Verification Distortion|>
+
+entity -> entity_type
+
+---
+
+Given an entity, returns its type.
+
+;;;;;
+
 <|glyph@trickster:templates|trick-id=trickster:get_position,title=Locational Distortion|>
 
 entity -> vector
