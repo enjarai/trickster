@@ -3,6 +3,7 @@ package dev.enjarai.trickster.render;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Fragment;
+import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.PatternGlyph;
 import dev.enjarai.trickster.spell.SpellPart;
 import net.minecraft.client.MinecraftClient;
@@ -153,12 +154,13 @@ public class SpellCircleRenderer {
             var pixelSize = patternSize / PART_PIXEL_RADIUS;
 
             var isDrawing = inUI && drawingPartGetter.get() == parent;
-            var patternList = isDrawing ? drawingPatternGetter.get() : pattern.orderedPattern();
+            var drawingPattern = drawingPatternGetter.get();
+            var patternList = isDrawing ? Pattern.from(drawingPattern) : pattern.pattern();
 
             for (int i = 0; i < 9; i++) {
                 var pos = getPatternDotPosition(x, y, i, patternSize);
 
-                var isLinked = patternList.contains(Integer.valueOf(i).byteValue());
+                var isLinked = isDrawing ? drawingPattern.contains((byte) i) : patternList.contains(i);
                 float dotScale = 1;
 
                 if (inUI && isInsideHitbox(pos, pixelSize, mouseX, mouseY) && isCircleClickable(size)) {
@@ -183,16 +185,14 @@ public class SpellCircleRenderer {
                 }, 0, isDrawing && isLinked ? 0.5f : 1, isDrawing && isLinked ? 0.5f : 1, 1, 0.5f);
             }
 
-            Vector2f last = null;
-            for (var b : patternList) {
-                var now = getPatternDotPosition(x, y, b, patternSize);
-                if (last != null) {
-                    drawGlyphLine(matrices, vertexConsumers, last, now, pixelSize, isDrawing, 1, 0.5f);
-                }
-                last = now;
+            for (var line : patternList.entries()) {
+                var first = getPatternDotPosition(x, y, line.p1(), patternSize);
+                var second = getPatternDotPosition(x, y, line.p2(), patternSize);
+                drawGlyphLine(matrices, vertexConsumers, first, second, pixelSize, isDrawing, 1, 0.5f);
             }
 
-            if (inUI && isDrawing && last != null) {
+            if (inUI && isDrawing) {
+                var last = getPatternDotPosition(x, y, drawingPattern.getLast(), patternSize);
                 var now = new Vector2f((float) mouseX, (float) mouseY);
                 drawGlyphLine(matrices, vertexConsumers, last, now, pixelSize, true, 1, 0.5f);
             }

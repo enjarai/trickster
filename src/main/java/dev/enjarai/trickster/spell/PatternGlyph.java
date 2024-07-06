@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.spell;
 
+import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
@@ -15,16 +16,25 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public record PatternGlyph(Pattern pattern, List<Byte> orderedPattern) implements Fragment {
-    public static final Codec<PatternGlyph> CODEC = Codec.BYTE.listOf().xmap(PatternGlyph::new, PatternGlyph::orderedPattern);
+public record PatternGlyph(Pattern pattern) implements Fragment {
+    public static final Codec<PatternGlyph> CODEC = Codec.either(Pattern.CODEC, Codec.BYTE.listOf())
+            .xmap(
+                    either -> either.left().orElseGet(() -> Pattern.from(either.right().orElseThrow())),
+                    Either::left
+            )
+            .xmap(PatternGlyph::new, PatternGlyph::pattern);
     public static final MapCodec<PatternGlyph> MAP_CODEC = CODEC.fieldOf("pattern");
+
+    public PatternGlyph() {
+        this(Pattern.EMPTY);
+    }
 
     public PatternGlyph(int... pattern) {
         this(Stream.of(ArrayUtils.toObject(pattern)).map(Integer::byteValue).toList());
     }
 
     public PatternGlyph(List<Byte> pattern) {
-        this(Pattern.from(pattern), pattern);
+        this(Pattern.from(pattern));
     }
 
     @Override
