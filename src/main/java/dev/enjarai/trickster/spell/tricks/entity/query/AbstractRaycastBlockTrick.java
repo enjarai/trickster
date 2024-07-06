@@ -12,15 +12,14 @@ import net.minecraft.world.RaycastContext;
 
 import java.util.List;
 
-public abstract class AbstractRaycastBlockTrick extends Trick {
+public abstract class AbstractRaycastBlockTrick extends AbstractLivingEntityQueryTrick {
     public AbstractRaycastBlockTrick(Pattern pattern) {
         super(pattern);
     }
 
     public BlockHitResult getHit(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var entityArg = expectInput(fragments, FragmentType.ENTITY, 0);
+        var entity = getLivingEntity(ctx, fragments, 0);
 
-        var entity = entityArg.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this));
         return entity.getWorld().raycast(new RaycastContext(
                 entity.getEyePos(), entity.getEyePos().add(entity.getRotationVector().multiply(128d)),
                 RaycastContext.ShapeType.OUTLINE, RaycastContext.FluidHandling.NONE, entity

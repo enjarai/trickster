@@ -12,16 +12,14 @@ import org.joml.Vector3d;
 
 import java.util.List;
 
-public class GetFacingTrick extends Trick {
+public class GetFacingTrick extends AbstractLivingEntityQueryTrick {
     public GetFacingTrick() {
         super(Pattern.of(3, 2, 7));
     }
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var entity = expectInput(fragments, FragmentType.ENTITY, 0);
-
-        var facing = entity.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this)).getRotationVector();
+        var facing = getLivingEntity(ctx, fragments, 0).getRotationVector();
 
         return new VectorFragment(new Vector3d(facing.x, facing.y, facing.z));
     }
