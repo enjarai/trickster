@@ -94,7 +94,7 @@ public class WrittenScrollItem extends Item {
             tooltip.add(Text.translatable("book.generation." + meta.generation()).formatted(Formatting.GRAY));
 
             if (meta.executable()) {
-                tooltip.add(Text.translatable("trickster.scroll_executable").append(": " + meta.mana()).formatted(Formatting.GRAY));
+                tooltip.add(Text.translatable("trickster.scroll_executable", meta.mana()).formatted(Formatting.GRAY));
             }
         }
 

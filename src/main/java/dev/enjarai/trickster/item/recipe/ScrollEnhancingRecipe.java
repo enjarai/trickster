@@ -41,7 +41,7 @@ public class ScrollEnhancingRecipe extends SpecialCraftingRecipe {
             }
         }
 
-        return !itemStack.isEmpty() && i == 1;
+        return !itemStack.isEmpty() && i > 0;
     }
 
     public ItemStack craft(CraftingRecipeInput craftingRecipeInput, RegistryWrapper.WrapperLookup wrapperLookup) {
@@ -58,7 +58,7 @@ public class ScrollEnhancingRecipe extends SpecialCraftingRecipe {
 
                     itemStack = itemStack2;
                 } else {
-                    if (!itemStack2.isOf(Items.AMETHYST_SHARD) || i > 0) {
+                    if (!itemStack2.isOf(Items.AMETHYST_SHARD)) {
                         return ItemStack.EMPTY;
                     }
 
@@ -69,8 +69,8 @@ public class ScrollEnhancingRecipe extends SpecialCraftingRecipe {
 
         var meta = itemStack.get(ModComponents.WRITTEN_SCROLL_META);
         var spell = itemStack.get(ModComponents.SPELL);
-        if (!itemStack.isEmpty() && i >= 1 && meta != null && spell != null) {
-            var newMeta = meta.withExecutable(500);
+        if (!itemStack.isEmpty() && i > 0 && meta != null && spell != null) {
+            var newMeta = meta.withExecutable(i * 100);
             ItemStack itemStack3 = itemStack.copyWithCount(1);
             itemStack3.set(ModComponents.WRITTEN_SCROLL_META, newMeta);
             itemStack3.set(ModComponents.SPELL, spell);
