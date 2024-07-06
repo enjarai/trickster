@@ -1,6 +1,5 @@
-package dev.enjarai.trickster.spell.tricks.entity;
+package dev.enjarai.trickster.spell.tricks.entity.query;
 
-import dev.enjarai.trickster.cca.ModEntityCumponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
@@ -14,9 +13,9 @@ import net.minecraft.entity.LivingEntity;
 
 import java.util.List;
 
-public class GetEntityManaTrick extends Trick {
-    public GetEntityManaTrick() {
-        super(Pattern.of(6, 7, 3, 8, 4, 0, 5, 1, 2, 4, 6));
+public class GetEntityArmourTrick extends Trick {
+    public GetEntityArmourTrick() {
+        super(Pattern.of(6, 4, 0, 3, 6, 7, 8, 5, 2, 4, 8));
     }
 
     @Override
@@ -27,7 +26,8 @@ public class GetEntityManaTrick extends Trick {
             var entity2 = entity.get();
 
             if (entity2 instanceof LivingEntity living) {
-                return new NumberFragment(ModEntityCumponents.MANA.get(living).get());
+                int armour = living.getArmor();
+                return new NumberFragment(armour);
             }
 
             throw new EntityInvalidBlunder(this);

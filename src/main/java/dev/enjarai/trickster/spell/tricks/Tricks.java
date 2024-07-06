@@ -3,6 +3,7 @@ package dev.enjarai.trickster.spell.tricks;
 import com.mojang.serialization.Lifecycle;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.tricks.entity.query.*;
 import dev.enjarai.trickster.spell.tricks.event.WardTrick;
 import dev.enjarai.trickster.spell.tricks.func.ClosureTrick;
 import dev.enjarai.trickster.spell.tricks.func.ExecuteTrick;
