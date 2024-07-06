@@ -154,7 +154,7 @@ public class SpellCircleRenderer {
             var pixelSize = patternSize / PART_PIXEL_RADIUS;
 
             var isDrawing = inUI && drawingPartGetter.get() == parent;
-            var drawingPattern = drawingPatternGetter.get();
+            var drawingPattern = inUI ? drawingPatternGetter.get() : null;
             var patternList = isDrawing ? Pattern.from(drawingPattern) : pattern.pattern();
 
             for (int i = 0; i < 9; i++) {
