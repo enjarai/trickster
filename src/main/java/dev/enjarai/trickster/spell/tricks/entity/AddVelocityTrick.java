@@ -21,16 +21,14 @@ public class AddVelocityTrick extends Trick {
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var entity = expectInput(fragments, FragmentType.ENTITY, 0);
-        var velocity = expectInput(fragments, FragmentType.VECTOR, 1);
-
         var target = entity.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this));
 
         if (target instanceof PlayerEntity player) {
             fragments = ModEntityCumponents.WARD.get(player)
-                    .run(ctx, this, new SpellPart(new PatternGlyph(4, 6, 0, 1, 2, 8, 4), new ArrayList<>()), fragments);
-            velocity = expectInput(fragments, FragmentType.VECTOR, 1);
+                    .run(ctx, this, new SpellPart(new PatternGlyph(pattern)), fragments);
         }
 
+        var velocity = expectInput(fragments, FragmentType.VECTOR, 1);
         ctx.useMana(this, (float)velocity.vector().length() * 4);
         target.addVelocity(velocity.vector().x(), velocity.vector().y(), velocity.vector().z());
         target.velocityModified = true;
