@@ -25,7 +25,7 @@ public class AddVelocityTrick extends Trick {
 
         if (target instanceof PlayerEntity player) {
             fragments = ModEntityCumponents.WARD.get(player)
-                    .run(ctx, this, new SpellPart(new PatternGlyph(pattern)), fragments);
+                    .run(ctx, this, fragments);
         }
 
         var velocity = expectInput(fragments, FragmentType.VECTOR, 1);

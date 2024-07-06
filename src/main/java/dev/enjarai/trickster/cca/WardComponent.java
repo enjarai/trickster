@@ -46,7 +46,7 @@ public class WardComponent implements Component {
         this.spell = spell;
     }
 
-    public List<Fragment> run(SpellContext triggerCtx, Trick source, SpellPart triggerSpell, List<Fragment> inputs) throws BlunderException {
+    public List<Fragment> run(SpellContext triggerCtx, Trick source, List<Fragment> inputs) throws BlunderException {
         if (spell == null)
             return inputs;
 
@@ -57,7 +57,7 @@ public class WardComponent implements Component {
 
         try {
             var ctx = new PlayerSpellContext((ServerPlayerEntity)this.player, EquipmentSlot.MAINHAND);
-            ctx.pushPartGlyph(List.of(triggerSpell, new ListFragment(inputs)));
+            ctx.pushPartGlyph(List.of(new PatternGlyph(source.getPattern()), new ListFragment(inputs)));
 
             var result = spell.run(ctx);
             ctx.popPartGlyph();
@@ -73,7 +73,7 @@ public class WardComponent implements Component {
                     var inputType = input.type();
                     var newInput = newInputs.get(index);
 
-                    if (!isModified && !newInput.equals(input)) {
+                    if (!newInput.equals(input)) {
                         isModified = true;
                     }
 

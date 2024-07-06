@@ -25,7 +25,7 @@ public class WardTrick extends Trick {
         var player = ctx.getPlayer().get();
         var wardHandler = expectInput(fragments, FragmentType.SPELL_PART, 0);
 
-        ModEntityCumponents.WARD.get(player).register(wardHandler.deepClone());
+        ModEntityCumponents.WARD.get(player).register(wardHandler);
         return VoidFragment.INSTANCE;
     }
 }
