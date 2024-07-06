@@ -148,9 +148,10 @@ public class SpellCircleRenderer {
     }
 
     private void drawSide(MatrixStack matrices, VertexConsumerProvider vertexConsumers, SpellPart parent, float x, float y, float size, Fragment glyph) {
+        var patternSize = size / PATTERN_TO_PART_RATIO;
+        var pixelSize = patternSize / PART_PIXEL_RADIUS;
+
         if (glyph instanceof PatternGlyph pattern) {
-            var patternSize = size / PATTERN_TO_PART_RATIO;
-            var pixelSize = patternSize / PART_PIXEL_RADIUS;
 
             var isDrawing = inUI && drawingPartGetter.get() == parent;
             var patternList = isDrawing ? drawingPatternGetter.get() : pattern.orderedPattern();
@@ -217,7 +218,37 @@ public class SpellCircleRenderer {
             );
 
             matrices.pop();
+
+            if (inUI) {
+                for (int i = 0; i < 9; i++) {
+                    var pos = getPatternDotPosition(x, y, i, patternSize);
+
+                    float dotScale;
+
+                    if (isInsideHitbox(pos, pixelSize, mouseX, mouseY) && isCircleClickable(size)) {
+                        dotScale = 1.6f;
+                    } else {
+                        if (isCircleClickable(size)) {
+                            var mouseDistance = new Vector2f((float) (mouseX - pos.x), (float) (mouseY - pos.y)).length();
+                            dotScale = Math.clamp(patternSize / (mouseDistance * 2) - 0.2f, 0, 1);
+                        } else {
+                            // Skip the dot if its too small to click
+                            continue;
+                        }
+                    }
+
+                    var dotSize = pixelSize * dotScale;
+
+                    drawFlatPolygon(matrices, vertexConsumers, c -> {
+                        c.accept(pos.x - dotSize, pos.y - dotSize);
+                        c.accept(pos.x - dotSize, pos.y + dotSize);
+                        c.accept(pos.x + dotSize, pos.y + dotSize);
+                        c.accept(pos.x + dotSize, pos.y - dotSize);
+                    }, 0, 1, 1, 1, 0.25f);
+                }
+            }
         }
+
     }
 
     public static void drawGlyphLine(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Vector2f last, Vector2f now, float pixelSize, boolean isDrawing, float tone, float opacity) {
