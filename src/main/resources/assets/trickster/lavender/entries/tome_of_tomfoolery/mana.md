@@ -6,7 +6,7 @@
 }
 ```
 
-Mana is what fuels your ploys. It's the cost of manipulating the world. 
+Mana is what fuels your ploys. It's the cost of manipulating the world.
 
 
 As is tradition, amounts of mana are measured in gandalfs, or G. 
@@ -45,7 +45,7 @@ When there are mana sources linked to your spell, they will be prioritised when 
 Mana links with greater limits provide a greater ratio of mana so that all sources are drawn from equally. 
 Mana links are lossy, with a tax of 70% incurred on the mana source. 
 The limit on mana links is the amount of mana drained post-tax. 
-The amount of mana actually provided to your spell is mana link limit divided by 1.7.
+The amount of mana actually provided to your spell is the mana link's limit divided by 1.7.
 
 ;;;;;
 

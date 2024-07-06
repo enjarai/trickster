@@ -24,11 +24,19 @@ public class PlayerSpellContext extends SpellContext {
     private final EquipmentSlot slot;
 
     public PlayerSpellContext(ServerPlayerEntity player, EquipmentSlot slot) {
-        this(player, ModEntityCumponents.MANA.get(player), slot);
+        this(0, player, slot);
     }
 
-    public PlayerSpellContext(ServerPlayerEntity player, ManaPool manaPool, EquipmentSlot slot) {
-        super(manaPool);
+    public PlayerSpellContext(int recursions, ServerPlayerEntity player, EquipmentSlot slot) {
+        this(ModEntityCumponents.MANA.get(player), recursions, player, slot);
+    }
+
+    public PlayerSpellContext(ManaPool manaPool, ServerPlayerEntity player, EquipmentSlot slot) {
+        this(manaPool, 0, player, slot);
+    }
+
+    public PlayerSpellContext(ManaPool manaPool, int recursions, ServerPlayerEntity player, EquipmentSlot slot) {
+        super(manaPool, recursions);
         this.player = player;
         this.slot = slot;
     }

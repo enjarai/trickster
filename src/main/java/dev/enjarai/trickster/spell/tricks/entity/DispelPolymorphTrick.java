@@ -34,6 +34,7 @@ public class DispelPolymorphTrick extends Trick {
                 return BooleanFragment.TRUE;
             }
         }
+
         return BooleanFragment.FALSE;
     }
 }

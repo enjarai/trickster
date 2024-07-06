@@ -21,7 +21,7 @@ import org.ladysnake.cca.api.v3.component.Component;
 import java.util.List;
 
 public class WardComponent implements Component {
-    private static final KeyedEndec<SpellPart> SPELL = SpellPart.ENDEC.keyed("handler", () -> null);
+    private static final KeyedEndec<SpellPart> SPELL = SpellPart.ENDEC.keyed("ward_handler", () -> null);
 
     private final PlayerEntity player;
     @Nullable
@@ -35,11 +35,14 @@ public class WardComponent implements Component {
     public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
         if (spell != null)
             tag.put(SPELL, spell);
+        else
+            tag.putBoolean("is_null", true);
     }
 
     @Override
     public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-        spell = tag.get(SPELL);
+        if (!tag.contains("is_null") || !tag.getBoolean("is_null"))
+            spell = tag.get(SPELL);
     }
 
     public void register(SpellPart spell) {
@@ -56,7 +59,7 @@ public class WardComponent implements Component {
         boolean applyBacklashIfModified = true;
 
         try {
-            var ctx = new PlayerSpellContext((ServerPlayerEntity)this.player, EquipmentSlot.MAINHAND);
+            var ctx = new PlayerSpellContext(triggerCtx.getRecursions(), (ServerPlayerEntity)this.player, EquipmentSlot.MAINHAND);
             ctx.pushPartGlyph(List.of(new PatternGlyph(source.getPattern()), new ListFragment(inputs)));
 
             var result = spell.run(ctx);

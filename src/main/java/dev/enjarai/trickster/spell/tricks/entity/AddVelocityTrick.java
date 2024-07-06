@@ -23,7 +23,7 @@ public class AddVelocityTrick extends Trick {
         var entity = expectInput(fragments, FragmentType.ENTITY, 0);
         var target = entity.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this));
 
-        fragments = tryWard(ctx, entity, fragments);
+        fragments = tryWard(ctx, target, fragments);
 
         var velocity = expectInput(fragments, FragmentType.VECTOR, 1);
         ctx.useMana(this, (float)velocity.vector().length() * 4);

@@ -42,7 +42,7 @@ public class WrittenScrollItem extends Item {
                 var spell = stack.get(ModComponents.SPELL);
                 if (spell != null) {
                     var singleUseManaPool = SimpleManaPool.getSingleUse(meta.mana());
-                    spell.spell().runSafely(new PlayerSpellContext((ServerPlayerEntity) user, singleUseManaPool, slot));
+                    spell.spell().runSafely(new PlayerSpellContext(singleUseManaPool, (ServerPlayerEntity) user, slot));
                     ((ServerPlayerEntity) user).getServerWorld().playSoundFromEntity(
                             null, user, ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f));
 

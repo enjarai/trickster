@@ -1,14 +1,12 @@
 package dev.enjarai.trickster.spell;
 
 public interface ManaPool {
-    float FACTOR = 25;
-
     static float healthFromMana(float mana) {
-        return mana / FACTOR;
+        return mana / 2;
     }
 
     static float manaFromHealth(float health) {
-        return health * FACTOR;
+        return health * 12;
     }
 
     void set(float value);

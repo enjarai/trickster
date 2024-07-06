@@ -28,8 +28,9 @@ public abstract class SpellContext {
     protected final ManaPool manaPool;
     protected final List<ManaLink> manaLinks = new ArrayList<>();
 
-    protected SpellContext(ManaPool manaPool) {
+    protected SpellContext(ManaPool manaPool, int recursions) {
         this.manaPool = manaPool;
+        this.recursions = recursions;
     }
 
     public void pushPartGlyph(List<Fragment> fragments) throws BlunderException {
@@ -94,6 +95,10 @@ public abstract class SpellContext {
         }
 
         manaLinks.add(link);
+    }
+
+    public int getRecursions() {
+        return recursions;
     }
 
     public Optional<ServerPlayerEntity> getPlayer() {

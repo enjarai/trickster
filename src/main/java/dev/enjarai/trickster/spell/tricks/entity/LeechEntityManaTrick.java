@@ -22,20 +22,18 @@ public class LeechEntityManaTrick extends Trick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var entity = expectInput(fragments, FragmentType.ENTITY, 0).getEntity(ctx);
+        var entity = expectInput(fragments, FragmentType.ENTITY, 0);
+        var target = entity.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this));
+
+        fragments = tryWard(ctx, target, fragments);
+
         var limit = expectInput(fragments, FragmentType.NUMBER, 1).number();
 
-        if (entity.isPresent()) {
-            var entity2 = entity.get();
-
-            if (entity2 instanceof LivingEntity living) {
-                ctx.addManaLink(this, new ManaLink(ModEntityCumponents.MANA.get(living), (float)limit));
-                return VoidFragment.INSTANCE;
-            }
-
-            throw new EntityInvalidBlunder(this);
+        if (target instanceof LivingEntity living) {
+            ctx.addManaLink(this, new ManaLink(ModEntityCumponents.MANA.get(living), (float)limit));
+            return VoidFragment.INSTANCE;
         }
 
-        throw new UnknownEntityBlunder(this);
+        throw new EntityInvalidBlunder(this);
     }
 }
