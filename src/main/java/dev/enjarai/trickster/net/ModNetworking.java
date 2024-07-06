@@ -72,10 +72,11 @@ public class ModNetworking {
                         stack.set(ModComponents.SELECTED_SLOT,
                                 new SelectedSlotComponent(newSlot, current.maxSlot()));
 
+                        var name = container.stream().skip(newSlot).findFirst().filter(s -> !s.isEmpty());
                         var message = Text.translatable("trickster.scroll_hat", newSlot);
 
-                        if (!stack.isEmpty()) {
-                            message = message.append(" [").append(stack.getName()).append("]");
+                        if (name.isPresent()) {
+                            message = message.append(" [").append(name.get().getName()).append("]");
                         }
 
                         player.sendMessage(message, true);
