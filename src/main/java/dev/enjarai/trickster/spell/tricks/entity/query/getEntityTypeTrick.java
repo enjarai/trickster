@@ -13,7 +13,7 @@ import java.util.List;
 
 public class getEntityTypeTrick extends Trick {
     public getEntityTypeTrick() {
-        super(pattern);
+        super(Pattern.of(3, 5, 6, 7)); // TODO
     }
 
     @Override
