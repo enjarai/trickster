@@ -10,6 +10,7 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
 import org.joml.Matrix4f;
@@ -210,9 +211,11 @@ public class SpellCircleRenderer {
             matrices.translate(x, y, 0);
             matrices.scale(size / 1.3f / width, size / 1.3f / width, 1);
 
+            var color = ColorHelper.Argb.withAlpha((int) (alpha * 0xff), 0xffffff);
+
             textRenderer.draw(
                     text,
-                    -width / 2f, -height / 2f, 0x88ffffff, false,
+                    -width / 2f, -height / 2f, color, false,
                     matrices.peek().getPositionMatrix(),
                     vertexConsumers, TextRenderer.TextLayerType.NORMAL,
                     0, 0xf000f0
