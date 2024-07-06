@@ -56,6 +56,7 @@ trickster:
     height_reflection: Stature Distortion
     sneaking_reflection: Alternative Distortion
     raycast: Scout's Distortion
+    get_entity_type: Motive Verification Distortion
     get_position: Locational Distortion
     get_facing: Directional Distortion
     get_health: Fettle Distortion
@@ -63,6 +64,8 @@ trickster:
     get_mana: Distortion of Authority
     leech_mana: Conduit's Ploy
     add_velocity: Impulse Ploy
+
+    block_find_entity: Embracing Distortion
 
     create_spell_circle: Perceptive Ploy
     delete_spell_circle: Cancellation Ploy

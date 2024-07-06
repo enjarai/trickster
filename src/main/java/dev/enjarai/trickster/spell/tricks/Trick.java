@@ -19,6 +19,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.List;
+import java.util.Optional;
 
 public abstract class Trick {
     public static final Identifier TRICK_RANDOM = Trickster.id("trick");
@@ -53,6 +54,26 @@ public abstract class Trick {
         }
         //noinspection unchecked
         return (T) fragment;
+    }
+
+    protected <T extends Fragment> Optional<T> supposeInput(List<Fragment> fragments, FragmentType<T> type, int index) throws BlunderException {
+        if (fragments.size() <= index) {
+            return Optional.empty();
+        }
+        var fragment = fragments.get(index);
+        if (fragment.type() != type) {
+            throw new IncorrectFragmentBlunder(this, index, type.getName(), fragment);
+        }
+        //noinspection unchecked
+        return Optional.of((T) fragment);
+    }
+
+    protected <T extends Fragment> Optional<T> supposeType(Fragment fragment, FragmentType<T> type) throws BlunderException {
+        if (fragment.type() != type) {
+            return Optional.empty();
+        }
+        //noinspection unchecked
+        return Optional.of((T) fragment);
     }
 
     protected <T extends Fragment> T expectInput(List<Fragment> fragments, Class<T> type, int index) throws BlunderException {
