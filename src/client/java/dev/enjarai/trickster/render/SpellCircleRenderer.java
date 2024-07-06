@@ -135,19 +135,21 @@ public class SpellCircleRenderer {
             renderPart(matrices, vertexConsumers, Optional.of(part), x, y, size / 3, startingAngle, delta, alphaGetter, normal);
         } else {
             matrices.push();
-            drawSide(matrices, vertexConsumers, parent, x, y, size, glyph);
+            drawSide(matrices, vertexConsumers, parent, x, y, size, alphaGetter, glyph);
             matrices.pop();
 
             if (!inUI) {
                 matrices.push();
                 matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
-                drawSide(matrices, vertexConsumers, parent, -x, y, size, glyph);
+                drawSide(matrices, vertexConsumers, parent, -x, y, size, alphaGetter, glyph);
                 matrices.pop();
             }
         }
     }
 
-    private void drawSide(MatrixStack matrices, VertexConsumerProvider vertexConsumers, SpellPart parent, float x, float y, float size, Fragment glyph) {
+    private void drawSide(MatrixStack matrices, VertexConsumerProvider vertexConsumers, SpellPart parent, float x, float y, float size, Function<Float, Float> alphaGetter, Fragment glyph) {
+        var alpha = alphaGetter.apply(size);
+
         if (glyph instanceof PatternGlyph pattern) {
             var patternSize = size / PATTERN_TO_PART_RATIO;
             var pixelSize = patternSize / PART_PIXEL_RADIUS;
@@ -180,21 +182,21 @@ public class SpellCircleRenderer {
                     c.accept(pos.x - dotSize, pos.y + dotSize);
                     c.accept(pos.x + dotSize, pos.y + dotSize);
                     c.accept(pos.x + dotSize, pos.y - dotSize);
-                }, 0, isDrawing && isLinked ? 0.5f : 1, isDrawing && isLinked ? 0.5f : 1, 1, 0.5f);
+                }, 0, isDrawing && isLinked ? 0.5f : 1, isDrawing && isLinked ? 0.5f : 1, 1, 0.5f * alpha);
             }
 
             Vector2f last = null;
             for (var b : patternList) {
                 var now = getPatternDotPosition(x, y, b, patternSize);
                 if (last != null) {
-                    drawGlyphLine(matrices, vertexConsumers, last, now, pixelSize, isDrawing, 1, 0.5f);
+                    drawGlyphLine(matrices, vertexConsumers, last, now, pixelSize, isDrawing, 1, 0.5f * alpha);
                 }
                 last = now;
             }
 
             if (inUI && isDrawing && last != null) {
                 var now = new Vector2f((float) mouseX, (float) mouseY);
-                drawGlyphLine(matrices, vertexConsumers, last, now, pixelSize, true, 1, 0.5f);
+                drawGlyphLine(matrices, vertexConsumers, last, now, pixelSize, true, 1, 0.5f * alpha);
             }
         } else {
             var textRenderer = MinecraftClient.getInstance().textRenderer;

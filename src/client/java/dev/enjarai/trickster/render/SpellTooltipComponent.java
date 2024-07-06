@@ -23,12 +23,12 @@ public class SpellTooltipComponent implements TooltipComponent {
 
     @Override
     public int getHeight() {
-        return 100;
+        return 110;
     }
 
     @Override
     public int getWidth(TextRenderer textRenderer) {
-        return 100;
+        return 110;
     }
 
     @Override
@@ -41,12 +41,12 @@ public class SpellTooltipComponent implements TooltipComponent {
         var matrices = context.getMatrices();
         var vertexConsumers = context.getVertexConsumers();
         var delta = 0;
-        var size = 25f;
+        var size = 30f;
 
         matrices.push();
         matrices.translate(0, 0, 10);
         renderer.renderPart(matrices, vertexConsumers, Optional.of(spell), x + (float) getWidth(textRenderer) / 2, y + (float) getHeight() / 2, size,
-                0.0, delta, a -> 1f, new Vec3d(0, 0, -1) );
+                0.0, delta, a -> a/size, new Vec3d(0, 0, -1) );
         matrices.pop();
     }
 }
