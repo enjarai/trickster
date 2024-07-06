@@ -6,6 +6,7 @@
   "mixins": [
     "AbstractBlockStateMixin",
     "LivingEntityMixin",
+    "SpellTooltipMixin",
     "WorldChunkMixin",
     "event.LivingEntityMixin",
     "event.ServerPlayerInteractionManagerMixin"
