@@ -23,12 +23,12 @@ public class SpellTooltipComponent implements TooltipComponent {
 
     @Override
     public int getHeight() {
-        return 80;
+        return 100;
     }
 
     @Override
     public int getWidth(TextRenderer textRenderer) {
-        return 80;
+        return 100;
     }
 
     @Override
