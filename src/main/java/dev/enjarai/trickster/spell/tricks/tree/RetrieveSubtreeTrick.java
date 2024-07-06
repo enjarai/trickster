@@ -26,7 +26,7 @@ public class RetrieveSubtreeTrick extends Trick {
         var spell = expectInput(fragments, SpellPart.class, 0);
         var addressFragment = expectInput(fragments, ListFragment.class, 1);
 
-        var address = sanitizeAddress(addressFragment);
+        var address = addressFragment.sanitizeAddress(this);
 
         var node = spell;
         for (int index : address) {
@@ -40,23 +40,5 @@ public class RetrieveSubtreeTrick extends Trick {
         }
 
         return node;
-    }
-
-    private List<Integer> sanitizeAddress(ListFragment address) {
-        var sanitizedAddress = new ArrayList<Integer>();
-
-        for (Fragment fragment : address.fragments()) {
-            if (fragment instanceof NumberFragment index && index.isInteger()) {
-                sanitizedAddress.add((int) index.number());
-            } else {
-                throw new IncorrectFragmentBlunder(
-                        this,
-                        1,
-                        Text.translatable(Trickster.MOD_ID + ".fragment." + Trickster.MOD_ID + "." + "integer_list"),
-                        address);
-            }
-        }
-
-        return sanitizedAddress;
     }
 }
