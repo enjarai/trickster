@@ -44,6 +44,10 @@ public class ModItems {
             new WandItem(new Item.Settings().maxCount(1)
                     .component(ModComponents.SPELL, new SpellComponent(new SpellPart()))));
 
+    public static final TrickyAccessoryItem WARDING_CHARM = register("warding_charm",
+            new TrickyAccessoryItem(new Item.Settings().maxCount(1)
+                    .component(ModComponents.SPELL, new SpellComponent(new SpellPart()))));
+
     public static final TagKey<Item> CAN_EVALUATE_DYNAMICALLY = TagKey.of(RegistryKeys.ITEM, Trickster.id("can_evaluate_dynamically"));
     public static final TagKey<Item> HOLDABLE_HAT = TagKey.of(RegistryKeys.ITEM, Trickster.id("holdable_hat"));
     public static final TagKey<Item> SCROLLS = TagKey.of(RegistryKeys.ITEM, Trickster.id("scrolls"));
