@@ -35,8 +35,12 @@ public final class SpellPart implements Fragment {
         this.subParts = new ArrayList<>(subParts);
     }
 
+    public SpellPart(Fragment glyph) {
+        this(glyph, new ArrayList<>());
+    }
+
     public SpellPart() {
-        this(new PatternGlyph(), new ArrayList<>());
+        this(new PatternGlyph());
     }
 
     @Override
