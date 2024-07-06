@@ -46,6 +46,10 @@ repositories {
 		name "Terraformers Maven"
 		url 'https://maven.terraformersmc.com'
 	}
+
+	maven {
+		url 'https://maven.shedaniel.me/'
+	}
 }
 
 loom {
@@ -120,6 +124,8 @@ dependencies {
 
 	modImplementation "com.terraformersmc:modmenu:${property('deps.modmenu')}"
 	modClientImplementation "maven.modrinth:sodium:${property('deps.sodium')}"
+
+	modImplementation("io.wispforest:accessories-fabric:${property('deps.accessories')}")
 }
 
 processResources {
