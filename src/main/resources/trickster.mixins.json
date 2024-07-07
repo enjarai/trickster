@@ -7,6 +7,7 @@
     "AbstractBlockStateMixin",
     "LivingEntityMixin",
     "SwordItemMixin",
+    "SpellTooltipMixin",
     "WorldChunkMixin",
     "event.LivingEntityMixin",
     "event.ServerPlayerInteractionManagerMixin"
