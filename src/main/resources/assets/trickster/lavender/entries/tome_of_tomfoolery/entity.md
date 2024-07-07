@@ -50,6 +50,26 @@ Given an entity, returns its height in blocks.
 
 ;;;;;
 
+<|glyph@trickster:templates|trick-id=trickster:sneaking_reflection,title=Alternative Distortion|>
+
+entity -> number
+
+---
+
+Given an entity, returns whether the entity is crouching.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:get_max_health,title=Vigor Distortion|>
+
+entity -> number
+
+---
+
+Given an entity, returns its maximum health.
+
+;;;;;
+
 <|glyph@trickster:templates|trick-id=trickster:get_health,title=Fettle Distortion|>
 
 entity -> number
@@ -77,16 +97,6 @@ entity -> number
 ---
 
 Given an entity, returns its current mana.
-
-;;;;;
-
-<|glyph@trickster:templates|trick-id=trickster:sneaking_reflection,title=Alternative Distortion|>
-
-entity -> number
-
----
-
-Given an entity, returns whether the entity is crouching.
 
 ;;;;;
 

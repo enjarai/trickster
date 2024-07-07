@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.mixin.event;
 
 import dev.enjarai.trickster.particle.ModParticles;
+import dev.enjarai.trickster.spell.ItemTriggerProvider;
 import dev.enjarai.trickster.spell.fragment.BlockTypeFragment;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
@@ -26,7 +27,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.List;
 
 @Mixin(ServerPlayerInteractionManager.class)
-public abstract class ServerPlayerInteractionManagerMixin {
+public abstract class ServerPlayerInteractionManagerMixin implements ItemTriggerProvider {
 	@Shadow protected ServerWorld world;
 
 	@Shadow @Final protected ServerPlayerEntity player;
@@ -97,5 +98,10 @@ public abstract class ServerPlayerInteractionManagerMixin {
 			player.currentScreenHandler.syncState();
 			cir.setReturnValue(ActionResult.FAIL);
 		}
+	}
+
+	@Inject(method = "finishMining", at = @At("TAIL"))
+	private void triggerItemSpell(BlockPos pos, int sequence, String reason, CallbackInfo ci) {
+		trickster$triggerMainHand(player, VectorFragment.of(pos));
 	}
 }

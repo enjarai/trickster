@@ -14,6 +14,7 @@ import net.minecraft.component.type.ContainerComponent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class WriteSpellTrick extends Trick {
@@ -24,8 +25,12 @@ public class WriteSpellTrick extends Trick {
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var spell = expectInput(fragments, FragmentType.SPELL_PART, 0);
+        var player = ctx.getPlayer();
 
-        return ctx.getOtherHandSpellStack().map(stack -> {
+        if (player.isEmpty())
+            return BooleanFragment.FALSE;
+
+        return Optional.of(player.get().getOffHandStack()).map(stack -> {
             var newSpell = spell.deepClone();
             newSpell.brutallyMurderEphemerals();
 

@@ -2,7 +2,7 @@
 {
   "title": "Wards",
   "icon": "minecraft:shield",
-  "category": "trickster:tricks"
+  "category": "trickster:basics"
 }
 ```
 

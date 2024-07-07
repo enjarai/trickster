@@ -73,6 +73,7 @@ public class Tricks {
     public static final GetEntityTypeTrick GET_ENTITY_TYPE = register("get_entity_type", new GetEntityTypeTrick());
     public static final GetFacingTrick GET_FACING = register("get_facing", new GetFacingTrick());
     public static final GetEntityHealthTrick GET_HEALTH = register("get_health", new GetEntityHealthTrick());
+    public static final GetEntityMaxHealthTrick GET_MAX_HEALTH = register("get_max_health", new GetEntityMaxHealthTrick());
     public static final GetEntityArmourTrick GET_ARMOUR_VALUE = register("get_armour", new GetEntityArmourTrick());
     public static final HeightReflectionTrick HEIGHT_REFLECTION = register("height_reflection", new HeightReflectionTrick());
     public static final SneakingReflectionTrick SNEAKING_REFLECTION = register("sneaking_reflection", new SneakingReflectionTrick());

@@ -9,24 +9,22 @@ import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import dev.enjarai.trickster.spell.tricks.blunder.UnknownEntityBlunder;
+import dev.enjarai.trickster.spell.tricks.entity.query.AbstractLivingEntityQueryTrick;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.List;
 
-public class PolymorphTrick extends Trick {
+public class PolymorphTrick extends AbstractLivingEntityQueryTrick {
     public PolymorphTrick() {
         super(Pattern.of(4, 2, 1, 0, 4, 8, 7, 6, 4));
     }
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var source = expectInput(fragments, FragmentType.ENTITY, 1);
-        var realSource = source.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this));
-
+        var realSource = getLivingEntity(ctx, fragments, 1);
         fragments = tryWard(ctx, realSource, fragments);
 
-        var target = expectInput(fragments, FragmentType.ENTITY, 0);
-        var realTarget = target.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this));
+        var realTarget = getLivingEntity(ctx, fragments, 0);
 
         if (realTarget instanceof ServerPlayerEntity targetPlayer && realSource instanceof ServerPlayerEntity sourcePlayer) {
             ctx.useMana(this, 480);

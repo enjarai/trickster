@@ -7,7 +7,7 @@
 ```
 
 The Top Hat is quite an ingenious piece of a caster's toolkit.
-By equipping it on their head, a caster can hold the <keybind;key.trickster.take_hat> 
+By equipping it on their head, a caster can press the <keybind;key.trickster.take_hat> 
 button to hold the hat in their offhand.
 
 

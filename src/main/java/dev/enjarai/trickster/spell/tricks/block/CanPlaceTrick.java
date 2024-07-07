@@ -18,14 +18,13 @@ public class CanPlaceTrick extends Trick {
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var pos = expectInput(fragments, FragmentType.VECTOR, 0);
+        var blockType = supposeInput(fragments, FragmentType.BLOCK_TYPE, 1);
         var blockPos = pos.toBlockPos();
         var world = ctx.getWorld();
-        boolean result = world.getBlockState(blockPos).isAir();
+        boolean result;
 
-        if (fragments.size() > 1 && fragments.get(1).type().equals(FragmentType.BLOCK_TYPE)) {
-            var blockType = expectInput(fragments, FragmentType.BLOCK_TYPE, 1);
-            result = blockType.block().getDefaultState().canPlaceAt(world, blockPos);
-        }
+        result = blockType.map(blockTypeFragment -> blockTypeFragment.block().getDefaultState().canPlaceAt(world, blockPos))
+                .orElseGet(() -> world.getBlockState(blockPos).isAir());
 
         return new BooleanFragment(result);
     }
