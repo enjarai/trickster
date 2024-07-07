@@ -42,17 +42,15 @@ public class LocateGlyphTrick extends Trick {
 
             var temp = queue.poll();
 
-            if(temp.getB().glyph.equals(target))
+            if (temp.getB().glyph.equals(target))
                 return Arrays.asList(temp.getA());
 
             var subParts = temp.getB().subParts;
             for (int i = 0; i < subParts.size(); i++) {
-                if(subParts.get(i).isPresent()) {
-                    var newAddress = Arrays.copyOfRange(temp.getA(), 0, temp.getA().length + 1);
-                    newAddress[temp.getA().length] = i;
+                var newAddress = Arrays.copyOfRange(temp.getA(), 0, temp.getA().length + 1);
+                newAddress[temp.getA().length] = i;
 
-                    queue.add(new Pair<>(newAddress, subParts.get(i).get()));
-                }
+                queue.add(new Pair<>(newAddress, subParts.get(i)));
             }
         }
         return null;

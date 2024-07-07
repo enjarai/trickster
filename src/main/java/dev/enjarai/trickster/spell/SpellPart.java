@@ -135,19 +135,17 @@ public final class SpellPart implements Fragment {
 
         int i = 0;
         for (var part : current.subParts) {
-            if (part.isPresent()) {
-                if (targetIsInner ? part.get().glyph == this : part.get() == this) {
-                    if (replacement.isPresent()) {
-                        current.subParts.set(i, replacement);
-                    } else {
-                        current.subParts.remove(i);
-                    }
-                    return true;
+            if (targetIsInner ? part.glyph == this : part == this) {
+                if (replacement.isPresent()) {
+                    current.subParts.set(i, replacement.get());
+                } else {
+                    current.subParts.remove(i);
                 }
+                return true;
+            }
 
-                if (setSubPartInTree(replacement, part.get(), targetIsInner)) {
-                    return true;
-                }
+            if (setSubPartInTree(replacement, part, targetIsInner)) {
+                return true;
             }
             i++;
         }

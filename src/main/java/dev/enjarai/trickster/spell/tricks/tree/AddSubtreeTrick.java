@@ -1,18 +1,12 @@
 package dev.enjarai.trickster.spell.tricks.tree;
 
-import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
-import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.blunder.AddressNotInTreeBlunder;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
-import dev.enjarai.trickster.spell.tricks.blunder.IncorrectFragmentBlunder;
-import net.minecraft.text.Text;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class AddSubtreeTrick extends Trick {
     public AddSubtreeTrick() {
@@ -31,13 +25,13 @@ public class AddSubtreeTrick extends Trick {
         var node = newSpell;
         for (int index : address) {
             var subParts = node.subParts;
-            if (subParts.size() > index && subParts.get(index).isPresent()) {
-                node = subParts.get(index).get();
+            if (subParts.size() > index) {
+                node = subParts.get(index);
             } else {
                 throw new AddressNotInTreeBlunder(this, address);
             }
         }
-        node.subParts.add(Optional.of(subtree));
+        node.subParts.add(subtree);
 
         return newSpell;
     }

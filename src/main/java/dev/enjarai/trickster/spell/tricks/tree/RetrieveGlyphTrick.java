@@ -1,19 +1,13 @@
 package dev.enjarai.trickster.spell.tricks.tree;
 
-import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.SpellPart;
-import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
-import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
-import dev.enjarai.trickster.spell.tricks.blunder.IncorrectFragmentBlunder;
-import net.minecraft.text.Text;
-import oshi.util.tuples.Pair;
 
 import java.util.*;
 
@@ -32,8 +26,8 @@ public class RetrieveGlyphTrick extends Trick {
         var node = spell;
         for (int index : address) {
             var subParts = node.subParts;
-            if (subParts.size() > index && subParts.get(index).isPresent()) {
-                node = subParts.get(index).get();
+            if (subParts.size() > index) {
+                node = subParts.get(index);
             } else {
                 // return void if the spell does not contain a glyph at the address
                 return VoidFragment.INSTANCE;
