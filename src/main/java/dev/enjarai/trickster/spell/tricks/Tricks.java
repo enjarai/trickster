@@ -16,6 +16,7 @@ import dev.enjarai.trickster.spell.tricks.event.DeleteSpellCircleTrick;
 import dev.enjarai.trickster.spell.tricks.func.SupplierTrick;
 import dev.enjarai.trickster.spell.tricks.list.*;
 import dev.enjarai.trickster.spell.tricks.math.*;
+import dev.enjarai.trickster.spell.tricks.tree.*;
 import dev.enjarai.trickster.spell.tricks.vector.*;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -115,6 +116,17 @@ public class Tricks {
     public static final ListInsertTrick LIST_INSERT = register("list_insert", new ListInsertTrick());
     public static final ListRemoveElementTrick LIST_REMOVE_ELEMENT = register("list_remove_element", new ListRemoveElementTrick());
     public static final ListRemoveTrick LIST_REMOVE = register("list_remove", new ListRemoveTrick());
+
+    // Tree
+    public static final LocateGlyphTrick LOCATE_GLYPH = register("locate_glyph", new LocateGlyphTrick());
+    public static final LocateGlyphsTrick LOCATE_GLYPHS = register("locate_glyphs", new LocateGlyphsTrick());
+    public static final RetrieveGlyphTrick RETRIEVE_GLYPH = register("retrieve_glyph", new RetrieveGlyphTrick());
+    public static final SetGlyphTrick SET_GLYPH = register("set_glyph", new SetGlyphTrick());
+    public static final RetrieveSubtreeTrick RETRIEVE_SUBTREE= register("retrieve_subtree", new RetrieveSubtreeTrick());
+    public static final SetSubtreeTrick SET_SUBTREE = register("set_subtree", new SetSubtreeTrick());
+    public static final AddSubtreeTrick ADD_LEAF = register("add_subtree", new AddSubtreeTrick());
+    public static final RemoveSubtreeTrick REMOVE_SUBTREE = register("remove_subtree", new RemoveSubtreeTrick());
+
 
     // Events
     public static final CreateSpellCircleTrick CREATE_SPELL_CIRCLE = register("create_spell_circle", new CreateSpellCircleTrick());

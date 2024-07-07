@@ -21,7 +21,8 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
         super.init();
 
         partWidget = new SpellPartWidget(
-                handler.spell.get(), width / 2d, height / 2d, 64, handler::updateSpell,
+                handler.spell.get(), width / 2d, height / 2d, 64,
+                handler::updateSpell, handler::updateOtherHandSpell,
                 handler.otherHandSpell::get, handler::executeOffhand
         );
         handler.replacerCallback = frag -> partWidget.replaceCallback(frag);
