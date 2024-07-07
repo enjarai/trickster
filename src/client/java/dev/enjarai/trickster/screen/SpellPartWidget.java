@@ -353,7 +353,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
     protected Optional<List<Integer>> getAddress(SpellPart node, SpellPart target) {
         var address = new LinkedList<Integer>();
-        var found =  getAddress(node, target, address, new LinkedList<>());
+        var found = getAddress(node, target, address, new LinkedList<>());
         if (found) {
             return Optional.of(address);
         } else {
@@ -370,16 +370,16 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         }
 
         var subParts = node.subParts;
-        if (subParts.stream().map(Optional::isPresent).findAny().isEmpty() && !address.isEmpty()) {
-            address.removeLast();
-        } else {
-            for (int i = 0; i < subParts.size(); i++) {
-                if (subParts.get(i).isPresent()) {
-                    address.add(i);
-                    var found = getAddress(subParts.get(i).get(), target, address, glyphSpells);
-                    if (found) return true;
-                }
+
+        for (int i = 0; i < subParts.size(); i++) {
+            if (subParts.get(i).isPresent()) {
+                address.add(i);
+                var found = getAddress(subParts.get(i).get(), target, address, glyphSpells);
+                if (found) return true;
+                address.removeLast();
             }
+        }
+        if (address.isEmpty()) {
             for (var glyph : glyphSpells) {
                 var found = getAddress(glyph, target, address, new LinkedList<>());
                 if (found) return true;
