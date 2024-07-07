@@ -17,6 +17,7 @@ import dev.enjarai.trickster.spell.tricks.event.DeleteSpellCircleTrick;
 import dev.enjarai.trickster.spell.tricks.func.SupplierTrick;
 import dev.enjarai.trickster.spell.tricks.list.*;
 import dev.enjarai.trickster.spell.tricks.math.*;
+import dev.enjarai.trickster.spell.tricks.misc.TypeFragmentTrick;
 import dev.enjarai.trickster.spell.tricks.tree.*;
 import dev.enjarai.trickster.spell.tricks.vector.*;
 import net.minecraft.registry.Registry;
@@ -154,6 +155,9 @@ public class Tricks {
     public static final DestabilizeBlockTrick DESTABILIZE_BLOCK = register("destabilize_block", new DestabilizeBlockTrick());
     public static final DisguiseBlockTrick DISGUISE_BLOCK = register("disguise_block", new DisguiseBlockTrick());
     public static final DispelBlockDisguiseTrick DISPEL_BLOCK_DISGUISE = register("dispel_block_disguise", new DispelBlockDisguiseTrick());
+
+    // Misc
+    public static final TypeFragmentTrick TYPE_FRAGMENT = register("type_fragment", new TypeFragmentTrick());
 
     private static <T extends Trick> T register(String path, T trick) {
         return Registry.register(REGISTRY, Trickster.id(path), trick);

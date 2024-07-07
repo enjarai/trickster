@@ -16,7 +16,7 @@ When first opening a new scroll, you will see just one circle. This is the **roo
 
 <|pattern@trickster:templates|pattern=0\,4\,8\,7,title=Extensive Revision|>
 
-[{gray}(Scribing pattern){}](^trickster:scribing_patterns)
+{gray}(Scribing pattern){}
 
 ---
 

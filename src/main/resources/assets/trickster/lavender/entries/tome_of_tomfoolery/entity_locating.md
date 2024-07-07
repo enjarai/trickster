@@ -26,4 +26,4 @@ vector, number, [entity_type] -> list
 
 ---
 
-Finds all entities in the provided range around a specific block position, optionally restricted by entity type.
+Finds all entities in the provided range around a specific block position.

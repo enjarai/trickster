@@ -18,6 +18,7 @@ public record FragmentType<T extends Fragment>(MapCodec<T> codec, OptionalInt co
     public static final RegistryKey<Registry<FragmentType<?>>> REGISTRY_KEY = RegistryKey.ofRegistry(Trickster.id("fragment_type"));
     public static final Registry<FragmentType<?>> REGISTRY = new SimpleRegistry<>(REGISTRY_KEY, Lifecycle.stable());
 
+    public static final FragmentType<TypeFragment> TYPE = register("type", TypeFragment.CODEC, 0x66cc00);
     public static final FragmentType<NumberFragment> NUMBER = register("number", NumberFragment.CODEC, 0xddaa00);
     public static final FragmentType<BooleanFragment> BOOLEAN = register("boolean", BooleanFragment.CODEC, 0xaa3355);
     public static final FragmentType<VectorFragment> VECTOR = register("vector", VectorFragment.CODEC);

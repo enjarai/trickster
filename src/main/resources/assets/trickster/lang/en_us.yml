@@ -112,7 +112,10 @@ trickster:
     check_block: Distortion of Validation
     can_place_block: Distortion of Suitability
 
+    type_fragment: Argumentative Distortion
+
   fragment.trickster:
+    type: Type
     number: Number
     boolean: Boolean
     vector: Vector
@@ -124,6 +127,7 @@ trickster:
     zalgo: §kZalgo
     item_type: Item
     block_type: Block
+    entity_type: Entity Type
     integer_list: List of Integers
 
   blunder:

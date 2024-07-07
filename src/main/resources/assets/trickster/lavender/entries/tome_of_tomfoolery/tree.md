@@ -26,7 +26,7 @@ that circle.
 
 <|pattern@trickster:templates|pattern=1\,0\,4\,8\,7\,6\,4\,2\,1\,4,title=Address Revision|>
 
-[{gray}(Scribing pattern){}](^trickster:scribing_patterns)
+{gray}(Scribing pattern){}
 
 ---
 
