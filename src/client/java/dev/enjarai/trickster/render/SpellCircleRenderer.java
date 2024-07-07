@@ -150,7 +150,8 @@ public class SpellCircleRenderer {
             var pixelSize = patternSize / PART_PIXEL_RADIUS;
 
             var isDrawing = inEditor && drawingPartGetter.get() == parent;
-            var patternList = isDrawing ? drawingPatternGetter.get() : pattern.orderedPattern();
+            var drawingPattern = inEditor ? drawingPatternGetter.get() : null;
+            var patternList = isDrawing ? Pattern.from(drawingPattern) : pattern.pattern();
 
             for (int i = 0; i < 9; i++) {
                 var pos = getPatternDotPosition(x, y, i, patternSize);
@@ -180,16 +181,14 @@ public class SpellCircleRenderer {
                 }, 0, isDrawing && isLinked ? 0.5f : 1, isDrawing && isLinked ? 0.5f : 1, 1, 0.5f * alpha);
             }
 
-            Vector2f last = null;
-            for (var b : patternList) {
-                var now = getPatternDotPosition(x, y, b, patternSize);
-                if (last != null) {
-                    drawGlyphLine(matrices, vertexConsumers, last, now, pixelSize, isDrawing, 1, 0.5f * alpha);
-                }
-                last = now;
+            for (var line : patternList.entries()) {
+                var first = getPatternDotPosition(x, y, line.p1(), patternSize);
+                var second = getPatternDotPosition(x, y, line.p2(), patternSize);
+                drawGlyphLine(matrices, vertexConsumers, first, second, pixelSize, isDrawing, 1, 0.5f);
             }
 
-            if (inEditor && isDrawing && last != null) {
+            if (inEditor && isDrawing) {
+                var last = getPatternDotPosition(x, y, drawingPattern.getLast(), patternSize);
                 var now = new Vector2f((float) mouseX, (float) mouseY);
                 drawGlyphLine(matrices, vertexConsumers, last, now, pixelSize, true, 1, 0.5f * alpha);
             }
