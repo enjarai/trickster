@@ -23,10 +23,8 @@ public class CanPlaceTrick extends Trick {
         var world = ctx.getWorld();
         boolean result;
 
-        if (blockType.isPresent())
-            result = blockType.get().block().getDefaultState().canPlaceAt(world, blockPos);
-        else
-            result = world.getBlockState(blockPos).isAir();
+        result = blockType.map(blockTypeFragment -> blockTypeFragment.block().getDefaultState().canPlaceAt(world, blockPos))
+                .orElseGet(() -> world.getBlockState(blockPos).isAir());
 
         return new BooleanFragment(result);
     }

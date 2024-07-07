@@ -32,8 +32,7 @@ Returns the hardness of the block at the given position.
 
 <|glyph@trickster:templates|trick-id=trickster:can_place_block,title=Distortion of Suitability|>
 
-vector, block -> boolean |
-vector -> boolean
+vector, [block] -> boolean
 
 ---
 
