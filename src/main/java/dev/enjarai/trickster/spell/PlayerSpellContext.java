@@ -10,6 +10,7 @@ import dev.enjarai.trickster.spell.tricks.blunder.EntityInvalidBlunder;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -93,5 +94,10 @@ public class PlayerSpellContext extends SpellContext {
     @Override
     public void setCrowMind(Fragment fragment) {
         player.setAttached(ModAttachments.CROW_MIND, new CrowMind(fragment));
+    }
+
+    @Override
+    public void addManaLink(Trick source, LivingEntity target, float limit) {
+        addManaLink(source, new ManaLink(manaPool, target, player.getHealth(), limit));
     }
 }

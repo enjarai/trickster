@@ -1,41 +1,47 @@
 package dev.enjarai.trickster.spell;
 
 import dev.enjarai.trickster.cca.ManaComponent;
+import dev.enjarai.trickster.cca.ModEntityCumponents;
+import net.minecraft.entity.LivingEntity;
 
 public class ManaLink {
-    public static float FACTOR = 1.7f;
-
+    public final ManaPool owner;
+    public final LivingEntity source;
     public final ManaComponent manaPool;
+    public final float taxRatio;
     private float availableMana;
 
-    public ManaLink(ManaComponent manaPool, float availableMana) {
-        this.manaPool = manaPool;
+    public ManaLink(ManaPool owner, LivingEntity source, float ownerHealth, float availableMana) {
+        this.owner = owner;
+        this.source = source;
+        this.manaPool = ModEntityCumponents.MANA.get(source);
+        this.taxRatio = ownerHealth / source.getHealth();
         this.availableMana = availableMana;
     }
 
     public float useMana(float amount) {
-        float oldMana = manaPool.get();
-        float result = getAvailable();
+        owner.decrease(amount / taxRatio);
 
-        if (amount > getAvailable()) {
+        float oldMana = manaPool.get();
+        float result = availableMana;
+
+        if (amount > availableMana) {
 
             if (!manaPool.decrease(availableMana))
                 availableMana -= oldMana;
             else
                 availableMana = 0;
         } else {
-            float postAmount = amount * FACTOR;
-
-            if (!manaPool.decrease(postAmount))
+            if (!manaPool.decrease(amount))
                 availableMana -= oldMana;
             else
-                availableMana -= postAmount;
+                availableMana -= amount;
         }
 
-        return result - getAvailable();
+        return result - availableMana;
     }
 
     public float getAvailable() {
-        return availableMana / FACTOR;
+        return availableMana;
     }
 }

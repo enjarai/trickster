@@ -1,11 +1,13 @@
 package dev.enjarai.trickster.spell;
 
+import dev.enjarai.trickster.cca.ModEntityCumponents;
 import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import dev.enjarai.trickster.spell.tricks.blunder.EntityInvalidBlunder;
 import dev.enjarai.trickster.spell.tricks.blunder.ExecutionLimitReachedBlunder;
 import dev.enjarai.trickster.spell.tricks.blunder.NotEnoughManaBlunder;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -96,6 +98,8 @@ public abstract class SpellContext {
 
         manaLinks.add(link);
     }
+
+    public abstract void addManaLink(Trick source, LivingEntity target, float limit);
 
     public int getRecursions() {
         return recursions;

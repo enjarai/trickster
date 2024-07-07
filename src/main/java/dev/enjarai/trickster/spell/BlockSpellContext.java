@@ -3,6 +3,7 @@ package dev.enjarai.trickster.spell;
 import dev.enjarai.trickster.block.SpellCircleBlockEntity;
 import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.blunder.EntityInvalidBlunder;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import org.joml.Vector3d;
@@ -38,5 +39,10 @@ public class BlockSpellContext extends SpellContext {
     public void setCrowMind(Fragment fragment) {
         blockEntity.crowMind = new CrowMind(fragment);
         blockEntity.markDirty();
+    }
+
+    @Override
+    public void addManaLink(Trick source, LivingEntity target, float limit) {
+        addManaLink(source, new ManaLink(manaPool, target, manaPool.getMax() / 20, limit));
     }
 }

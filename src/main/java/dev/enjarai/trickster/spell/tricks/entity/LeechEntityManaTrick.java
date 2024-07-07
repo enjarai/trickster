@@ -1,10 +1,6 @@
 package dev.enjarai.trickster.spell.tricks.entity;
 
-import dev.enjarai.trickster.cca.ModEntityCumponents;
-import dev.enjarai.trickster.spell.Fragment;
-import dev.enjarai.trickster.spell.ManaLink;
-import dev.enjarai.trickster.spell.Pattern;
-import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
@@ -27,7 +23,7 @@ public class LeechEntityManaTrick extends AbstractLivingEntityQueryTrick {
         var limit = expectInput(fragments, FragmentType.NUMBER, 1).number();
 
         if (target instanceof LivingEntity living) {
-            ctx.addManaLink(this, new ManaLink(ModEntityCumponents.MANA.get(living), (float)limit));
+            ctx.addManaLink(this, living, (float)limit);
             return VoidFragment.INSTANCE;
         }
 
