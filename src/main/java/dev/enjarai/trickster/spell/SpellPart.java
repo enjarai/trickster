@@ -117,6 +117,44 @@ public final class SpellPart implements Fragment {
         }
     }
 
+    public boolean setSubPartInTree(Optional<SpellPart> replacement, SpellPart current, boolean targetIsInner) {
+        if (current.glyph instanceof SpellPart part) {
+            if (targetIsInner ? part.glyph == this : part == this) {
+                if (replacement.isPresent()) {
+                    current.glyph = replacement.get();
+                } else {
+                    current.glyph = new PatternGlyph();
+                }
+                return true;
+            }
+
+            if (setSubPartInTree(replacement, part, targetIsInner)) {
+                return true;
+            }
+        }
+
+        int i = 0;
+        for (var part : current.subParts) {
+            if (part.isPresent()) {
+                if (targetIsInner ? part.get().glyph == this : part.get() == this) {
+                    if (replacement.isPresent()) {
+                        current.subParts.set(i, replacement);
+                    } else {
+                        current.subParts.remove(i);
+                    }
+                    return true;
+                }
+
+                if (setSubPartInTree(replacement, part.get(), targetIsInner)) {
+                    return true;
+                }
+            }
+            i++;
+        }
+
+        return false;
+    }
+
     public Fragment getGlyph() {
         return glyph;
     }

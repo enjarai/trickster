@@ -14,7 +14,7 @@ public class SpellCircleBlockEntityRenderer implements BlockEntityRenderer<Spell
     private final SpellCircleRenderer renderer;
 
     public SpellCircleBlockEntityRenderer(BlockEntityRendererFactory.Context ctx) {
-        this.renderer = new SpellCircleRenderer();
+        this.renderer = new SpellCircleRenderer(false);
     }
 
     @Override

@@ -91,6 +91,15 @@ trickster:
     list_remove: Expulsion Stratagem
     list_remove_element: Eviction Stratagem
 
+    locate_glyph: Pinpoint Distortion
+    locate_glyphs: Discovering Distortion
+    retrieve_glyph: Retrieval Distortion
+    set_glyph: Replacement Distortion
+    retrieve_subtree: Felling Distortion
+    set_subtree: Grafting Distortion
+    add_subtree: Branching Distortion
+    remove_subtree: Pruning Distortion
+
     swap_block: Ploy of Exchange
     conjure_flower: Floral Ploy
     conjure_water: Aquatic Ploy
@@ -113,6 +122,7 @@ trickster:
     zalgo: §kZalgo
     item_type: Item
     block_type: Block
+    integer_list: List of Integers
 
   blunder:
     incorrect_fragment: Incorrect argument at index %d. Expected %s, got %s

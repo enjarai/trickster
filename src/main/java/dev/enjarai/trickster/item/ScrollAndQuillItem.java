@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.item;
 
+
 import dev.enjarai.trickster.screen.ScrollAndQuillScreenHandler;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
