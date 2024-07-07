@@ -161,6 +161,10 @@ public final class SpellPart implements Fragment {
         return subParts;
     }
 
+    public boolean isEmpty() {
+        return subParts.isEmpty() && glyph instanceof PatternGlyph patternGlyph && patternGlyph.pattern().isEmpty();
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == this) return true;

@@ -88,6 +88,7 @@ public class Tricks {
 
     // Entity Locating
     public static final BlockFindEntityTrick BLOCK_FIND_ENTITY = register("block_find_entity", new BlockFindEntityTrick());
+    public static final RangeFindEntityTrick RANGE_FIND_ENTITY = register("range_find_entity", new RangeFindEntityTrick());
 
     // Math
     public static final AddTrick ADD = register("add", new AddTrick());
