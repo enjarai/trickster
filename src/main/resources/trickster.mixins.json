@@ -6,9 +6,9 @@
   "mixins": [
     "AbstractBlockStateMixin",
     "LivingEntityMixin",
-    "SwordItemMixin",
     "SpellTooltipMixin",
     "WorldChunkMixin",
+    "event.SwordItemMixin",
     "event.LivingEntityMixin",
     "event.ServerPlayerInteractionManagerMixin"
   ],
