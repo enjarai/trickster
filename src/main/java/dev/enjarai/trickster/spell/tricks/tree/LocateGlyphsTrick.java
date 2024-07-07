@@ -13,7 +13,7 @@ import oshi.util.tuples.Pair;
 
 import java.util.*;
 
-public class LocateGlyphsTrick extends Trick {
+public class LocateGlyphsTrick extends MetaTrick {
     public LocateGlyphsTrick() {
         super(Pattern.of(6, 7, 8, 2, 1, 0, 4, 8, 5, 2));
     }

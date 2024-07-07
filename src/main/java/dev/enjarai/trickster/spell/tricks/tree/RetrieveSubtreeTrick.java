@@ -11,7 +11,7 @@ import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 
 import java.util.List;
 
-public class RetrieveSubtreeTrick extends Trick {
+public class RetrieveSubtreeTrick extends MetaTrick {
     public RetrieveSubtreeTrick() {
         super(Pattern.of(0, 3, 6, 4, 2, 5, 8, 4, 0, 1, 2));
     }
@@ -21,19 +21,6 @@ public class RetrieveSubtreeTrick extends Trick {
         var spell = expectInput(fragments, SpellPart.class, 0);
         var addressFragment = expectInput(fragments, ListFragment.class, 1);
 
-        var address = addressFragment.sanitizeAddress(this);
-
-        var node = spell;
-        for (int index : address) {
-            var subParts = node.subParts;
-            if (subParts.size() > index) {
-                node = subParts.get(index);
-            } else {
-                // return void if the spell does not contain a glyph at the address
-                return VoidFragment.INSTANCE;
-            }
-        }
-
-        return node;
+        return findNode(spell, addressFragment).<Fragment>map(n -> n).orElse(VoidFragment.INSTANCE);
     }
 }

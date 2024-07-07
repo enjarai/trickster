@@ -8,7 +8,7 @@ import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 
 import java.util.List;
 
-public class AddSubtreeTrick extends Trick {
+public class AddSubtreeTrick extends MetaTrick {
     public AddSubtreeTrick() {
         super(Pattern.of(2, 1, 0, 4, 8, 7, 6, 4, 2, 5, 8));
     }
@@ -19,18 +19,9 @@ public class AddSubtreeTrick extends Trick {
         var addressFragment = expectInput(fragments, ListFragment.class, 1);
         var subtree = expectInput(fragments, SpellPart.class, 2);
 
-        var address = addressFragment.sanitizeAddress(this);
         var newSpell = spell.deepClone();
-
-        var node = newSpell;
-        for (int index : address) {
-            var subParts = node.subParts;
-            if (subParts.size() > index) {
-                node = subParts.get(index);
-            } else {
-                throw new AddressNotInTreeBlunder(this, address);
-            }
-        }
+        var node = findNode(newSpell, addressFragment)
+                .orElseThrow(() -> new AddressNotInTreeBlunder(this, addressFragment.sanitizeAddress(this)));
         node.subParts.add(subtree);
 
         return newSpell;

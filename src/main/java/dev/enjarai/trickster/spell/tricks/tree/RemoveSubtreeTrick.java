@@ -9,7 +9,7 @@ import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 
 import java.util.List;
 
-public class RemoveSubtreeTrick extends Trick {
+public class RemoveSubtreeTrick extends MetaTrick {
     public RemoveSubtreeTrick() {
         super(Pattern.of(6, 3, 0, 4, 8, 5, 2, 4, 6, 7, 8));
     }
