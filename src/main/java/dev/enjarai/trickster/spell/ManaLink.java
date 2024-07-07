@@ -2,6 +2,9 @@ package dev.enjarai.trickster.spell;
 
 import dev.enjarai.trickster.cca.ManaComponent;
 import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.spell.tricks.Trick;
+import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
+import dev.enjarai.trickster.spell.tricks.blunder.NotEnoughManaBlunder;
 import net.minecraft.entity.LivingEntity;
 
 public class ManaLink {
@@ -19,8 +22,9 @@ public class ManaLink {
         this.availableMana = availableMana;
     }
 
-    public float useMana(float amount) {
-        owner.decrease(amount / taxRatio);
+    public float useMana(Trick trickSource, float amount) throws BlunderException {
+        if (!owner.decrease(amount / taxRatio))
+            throw new NotEnoughManaBlunder(trickSource, amount);
 
         float oldMana = manaPool.get();
         float result = availableMana;

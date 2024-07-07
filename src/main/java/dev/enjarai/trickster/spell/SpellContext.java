@@ -130,7 +130,7 @@ public abstract class SpellContext {
                 float available = link.getAvailable();
                 float ratio = available / totalAvailable;
                 float ratioD = amount * ratio;
-                float used = link.useMana(ratioD);
+                float used = link.useMana(source, ratioD);
 
                 if (used < ratioD) {
                     leftOver += ratioD - used;

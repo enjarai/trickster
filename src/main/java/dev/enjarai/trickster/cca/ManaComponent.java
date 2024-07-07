@@ -63,7 +63,7 @@ public class ManaComponent extends SimpleManaPool implements AutoSyncedComponent
             entity.damage(new DamageSource(entity.getRegistryManager().get(DamageTypes.MAGIC.getRegistryRef()).entryOf(DamageTypes.MAGIC)),
                     ManaPool.healthFromMana(f * -1));
 
-            return !entity.isDead();
+            return entity.isAlive();
         }
 
         return true;
