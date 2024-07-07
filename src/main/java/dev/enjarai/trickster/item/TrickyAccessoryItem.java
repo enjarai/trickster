@@ -27,6 +27,10 @@ public class TrickyAccessoryItem extends AccessoryItem {
     }
 
     public static List<Fragment> tryWard(SpellContext triggerCtx, ServerPlayerEntity player, Trick source, List<Fragment> inputs) throws BlunderException {
+        if (triggerCtx.getCaster().map(c -> c.equals(player)).orElse(false)) {
+            return inputs;
+        }
+
         var charmStack = SlotReference.of(player, "charm", 0).getStack();
         if (charmStack == null || charmStack.isEmpty()) {
             return inputs;

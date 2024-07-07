@@ -15,6 +15,9 @@ import dev.enjarai.trickster.spell.tricks.entity.*;
 import dev.enjarai.trickster.spell.tricks.event.CreateSpellCircleTrick;
 import dev.enjarai.trickster.spell.tricks.event.DeleteSpellCircleTrick;
 import dev.enjarai.trickster.spell.tricks.func.SupplierTrick;
+import dev.enjarai.trickster.spell.tricks.inventory.ImportHatTrick;
+import dev.enjarai.trickster.spell.tricks.inventory.ImportTrick;
+import dev.enjarai.trickster.spell.tricks.inventory.OtherHandTrick;
 import dev.enjarai.trickster.spell.tricks.list.*;
 import dev.enjarai.trickster.spell.tricks.math.*;
 import dev.enjarai.trickster.spell.tricks.misc.TypeFragmentTrick;
@@ -61,6 +64,7 @@ public class Tricks {
     public static final RevealTrick REVEAL = register("reveal", new RevealTrick());
     public static final ReadSpellTrick READ_SPELL = register("read_spell", new ReadSpellTrick());
     public static final WriteSpellTrick WRITE_SPELL = register("write_spell", new WriteSpellTrick());
+    public static final ClearSpellTrick CLEAR_SPELL = register("clear_spell", new ClearSpellTrick());
     public static final ReadCrowMindTrick READ_CROW_MIND = register("read_crow_mind", new ReadCrowMindTrick());
     public static final WriteCrowMindTrick WRITE_CROW_MIND = register("write_crow_mind", new WriteCrowMindTrick());
 
@@ -155,6 +159,11 @@ public class Tricks {
     public static final DestabilizeBlockTrick DESTABILIZE_BLOCK = register("destabilize_block", new DestabilizeBlockTrick());
     public static final DisguiseBlockTrick DISGUISE_BLOCK = register("disguise_block", new DisguiseBlockTrick());
     public static final DispelBlockDisguiseTrick DISPEL_BLOCK_DISGUISE = register("dispel_block_disguise", new DispelBlockDisguiseTrick());
+
+    // Inventory
+    public static final ImportTrick IMPORT = register("import", new ImportTrick());
+    public static final ImportHatTrick IMPORT_HAT = register("import_hat", new ImportHatTrick());
+    public static final OtherHandTrick OTHER_HAND = register("other_hand", new OtherHandTrick());
 
     // Misc
     public static final TypeFragmentTrick TYPE_FRAGMENT = register("type_fragment", new TypeFragmentTrick());

@@ -68,6 +68,13 @@ public abstract class Trick {
         return Optional.of((T) fragment);
     }
 
+    protected Optional<Fragment> supposeInput(List<Fragment> fragments, int index) throws BlunderException {
+        if (fragments.size() <= index) {
+            return Optional.empty();
+        }
+        return Optional.of(fragments.get(index));
+    }
+
     protected <T extends Fragment> Optional<T> supposeType(Fragment fragment, FragmentType<T> type) throws BlunderException {
         if (fragment.type() != type) {
             return Optional.empty();

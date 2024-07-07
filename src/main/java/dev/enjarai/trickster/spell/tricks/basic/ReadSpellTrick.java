@@ -1,4 +1,4 @@
-package dev.enjarai.trickster.spell.tricks;
+package dev.enjarai.trickster.spell.tricks.basic;
 
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
@@ -6,6 +6,7 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
+import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import net.minecraft.component.DataComponentTypes;
 

@@ -52,6 +52,17 @@ Returns true or false depending on success.
 
 ;;;;;
 
+<|glyph@trickster:templates|trick-id=trickster:write_spell,title=Censorship Ploy|>
+
+-> boolean
+
+---
+
+Removes an inscribed spell from the item held in the caster's other hand.
+Returns true or false depending on success.
+
+;;;;;
+
 <|glyph@trickster:templates|trick-id=trickster:reveal,title=Showcase Stratagem|>
 
 any... ->

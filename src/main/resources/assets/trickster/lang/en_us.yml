@@ -112,6 +112,10 @@ trickster:
     check_block: Distortion of Validation
     can_place_block: Distortion of Suitability
 
+    import: Assistance Ploy
+    import_hat: Cranium Ploy
+    other_hand: Juggling Delusion
+
     type_fragment: Argumentative Distortion
 
   fragment.trickster:
