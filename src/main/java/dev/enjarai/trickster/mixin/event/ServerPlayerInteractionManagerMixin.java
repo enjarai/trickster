@@ -100,7 +100,7 @@ public abstract class ServerPlayerInteractionManagerMixin implements ItemTrigger
 		}
 	}
 
-	@Inject(method = "finishMining", at = @At("TAIL"))
+	@Inject(method = "finishMining", at = @At("RETURN"))
 	private void triggerItemSpell(BlockPos pos, int sequence, String reason, CallbackInfo ci) {
 		trickster$triggerMainHand(player, VectorFragment.of(pos));
 	}
