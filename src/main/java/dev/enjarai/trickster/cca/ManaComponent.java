@@ -1,10 +1,9 @@
 package dev.enjarai.trickster.cca;
 
+import dev.enjarai.trickster.entity.ModEntities;
 import dev.enjarai.trickster.spell.ManaPool;
 import dev.enjarai.trickster.spell.SimpleManaPool;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.registry.RegistryWrapper;
@@ -14,10 +13,12 @@ import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 public class ManaComponent extends SimpleManaPool implements AutoSyncedComponent, CommonTickingComponent {
     private final LivingEntity entity;
+    private final boolean manaDevoid;
 
     public ManaComponent(LivingEntity entity) {
         super(0); // Max mana gets updated later
         this.entity = entity;
+        this.manaDevoid = entity.getType().isIn(ModEntities.MANA_DEVOID);
     }
 
     @Override
@@ -42,6 +43,9 @@ public class ManaComponent extends SimpleManaPool implements AutoSyncedComponent
 
     @Override
     public void tick() {
+        if (manaDevoid)
+            return;
+
         maxMana = ManaPool.manaFromHealth(entity.getMaxHealth());
         stdIncrease();
     }
@@ -56,12 +60,15 @@ public class ManaComponent extends SimpleManaPool implements AutoSyncedComponent
      */
     @Override
     public boolean decrease(float amount) {
+        if (manaDevoid)
+            return true;
+
         float f = mana - amount;
         mana = Math.max(Math.min(mana - amount, maxMana), 0);
 
         if (f < 0) { //TODO: funny death messages
-            entity.damage(new DamageSource(entity.getRegistryManager().get(DamageTypes.MAGIC.getRegistryRef()).entryOf(DamageTypes.MAGIC)),
-                    ManaPool.healthFromMana(f * -1));
+            if (!entity.isInCreativeMode())
+                entity.setHealth(entity.getHealth() - ManaPool.healthFromMana(f * -1));
 
             return entity.isAlive();
         }
