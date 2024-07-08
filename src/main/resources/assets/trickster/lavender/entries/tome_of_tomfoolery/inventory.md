@@ -38,3 +38,23 @@ number -> any
 ---
 
 Grabs the spell from a scroll in a specific slot in the caster's [Top Hat](^trickster:top_hat), casts it, and returns the result.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:stack_to_item,title=Fence's Distortion|>
+
+stack -> item
+
+---
+
+Returns the type of item that the given stack contains.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:get_inventory_stack,title=Intrusive Distortion|>
+
+number, [vector] -> stack
+
+---
+
+Returns the item stack at the given index in the inventory of the caster, or the block at the given position instead.

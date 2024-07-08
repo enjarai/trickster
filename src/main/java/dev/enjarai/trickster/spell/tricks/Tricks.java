@@ -15,9 +15,7 @@ import dev.enjarai.trickster.spell.tricks.entity.*;
 import dev.enjarai.trickster.spell.tricks.event.CreateSpellCircleTrick;
 import dev.enjarai.trickster.spell.tricks.event.DeleteSpellCircleTrick;
 import dev.enjarai.trickster.spell.tricks.func.SupplierTrick;
-import dev.enjarai.trickster.spell.tricks.inventory.ImportHatTrick;
-import dev.enjarai.trickster.spell.tricks.inventory.ImportTrick;
-import dev.enjarai.trickster.spell.tricks.inventory.OtherHandTrick;
+import dev.enjarai.trickster.spell.tricks.inventory.*;
 import dev.enjarai.trickster.spell.tricks.list.*;
 import dev.enjarai.trickster.spell.tricks.math.*;
 import dev.enjarai.trickster.spell.tricks.misc.TypeFragmentTrick;
@@ -168,6 +166,8 @@ public class Tricks {
     public static final ImportTrick IMPORT = register("import", new ImportTrick());
     public static final ImportHatTrick IMPORT_HAT = register("import_hat", new ImportHatTrick());
     public static final OtherHandTrick OTHER_HAND = register("other_hand", new OtherHandTrick());
+    public static final StackToItemTrick STACK_TO_ITEM = register("stack_to_item", new StackToItemTrick());
+    public static final GetInventoryStackTrick GET_INVENTORY_STACK = register("get_inventory_stack", new GetInventoryStackTrick());
 
     // Misc
     public static final TypeFragmentTrick TYPE_FRAGMENT = register("type_fragment", new TypeFragmentTrick());
