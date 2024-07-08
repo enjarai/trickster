@@ -27,8 +27,8 @@ public class ConjureFlowerTrick extends Trick {
         var pos = expectInput(fragments, FragmentType.VECTOR, 0);
 
         var blockPos = pos.toBlockPos();
-
         expectCanBuild(ctx, blockPos);
+
         if (!ctx.getWorld().getBlockState(blockPos).isAir()) {
             throw new BlockOccupiedBlunder(this);
         }
@@ -37,7 +37,7 @@ public class ConjureFlowerTrick extends Trick {
         }
 
         var flowerType = Registries.BLOCK.getRandomEntry(ModItems.CONJURABLE_FLOWERS, ctx.getWorld().getOrCreateRandom(TRICK_RANDOM));
-
+        ctx.useMana(this, 5);
         flowerType.ifPresent(flower -> {
             ctx.getWorld().setBlockState(blockPos, flower.value().getDefaultState());
         });

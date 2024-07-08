@@ -1,11 +1,17 @@
 package dev.enjarai.trickster.spell.tricks;
 
 import dev.enjarai.trickster.Trickster;
+import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.item.TrickyAccessoryItem;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.tricks.blunder.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
@@ -13,6 +19,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.List;
+import java.util.Optional;
 
 public abstract class Trick {
     public static final Identifier TRICK_RANDOM = Trickster.id("trick");
@@ -47,6 +54,33 @@ public abstract class Trick {
         }
         //noinspection unchecked
         return (T) fragment;
+    }
+
+    protected <T extends Fragment> Optional<T> supposeInput(List<Fragment> fragments, FragmentType<T> type, int index) throws BlunderException {
+        if (fragments.size() <= index) {
+            return Optional.empty();
+        }
+        var fragment = fragments.get(index);
+        if (fragment.type() != type) {
+            throw new IncorrectFragmentBlunder(this, index, type.getName(), fragment);
+        }
+        //noinspection unchecked
+        return Optional.of((T) fragment);
+    }
+
+    protected Optional<Fragment> supposeInput(List<Fragment> fragments, int index) throws BlunderException {
+        if (fragments.size() <= index) {
+            return Optional.empty();
+        }
+        return Optional.of(fragments.get(index));
+    }
+
+    protected <T extends Fragment> Optional<T> supposeType(Fragment fragment, FragmentType<T> type) throws BlunderException {
+        if (fragment.type() != type) {
+            return Optional.empty();
+        }
+        //noinspection unchecked
+        return Optional.of((T) fragment);
     }
 
     protected <T extends Fragment> T expectInput(List<Fragment> fragments, Class<T> type, int index) throws BlunderException {
@@ -92,6 +126,14 @@ public abstract class Trick {
                 throw new CantEditBlockBlunder(this, pos);
             }
         }
+    }
+
+    protected List<Fragment> tryWard(SpellContext ctx, Entity target, List<Fragment> fragments) throws BlunderException {
+        if (target instanceof ServerPlayerEntity player) {
+            return TrickyAccessoryItem.tryWard(ctx, player, this, fragments);
+        }
+
+        return fragments;
     }
 
     public MutableText getName() {

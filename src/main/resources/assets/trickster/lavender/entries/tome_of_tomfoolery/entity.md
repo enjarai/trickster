@@ -10,6 +10,16 @@ Various tricks related to gathering data about entities.
 
 ;;;;;
 
+<|glyph@trickster:templates|trick-id=trickster:get_entity_type,title=Motive Verification Distortion|>
+
+entity -> entity_type
+
+---
+
+Given an entity, returns its type.
+
+;;;;;
+
 <|glyph@trickster:templates|trick-id=trickster:get_position,title=Locational Distortion|>
 
 entity -> vector
@@ -47,6 +57,46 @@ entity -> number
 ---
 
 Given an entity, returns whether the entity is crouching.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:get_max_health,title=Vigor Distortion|>
+
+entity -> number
+
+---
+
+Given an entity, returns its maximum health.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:get_health,title=Fettle Distortion|>
+
+entity -> number
+
+---
+
+Given an entity, returns its current health.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:get_armour,title=Bulwark Distortion|>
+
+entity -> number
+
+---
+
+Given an entity, returns its total armour value.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:get_mana,title=Distortion of Authority|>
+
+entity -> number
+
+---
+
+Given an entity, returns its current mana.
 
 ;;;;;
 

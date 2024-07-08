@@ -22,7 +22,7 @@ public class SpellCircleBlockEntityRenderer implements BlockEntityRenderer<Spell
         matrices.push();
         matrices.translate(0.5f, 0.5f, 0.5f);
         matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(90));
-        this.renderer.renderPart(matrices, vertexConsumers, Optional.of(entity.spell), 0, 0, 0.5f, 0, tickDelta, size -> 1f, new Vec3d(0, 0, -1));
+        this.renderer.renderPart(matrices, vertexConsumers, entity.spell, 0, 0, 0.5f, 0, tickDelta, size -> 1f, new Vec3d(0, 0, -1));
 //        matrices.scale(1, -1, 1);
 //        this.renderer.renderPart(matrices, vertexConsumers, Optional.of(entity.spell), 0, 0, 1, 0, tickDelta, size -> 1f);
         matrices.pop();

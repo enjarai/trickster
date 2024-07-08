@@ -21,6 +21,7 @@ public record VectorFragment(Vector3dc vector) implements Fragment, AddableFragm
             .<Vector3dc>xmap(list -> new Vector3d(list.get(0), list.get(1), list.get(2)), vec -> List.of(vec.x(), vec.y(), vec.z()))
             .xmap(VectorFragment::new, VectorFragment::vector)
             .fieldOf("vector");
+    public static final VectorFragment ZERO = new VectorFragment(new Vector3d());
 
     @Override
     public FragmentType<?> type() {

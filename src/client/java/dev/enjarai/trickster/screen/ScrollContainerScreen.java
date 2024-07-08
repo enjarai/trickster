@@ -38,6 +38,12 @@ public class ScrollContainerScreen extends HandledScreen<ScrollContainerScreenHa
     }
 
     @Override
+    protected void drawForeground(DrawContext context, int mouseX, int mouseY) {
+        context.drawText(this.textRenderer, this.title, this.titleX, this.titleY, 0xc0c0c0, false);
+        context.drawText(this.textRenderer, this.playerInventoryTitle, this.playerInventoryTitleX, this.playerInventoryTitleY, 0x404040, false);
+    }
+
+    @Override
     protected void drawSlot(DrawContext context, Slot slot) {
         super.drawSlot(context, slot);
 

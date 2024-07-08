@@ -42,7 +42,7 @@ public abstract class PlayerRendererMixin {
 
             var rot = new Vec3d(-1, -1, player.getRotationVector().y);;
 
-            this.trickster$renderer.renderPart(matrices, vertexConsumers, spell, 0, 0, 0.5f, 0, tickDelta, size -> 1f, rot);
+            this.trickster$renderer.renderPart(matrices, vertexConsumers, spell.get(), 0, 0, 0.5f, 0, tickDelta, size -> 1f, rot);
             matrices.pop();
         }
     }

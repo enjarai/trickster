@@ -17,7 +17,8 @@ public class RevealTrick extends Trick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var result = expectInput(fragments, 0).asFormattedText();
+        var first = expectInput(fragments, 0);
+        var result = first.asFormattedText();
 
         if (fragments.size() > 1) {
             var building = Text.literal("(");
@@ -38,6 +39,6 @@ public class RevealTrick extends Trick {
             player.sendMessage(Text.of(finalResult));
         });
 
-        return VoidFragment.INSTANCE;
+        return first;
     }
 }

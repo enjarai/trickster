@@ -14,6 +14,10 @@ public abstract class BlunderException extends RuntimeException {
         return Text.literal("" + number).withColor(FragmentType.NUMBER.color().getAsInt());
     }
 
+    protected Text formatFloat(float number) {
+        return Text.literal(String.format("%f", number)).withColor(FragmentType.NUMBER.color().getAsInt());
+    }
+
     protected Text formatAddress(List<Integer> address) {
         var out = Text.literal("[");
         var first = true;

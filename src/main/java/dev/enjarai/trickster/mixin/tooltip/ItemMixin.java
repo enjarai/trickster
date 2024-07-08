@@ -1,4 +1,4 @@
-package dev.enjarai.trickster.mixin;
+package dev.enjarai.trickster.mixin.tooltip;
 
 
 import dev.enjarai.trickster.SpellTooltipData;
@@ -15,12 +15,11 @@ import java.util.Optional;
 
 
 @Mixin(Item.class)
-public abstract class SpellTooltipMixin {
-
+public abstract class ItemMixin {
     @Inject(method = "getTooltipData", at = @At("HEAD"), cancellable = true)
         private void trickster$getSpellTooltipData(ItemStack stack, CallbackInfoReturnable<Optional<TooltipData>> cir) {
         var spellComponent = stack.get(ModComponents.SPELL);
-        if (spellComponent != null) {
+        if (spellComponent != null && !spellComponent.spell().isEmpty()) {
             cir.setReturnValue(Optional.of(new SpellTooltipData(spellComponent.spell())));
         }
     }

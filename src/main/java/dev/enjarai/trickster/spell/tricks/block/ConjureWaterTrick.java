@@ -37,8 +37,8 @@ public class ConjureWaterTrick extends Trick {
 
         var blockPos = pos.toBlockPos();
         var bucket = Items.WATER_BUCKET;
-
         expectCanBuild(ctx, blockPos);
+
         if (!(ctx.getWorld().getBlockState(blockPos).isAir()
                 || ctx.getWorld().getBlockState(blockPos).getBlock() instanceof Waterloggable
                 || ctx.getWorld().getBlockState(blockPos).isOf(Blocks.CAULDRON))
@@ -47,6 +47,8 @@ public class ConjureWaterTrick extends Trick {
         }
 
         var state = ctx.getWorld().getBlockState(blockPos);
+        ctx.useMana(this, 15);
+
         if (state.getBlock() == Blocks.CAULDRON) {
             ctx.getWorld().setBlockState(blockPos, Blocks.WATER_CAULDRON.getDefaultState().with(LeveledCauldronBlock.LEVEL, LeveledCauldronBlock.MAX_LEVEL), 3);
         } else if (!tryPlaceWater(
