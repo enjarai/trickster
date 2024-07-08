@@ -113,6 +113,10 @@ public class Tricks {
     public static final ExtractYTrick EXTRACT_Y = register("extract_y", new ExtractYTrick());
     public static final ExtractZTrick EXTRACT_Z = register("extract_z", new ExtractZTrick());
     public static final LengthTrick LENGTH = register("length", new LengthTrick());
+    public static final DotProductTrick DOT_PRODUCT = register("dot_product", new DotProductTrick());
+    public static final CrossProductTrick CROSS_PRODUCT = register("cross_product", new CrossProductTrick());
+    public static final NormalizeTrick NORMALIZE = register("normalize", new NormalizeTrick());
+    public static final AlignVectorTrick ALIGN_VECTOR = register("align_vector", new AlignVectorTrick());
     public static final MergeVectorTrick MERGE_VECTOR = register("merge_vector", new MergeVectorTrick());
 
     // Boolean
@@ -142,7 +146,6 @@ public class Tricks {
     public static final SetSubtreeTrick SET_SUBTREE = register("set_subtree", new SetSubtreeTrick());
     public static final AddSubtreeTrick ADD_LEAF = register("add_subtree", new AddSubtreeTrick());
     public static final RemoveSubtreeTrick REMOVE_SUBTREE = register("remove_subtree", new RemoveSubtreeTrick());
-
 
     // Events
     public static final CreateSpellCircleTrick CREATE_SPELL_CIRCLE = register("create_spell_circle", new CreateSpellCircleTrick());

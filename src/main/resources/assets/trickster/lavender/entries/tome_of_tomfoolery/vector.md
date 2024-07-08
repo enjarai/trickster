@@ -61,3 +61,43 @@ vector -> number
 ---
 
 Returns the length of the given vector.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:dot_product,title=Alignment Distortion|>
+
+vector, vector -> number
+
+---
+
+Returns the dot product of the given vectors.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:cross_product,title=Perpendicular Distortion|>
+
+vector, vector -> vector
+
+---
+
+Returns the cross product of the given vectors.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:normalize,title=Regularity Distortion|>
+
+vector -> vector
+
+---
+
+Normalizes the given vector to a length of one.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:align_vector,title=Aligned Regularity Distortion|>
+
+vector -> vector
+
+---
+
+Normalizes the given vector to a length of one and aligns it to the nearest cardinal axis.

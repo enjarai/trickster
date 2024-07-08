@@ -23,9 +23,9 @@ public class MergeVectorTrick extends Trick {
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var vectorFragments = fragments;
 
-        if (fragments.get(0).type() == FragmentType.LIST) {
-            var list = expectInput(fragments, FragmentType.LIST, 0);
-            vectorFragments = list.fragments();
+        var list = supposeInput(fragments, 0).flatMap(l -> supposeType(l, FragmentType.LIST));
+        if (list.isPresent()) {
+            vectorFragments = list.get().fragments();
         }
 
         var x = expectInput(vectorFragments, FragmentType.NUMBER, 0);

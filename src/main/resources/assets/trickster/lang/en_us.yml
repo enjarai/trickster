@@ -41,6 +41,10 @@ trickster:
     extract_y: Secondary Distortion
     extract_z: Tertiary Distortion
     merge_vector: Absorption Distortion
+    dot_product: Alignment Distortion
+    cross_product: Perpendicular Distortion
+    normalize: Regularity Distortion
+    align_vector: Aligned Regularity Distortion
     length: Magnitude Distortion
 
     two: Foundational Delusion

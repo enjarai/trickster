@@ -52,7 +52,7 @@ Returns true or false depending on success.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:write_spell,title=Censorship Ploy|>
+<|glyph@trickster:templates|trick-id=trickster:clear_spell,title=Censorship Ploy|>
 
 -> boolean
 
@@ -99,8 +99,6 @@ any ->
 ---
 
 Stores the supplied value in the caster's Crow Mind, overwriting any value that might already be present.
-
-;;;;;
 
 ;;;;;
 
