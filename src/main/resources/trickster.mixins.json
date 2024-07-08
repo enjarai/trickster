@@ -6,10 +6,12 @@
   "mixins": [
     "AbstractBlockStateMixin",
     "LivingEntityMixin",
-    "SpellTooltipMixin",
     "WorldChunkMixin",
+    "event.EntityMixin",
+    "event.ItemStackMixin",
     "event.LivingEntityMixin",
-    "event.ServerPlayerInteractionManagerMixin"
+    "event.ServerPlayerInteractionManagerMixin",
+    "tooltip.ItemMixin"
   ],
   "injectors": {
     "defaultRequire": 1

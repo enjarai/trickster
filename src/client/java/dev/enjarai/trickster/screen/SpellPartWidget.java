@@ -4,6 +4,8 @@ import dev.enjarai.trickster.ModSounds;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.render.SpellCircleRenderer;
 import dev.enjarai.trickster.spell.*;
+import dev.enjarai.trickster.spell.fragment.ListFragment;
+import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
@@ -12,6 +14,7 @@ import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -30,6 +33,8 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     public static final Pattern COPY_OFFHAND_LITERAL = Pattern.of(4, 0, 1, 4, 2, 1);
     public static final Pattern COPY_OFFHAND_LITERAL_INNER = Pattern.of(1, 2, 4, 1, 0, 4, 7);
     public static final Pattern COPY_OFFHAND_EXECUTE = Pattern.of(4, 3, 0, 4, 5, 2, 4, 1);
+    public static final Pattern WRITE_OFFHAND_ADDRESS = Pattern.of(1, 0, 4, 8, 7, 6, 4, 2, 1, 4);
+
 
     private SpellPart spellPart;
 //    private List<SpellPartWidget> partWidgets;
@@ -42,6 +47,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     private boolean isMutable = true;
 
     private Consumer<SpellPart> updateListener;
+    private Consumer<SpellPart> otherHandSpellUpdateListener;
     private Supplier<SpellPart> otherHandSpellSupplier;
     @Nullable
     private SpellPart toBeReplaced;
@@ -53,12 +59,13 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
     private final SpellCircleRenderer renderer;
 
-    public SpellPartWidget(SpellPart spellPart, double x, double y, double size, Consumer<SpellPart> updateListener, Supplier<SpellPart> otherHandSpellSupplier, Runnable initializeReplace) {
+    public SpellPartWidget(SpellPart spellPart, double x, double y, double size, Consumer<SpellPart> spellUpdateListener, Consumer<SpellPart> otherHandSpellUpdateListener, Supplier<SpellPart> otherHandSpellSupplier, Runnable initializeReplace) {
         this.spellPart = spellPart;
         this.x = x;
         this.y = y;
         this.size = size;
-        this.updateListener = updateListener;
+        this.updateListener = spellUpdateListener;
+        this.otherHandSpellUpdateListener = otherHandSpellUpdateListener;
         this.otherHandSpellSupplier = otherHandSpellSupplier;
         this.initializeReplace = initializeReplace;
         this.renderer = new SpellCircleRenderer(() -> this.drawingPart, () -> this.drawingPattern);
@@ -81,7 +88,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             this.renderer.setMousePosition(mouseX, mouseY);
         }
         this.renderer.renderPart(
-                context.getMatrices(), context.getVertexConsumers(), Optional.of(spellPart),
+                context.getMatrices(), context.getVertexConsumers(), spellPart,
                 (float) x, (float) y, (float) size, 0, delta,
                 size -> (float) Math.clamp(1 / (size / context.getScaledWindowHeight() * 2) - 0.2, 0, 1),
                 new Vec3d(0, 0, -1)
@@ -232,7 +239,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
                     drawingPattern.add((byte) i);
 
                     //add middle point to path if connecting opposite corners
-                    if(drawingPattern.size() > 1 && drawingPattern.get(drawingPattern.size() - 2) == (byte) (8 - i))
+                    if (drawingPattern.size() > 1 && drawingPattern.get(drawingPattern.size() - 2) == (byte) (8 - i))
                         drawingPattern.add(drawingPattern.size() - 1, (byte) 4);
 
                     // TODO click sound?
@@ -255,16 +262,16 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         var tryReset = true;
 
         if (compiled.equals(CREATE_SUBCIRCLE_GLYPH)) {
-            drawingPart.subParts.add(Optional.of(new SpellPart()));
+            drawingPart.subParts.add(new SpellPart());
         } else if (compiled.equals(CREATE_GLYPH_CIRCLE_GLYPH)) {
             drawingPart.glyph = new SpellPart();
         } else if (compiled.equals(CREATE_PARENT_GLYPH)) {
             var newPart = new SpellPart();
-            newPart.subParts.add(Optional.of(drawingPart));
+            newPart.subParts.add(drawingPart);
             if (drawingPart == spellPart) {
                 spellPart = newPart;
             } else {
-                setSubPartInTree(drawingPart, Optional.of(newPart), spellPart, false);
+                drawingPart.setSubPartInTree(Optional.of(newPart), spellPart, false);
             }
         } else if (compiled.equals(CREATE_PARENT_GLYPH_GLYPH)) {
             var newPart = new SpellPart();
@@ -272,45 +279,49 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             if (drawingPart == spellPart) {
                 spellPart = newPart;
             } else {
-                setSubPartInTree(drawingPart, Optional.of(newPart), spellPart, false);
+                drawingPart.setSubPartInTree(Optional.of(newPart), spellPart, false);
             }
         } else if (compiled.equals(EXPAND_TO_OUTER_CIRCLE_GLYPH)) {
             if (drawingPart != spellPart) {
                 if (spellPart.glyph == drawingPart) {
                     spellPart = drawingPart;
                 } else {
-                    setSubPartInTree(drawingPart, Optional.of(drawingPart), spellPart, true);
+                    drawingPart.setSubPartInTree(Optional.of(drawingPart), spellPart, true);
                 }
             }
         } else if (compiled.equals(DELETE_CIRCLE_GLYPH)) {
-            var firstSubpart = drawingPart.getSubParts().stream().filter(Optional::isPresent).map(Optional::get).findFirst();
+            var firstSubpart = drawingPart.getSubParts().stream().findFirst();
             if (drawingPart == spellPart) {
                 spellPart = firstSubpart.orElse(new SpellPart());
             } else {
-                setSubPartInTree(drawingPart, firstSubpart, spellPart, false);
+                drawingPart.setSubPartInTree(firstSubpart, spellPart, false);
             }
         } else if (compiled.equals(DELETE_BRANCH_GLYPH)) {
             if (drawingPart == spellPart) {
                 spellPart = new SpellPart();
             } else {
-                setSubPartInTree(drawingPart, Optional.empty(), spellPart, false);
+                drawingPart.setSubPartInTree(Optional.empty(), spellPart, false);
             }
         } else if (compiled.equals(COPY_OFFHAND_LITERAL)) {
             if (drawingPart == spellPart) {
                 spellPart = otherHandSpellSupplier.get().deepClone();
             } else {
-                setSubPartInTree(drawingPart, Optional.of(otherHandSpellSupplier.get().deepClone()), spellPart, false);
+                drawingPart.setSubPartInTree(Optional.of(otherHandSpellSupplier.get().deepClone()), spellPart, false);
             }
         } else if (compiled.equals(COPY_OFFHAND_LITERAL_INNER)) {
             drawingPart.glyph = otherHandSpellSupplier.get().deepClone();
         } else if (compiled.equals(COPY_OFFHAND_EXECUTE)) {
             toBeReplaced = drawingPart;
             initializeReplace.run();
+        } else if (compiled.equals(WRITE_OFFHAND_ADDRESS)) {
+            var address = getAddress(spellPart, drawingPart);
+            if (address.isPresent()) {
+                var addressFragment = new ListFragment(address.get().stream().map(num -> (Fragment) new NumberFragment(num)).toList());
+                otherHandSpellUpdateListener.accept(new SpellPart(addressFragment, List.of()));
+            }
         } else {
-            if (patternSize > 1) {
-                drawingPart.glyph = new PatternGlyph(compiled, drawingPattern);
-            } else {
-                drawingPart.glyph = new PatternGlyph();
+            if (patternSize >= 2) {
+                drawingPart.glyph = new PatternGlyph(compiled);
             }
             tryReset = false;
         }
@@ -342,39 +353,37 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         return drawingPart != null;
     }
 
-    protected boolean setSubPartInTree(SpellPart target, Optional<SpellPart> replacement, SpellPart current, boolean targetIsInner) {
-        if (current.glyph instanceof SpellPart part) {
-            if (targetIsInner ? part.glyph == target : part == target) {
-                if (replacement.isPresent()) {
-                    current.glyph = replacement.get();
-                } else {
-                    current.glyph = new PatternGlyph();
-                }
-                return true;
-            }
+    protected Optional<List<Integer>> getAddress(SpellPart node, SpellPart target) {
+        var address = new LinkedList<Integer>();
+        var found =  getAddress(node, target, address, new LinkedList<>());
+        if (found) {
+            return Optional.of(address);
+        } else {
+            return Optional.empty();
+        }
+    }
 
-            if (setSubPartInTree(target, replacement, part, targetIsInner)) {
-                return true;
-            }
+    protected boolean getAddress(SpellPart node, SpellPart target, List<Integer> address, List<SpellPart> glyphSpells) {
+        if (node == target) {
+            return true;
+        }
+        if (node.glyph instanceof SpellPart glyph) {
+            glyphSpells.add(glyph);
         }
 
-        int i = 0;
-        for (var part : current.subParts) {
-            if (part.isPresent()) {
-                if (targetIsInner ? part.get().glyph == target : part.get() == target) {
-                    if (replacement.isPresent()) {
-                        current.subParts.set(i, replacement);
-                    } else {
-                        current.subParts.remove(i);
-                    }
-                    return true;
-                }
-
-                if (setSubPartInTree(target, replacement, part.get(), targetIsInner)) {
-                    return true;
-                }
+        var subParts = node.subParts;
+        if (subParts.isEmpty() && !address.isEmpty()) {
+            address.removeLast();
+        } else {
+            for (int i = 0; i < subParts.size(); i++) {
+                address.add(i);
+                var found = getAddress(subParts.get(i), target, address, glyphSpells);
+                if (found) return true;
             }
-            i++;
+            for (var glyph : glyphSpells) {
+                var found = getAddress(glyph, target, address, new LinkedList<>());
+                if (found) return true;
+            }
         }
 
         return false;
@@ -413,25 +422,21 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         var nextSize = Math.min(size / 2, size / (float) (partCount / 2));
         int i = 0;
         for (var child : part.getSubParts()) {
-            if (child.isPresent()) {
-                var childPart = child.get();
+            var angle = startingAngle + (2 * Math.PI) / partCount * i - (Math.PI / 2);
 
-                var angle = startingAngle + (2 * Math.PI) / partCount * i - (Math.PI / 2);
+            var nextX = x + (size * Math.cos(angle));
+            var nextY = y + (size * Math.sin(angle));
+            var diffX = nextX - mouseX;
+            var diffY = nextY - mouseY;
+            var distanceSquared = diffX * diffX + diffY * diffY;
 
-                var nextX = x + (size * Math.cos(angle));
-                var nextY = y + (size * Math.sin(angle));
-                var diffX = nextX - mouseX;
-                var diffY = nextY - mouseY;
-                var distanceSquared = diffX * diffX + diffY * diffY;
-
-                if (distanceSquared < closestDistanceSquared) {
-                    closest = childPart;
-                    closestAngle = (float) angle;
-                    closestX = (float) nextX;
-                    closestY = (float) nextY;
-                    closestSize = nextSize;
-                    closestDistanceSquared = distanceSquared;
-                }
+            if (distanceSquared < closestDistanceSquared) {
+                closest = child;
+                closestAngle = (float) angle;
+                closestX = (float) nextX;
+                closestY = (float) nextY;
+                closestSize = nextSize;
+                closestDistanceSquared = distanceSquared;
             }
 
             i++;

@@ -1,6 +1,5 @@
 package dev.enjarai.trickster.spell;
 
-import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -20,35 +19,34 @@ import java.util.stream.Collectors;
 public final class SpellPart implements Fragment {
     public static final MapCodec<SpellPart> MAP_CODEC = MapCodec.recursive("spell_part", self -> RecordCodecBuilder.mapCodec(instance -> instance.group(
             Fragment.CODEC.get().fieldOf("glyph").forGetter(SpellPart::getGlyph),
-            Codec.either(self, Codec.BOOL)
-                    .xmap(e -> e.left(), o -> o.<Either<SpellPart, Boolean>>map(Either::left).orElse(Either.right(false)))
-                    .listOf().fieldOf("sub_parts").forGetter(SpellPart::getSubParts)
+            self.listOf().fieldOf("sub_parts").forGetter(SpellPart::getSubParts)
     ).apply(instance, SpellPart::new)));
     public static final Codec<SpellPart> CODEC = MAP_CODEC.codec();
     public static final Endec<SpellPart> ENDEC = CodecUtils.toEndec(CODEC);
 
     public Fragment glyph;
-    public List<Optional<SpellPart>> subParts;
+    public List<SpellPart> subParts;
 
-    public SpellPart(Fragment glyph, List<Optional<SpellPart>> subParts) {
+    public SpellPart(Fragment glyph, List<SpellPart> subParts) {
         this.glyph = glyph;
         this.subParts = new ArrayList<>(subParts);
     }
 
+    public SpellPart(Fragment glyph) {
+        this(glyph, new ArrayList<>());
+    }
+
     public SpellPart() {
-        this(new PatternGlyph(), new ArrayList<>());
+        this(new PatternGlyph());
     }
 
     @Override
-    public Fragment activateAsGlyph(SpellContext ctx, List<Optional<Fragment>> fragments) throws BlunderException {
+    public Fragment activateAsGlyph(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         if (fragments.isEmpty()) {
             return this;
         } else {
             ctx.pushStackTrace(-1);
-            ctx.pushPartGlyph(fragments.stream()
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
-                    .toList());
+            ctx.pushPartGlyph(fragments);
             var result = run(ctx);
             ctx.popPartGlyph();
             ctx.popStackTrace();
@@ -57,12 +55,12 @@ public final class SpellPart implements Fragment {
     }
 
     public Fragment run(SpellContext ctx) throws BlunderException {
-        var fragments = new ArrayList<Optional<Fragment>>();
+        var fragments = new ArrayList<Fragment>();
 
         int i = 0;
         for (var part : subParts) {
             ctx.pushStackTrace(i);
-            fragments.add(part.map(p -> p.run(ctx)));
+            fragments.add(part.run(ctx));
             ctx.popStackTrace();
             i++;
         }
@@ -95,7 +93,7 @@ public final class SpellPart implements Fragment {
     }
 
     public void brutallyMurderEphemerals() {
-        subParts.forEach(part -> part.ifPresent(SpellPart::brutallyMurderEphemerals));
+        subParts.forEach(SpellPart::brutallyMurderEphemerals);
 
         if (glyph instanceof SpellPart spellPart) {
             spellPart.brutallyMurderEphemerals();
@@ -107,7 +105,7 @@ public final class SpellPart implements Fragment {
     }
 
     public void buildClosure(Map<Pattern, Fragment> replacements) {
-        subParts.forEach(part -> part.ifPresent(p -> p.buildClosure(replacements)));
+        subParts.forEach(part -> part.buildClosure(replacements));
 
         if (glyph instanceof SpellPart spellPart) {
             spellPart.buildClosure(replacements);
@@ -119,12 +117,52 @@ public final class SpellPart implements Fragment {
         }
     }
 
+    public boolean setSubPartInTree(Optional<SpellPart> replacement, SpellPart current, boolean targetIsInner) {
+        if (current.glyph instanceof SpellPart part) {
+            if (targetIsInner ? part.glyph == this : part == this) {
+                if (replacement.isPresent()) {
+                    current.glyph = replacement.get();
+                } else {
+                    current.glyph = new PatternGlyph();
+                }
+                return true;
+            }
+
+            if (setSubPartInTree(replacement, part, targetIsInner)) {
+                return true;
+            }
+        }
+
+        int i = 0;
+        for (var part : current.subParts) {
+            if (targetIsInner ? part.glyph == this : part == this) {
+                if (replacement.isPresent()) {
+                    current.subParts.set(i, replacement.get());
+                } else {
+                    current.subParts.remove(i);
+                }
+                return true;
+            }
+
+            if (setSubPartInTree(replacement, part, targetIsInner)) {
+                return true;
+            }
+            i++;
+        }
+
+        return false;
+    }
+
     public Fragment getGlyph() {
         return glyph;
     }
 
-    public List<Optional<SpellPart>> getSubParts() {
+    public List<SpellPart> getSubParts() {
         return subParts;
+    }
+
+    public boolean isEmpty() {
+        return subParts.isEmpty() && glyph instanceof PatternGlyph patternGlyph && patternGlyph.pattern().isEmpty();
     }
 
     @Override
@@ -161,7 +199,7 @@ public final class SpellPart implements Fragment {
             if (i > 0) {
                 text.append(", ");
             }
-            text.append(subPart.map(Fragment::asFormattedText).orElse(VoidFragment.INSTANCE.asFormattedText()));
+            text.append(subPart.asFormattedText());
         }
         text.append("}");
         return text;
@@ -181,6 +219,6 @@ public final class SpellPart implements Fragment {
         var glyph = this.glyph instanceof SpellPart spell ? spell.deepClone() : this.glyph;
 
         return new SpellPart(glyph, subParts.stream()
-                .map(o -> o.map(SpellPart::deepClone)).collect(Collectors.toList()));
+                .map(SpellPart::deepClone).collect(Collectors.toList()));
     }
 }

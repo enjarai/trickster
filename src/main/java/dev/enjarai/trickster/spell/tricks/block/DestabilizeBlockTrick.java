@@ -31,6 +31,7 @@ public class DestabilizeBlockTrick extends Trick {
             throw new BlockUnoccupiedBlunder(this, pos);
         }
 
+        ctx.useMana(this, 10);
         FallingBlockEntity.spawnFromBlock(ctx.getWorld(), blockPos, state);
 
         var particlePos = blockPos.toCenterPos();

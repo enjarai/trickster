@@ -2,12 +2,16 @@ package dev.enjarai.trickster.spell.fragment;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.MapCodec;
+import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Fragment;
+import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.Tricks;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import dev.enjarai.trickster.spell.tricks.blunder.IncompatibleTypesBlunder;
+import dev.enjarai.trickster.spell.tricks.blunder.IncorrectFragmentBlunder;
 import net.minecraft.text.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,5 +46,23 @@ public record ListFragment(List<Fragment> fragments) implements Fragment {
 
     public ListFragment addRange(ListFragment other) throws BlunderException {
         return new ListFragment(ImmutableList.<Fragment>builder().addAll(fragments).addAll(other.fragments).build());
+    }
+
+    public List<Integer> sanitizeAddress(Trick source) {
+        var sanitizedAddress = new ArrayList<Integer>();
+
+        for (Fragment fragment : this.fragments()) {
+            if (fragment instanceof NumberFragment index && index.isInteger()) {
+                sanitizedAddress.add((int) index.number());
+            } else {
+                throw new IncorrectFragmentBlunder(
+                        source,
+                        1,
+                        Text.translatable(Trickster.MOD_ID + ".fragment." + Trickster.MOD_ID + "." + "integer_list"),
+                        this);
+            }
+        }
+
+        return sanitizedAddress;
     }
 }
