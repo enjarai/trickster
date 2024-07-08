@@ -57,4 +57,4 @@ number, [vector] -> stack
 
 ---
 
-Returns the item stack at the given index in the inventory of the caster, or the block at the given position instead.
+Returns the item stack at the given index in either the inventory of the caster, or the block at the given position.
