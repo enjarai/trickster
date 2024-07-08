@@ -20,8 +20,8 @@ Using mana in this way will consume your health, and is referred to as bloodcast
 The average player has 40 kilogandalfs of mana in their blood.
 
 
-Concretely, mana regenerates over time at 0.5%/s. Maximum mana is always equivalent to maximum health times 12. 
-Current blood mana is always equivalent to current health times 2.
+Concretely, mana regenerates over time at 0.5%/s. Maximum mana is always equivalent to maximum health times twelve. 
+Current blood mana is always equivalent to current health times two.
 
 ;;;;;
 
@@ -42,10 +42,10 @@ You cannot relink an entity that has been unlinked in the current spell.
 ;;;;;
 
 When there are mana sources linked to your spell, they will be prioritised when ploys draw mana. 
-Mana links with greater limits provide a greater ratio of mana so that all sources are drawn from equally. 
-Mana links are lossy, with a tax of 70% incurred on the mana source. 
-The limit on mana links is the amount of mana drained post-tax. 
-The amount of mana actually provided to your spell is the mana link's limit divided by 1.7.
+Mana links with greater limits provide a greater ratio of mana so that all links are drained of the same percentage of their available mana. 
+A tax is incurred on the caster prior to draining the source. 
+The tax percentage is the caster's health divided by the source's health. 
+If the caster is not alive, a value of 25 is used in place of health.
 
 ;;;;;
 

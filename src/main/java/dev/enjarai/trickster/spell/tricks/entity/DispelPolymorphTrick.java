@@ -24,7 +24,7 @@ public class DispelPolymorphTrick extends AbstractLivingEntityQueryTrick {
         var target = getLivingEntity(ctx, fragments, 0);
 
         if (target instanceof ServerPlayerEntity player) {
-            ctx.useMana(this, 120);
+            ctx.useMana(this, 70);
 
             var cumpoonent = player.getComponent(ModEntityCumponents.DISGUISE);
 

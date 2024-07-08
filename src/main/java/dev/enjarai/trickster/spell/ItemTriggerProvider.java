@@ -2,7 +2,6 @@ package dev.enjarai.trickster.spell;
 
 import dev.enjarai.trickster.item.component.ModComponents;
 import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolItem;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -19,10 +18,19 @@ public interface ItemTriggerProvider {
     }
 
     default void trickster$triggerBoots(ServerPlayerEntity player, Fragment... arguments) {
-        var stack = player.getAllArmorItems().iterator().next();
+        trickster$triggerArmour(player, 0, arguments);
+    }
 
-        if (stack.getItem() instanceof ArmorItem) {
-            trickster$trigger(player, stack, List.of(arguments));
+    default void trickster$triggerArmour(ServerPlayerEntity player, int index, Fragment... arguments) {
+        int i = 0;
+
+        for (var item : player.getAllArmorItems()) {
+            if (index == i) {
+                trickster$trigger(player, item, List.of(arguments));
+                return;
+            }
+
+            i++;
         }
     }
 
