@@ -29,6 +29,7 @@ public class SwapBlockTrick extends Trick {
         if (blockPos1.equals(blockPos2)) {
             throw new OverlapBlunder(this, pos1, pos2);
         }
+
         expectCanBuild(ctx, blockPos1, blockPos2);
 
         var state1 = ctx.getWorld().getBlockState(blockPos1);
@@ -40,6 +41,8 @@ public class SwapBlockTrick extends Trick {
         if (state2.isAir()) {
             throw new BlockUnoccupiedBlunder(this, pos2);
         }
+
+        ctx.useMana(this, 85);
 
         NbtCompound blockEntity1Nbt = null;
         NbtCompound blockEntity2Nbt = null;

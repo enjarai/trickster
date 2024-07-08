@@ -52,13 +52,24 @@ Returns true or false depending on success.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:reveal,title=Showcase Stratagem|>
+<|glyph@trickster:templates|trick-id=trickster:clear_spell,title=Censorship Ploy|>
 
-any... ->
+-> boolean
 
 ---
 
-Shows all given values as a chat message to the caster.
+Removes an inscribed spell from the item held in the caster's other hand.
+Returns true or false depending on success.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:reveal,title=Showcase Stratagem|>
+
+any... -> any
+
+---
+
+Shows all given values as a chat message to the caster and returns the first.
 
 ;;;;;
 
@@ -88,8 +99,6 @@ any ->
 ---
 
 Stores the supplied value in the caster's Crow Mind, overwriting any value that might already be present.
-
-;;;;;
 
 ;;;;;
 

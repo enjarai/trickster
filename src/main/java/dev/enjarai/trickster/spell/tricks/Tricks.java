@@ -3,6 +3,7 @@ package dev.enjarai.trickster.spell.tricks;
 import com.mojang.serialization.Lifecycle;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.tricks.entity.query.*;
 import dev.enjarai.trickster.spell.tricks.func.ClosureTrick;
 import dev.enjarai.trickster.spell.tricks.func.ExecuteTrick;
 import dev.enjarai.trickster.spell.tricks.func.IteratorTrick;
@@ -14,8 +15,12 @@ import dev.enjarai.trickster.spell.tricks.entity.*;
 import dev.enjarai.trickster.spell.tricks.event.CreateSpellCircleTrick;
 import dev.enjarai.trickster.spell.tricks.event.DeleteSpellCircleTrick;
 import dev.enjarai.trickster.spell.tricks.func.SupplierTrick;
+import dev.enjarai.trickster.spell.tricks.inventory.ImportHatTrick;
+import dev.enjarai.trickster.spell.tricks.inventory.ImportTrick;
+import dev.enjarai.trickster.spell.tricks.inventory.OtherHandTrick;
 import dev.enjarai.trickster.spell.tricks.list.*;
 import dev.enjarai.trickster.spell.tricks.math.*;
+import dev.enjarai.trickster.spell.tricks.misc.TypeFragmentTrick;
 import dev.enjarai.trickster.spell.tricks.tree.*;
 import dev.enjarai.trickster.spell.tricks.vector.*;
 import net.minecraft.registry.Registry;
@@ -59,6 +64,7 @@ public class Tricks {
     public static final RevealTrick REVEAL = register("reveal", new RevealTrick());
     public static final ReadSpellTrick READ_SPELL = register("read_spell", new ReadSpellTrick());
     public static final WriteSpellTrick WRITE_SPELL = register("write_spell", new WriteSpellTrick());
+    public static final ClearSpellTrick CLEAR_SPELL = register("clear_spell", new ClearSpellTrick());
     public static final ReadCrowMindTrick READ_CROW_MIND = register("read_crow_mind", new ReadCrowMindTrick());
     public static final WriteCrowMindTrick WRITE_CROW_MIND = register("write_crow_mind", new WriteCrowMindTrick());
 
@@ -69,7 +75,11 @@ public class Tricks {
 
     // Entity
     public static final GetPositionTrick GET_POSITION = register("get_position", new GetPositionTrick());
+    public static final GetEntityTypeTrick GET_ENTITY_TYPE = register("get_entity_type", new GetEntityTypeTrick());
     public static final GetFacingTrick GET_FACING = register("get_facing", new GetFacingTrick());
+    public static final GetEntityHealthTrick GET_HEALTH = register("get_health", new GetEntityHealthTrick());
+    public static final GetEntityMaxHealthTrick GET_MAX_HEALTH = register("get_max_health", new GetEntityMaxHealthTrick());
+    public static final GetEntityArmourTrick GET_ARMOUR_VALUE = register("get_armour", new GetEntityArmourTrick());
     public static final HeightReflectionTrick HEIGHT_REFLECTION = register("height_reflection", new HeightReflectionTrick());
     public static final SneakingReflectionTrick SNEAKING_REFLECTION = register("sneaking_reflection", new SneakingReflectionTrick());
     public static final RaycastBlockPosTrick RAYCAST = register("raycast", new RaycastBlockPosTrick());
@@ -78,6 +88,12 @@ public class Tricks {
     public static final AddVelocityTrick ADD_VELOCITY = register("add_velocity", new AddVelocityTrick());
     public static final PolymorphTrick POLYMORPH = register("polymorph", new PolymorphTrick());
     public static final DispelPolymorphTrick DISPEL_POLYMORPH = register("dispel_polymorph", new DispelPolymorphTrick());
+    public static final GetEntityManaTrick GET_MANA = register("get_mana", new GetEntityManaTrick());
+    public static final LeechEntityManaTrick LEECH_MANA = register("leech_mana", new LeechEntityManaTrick());
+
+    // Entity Locating
+    public static final BlockFindEntityTrick BLOCK_FIND_ENTITY = register("block_find_entity", new BlockFindEntityTrick());
+    public static final RangeFindEntityTrick RANGE_FIND_ENTITY = register("range_find_entity", new RangeFindEntityTrick());
 
     // Math
     public static final AddTrick ADD = register("add", new AddTrick());
@@ -97,6 +113,10 @@ public class Tricks {
     public static final ExtractYTrick EXTRACT_Y = register("extract_y", new ExtractYTrick());
     public static final ExtractZTrick EXTRACT_Z = register("extract_z", new ExtractZTrick());
     public static final LengthTrick LENGTH = register("length", new LengthTrick());
+    public static final DotProductTrick DOT_PRODUCT = register("dot_product", new DotProductTrick());
+    public static final CrossProductTrick CROSS_PRODUCT = register("cross_product", new CrossProductTrick());
+    public static final NormalizeTrick NORMALIZE = register("normalize", new NormalizeTrick());
+    public static final AlignVectorTrick ALIGN_VECTOR = register("align_vector", new AlignVectorTrick());
     public static final MergeVectorTrick MERGE_VECTOR = register("merge_vector", new MergeVectorTrick());
 
     // Boolean
@@ -127,19 +147,29 @@ public class Tricks {
     public static final AddSubtreeTrick ADD_LEAF = register("add_subtree", new AddSubtreeTrick());
     public static final RemoveSubtreeTrick REMOVE_SUBTREE = register("remove_subtree", new RemoveSubtreeTrick());
 
-
     // Events
     public static final CreateSpellCircleTrick CREATE_SPELL_CIRCLE = register("create_spell_circle", new CreateSpellCircleTrick());
     public static final DeleteSpellCircleTrick DELETE_SPELL_CIRCLE = register("delete_spell_circle", new DeleteSpellCircleTrick());
 
     // Blocks
+    public static final BreakBlockTrick BREAK_BLOCK = register("break_block", new BreakBlockTrick());
     public static final SwapBlockTrick SWAP_BLOCK = register("swap_block", new SwapBlockTrick());
     public static final ConjureFlowerTrick CONJURE_FLOWER = register("conjure_flower", new ConjureFlowerTrick());
     public static final ConjureWaterTrick CONJURE_WATER = register("conjure_water", new ConjureWaterTrick());
     public static final CheckBlockTrick CHECK_BLOCK = register("check_block", new CheckBlockTrick());
+    public static final CanPlaceTrick CAN_PLACE_BLOCK = register("can_place_block", new CanPlaceTrick());
+    public static final GetBlockHardnessTrick GET_BLOCK_HARDNESS = register("get_block_hardness", new GetBlockHardnessTrick());
     public static final DestabilizeBlockTrick DESTABILIZE_BLOCK = register("destabilize_block", new DestabilizeBlockTrick());
     public static final DisguiseBlockTrick DISGUISE_BLOCK = register("disguise_block", new DisguiseBlockTrick());
     public static final DispelBlockDisguiseTrick DISPEL_BLOCK_DISGUISE = register("dispel_block_disguise", new DispelBlockDisguiseTrick());
+
+    // Inventory
+    public static final ImportTrick IMPORT = register("import", new ImportTrick());
+    public static final ImportHatTrick IMPORT_HAT = register("import_hat", new ImportHatTrick());
+    public static final OtherHandTrick OTHER_HAND = register("other_hand", new OtherHandTrick());
+
+    // Misc
+    public static final TypeFragmentTrick TYPE_FRAGMENT = register("type_fragment", new TypeFragmentTrick());
 
     private static <T extends Trick> T register(String path, T trick) {
         return Registry.register(REGISTRY, Trickster.id(path), trick);

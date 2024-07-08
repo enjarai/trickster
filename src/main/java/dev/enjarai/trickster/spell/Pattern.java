@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 
 public record Pattern(List<PatternEntry> entries) {
     public static final Codec<Pattern> CODEC = PatternEntry.CODEC
-            .listOf(1, Integer.MAX_VALUE).xmap(Pattern::new, Pattern::entries);
+            .listOf(0, Integer.MAX_VALUE).xmap(Pattern::new, Pattern::entries);
     public static final Pattern EMPTY = Pattern.of();
 
     public static Pattern from(List<Byte> pattern) {
@@ -37,6 +37,16 @@ public record Pattern(List<PatternEntry> entries) {
 
     public boolean isEmpty() {
         return entries().isEmpty();
+    }
+
+    public boolean contains(int point) {
+        byte realPoint = (byte) point;
+        for (PatternEntry entry : entries) {
+            if (entry.p1 == realPoint || entry.p2 == realPoint) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public record PatternEntry(byte p1, byte p2) implements Comparable<PatternEntry> {

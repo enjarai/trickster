@@ -1,16 +1,22 @@
 package dev.enjarai.trickster.spell;
 
 import dev.enjarai.trickster.ModAttachments;
+import dev.enjarai.trickster.cca.ModEntityCumponents;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
+import dev.enjarai.trickster.spell.tricks.Trick;
+import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
+import dev.enjarai.trickster.spell.tricks.blunder.EntityInvalidBlunder;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import org.joml.Vector3d;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @SuppressWarnings("UnstableApiUsage")
@@ -19,7 +25,19 @@ public class PlayerSpellContext extends SpellContext {
     private final EquipmentSlot slot;
 
     public PlayerSpellContext(ServerPlayerEntity player, EquipmentSlot slot) {
-        super();
+        this(0, player, slot);
+    }
+
+    public PlayerSpellContext(int recursions, ServerPlayerEntity player, EquipmentSlot slot) {
+        this(ModEntityCumponents.MANA.get(player), recursions, player, slot);
+    }
+
+    public PlayerSpellContext(ManaPool manaPool, ServerPlayerEntity player, EquipmentSlot slot) {
+        this(manaPool, 0, player, slot);
+    }
+
+    public PlayerSpellContext(ManaPool manaPool, int recursions, ServerPlayerEntity player, EquipmentSlot slot) {
+        super(manaPool, recursions);
         this.player = player;
         this.slot = slot;
     }
@@ -76,5 +94,10 @@ public class PlayerSpellContext extends SpellContext {
     @Override
     public void setCrowMind(Fragment fragment) {
         player.setAttached(ModAttachments.CROW_MIND, new CrowMind(fragment));
+    }
+
+    @Override
+    public void addManaLink(Trick source, LivingEntity target, float limit) {
+        addManaLink(source, new ManaLink(manaPool, target, player.getHealth(), limit));
     }
 }

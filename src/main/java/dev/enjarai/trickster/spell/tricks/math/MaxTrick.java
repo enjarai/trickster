@@ -18,6 +18,12 @@ public class MaxTrick extends Trick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+        var list = supposeInput(fragments, 0).flatMap(l -> supposeType(l, FragmentType.LIST));
+
+        if (list.isPresent()) {
+            fragments = list.get().fragments();
+        }
+
         return new NumberFragment(fragments.stream()
                 .mapToDouble(frag -> expectType(frag, FragmentType.NUMBER).number())
                 .max()

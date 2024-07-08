@@ -5,7 +5,7 @@
   "plugin": "dev.enjarai.trickster.ConditionalMixins",
   "client": [
     "AbstractClientPlayerEntityMixin",
-    "SpellToolTipMixin",
+    "tooltip.TooltipComponentMixin",
     "HeldItemRendererMixin",
     "InGameHudMixin",
     "MouseMixin",

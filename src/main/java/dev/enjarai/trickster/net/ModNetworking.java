@@ -72,12 +72,11 @@ public class ModNetworking {
                         stack.set(ModComponents.SELECTED_SLOT,
                                 new SelectedSlotComponent(newSlot, current.maxSlot()));
 
-                        var name = container.stream().skip(newSlot).findFirst()
-                                .flatMap(s -> Optional.ofNullable(s.get(DataComponentTypes.CUSTOM_NAME)));
+                        var name = container.stream().skip(newSlot).findFirst().filter(s -> !s.isEmpty());
                         var message = Text.translatable("trickster.scroll_hat", newSlot);
 
                         if (name.isPresent()) {
-                            message = message.append(" [").append(name.get()).append("]");
+                            message = message.append(" [").append(name.get().getName()).append("]");
                         }
 
                         player.sendMessage(message, true);
@@ -108,6 +107,7 @@ public class ModNetworking {
                 newStack.set(ModComponents.WRITTEN_SCROLL_META, new WrittenScrollMetaComponent(
                         packet.name(), player.getName().getString(), 0
                 ));
+                newStack.setCount(stack.getCount());
 
                 player.setStackInHand(packet.hand(), newStack);
                 player.swingHand(packet.hand());

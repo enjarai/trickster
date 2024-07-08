@@ -4,6 +4,7 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.DivisibleFragment;
+import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import dev.enjarai.trickster.spell.tricks.blunder.MissingInputsBlunder;
@@ -17,6 +18,12 @@ public class DivideTrick extends Trick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+        var list = supposeInput(fragments, 0).flatMap(l -> supposeType(l, FragmentType.LIST));
+
+        if (list.isPresent()) {
+            fragments = list.get().fragments();
+        }
+
         return fragments.stream()
                 .map(a -> expectType(a, DivisibleFragment.class))
                 .reduce(DivisibleFragment::divide)

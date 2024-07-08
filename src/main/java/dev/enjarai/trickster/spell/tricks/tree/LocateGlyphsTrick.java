@@ -13,7 +13,7 @@ import oshi.util.tuples.Pair;
 
 import java.util.*;
 
-public class LocateGlyphsTrick extends Trick {
+public class LocateGlyphsTrick extends MetaTrick {
     public LocateGlyphsTrick() {
         super(Pattern.of(6, 7, 8, 2, 1, 0, 4, 8, 5, 2));
     }
@@ -46,12 +46,10 @@ public class LocateGlyphsTrick extends Trick {
 
             var subParts = temp.getB().subParts;
             for (int i = 0; i < subParts.size(); i++) {
-                if (subParts.get(i).isPresent()) {
-                    var newAddress = Arrays.copyOfRange(temp.getA(), 0, temp.getA().length + 1);
-                    newAddress[temp.getA().length] = i;
+                var newAddress = Arrays.copyOfRange(temp.getA(), 0, temp.getA().length + 1);
+                newAddress[temp.getA().length] = i;
 
-                    queue.add(new Pair<>(newAddress, subParts.get(i).get()));
-                }
+                queue.add(new Pair<>(newAddress, subParts.get(i)));
             }
         }
     }

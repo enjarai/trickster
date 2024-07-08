@@ -9,28 +9,30 @@ import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import dev.enjarai.trickster.spell.tricks.blunder.UnknownEntityBlunder;
+import dev.enjarai.trickster.spell.tricks.entity.query.AbstractLivingEntityQueryTrick;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.List;
 
-public class PolymorphTrick extends Trick {
+public class PolymorphTrick extends AbstractLivingEntityQueryTrick {
     public PolymorphTrick() {
         super(Pattern.of(4, 2, 1, 0, 4, 8, 7, 6, 4));
     }
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var target = expectInput(fragments, FragmentType.ENTITY, 0);
-        var source = expectInput(fragments, FragmentType.ENTITY, 1);
+        var realSource = getLivingEntity(ctx, fragments, 1);
+        fragments = tryWard(ctx, realSource, fragments);
 
-        var realTarget = target.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this));
-        var realSource = source.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this));
+        var realTarget = getLivingEntity(ctx, fragments, 0);
 
         if (realTarget instanceof ServerPlayerEntity targetPlayer && realSource instanceof ServerPlayerEntity sourcePlayer) {
-            var cumpoonent = targetPlayer.getComponent(ModEntityCumponents.DISGUISE);
+            ctx.useMana(this, 480);
 
-            var uuid = sourcePlayer.getUuid();
+            var cumpoonent = targetPlayer.getComponent(ModEntityCumponents.DISGUISE);
             var sourceCumponent = sourcePlayer.getComponent(ModEntityCumponents.DISGUISE);
+            var uuid = sourcePlayer.getUuid();
+
             if (sourceCumponent.getUuid() != null) {
                 uuid = sourceCumponent.getUuid();
             }
@@ -39,6 +41,7 @@ public class PolymorphTrick extends Trick {
         } else {
             throw new UnknownEntityBlunder(this);
         }
+
         return VoidFragment.INSTANCE;
     }
 }

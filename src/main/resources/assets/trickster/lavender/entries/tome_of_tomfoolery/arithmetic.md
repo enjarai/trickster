@@ -15,9 +15,8 @@ Many base arithmetical operations, though not all, will work on both single numb
 
 <|glyph@trickster:templates|trick-id=trickster:add,title=Annexation Stratagem|>
 
-number... -> number | 
-
-vec... -> vec
+number... | number[] -> number |
+vec... | vec[] -> vec
 
 ---
 
@@ -28,9 +27,8 @@ Works with vectors.
 
 <|glyph@trickster:templates|trick-id=trickster:subtract,title=Desertion Stratagem|>
 
-number... -> number |
-
-vec... -> vec
+number... | number[] -> number |
+vec... | vec[] -> vec
 
 ---
 
@@ -41,7 +39,7 @@ Works with vectors.
 
 <|glyph@trickster:templates|trick-id=trickster:multiply,title=Domination Stratagem|>
 
-(number | vec)... -> (number | vec)
+(number | vec)... | (number | vec)[] -> (number | vec)
 
 ---
 
@@ -52,7 +50,7 @@ A number and a vector will combine into a vector.
 
 <|glyph@trickster:templates|trick-id=trickster:divide,title=Submission Stratagem|>
 
-(number | vec)... -> (number | vec)
+(number | vec)... | (number | vec)[] -> (number | vec)
 
 ---
 
@@ -73,7 +71,7 @@ Returns the remainder of dividing the first number by the second number.
 
 <|glyph@trickster:templates|trick-id=trickster:max,title=Noble Stratagem|>
 
-number... -> number
+number... | number[] -> number
 
 ---
 
@@ -83,7 +81,7 @@ Returns highest of many input values.
 
 <|glyph@trickster:templates|trick-id=trickster:min,title=Insignificance Stratagem|>
 
-number... -> number
+number... | number[] -> number
 
 ---
 
