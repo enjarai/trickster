@@ -32,7 +32,7 @@ public interface ItemTriggerProvider {
         if (spellComponent != null) {
             var ctx = new PlayerSpellContext(player, EquipmentSlot.MAINHAND);
             ctx.pushPartGlyph(arguments);
-            spellComponent.spell().run(ctx);
+            spellComponent.spell().runSafely(ctx);
             ctx.popPartGlyph();
         }
     }

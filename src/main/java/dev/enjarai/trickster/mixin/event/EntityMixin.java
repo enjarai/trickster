@@ -15,7 +15,7 @@ public class EntityMixin implements ItemTriggerProvider {
     private void triggerItemSpell(CallbackInfo ci) {
         var self = (Entity)(Object)this;
 
-        if (self.fallDistance <= 2.5)
+        if (self.isTouchingWater() || self.fallDistance <= 2.5)
             return;
 
         if (self instanceof ServerPlayerEntity player) {
