@@ -65,11 +65,11 @@ Returns true or false depending on success.
 
 <|glyph@trickster:templates|trick-id=trickster:reveal,title=Showcase Stratagem|>
 
-any... ->
+any... -> any
 
 ---
 
-Shows all given values as a chat message to the caster.
+Shows all given values as a chat message to the caster and returns the first.
 
 ;;;;;
 
