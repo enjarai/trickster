@@ -144,10 +144,11 @@ public class SpellCircleRenderer {
 
     private void drawSide(MatrixStack matrices, VertexConsumerProvider vertexConsumers, SpellPart parent, float x, float y, float size, Function<Float, Float> alphaGetter, Fragment glyph) {
         var alpha = alphaGetter.apply(size);
+        var patternSize = size / PATTERN_TO_PART_RATIO;
+        var pixelSize = patternSize / PART_PIXEL_RADIUS;
 
         if (glyph instanceof PatternGlyph pattern) {
-            var patternSize = size / PATTERN_TO_PART_RATIO;
-            var pixelSize = patternSize / PART_PIXEL_RADIUS;
+
 
             var isDrawing = inEditor && drawingPartGetter.get() == parent;
             var drawingPattern = inEditor ? drawingPatternGetter.get() : null;
@@ -215,6 +216,35 @@ public class SpellCircleRenderer {
             );
 
             matrices.pop();
+
+            if (inEditor && inUI) {
+                for (int i = 0; i < 9; i++) {
+                    var pos = getPatternDotPosition(x, y, i, patternSize);
+
+                    float dotScale;
+
+                    if (isInsideHitbox(pos, pixelSize, mouseX, mouseY) && isCircleClickable(size)) {
+                        dotScale = 1.6f;
+                    } else {
+                        if (isCircleClickable(size)) {
+                            var mouseDistance = new Vector2f((float) (mouseX - pos.x), (float) (mouseY - pos.y)).length();
+                            dotScale = Math.clamp(patternSize / (mouseDistance * 2) - 0.2f, 0, 1);
+                        } else {
+                            // Skip the dot if its too small to click
+                            continue;
+                        }
+                    }
+
+                    var dotSize = pixelSize * dotScale;
+
+                    drawFlatPolygon(matrices, vertexConsumers, c -> {
+                        c.accept(pos.x - dotSize, pos.y - dotSize);
+                        c.accept(pos.x - dotSize, pos.y + dotSize);
+                        c.accept(pos.x + dotSize, pos.y + dotSize);
+                        c.accept(pos.x + dotSize, pos.y - dotSize);
+                    }, 0, 1, 1, 1, 0.25f);
+                }
+            }
         }
     }
 
