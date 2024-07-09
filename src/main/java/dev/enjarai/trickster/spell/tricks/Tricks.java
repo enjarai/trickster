@@ -19,6 +19,7 @@ import dev.enjarai.trickster.spell.tricks.inventory.*;
 import dev.enjarai.trickster.spell.tricks.list.*;
 import dev.enjarai.trickster.spell.tricks.math.*;
 import dev.enjarai.trickster.spell.tricks.misc.TypeFragmentTrick;
+import dev.enjarai.trickster.spell.tricks.projectile.SummonArrowTrick;
 import dev.enjarai.trickster.spell.tricks.tree.*;
 import dev.enjarai.trickster.spell.tricks.vector.*;
 import net.minecraft.registry.Registry;
@@ -168,6 +169,9 @@ public class Tricks {
     public static final OtherHandTrick OTHER_HAND = register("other_hand", new OtherHandTrick());
     public static final StackToItemTrick STACK_TO_ITEM = register("stack_to_item", new StackToItemTrick());
     public static final GetInventoryStackTrick GET_INVENTORY_STACK = register("get_inventory_stack", new GetInventoryStackTrick());
+
+    // Projectile
+    public static final SummonArrowTrick SUMMON_ARROW = register("summon_arrow", new SummonArrowTrick());
 
     // Misc
     public static final TypeFragmentTrick TYPE_FRAGMENT = register("type_fragment", new TypeFragmentTrick());

@@ -42,7 +42,7 @@ public class SwapBlockTrick extends Trick {
             throw new BlockUnoccupiedBlunder(this, pos2);
         }
 
-        ctx.useMana(this, 85);
+        ctx.useMana(this, (float)(60 + (pos1.vector().distance(pos2.vector()))));
 
         NbtCompound blockEntity1Nbt = null;
         NbtCompound blockEntity2Nbt = null;

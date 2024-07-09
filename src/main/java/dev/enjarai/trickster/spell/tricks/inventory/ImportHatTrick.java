@@ -52,7 +52,7 @@ public class ImportHatTrick extends Trick {
                 return VoidFragment.INSTANCE;
             }
 
-            ctx.pushPartGlyph(List.of());
+            ctx.pushPartGlyph(fragments.subList(1, fragments.size()));
             ctx.pushStackTrace(-2);
             var result = component.spell().run(ctx);
             ctx.popStackTrace();

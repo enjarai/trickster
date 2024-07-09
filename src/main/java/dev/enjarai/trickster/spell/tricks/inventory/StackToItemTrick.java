@@ -17,7 +17,7 @@ public class StackToItemTrick extends Trick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var stack = expectInput(fragments, FragmentType.ITEM_STACK, 0).stack();
+        var stack = expectInput(fragments, FragmentType.ITEM_STACK, 0).getStack(this, ctx);
         return new ItemTypeFragment(stack.getItem());
     }
 }

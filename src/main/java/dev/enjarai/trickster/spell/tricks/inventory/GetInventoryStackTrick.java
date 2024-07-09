@@ -8,8 +8,10 @@ import dev.enjarai.trickster.spell.fragment.ItemStackFragment;
 import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.blunder.*;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.List;
+import java.util.Optional;
 
 public class GetInventoryStackTrick extends Trick {
     public GetInventoryStackTrick() {
@@ -18,27 +20,18 @@ public class GetInventoryStackTrick extends Trick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var slot = expectInput(fragments, FragmentType.NUMBER, 1).number();
-        var pos = supposeInput(fragments, FragmentType.VECTOR, 0);
-        Inventory inventory;
+        var slot = expectInput(fragments, FragmentType.NUMBER, 0).number();
+        var pos = supposeInput(fragments, FragmentType.VECTOR, 1);
+        Optional<BlockPos> maybePosition = Optional.empty();
 
         if (pos.isPresent()) {
             var target = ctx.getWorld().getBlockEntity(pos.get().toBlockPos());
 
-            if (target instanceof Inventory blockInventory) {
-                inventory = blockInventory;
+            if (target instanceof Inventory) {
+                maybePosition = Optional.of(target.getPos());
             } else throw new BlockInvalidBlunder(this);
-        } else {
-            var player = ctx.getPlayer();
-
-            if (player.isPresent())
-                inventory = player.get().getInventory();
-            else throw new NoPlayerBlunder(this);
         }
 
-        if (slot > inventory.size())
-            throw new NoSuchSlotBlunder(this);
-
-        return new ItemStackFragment(inventory.getStack((int)Math.round(slot)));
+        return new ItemStackFragment((int)Math.round(slot), maybePosition);
     }
 }
