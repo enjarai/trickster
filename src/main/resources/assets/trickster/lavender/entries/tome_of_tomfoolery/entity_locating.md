@@ -22,7 +22,7 @@ Finds an entity at a specific block position, optionally restricted by entity ty
 
 <|glyph@trickster:templates|trick-id=trickster:range_find_entity,title=Distortion of Shared Fate|>
 
-vector, number, [entity_type] -> list
+vector, number, [entity_type] -> entity[]
 
 ---
 

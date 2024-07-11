@@ -10,7 +10,7 @@ trickster:
     scroll_name: Scroll Name...
     enter_scroll_name: 'Enter Scroll Name:'
     scroll_sign_note:
-      line0: Note! When you sign the scroll,
+      line0: 'Note: When you sign the scroll,'
       line1: it will no longer be editable.
 
   item_group: Trickster
@@ -147,6 +147,8 @@ item.trickster:
   tome_of_tomfoolery: Tome of Tomfoolery
   mirror_of_evaluation: Mirror of Evaluation
   scroll_and_quill: Scroll and Quill
+  warding_charm: Warding Charm
+  spell_ink: Spell Ink
   top_hat: Top Hat
   wand: Wand
 

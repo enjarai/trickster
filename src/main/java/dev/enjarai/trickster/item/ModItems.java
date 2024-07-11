@@ -54,8 +54,8 @@ public class ModItems {
     public static final TrickyAccessoryItem WARDING_CHARM = register("warding_charm",
             new TrickyAccessoryItem(new Item.Settings().maxCount(1)
                     .component(ModComponents.SPELL, new SpellComponent(new SpellPart()))));
-    public static final Item SPELL_INK = register("spell_ink",
-            new Item(new Item.Settings().recipeRemainder(Items.GLASS_BOTTLE)
+    public static final SpellInkItem SPELL_INK = register("spell_ink",
+            new SpellInkItem(new Item.Settings().recipeRemainder(Items.GLASS_BOTTLE)
                     .food(new FoodComponent(0,
                             0,
                             true,
