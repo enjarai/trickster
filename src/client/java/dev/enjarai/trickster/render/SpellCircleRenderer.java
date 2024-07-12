@@ -79,7 +79,7 @@ public class SpellCircleRenderer {
 
         matrices.push();
         if (!inUI) {
-            matrices.translate(0, 0, -1 / 16f);
+            matrices.translate(0, 0, -size / 8f);
         }
         int i = 0;
         for (var child : entry.getSubParts()) {

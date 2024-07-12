@@ -4,6 +4,7 @@ import dev.enjarai.trickster.cca.ModEntityCumponents;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.render.SpellCircleRenderer;
 import dev.enjarai.trickster.spell.SpellPart;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.PlayerEntityRenderer;
@@ -27,7 +28,7 @@ public abstract class PlayerRendererMixin {
     @Inject(method = "render(Lnet/minecraft/client/network/AbstractClientPlayerEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At("HEAD"))
     public void trickster$onRender(AbstractClientPlayerEntity player, float $$1, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int $$5, CallbackInfo ci) {
         var spell = trickster$get_spell(player);
-        if (spell.isPresent()) {
+        if (spell.isPresent() && (player != MinecraftClient.getInstance().player || MinecraftClient.getInstance().gameRenderer.getCamera().isThirdPerson())) {
             matrices.push();
             //translate to be at eye level
             matrices.translate(0f, player.getEyeHeight(player.getPose()), 0f);

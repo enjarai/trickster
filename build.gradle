@@ -123,7 +123,7 @@ dependencies {
 	include modImplementation("org.ladysnake.cardinal-components-api:cardinal-components-entity:${property('deps.cardinal-components-api')}")
 
 	modImplementation "com.terraformersmc:modmenu:${property('deps.modmenu')}"
-	modClientImplementation "maven.modrinth:sodium:${property('deps.sodium')}"
+	modClientCompileOnly "maven.modrinth:sodium:${property('deps.sodium')}"
 
 	modImplementation("io.wispforest:accessories-fabric:${property('deps.accessories')}")
 }

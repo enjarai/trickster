@@ -86,7 +86,7 @@ public class SpellCircleBlockEntity extends BlockEntity {
     public void tick() {
         manaPool.stdIncrease();
 
-        if (event == SpellCircleEvent.TICK) {
+        if (event == SpellCircleEvent.TICK && !getWorld().isClient()) {
             if (age % 10 == 0) {
                 var iterations = age / 10;
                 callEvent(List.of(new NumberFragment(iterations)));
