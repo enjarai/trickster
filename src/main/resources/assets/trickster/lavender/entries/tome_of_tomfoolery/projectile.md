@@ -10,7 +10,7 @@ Tricks for manipulating projectiles.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:summon_arrow,title=Ballista Ploy|>
+<|glyph@trickster:templates|trick-id=trickster:summon_arrow,title=Ballista's Ploy|>
 
 vector, [slot] -> entity
 
