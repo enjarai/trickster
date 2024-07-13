@@ -53,14 +53,14 @@ public class SpellCircleBlock extends BlockWithEntity {
         return SHAPES[state.get(FACING).getId()];
     }
 
-    @Override
-    protected BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
-        if (world.getBlockState(pos.offset(state.get(FACING).getOpposite())).isAir()) {
-            return Blocks.AIR.getDefaultState();
-        }
-
-        return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
-    }
+//    @Override
+//    protected BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+//        if (world.getBlockState(pos.offset(state.get(FACING).getOpposite())).isAir()) {
+//            return Blocks.AIR.getDefaultState();
+//        }
+//
+//        return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
+//    }
 
     @Nullable
     @Override
