@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "trickster:mirror_of_evaluation"
+    },
+    {
+      "item": "trickster:spell_ink"
+    },
+    {
+      "item": "minecraft:ender_eye"
+    },
+    {
+      "item": "minecraft:chain"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "trickster:warding_charm"
+  }
+}

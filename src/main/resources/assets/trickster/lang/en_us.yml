@@ -152,6 +152,9 @@ item.trickster:
   top_hat: Top Hat
   wand: Wand
 
+effect.trickster:
+  mana_boost: Mana Hyperflux
+
 tag.item.trickster:
   can_evaluate_dynamically: Can Evaluate Dynamically
   holdable_hat: Holdable Hats

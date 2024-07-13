@@ -82,6 +82,8 @@ public class ModItems {
                 entries.add(MIRROR_OF_EVALUATION);
                 entries.add(TOP_HAT);
                 entries.add(WAND);
+                entries.add(WARDING_CHARM);
+                entries.add(SPELL_INK);
             })
             .build();
 
