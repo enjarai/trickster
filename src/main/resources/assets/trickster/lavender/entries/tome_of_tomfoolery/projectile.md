@@ -12,9 +12,9 @@ Tricks for manipulating projectiles.
 
 <|glyph@trickster:templates|trick-id=trickster:summon_arrow,title=Ballista Ploy|>
 
-vector, [stack] -> entity
+vector, [slot] -> entity
 
 ---
 
 Summons an arrow at the given position, returning it. 
-Requires an arrow, from either the given stack or the caster's inventory. 
+Requires an arrow, from either the given slot or the caster's inventory. 
