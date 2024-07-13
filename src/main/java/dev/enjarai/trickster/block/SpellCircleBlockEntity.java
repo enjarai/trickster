@@ -92,9 +92,8 @@ public class SpellCircleBlockEntity extends BlockEntity {
                 callEvent(List.of(new NumberFragment(iterations)));
                 markDirty();
             }
-
-            age++;
         }
+        age++;
     }
 
     @Nullable

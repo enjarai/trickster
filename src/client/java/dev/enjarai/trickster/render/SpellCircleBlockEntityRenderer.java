@@ -1,12 +1,15 @@
 package dev.enjarai.trickster.render;
 
+import dev.enjarai.trickster.block.SpellCircleBlock;
 import dev.enjarai.trickster.block.SpellCircleBlockEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
+import org.joml.Vector3f;
 
 import java.util.Optional;
 
@@ -20,11 +23,29 @@ public class SpellCircleBlockEntityRenderer implements BlockEntityRenderer<Spell
     @Override
     public void render(SpellCircleBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         matrices.push();
+
+        var facing = entity.getCachedState().get(SpellCircleBlock.FACING);
+        var offset = 1.0 / 16.0 * 7.0;
+        matrices.translate(facing.getOffsetX() * -offset, facing.getOffsetY() * -offset, facing.getOffsetZ() * -offset);
+
         matrices.translate(0.5f, 0.5f, 0.5f);
+        matrices.multiply(facing.getRotationQuaternion());
         matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(90));
-        this.renderer.renderPart(matrices, vertexConsumers, entity.spell, 0, 0, 0.5f, 0, tickDelta, size -> 1f, new Vec3d(0, 0, -1));
-//        matrices.scale(1, -1, 1);
-//        this.renderer.renderPart(matrices, vertexConsumers, Optional.of(entity.spell), 0, 0, 1, 0, tickDelta, size -> 1f);
+
+        matrices.multiply(RotationAxis.POSITIVE_X.rotation((float) Math.sin((entity.age + tickDelta) * 0.1f) * 0.05f));
+        matrices.multiply(RotationAxis.POSITIVE_Y.rotation((float) Math.sin((entity.age + tickDelta) * 0.12f) * 0.05f));
+        matrices.translate(
+                0, 0,
+                (float) Math.sin((entity.age + tickDelta) * 0.14f) * 0.02f
+        );
+
+        var normal = new Vec3d(new Vector3f(0, 0, -1).rotate(facing.getRotationQuaternion().conjugate()));
+
+        this.renderer.renderPart(
+                matrices, vertexConsumers, entity.spell,
+                0, 0, 0.5f, 0,
+                tickDelta, size -> 1f, normal
+        );
         matrices.pop();
     }
 }
