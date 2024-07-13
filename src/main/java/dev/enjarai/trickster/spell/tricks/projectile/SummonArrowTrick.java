@@ -27,15 +27,15 @@ public class SummonArrowTrick extends Trick {
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var pos = expectInput(fragments, FragmentType.VECTOR, 0).vector();
-        var optionalStack = supposeInput(fragments, FragmentType.ITEM_STACK, 1);
+        var optionalSlot = supposeInput(fragments, FragmentType.SLOT, 1);
         ItemStack stack = null;
         boolean b = false;
 
-        if (optionalStack.isPresent()) {
-            stack = optionalStack.get().getStack(this, ctx);
+        if (optionalSlot.isPresent()) {
+            stack = optionalSlot.get().getStack(this, ctx);
             b = isValid(stack);
             if (!b) throw new ItemInvalidBlunder(this);
-            optionalStack.get().move(this, ctx);
+            optionalSlot.get().move(this, ctx);
         } else {
             var player = ctx.getPlayer().orElseThrow(() -> new NoPlayerBlunder(this));
             var inventory = player.getInventory();

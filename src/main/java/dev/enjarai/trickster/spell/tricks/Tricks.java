@@ -167,8 +167,8 @@ public class Tricks {
     public static final ImportTrick IMPORT = register("import", new ImportTrick());
     public static final ImportHatTrick IMPORT_HAT = register("import_hat", new ImportHatTrick());
     public static final OtherHandTrick OTHER_HAND = register("other_hand", new OtherHandTrick());
-    public static final StackToItemTrick STACK_TO_ITEM = register("stack_to_item", new StackToItemTrick());
-    public static final GetInventoryStackTrick GET_INVENTORY_STACK = register("get_inventory_stack", new GetInventoryStackTrick());
+    public static final GetItemInSlotTrick GET_ITEM_IN_SLOT = register("get_item_in_slot", new GetItemInSlotTrick());
+    public static final GetInventorySlotTrick GET_INVENTORY_SLOT = register("get_inventory_slot", new GetInventorySlotTrick());
 
     // Projectile
     public static final SummonArrowTrick SUMMON_ARROW = register("summon_arrow", new SummonArrowTrick());

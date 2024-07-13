@@ -10,13 +10,13 @@ Tricks that pull information from and interact with the caster's inventory.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:stack_to_item,title=Fence's Distortion|>
+<|glyph@trickster:templates|trick-id=trickster:get_item_in_slot,title=Fence's Distortion|>
 
-stack -> item
+slot -> item
 
 ---
 
-Returns the type of item that the given stack contains.
+Returns the type of item that the given slot contains.
 
 ;;;;;
 
@@ -30,13 +30,13 @@ Returns the type of item in the caster's other hand.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:get_inventory_stack,title=Intrusive Distortion|>
+<|glyph@trickster:templates|trick-id=trickster:get_inventory_slot,title=Intrusive Distortion|>
 
-number, [vector] -> stack
+number, [vector] -> slot
 
 ---
 
-Returns the item stack at the given index in either the inventory of the caster, or the block at the given position.
+Returns the item slot at the given index in either the inventory of the caster, or the block at the given position.
 
 ;;;;;
 

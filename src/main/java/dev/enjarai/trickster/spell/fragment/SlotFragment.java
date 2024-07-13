@@ -17,15 +17,15 @@ import net.minecraft.util.math.BlockPos;
 
 import java.util.Optional;
 
-public record ItemStackFragment(int slot, Optional<BlockPos> maybePosition) implements Fragment {
-    public static final MapCodec<ItemStackFragment> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Codec.INT.fieldOf("slot").forGetter(ItemStackFragment::slot),
-            BlockPos.CODEC.optionalFieldOf("maybePosition").forGetter(ItemStackFragment::maybePosition)
-    ).apply(instance, ItemStackFragment::new));
+public record SlotFragment(int slot, Optional<BlockPos> maybePosition) implements Fragment {
+    public static final MapCodec<SlotFragment> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+            Codec.INT.fieldOf("slot").forGetter(SlotFragment::slot),
+            BlockPos.CODEC.optionalFieldOf("maybePosition").forGetter(SlotFragment::maybePosition)
+    ).apply(instance, SlotFragment::new));
 
     @Override
     public FragmentType<?> type() {
-        return FragmentType.ITEM_STACK;
+        return FragmentType.SLOT;
     }
 
     @Override

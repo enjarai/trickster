@@ -10,14 +10,14 @@ import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 
 import java.util.List;
 
-public class StackToItemTrick extends Trick {
-    public StackToItemTrick() {
+public class GetItemInSlotTrick extends Trick {
+    public GetItemInSlotTrick() {
         super(Pattern.of(1, 4, 7, 8, 5, 2, 4, 6, 3, 4));
     }
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var stack = expectInput(fragments, FragmentType.ITEM_STACK, 0).getStack(this, ctx);
-        return new ItemTypeFragment(stack.getItem());
+        var slot = expectInput(fragments, FragmentType.SLOT, 0).getStack(this, ctx);
+        return new ItemTypeFragment(slot.getItem());
     }
 }

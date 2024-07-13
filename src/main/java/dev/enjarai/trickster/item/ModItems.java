@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.item;
 
 import dev.enjarai.trickster.Trickster;
+import dev.enjarai.trickster.effects.ModEffects;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.SelectedSlotComponent;
 import dev.enjarai.trickster.item.component.SpellComponent;
