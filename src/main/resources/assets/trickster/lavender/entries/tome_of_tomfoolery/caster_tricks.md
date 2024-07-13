@@ -27,3 +27,13 @@ Returns the location the spell is being cast from.
 ---
 
 Returns the entity casting the spell.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:mana_reflection,title=Authority Delusion|>
+
+-> number
+
+---
+
+Returns the amount of mana directly available to the spell.

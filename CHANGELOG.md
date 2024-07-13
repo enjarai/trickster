@@ -1,5 +1,23 @@
-- Fixed being able to crash the server with a fork-bomb-like spell.
-- Made a few fixes to conjure water: (Thanks @Master_Bw3!)
-  - Fixed conjure water working in the nether.
-  - Fixed conjure water not working on waterloggable blocks.
-  - Fixed conjure water not working on cauldrons.
+- Added a mana system to ensure relatively fair play in survival, hopefully without compromising on tomfoolery. (@StellarWitch7)
+- Added a meta-programming system to dynamically write and edit spells within spells. (@Master-Bw3)
+- Added the warding charm to indirectly protect yourself from being targeted by others. (@StellarWitch7)
+- Made spell scrolls signable. (@enjarai)
+- Made signed spell scrolls easily cloneable. (@enjarai)
+- Added single use spell scrolls with a fixed mana buffer. (@enjarai)
+- Added shadow blocks, a way to disguise blocks as other blocks. (@StellarWitch7)
+- Added third person visuals for editing scrolls. (@Master-Bw3)
+- Added ways to import spells from other inventory items. (@enjarai)
+- Added a tooltip showing the inscribed spell on an item. (@Master-Bw3)
+- Added the ability to trigger inscribed spells on many common items. (@StellarWitch7)
+- Added multiple extra scribing patterns. (@enjarai)
+- Added previews for scribing patterns in the guide book. (@enjarai)
+- Scribing patterns no longer clear the glyph they're drawn in place of. (@StellarWitch7)
+- Generally made many changes to the guide book.
+- Added iteration patterns.
+- Added more block manipulation patterns.
+- Added more entity manipulation patterns.
+- Added more vector manipulation patterns.
+- Added more list manipulation patterns.
+- Added more meta-execution patterns.
+- Added torture.
+- Fixed *many* issues.

@@ -23,7 +23,7 @@
 			"dev.enjarai.trickster.TricksterClient"
 		],
 		"cardinal-components-chunk": [
-          "dev.enjarai.trickster.cca.ModChunkCumponents"
+          	"dev.enjarai.trickster.cca.ModChunkCumponents"
 		],
 		"cardinal-components-entity": [
 			"dev.enjarai.trickster.cca.ModEntityCumponents"
@@ -56,6 +56,7 @@
 		"cicada": ">=0.8.0"
 	},
 	"breaks": {
-		"sodium": "<0.5.11"
+		"sodium": "<0.5.11",
+		"optifabric": "*"
 	}
 }

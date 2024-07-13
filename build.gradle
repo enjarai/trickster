@@ -163,19 +163,25 @@ yamlang {
 
 // configure the maven publication
 publishing {
-	publications {
-		create("mavenJava", MavenPublication) {
-			artifactId = project.archives_base_name
-			from components.java
+	repositories {
+		maven {
+			name = "enjaraiMaven"
+			url = "https://maven.enjarai.dev/releases"
+			credentials(PasswordCredentials)
+			authentication {
+				basic(BasicAuthentication)
+			}
 		}
 	}
 
-	// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-	repositories {
-		// Add repositories to publish to here.
-		// Notice: This block does NOT have the same function as the block in the top level.
-		// The repositories here will be used for publishing your artifact, not for
-		// retrieving dependencies.
+	publications {
+		mavenJava(MavenPublication) {
+			groupId = group
+			artifactId = archivesBaseName
+			version = version
+
+			from components.java
+		}
 	}
 }
 
@@ -216,6 +222,9 @@ publishMods {
 			requires {
 				slug = "lavender"
 			}
+			requires {
+				slug = "accessories"
+			}
 			embeds {
 				slug = "cardinal-components-api"
 			}
@@ -231,4 +240,10 @@ publishMods {
 			tagName = project.version
 		}
 	}
+}
+
+tasks.register('publishAll') {
+	group 'publishing'
+	dependsOn 'publish'
+	dependsOn 'publishMods'
 }

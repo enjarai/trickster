@@ -70,8 +70,9 @@ public class Tricks {
 
     // Caster
     public static final ReflectionTrick REFLECTION = register("reflection", new ReflectionTrick());
-    public static final CasterReflection CASTER_REFLECTION = register("caster_reflection", new CasterReflection());
+    public static final CasterReflectionTrick CASTER_REFLECTION = register("caster_reflection", new CasterReflectionTrick());
     public static final CostTrick COST = register("cost", new CostTrick());
+    public static final ManaReflectionTrick MANA_REFLECTION = register("mana_reflection", new ManaReflectionTrick());
 
     // Entity
     public static final GetPositionTrick GET_POSITION = register("get_position", new GetPositionTrick());

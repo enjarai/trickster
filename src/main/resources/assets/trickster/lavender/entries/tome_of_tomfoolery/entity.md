@@ -90,16 +90,6 @@ Given an entity, returns its total armour value.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:get_mana,title=Distortion of Authority|>
-
-entity -> number
-
----
-
-Given an entity, returns its current mana.
-
-;;;;;
-
 <|glyph@trickster:templates|trick-id=trickster:raycast,title=Archer's Distortion|>
 
 entity -> vector
