@@ -153,6 +153,9 @@ item.trickster:
   top_hat: Top Hat
   wand: Wand
 
+block.trickster:
+  entangled_redstone: Mana-Entangled Block of Redstone
+
 effect.trickster:
   mana_boost: Mana Hyperflux
 

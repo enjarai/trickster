@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "power=0": {
+      "model": "trickster:block/disabled_entangled_redstone"
+    },
+    "": {
+      "model": "trickster:block/entangled_redstone"
+    }
+  }
+}

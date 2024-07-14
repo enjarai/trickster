@@ -27,8 +27,8 @@ public class SpellCircleBlock extends BlockWithEntity {
             createCuboidShape(0, 0, 0, 2, 16, 16)
     };
 
-    protected SpellCircleBlock(Settings settings) {
-        super(settings);
+    protected SpellCircleBlock() {
+        super(AbstractBlock.Settings.create().strength(0.5f).noCollision());
         setDefaultState(stateManager.getDefaultState().with(FACING, Direction.UP));
     }
 
