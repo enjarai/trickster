@@ -29,6 +29,7 @@ public class AddVelocityTrick extends AbstractLivingEntityQueryTrick {
         ctx.useMana(this, (float)velocity.vector().length() * 6);
         target.addVelocity(velocity.vector().x(), velocity.vector().y(), velocity.vector().z());
         target.velocityModified = true;
+        ctx.setWorldAffected();
 
         return VoidFragment.INSTANCE;
     }

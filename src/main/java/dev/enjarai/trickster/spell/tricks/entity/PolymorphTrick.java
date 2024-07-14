@@ -38,6 +38,7 @@ public class PolymorphTrick extends AbstractLivingEntityQueryTrick {
             }
 
             cumpoonent.setUuid(uuid);
+            ctx.setWorldAffected();
         } else {
             throw new UnknownEntityBlunder(this);
         }

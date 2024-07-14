@@ -15,6 +15,7 @@ public abstract class AbstractBlockDisguiseTrick extends Trick {
 
     protected static void updateShadow(SpellContext ctx, BlockPos blockPos) {
         ModNetworking.CHANNEL.serverHandle(ctx.getWorld(), blockPos).send(new RebuildChunkPacket(blockPos));
+        ctx.setWorldAffected();
 
         var particlePos = blockPos.toCenterPos();
         ctx.getWorld().spawnParticles(

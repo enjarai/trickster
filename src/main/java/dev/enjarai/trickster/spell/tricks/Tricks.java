@@ -15,6 +15,7 @@ import dev.enjarai.trickster.spell.tricks.entity.*;
 import dev.enjarai.trickster.spell.tricks.event.CreateSpellCircleTrick;
 import dev.enjarai.trickster.spell.tricks.event.DeleteSpellCircleTrick;
 import dev.enjarai.trickster.spell.tricks.func.SupplierTrick;
+import dev.enjarai.trickster.spell.tricks.inventory.CheckHatTrick;
 import dev.enjarai.trickster.spell.tricks.inventory.ImportHatTrick;
 import dev.enjarai.trickster.spell.tricks.inventory.ImportTrick;
 import dev.enjarai.trickster.spell.tricks.inventory.OtherHandTrick;
@@ -167,6 +168,7 @@ public class Tricks {
     // Inventory
     public static final ImportTrick IMPORT = register("import", new ImportTrick());
     public static final ImportHatTrick IMPORT_HAT = register("import_hat", new ImportHatTrick());
+    public static final CheckHatTrick CHECK_HAT = register("check_hat", new CheckHatTrick());
     public static final OtherHandTrick OTHER_HAND = register("other_hand", new OtherHandTrick());
 
     // Misc

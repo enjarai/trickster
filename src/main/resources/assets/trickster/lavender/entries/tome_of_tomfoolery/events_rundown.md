@@ -18,12 +18,12 @@ but side effects and exceptions are very much supported.
 
 <|glyph@trickster:templates|trick-id=trickster:create_spell_circle,title=Perceptive Ploy|>
 
-vector, spell, spell ->
+vector, vector, spell, spell ->
 
 ---
 
-Places the latter spell at the given vector position and sets it 
-to listen for the event referenced by the former spell.
+Places the latter spell at the position of the first vector, facing the second vector, and sets it 
+to listen for the former spell's event.
 
 ;;;;;
 

@@ -119,6 +119,7 @@ trickster:
 
     import: Assistance Ploy
     import_hat: Cranium Ploy
+    check_hat: Cranium Delusion
     other_hand: Juggling Delusion
 
     type_fragment: Argumentative Distortion

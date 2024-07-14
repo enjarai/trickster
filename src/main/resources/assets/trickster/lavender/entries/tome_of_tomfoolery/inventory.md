@@ -38,3 +38,13 @@ number -> any
 ---
 
 Grabs the spell from a scroll in a specific slot in the caster's [Top Hat](^trickster:top_hat), casts it, and returns the result.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:check_hat,title=Cranium Delusion|>
+
+-> number
+
+---
+
+Returns the selected slot in the caster's [Top Hat](^trickster:top_hat).

@@ -59,6 +59,7 @@ public class SwapBlockTrick extends Trick {
 
         ctx.getWorld().setBlockState(blockPos1, state2);
         ctx.getWorld().setBlockState(blockPos2, state1);
+        ctx.setWorldAffected();
 
         if (blockEntity1Nbt != null) {
             ctx.getWorld().getBlockEntity(blockPos2).read(blockEntity1Nbt, ctx.getWorld().getRegistryManager());
