@@ -1,11 +1,16 @@
 package dev.enjarai.trickster.cca;
 
 import dev.enjarai.trickster.entity.ModEntities;
+import dev.enjarai.trickster.misc.ModDamageTypes;
 import dev.enjarai.trickster.spell.ManaPool;
 import dev.enjarai.trickster.spell.SimpleManaPool;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
@@ -66,10 +71,8 @@ public class ManaComponent extends SimpleManaPool implements AutoSyncedComponent
         float f = mana - amount;
         mana = Math.max(Math.min(mana - amount, maxMana), 0);
 
-        if (f < 0) { //TODO: funny death messages
-            if (!entity.isInCreativeMode())
-                entity.setHealth(entity.getHealth() - ManaPool.healthFromMana(f * -1));
-
+        if (f < 0) {
+            entity.damage(ModDamageTypes.of(entity.getWorld(), ModDamageTypes.MANA_OVERFLUX), ManaPool.healthFromMana(f * -1));
             return entity.isAlive();
         }
 
