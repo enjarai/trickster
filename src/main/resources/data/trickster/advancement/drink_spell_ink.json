@@ -1,0 +1,33 @@
+{
+    "display": {
+        "icon": {
+            "item": "trickster:spell_ink"
+        },
+        "title": {
+            "text": "Why'd You Do That?"
+        },
+        "description": {
+            "text": "Can you not read?"
+        },
+        "frame": "task",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": false,
+        "background": "minecraft:textures/gui/advancements/backgrounds/stone.png"
+    },
+    "criteria": {
+        "yum": {
+            "trigger": "minecraft:consume_item",
+            "conditions": {
+                "item": {
+                    "item": "trickster:spell_ink"
+                }
+            }
+        }
+    },
+    "requirements": [
+        [
+            "yum"
+        ]
+    ]
+}
