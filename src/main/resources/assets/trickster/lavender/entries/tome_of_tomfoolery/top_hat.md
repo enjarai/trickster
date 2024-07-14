@@ -23,4 +23,7 @@ it will instead read the spell from the selected scroll in the held hat.
 
 ;;;;;
 
+You can also access the spell in any slot of your Top Hat directly using [Cranium Ploy](^trickster:inventory),
+or read the selected slot using [Cranium Delusion](^trickster:inventory).
+
 <recipe;trickster:top_hat>

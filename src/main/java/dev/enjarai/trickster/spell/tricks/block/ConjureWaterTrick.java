@@ -57,6 +57,7 @@ public class ConjureWaterTrick extends Trick {
         ) && bucket instanceof BucketItem) {
             ((BucketItem) bucket).placeFluid(null, ctx.getWorld(), blockPos, null);
         }
+        ctx.setWorldAffected();
 
 
         var particlePos = blockPos.toCenterPos();

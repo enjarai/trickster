@@ -33,6 +33,7 @@ public class DestabilizeBlockTrick extends Trick {
 
         ctx.useMana(this, 10);
         FallingBlockEntity.spawnFromBlock(ctx.getWorld(), blockPos, state);
+        ctx.setWorldAffected();
 
         var particlePos = blockPos.toCenterPos();
         ctx.getWorld().spawnParticles(

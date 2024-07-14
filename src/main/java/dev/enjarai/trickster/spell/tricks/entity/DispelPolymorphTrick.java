@@ -30,6 +30,8 @@ public class DispelPolymorphTrick extends AbstractLivingEntityQueryTrick {
 
             if (cumpoonent.getUuid() != null) {
                 cumpoonent.setUuid(null);
+                ctx.setWorldAffected();
+
                 return BooleanFragment.TRUE;
             }
         }
