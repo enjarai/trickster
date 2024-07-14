@@ -41,6 +41,7 @@ public class ConjureFlowerTrick extends Trick {
         flowerType.ifPresent(flower -> {
             ctx.getWorld().setBlockState(blockPos, flower.value().getDefaultState());
         });
+        ctx.setWorldAffected();
 
         var particlePos = blockPos.toCenterPos();
         ctx.getWorld().spawnParticles(

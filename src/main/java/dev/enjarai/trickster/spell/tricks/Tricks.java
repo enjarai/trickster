@@ -166,6 +166,7 @@ public class Tricks {
     // Inventory
     public static final ImportTrick IMPORT = register("import", new ImportTrick());
     public static final ImportHatTrick IMPORT_HAT = register("import_hat", new ImportHatTrick());
+    public static final CheckHatTrick CHECK_HAT = register("check_hat", new CheckHatTrick());
     public static final OtherHandTrick OTHER_HAND = register("other_hand", new OtherHandTrick());
     public static final GetItemInSlotTrick GET_ITEM_IN_SLOT = register("get_item_in_slot", new GetItemInSlotTrick());
     public static final GetInventorySlotTrick GET_INVENTORY_SLOT = register("get_inventory_slot", new GetInventorySlotTrick());
