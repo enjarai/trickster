@@ -156,6 +156,9 @@ tag.item.trickster:
   scrolls: Scrolls
   spell_cost: Spell Cost
 
+death.attack:
+  mana_overflux: "%1$s's magic show has met an untimely end."
+
 key:
   categories:
     trickster: Trickster

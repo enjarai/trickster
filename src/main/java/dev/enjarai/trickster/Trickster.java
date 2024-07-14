@@ -5,6 +5,7 @@ import dev.enjarai.trickster.config.TricksterConfig;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.recipe.ModRecipes;
+import dev.enjarai.trickster.misc.ModDamageTypes;
 import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.screen.ModScreenHandlers;
@@ -44,6 +45,7 @@ public class Trickster implements ModInitializer {
 		ModSounds.register();
 		ModAttachments.register();
 		ModRecipes.register();
+		ModDamageTypes.register();
 		Tricks.register();
 		SpellCircleEvent.register();
 	}
