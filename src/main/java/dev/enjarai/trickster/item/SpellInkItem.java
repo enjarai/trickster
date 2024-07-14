@@ -33,7 +33,7 @@ public class SpellInkItem extends Item {
         if (!world.isClient()) {
             if (!user.addStatusEffect(new StatusEffectInstance(Registries.STATUS_EFFECT.getEntry(ModEffects.MANA_BOOST),
                     20 * 60,
-                    1,
+                    0,
                     false,
                     false,
                     true))

@@ -70,6 +70,7 @@ trickster:
     get_mana: Distortion of Authority
     leech_mana: Conduit's Ploy
     add_velocity: Impulse Ploy
+    summon_arrow: Ballista's Ploy
 
     block_find_entity: Embracing Distortion
     range_find_entity: Distortion of Shared Fate
