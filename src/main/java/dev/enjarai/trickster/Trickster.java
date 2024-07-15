@@ -1,5 +1,6 @@
 package dev.enjarai.trickster;
 
+import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.block.ModBlocks;
 import dev.enjarai.trickster.config.TricksterConfig;
 import dev.enjarai.trickster.effects.ModEffects;
@@ -50,6 +51,7 @@ public class Trickster implements ModInitializer {
 		ModDamageTypes.register();
 		Tricks.register();
 		SpellCircleEvent.register();
+		ModCriteria.register();
 	}
 
 	public static Identifier id(String path) {

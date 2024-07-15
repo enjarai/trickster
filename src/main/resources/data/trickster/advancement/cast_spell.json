@@ -1,0 +1,20 @@
+{
+  "display": {
+    "icon": {
+      "id": "trickster:mirror_of_evaluation"
+    },
+    "title": {
+      "text": "Pre-Show Prep"
+    },
+    "description": {
+      "text": "Girl, I love your make-up!"
+    },
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "use_mana": {
+      "trigger": "trickster:use_mana"
+    }
+  }
+}

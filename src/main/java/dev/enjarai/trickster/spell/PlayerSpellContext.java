@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.spell;
 
 import dev.enjarai.trickster.ModAttachments;
+import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.cca.ModEntityCumponents;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
@@ -40,6 +41,12 @@ public class PlayerSpellContext extends SpellContext {
         super(manaPool, recursions);
         this.player = player;
         this.slot = slot;
+    }
+
+    @Override
+    public void useMana(Trick source, float amount) {
+        ModCriteria.MANA_USED.trigger(player);
+        super.useMana(source, amount);
     }
 
     @Override

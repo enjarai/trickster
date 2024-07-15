@@ -3,7 +3,7 @@
   "category": "misc",
   "ingredients": [
     {
-      "item": "minecraft:stone_block"
+      "item": "minecraft:stone"
     },
     {
       "item": "minecraft:redstone_block"
