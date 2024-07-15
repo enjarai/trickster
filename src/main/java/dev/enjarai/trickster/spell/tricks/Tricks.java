@@ -117,6 +117,7 @@ public class Tricks {
     public static final CrossProductTrick CROSS_PRODUCT = register("cross_product", new CrossProductTrick());
     public static final NormalizeTrick NORMALIZE = register("normalize", new NormalizeTrick());
     public static final AlignVectorTrick ALIGN_VECTOR = register("align_vector", new AlignVectorTrick());
+    public static final ReverseVectorTrick REVERSE_ALIGN_VECTOR = register("reverse_align_vector", new ReverseVectorTrick());
     public static final MergeVectorTrick MERGE_VECTOR = register("merge_vector", new MergeVectorTrick());
 
     // Boolean

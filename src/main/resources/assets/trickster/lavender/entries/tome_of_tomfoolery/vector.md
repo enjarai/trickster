@@ -84,6 +84,16 @@ Returns the cross product of the given vectors.
 
 ;;;;;
 
+<|glyph@trickster:templates|trick-id=trickster:reverse_vector,title=Inversion Distortion|>
+
+vector -> vector
+
+---
+
+Inverts the given vector.
+
+;;;;;
+
 <|glyph@trickster:templates|trick-id=trickster:normalize,title=Regularity Distortion|>
 
 vector -> vector
