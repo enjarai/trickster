@@ -2,7 +2,6 @@ package dev.enjarai.trickster.block;
 
 import dev.enjarai.trickster.Trickster;
 import net.fabricmc.fabric.api.object.builder.v1.world.poi.PointOfInterestHelper;
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.registry.Registries;
@@ -10,7 +9,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.world.poi.PointOfInterestType;
 
 public class ModBlocks {
-    public static final EntangledRedstoneBlock ENTANGLED_REDSTONE = register("entangled_redstone", new EntangledRedstoneBlock());
+    public static final SpellResonatorBlock SPELL_RESONATOR = register("spell_resonator", new SpellResonatorBlock());
     public static final SpellCircleBlock SPELL_CIRCLE = register("spell_circle", new SpellCircleBlock());
 
     public static final BlockEntityType<SpellCircleBlockEntity> SPELL_CIRCLE_ENTITY =

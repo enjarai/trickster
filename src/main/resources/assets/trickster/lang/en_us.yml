@@ -155,7 +155,7 @@ item.trickster:
   wand: Wand
 
 block.trickster:
-  entangled_redstone: Mana-Entangled Block of Redstone
+  spell_resonator: Mana-Entangled Block of Redstone
 
 effect.trickster:
   mana_boost: Mana Hyperflux
