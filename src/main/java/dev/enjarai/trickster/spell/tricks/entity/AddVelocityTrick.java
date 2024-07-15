@@ -14,7 +14,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddVelocityTrick extends AbstractLivingEntityQueryTrick {
+public class AddVelocityTrick extends Trick {
     public AddVelocityTrick() {
         super(Pattern.of(4, 6, 0, 1, 2, 8, 4));
     }
