@@ -181,3 +181,4 @@ text.config.trickster-config:
   option:
     dragDrawing: Draw by dragging
     topHatInterceptScrolling: Top Hat intercepts hotbar scrolling
+    allowSwapBedrock: Bedrock can be swapped with other blocks
