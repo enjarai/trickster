@@ -1,9 +1,6 @@
 package dev.enjarai.trickster.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.ShapeContext;
+import net.minecraft.block.*;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
@@ -26,7 +23,7 @@ import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
-public class SpellResonatorBlock extends Block implements SpellControlledRedstoneBlock {
+public class SpellResonatorBlock extends Block implements SpellControlledRedstoneBlock, Waterloggable {
     public static final IntProperty POWER = Properties.POWER;
     public static final DirectionProperty FACING = Properties.FACING;
     public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
@@ -41,7 +38,9 @@ public class SpellResonatorBlock extends Block implements SpellControlledRedston
     };
 
     public SpellResonatorBlock() {
-        super(Blocks.REDSTONE_BLOCK.getSettings());
+        super(AbstractBlock.Settings.copyShallow(Blocks.REDSTONE_BLOCK)
+                .luminance(state -> Math.max(1, state.get(POWER)))
+                .emissiveLighting((state, world, pos) -> true));
         setDefaultState(getStateManager().getDefaultState()
                 .with(POWER, 0)
                 .with(FACING, Direction.UP)
@@ -122,6 +121,11 @@ public class SpellResonatorBlock extends Block implements SpellControlledRedston
         }
 
         return false;
+    }
+
+    @Override
+    public int getPower(World world, BlockPos pos) {
+        return world.getBlockState(pos).get(POWER);
     }
 
     @Override

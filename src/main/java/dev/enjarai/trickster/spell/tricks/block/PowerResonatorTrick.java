@@ -9,6 +9,8 @@ import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.blunder.*;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 
 import java.util.List;
@@ -28,15 +30,19 @@ public class PowerResonatorTrick extends Trick {
         var intPower = MathHelper.clamp((int) power.number(), 0, 15);
 
         if (ctx.getWorld().getBlockState(blockPos).getBlock() instanceof SpellControlledRedstoneBlock block) {
-            ctx.useMana(this, 5);
+            ctx.useMana(this, (float) Math.sqrt(ctx.getBlockPos().getSquaredDistance(blockPos)) / 2f);
             var result = block.setPower(ctx.getWorld(), blockPos, intPower);
             ctx.setWorldAffected();
 
             if (result) {
-                var particlePos = blockPos.toCenterPos();
-                ctx.getWorld().spawnParticles(
-                        ModParticles.PROTECTED_BLOCK, particlePos.x, particlePos.y, particlePos.z,
-                        1, 0, 0, 0, 0
+//                var particlePos = blockPos.toCenterPos();
+//                ctx.getWorld().spawnParticles(
+//                        ModParticles.PROTECTED_BLOCK, particlePos.x, particlePos.y, particlePos.z,
+//                        1, 0, 0, 0, 0
+//                );
+                ctx.getWorld().playSound(
+                        null, blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5,
+                        SoundEvents.BLOCK_BELL_USE, SoundCategory.BLOCKS, 1, 2, 0
                 );
 
                 return BooleanFragment.TRUE;

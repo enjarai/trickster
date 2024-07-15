@@ -5,4 +5,6 @@ import net.minecraft.world.World;
 
 public interface SpellControlledRedstoneBlock {
     boolean setPower(World world, BlockPos pos, int power);
+
+    int getPower(World world, BlockPos pos);
 }

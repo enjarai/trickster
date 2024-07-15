@@ -1,4 +1,6 @@
 {
+	"parent": "block/block",
+	"gui_light": "front",
 	"credit": "Made with Blockbench",
 	"textures": {
 		"0": "trickster:block/spell_resonator_crystal",

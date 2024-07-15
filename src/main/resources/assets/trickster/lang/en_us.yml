@@ -59,6 +59,8 @@ trickster:
     reflection: Positioning Delusion
     caster_reflection: Reflection Delusion
     mana_reflection: Authority Delusion
+    facing_reflection: Directional Delusion
+
     height_reflection: Stature Distortion
     sneaking_reflection: Alternative Distortion
     raycast: Scout's Distortion
@@ -120,6 +122,7 @@ trickster:
     get_block_hardness: Distortion of Hardness
     check_block: Distortion of Validation
     can_place_block: Distortion of Suitability
+    check_resonator: Distortion of Resonance
 
     import: Assistance Ploy
     import_hat: Cranium Ploy
