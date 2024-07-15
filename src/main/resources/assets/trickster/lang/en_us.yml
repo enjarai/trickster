@@ -113,6 +113,8 @@ trickster:
     conjure_water: Aquatic Ploy
     destabilize_block: Earthquake Ploy
     disguise_block: Shadow Ploy
+    dispel_block_disguise: Revelation Ploy
+    power_resonator: Resonance Ploy
 
     get_block_hardness: Distortion of Hardness
     check_block: Distortion of Validation
