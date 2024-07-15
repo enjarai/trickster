@@ -8,6 +8,7 @@ import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import dev.enjarai.trickster.spell.tricks.blunder.EntityInvalidBlunder;
+import dev.enjarai.trickster.spell.tricks.blunder.NotEnoughManaBlunder;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
@@ -44,9 +45,15 @@ public class PlayerSpellContext extends SpellContext {
     }
 
     @Override
-    public void useMana(Trick source, float amount) {
-        ModCriteria.MANA_USED.trigger(player);
-        super.useMana(source, amount);
+    public void useMana(Trick source, float amount) throws BlunderException {
+        try {
+            super.useMana(source, amount);
+        } catch (NotEnoughManaBlunder blunder) {
+            ModCriteria.MANA_OVERFLUX.trigger(player);
+            throw blunder;
+        }
+
+        ModCriteria.MANA_USED.trigger(player, amount);
     }
 
     @Override

@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "id": "trickster:top_hat"
+    },
+    "title": {
+      "text": "Final Act"
+    },
+    "description": {
+      "text": "Failure is not the end",
+      "obfuscated": true
+    },
+    "frame": "task",
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "trickster:root",
+  "criteria": {
+    "mana_overflux": {
+      "trigger": "trickster:mana_overflux"
+    }
+  }
+}

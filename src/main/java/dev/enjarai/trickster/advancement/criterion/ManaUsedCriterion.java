@@ -16,17 +16,31 @@ public class ManaUsedCriterion extends AbstractCriterion<ManaUsedCriterion.Condi
         return ManaUsedCriterion.Conditions.CODEC;
     }
 
-    public void trigger(ServerPlayerEntity player) {
-        super.trigger(player, conditions -> true);
+    public void trigger(ServerPlayerEntity player, float amountUsed) {
+        super.trigger(player, conditions -> conditions.match(amountUsed));
     }
 
-    public record Conditions(Optional<LootContextPredicate> player) implements AbstractCriterion.Conditions
+    public record Conditions(Optional<LootContextPredicate> player, Optional<Float> min, Optional<Float> max) implements AbstractCriterion.Conditions
     {
         public static final Codec<Conditions> CODEC = RecordCodecBuilder.create(instance ->
           instance.group(
-            EntityPredicate.LOOT_CONTEXT_PREDICATE_CODEC.optionalFieldOf("player").forGetter(Conditions::player)
+                  EntityPredicate.LOOT_CONTEXT_PREDICATE_CODEC.optionalFieldOf("player").forGetter(Conditions::player),
+                  Codec.FLOAT.optionalFieldOf("min").forGetter(Conditions::min),
+                  Codec.FLOAT.optionalFieldOf("max").forGetter(Conditions::max)
           ).apply(instance, Conditions::new)
         );
+
+        public boolean match(float amountUsed) {
+            boolean b = true;
+
+            if (min.isPresent())
+                b = amountUsed >= min.get();
+
+            if (b && max.isPresent())
+                b = amountUsed <= max.get();
+
+            return b;
+        }
 
         @Override
         public void validate(LootContextPredicateValidator validator) {

@@ -4,11 +4,13 @@
       "id": "trickster:tome_of_tomfoolery"
     },
     "title": {
-      "text": "Let the Show Begin!"
+      "text": "Let The Show Begin!"
     },
     "description": {
-      "text": "Can you not read?"
+      "text": "...Once you're done studying"
     },
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png",
+    "frame": "task",
     "announce_to_chat": true,
     "hidden": false
   },

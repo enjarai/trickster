@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "id": "trickster:wand"
+    },
+    "title": {
+      "text": "Great Magician"
+    },
+    "description": {
+      "text": "How did you manage that?"
+    },
+    "frame": "challenge",
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "trickster:cast_spell",
+  "criteria": {
+    "use_mana": {
+      "trigger": "trickster:mana_used",
+      "conditions": {
+        "min": 4000
+      }
+    }
+  }
+}

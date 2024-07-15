@@ -7,14 +7,16 @@
       "text": "Pre-Show Prep"
     },
     "description": {
-      "text": "Girl, I love your make-up!"
+      "text": "Give it your best"
     },
+    "frame": "goal",
     "announce_to_chat": true,
     "hidden": false
   },
+  "parent": "trickster:root",
   "criteria": {
     "use_mana": {
-      "trigger": "trickster:use_mana"
+      "trigger": "trickster:mana_used"
     }
   }
 }
