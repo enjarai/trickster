@@ -10,10 +10,19 @@
     },
     {
       "item": "minecraft:amethyst_shard"
+    },
+    {
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "item": "minecraft:amethyst_shard"
     }
   ],
   "result": {
-    "count": 1,
+    "count": 4,
     "id": "trickster:spell_resonator"
   }
 }
