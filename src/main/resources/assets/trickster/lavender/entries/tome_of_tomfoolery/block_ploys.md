@@ -86,3 +86,13 @@ vector -> boolean
 ---
 
 Dispels any shadow block at the given position and returns whether there was one initially.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:power_resonator,title=Resonance Ploy|>
+
+vector, number -> boolean
+
+---
+
+Powers the [Spell Resonator](^trickster:spell_resonator) at the given position with the given power level, between 0 and 15.

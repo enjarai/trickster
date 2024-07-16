@@ -1,6 +1,5 @@
 package dev.enjarai.trickster.spell;
 
-import dev.enjarai.trickster.cca.ModEntityCumponents;
 import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import dev.enjarai.trickster.spell.tricks.blunder.EntityInvalidBlunder;

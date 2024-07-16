@@ -10,7 +10,7 @@ trickster:
     scroll_name: Scroll Name...
     enter_scroll_name: 'Enter Scroll Name:'
     scroll_sign_note:
-      line0: Note! When you sign the scroll,
+      line0: 'Note: When you sign the scroll,'
       line1: it will no longer be editable.
 
   item_group: Trickster
@@ -45,6 +45,7 @@ trickster:
     cross_product: Perpendicular Distortion
     normalize: Regularity Distortion
     align_vector: Aligned Regularity Distortion
+    reverse_vector: Inversion Distortion
     length: Magnitude Distortion
 
     two: Foundational Delusion
@@ -58,6 +59,8 @@ trickster:
     reflection: Positioning Delusion
     caster_reflection: Reflection Delusion
     mana_reflection: Authority Delusion
+    facing_reflection: Directional Delusion
+
     height_reflection: Stature Distortion
     sneaking_reflection: Alternative Distortion
     raycast: Scout's Distortion
@@ -70,6 +73,7 @@ trickster:
     get_mana: Distortion of Authority
     leech_mana: Conduit's Ploy
     add_velocity: Impulse Ploy
+    summon_arrow: Ballista's Ploy
 
     block_find_entity: Embracing Distortion
     range_find_entity: Distortion of Shared Fate
@@ -112,10 +116,13 @@ trickster:
     conjure_water: Aquatic Ploy
     destabilize_block: Earthquake Ploy
     disguise_block: Shadow Ploy
+    dispel_block_disguise: Revelation Ploy
+    power_resonator: Resonance Ploy
 
     get_block_hardness: Distortion of Hardness
     check_block: Distortion of Validation
     can_place_block: Distortion of Suitability
+    check_resonator: Distortion of Resonance
 
     import: Assistance Ploy
     import_hat: Cranium Ploy
@@ -148,8 +155,16 @@ item.trickster:
   tome_of_tomfoolery: Tome of Tomfoolery
   mirror_of_evaluation: Mirror of Evaluation
   scroll_and_quill: Scroll and Quill
+  warding_charm: Warding Charm
+  spell_ink: Spell Ink
   top_hat: Top Hat
   wand: Wand
+
+block.trickster:
+  spell_resonator: Spell Resonator
+
+effect.trickster:
+  mana_boost: Mana Hyperflux
 
 tag.item.trickster:
   can_evaluate_dynamically: Can Evaluate Dynamically
@@ -172,3 +187,4 @@ text.config.trickster-config:
   option:
     dragDrawing: Draw by dragging
     topHatInterceptScrolling: Top Hat intercepts hotbar scrolling
+    allowSwapBedrock: Bedrock can be swapped with other blocks

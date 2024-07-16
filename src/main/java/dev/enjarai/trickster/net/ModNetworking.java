@@ -7,6 +7,7 @@ import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.SelectedSlotComponent;
 import dev.enjarai.trickster.item.component.SpellComponent;
 import dev.enjarai.trickster.item.component.WrittenScrollMetaComponent;
+import io.wispforest.accessories.api.slot.SlotReference;
 import io.wispforest.owo.network.OwoNetChannel;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.EquipmentSlot;
@@ -23,14 +24,23 @@ public class ModNetworking {
             var player = access.player();
             var inventory = player.getInventory();
 
+            var hat = SlotReference.of(player, "hat", 0);
+            var hatStack = hat.getStack();
             if (packet.hold()) {
-                if (player.getEquippedStack(EquipmentSlot.HEAD).isIn(ModItems.HOLDABLE_HAT) && player.getOffHandStack().isEmpty()) {
+                if (hatStack != null && hatStack.isIn(ModItems.HOLDABLE_HAT) && player.getOffHandStack().isEmpty()) {
+                    hat.setStack(ItemStack.EMPTY);
+                    inventory.offHand.set(0, hatStack);
+                } else if (player.getEquippedStack(EquipmentSlot.HEAD).isIn(ModItems.HOLDABLE_HAT) && player.getOffHandStack().isEmpty()) {
                     var headStack = inventory.getArmorStack(EquipmentSlot.HEAD.getEntitySlotId());
                     inventory.armor.set(EquipmentSlot.HEAD.getEntitySlotId(), ItemStack.EMPTY);
                     inventory.offHand.set(0, headStack);
                 }
             } else {
-                if (player.getEquippedStack(EquipmentSlot.HEAD).isEmpty() && player.getOffHandStack().isIn(ModItems.HOLDABLE_HAT)) {
+                if (hatStack != null && hatStack.isEmpty() && player.getOffHandStack().isIn(ModItems.HOLDABLE_HAT)) {
+                    var offHandStack = inventory.offHand.getFirst();
+                    inventory.offHand.set(0, ItemStack.EMPTY);
+                    hat.setStack(offHandStack);
+                } else if (player.getEquippedStack(EquipmentSlot.HEAD).isEmpty() && player.getOffHandStack().isIn(ModItems.HOLDABLE_HAT)) {
                     var offHandStack = inventory.offHand.getFirst();
                     inventory.offHand.set(0, ItemStack.EMPTY);
                     inventory.armor.set(EquipmentSlot.HEAD.getEntitySlotId(), offHandStack);

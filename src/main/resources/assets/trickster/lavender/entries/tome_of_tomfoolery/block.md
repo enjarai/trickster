@@ -40,4 +40,10 @@ Returns whether the given block can be placed at the given position.
 
 ;;;;;
 
-If no block is given, returns whether the given position is empty. 
+<|glyph@trickster:templates|trick-id=trickster:check_resonator,title=Distortion of Resonance|>
+
+vector -> number
+
+---
+
+Returns the power level of the [Spell Resonator](^trickster:spell_resonator) at the given position.

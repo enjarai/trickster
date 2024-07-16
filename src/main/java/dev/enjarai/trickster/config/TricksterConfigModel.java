@@ -7,5 +7,6 @@ import io.wispforest.owo.config.annotation.Modmenu;
 @Config(name = "trickster-config", wrapperName = "TricksterConfig")
 public class TricksterConfigModel {
     public boolean dragDrawing = false;
-    public boolean topHatInterceptScrolling = true;
+    public boolean topHatInterceptScrolling = false;
+    public boolean allowSwapBedrock = true;
 }

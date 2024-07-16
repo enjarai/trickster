@@ -38,7 +38,11 @@ public class SimpleManaPool implements ManaPool {
     }
 
     public void stdIncrease() {
-        increase(maxMana / 4000);
+        stdIncrease(1);
+    }
+
+    public void stdIncrease(float multiplier) {
+        increase((maxMana / 4000) * multiplier);
     }
 
     public static SimpleManaPool getSingleUse(float mana) {

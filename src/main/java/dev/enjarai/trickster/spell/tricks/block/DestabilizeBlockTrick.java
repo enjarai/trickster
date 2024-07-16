@@ -7,6 +7,7 @@ import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.tricks.Trick;
+import dev.enjarai.trickster.spell.tricks.blunder.BlockInvalidBlunder;
 import dev.enjarai.trickster.spell.tricks.blunder.BlockUnoccupiedBlunder;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import net.minecraft.entity.FallingBlockEntity;
@@ -29,6 +30,11 @@ public class DestabilizeBlockTrick extends Trick {
 
         if (state.isAir()) {
             throw new BlockUnoccupiedBlunder(this, pos);
+        }
+
+        var hardness = state.getHardness(ctx.getWorld(), blockPos);
+        if (hardness < 0 || hardness > 55.5f) {
+            throw new BlockInvalidBlunder(this);
         }
 
         ctx.useMana(this, 10);

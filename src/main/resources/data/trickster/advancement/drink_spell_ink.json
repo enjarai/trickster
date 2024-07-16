@@ -1,0 +1,27 @@
+{
+    "display": {
+        "icon": {
+            "id": "trickster:spell_ink"
+        },
+        "title": {
+            "text": "Why'd You Do That?"
+        },
+        "description": {
+            "text": "Can you not read?"
+        },
+        "frame": "task",
+        "announce_to_chat": true,
+        "hidden": true
+    },
+    "parent": "trickster:root",
+    "criteria": {
+        "consume_item": {
+            "trigger": "minecraft:consume_item",
+            "conditions": {
+                "item": {
+                    "item": "trickster:spell_ink"
+                }
+            }
+        }
+    }
+}

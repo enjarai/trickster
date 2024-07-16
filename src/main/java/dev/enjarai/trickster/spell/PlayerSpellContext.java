@@ -1,12 +1,14 @@
 package dev.enjarai.trickster.spell;
 
 import dev.enjarai.trickster.ModAttachments;
+import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.cca.ModEntityCumponents;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import dev.enjarai.trickster.spell.tricks.blunder.EntityInvalidBlunder;
+import dev.enjarai.trickster.spell.tricks.blunder.NotEnoughManaBlunder;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
@@ -40,6 +42,18 @@ public class PlayerSpellContext extends SpellContext {
         super(manaPool, recursions);
         this.player = player;
         this.slot = slot;
+    }
+
+    @Override
+    public void useMana(Trick source, float amount) throws BlunderException {
+        try {
+            super.useMana(source, amount);
+        } catch (NotEnoughManaBlunder blunder) {
+            ModCriteria.MANA_OVERFLUX.trigger(player);
+            throw blunder;
+        }
+
+        ModCriteria.MANA_USED.trigger(player, amount);
     }
 
     @Override

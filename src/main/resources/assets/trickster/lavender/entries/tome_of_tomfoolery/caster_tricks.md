@@ -20,6 +20,16 @@ Returns the location the spell is being cast from.
 
 ;;;;;
 
+<|glyph@trickster:templates|trick-id=trickster:facing_reflection,title=Directional Delusion|>
+
+-> vector
+
+---
+
+Returns the direction the casting block or entity is facing as a unit vector, if available.
+
+;;;;;
+
 <|glyph@trickster:templates|trick-id=trickster:caster_reflection,title=Reflection Delusion|>
 
 -> entity

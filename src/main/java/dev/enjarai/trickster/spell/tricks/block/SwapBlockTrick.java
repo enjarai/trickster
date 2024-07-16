@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.spell.tricks.block;
 
+import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
@@ -7,6 +8,7 @@ import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.tricks.Trick;
+import dev.enjarai.trickster.spell.tricks.blunder.BlockInvalidBlunder;
 import dev.enjarai.trickster.spell.tricks.blunder.BlockUnoccupiedBlunder;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import dev.enjarai.trickster.spell.tricks.blunder.OverlapBlunder;
@@ -25,6 +27,7 @@ public class SwapBlockTrick extends Trick {
         var pos2 = expectInput(fragments, FragmentType.VECTOR, 1);
         var blockPos1 = pos1.toBlockPos();
         var blockPos2 = pos2.toBlockPos();
+        var world = ctx.getWorld();
 
         if (blockPos1.equals(blockPos2)) {
             throw new OverlapBlunder(this, pos1, pos2);
@@ -32,8 +35,8 @@ public class SwapBlockTrick extends Trick {
 
         expectCanBuild(ctx, blockPos1, blockPos2);
 
-        var state1 = ctx.getWorld().getBlockState(blockPos1);
-        var state2 = ctx.getWorld().getBlockState(blockPos2);
+        var state1 = world.getBlockState(blockPos1);
+        var state2 = world.getBlockState(blockPos2);
 
         if (state1.isAir()) {
             throw new BlockUnoccupiedBlunder(this, pos1);
@@ -42,39 +45,48 @@ public class SwapBlockTrick extends Trick {
             throw new BlockUnoccupiedBlunder(this, pos2);
         }
 
-        ctx.useMana(this, 85);
+        if (!Trickster.CONFIG.allowSwapBedrock()) {
+            if (state1.getHardness(world, blockPos1) < 0) {
+                throw new BlockInvalidBlunder(this);
+            }
+            if (state2.getHardness(world, blockPos2) < 0) {
+                throw new BlockInvalidBlunder(this);
+            }
+        }
+
+        ctx.useMana(this, (float)(60 + (pos1.vector().distance(pos2.vector()))));
 
         NbtCompound blockEntity1Nbt = null;
         NbtCompound blockEntity2Nbt = null;
-        var blockEntity1 = ctx.getWorld().getBlockEntity(blockPos1);
-        var blockEntity2 = ctx.getWorld().getBlockEntity(blockPos2);
+        var blockEntity1 = world.getBlockEntity(blockPos1);
+        var blockEntity2 = world.getBlockEntity(blockPos2);
         if (blockEntity1 != null) {
-            blockEntity1Nbt = blockEntity1.createNbt(ctx.getWorld().getRegistryManager());
-            blockEntity1.read(new NbtCompound(), ctx.getWorld().getRegistryManager());
+            blockEntity1Nbt = blockEntity1.createNbt(world.getRegistryManager());
+            blockEntity1.read(new NbtCompound(), world.getRegistryManager());
         }
         if (blockEntity2 != null) {
-            blockEntity2Nbt = blockEntity2.createNbt(ctx.getWorld().getRegistryManager());
-            blockEntity2.read(new NbtCompound(), ctx.getWorld().getRegistryManager());
+            blockEntity2Nbt = blockEntity2.createNbt(world.getRegistryManager());
+            blockEntity2.read(new NbtCompound(), world.getRegistryManager());
         }
 
-        ctx.getWorld().setBlockState(blockPos1, state2);
-        ctx.getWorld().setBlockState(blockPos2, state1);
+        world.setBlockState(blockPos1, state2);
+        world.setBlockState(blockPos2, state1);
         ctx.setWorldAffected();
 
         if (blockEntity1Nbt != null) {
-            ctx.getWorld().getBlockEntity(blockPos2).read(blockEntity1Nbt, ctx.getWorld().getRegistryManager());
+            world.getBlockEntity(blockPos2).read(blockEntity1Nbt, world.getRegistryManager());
         }
         if (blockEntity2Nbt != null) {
-            ctx.getWorld().getBlockEntity(blockPos1).read(blockEntity2Nbt, ctx.getWorld().getRegistryManager());
+            world.getBlockEntity(blockPos1).read(blockEntity2Nbt, world.getRegistryManager());
         }
 
         var particlePos1 = blockPos1.toCenterPos();
         var particlePos2 = blockPos2.toCenterPos();
-        ctx.getWorld().spawnParticles(
+        world.spawnParticles(
                 ModParticles.PROTECTED_BLOCK, particlePos1.x, particlePos1.y, particlePos1.z,
                 1, 0, 0, 0, 0
         );
-        ctx.getWorld().spawnParticles(
+        world.spawnParticles(
                 ModParticles.PROTECTED_BLOCK, particlePos2.x, particlePos2.y, particlePos2.z,
                 1, 0, 0, 0, 0
         );

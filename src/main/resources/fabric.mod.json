@@ -22,6 +22,9 @@
 		"client": [
 			"dev.enjarai.trickster.TricksterClient"
 		],
+		"fabric-datagen": [
+			"dev.enjarai.trickster.datagen.ModDataStuff"
+		],
 		"cardinal-components-chunk": [
           	"dev.enjarai.trickster.cca.ModChunkCumponents"
 		],
@@ -53,7 +56,7 @@
 		"owo": "*",
 		"lavender": "*",
 		"accessories": ">=1.0.0-beta.11",
-		"cicada": ">=0.8.0"
+		"cicada": ">=0.8.2"
 	},
 	"breaks": {
 		"sodium": "<0.5.11",
