@@ -14,7 +14,7 @@ Tricks for manipulating projectiles.
 
 vector, [slot] -> entity
 
----
+<|cost-rule@trickster:templates|formula=20kG + max((distance - 5kG) * 1.5, 0kG)|>
 
 Summons an arrow at the given position, returning it. 
 Requires an arrow, from either the given slot or the caster's inventory. 

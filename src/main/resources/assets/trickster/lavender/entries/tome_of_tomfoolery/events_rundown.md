@@ -18,7 +18,7 @@ but side effects and exceptions are very much supported.
 
 <|glyph@trickster:templates|trick-id=trickster:create_spell_circle,title=Perceptive Ploy|>
 
-vector, vector, spell, spell ->
+vector, vector, spell, spell -> boolean
 
 <|cost-rule@trickster:templates|formula=496kG|>
 
