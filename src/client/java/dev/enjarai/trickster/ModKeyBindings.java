@@ -5,6 +5,7 @@ import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.net.MladyPacket;
 import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.net.ScrollInGamePacket;
+import io.wispforest.accessories.api.slot.SlotReference;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.MinecraftClient;
@@ -22,9 +23,11 @@ public class ModKeyBindings {
             var player = client.player;
             if (player != null && client.currentScreen == null) {
                 if (TAKE_HAT.wasPressed()) {
-                    if (player.getEquippedStack(EquipmentSlot.HEAD).isIn(ModItems.HOLDABLE_HAT) && player.getEquippedStack(EquipmentSlot.OFFHAND).isEmpty()) {
+                    var hat = SlotReference.of(player, "hat", 0);
+                    var hatStack = hat.getStack();
+                    if (((hatStack != null && hatStack.isIn(ModItems.HOLDABLE_HAT)) || player.getEquippedStack(EquipmentSlot.HEAD).isIn(ModItems.HOLDABLE_HAT)) && player.getEquippedStack(EquipmentSlot.OFFHAND).isEmpty()) {
                         ModNetworking.CHANNEL.clientHandle().send(new MladyPacket(true));
-                    } else if (player.getEquippedStack(EquipmentSlot.HEAD).isEmpty() && player.getOffHandStack().isIn(ModItems.HOLDABLE_HAT)) {
+                    } else if (((hatStack != null && hatStack.isEmpty()) || player.getEquippedStack(EquipmentSlot.HEAD).isEmpty()) && player.getOffHandStack().isIn(ModItems.HOLDABLE_HAT)) {
                         ModNetworking.CHANNEL.clientHandle().send(new MladyPacket(false));
                     }
                 }

@@ -11,6 +11,7 @@ import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import dev.enjarai.trickster.spell.tricks.blunder.IndexOutOfBoundsBlunder;
 import dev.enjarai.trickster.spell.tricks.blunder.NoPlayerBlunder;
+import io.wispforest.accessories.api.slot.SlotReference;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -28,7 +29,12 @@ public class ImportHatTrick extends Trick {
 
         var player = ctx.getPlayer().orElseThrow(() -> new NoPlayerBlunder(this));
         ItemStack hatStack;
-        if (player.getOffHandStack().isIn(ModItems.HOLDABLE_HAT)) {
+
+        var hatSlot = SlotReference.of(player, "hat", 0);
+        var hatSlotStack = hatSlot.getStack();
+        if (hatSlotStack != null && hatSlotStack.isIn(ModItems.HOLDABLE_HAT)) {
+            hatStack = hatSlotStack;
+        } else if (player.getOffHandStack().isIn(ModItems.HOLDABLE_HAT)) {
             hatStack = player.getOffHandStack();
         } else if (player.getEquippedStack(EquipmentSlot.HEAD).isIn(ModItems.HOLDABLE_HAT)) {
             hatStack = player.getEquippedStack(EquipmentSlot.HEAD);

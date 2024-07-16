@@ -2,17 +2,20 @@ package dev.enjarai.trickster;
 
 import dev.enjarai.trickster.block.ModBlocks;
 import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.ScrollAndQuillItem;
 import dev.enjarai.trickster.net.IsEditingScrollPacket;
 import dev.enjarai.trickster.net.ModClientNetworking;
 import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.particle.ProtectedBlockParticle;
+import dev.enjarai.trickster.render.HoldableHatRenderer;
 import dev.enjarai.trickster.render.SpellCircleBlockEntityRenderer;
 import dev.enjarai.trickster.screen.ModHandledScreens;
 import dev.enjarai.trickster.screen.ScrollAndQuillScreen;
 import dev.enjarai.trickster.screen.SignScrollScreen;
 import dev.enjarai.trickster.screen.owo.GlyphComponent;
+import io.wispforest.accessories.api.client.AccessoriesRendererRegistry;
 import io.wispforest.owo.ui.parsing.UIParsing;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
@@ -40,6 +43,8 @@ public class TricksterClient implements ClientModInitializer {
 		UIParsing.registerFactory(Trickster.id("pattern"), GlyphComponent::parseList);
 
 		ParticleFactoryRegistry.getInstance().register(ModParticles.PROTECTED_BLOCK, ProtectedBlockParticle.Factory::new);
+
+		AccessoriesRendererRegistry.registerRenderer(ModItems.TOP_HAT, HoldableHatRenderer::new);
 
 		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.SPELL_RESONATOR, RenderLayer.getCutout());
 
