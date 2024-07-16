@@ -14,7 +14,7 @@ This entry contains tricks that operate directly on blocks in the world.
 
 vector -> 
 
----
+<|cost-rule@trickster:templates|formula=max(hardness * 1kG\, 8kG)|>
 
 Breaks the block at the given position. 
 
@@ -24,7 +24,7 @@ Breaks the block at the given position.
 
 vector, vector ->
 
----
+<|cost-rule@trickster:templates|formula=60kG + distance * 1kG|>
 
 Exchanges the blocks at two positions in the world. Neither of the positions can be empty.
 
@@ -34,7 +34,7 @@ Exchanges the blocks at two positions in the world. Neither of the positions can
 
 vector ->
 
----
+<|cost-rule@trickster:templates|formula=5kG|>
 
 Conjures a random flower at the given position.
 The block underneath must have a solid top face.
@@ -45,7 +45,7 @@ The block underneath must have a solid top face.
 
 vector ->
 
----
+<|cost-rule@trickster:templates|formula=15kG|>
 
 Conjures a small splash of water at the given position.
 
@@ -55,7 +55,7 @@ Conjures a small splash of water at the given position.
 
 vector ->
 
----
+<|cost-rule@trickster:templates|formula=10kG|>
 
 Makes the target block temporarily affected by gravity as if it were sand.
 
@@ -73,7 +73,7 @@ but can also be removed using a Revelation Ploy.
 
 vector, block -> boolean
 
----
+<|cost-rule@trickster:templates|formula=20kG|>
 
 Places a shadow of the given block at the given position and returns whether there was any change.
 
@@ -83,7 +83,7 @@ Places a shadow of the given block at the given position and returns whether the
 
 vector -> boolean
 
----
+<|cost-rule@trickster:templates|formula=10kG|>
 
 Dispels any shadow block at the given position and returns whether there was one initially.
 
@@ -93,6 +93,6 @@ Dispels any shadow block at the given position and returns whether there was one
 
 vector, number -> boolean
 
----
+<|cost-rule@trickster:templates|formula=distance / 2kG|>
 
 Powers the [Spell Resonator](^trickster:spell_resonator) at the given position with the given power level, between 0 and 15.

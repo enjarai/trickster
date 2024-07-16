@@ -55,5 +55,25 @@
                 </sizing>
             </flow-layout>
         </template>
+        <template name="cost-rule">
+            <flow-layout direction="vertical">
+                <children>
+                    <texture texture="{{book-texture}}" texture-width="512" texture-height="256"
+                             u="54" v="240" region-width="109" region-height="5">
+                        <blend>true</blend>
+                        <positioning type="absolute">2,-1</positioning>
+                        <tooltip-text>Costs mana
+§7{{formula}}</tooltip-text>
+                    </texture>
+                </children>
+
+                <horizontal-alignment>center</horizontal-alignment>
+                <sizing>
+                    <horizontal method="fill">100</horizontal>
+                    <vertical method="fixed">3</vertical>
+                </sizing>
+                <allow-overflow>true</allow-overflow>
+            </flow-layout>
+        </template>
     </templates>
 </owo-ui>
