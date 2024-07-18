@@ -135,6 +135,9 @@ trickster:
 
     type_fragment: Argumentative Distortion
 
+    get_scale: Distortion of Occupation
+    set_scale: Ploy of Occupation
+
   fragment.trickster:
     type: Type
     number: Number

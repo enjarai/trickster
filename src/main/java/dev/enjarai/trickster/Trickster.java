@@ -2,6 +2,7 @@ package dev.enjarai.trickster;
 
 import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.block.ModBlocks;
+import dev.enjarai.trickster.compat.pehkui.PehkuiCompat;
 import dev.enjarai.trickster.config.TricksterConfig;
 import dev.enjarai.trickster.effects.ModEffects;
 import dev.enjarai.trickster.item.ModItems;
@@ -15,6 +16,7 @@ import dev.enjarai.trickster.spell.tricks.Tricks;
 import dev.enjarai.trickster.spell.world.SpellCircleEvent;
 import net.fabricmc.api.ModInitializer;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
@@ -52,6 +54,10 @@ public class Trickster implements ModInitializer {
 		Tricks.register();
 		SpellCircleEvent.register();
 		ModCriteria.register();
+
+		if (FabricLoader.getInstance().isModLoaded("pehkui")) {
+			PehkuiCompat.init();
+		}
 	}
 
 	public static Identifier id(String path) {

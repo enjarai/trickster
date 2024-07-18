@@ -130,6 +130,10 @@ dependencies {
 	modClientCompileOnly "maven.modrinth:sodium:${property('deps.sodium')}"
 
 	modImplementation("io.wispforest:accessories-fabric:${property('deps.accessories')}")
+
+	modImplementation("com.github.Virtuoel:Pehkui:${property('deps.pehkui')}", {
+		exclude group: "net.fabricmc.fabric-api"
+	})
 }
 
 processResources {
