@@ -19,8 +19,10 @@ import dev.enjarai.trickster.spell.tricks.inventory.*;
 import dev.enjarai.trickster.spell.tricks.list.*;
 import dev.enjarai.trickster.spell.tricks.math.*;
 import dev.enjarai.trickster.spell.tricks.misc.TypeFragmentTrick;
-import dev.enjarai.trickster.spell.tricks.projectile.FireballTrick;
+import dev.enjarai.trickster.spell.tricks.projectile.SummonDragonBreathTrick;
+import dev.enjarai.trickster.spell.tricks.projectile.SummonFireballTrick;
 import dev.enjarai.trickster.spell.tricks.projectile.SummonArrowTrick;
+import dev.enjarai.trickster.spell.tricks.projectile.SummonTntTrick;
 import dev.enjarai.trickster.spell.tricks.tree.*;
 import dev.enjarai.trickster.spell.tricks.vector.*;
 import net.minecraft.registry.Registry;
@@ -178,7 +180,9 @@ public class Tricks {
 
     // Projectile
     public static final SummonArrowTrick SUMMON_ARROW = register("summon_arrow", new SummonArrowTrick());
-    public static final FireballTrick SUMMON_FIREBALL = register("summon_fireball", new FireballTrick());
+    public static final SummonFireballTrick SUMMON_FIREBALL = register("summon_fireball", new SummonFireballTrick());
+    public static final SummonDragonBreathTrick SUMMON_DRAGON_BREATH = register("summon_dragon_breath", new SummonDragonBreathTrick());
+    public static final SummonTntTrick SUMMON_TNT = register("summon_tnt", new SummonTntTrick());
 
     // Misc
     public static final TypeFragmentTrick TYPE_FRAGMENT = register("type_fragment", new TypeFragmentTrick());

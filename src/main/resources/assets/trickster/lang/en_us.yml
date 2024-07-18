@@ -73,7 +73,11 @@ trickster:
     get_mana: Distortion of Authority
     leech_mana: Conduit's Ploy
     add_velocity: Impulse Ploy
+
     summon_arrow: Ballista's Ploy
+    summon_fireball: Pyromancer's Ploy
+    summon_dragon_breath: Dragon's Ploy
+    summon_tnt: Demolitionist's Ploy
 
     block_find_entity: Embracing Distortion
     range_find_entity: Distortion of Shared Fate
