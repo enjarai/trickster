@@ -54,7 +54,7 @@ public class SummonArrowTrick extends Trick {
 
         if (stack.getItem() instanceof ProjectileItem item) {
             var dist = ctx.getPos().distance(pos);
-            ctx.useMana(this, (float)(20 + (dist > 5 ? dist * 1.5 : 0)));
+            ctx.useMana(this, (float) (20 + Math.max((dist - 5) * 1.5, 0)));
             stack.decrement(1);
             arrow = item.createEntity(ctx.getWorld(), new Position() {
                 @Override

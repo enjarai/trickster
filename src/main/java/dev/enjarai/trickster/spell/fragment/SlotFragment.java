@@ -60,7 +60,7 @@ public record SlotFragment(int slot, Optional<BlockPos> source) implements Fragm
     }
 
     public void move(Trick trickSource, SpellContext ctx) throws BlunderException {
-        if (source.isPresent())
-            ctx.useMana(trickSource, (float)(32 + (ctx.getBlockPos().toCenterPos().distanceTo(source.get().toCenterPos()) * 0.8)));
+        source.ifPresent(pos ->
+                ctx.useMana(trickSource, (float) (32 + (ctx.getBlockPos().toCenterPos().distanceTo(pos.toCenterPos()) * 0.8))));
     }
 }

@@ -14,7 +14,7 @@ Various tricks related to manipulating entities.
 
 entity, vector ->
 
----
+<|cost-rule@trickster:templates|formula=length^2 * 2kG|>
 
 Applies the given vector as velocity to the given entity.
 
@@ -24,7 +24,7 @@ Applies the given vector as velocity to the given entity.
 
 entity, entity ->
 
----
+<|cost-rule@trickster:templates|formula=480kG|>
 
 Polymorphs the first entity to appear to be the second in every way. Only works on players.
 
@@ -34,6 +34,6 @@ Polymorphs the first entity to appear to be the second in every way. Only works 
 
 entity ->
 
----
+<|cost-rule@trickster:templates|formula=70kG|>
 
 Dispels any polymorph on the given entity.

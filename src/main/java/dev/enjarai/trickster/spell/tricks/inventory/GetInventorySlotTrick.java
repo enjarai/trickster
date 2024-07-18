@@ -32,6 +32,6 @@ public class GetInventorySlotTrick extends Trick {
             } else throw new BlockInvalidBlunder(this);
         }
 
-        return new SlotFragment((int)Math.round(slot), maybePosition);
+        return new SlotFragment((int) Math.round(slot), maybePosition);
     }
 }

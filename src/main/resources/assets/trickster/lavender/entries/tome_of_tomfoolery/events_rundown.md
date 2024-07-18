@@ -18,9 +18,9 @@ but side effects and exceptions are very much supported.
 
 <|glyph@trickster:templates|trick-id=trickster:create_spell_circle,title=Perceptive Ploy|>
 
-vector, vector, spell, spell ->
+vector, vector, spell, spell -> boolean
 
----
+<|cost-rule@trickster:templates|formula=496kG|>
 
 Places the latter spell at the position of the first vector, facing the second vector, and sets it 
 to listen for the former spell's event.
@@ -48,7 +48,7 @@ See the next page.
 
 vector -> boolean
 
----
+<|cost-rule@trickster:templates|formula=124kG|>
 
 Destroys any spell circle placed at the given vector position.
 Returns true if a spell circle was destroyed, or false if not.
