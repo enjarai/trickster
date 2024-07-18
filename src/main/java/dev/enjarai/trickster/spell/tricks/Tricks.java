@@ -27,6 +27,7 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.SimpleRegistry;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryEntryInfo;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -181,7 +182,8 @@ public class Tricks {
     // Misc
     public static final TypeFragmentTrick TYPE_FRAGMENT = register("type_fragment", new TypeFragmentTrick());
 
-    private static <T extends Trick> T register(String path, T trick) {
+    @ApiStatus.Internal
+    public static <T extends Trick> T register(String path, T trick) {
         return Registry.register(REGISTRY, Trickster.id(path), trick);
     }
 
