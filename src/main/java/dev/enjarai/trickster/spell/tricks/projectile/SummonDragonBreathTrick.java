@@ -31,6 +31,6 @@ public class SummonDragonBreathTrick extends AbstractProjectileTrick {
 
     @Override
     protected boolean isValidItem(ItemStack stack) {
-        return stack.getItem().equals(Items.FIRE_CHARGE);
+        return stack.getItem().equals(Items.DRAGON_BREATH);
     }
 }
