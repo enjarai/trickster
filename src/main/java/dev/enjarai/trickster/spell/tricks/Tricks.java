@@ -19,6 +19,7 @@ import dev.enjarai.trickster.spell.tricks.inventory.*;
 import dev.enjarai.trickster.spell.tricks.list.*;
 import dev.enjarai.trickster.spell.tricks.math.*;
 import dev.enjarai.trickster.spell.tricks.misc.TypeFragmentTrick;
+import dev.enjarai.trickster.spell.tricks.projectile.FireballTrick;
 import dev.enjarai.trickster.spell.tricks.projectile.SummonArrowTrick;
 import dev.enjarai.trickster.spell.tricks.tree.*;
 import dev.enjarai.trickster.spell.tricks.vector.*;
@@ -177,6 +178,7 @@ public class Tricks {
 
     // Projectile
     public static final SummonArrowTrick SUMMON_ARROW = register("summon_arrow", new SummonArrowTrick());
+    public static final FireballTrick SUMMON_FIREBALL = register("summon_fireball", new FireballTrick());
 
     // Misc
     public static final TypeFragmentTrick TYPE_FRAGMENT = register("type_fragment", new TypeFragmentTrick());

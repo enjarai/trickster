@@ -47,14 +47,15 @@ public class SummonArrowTrick extends Trick {
             }
         }
 
-        if (stack == null || !b) throw new MissingItemBlunder(this);
-        var dist = ctx.getPos().distance(pos);
-        ctx.useMana(this, (float)(20 + (dist > 5 ? dist * 1.5 : 0)));
-        stack.decrement(1);
+        if (stack == null || !b)
+            throw new MissingItemBlunder(this);
 
         ProjectileEntity arrow;
 
-        if (stack.getItem() instanceof ProjectileItem item)
+        if (stack.getItem() instanceof ProjectileItem item) {
+            var dist = ctx.getPos().distance(pos);
+            ctx.useMana(this, (float)(20 + (dist > 5 ? dist * 1.5 : 0)));
+            stack.decrement(1);
             arrow = item.createEntity(ctx.getWorld(), new Position() {
                 @Override
                 public double getX() {
@@ -71,10 +72,9 @@ public class SummonArrowTrick extends Trick {
                     return pos.z();
                 }
             }, stack, Direction.DOWN);
-        else throw new MissingItemBlunder(this);
+        } else throw new MissingItemBlunder(this);
 
         ctx.getWorld().spawnEntity(arrow);
-
         return EntityFragment.from(arrow);
     }
 

@@ -17,4 +17,16 @@ vector, [slot] -> entity
 ---
 
 Summons an arrow at the given position, returning it. 
-Requires an arrow, from either the given slot or the caster's inventory. 
+Requires an arrow, from either the given slot or the caster's inventory.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:summon_fireball,title=Pyromancer's Ploy|>
+
+vector -> entity
+
+---
+
+Summons a fireball at the given position, returning it. 
+Requires a fire charge in the caster's inventory. 
+
