@@ -6,6 +6,7 @@ import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import dev.enjarai.trickster.spell.tricks.blunder.MissingItemBlunder;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ProjectileItem;
 import net.minecraft.registry.tag.ItemTags;
@@ -25,8 +26,6 @@ public class SummonArrowTrick extends AbstractProjectileTrick {
         if (stack.getItem() instanceof ProjectileItem item) {
             var dist = ctx.getPos().distance(pos);
             ctx.useMana(this, (float) (20 + Math.max((dist - 5) * 1.5, 0)));
-            stack.decrement(1);
-
             return item.createEntity(ctx.getWorld(), new Position() {
                 @Override
                 public double getX() {
@@ -47,7 +46,7 @@ public class SummonArrowTrick extends AbstractProjectileTrick {
     }
 
     @Override
-    protected boolean isValidItem(ItemStack stack) {
-        return stack.isIn(ItemTags.ARROWS) && stack.getItem() instanceof ProjectileItem;
+    protected boolean isValidItem(Item item) {
+        return item.getRegistryEntry().isIn(ItemTags.ARROWS) && item instanceof ProjectileItem;
     }
 }
