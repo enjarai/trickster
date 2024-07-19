@@ -111,6 +111,8 @@ trickster:
     add_subtree: Branching Distortion
     remove_subtree: Pruning Distortion
 
+    break_block: Ploy of Destruction
+    place_block: Ploy of Creation
     swap_block: Ploy of Exchange
     conjure_flower: Floral Ploy
     conjure_water: Aquatic Ploy
@@ -144,6 +146,7 @@ trickster:
     pattern: Pattern
     spell_part: Spell
     entity: Entity
+    slot: Slot
     zalgo: §kZalgo
     item_type: Item
     block_type: Block
