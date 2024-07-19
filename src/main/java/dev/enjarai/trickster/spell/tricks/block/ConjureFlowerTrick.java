@@ -30,7 +30,7 @@ public class ConjureFlowerTrick extends Trick {
         expectCanBuild(ctx, blockPos);
 
         if (!ctx.getWorld().getBlockState(blockPos).isAir()) {
-            throw new BlockOccupiedBlunder(this);
+            throw new BlockOccupiedBlunder(this, pos);
         }
         if (!ctx.getWorld().getBlockState(blockPos.down()).isSideSolidFullSquare(ctx.getWorld(), blockPos.down(), Direction.UP)) {
             throw new BlockUnoccupiedBlunder(this, VectorFragment.of(blockPos.down()));

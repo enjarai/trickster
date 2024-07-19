@@ -61,7 +61,7 @@ public class CreateSpellCircleTrick extends Trick {
 
             return BooleanFragment.TRUE;
         } else {
-            throw new BlockOccupiedBlunder(this);
+            throw new BlockOccupiedBlunder(this, position);
         }
     }
 }
