@@ -40,6 +40,16 @@ Returns whether the given block can be placed at the given position.
 
 ;;;;;
 
+<|glyph@trickster:templates|trick-id=trickster:get_redstone_power,title=Distortion of Logic|>
+
+vector -> number
+
+---
+
+Returns the redstone power level inputted into the given block position.
+
+;;;;;
+
 <|glyph@trickster:templates|trick-id=trickster:check_resonator,title=Distortion of Resonance|>
 
 vector -> number

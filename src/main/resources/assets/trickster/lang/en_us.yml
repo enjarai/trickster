@@ -129,6 +129,7 @@ trickster:
     check_block: Distortion of Validation
     can_place_block: Distortion of Suitability
     check_resonator: Distortion of Resonance
+    get_redstone_power: Distortion of Logic
 
     import: Assistance Ploy
     import_hat: Cranium Ploy

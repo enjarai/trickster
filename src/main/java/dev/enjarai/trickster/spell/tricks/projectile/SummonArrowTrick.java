@@ -12,6 +12,7 @@ import net.minecraft.item.ProjectileItem;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Position;
+import net.minecraft.util.math.Vec3d;
 import org.joml.Vector3dc;
 
 import java.util.List;
@@ -24,22 +25,7 @@ public class SummonArrowTrick extends AbstractProjectileTrick {
     @Override
     protected Entity makeProjectile(SpellContext ctx, Vector3dc pos, ItemStack stack, List<Fragment> extraInputs) throws BlunderException {
         if (stack.getItem() instanceof ProjectileItem item) {
-            return item.createEntity(ctx.getWorld(), new Position() {
-                @Override
-                public double getX() {
-                    return pos.x();
-                }
-
-                @Override
-                public double getY() {
-                    return pos.y();
-                }
-
-                @Override
-                public double getZ() {
-                    return pos.z();
-                }
-            }, stack, Direction.DOWN);
+            return item.createEntity(ctx.getWorld(), new Vec3d(0, 0, 0).fromVector3d(pos), stack, Direction.DOWN);
         } else throw new ItemInvalidBlunder(this);
     }
 
