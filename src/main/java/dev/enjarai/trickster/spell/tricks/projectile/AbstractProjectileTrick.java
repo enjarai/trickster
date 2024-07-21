@@ -7,13 +7,12 @@ import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
-import dev.enjarai.trickster.spell.tricks.blunder.ItemInvalidBlunder;
-import dev.enjarai.trickster.spell.tricks.blunder.MissingItemBlunder;
-import dev.enjarai.trickster.spell.tricks.blunder.NoPlayerBlunder;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.world.ServerWorld;
+import org.joml.Vector3d;
 import org.joml.Vector3dc;
 
 import java.util.List;
@@ -38,8 +37,7 @@ public abstract class AbstractProjectileTrick extends Trick {
 
             return EntityFragment.from(projectile);
         } catch (BlunderException blunder) {
-            var thisPos = ctx.getPos();
-            world.spawnEntity(new ItemEntity(world, thisPos.x, thisPos.y, thisPos.z, stack));
+            onFail(ctx, world, ctx.getPos(), pos, stack);
             throw blunder;
         }
     }
@@ -47,6 +45,10 @@ public abstract class AbstractProjectileTrick extends Trick {
     protected abstract Entity makeProjectile(SpellContext ctx, Vector3dc pos, ItemStack stack, List<Fragment> extraInputs) throws BlunderException;
 
     protected abstract boolean isValidItem(Item item);
+
+    protected void onFail(SpellContext ctx, ServerWorld world, Vector3d spellPos, Vector3dc targetPos, ItemStack stack) {
+        world.spawnEntity(new ItemEntity(world, spellPos.x, spellPos.y, spellPos.z, stack));
+    }
 
     protected float cost(double dist) {
         return (float) (20 + Math.pow(dist, (dist / 5)));

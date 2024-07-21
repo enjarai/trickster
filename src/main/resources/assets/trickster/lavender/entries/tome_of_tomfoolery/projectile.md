@@ -39,8 +39,8 @@ vector, [slot], [slot] -> entity
 
 <|cost-rule@trickster:templates|formula=20kG + distance ^ (distance / 5kG)|>
 
-Summons a ball of dragon's breath at the given position, returning it.
-Requires a bottle of dragon's breath and a fireball.
+Summons a ball of dragon's breath at the given position, returning it. 
+Requires a bottle of dragon's breath and a fire charge.
 
 ;;;;;
 
