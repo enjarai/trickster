@@ -15,7 +15,7 @@ or optionally a specific slot.
 
 vector, [slot] -> entity
 
-<|cost-rule@trickster:templates|formula=20kG + max((distance - 5kG) * 1.5\, 0kG)|>
+<|cost-rule@trickster:templates|formula=20kG + distance ^ (distance / 5kG)|>
 
 Summons an arrow at the given position, returning it. 
 Requires an arrow.
@@ -26,7 +26,7 @@ Requires an arrow.
 
 vector, [slot] -> entity
 
-<|cost-rule@trickster:templates|formula=20kG + max((distance - 5kG) * 1.5\, 0kG)|>
+<|cost-rule@trickster:templates|formula=20kG + distance ^ (distance / 5kG)|>
 
 Summons a fireball at the given position, returning it. 
 Requires a fire charge.
@@ -37,7 +37,7 @@ Requires a fire charge.
 
 vector, [slot], [slot] -> entity
 
-<|cost-rule@trickster:templates|formula=20kG + max((distance - 5kG) * 1.5\, 0kG)|>
+<|cost-rule@trickster:templates|formula=20kG + distance ^ (distance / 5kG)|>
 
 Summons a ball of dragon's breath at the given position, returning it.
 Requires a bottle of dragon's breath and a fireball.
@@ -48,7 +48,7 @@ Requires a bottle of dragon's breath and a fireball.
 
 vector, [slot] -> entity
 
-<|cost-rule@trickster:templates|formula=20kG + max((distance - 5kG) * 1.5\, 0kG)|>
+<|cost-rule@trickster:templates|formula=20kG + distance ^ (distance / 5kG)|>
 
 Summons lit TNT at the given position, returning it.
 Requires TNT.

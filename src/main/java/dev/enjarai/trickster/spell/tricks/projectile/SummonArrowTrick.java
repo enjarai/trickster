@@ -4,7 +4,7 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
-import dev.enjarai.trickster.spell.tricks.blunder.MissingItemBlunder;
+import dev.enjarai.trickster.spell.tricks.blunder.ItemInvalidBlunder;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -24,8 +24,6 @@ public class SummonArrowTrick extends AbstractProjectileTrick {
     @Override
     protected Entity makeProjectile(SpellContext ctx, Vector3dc pos, ItemStack stack, List<Fragment> extraInputs) throws BlunderException {
         if (stack.getItem() instanceof ProjectileItem item) {
-            var dist = ctx.getPos().distance(pos);
-            ctx.useMana(this, (float) (20 + Math.max((dist - 5) * 1.5, 0)));
             return item.createEntity(ctx.getWorld(), new Position() {
                 @Override
                 public double getX() {
@@ -42,7 +40,7 @@ public class SummonArrowTrick extends AbstractProjectileTrick {
                     return pos.z();
                 }
             }, stack, Direction.DOWN);
-        } else throw new MissingItemBlunder(this);
+        } else throw new ItemInvalidBlunder(this);
     }
 
     @Override

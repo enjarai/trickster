@@ -22,31 +22,7 @@ public class SummonDragonBreathTrick extends AbstractProjectileTrick {
     }
 
     @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var pos = expectInput(fragments, FragmentType.VECTOR, 0).vector();
-        var optionalSlot1 = supposeInput(fragments, FragmentType.SLOT, 1);
-        var optionalSlot2 = supposeInput(fragments, FragmentType.SLOT, 2);
-        var stack1 = ctx.getStack(this, optionalSlot1, this::isValidItem);
-        var stack2 = ctx.getStack(this, optionalSlot2, item -> isValidItem(item) && !item.equals(stack1.getItem()));
-        var world = ctx.getWorld();
-
-        try {
-            var projectile = makeProjectile(ctx, pos, stack1,
-                    fragments.subList(1 + (optionalSlot1.isPresent() ? 1 : 0) + (optionalSlot2.isPresent() ? 1 : 0), fragments.size()));
-            world.spawnEntity(projectile);
-            return EntityFragment.from(projectile);
-        } catch (BlunderException blunder) {
-            var thisPos = ctx.getPos();
-            world.spawnEntity(new ItemEntity(world, thisPos.x, thisPos.y, thisPos.z, stack1));
-            world.spawnEntity(new ItemEntity(world, thisPos.x, thisPos.y, thisPos.z, stack2));
-            throw blunder;
-        }
-    }
-
-    @Override
     protected Entity makeProjectile(SpellContext ctx, Vector3dc pos, ItemStack stack, List<Fragment> extraInputs) throws BlunderException {
-        var dist = ctx.getPos().distance(pos);
-        ctx.useMana(this, (float) (20 + Math.max((dist - 5) * 1.5, 0)));
         var fireball = EntityType.DRAGON_FIREBALL.create(ctx.getWorld()); assert fireball != null;
         fireball.setPos(pos.x(), pos.y(), pos.z());
         return fireball;

@@ -20,8 +20,6 @@ public class SummonTntTrick extends AbstractProjectileTrick {
 
     @Override
     protected Entity makeProjectile(SpellContext ctx, Vector3dc pos, ItemStack stack, List<Fragment> extraInputs) throws BlunderException {
-        var dist = ctx.getPos().distance(pos);
-        ctx.useMana(this, (float) (20 + Math.max((dist - 5) * 1.5, 0)));
         return new TntEntity(ctx.getWorld(), pos.x(), pos.y(), pos.z(), null);
     }
 

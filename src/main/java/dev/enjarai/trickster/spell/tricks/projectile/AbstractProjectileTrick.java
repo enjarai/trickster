@@ -31,8 +31,11 @@ public abstract class AbstractProjectileTrick extends Trick {
         var world = ctx.getWorld();
 
         try {
+            ctx.useMana(this, cost(ctx.getPos().distance(pos)));
+
             var projectile = makeProjectile(ctx, pos, stack, fragments.subList(optionalSlot.isPresent() ? 2 : 1, fragments.size()));
             world.spawnEntity(projectile);
+
             return EntityFragment.from(projectile);
         } catch (BlunderException blunder) {
             var thisPos = ctx.getPos();
@@ -44,4 +47,8 @@ public abstract class AbstractProjectileTrick extends Trick {
     protected abstract Entity makeProjectile(SpellContext ctx, Vector3dc pos, ItemStack stack, List<Fragment> extraInputs) throws BlunderException;
 
     protected abstract boolean isValidItem(Item item);
+
+    protected float cost(double dist) {
+        return (float) (20 + Math.pow(dist, (dist / 5)));
+    }
 }
