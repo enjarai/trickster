@@ -26,7 +26,7 @@ vector, slot |
 
 vector, block ->
 
-<|cost-rule@trickster:templates|formula=20kG + max((distance - 5kG) * 1.5, 0kG)|>
+<|cost-rule@trickster:templates|formula=20kG + max((distance - 5kG) * 1.5\, 0kG)|>
 
 Places the given block at the given position. Will consume its respective item. 
 
