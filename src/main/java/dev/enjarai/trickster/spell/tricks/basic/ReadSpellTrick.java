@@ -29,6 +29,11 @@ public class ReadSpellTrick extends Trick {
                                 .findFirst()
                                 .filter(stack2 -> stack2.contains(ModComponents.SPELL));
                     }
+
+                    if (stack.get(ModComponents.SPELL).closed()) {
+                        return Optional.empty();
+                    }
+
                     return Optional.of(stack);
                 })
                 .<Fragment>map(stack -> stack.get(ModComponents.SPELL).spell())

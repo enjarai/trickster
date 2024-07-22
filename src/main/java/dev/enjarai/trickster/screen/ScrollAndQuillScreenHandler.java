@@ -57,7 +57,8 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
 
         if (otherHandStack != null) {
             var spell = otherHandStack.get(ModComponents.SPELL);
-            if (spell != null) {
+
+            if (spell != null && !spell.closed()) {
                 this.otherHandSpell.set(spell.spell());
             }
         }
