@@ -91,33 +91,30 @@ public abstract class SpellContext {
     // I am disappointed in myself for having written this.
     // Maybe I'll clean it up one day. -- Aurora D.
     public ItemStack getStack(Trick source, Optional<SlotFragment> optionalSlot, Function<Item, Boolean> validator) throws BlunderException {
-        ItemStack stack = null;
-        boolean b = false;
+        ItemStack result = null;
 
         if (optionalSlot.isPresent()) {
-            b = validator.apply(optionalSlot.get().getItem(source, this));
-            if (!b) throw new ItemInvalidBlunder(source);
-            stack = optionalSlot.get().move(source, this);
+            if (!validator.apply(optionalSlot.get().getItem(source, this))) throw new ItemInvalidBlunder(source);
+            result = optionalSlot.get().move(source, this);
         } else {
             var player = this.getPlayer().orElseThrow(() -> new NoPlayerBlunder(source));
             var inventory = player.getInventory();
 
             for (int i = 0; i < inventory.size(); i++) {
-                stack = inventory.getStack(i);
-                b = validator.apply(stack.getItem());
-                if (b) break;
-            }
+                var stack = inventory.getStack(i);
 
-            if (b) {
-                stack.decrement(1);
-                stack = stack.copyWithCount(1);
+                if (validator.apply(stack.getItem())) {
+                    result = stack.copyWithCount(1);
+                    stack.decrement(1);
+                    break;
+                }
             }
         }
 
-        if (stack == null || !b)
+        if (result == null)
             throw new MissingItemBlunder(source);
 
-        return stack;
+        return result;
     }
 
     public void addManaLink(Trick source, ManaLink link) throws BlunderException {

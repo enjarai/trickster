@@ -48,9 +48,10 @@ public record SlotFragment(int slot, Optional<BlockPos> source) implements Fragm
         if (stack.getCount() < amount)
             throw new MissingItemBlunder(trickSource);
 
+        var result = stack.copyWithCount(amount);
         source.ifPresent(pos -> ctx.useMana(trickSource, (float) (amount * (32 + (ctx.getBlockPos().toCenterPos().distanceTo(pos.toCenterPos()) * 0.8)))));
         stack.decrement(amount);
-        return stack.copyWithCount(amount);
+        return result;
     }
 
     public Item getItem(Trick trickSource, SpellContext ctx) throws BlunderException {
