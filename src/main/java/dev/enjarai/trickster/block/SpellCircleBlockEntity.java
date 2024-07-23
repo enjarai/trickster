@@ -45,7 +45,7 @@ public class SpellCircleBlockEntity extends BlockEntity {
 
         @Override
         public void stdIncrease() {
-            increase(maxMana / 2000);
+            stdIncrease(2);
         }
     };
 

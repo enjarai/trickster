@@ -51,11 +51,6 @@ public class ManaComponent extends SimpleManaPool implements AutoSyncedComponent
         stdIncrease();
     }
 
-    @Override
-    public void increase(float amount) {
-        mana = Math.max(Math.min(mana + amount, maxMana), 0);
-    }
-
     /**
      * Returns whether the entity is still alive.
      */
@@ -65,7 +60,7 @@ public class ManaComponent extends SimpleManaPool implements AutoSyncedComponent
             return true;
 
         float f = mana - amount;
-        mana = Math.max(Math.min(mana - amount, maxMana), 0);
+        super.decrease(amount);
 
         if (f < 0) {
             entity.damage(ModDamageTypes.of(entity.getWorld(), ModDamageTypes.MANA_OVERFLUX), ManaPool.healthFromMana(f * -1));

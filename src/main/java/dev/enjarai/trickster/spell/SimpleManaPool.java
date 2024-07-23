@@ -24,12 +24,12 @@ public class SimpleManaPool implements ManaPool {
 
     @Override
     public void set(float value) {
-        mana = Math.max(Math.min(value, maxMana), 0);
+        mana = Float.isNaN(mana) ? 0 : Math.max(Math.min(value, maxMana), 0);
     }
 
     @Override
     public float get() {
-        return mana;
+        return Float.isNaN(mana) ? 0 : mana;
     }
 
     @Override
