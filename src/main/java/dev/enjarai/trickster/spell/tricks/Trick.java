@@ -30,7 +30,7 @@ public abstract class Trick {
         this.pattern = pattern;
     }
 
-    public Pattern getPattern() {
+    public final Pattern getPattern() {
         return pattern;
     }
 
