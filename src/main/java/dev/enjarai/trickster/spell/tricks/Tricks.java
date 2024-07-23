@@ -18,7 +18,6 @@ import dev.enjarai.trickster.spell.tricks.func.SupplierTrick;
 import dev.enjarai.trickster.spell.tricks.inventory.*;
 import dev.enjarai.trickster.spell.tricks.list.*;
 import dev.enjarai.trickster.spell.tricks.math.*;
-import dev.enjarai.trickster.spell.tricks.misc.AssertionTrick;
 import dev.enjarai.trickster.spell.tricks.misc.TypeFragmentTrick;
 import dev.enjarai.trickster.spell.tricks.projectile.SummonDragonBreathTrick;
 import dev.enjarai.trickster.spell.tricks.projectile.SummonFireballTrick;
@@ -190,7 +189,6 @@ public class Tricks {
     public static final SummonTntTrick SUMMON_TNT = register("summon_tnt", new SummonTntTrick());
 
     // Misc
-    public static final AssertionTrick ASSERT = register("assert", new AssertionTrick());
     public static final TypeFragmentTrick TYPE_FRAGMENT = register("type_fragment", new TypeFragmentTrick());
 
     @ApiStatus.Internal
