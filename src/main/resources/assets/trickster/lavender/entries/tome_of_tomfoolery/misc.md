@@ -10,6 +10,16 @@ A few miscellaneous tricks that don't fit into any other category.
 
 ;;;;;
 
+<|glyph@trickster:templates|trick-id=trickster:assert,title=Distortion of Assertion|>
+
+any, boolean -> any
+
+---
+
+If the given boolean is true, returns the first input. Otherwise, blunders.
+
+;;;;;
+
 <|glyph@trickster:templates|trick-id=trickster:type_fragment,title=Argumentative Distortion|>
 
 any -> type

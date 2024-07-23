@@ -18,6 +18,7 @@ import dev.enjarai.trickster.spell.tricks.func.SupplierTrick;
 import dev.enjarai.trickster.spell.tricks.inventory.*;
 import dev.enjarai.trickster.spell.tricks.list.*;
 import dev.enjarai.trickster.spell.tricks.math.*;
+import dev.enjarai.trickster.spell.tricks.misc.AssertionTrick;
 import dev.enjarai.trickster.spell.tricks.misc.TypeFragmentTrick;
 import dev.enjarai.trickster.spell.tricks.projectile.SummonDragonBreathTrick;
 import dev.enjarai.trickster.spell.tricks.projectile.SummonFireballTrick;
@@ -82,6 +83,7 @@ public class Tricks {
     public static final GetPositionTrick GET_POSITION = register("get_position", new GetPositionTrick());
     public static final GetEntityTypeTrick GET_ENTITY_TYPE = register("get_entity_type", new GetEntityTypeTrick());
     public static final GetFacingTrick GET_FACING = register("get_facing", new GetFacingTrick());
+    public static final GetVelocityTrick GET_VELOCITY = register("get_velocity", new GetVelocityTrick());
     public static final GetEntityHealthTrick GET_HEALTH = register("get_health", new GetEntityHealthTrick());
     public static final GetEntityMaxHealthTrick GET_MAX_HEALTH = register("get_max_health", new GetEntityMaxHealthTrick());
     public static final GetEntityArmourTrick GET_ARMOUR_VALUE = register("get_armour", new GetEntityArmourTrick());
@@ -188,6 +190,7 @@ public class Tricks {
     public static final SummonTntTrick SUMMON_TNT = register("summon_tnt", new SummonTntTrick());
 
     // Misc
+    public static final AssertionTrick ASSERT = register("assert", new AssertionTrick());
     public static final TypeFragmentTrick TYPE_FRAGMENT = register("type_fragment", new TypeFragmentTrick());
 
     @ApiStatus.Internal

@@ -3,11 +3,13 @@ package dev.enjarai.trickster.spell;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.fragment.ZalgoFragment;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
+import dev.enjarai.trickster.spell.tricks.blunder.NaNBlunder;
 import io.wispforest.endec.Endec;
 import io.wispforest.owo.serialization.CodecUtils;
 import net.minecraft.text.Text;
@@ -81,6 +83,9 @@ public final class SpellPart implements Fragment {
         try {
             return Optional.of(run(ctx));
         } catch (BlunderException e) {
+            if (e instanceof NaNBlunder)
+                ctx.getPlayer().ifPresent((player) -> ModCriteria.NAN_NUMBER.trigger(player));
+
             onError.accept(e.createMessage().append(" (").append(ctx.formatStackTrace()).append(")"));
         } catch (Exception e) {
             onError.accept(Text.literal("Uncaught exception in spell: " + e.getMessage()));

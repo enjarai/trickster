@@ -71,6 +71,7 @@ trickster:
     get_health: Fettle Distortion
     get_armour: Bulwark Distortion
     get_mana: Distortion of Authority
+    get_velocity: Movement Distortion
     leech_mana: Conduit's Ploy
     add_velocity: Impulse Ploy
 

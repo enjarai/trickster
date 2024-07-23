@@ -7,11 +7,23 @@ import dev.enjarai.trickster.spell.tricks.Tricks;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import dev.enjarai.trickster.spell.tricks.blunder.DivideByZeroBlunder;
 import dev.enjarai.trickster.spell.tricks.blunder.IncompatibleTypesBlunder;
+import dev.enjarai.trickster.spell.tricks.blunder.NaNBlunder;
 import net.minecraft.text.Text;
 
-public record NumberFragment(double number) implements Fragment, AddableFragment, SubtractableFragment, MultiplicableFragment, DivisibleFragment, RoundableFragment {
+import java.util.Objects;
+
+public final class NumberFragment implements Fragment, AddableFragment, SubtractableFragment, MultiplicableFragment, DivisibleFragment, RoundableFragment {
     public static final MapCodec<NumberFragment> CODEC =
             Codec.DOUBLE.fieldOf("number").xmap(NumberFragment::new, NumberFragment::number);
+
+    private final double number;
+
+    public NumberFragment(double number) throws BlunderException {
+        if (Double.isNaN(number))
+            throw new NaNBlunder();
+
+        this.number = number;
+    }
 
     @Override
     public FragmentType<?> type() {
@@ -91,4 +103,20 @@ public record NumberFragment(double number) implements Fragment, AddableFragment
     public boolean isInteger() {
         return number - Math.floor(number) == 0;
     }
+
+    public double number() {
+        return number;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(number);
+    }
+
+    @Override
+    public String toString() {
+        return "NumberFragment[" +
+                "number=" + number + ']';
+    }
+
 }
