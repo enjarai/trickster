@@ -22,20 +22,20 @@ public final class ManaLink {
     private float availableMana;
 
     public static final Codec<ManaLink> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            // TODO: IMPLEMENT CODEC FOR MANA POOL
+            ManaPool.CODEC.get().fieldOf("owner").forGetter(manaLink -> manaLink.owner),
             Uuids.CODEC.fieldOf("source_uuid").forGetter(manaLink -> manaLink.source.getUuid()),
             World.CODEC.fieldOf("source_world").forGetter(manaLink -> manaLink.source.getWorld().getRegistryKey()),
-
             Codec.FLOAT.fieldOf("tax_ratio").forGetter(manaLink -> manaLink.taxRatio),
             Codec.FLOAT.fieldOf("available_mana").forGetter(manaLink -> manaLink.availableMana)
-    ).apply(instance, (sourceUuid, sourceWorld, taxRatio, availableMana) -> new ManaLink((LivingEntity) Objects.requireNonNull(Trickster.getCurrentServer().getWorld(sourceWorld)).getEntity(sourceUuid), taxRatio, availableMana)));
+    ).apply(instance, (owner, sourceUuid, sourceWorld, taxRatio, availableMana) -> new ManaLink((LivingEntity) Objects.requireNonNull(Trickster.getCurrentServer().getWorld(sourceWorld)).getEntity(sourceUuid), owner, taxRatio, availableMana)));
 
-                                        // TODO: FIX ME AURI
-    private ManaLink(LivingEntity source, float taxRatio, float availableMana) {
+                                                     // TODO: FIX ME AURI
+    private ManaLink(LivingEntity source, ManaPool owner, float taxRatio, float availableMana) {
+        this.owner = owner;
+        this.source = source;
+        this.manaPool = ModEntityCumponents.MANA.get(source);
         this.taxRatio = taxRatio;
         this.availableMana = availableMana;
-        this.source = source;
-        // TODO: FIX ME AURI
     }
 
     public ManaLink(ManaPool owner, LivingEntity source, float ownerHealth, float availableMana) {

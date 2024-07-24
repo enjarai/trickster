@@ -1,8 +1,12 @@
 package dev.enjarai.trickster.spell;
 
-import com.mojang.serialization.Codec;
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
+import com.mojang.serialization.MapCodec;
 
 public interface ManaPool {
+    Supplier<MapCodec<ManaPool>> CODEC = Suppliers.memoize(() -> ManaPoolType.REGISTRY.getCodec().dispatchMap(ManaPool::type, ManaPoolType::codec));
+
     static float healthFromMana(float mana) {
         return mana / 2;
     }
@@ -10,6 +14,8 @@ public interface ManaPool {
     static float manaFromHealth(float health) {
         return health * 12;
     }
+
+    ManaPoolType<?> type();
 
     void set(float value);
 
@@ -35,7 +41,4 @@ public interface ManaPool {
         set(f);
         return !(f < 0);
     }
-
-    Codec<? extends ManaPool> getCodec();
-
 }

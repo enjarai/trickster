@@ -16,13 +16,13 @@ public class SpellQueue {
     private final Stack<Integer> scope = new Stack<>();
 
     public static final Codec<SpellQueue> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            SpellContext.CODEC.get().fieldOf("ctx").forGetter(spellQueue -> spellQueue.ctx),
             Codec.list(SerializedSpellInstruction.CODEC).fieldOf("instructions").forGetter(spellQueue -> spellQueue.instructions.stream().map(SpellInstruction::asSerialized).collect(Collectors.toList())),
             Codec.list(Fragment.CODEC.get().codec()).fieldOf("inputs").forGetter(spellQueue -> spellQueue.inputs),
             Codec.list(Codec.INT).fieldOf("scope").forGetter(spellQueue -> spellQueue.scope)
-    ).apply(instance, (instructions, inputs, scope) -> {
+    ).apply(instance, (ctx, instructions, inputs, scope) -> {
         List<SpellInstruction> serializedInstructions = instructions.stream().map(SerializedSpellInstruction::toDeserialized).collect(Collectors.toList());
-        // TODO: IMPLEMENT CODEC FOR SPELL CONTEXT
-        return new SpellQueue(null, serializedInstructions, inputs, scope);
+        return new SpellQueue(ctx, serializedInstructions, inputs, scope);
     }));
 
     private SpellQueue(SpellContext ctx, List<SpellInstruction> instructions, List<Fragment> inputs, List<Integer> scope) {

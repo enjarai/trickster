@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.spell;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.impl.StructEndecBuilder;
@@ -12,7 +13,7 @@ public class SimpleManaPool implements ManaPool {
             SimpleManaPool::new
     );
 
-    public static final Codec<SimpleManaPool> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+    public static final MapCodec<SimpleManaPool> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Codec.FLOAT.fieldOf("mana").forGetter(SimpleManaPool::get),
             Codec.FLOAT.fieldOf("max_mana").forGetter(SimpleManaPool::getMax)
     ).apply(instance, SimpleManaPool::new));
@@ -30,6 +31,11 @@ public class SimpleManaPool implements ManaPool {
     }
 
     @Override
+    public ManaPoolType<?> type() {
+        return ManaPoolType.SIMPLE;
+    }
+
+    @Override
     public void set(float value) {
         mana = Float.isNaN(mana) ? 0 : Math.max(Math.min(value, maxMana), 0);
     }
@@ -42,11 +48,6 @@ public class SimpleManaPool implements ManaPool {
     @Override
     public float getMax() {
         return maxMana;
-    }
-
-    @Override
-    public Codec<? extends ManaPool> getCodec() {
-        return CODEC;
     }
 
     public void stdIncrease() {

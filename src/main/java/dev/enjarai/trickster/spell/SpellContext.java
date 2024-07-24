@@ -1,14 +1,13 @@
 package dev.enjarai.trickster.spell;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.enjarai.trickster.spell.fragment.ListFragment;
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
+import com.mojang.serialization.MapCodec;
 import dev.enjarai.trickster.spell.fragment.SlotFragment;
 import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.blunder.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.brain.task.FarmerVillagerTask;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -22,6 +21,7 @@ import java.util.*;
 import java.util.function.Function;
 
 public abstract class SpellContext {
+    public static final Supplier<MapCodec<SpellContext>> CODEC = Suppliers.memoize(() -> SpellContextType.REGISTRY.getCodec().dispatchMap(SpellContext::type, SpellContextType::codec));
     public static final int MAX_RECURSION_DEPTH = 256;
 
     private final Deque<List<Fragment>> partGlyphStack = new ArrayDeque<>();
@@ -33,29 +33,16 @@ public abstract class SpellContext {
     protected final ManaPool manaPool;
     protected final List<ManaLink> manaLinks = new ArrayList<>();
 
-    /*
-    TODO: FIX
-    public static final Codec<SpellContext> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.list(Codec.list(Fragment.CODEC.get().codec())).fieldOf("part_glyph_stack").<SpellContext>forGetter(ctx -> new ArrayList<>(ctx.partGlyphStack)),
-        Codec.BOOL.fieldOf("destructive").<SpellContext>forGetter(ctx -> ctx.destructive),
-        Codec.BOOL.fieldOf("has_affected_world").<SpellContext>forGetter(ctx -> ctx.hasAffectedWorld),
-        Codec.list(Codec.INT).fieldOf("stacktrace").<SpellContext>forGetter(ctx -> new ArrayList<>(ctx.stacktrace)),
-        Codec.list(ManaLink.CODEC).fieldOf("mana_links").<SpellContext>forGetter(ctx -> ctx.manaLinks)
-            // TODO: ADD MANA POOL CODEC
-    ).apply(instance, (partGlyphStack, destructive, hasAffectedWorld, stackTrace, manaLinks) -> {
-        return new Sp
-    }));
-
-    private SpellContext(List<List<Fragment>> partGlyphList, boolean destructive, boolean hasAffectedWorld, List<Integer> stacktraceAsInts, ManaPool manaPool, List<ManaLink> manaLinks) {
+    protected SpellContext(List<List<Fragment>> partGlyphList, boolean destructive, boolean hasAffectedWorld, List<Integer> stacktrace, ManaPool manaPool, List<ManaLink> manaLinks) {
         this.partGlyphStack.addAll(partGlyphList);
         this.destructive = destructive;
         this.hasAffectedWorld = hasAffectedWorld;
-        this.stacktrace.addAll(stacktraceAsInts);
+        this.stacktrace.addAll(stacktrace);
         this.manaPool = manaPool;
         this.manaLinks.addAll(manaLinks);
     }
 
-     */
+    public abstract SpellContextType<?> type();
 
     protected SpellContext(ManaPool manaPool, int recursions) {
         this.manaPool = manaPool;
@@ -226,6 +213,14 @@ public abstract class SpellContext {
     public abstract Fragment getCrowMind();
 
     public abstract void setCrowMind(Fragment fragment);
+
+    public Deque<Integer> stacktrace() {
+        return stacktrace;
+    }
+
+    public Deque<List<Fragment>> partGlyphStack() {
+        return partGlyphStack;
+    }
 
     public boolean isDestructive() {
         return destructive;
