@@ -17,9 +17,11 @@ import dev.enjarai.trickster.spell.tricks.event.DelayedExecuteTrick;
 import dev.enjarai.trickster.spell.world.SpellCircleEvent;
 import net.fabricmc.api.ModInitializer;
 
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +37,8 @@ public class Trickster implements ModInitializer {
 	public static final EntityAttributeModifier NEGATE_ATTRIBUTE = new EntityAttributeModifier(Trickster.SPELL_CIRCLE_ATTRIBUTE, -1d, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
 
 	public static final TricksterConfig CONFIG = TricksterConfig.createAndLoad();
+
+	private static MinecraftServer currentServer;
 
 	@Override
 	public void onInitialize() {
@@ -57,6 +61,10 @@ public class Trickster implements ModInitializer {
 		SpellCircleEvent.register();
 		ModCriteria.register();
 
+		ServerLifecycleEvents.SERVER_STARTING.register((server -> {
+			currentServer = server;
+		}));
+
 		ServerTickEvents.START_WORLD_TICK.register((world) -> {
 			int index = 0;
 
@@ -72,6 +80,10 @@ public class Trickster implements ModInitializer {
 		if (FabricLoader.getInstance().isModLoaded("pehkui")) {
 			PehkuiCompat.init();
 		}
+	}
+
+	public static MinecraftServer getCurrentServer() {
+		return currentServer;
 	}
 
 	public static Identifier id(String path) {

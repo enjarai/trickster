@@ -1,5 +1,7 @@
 package dev.enjarai.trickster.spell;
 
+import com.mojang.serialization.Codec;
+
 public interface ManaPool {
     static float healthFromMana(float mana) {
         return mana / 2;
@@ -33,4 +35,7 @@ public interface ManaPool {
         set(f);
         return !(f < 0);
     }
+
+    Codec<? extends ManaPool> getCodec();
+
 }

@@ -6,4 +6,7 @@ import java.util.function.BiFunction;
 
 public sealed interface SpellInstruction permits Fragment, EnterScopeInstruction, ExitScopeInstruction {
     Optional<BiFunction<SpellContext, List<Fragment>, Fragment>> getActivator();
+
+    SerializedSpellInstruction asSerialized();
+
 }

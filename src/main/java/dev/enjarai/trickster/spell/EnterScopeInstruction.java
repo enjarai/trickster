@@ -9,4 +9,10 @@ public non-sealed class EnterScopeInstruction implements SpellInstruction {
     public Optional<BiFunction<SpellContext, List<Fragment>, Fragment>> getActivator() {
         return Optional.empty();
     }
+
+    @Override
+    public SerializedSpellInstruction asSerialized() {
+        return new SerializedSpellInstruction(SpellInstructionType.ENTER_SCOPE, null);
+    }
+
 }

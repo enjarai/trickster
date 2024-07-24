@@ -9,4 +9,10 @@ public non-sealed class ExitScopeInstruction implements SpellInstruction {
     public Optional<BiFunction<SpellContext, List<Fragment>, Fragment>> getActivator() {
         return Optional.empty();
     }
+
+    @Override
+    public SerializedSpellInstruction asSerialized() {
+        return new SerializedSpellInstruction(SpellInstructionType.EXIT_SCOPE, null);
+    }
+
 }
