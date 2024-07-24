@@ -4,6 +4,7 @@ import dev.enjarai.trickster.cca.ModEntityCumponents;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.PatternGlyph;
+import dev.enjarai.trickster.spell.execution.SpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
@@ -11,6 +12,7 @@ import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
 import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
+import dev.enjarai.trickster.spell.tricks.blunder.SlowWardBlunder;
 import dev.enjarai.trickster.spell.tricks.blunder.WardModifiedSelfBlunder;
 import dev.enjarai.trickster.spell.tricks.blunder.WardReturnBlunder;
 import io.wispforest.accessories.api.AccessoryItem;
@@ -49,14 +51,10 @@ public class TrickyAccessoryItem extends AccessoryItem {
         boolean applyBacklashIfModified = true;
 
         try {
-            var ctx = new PlayerSpellSource(player, EquipmentSlot.MAINHAND);
-            ctx.pushPartGlyph(List.of(new PatternGlyph(source.getPattern()), new ListFragment(inputs)));
+            var result = new SpellExecutor(spell, List.of(new PatternGlyph(source.getPattern()), new ListFragment(inputs))).run(new PlayerSpellSource(player));
 
-            var result = spell.run(ctx);
-            ctx.popPartGlyph();
-
-            if (result.type() == FragmentType.LIST) {
-                var newInputs = ((ListFragment)result).fragments();
+            if (result.orElseThrow(SlowWardBlunder::new).type() == FragmentType.LIST) {
+                var newInputs = ((ListFragment)result.get()).fragments();
                 int index = 0;
 
                 if (newInputs.size() != inputs.size())

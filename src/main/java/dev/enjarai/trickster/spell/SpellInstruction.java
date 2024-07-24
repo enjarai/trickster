@@ -13,7 +13,7 @@ import java.util.function.BiFunction;
 public sealed interface SpellInstruction permits Fragment, EnterScopeInstruction, ExitScopeInstruction {
     SerializedSpellInstruction asSerialized();
 
-    default Optional<BiFunction<SpellSource, List<Fragment>, Fragment>> getActivator() {
+    default Optional<BiFunction<SpellContext, List<Fragment>, Fragment>> getActivator() {
         return Optional.empty();
     }
 

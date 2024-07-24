@@ -3,6 +3,7 @@ package dev.enjarai.trickster.item;
 import dev.enjarai.trickster.ModSounds;
 import dev.enjarai.trickster.cca.ModEntityCumponents;
 import dev.enjarai.trickster.item.component.ModComponents;
+import dev.enjarai.trickster.spell.execution.SpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
@@ -14,6 +15,8 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class WandItem extends Item {
     public WandItem(Settings settings) {
         super(settings);
@@ -22,12 +25,11 @@ public class WandItem extends Item {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         var stack = user.getStackInHand(hand);
-        var slot = hand == Hand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
 
         if (!world.isClient()) {
             var spell = stack.get(ModComponents.SPELL);
             if (spell != null) {
-                ModEntityCumponents.CASTER.get(user).queueSpell(new PlayerSpellSource((ServerPlayerEntity) user, slot), spell.spell());
+                new SpellExecutor(spell.spell(), List.of()).run(new PlayerSpellSource((ServerPlayerEntity) user));
                 ((ServerPlayerEntity) user).getServerWorld().playSoundFromEntity(
                         null, user, ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f));
             }

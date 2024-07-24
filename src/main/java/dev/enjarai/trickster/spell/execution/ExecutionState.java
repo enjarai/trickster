@@ -46,10 +46,6 @@ public class ExecutionState {
         return new ExecutionState(recursions + 1, arguments);
     }
 
-    public void decrementRecursion() {
-        recursions--;
-    }
-
     public int getRecursions() {
         return recursions;
     }

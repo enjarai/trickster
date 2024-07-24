@@ -3,6 +3,7 @@ package dev.enjarai.trickster.spell.tricks.basic;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
@@ -16,7 +17,7 @@ public class RevealTrick extends Trick {
     }
 
     @Override
-    public Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var first = expectInput(fragments, 0);
         var result = first.asFormattedText();
 
@@ -35,7 +36,7 @@ public class RevealTrick extends Trick {
         }
 
         Text finalResult = result;
-        ctx.getPlayer().ifPresent(player -> {
+        ctx.source().getPlayer().ifPresent(player -> {
             //TODO: this uses the server's setting, should use the client's preference
             player.sendMessage(Text.of(finalResult), Trickster.CONFIG.revealToHotbar());
         });

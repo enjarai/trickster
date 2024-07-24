@@ -34,7 +34,7 @@ public non-sealed interface Fragment extends SpellInstruction {
 
     BooleanFragment asBoolean();
 
-    default Fragment activateAsGlyph(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
+    default Fragment activateAsGlyph(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         return this;
     }
 
@@ -47,7 +47,7 @@ public non-sealed interface Fragment extends SpellInstruction {
         return false;
     }
 
-    default Optional<BiFunction<SpellSource, List<Fragment>, Fragment>> getActivator() {
+    default Optional<BiFunction<SpellContext, List<Fragment>, Fragment>> getActivator() {
         return Optional.of(this::activateAsGlyph);
     }
 }

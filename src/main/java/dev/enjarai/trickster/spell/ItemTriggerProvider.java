@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.spell;
 
 import dev.enjarai.trickster.item.component.ModComponents;
+import dev.enjarai.trickster.spell.execution.SpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -39,10 +40,7 @@ public interface ItemTriggerProvider {
         var spellComponent = stack.get(ModComponents.SPELL);
 
         if (spellComponent != null) {
-            var ctx = new PlayerSpellSource(player, EquipmentSlot.MAINHAND);
-            ctx.pushPartGlyph(arguments);
-            spellComponent.spell().runSafely(ctx);
-            ctx.popPartGlyph();
+            new SpellExecutor(spellComponent.spell(), arguments).run(new PlayerSpellSource(player));
         }
     }
 }

@@ -43,62 +43,6 @@ public final class SpellPart implements Fragment {
         this(new PatternGlyph());
     }
 
-    @Override
-    public Fragment activateAsGlyph(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
-        if (fragments.isEmpty()) {
-            return this;
-        } else {
-            ctx.pushStackTrace(-1);
-            ctx.pushPartGlyph(fragments);
-            var result = run(ctx);
-            ctx.popPartGlyph();
-            ctx.popStackTrace();
-            return result;
-        }
-    }
-
-    public Fragment run(SpellSource ctx) throws BlunderException {
-        var fragments = new ArrayList<Fragment>();
-
-        int i = 0;
-        for (var part : subParts) {
-            ctx.pushStackTrace(i);
-            fragments.add(part.run(ctx));
-            ctx.popStackTrace();
-            i++;
-        }
-
-        var value = glyph.activateAsGlyph(ctx, fragments);
-
-        if (ctx.isDestructive() && !value.equals(VoidFragment.INSTANCE)) {
-            if (glyph != value) {
-                subParts.clear();
-            }
-            glyph = value;
-        }
-
-        return value;
-    }
-
-    public Optional<Fragment> runSafely(SpellSource ctx, Consumer<Text> onError) {
-        try {
-            return Optional.of(run(ctx));
-        } catch (BlunderException e) {
-            if (e instanceof NaNBlunder)
-                ctx.getPlayer().ifPresent((player) -> ModCriteria.NAN_NUMBER.trigger(player));
-
-            onError.accept(e.createMessage().append(" (").append(ctx.formatStackTrace()).append(")"));
-        } catch (Exception e) {
-            onError.accept(Text.literal("Uncaught exception in spell: " + e.getMessage()));
-        }
-
-        return Optional.empty();
-    }
-
-    public Optional<Fragment> runSafely(SpellSource ctx) {
-        return runSafely(ctx, err -> ctx.getPlayer().ifPresent(player -> player.sendMessage(err)));
-    }
-
     public void brutallyMurderEphemerals() {
         subParts.forEach(SpellPart::brutallyMurderEphemerals);
 

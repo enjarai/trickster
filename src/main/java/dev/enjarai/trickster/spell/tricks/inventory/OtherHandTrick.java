@@ -2,6 +2,7 @@ package dev.enjarai.trickster.spell.tricks.inventory;
 
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.ItemTypeFragment;
 import dev.enjarai.trickster.spell.tricks.Trick;
@@ -16,8 +17,8 @@ public class OtherHandTrick extends Trick {
     }
 
     @Override
-    public Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
-        return new ItemTypeFragment(ctx.getOtherHandSpellStack()
+    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+        return new ItemTypeFragment(ctx.source().getOtherHandSpellStack()
                 .orElseThrow(() -> new MissingItemBlunder(this)).getItem());
     }
 }

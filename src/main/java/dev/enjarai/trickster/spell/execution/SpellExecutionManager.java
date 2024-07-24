@@ -24,10 +24,6 @@ public class SpellExecutionManager {
 
     }
 
-    public Optional<Fragment> execute(SpellSource ctx, SpellPart spell) {
-        return spell.runSafely(ctx);
-    }
-
     public void queue(SpellPart spell, List<Fragment> arguments) {
         spells.add(new SpellExecutor(spell, arguments));
     }
@@ -38,7 +34,7 @@ public class SpellExecutionManager {
         for (int i = 0; i < size; i++) {
             var spell = spells.poll(); assert spell != null;
 
-            if (!spell.run(source))
+            if (spell.run(source).isEmpty())
                 spells.add(spell);
         }
     }

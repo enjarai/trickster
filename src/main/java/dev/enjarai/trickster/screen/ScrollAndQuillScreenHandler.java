@@ -5,6 +5,7 @@ import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.SpellComponent;
 import dev.enjarai.trickster.spell.Fragment;
+import dev.enjarai.trickster.spell.execution.SpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
@@ -18,6 +19,7 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public class ScrollAndQuillScreenHandler extends ScreenHandler {
@@ -82,13 +84,10 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
                 if (server != null) {
                     server.execute(() -> {
                         if (greedyEvaluation) {
-                            var ctx = new PlayerSpellSource((ServerPlayerEntity) player(), slot).setDestructive();
-                            spell.runSafely(ctx, err -> {
-                            });
-                            if (ctx.hasAffectedWorld()) {
-                                ((ServerPlayerEntity) player()).getServerWorld().playSoundFromEntity(
-                                        null, player(), ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f));
-                            }
+                            new SpellExecutor(spell, List.of()).run(new PlayerSpellSource((ServerPlayerEntity) player()));
+                            ((ServerPlayerEntity) player()).getServerWorld().playSoundFromEntity(
+                                    null, player(), ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f));
+
                             this.spell.set(spell);
                         } else {
                             spell.brutallyMurderEphemerals();
@@ -131,8 +130,8 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
         if (server != null) {
             server.execute(() -> {
                 if (player().getInventory().contains(ModItems.CAN_EVALUATE_DYNAMICALLY)) {
-                    var fragment = otherHandSpell.get()
-                            .runSafely(new PlayerSpellSource((ServerPlayerEntity) player(), slot))
+                    var fragment = new SpellExecutor(otherHandSpell.get(), List.of())
+                            .run(new PlayerSpellSource((ServerPlayerEntity) player()))
                             .orElse(VoidFragment.INSTANCE);
                     ((ServerPlayerEntity) player()).getServerWorld().playSoundFromEntity(
                             null, player(), ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f));

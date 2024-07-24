@@ -2,6 +2,7 @@ package dev.enjarai.trickster.compat.pehkui;
 
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
@@ -18,15 +19,15 @@ public class SetScaleTrick extends Trick {
     }
 
     @Override
-    public Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var target = expectInput(fragments, FragmentType.ENTITY, 0);
         var scale = expectInput(fragments, FragmentType.NUMBER, 1);
 
-        var scaleData = ScaleTypes.BASE.getScaleData(target.getEntity(ctx)
+        var scaleData = ScaleTypes.BASE.getScaleData(target.getEntity(ctx.source())
                         .orElseThrow(() -> new UnknownEntityBlunder(this)));
 
         var difference = Math.abs(scale.number() - scaleData.getScale());
-        ctx.useMana(this, (float) (difference * difference * 10));
+        ctx.source().useMana(this, (float) (difference * difference * 10));
         scaleData.setScale((float) scale.number());
 
         return BooleanFragment.TRUE;

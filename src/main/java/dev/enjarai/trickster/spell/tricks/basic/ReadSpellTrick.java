@@ -4,6 +4,7 @@ import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.tricks.Trick;
@@ -19,8 +20,8 @@ public class ReadSpellTrick extends Trick {
     }
 
     @Override
-    public Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
-        return ctx.getOtherHandSpellStack()
+    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+        return ctx.source().getOtherHandSpellStack()
                 .filter(stack -> stack.contains(ModComponents.SPELL) || (stack.contains(DataComponentTypes.CONTAINER) && stack.contains(ModComponents.SELECTED_SLOT)))
                 .flatMap(stack -> {
                     if (stack.isIn(ModItems.HOLDABLE_HAT)) {

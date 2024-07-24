@@ -4,13 +4,14 @@ import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.execution.SpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.tricks.Trick;
-import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
-import dev.enjarai.trickster.spell.tricks.blunder.IndexOutOfBoundsBlunder;
-import dev.enjarai.trickster.spell.tricks.blunder.NoPlayerBlunder;
+import dev.enjarai.trickster.spell.tricks.blunder.*;
+import dev.enjarai.trickster.spell.tricks.func.ForkingTrick;
 import io.wispforest.accessories.api.slot.SlotReference;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.EquipmentSlot;
@@ -18,16 +19,21 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public class ImportHatTrick extends Trick {
+public class ImportHatTrick extends Trick implements ForkingTrick {
     public ImportHatTrick() {
         super(Pattern.of(3, 0, 5, 6, 3, 2, 5, 8, 3, 1, 5, 7, 3));
     }
 
     @Override
-    public Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+        return null;
+    }
+
+    @Override
+    public SpellExecutor makeFork(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var index = expectInput(fragments, FragmentType.NUMBER, 0);
 
-        var player = ctx.getPlayer().orElseThrow(() -> new NoPlayerBlunder(this));
+        var player = ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this));
         ItemStack hatStack;
 
         var hatSlot = SlotReference.of(player, "hat", 0);
@@ -39,7 +45,7 @@ public class ImportHatTrick extends Trick {
         } else if (player.getEquippedStack(EquipmentSlot.HEAD).isIn(ModItems.HOLDABLE_HAT)) {
             hatStack = player.getEquippedStack(EquipmentSlot.HEAD);
         } else {
-            return VoidFragment.INSTANCE;
+            throw new MissingItemBlunder(this);
         }
 
         var container = hatStack.get(DataComponentTypes.CONTAINER);
@@ -50,22 +56,17 @@ public class ImportHatTrick extends Trick {
 
             var scroll = container.stream().skip((long) index.number()).findFirst();
             if (scroll.isEmpty()) {
-                return VoidFragment.INSTANCE;
+                throw new MissingItemBlunder(this);
             }
 
             var component = scroll.get().get(ModComponents.SPELL);
             if (component == null) {
-                return VoidFragment.INSTANCE;
+                throw new ItemInvalidBlunder(this);
             }
 
-            ctx.pushPartGlyph(fragments.subList(1, fragments.size()));
-            ctx.pushStackTrace(-2);
-            var result = component.spell().run(ctx);
-            ctx.popStackTrace();
-            ctx.popPartGlyph();
-            return result;
+            return new SpellExecutor(component.spell(), fragments.subList(1, fragments.size()));
         }
 
-        return VoidFragment.INSTANCE;
+        throw new ItemInvalidBlunder(this);
     }
 }

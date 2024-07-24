@@ -2,6 +2,7 @@ package dev.enjarai.trickster.block;
 
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.*;
+import dev.enjarai.trickster.spell.execution.SpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.BlockSpellSource;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
@@ -38,7 +39,7 @@ public class SpellCircleBlockEntity extends BlockEntity {
     public int age;
     public int lastPower;
     public CrowMind crowMind = new CrowMind(VoidFragment.INSTANCE);
-    public SimpleManaPool manaPool = new SimpleManaPool(MAX_MANA) { //TODO: extract to class and register type
+    public SimpleManaPool manaPool = new SimpleManaPool(MAX_MANA) { //TODO: extract to class and register type (maybe?)
         @Override
         public void set(float value) {
             super.set(value);
@@ -119,10 +120,7 @@ public class SpellCircleBlockEntity extends BlockEntity {
     }
 
     public boolean callEvent(List<Fragment> arguments) {
-        var ctx = new BlockSpellSource((ServerWorld) getWorld(), getPos(), this);
-        ctx.pushPartGlyph(arguments);
-        var result = spell.runSafely(ctx, err -> lastError = err);
-        ctx.popPartGlyph();
-        return result.orElse(BooleanFragment.FALSE).asBoolean().bool();
+        new SpellExecutor(spell, arguments).run(new BlockSpellSource((ServerWorld) getWorld(), getPos(), this));
+        return false;
     }
 }
