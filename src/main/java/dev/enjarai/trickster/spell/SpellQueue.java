@@ -57,12 +57,17 @@ public class SpellQueue {
         instructions.push(new EnterScopeInstruction());
     }
 
-    public void run() throws BlunderException {
-        run(this.execCtx, 0);
+    /**
+     * @return whether the spell has completed or not.
+     * @throws BlunderException
+     */
+    public boolean run() throws BlunderException {
+        return run(this.execCtx, 0).isPresent();
     }
 
     /**
      * @return the spell's result, or Optional.empty() if the spell is not done executing.
+     * @throws BlunderException
      */
     public Optional<Fragment> run(ExecutionContext execCtx, int executions) throws BlunderException {
         {

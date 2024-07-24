@@ -3,23 +3,21 @@ package dev.enjarai.trickster.spell;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class SpellExecutionManager {
     public static final Codec<SpellExecutionManager> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             SpellQueue.CODEC.listOf().fieldOf("spells").forGetter((e) -> e.spells)
     ).apply(instance, SpellExecutionManager::new));
 
-    private final List<SpellQueue> spells;
+    private final Queue<SpellQueue> spells = new ArrayDeque<>();
 
     private SpellExecutionManager(List<SpellQueue> spells) {
-        this.spells = spells;
+        this.spells.addAll(spells);
     }
 
     public SpellExecutionManager() {
-        this(new ArrayList<>());
+
     }
 
     public Optional<Fragment> execute(SpellContext ctx, SpellPart spell) {
@@ -31,8 +29,13 @@ public class SpellExecutionManager {
     }
 
     public void tick() {
-        for (var spell : spells) {
-            spell.run();
+        int size = spells.size();
+
+        for (int i = 0; i < size; i++) {
+            var spell = spells.poll(); assert spell != null;
+
+            if (!spell.run())
+                spells.add(spell);
         }
     }
 }
