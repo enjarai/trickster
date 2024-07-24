@@ -43,7 +43,7 @@ public class ConjureWaterTrick extends Trick {
                 || ctx.getWorld().getBlockState(blockPos).getBlock() instanceof Waterloggable
                 || ctx.getWorld().getBlockState(blockPos).isOf(Blocks.CAULDRON))
         ) {
-            throw new BlockOccupiedBlunder(this);
+            throw new BlockOccupiedBlunder(this, pos);
         }
 
         var state = ctx.getWorld().getBlockState(blockPos);

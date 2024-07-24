@@ -6,7 +6,8 @@
 }
 ```
 
-Tricks for manipulating projectiles.
+Tricks for manipulating projectiles. Tricks in this category will take the required item from their caster's inventory, 
+or optionally a specific slot.
 
 ;;;;;
 
@@ -14,7 +15,40 @@ Tricks for manipulating projectiles.
 
 vector, [slot] -> entity
 
-<|cost-rule@trickster:templates|formula=20kG + max((distance - 5kG) * 1.5, 0kG)|>
+<|cost-rule@trickster:templates|formula=20kG + distance ^ (distance / 5kG)|>
 
 Summons an arrow at the given position, returning it. 
-Requires an arrow, from either the given slot or the caster's inventory. 
+Requires an arrow.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:summon_fireball,title=Pyromancer's Ploy|>
+
+vector, [slot] -> entity
+
+<|cost-rule@trickster:templates|formula=20kG + distance ^ (distance / 5kG)|>
+
+Summons a fireball at the given position, returning it. 
+Requires a fire charge.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:summon_dragon_breath,title=Dragon's Ploy|>
+
+vector, [slot], [slot] -> entity
+
+<|cost-rule@trickster:templates|formula=20kG + distance ^ (distance / 5kG)|>
+
+Summons a ball of dragon's breath at the given position, returning it. 
+Requires a bottle of dragon's breath and a fire charge.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:summon_tnt,title=Demolitionist's Ploy|>
+
+vector, [slot] -> entity
+
+<|cost-rule@trickster:templates|formula=20kG + distance ^ (distance / 5kG)|>
+
+Summons lit TNT at the given position, returning it.
+Requires TNT.

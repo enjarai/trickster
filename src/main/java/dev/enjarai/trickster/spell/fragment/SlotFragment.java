@@ -6,11 +6,9 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.tricks.Trick;
-import dev.enjarai.trickster.spell.tricks.blunder.BlockInvalidBlunder;
-import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
-import dev.enjarai.trickster.spell.tricks.blunder.NoPlayerBlunder;
-import dev.enjarai.trickster.spell.tricks.blunder.NoSuchSlotBlunder;
+import dev.enjarai.trickster.spell.tricks.blunder.*;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
@@ -40,7 +38,27 @@ public record SlotFragment(int slot, Optional<BlockPos> source) implements Fragm
         return BooleanFragment.TRUE;
     }
 
-    public ItemStack getStack(Trick trickSource, SpellContext ctx) throws BlunderException {
+    public ItemStack move(Trick trickSource, SpellContext ctx) throws BlunderException {
+        return move(trickSource, ctx, 1);
+    }
+
+    public ItemStack move(Trick trickSource, SpellContext ctx, int amount) throws BlunderException {
+        var stack = getStack(trickSource, ctx);
+
+        if (stack.getCount() < amount)
+            throw new MissingItemBlunder(trickSource);
+
+        var result = stack.copyWithCount(amount);
+        source.ifPresent(pos -> ctx.useMana(trickSource, (float) (amount * (32 + (ctx.getBlockPos().toCenterPos().distanceTo(pos.toCenterPos()) * 0.8)))));
+        stack.decrement(amount);
+        return result;
+    }
+
+    public Item getItem(Trick trickSource, SpellContext ctx) throws BlunderException {
+        return getStack(trickSource, ctx).getItem();
+    }
+
+    private ItemStack getStack(Trick trickSource, SpellContext ctx) throws BlunderException {
         Inventory inventory;
         if (source.isPresent()) {
             if (ctx.getWorld().getBlockEntity(source.get()) instanceof Inventory entity)
@@ -57,10 +75,5 @@ public record SlotFragment(int slot, Optional<BlockPos> source) implements Fragm
             throw new NoSuchSlotBlunder(trickSource);
 
         return inventory.getStack(slot);
-    }
-
-    public void move(Trick trickSource, SpellContext ctx) throws BlunderException {
-        source.ifPresent(pos ->
-                ctx.useMana(trickSource, (float) (32 + (ctx.getBlockPos().toCenterPos().distanceTo(pos.toCenterPos()) * 0.8))));
     }
 }

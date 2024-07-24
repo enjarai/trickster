@@ -20,6 +20,18 @@ Breaks the block at the given position.
 
 ;;;;;
 
+<|glyph@trickster:templates|trick-id=trickster:place_block,title=Ploy of Creation|>
+
+vector, slot |
+
+vector, block ->
+
+<|cost-rule@trickster:templates|formula=20kG + max((distance - 5kG) * 1.5\, 0kG)|>
+
+Places the given block at the given position. Will consume its respective item. 
+
+;;;;;
+
 <|glyph@trickster:templates|trick-id=trickster:swap_block,title=Ploy of Exchange|>
 
 vector, vector ->

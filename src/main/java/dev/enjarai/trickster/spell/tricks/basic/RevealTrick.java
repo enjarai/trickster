@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.spell.tricks.basic;
 
+import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
@@ -36,7 +37,8 @@ public class RevealTrick extends Trick {
 
         Text finalResult = result;
         ctx.getPlayer().ifPresent(player -> {
-            player.sendMessage(Text.of(finalResult));
+            //TODO: this uses the server's setting, should use the client's preference
+            player.sendMessage(Text.of(finalResult), Trickster.CONFIG.revealToHotbar());
         });
 
         return first;

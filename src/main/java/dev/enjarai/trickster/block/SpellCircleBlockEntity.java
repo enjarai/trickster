@@ -34,6 +34,7 @@ public class SpellCircleBlockEntity extends BlockEntity {
     public SpellCircleEvent event = SpellCircleEvent.NONE;
     public Text lastError;
     public int age;
+    public int lastPower;
     public CrowMind crowMind = new CrowMind(VoidFragment.INSTANCE);
     public SimpleManaPool manaPool = new SimpleManaPool(MAX_MANA) {
         @Override
@@ -44,7 +45,7 @@ public class SpellCircleBlockEntity extends BlockEntity {
 
         @Override
         public void stdIncrease() {
-            increase(maxMana / 2000);
+            stdIncrease(2);
         }
     };
 
@@ -94,6 +95,14 @@ public class SpellCircleBlockEntity extends BlockEntity {
             }
         }
         age++;
+    }
+
+    public void redstoneUpdate(int power) {
+        if (event == SpellCircleEvent.REDSTONE_UPDATE && !getWorld().isClient() && lastPower != power) {
+            lastPower = power;
+            callEvent(List.of(new NumberFragment(power)));
+            markDirty();
+        }
     }
 
     @Nullable

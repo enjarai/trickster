@@ -71,9 +71,10 @@ public class ScrollEnhancingRecipe extends SpecialCraftingRecipe {
         var spell = itemStack.get(ModComponents.SPELL);
         if (!itemStack.isEmpty() && i > 0 && meta != null && spell != null) {
             var newMeta = meta.withExecutable(i * 100);
+            var newSpell = spell.withClosed();
             ItemStack itemStack3 = itemStack.copyWithCount(1);
             itemStack3.set(ModComponents.WRITTEN_SCROLL_META, newMeta);
-            itemStack3.set(ModComponents.SPELL, spell);
+            itemStack3.set(ModComponents.SPELL, newSpell);
             return itemStack3;
         } else {
             return ItemStack.EMPTY;

@@ -40,6 +40,16 @@ Given an entity, returns its facing as a vector.
 
 ;;;;;
 
+<|glyph@trickster:templates|trick-id=trickster:get_velocity,title=Movement Distortion|>
+
+entity -> vector
+
+---
+
+Given an entity, returns its current velocity as a vector.
+
+;;;;;
+
 <|glyph@trickster:templates|trick-id=trickster:height_reflection,title=Stature Distortion|>
 
 entity -> number

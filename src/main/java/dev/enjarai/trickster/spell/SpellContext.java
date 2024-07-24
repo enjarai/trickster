@@ -1,12 +1,11 @@
 package dev.enjarai.trickster.spell;
 
+import dev.enjarai.trickster.spell.fragment.SlotFragment;
 import dev.enjarai.trickster.spell.tricks.Trick;
-import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
-import dev.enjarai.trickster.spell.tricks.blunder.EntityInvalidBlunder;
-import dev.enjarai.trickster.spell.tricks.blunder.ExecutionLimitReachedBlunder;
-import dev.enjarai.trickster.spell.tricks.blunder.NotEnoughManaBlunder;
+import dev.enjarai.trickster.spell.tricks.blunder.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -16,6 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import org.joml.Vector3d;
 
 import java.util.*;
+import java.util.function.Function;
 
 public abstract class SpellContext {
     public static final int MAX_RECURSION_DEPTH = 256;
@@ -86,6 +86,35 @@ public abstract class SpellContext {
         }
 
         return result == null ? Text.of("") : result;
+    }
+
+    // I am disappointed in myself for having written this.
+    // Maybe I'll clean it up one day. -- Aurora D.
+    public ItemStack getStack(Trick source, Optional<SlotFragment> optionalSlot, Function<Item, Boolean> validator) throws BlunderException {
+        ItemStack result = null;
+
+        if (optionalSlot.isPresent()) {
+            if (!validator.apply(optionalSlot.get().getItem(source, this))) throw new ItemInvalidBlunder(source);
+            result = optionalSlot.get().move(source, this);
+        } else {
+            var player = this.getPlayer().orElseThrow(() -> new NoPlayerBlunder(source));
+            var inventory = player.getInventory();
+
+            for (int i = 0; i < inventory.size(); i++) {
+                var stack = inventory.getStack(i);
+
+                if (validator.apply(stack.getItem())) {
+                    result = stack.copyWithCount(1);
+                    stack.decrement(1);
+                    break;
+                }
+            }
+        }
+
+        if (result == null)
+            throw new MissingItemBlunder(source);
+
+        return result;
     }
 
     public void addManaLink(Trick source, ManaLink link) throws BlunderException {

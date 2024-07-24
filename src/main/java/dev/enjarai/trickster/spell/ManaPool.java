@@ -16,6 +16,9 @@ public interface ManaPool {
     float getMax();
 
     default void increase(float amount) {
+        if (Float.isNaN(get()))
+            set(0);
+
         set(get() + amount);
     }
 
@@ -23,6 +26,9 @@ public interface ManaPool {
      * Returns whether the pool still has mana.
      */
     default boolean decrease(float amount) {
+        if (Float.isNaN(get()))
+            set(0);
+
         float f = get() - amount;
         set(f);
         return !(f < 0);

@@ -8,5 +8,6 @@ import io.wispforest.owo.config.annotation.Modmenu;
 public class TricksterConfigModel {
     public boolean dragDrawing = false;
     public boolean topHatInterceptScrolling = false;
+    public boolean revealToHotbar = true;
     public boolean allowSwapBedrock = true;
 }

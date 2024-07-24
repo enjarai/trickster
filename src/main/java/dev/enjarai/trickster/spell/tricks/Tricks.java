@@ -19,7 +19,10 @@ import dev.enjarai.trickster.spell.tricks.inventory.*;
 import dev.enjarai.trickster.spell.tricks.list.*;
 import dev.enjarai.trickster.spell.tricks.math.*;
 import dev.enjarai.trickster.spell.tricks.misc.TypeFragmentTrick;
+import dev.enjarai.trickster.spell.tricks.projectile.SummonDragonBreathTrick;
+import dev.enjarai.trickster.spell.tricks.projectile.SummonFireballTrick;
 import dev.enjarai.trickster.spell.tricks.projectile.SummonArrowTrick;
+import dev.enjarai.trickster.spell.tricks.projectile.SummonTntTrick;
 import dev.enjarai.trickster.spell.tricks.tree.*;
 import dev.enjarai.trickster.spell.tricks.vector.*;
 import net.minecraft.registry.Registry;
@@ -79,6 +82,7 @@ public class Tricks {
     public static final GetPositionTrick GET_POSITION = register("get_position", new GetPositionTrick());
     public static final GetEntityTypeTrick GET_ENTITY_TYPE = register("get_entity_type", new GetEntityTypeTrick());
     public static final GetFacingTrick GET_FACING = register("get_facing", new GetFacingTrick());
+    public static final GetVelocityTrick GET_VELOCITY = register("get_velocity", new GetVelocityTrick());
     public static final GetEntityHealthTrick GET_HEALTH = register("get_health", new GetEntityHealthTrick());
     public static final GetEntityMaxHealthTrick GET_MAX_HEALTH = register("get_max_health", new GetEntityMaxHealthTrick());
     public static final GetEntityArmourTrick GET_ARMOUR_VALUE = register("get_armour", new GetEntityArmourTrick());
@@ -119,7 +123,7 @@ public class Tricks {
     public static final CrossProductTrick CROSS_PRODUCT = register("cross_product", new CrossProductTrick());
     public static final NormalizeTrick NORMALIZE = register("normalize", new NormalizeTrick());
     public static final AlignVectorTrick ALIGN_VECTOR = register("align_vector", new AlignVectorTrick());
-    public static final ReverseVectorTrick REVERSE_ALIGN_VECTOR = register("reverse_align_vector", new ReverseVectorTrick());
+    public static final ReverseVectorTrick REVERSE_ALIGN_VECTOR = register("reverse_vector", new ReverseVectorTrick());
     public static final MergeVectorTrick MERGE_VECTOR = register("merge_vector", new MergeVectorTrick());
 
     // Boolean
@@ -156,6 +160,7 @@ public class Tricks {
 
     // Blocks
     public static final BreakBlockTrick BREAK_BLOCK = register("break_block", new BreakBlockTrick());
+    public static final PlaceBlockTrick PLACE_BLOCK = register("place_block", new PlaceBlockTrick());
     public static final SwapBlockTrick SWAP_BLOCK = register("swap_block", new SwapBlockTrick());
     public static final ConjureFlowerTrick CONJURE_FLOWER = register("conjure_flower", new ConjureFlowerTrick());
     public static final ConjureWaterTrick CONJURE_WATER = register("conjure_water", new ConjureWaterTrick());
@@ -167,6 +172,7 @@ public class Tricks {
     public static final DispelBlockDisguiseTrick DISPEL_BLOCK_DISGUISE = register("dispel_block_disguise", new DispelBlockDisguiseTrick());
     public static final PowerResonatorTrick POWER_RESONATOR = register("power_resonator", new PowerResonatorTrick());
     public static final CheckResonatorTrick CHECK_RESONATOR = register("check_resonator", new CheckResonatorTrick());
+    public static final GetRedstonePowerTrick GET_REDSTONE_POWER = register("get_redstone_power", new GetRedstonePowerTrick());
 
     // Inventory
     public static final ImportTrick IMPORT = register("import", new ImportTrick());
@@ -178,6 +184,9 @@ public class Tricks {
 
     // Projectile
     public static final SummonArrowTrick SUMMON_ARROW = register("summon_arrow", new SummonArrowTrick());
+    public static final SummonFireballTrick SUMMON_FIREBALL = register("summon_fireball", new SummonFireballTrick());
+    public static final SummonDragonBreathTrick SUMMON_DRAGON_BREATH = register("summon_dragon_breath", new SummonDragonBreathTrick());
+    public static final SummonTntTrick SUMMON_TNT = register("summon_tnt", new SummonTntTrick());
 
     // Misc
     public static final TypeFragmentTrick TYPE_FRAGMENT = register("type_fragment", new TypeFragmentTrick());

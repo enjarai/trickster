@@ -19,7 +19,7 @@ public abstract class ItemMixin {
     @Inject(method = "getTooltipData", at = @At("HEAD"), cancellable = true)
         private void trickster$getSpellTooltipData(ItemStack stack, CallbackInfoReturnable<Optional<TooltipData>> cir) {
         var spellComponent = stack.get(ModComponents.SPELL);
-        if (spellComponent != null && !spellComponent.spell().isEmpty()) {
+        if (spellComponent != null && !spellComponent.spell().isEmpty() && !spellComponent.closed()) {
             cir.setReturnValue(Optional.of(new SpellTooltipData(spellComponent.spell())));
         }
     }

@@ -38,11 +38,14 @@ public record SpellCircleEvent(Identifier id, Pattern pattern) {
     };
 
     public static final SpellCircleEvent NONE = register("none", Pattern.EMPTY);
+
     public static final SpellCircleEvent BREAK_BLOCK = register("break_block", Pattern.of(0, 4, 8, 6, 4, 2, 0));
     public static final SpellCircleEvent PLACE_BLOCK = register("place_block", Pattern.of(0, 2, 8, 6, 0));
     public static final SpellCircleEvent ENTITY_MOVE = register("entity_move", Pattern.of(3, 4, 5, 8, 4));
-    public static final SpellCircleEvent TICK = register("tick", Pattern.of(0, 3, 6, 7, 8, 5, 2, 1, 0, 4, 5));
     public static final SpellCircleEvent USE_ITEM = register("use_item", Pattern.of(0, 4, 8, 5, 1, 0, 3, 7, 8));
+
+    public static final SpellCircleEvent TICK = register("tick", Pattern.of(0, 3, 6, 7, 8, 5, 2, 1, 0, 4, 5));
+    public static final SpellCircleEvent REDSTONE_UPDATE = register("redstone_update", Pattern.of(1, 5, 8, 7, 6, 3, 1));
 
     private static SpellCircleEvent register(String path, Pattern pattern) {
         var id = Trickster.id(path);
