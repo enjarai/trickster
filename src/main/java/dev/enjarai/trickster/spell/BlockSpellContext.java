@@ -41,7 +41,7 @@ public class BlockSpellContext extends SpellContext {
     }
 
     public BlockSpellContext(ServerWorld world, BlockPos pos, SpellCircleBlockEntity blockEntity) {
-        super(blockEntity.manaPool, 0);
+        super(blockEntity.manaPool);
         this.world = world;
         this.pos = pos;
         this.blockEntity = blockEntity;

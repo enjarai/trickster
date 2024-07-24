@@ -35,16 +35,6 @@ providing it with all other passed in fragments as arguments.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:delayed_execute,title=Eventual Stratagem|>
-
-spell, any... ->
-
----
-
-Executes the passed spell fragment with the given arguments... eventually. 
-
-;;;;;
-
 <|glyph@trickster:templates|trick-id=trickster:iterator,title=Iteration Stratagem|>
 
 spell, any[] -> any[]

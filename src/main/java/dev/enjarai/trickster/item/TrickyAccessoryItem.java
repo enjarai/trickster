@@ -49,7 +49,7 @@ public class TrickyAccessoryItem extends AccessoryItem {
         boolean applyBacklashIfModified = true;
 
         try {
-            var ctx = new PlayerSpellContext(triggerCtx.getRecursions(), player, EquipmentSlot.MAINHAND);
+            var ctx = new PlayerSpellContext(player, EquipmentSlot.MAINHAND);
             ctx.pushPartGlyph(List.of(new PatternGlyph(source.getPattern()), new ListFragment(inputs)));
 
             var result = spell.run(ctx);

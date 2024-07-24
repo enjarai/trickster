@@ -4,7 +4,6 @@ import com.mojang.serialization.Lifecycle;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.tricks.entity.query.*;
-import dev.enjarai.trickster.spell.tricks.event.DelayedExecuteTrick;
 import dev.enjarai.trickster.spell.tricks.func.ClosureTrick;
 import dev.enjarai.trickster.spell.tricks.func.ExecuteTrick;
 import dev.enjarai.trickster.spell.tricks.func.IteratorTrick;
@@ -51,7 +50,6 @@ public class Tricks {
 
     // Functions
     public static final ExecuteTrick EXECUTE = register("execute", new ExecuteTrick());
-    public static final DelayedExecuteTrick DELAYED_EXECUTE = register("delayed_execute", new DelayedExecuteTrick());
     public static final IteratorTrick ITERATOR = register("iterator", new IteratorTrick());
     public static final ClosureTrick CLOSURE = register("closure", new ClosureTrick());
     public static final SupplierTrick SUPPLIER = register("supplier", new SupplierTrick());

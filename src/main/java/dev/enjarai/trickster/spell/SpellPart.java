@@ -93,6 +93,7 @@ public final class SpellPart implements Fragment {
         } catch (Exception e) {
             onError.accept(Text.literal("Uncaught exception in spell: " + e.getMessage()));
         }
+
         return Optional.empty();
     }
 
