@@ -11,7 +11,7 @@ public record SerializedSpellInstruction(SpellInstructionType type, @Nullable Fr
     public static final Codec<SerializedSpellInstruction> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.INT.fieldOf("instruction_id").forGetter(s -> s.type.getId()),
             Fragment.CODEC.get().codec().optionalFieldOf("fragment").forGetter(s -> Optional.ofNullable(s.fragment))
-    ).apply(instance, (id, optionalFragment) -> new SerializedSpellInstruction(SpellInstructionType.fromId(id), optionalFragment.get())));
+    ).apply(instance, (id, optionalFragment) -> new SerializedSpellInstruction(SpellInstructionType.fromId(id), optionalFragment.orElse(null))));
 
     public SpellInstruction toDeserialized() {
         return switch (type) {

@@ -7,7 +7,7 @@ import java.util.*;
 
 public class SpellExecutionManager {
     public static final Codec<SpellExecutionManager> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            SpellQueue.CODEC.listOf().fieldOf("spells").forGetter((e) -> e.spells)
+            SpellQueue.CODEC.listOf().fieldOf("spells").forGetter((e) -> e.spells.stream().toList())
     ).apply(instance, SpellExecutionManager::new));
 
     private final Queue<SpellQueue> spells = new ArrayDeque<>();
