@@ -35,14 +35,13 @@ providing it with all other passed in fragments as arguments.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:closure,title=Closure Stratagem|>
+<|glyph@trickster:templates|trick-id=trickster:delayed_execute,title=Eventual Stratagem|>
 
-spell, [spell, any]... -> spell
+spell, any... ->
 
 ---
 
-Replaces any occurrence of any of the latter spell's patterns inside the first spell
-with the fragment immediately following them.
+Executes the passed spell fragment with the given arguments... eventually. 
 
 ;;;;;
 
@@ -77,6 +76,17 @@ any -> spell
 ---
 
 Creates a new spell fragment which returns the previously provided fragment when executed.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:closure,title=Closure Stratagem|>
+
+spell, [spell, any]... -> spell
+
+---
+
+Replaces any occurrence of any of the latter spell's patterns inside the first spell
+with the fragment immediately following them.
 
 ;;;;;
 

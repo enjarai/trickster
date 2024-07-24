@@ -8,6 +8,8 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import org.joml.Vector3d;
 
+import java.util.List;
+
 public class BlockSpellContext extends SpellContext {
     public final ServerWorld world;
     public final BlockPos pos;
@@ -39,6 +41,14 @@ public class BlockSpellContext extends SpellContext {
     public void setCrowMind(Fragment fragment) {
         blockEntity.crowMind = new CrowMind(fragment);
         blockEntity.markDirty();
+    }
+
+    @Override
+    public SpellContext delayed(List<Fragment> arguments) {
+        var ctx = new BlockSpellContext(world, pos, blockEntity);
+        ctx.manaLinks.addAll(manaLinks);
+        ctx.pushPartGlyph(arguments);
+        return ctx;
     }
 
     @Override

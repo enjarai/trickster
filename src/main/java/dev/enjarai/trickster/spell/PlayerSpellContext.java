@@ -19,6 +19,7 @@ import net.minecraft.server.world.ServerWorld;
 import org.joml.Vector3d;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @SuppressWarnings("UnstableApiUsage")
@@ -108,6 +109,14 @@ public class PlayerSpellContext extends SpellContext {
     @Override
     public void setCrowMind(Fragment fragment) {
         player.setAttached(ModAttachments.CROW_MIND, new CrowMind(fragment));
+    }
+
+    @Override
+    public SpellContext delayed(List<Fragment> arguments) {
+        var ctx = new PlayerSpellContext(player, slot);
+        ctx.manaLinks.addAll(manaLinks);
+        ctx.pushPartGlyph(arguments);
+        return ctx;
     }
 
     @Override

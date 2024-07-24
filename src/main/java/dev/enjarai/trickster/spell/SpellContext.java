@@ -127,6 +127,11 @@ public abstract class SpellContext {
         manaLinks.add(link);
     }
 
+    /*
+     * Returns a copy of this context with recursion count reset and the provided arguments
+     */
+    public abstract SpellContext delayed(List<Fragment> arguments);
+
     public abstract void addManaLink(Trick source, LivingEntity target, float limit);
 
     public int getRecursions() {
