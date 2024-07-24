@@ -40,6 +40,7 @@ public interface ItemTriggerProvider {
         var spellComponent = stack.get(ModComponents.SPELL);
 
         if (spellComponent != null) {
+            // TODO: are we sure we dont want this to be multi tick capable? maybe with a limited amount of ticks?
             new SpellExecutor(spellComponent.spell(), arguments).run(new PlayerSpellSource(player));
         }
     }

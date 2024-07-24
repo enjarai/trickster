@@ -39,7 +39,7 @@ public class SpellCircleBlockEntity extends BlockEntity {
     public int age;
     public int lastPower;
     public CrowMind crowMind = new CrowMind(VoidFragment.INSTANCE);
-    public SimpleManaPool manaPool = new SimpleManaPool(MAX_MANA) { //TODO: extract to class and register type (maybe?)
+    public SimpleManaPool manaPool = new SimpleManaPool(MAX_MANA) { //TODO: extract to class and register type (maybe?) (Eh, i dont think we need to honestly...)
         @Override
         public void set(float value) {
             super.set(value);

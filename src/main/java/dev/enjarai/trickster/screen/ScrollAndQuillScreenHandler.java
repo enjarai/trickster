@@ -84,6 +84,8 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
                 if (server != null) {
                     server.execute(() -> {
                         if (greedyEvaluation) {
+                            // TODO: find a way to deal with the now removed "destructive" evaluation mode.
+                            // How else can we do the mirror? Turn flattened spell queue back into spellpart??
                             new SpellExecutor(spell, List.of()).run(new PlayerSpellSource((ServerPlayerEntity) player()));
                             ((ServerPlayerEntity) player()).getServerWorld().playSoundFromEntity(
                                     null, player(), ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f));

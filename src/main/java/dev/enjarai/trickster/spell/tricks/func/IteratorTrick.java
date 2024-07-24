@@ -34,6 +34,7 @@ public class IteratorTrick extends Trick implements ForkingTrick {
         var executable = expectInput(fragments, FragmentType.SPELL_PART, 0);
         var list = expectInput(fragments, FragmentType.LIST, 1);
 
+        // TODO: this wont work with codecs, find a way around that?
         return new SpellExecutor(executable, new ExecutionState(List.of())) {
             private final Stack<Fragment> elements = new Stack<>();
             private boolean hasInit = false;
