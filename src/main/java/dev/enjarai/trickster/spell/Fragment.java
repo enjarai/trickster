@@ -11,9 +11,10 @@ import net.minecraft.text.Text;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
-public interface Fragment {
+public non-sealed interface Fragment extends SpellInstruction {
     Supplier<MapCodec<Fragment>> CODEC = Suppliers.memoize(() -> FragmentType.REGISTRY.getCodec().dispatchMap(Fragment::type, FragmentType::codec));
     Supplier<Endec<Fragment>> ENDEC = Suppliers.memoize(() -> CodecUtils.toEndec(CODEC.get().codec()));
 
@@ -36,5 +37,9 @@ public interface Fragment {
 
     default boolean isEphemeral() {
         return false;
+    }
+
+    default Optional<BiFunction<SpellContext, List<Fragment>, Fragment>> getActivator() {
+        return Optional.of(this::activateAsGlyph);
     }
 }

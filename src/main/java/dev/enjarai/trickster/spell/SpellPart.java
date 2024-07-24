@@ -13,8 +13,11 @@ import dev.enjarai.trickster.spell.tricks.blunder.NaNBlunder;
 import io.wispforest.endec.Endec;
 import io.wispforest.owo.serialization.CodecUtils;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
