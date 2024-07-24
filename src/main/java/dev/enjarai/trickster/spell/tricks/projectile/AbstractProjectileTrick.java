@@ -2,7 +2,7 @@ package dev.enjarai.trickster.spell.tricks.projectile;
 
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
-import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.tricks.Trick;
@@ -23,7 +23,7 @@ public abstract class AbstractProjectileTrick extends Trick {
     }
 
     @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
         var pos = expectInput(fragments, FragmentType.VECTOR, 0).vector();
         var optionalSlot = supposeInput(fragments, FragmentType.SLOT, 1);
         var stack = ctx.getStack(this, optionalSlot, this::isValidItem);
@@ -42,11 +42,11 @@ public abstract class AbstractProjectileTrick extends Trick {
         }
     }
 
-    protected abstract Entity makeProjectile(SpellContext ctx, Vector3dc pos, ItemStack stack, List<Fragment> extraInputs) throws BlunderException;
+    protected abstract Entity makeProjectile(SpellSource ctx, Vector3dc pos, ItemStack stack, List<Fragment> extraInputs) throws BlunderException;
 
     protected abstract boolean isValidItem(Item item);
 
-    protected void onFail(SpellContext ctx, ServerWorld world, Vector3d spellPos, Vector3dc targetPos, ItemStack stack) {
+    protected void onFail(SpellSource ctx, ServerWorld world, Vector3d spellPos, Vector3dc targetPos, ItemStack stack) {
         world.spawnEntity(new ItemEntity(world, spellPos.x, spellPos.y, spellPos.z, stack));
     }
 

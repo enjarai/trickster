@@ -1,21 +1,14 @@
 package dev.enjarai.trickster.spell.tricks.block;
 
 import dev.enjarai.trickster.cca.ModChunkCumponents;
-import dev.enjarai.trickster.net.ModNetworking;
-import dev.enjarai.trickster.net.RebuildChunkPacket;
-import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
-import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.fragment.VoidFragment;
-import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.blunder.BlockInvalidBlunder;
 import dev.enjarai.trickster.spell.tricks.blunder.BlockUnoccupiedBlunder;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
 import net.minecraft.world.chunk.EmptyChunk;
 
 import java.util.List;
@@ -26,7 +19,7 @@ public class DisguiseBlockTrick extends AbstractBlockDisguiseTrick {
     }
 
     @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
         var pos = expectInput(fragments, FragmentType.VECTOR, 0);
         var blockType = expectInput(fragments, FragmentType.BLOCK_TYPE, 1);
         var blockPos = pos.toBlockPos();

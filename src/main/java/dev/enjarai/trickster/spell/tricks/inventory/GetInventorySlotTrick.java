@@ -2,7 +2,7 @@ package dev.enjarai.trickster.spell.tricks.inventory;
 
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
-import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.SlotFragment;
 import dev.enjarai.trickster.spell.tricks.Trick;
@@ -19,7 +19,7 @@ public class GetInventorySlotTrick extends Trick {
     }
 
     @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
         var slot = expectInput(fragments, FragmentType.NUMBER, 0).number();
         var pos = supposeInput(fragments, FragmentType.VECTOR, 1);
         Optional<BlockPos> maybePosition = Optional.empty();

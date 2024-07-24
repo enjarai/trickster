@@ -4,7 +4,7 @@ import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
-import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.tricks.Trick;
@@ -24,7 +24,7 @@ public class ImportHatTrick extends Trick {
     }
 
     @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
         var index = expectInput(fragments, FragmentType.NUMBER, 0);
 
         var player = ctx.getPlayer().orElseThrow(() -> new NoPlayerBlunder(this));

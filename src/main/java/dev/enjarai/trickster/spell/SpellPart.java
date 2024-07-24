@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.enjarai.trickster.advancement.criterion.ModCriteria;
+import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
@@ -13,11 +14,8 @@ import dev.enjarai.trickster.spell.tricks.blunder.NaNBlunder;
 import io.wispforest.endec.Endec;
 import io.wispforest.owo.serialization.CodecUtils;
 import net.minecraft.text.Text;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -46,7 +44,7 @@ public final class SpellPart implements Fragment {
     }
 
     @Override
-    public Fragment activateAsGlyph(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment activateAsGlyph(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
         if (fragments.isEmpty()) {
             return this;
         } else {
@@ -59,7 +57,7 @@ public final class SpellPart implements Fragment {
         }
     }
 
-    public Fragment run(SpellContext ctx) throws BlunderException {
+    public Fragment run(SpellSource ctx) throws BlunderException {
         var fragments = new ArrayList<Fragment>();
 
         int i = 0;
@@ -82,7 +80,7 @@ public final class SpellPart implements Fragment {
         return value;
     }
 
-    public Optional<Fragment> runSafely(SpellContext ctx, Consumer<Text> onError) {
+    public Optional<Fragment> runSafely(SpellSource ctx, Consumer<Text> onError) {
         try {
             return Optional.of(run(ctx));
         } catch (BlunderException e) {
@@ -97,7 +95,7 @@ public final class SpellPart implements Fragment {
         return Optional.empty();
     }
 
-    public Optional<Fragment> runSafely(SpellContext ctx) {
+    public Optional<Fragment> runSafely(SpellSource ctx) {
         return runSafely(ctx, err -> ctx.getPlayer().ifPresent(player -> player.sendMessage(err)));
     }
 

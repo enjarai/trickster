@@ -4,8 +4,8 @@ import dev.enjarai.trickster.cca.ModEntityCumponents;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.PatternGlyph;
-import dev.enjarai.trickster.spell.PlayerSpellContext;
-import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
+import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
@@ -26,7 +26,7 @@ public class TrickyAccessoryItem extends AccessoryItem {
         super(settings);
     }
 
-    public static List<Fragment> tryWard(SpellContext triggerCtx, ServerPlayerEntity player, Trick source, List<Fragment> inputs) throws BlunderException {
+    public static List<Fragment> tryWard(SpellSource triggerCtx, ServerPlayerEntity player, Trick source, List<Fragment> inputs) throws BlunderException {
         if (triggerCtx.getCaster().map(c -> c.equals(player)).orElse(false)) {
             return inputs;
         }
@@ -49,7 +49,7 @@ public class TrickyAccessoryItem extends AccessoryItem {
         boolean applyBacklashIfModified = true;
 
         try {
-            var ctx = new PlayerSpellContext(player, EquipmentSlot.MAINHAND);
+            var ctx = new PlayerSpellSource(player, EquipmentSlot.MAINHAND);
             ctx.pushPartGlyph(List.of(new PatternGlyph(source.getPattern()), new ListFragment(inputs)));
 
             var result = spell.run(ctx);

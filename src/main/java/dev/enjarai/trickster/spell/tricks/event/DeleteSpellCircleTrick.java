@@ -3,7 +3,7 @@ package dev.enjarai.trickster.spell.tricks.event;
 import dev.enjarai.trickster.block.ModBlocks;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
-import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.tricks.Trick;
@@ -18,7 +18,7 @@ public class DeleteSpellCircleTrick extends Trick {
     }
 
     @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
         var position = expectInput(fragments, FragmentType.VECTOR, 0);
 
         var blockPos = position.toBlockPos();

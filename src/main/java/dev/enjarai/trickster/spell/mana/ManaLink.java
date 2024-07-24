@@ -1,4 +1,4 @@
-package dev.enjarai.trickster.spell;
+package dev.enjarai.trickster.spell.mana;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -21,6 +21,7 @@ public final class ManaLink {
     public final float taxRatio;
     private float availableMana;
 
+    // TODO if you use this codec im going to murder you  - Rai
     public static final Codec<ManaLink> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ManaPool.CODEC.get().fieldOf("owner").forGetter(manaLink -> manaLink.owner),
             Uuids.CODEC.fieldOf("source_uuid").forGetter(manaLink -> manaLink.source.getUuid()),

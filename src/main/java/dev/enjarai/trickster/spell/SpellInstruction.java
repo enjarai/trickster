@@ -1,5 +1,8 @@
 package dev.enjarai.trickster.spell;
 
+import dev.enjarai.trickster.spell.execution.SerializedSpellInstruction;
+import dev.enjarai.trickster.spell.execution.SpellExecutor;
+import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import org.apache.commons.lang3.NotImplementedException;
 
@@ -10,11 +13,11 @@ import java.util.function.BiFunction;
 public sealed interface SpellInstruction permits Fragment, EnterScopeInstruction, ExitScopeInstruction {
     SerializedSpellInstruction asSerialized();
 
-    default Optional<BiFunction<SpellContext, List<Fragment>, Fragment>> getActivator() {
+    default Optional<BiFunction<SpellSource, List<Fragment>, Fragment>> getActivator() {
         return Optional.empty();
     }
 
-    default SpellQueue makeFork(SpellContext ctx, List<Fragment> args) throws BlunderException {
+    default SpellExecutor makeFork(SpellContext ctx, List<Fragment> args) throws BlunderException {
         throw new NotImplementedException();
     }
 

@@ -1,4 +1,4 @@
-package dev.enjarai.trickster.spell;
+package dev.enjarai.trickster.spell.execution;
 
 public enum SpellInstructionType {
     FRAGMENT(1),

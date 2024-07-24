@@ -1,4 +1,4 @@
-package dev.enjarai.trickster.spell;
+package dev.enjarai.trickster.spell.mana;
 
 import com.mojang.serialization.Lifecycle;
 import com.mojang.serialization.MapCodec;
@@ -13,7 +13,6 @@ public record ManaPoolType<T extends ManaPool>(MapCodec<T> codec) {
     public static final Registry<ManaPoolType<?>> REGISTRY = new SimpleRegistry<>(REGISTRY_KEY, Lifecycle.stable());
 
     public static final ManaPoolType<SimpleManaPool> SIMPLE = register("simple", SimpleManaPool.CODEC);
-    public static final ManaPoolType<ManaComponent> COMPONENT = register("component", ManaComponent.CODEC);
 
     private static <T extends ManaPool> ManaPoolType<T> register(String name, MapCodec<T> codec) {
         return Registry.register(REGISTRY, Trickster.id(name), new ManaPoolType<>(codec));

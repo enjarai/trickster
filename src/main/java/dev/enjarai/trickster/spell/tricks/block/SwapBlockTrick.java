@@ -4,7 +4,7 @@ import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
-import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.tricks.Trick;
@@ -22,7 +22,7 @@ public class SwapBlockTrick extends Trick {
     }
 
     @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
         var pos1 = expectInput(fragments, FragmentType.VECTOR, 0);
         var pos2 = expectInput(fragments, FragmentType.VECTOR, 1);
         var blockPos1 = pos1.toBlockPos();

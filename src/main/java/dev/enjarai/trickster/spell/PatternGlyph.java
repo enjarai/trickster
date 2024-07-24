@@ -3,17 +3,19 @@ package dev.enjarai.trickster.spell;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
+import dev.enjarai.trickster.spell.execution.SpellExecutor;
+import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.tricks.Tricks;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import dev.enjarai.trickster.spell.tricks.blunder.UnknownTrickBlunder;
+import dev.enjarai.trickster.spell.tricks.func.ForkingTrick;
 import net.minecraft.text.Text;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 public record PatternGlyph(Pattern pattern) implements Fragment {
@@ -38,7 +40,7 @@ public record PatternGlyph(Pattern pattern) implements Fragment {
     }
 
     @Override
-    public Fragment activateAsGlyph(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment activateAsGlyph(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
         if (pattern.equals(Pattern.EMPTY)) {
             return VoidFragment.INSTANCE;
         }
@@ -48,6 +50,16 @@ public record PatternGlyph(Pattern pattern) implements Fragment {
             return trick.activate(ctx, fragments);
         }
         throw new UnknownTrickBlunder(); // TODO more detail
+    }
+
+    @Override
+    public boolean forks() {
+        return Tricks.lookup(pattern) instanceof ForkingTrick;
+    }
+
+    @Override
+    public SpellExecutor makeFork(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+        return ((ForkingTrick) Tricks.lookup(pattern)).makeFork(ctx, fragments);
     }
 
     @Override

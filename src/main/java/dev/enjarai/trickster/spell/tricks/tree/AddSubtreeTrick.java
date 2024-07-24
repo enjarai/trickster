@@ -1,8 +1,8 @@
 package dev.enjarai.trickster.spell.tricks.tree;
 
 import dev.enjarai.trickster.spell.*;
+import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
-import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.blunder.AddressNotInTreeBlunder;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 
@@ -14,7 +14,7 @@ public class AddSubtreeTrick extends MetaTrick {
     }
 
     @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
         var spell = expectInput(fragments, SpellPart.class, 0);
         var addressFragment = expectInput(fragments, ListFragment.class, 1);
         var subtree = expectInput(fragments, SpellPart.class, 2);

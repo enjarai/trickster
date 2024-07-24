@@ -1,4 +1,4 @@
-package dev.enjarai.trickster.spell;
+package dev.enjarai.trickster.spell.mana;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;

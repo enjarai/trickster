@@ -1,11 +1,18 @@
-package dev.enjarai.trickster.spell;
+package dev.enjarai.trickster.spell.mana;
 
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.mojang.serialization.MapCodec;
+import org.jetbrains.annotations.Nullable;
 
 public interface ManaPool {
-    Supplier<MapCodec<ManaPool>> CODEC = Suppliers.memoize(() -> ManaPoolType.REGISTRY.getCodec().dispatchMap(ManaPool::type, ManaPoolType::codec));
+    Supplier<MapCodec<ManaPool>> CODEC = Suppliers.memoize(() -> ManaPoolType.REGISTRY.getCodec().dispatchMap(pool -> {
+        var type = pool.type();
+        if (type == null) {
+            throw new UnsupportedOperationException("This mana pool type cannot be serialized");
+        }
+        return type;
+    }, ManaPoolType::codec));
 
     static float healthFromMana(float mana) {
         return mana / 2;
@@ -15,6 +22,7 @@ public interface ManaPool {
         return health * 12;
     }
 
+    @Nullable
     ManaPoolType<?> type();
 
     void set(float value);

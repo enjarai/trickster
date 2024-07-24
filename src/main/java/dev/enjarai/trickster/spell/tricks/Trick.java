@@ -1,19 +1,15 @@
 package dev.enjarai.trickster.spell.tricks;
 
 import dev.enjarai.trickster.Trickster;
-import dev.enjarai.trickster.cca.ModEntityCumponents;
 import dev.enjarai.trickster.item.TrickyAccessoryItem;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
-import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.fragment.EntityFragment;
+import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.tricks.blunder.*;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.MutableText;
-import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -24,24 +20,17 @@ import java.util.Optional;
 public abstract class Trick {
     public static final Identifier TRICK_RANDOM = Trickster.id("trick");
 
-    public final boolean forks;
-
     protected final Pattern pattern;
 
-    public Trick(Pattern pattern, boolean forks) {
-        this.pattern = pattern;
-        this.forks = forks;
-    }
-
     public Trick(Pattern pattern) {
-        this(pattern, false);
+        this.pattern = pattern;
     }
 
     public final Pattern getPattern() {
         return pattern;
     }
 
-    public abstract Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException;
+    public abstract Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException;
 
     protected <T extends Fragment> T expectInput(List<Fragment> fragments, FragmentType<T> type, int index) throws BlunderException {
         if (fragments.size() <= index) {
@@ -117,7 +106,7 @@ public abstract class Trick {
         return fragments.get(index);
     }
 
-    protected void expectCanBuild(SpellContext ctx, BlockPos... positions) {
+    protected void expectCanBuild(SpellSource ctx, BlockPos... positions) {
         if (ctx.getPlayer().isEmpty()) {
             return;
         }
@@ -135,7 +124,7 @@ public abstract class Trick {
         }
     }
 
-    protected List<Fragment> tryWard(SpellContext ctx, Entity target, List<Fragment> fragments) throws BlunderException {
+    protected List<Fragment> tryWard(SpellSource ctx, Entity target, List<Fragment> fragments) throws BlunderException {
         if (target instanceof ServerPlayerEntity player) {
             return TrickyAccessoryItem.tryWard(ctx, player, this, fragments);
         }

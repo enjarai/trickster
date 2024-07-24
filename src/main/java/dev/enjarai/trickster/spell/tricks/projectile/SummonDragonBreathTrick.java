@@ -2,7 +2,7 @@ package dev.enjarai.trickster.spell.tricks.projectile;
 
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
-import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import net.minecraft.entity.Entity;
@@ -20,7 +20,7 @@ public class SummonDragonBreathTrick extends AbstractProjectileTrick {
     }
 
     @Override
-    protected Entity makeProjectile(SpellContext ctx, Vector3dc pos, ItemStack stack, List<Fragment> extraInputs) throws BlunderException {
+    protected Entity makeProjectile(SpellSource ctx, Vector3dc pos, ItemStack stack, List<Fragment> extraInputs) throws BlunderException {
         var optionalSlot2 = supposeInput(extraInputs, FragmentType.SLOT, 0);
         var stack2 = ctx.getStack(this, optionalSlot2, item -> isValidItem(item) && !item.equals(stack.getItem()));
         var world = ctx.getWorld();

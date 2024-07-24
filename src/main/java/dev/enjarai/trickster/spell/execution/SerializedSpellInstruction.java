@@ -1,7 +1,11 @@
-package dev.enjarai.trickster.spell;
+package dev.enjarai.trickster.spell.execution;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import dev.enjarai.trickster.spell.EnterScopeInstruction;
+import dev.enjarai.trickster.spell.ExitScopeInstruction;
+import dev.enjarai.trickster.spell.Fragment;
+import dev.enjarai.trickster.spell.SpellInstruction;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;

@@ -3,8 +3,7 @@ package dev.enjarai.trickster.item;
 import dev.enjarai.trickster.ModSounds;
 import dev.enjarai.trickster.cca.ModEntityCumponents;
 import dev.enjarai.trickster.item.component.ModComponents;
-import dev.enjarai.trickster.spell.PlayerSpellContext;
-import dev.enjarai.trickster.spell.SpellQueue;
+import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -28,7 +27,7 @@ public class WandItem extends Item {
         if (!world.isClient()) {
             var spell = stack.get(ModComponents.SPELL);
             if (spell != null) {
-                ModEntityCumponents.CASTER.get(user).queueSpell(new PlayerSpellContext((ServerPlayerEntity) user, slot), spell.spell());
+                ModEntityCumponents.CASTER.get(user).queueSpell(new PlayerSpellSource((ServerPlayerEntity) user, slot), spell.spell());
                 ((ServerPlayerEntity) user).getServerWorld().playSoundFromEntity(
                         null, user, ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f));
             }

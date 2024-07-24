@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.enjarai.trickster.spell.Fragment;
-import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.blunder.*;
 import net.minecraft.inventory.Inventory;
@@ -38,11 +38,11 @@ public record SlotFragment(int slot, Optional<BlockPos> source) implements Fragm
         return BooleanFragment.TRUE;
     }
 
-    public ItemStack move(Trick trickSource, SpellContext ctx) throws BlunderException {
+    public ItemStack move(Trick trickSource, SpellSource ctx) throws BlunderException {
         return move(trickSource, ctx, 1);
     }
 
-    public ItemStack move(Trick trickSource, SpellContext ctx, int amount) throws BlunderException {
+    public ItemStack move(Trick trickSource, SpellSource ctx, int amount) throws BlunderException {
         var stack = getStack(trickSource, ctx);
 
         if (stack.getCount() < amount)
@@ -54,11 +54,11 @@ public record SlotFragment(int slot, Optional<BlockPos> source) implements Fragm
         return result;
     }
 
-    public Item getItem(Trick trickSource, SpellContext ctx) throws BlunderException {
+    public Item getItem(Trick trickSource, SpellSource ctx) throws BlunderException {
         return getStack(trickSource, ctx).getItem();
     }
 
-    private ItemStack getStack(Trick trickSource, SpellContext ctx) throws BlunderException {
+    private ItemStack getStack(Trick trickSource, SpellSource ctx) throws BlunderException {
         Inventory inventory;
         if (source.isPresent()) {
             if (ctx.getWorld().getBlockEntity(source.get()) instanceof Inventory entity)

@@ -2,9 +2,11 @@ package dev.enjarai.trickster.block;
 
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.*;
+import dev.enjarai.trickster.spell.execution.source.BlockSpellSource;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
+import dev.enjarai.trickster.spell.mana.SimpleManaPool;
 import dev.enjarai.trickster.spell.world.SpellCircleEvent;
 import io.wispforest.endec.impl.KeyedEndec;
 import net.minecraft.block.BlockState;
@@ -117,7 +119,7 @@ public class SpellCircleBlockEntity extends BlockEntity {
     }
 
     public boolean callEvent(List<Fragment> arguments) {
-        var ctx = new BlockSpellContext((ServerWorld) getWorld(), getPos(), this);
+        var ctx = new BlockSpellSource((ServerWorld) getWorld(), getPos(), this);
         ctx.pushPartGlyph(arguments);
         var result = spell.runSafely(ctx, err -> lastError = err);
         ctx.popPartGlyph();

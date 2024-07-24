@@ -5,10 +5,9 @@ import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.SpellComponent;
 import dev.enjarai.trickster.spell.Fragment;
-import dev.enjarai.trickster.spell.PlayerSpellContext;
+import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
-import dev.enjarai.trickster.spell.tricks.blunder.ImmutableItemBlunder;
 import io.wispforest.endec.Endec;
 import io.wispforest.owo.client.screens.SyncedProperty;
 import net.minecraft.entity.EquipmentSlot;
@@ -83,7 +82,7 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
                 if (server != null) {
                     server.execute(() -> {
                         if (greedyEvaluation) {
-                            var ctx = new PlayerSpellContext((ServerPlayerEntity) player(), slot).setDestructive();
+                            var ctx = new PlayerSpellSource((ServerPlayerEntity) player(), slot).setDestructive();
                             spell.runSafely(ctx, err -> {
                             });
                             if (ctx.hasAffectedWorld()) {
@@ -133,7 +132,7 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
             server.execute(() -> {
                 if (player().getInventory().contains(ModItems.CAN_EVALUATE_DYNAMICALLY)) {
                     var fragment = otherHandSpell.get()
-                            .runSafely(new PlayerSpellContext((ServerPlayerEntity) player(), slot))
+                            .runSafely(new PlayerSpellSource((ServerPlayerEntity) player(), slot))
                             .orElse(VoidFragment.INSTANCE);
                     ((ServerPlayerEntity) player()).getServerWorld().playSoundFromEntity(
                             null, player(), ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f));

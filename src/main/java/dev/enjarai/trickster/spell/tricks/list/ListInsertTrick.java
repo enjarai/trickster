@@ -3,7 +3,7 @@ package dev.enjarai.trickster.spell.tricks.list;
 import com.google.common.collect.ImmutableList;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
-import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
 import dev.enjarai.trickster.spell.tricks.Trick;
@@ -20,7 +20,7 @@ public class ListInsertTrick extends Trick {
     }
 
     @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
         var list = expectInput(fragments, FragmentType.LIST, 0);
         var index = expectInput(fragments, FragmentType.NUMBER, 1);
         var toAdd = fragments.subList(2, fragments.size());

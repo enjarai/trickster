@@ -3,8 +3,8 @@ package dev.enjarai.trickster.item;
 import dev.enjarai.trickster.ModSounds;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.screen.ScrollAndQuillScreenHandler;
-import dev.enjarai.trickster.spell.PlayerSpellContext;
-import dev.enjarai.trickster.spell.SimpleManaPool;
+import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
+import dev.enjarai.trickster.spell.mana.SimpleManaPool;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -42,7 +42,7 @@ public class WrittenScrollItem extends Item {
                 var spell = stack.get(ModComponents.SPELL);
                 if (spell != null) {
                     var singleUseManaPool = SimpleManaPool.getSingleUse(meta.mana());
-                    spell.spell().runSafely(new PlayerSpellContext(singleUseManaPool, (ServerPlayerEntity) user, slot));
+                    spell.spell().runSafely(new PlayerSpellSource(singleUseManaPool, (ServerPlayerEntity) user, slot));
                     ((ServerPlayerEntity) user).getServerWorld().playSoundFromEntity(
                             null, user, ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f));
 

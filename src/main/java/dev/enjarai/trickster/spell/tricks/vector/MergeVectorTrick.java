@@ -2,14 +2,11 @@ package dev.enjarai.trickster.spell.tricks.vector;
 
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
-import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
 import org.joml.Vector3d;
 
 import java.util.List;
@@ -20,7 +17,7 @@ public class MergeVectorTrick extends Trick {
     }
 
     @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
         var vectorFragments = fragments;
 
         var list = supposeInput(fragments, 0).flatMap(l -> supposeType(l, FragmentType.LIST));

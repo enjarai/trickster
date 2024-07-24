@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.spell.tricks.entity;
 
 import dev.enjarai.trickster.spell.*;
+import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
@@ -16,7 +17,7 @@ public class LeechEntityManaTrick extends AbstractLivingEntityQueryTrick {
     }
 
     @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
         var target = getLivingEntity(ctx, fragments, 0);
         fragments = tryWard(ctx, target, fragments);
 
