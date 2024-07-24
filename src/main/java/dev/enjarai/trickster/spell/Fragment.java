@@ -35,6 +35,11 @@ public non-sealed interface Fragment extends SpellInstruction {
         return this;
     }
 
+    @Override
+    default SerializedSpellInstruction asSerialized() {
+        return new SerializedSpellInstruction(SpellInstructionType.FRAGMENT, this);
+    }
+
     default boolean isEphemeral() {
         return false;
     }

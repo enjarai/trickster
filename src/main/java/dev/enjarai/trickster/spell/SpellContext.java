@@ -1,5 +1,8 @@
 package dev.enjarai.trickster.spell;
 
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
+import com.mojang.serialization.MapCodec;
 import dev.enjarai.trickster.spell.fragment.SlotFragment;
 import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.blunder.*;
@@ -18,10 +21,9 @@ import java.util.*;
 import java.util.function.Function;
 
 public abstract class SpellContext {
-    public static final int MAX_RECURSION_DEPTH = 256;
+    public static final Supplier<MapCodec<SpellContext>> CODEC = Suppliers.memoize(() -> SpellContextType.REGISTRY.getCodec().dispatchMap(SpellContext::type, SpellContextType::codec));
 
     private final Deque<List<Fragment>> partGlyphStack = new ArrayDeque<>();
-    private int recursions = 0;
     private boolean destructive = false;
     private boolean hasAffectedWorld = false;
     private final Deque<Integer> stacktrace = new ArrayDeque<>();
@@ -29,22 +31,27 @@ public abstract class SpellContext {
     protected final ManaPool manaPool;
     protected final List<ManaLink> manaLinks = new ArrayList<>();
 
-    protected SpellContext(ManaPool manaPool, int recursions) {
+    protected SpellContext(List<List<Fragment>> partGlyphList, boolean destructive, boolean hasAffectedWorld, List<Integer> stacktrace, ManaPool manaPool, List<ManaLink> manaLinks) {
+        this.partGlyphStack.addAll(partGlyphList);
+        this.destructive = destructive;
+        this.hasAffectedWorld = hasAffectedWorld;
+        this.stacktrace.addAll(stacktrace);
         this.manaPool = manaPool;
-        this.recursions = recursions;
+        this.manaLinks.addAll(manaLinks);
+    }
+
+    public abstract SpellContextType<?> type();
+
+    protected SpellContext(ManaPool manaPool) {
+        this.manaPool = manaPool;
     }
 
     public void pushPartGlyph(List<Fragment> fragments) throws BlunderException {
         partGlyphStack.push(fragments);
-        recursions++;
-        if (recursions > MAX_RECURSION_DEPTH) {
-            throw new ExecutionLimitReachedBlunder();
-        }
     }
 
     public void popPartGlyph() {
         partGlyphStack.pop();
-//        recursions--; // For now, we'll actually have a maximum of 256 "function" calls in one spell execution, period.
     }
 
     public List<Fragment> peekPartGlyph() {
@@ -134,10 +141,6 @@ public abstract class SpellContext {
 
     public abstract void addManaLink(Trick source, LivingEntity target, float limit);
 
-    public int getRecursions() {
-        return recursions;
-    }
-
     public Optional<ServerPlayerEntity> getPlayer() {
         return Optional.empty();
     }
@@ -198,6 +201,14 @@ public abstract class SpellContext {
     public abstract Fragment getCrowMind();
 
     public abstract void setCrowMind(Fragment fragment);
+
+    public Deque<Integer> stacktrace() {
+        return stacktrace;
+    }
+
+    public Deque<List<Fragment>> partGlyphStack() {
+        return partGlyphStack;
+    }
 
     public boolean isDestructive() {
         return destructive;

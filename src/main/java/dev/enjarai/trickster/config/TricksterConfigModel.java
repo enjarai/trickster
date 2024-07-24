@@ -10,5 +10,5 @@ public class TricksterConfigModel {
     public boolean topHatInterceptScrolling = false;
     public boolean revealToHotbar = true;
     public boolean allowSwapBedrock = true;
-    public int queuedCastsPerTick = 4;
+    public int maxExecutionsPerSpellPerTick = 255;
 }

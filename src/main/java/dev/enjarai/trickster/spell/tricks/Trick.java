@@ -24,10 +24,17 @@ import java.util.Optional;
 public abstract class Trick {
     public static final Identifier TRICK_RANDOM = Trickster.id("trick");
 
+    public final boolean forks;
+
     protected final Pattern pattern;
 
-    public Trick(Pattern pattern) {
+    public Trick(Pattern pattern, boolean forks) {
         this.pattern = pattern;
+        this.forks = forks;
+    }
+
+    public Trick(Pattern pattern) {
+        this(pattern, false);
     }
 
     public final Pattern getPattern() {

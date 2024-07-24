@@ -1,20 +1,33 @@
 package dev.enjarai.trickster.cca;
 
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.entity.ModEntities;
 import dev.enjarai.trickster.misc.ModDamageTypes;
 import dev.enjarai.trickster.spell.ManaPool;
+import dev.enjarai.trickster.spell.ManaPoolType;
 import dev.enjarai.trickster.spell.SimpleManaPool;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Uuids;
+import net.minecraft.world.World;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
+
+import java.util.Objects;
 
 public class ManaComponent extends SimpleManaPool implements AutoSyncedComponent, CommonTickingComponent {
     private final LivingEntity entity;
     private final boolean manaDevoid;
+
+    public static MapCodec<ManaComponent> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+            Uuids.CODEC.fieldOf("entity_uuid").forGetter(manaComponent -> manaComponent.entity.getUuid()),
+            World.CODEC.fieldOf("entity_world").forGetter(manaComponent -> manaComponent.entity.getWorld().getRegistryKey())
+    ).apply(instance, (entityUuid, worldRegistryKey) -> ModEntityCumponents.MANA.get(Objects.requireNonNull(Objects.requireNonNull(Trickster.getCurrentServer().getWorld(worldRegistryKey)).getEntity(entityUuid)))));
 
     public ManaComponent(LivingEntity entity) {
         super(0); // Max mana gets updated later
@@ -49,6 +62,11 @@ public class ManaComponent extends SimpleManaPool implements AutoSyncedComponent
 
         maxMana = ManaPool.manaFromHealth(entity.getMaxHealth());
         stdIncrease();
+    }
+
+    @Override
+    public ManaPoolType<?> type() {
+        return ManaPoolType.COMPONENT;
     }
 
     /**
