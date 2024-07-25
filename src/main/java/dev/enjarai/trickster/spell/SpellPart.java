@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.enjarai.trickster.advancement.criterion.ModCriteria;
+import dev.enjarai.trickster.spell.execution.SpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
@@ -41,6 +42,16 @@ public final class SpellPart implements Fragment {
 
     public SpellPart() {
         this(new PatternGlyph());
+    }
+
+    @Override
+    public boolean forks(SpellContext ctx, List<Fragment> args) {
+        return !args.isEmpty();
+    }
+
+    @Override
+    public SpellExecutor makeFork(SpellContext ctx, List<Fragment> args) throws BlunderException {
+        return new SpellExecutor(this, ctx.executionState().recurseOrThrow(args));
     }
 
     public void brutallyMurderEphemerals() {

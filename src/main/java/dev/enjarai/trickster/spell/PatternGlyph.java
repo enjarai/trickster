@@ -54,7 +54,7 @@ public record PatternGlyph(Pattern pattern) implements Fragment {
     }
 
     @Override
-    public boolean forks() {
+    public boolean forks(SpellContext ctx, List<Fragment> args) {
         return Tricks.lookup(pattern) instanceof ForkingTrick;
     }
 

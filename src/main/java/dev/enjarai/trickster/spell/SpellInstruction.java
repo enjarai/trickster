@@ -21,7 +21,7 @@ public sealed interface SpellInstruction permits Fragment, EnterScopeInstruction
         throw new NotImplementedException();
     }
 
-    default boolean forks() {
+    default boolean forks(SpellContext ctx, List<Fragment> args) {
         return false;
     }
 }

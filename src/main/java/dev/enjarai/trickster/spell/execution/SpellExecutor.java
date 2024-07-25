@@ -106,7 +106,7 @@ public class SpellExecutor {
                     args = _args.reversed();
                 }
 
-                if (inst.forks()) {
+                if (inst.forks(ctx, args)) {
                     var child = makeExecutor(ctx, inst, args);
 
                     if (instructions.size() == 1) {
