@@ -2,6 +2,7 @@ package dev.enjarai.trickster.spell.tricks.block;
 
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.BlockTypeFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
@@ -16,10 +17,10 @@ public class CheckBlockTrick extends Trick {
     }
 
     @Override
-    public Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var pos = expectInput(fragments, FragmentType.VECTOR, 0);
         var blockPos = pos.toBlockPos();
 
-        return new BlockTypeFragment(ctx.getWorld().getBlockState(blockPos).getBlock());
+        return new BlockTypeFragment(ctx.source().getWorld().getBlockState(blockPos).getBlock());
     }
 }

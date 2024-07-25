@@ -4,6 +4,7 @@ import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
@@ -22,8 +23,8 @@ public class CheckHatTrick extends Trick {
     }
 
     @Override
-    public Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
-        var player = ctx.getPlayer().orElseThrow(() -> new NoPlayerBlunder(this));
+    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+        var player = ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this));
         ItemStack hatStack;
 
         var hatSlot = SlotReference.of(player, "hat", 0);

@@ -2,6 +2,7 @@ package dev.enjarai.trickster.spell.fragment;
 
 import com.mojang.serialization.MapCodec;
 import dev.enjarai.trickster.spell.Fragment;
+import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.text.Text;
@@ -24,8 +25,8 @@ public record EntityFragment(UUID uuid, Text name) implements Fragment {
         return name;
     }
 
-    public Optional<Entity> getEntity(SpellSource ctx) {
-        return Optional.ofNullable(ctx.getWorld().getEntity(uuid));
+    public Optional<Entity> getEntity(SpellContext ctx) {
+        return Optional.ofNullable(ctx.source().getWorld().getEntity(uuid));
     }
 
     @Override

@@ -2,6 +2,7 @@ package dev.enjarai.trickster.spell.tricks.block;
 
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.SlotFragment;
@@ -21,10 +22,10 @@ public class PlaceBlockTrick extends Trick {
     }
 
     @Override
-    public Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var pos = expectInput(fragments, FragmentType.VECTOR, 0);
         var arg2 = expectInput(fragments, 1);
-        var world = ctx.getWorld();
+        var world = ctx.source().getWorld();
         var blockPos = pos.toBlockPos();
         ItemStack stack;
 
@@ -43,14 +44,13 @@ public class PlaceBlockTrick extends Trick {
                 throw new CannotPlaceBlockBlunder(this, state.getBlock(), pos);
             }
 
-            var dist = ctx.getPos().distance(pos.vector());
+            var dist = ctx.source().getPos().distance(pos.vector());
             ctx.useMana(this, (float) (20 + Math.max((dist - 5) * 1.5, 0)));
             world.setBlockState(blockPos, state);
-            ctx.setWorldAffected();
 
             return VoidFragment.INSTANCE;
         } catch (BlunderException blunder) {
-            var thisPos = ctx.getPos();
+            var thisPos = ctx.source().getPos();
             world.spawnEntity(new ItemEntity(world, thisPos.x, thisPos.y, thisPos.z, stack));
             throw blunder;
         }

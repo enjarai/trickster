@@ -2,6 +2,7 @@ package dev.enjarai.trickster.spell.tricks.projectile;
 
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import net.minecraft.entity.Entity;
@@ -19,8 +20,8 @@ public class SummonTntTrick extends AbstractProjectileTrick {
     }
 
     @Override
-    protected Entity makeProjectile(SpellSource ctx, Vector3dc pos, ItemStack stack, List<Fragment> extraInputs) throws BlunderException {
-        return new TntEntity(ctx.getWorld(), pos.x(), pos.y(), pos.z(), null);
+    protected Entity makeProjectile(SpellContext ctx, Vector3dc pos, ItemStack stack, List<Fragment> extraInputs) throws BlunderException {
+        return new TntEntity(ctx.source().getWorld(), pos.x(), pos.y(), pos.z(), null);
     }
 
     @Override

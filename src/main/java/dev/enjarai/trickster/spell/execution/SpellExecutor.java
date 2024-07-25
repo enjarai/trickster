@@ -73,6 +73,7 @@ public class SpellExecutor {
      * @throws BlunderException
      */
     protected Optional<Fragment> run(SpellContext ctx, int executions) throws BlunderException {
+        if (child.isPresent())
         {
             var result = runChild(ctx, executions);
 
@@ -81,10 +82,6 @@ public class SpellExecutor {
         }
 
         while (true) {
-            if (instructions.isEmpty()) {
-                return Optional.of(inputs.pop());
-            }
-
             if (executions >= Trickster.CONFIG.maxExecutionsPerSpellPerTick()) {
                 return Optional.empty();
             }
@@ -95,6 +92,10 @@ public class SpellExecutor {
                 scope.push(0);
             } else if (inst instanceof ExitScopeInstruction) {
                 scope.pop();
+
+                if (scope.isEmpty())
+                    return Optional.of(inputs.pop());
+
                 scope.push(scope.pop() + 1);
             } else {
                 List<Fragment> args;
@@ -115,7 +116,7 @@ public class SpellExecutor {
 
                         instructions.addAll(child.instructions);
                         state = child.state;
-                        return run(ctx, executions);
+                        ctx = new SpellContext(ctx.source(), state);
                     } else {
                         this.child = Optional.of(child);
                         var result = runChild(ctx, executions);
@@ -133,8 +134,8 @@ public class SpellExecutor {
         }
     }
 
-    protected Optional<Fragment> runChild(SpellContext context, int executions) {
-        var result = child.flatMap(c -> c.run(context, executions));
+    protected Optional<Fragment> runChild(SpellContext ctx, int executions) {
+        var result = child.flatMap(c -> c.run(new SpellContext(ctx.source(), c.state), executions));
 
         if (result.isPresent()) {
             inputs.push(result.get());

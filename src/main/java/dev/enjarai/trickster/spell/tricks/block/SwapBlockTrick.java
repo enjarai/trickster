@@ -4,6 +4,7 @@ import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
@@ -22,12 +23,12 @@ public class SwapBlockTrick extends Trick {
     }
 
     @Override
-    public Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var pos1 = expectInput(fragments, FragmentType.VECTOR, 0);
         var pos2 = expectInput(fragments, FragmentType.VECTOR, 1);
         var blockPos1 = pos1.toBlockPos();
         var blockPos2 = pos2.toBlockPos();
-        var world = ctx.getWorld();
+        var world = ctx.source().getWorld();
 
         if (blockPos1.equals(blockPos2)) {
             throw new OverlapBlunder(this, pos1, pos2);
@@ -71,7 +72,6 @@ public class SwapBlockTrick extends Trick {
 
         world.setBlockState(blockPos1, state2);
         world.setBlockState(blockPos2, state1);
-        ctx.setWorldAffected();
 
         if (blockEntity1Nbt != null) {
             world.getBlockEntity(blockPos2).read(blockEntity1Nbt, world.getRegistryManager());

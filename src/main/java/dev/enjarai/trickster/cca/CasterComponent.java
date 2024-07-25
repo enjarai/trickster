@@ -3,9 +3,9 @@ package dev.enjarai.trickster.cca;
 import com.mojang.serialization.DataResult;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellPart;
-import dev.enjarai.trickster.spell.execution.SpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
 import dev.enjarai.trickster.spell.execution.SpellExecutionManager;
+import dev.enjarai.trickster.spell.mana.ManaPool;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -39,7 +39,9 @@ public class CasterComponent implements ServerTickingComponent {
         DataResult<SpellExecutionManager> result = SpellExecutionManager.CODEC.parse(NbtOps.INSTANCE, tag.get("manager"));
 
         if (result.hasResultOrPartial())
-            executionManager = result.result().orElseThrow();
+            executionManager = result.resultOrPartial().orElseThrow();
+
+        executionManager.setSource(new PlayerSpellSource((ServerPlayerEntity) player));
     }
 
     @Override
@@ -50,5 +52,9 @@ public class CasterComponent implements ServerTickingComponent {
 
     public void queue(SpellPart spell, List<Fragment> arguments) {
         executionManager.queue(spell, arguments);
+    }
+
+    public void queue(SpellPart spell, List<Fragment> arguments, ManaPool poolOverride) {
+        executionManager.queue(spell, arguments, poolOverride);
     }
 }

@@ -3,6 +3,7 @@ package dev.enjarai.trickster.spell.tricks.block;
 import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
@@ -20,29 +21,28 @@ public class DestabilizeBlockTrick extends Trick {
     }
 
     @Override
-    public Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var pos = expectInput(fragments, FragmentType.VECTOR, 0);
         var blockPos = pos.toBlockPos();
-
+        var world = ctx.source().getWorld();
         expectCanBuild(ctx, blockPos);
 
-        var state = ctx.getWorld().getBlockState(blockPos);
+        var state = world.getBlockState(blockPos);
 
         if (state.isAir()) {
             throw new BlockUnoccupiedBlunder(this, pos);
         }
 
-        var hardness = state.getHardness(ctx.getWorld(), blockPos);
+        var hardness = state.getHardness(world, blockPos);
         if (hardness < 0 || hardness > 55.5f) {
             throw new BlockInvalidBlunder(this);
         }
 
         ctx.useMana(this, 10);
-        FallingBlockEntity.spawnFromBlock(ctx.getWorld(), blockPos, state);
-        ctx.setWorldAffected();
+        FallingBlockEntity.spawnFromBlock(world, blockPos, state);
 
         var particlePos = blockPos.toCenterPos();
-        ctx.getWorld().spawnParticles(
+        world.spawnParticles(
                 ModParticles.PROTECTED_BLOCK, particlePos.x, particlePos.y, particlePos.z,
                 1, 0, 0, 0, 0
         );

@@ -2,6 +2,7 @@ package dev.enjarai.trickster.spell.tricks.block;
 
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
@@ -17,10 +18,10 @@ public class BreakBlockTrick extends Trick {
     }
 
     @Override
-    public Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var pos = expectInput(fragments, FragmentType.VECTOR, 0);
         var blockPos = pos.toBlockPos();
-        var world = ctx.getWorld();
+        var world = ctx.source().getWorld();
         var state = world.getBlockState(blockPos);
 
         if (state.isAir()) {
@@ -31,8 +32,7 @@ public class BreakBlockTrick extends Trick {
 
         if (hardness >= 0 && hardness < 55.5f) {
             ctx.useMana(this, Math.max(hardness, 8));
-            ctx.getCaster().ifPresentOrElse(c -> world.breakBlock(blockPos, true, c), () -> world.breakBlock(blockPos, true));
-            ctx.setWorldAffected();
+            ctx.source().getCaster().ifPresentOrElse(c -> world.breakBlock(blockPos, true, c), () -> world.breakBlock(blockPos, true));
         }
 
         return VoidFragment.INSTANCE;

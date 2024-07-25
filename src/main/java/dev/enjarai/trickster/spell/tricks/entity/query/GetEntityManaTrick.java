@@ -4,6 +4,7 @@ import dev.enjarai.trickster.block.SpellCircleBlockEntity;
 import dev.enjarai.trickster.cca.ModEntityCumponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
@@ -18,7 +19,7 @@ public class GetEntityManaTrick extends AbstractLivingEntityQueryTrick {
     }
 
     @Override
-    public Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var arg = expectInput(fragments, 0);
 
         Fragment result = supposeType(arg, FragmentType.ENTITY).map(entity -> {
@@ -32,7 +33,7 @@ public class GetEntityManaTrick extends AbstractLivingEntityQueryTrick {
 
         if (result == null) {
             result = supposeType(arg, FragmentType.VECTOR).map(vec -> {
-                var target = ctx.getWorld().getBlockEntity(vec.toBlockPos());
+                var target = ctx.source().getWorld().getBlockEntity(vec.toBlockPos());
                 if (!(target instanceof SpellCircleBlockEntity)) {
                     throw new BlockInvalidBlunder(this);
                 }

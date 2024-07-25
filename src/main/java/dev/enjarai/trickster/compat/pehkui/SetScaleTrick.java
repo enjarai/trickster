@@ -23,11 +23,11 @@ public class SetScaleTrick extends Trick {
         var target = expectInput(fragments, FragmentType.ENTITY, 0);
         var scale = expectInput(fragments, FragmentType.NUMBER, 1);
 
-        var scaleData = ScaleTypes.BASE.getScaleData(target.getEntity(ctx.source())
+        var scaleData = ScaleTypes.BASE.getScaleData(target.getEntity(ctx)
                         .orElseThrow(() -> new UnknownEntityBlunder(this)));
 
         var difference = Math.abs(scale.number() - scaleData.getScale());
-        ctx.source().useMana(this, (float) (difference * difference * 10));
+        ctx.useMana(this, (float) (difference * difference * 10));
         scaleData.setScale((float) scale.number());
 
         return BooleanFragment.TRUE;

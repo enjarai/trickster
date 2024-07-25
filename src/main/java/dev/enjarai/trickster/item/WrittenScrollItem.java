@@ -43,9 +43,7 @@ public class WrittenScrollItem extends Item {
             if (!world.isClient()) {
                 var spell = stack.get(ModComponents.SPELL);
                 if (spell != null) {
-                    // TODO: run this on the playerentity cast component for multitick support, but with the custom mana pool.
-                    // Probably need to implement extra tomfoolery to make that possible. (mana pool override in ExecutionState?)
-                    new SpellExecutor(spell.spell(), List.of()).run(new PlayerSpellSource(SimpleManaPool.getSingleUse(meta.mana()), (ServerPlayerEntity) user));
+                    ModEntityCumponents.CASTER.get(user).queue(spell.spell(), List.of(), SimpleManaPool.getSingleUse(meta.mana()));
                     ((ServerPlayerEntity) user).getServerWorld().playSoundFromEntity(
                             null, user, ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f));
 

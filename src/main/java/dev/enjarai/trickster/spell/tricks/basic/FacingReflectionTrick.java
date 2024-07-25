@@ -3,7 +3,6 @@ package dev.enjarai.trickster.spell.tricks.basic;
 import dev.enjarai.trickster.block.SpellCircleBlock;
 import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.execution.source.BlockSpellSource;
-import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
@@ -18,13 +17,13 @@ public class FacingReflectionTrick extends Trick {
     }
 
     @Override
-    public Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
-        if (ctx instanceof BlockSpellSource blockCtx) {
-            return new VectorFragment(blockCtx.blockEntity.getCachedState()
+    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+        if (ctx.source() instanceof BlockSpellSource blockSource) {
+            return new VectorFragment(blockSource.blockEntity.getCachedState()
                     .get(SpellCircleBlock.FACING).getUnitVector().get(new Vector3d()));
         }
 
-        return new VectorFragment(ctx.getCaster()
+        return new VectorFragment(ctx.source().getCaster()
                 .orElseThrow(() -> new IncompatibleSourceBlunder(this))
                 .getRotationVector().toVector3d());
     }

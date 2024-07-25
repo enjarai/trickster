@@ -107,25 +107,25 @@ public abstract class Trick {
         return fragments.get(index);
     }
 
-    protected void expectCanBuild(SpellSource ctx, BlockPos... positions) {
-        if (ctx.getPlayer().isEmpty()) {
+    protected void expectCanBuild(SpellContext ctx, BlockPos... positions) {
+        if (ctx.source().getPlayer().isEmpty()) {
             return;
         }
 
-        var player = ctx.getPlayer().get();
+        var player = ctx.source().getPlayer().get();
 
         if (player.interactionManager.getGameMode().isBlockBreakingRestricted()) {
             throw new CantEditBlockBlunder(this, positions[0]);
         }
 
         for (var pos : positions) {
-            if (!player.canModifyAt(ctx.getWorld(), pos)) {
+            if (!player.canModifyAt(ctx.source().getWorld(), pos)) {
                 throw new CantEditBlockBlunder(this, pos);
             }
         }
     }
 
-    protected List<Fragment> tryWard(SpellSource ctx, Entity target, List<Fragment> fragments) throws BlunderException {
+    protected List<Fragment> tryWard(SpellContext ctx, Entity target, List<Fragment> fragments) throws BlunderException {
         if (target instanceof ServerPlayerEntity player) {
             return TrickyAccessoryItem.tryWard(ctx, player, this, fragments);
         }

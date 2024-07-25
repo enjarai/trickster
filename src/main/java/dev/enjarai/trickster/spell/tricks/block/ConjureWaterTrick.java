@@ -3,6 +3,7 @@ package dev.enjarai.trickster.spell.tricks.block;
 import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
@@ -32,36 +33,34 @@ public class ConjureWaterTrick extends Trick {
     }
 
     @Override
-    public Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var pos = expectInput(fragments, FragmentType.VECTOR, 0);
-
         var blockPos = pos.toBlockPos();
         var bucket = Items.WATER_BUCKET;
+        var world = ctx.source().getWorld();
         expectCanBuild(ctx, blockPos);
 
-        if (!(ctx.getWorld().getBlockState(blockPos).isAir()
-                || ctx.getWorld().getBlockState(blockPos).getBlock() instanceof Waterloggable
-                || ctx.getWorld().getBlockState(blockPos).isOf(Blocks.CAULDRON))
+        if (!(world.getBlockState(blockPos).isAir()
+                || world.getBlockState(blockPos).getBlock() instanceof Waterloggable
+                || world.getBlockState(blockPos).isOf(Blocks.CAULDRON))
         ) {
             throw new BlockOccupiedBlunder(this, pos);
         }
 
-        var state = ctx.getWorld().getBlockState(blockPos);
+        var state = world.getBlockState(blockPos);
         ctx.useMana(this, 15);
 
         if (state.getBlock() == Blocks.CAULDRON) {
-            ctx.getWorld().setBlockState(blockPos, Blocks.WATER_CAULDRON.getDefaultState().with(LeveledCauldronBlock.LEVEL, LeveledCauldronBlock.MAX_LEVEL), 3);
+            world.setBlockState(blockPos, Blocks.WATER_CAULDRON.getDefaultState().with(LeveledCauldronBlock.LEVEL, LeveledCauldronBlock.MAX_LEVEL), 3);
         } else if (!tryPlaceWater(
-                ctx.getWorld(),
+                world,
                 blockPos
         ) && bucket instanceof BucketItem) {
-            ((BucketItem) bucket).placeFluid(null, ctx.getWorld(), blockPos, null);
+            ((BucketItem) bucket).placeFluid(null, world, blockPos, null);
         }
-        ctx.setWorldAffected();
-
 
         var particlePos = blockPos.toCenterPos();
-        ctx.getWorld().spawnParticles(
+        world.spawnParticles(
                 ModParticles.PROTECTED_BLOCK, particlePos.x, particlePos.y, particlePos.z,
                 1, 0, 0, 0, 0
         );

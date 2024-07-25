@@ -22,7 +22,7 @@ public class GetScaleTrick extends Trick {
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var target = expectInput(fragments, FragmentType.ENTITY, 0);
 
-        return new NumberFragment(ScaleTypes.BASE.getScaleData(target.getEntity(ctx.source())
+        return new NumberFragment(ScaleTypes.BASE.getScaleData(target.getEntity(ctx)
                 .orElseThrow(() -> new UnknownEntityBlunder(this))).getScale());
     }
 }

@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.enjarai.trickster.spell.Fragment;
+import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.blunder.*;
@@ -38,35 +39,35 @@ public record SlotFragment(int slot, Optional<BlockPos> source) implements Fragm
         return BooleanFragment.TRUE;
     }
 
-    public ItemStack move(Trick trickSource, SpellSource ctx) throws BlunderException {
+    public ItemStack move(Trick trickSource, SpellContext ctx) throws BlunderException {
         return move(trickSource, ctx, 1);
     }
 
-    public ItemStack move(Trick trickSource, SpellSource ctx, int amount) throws BlunderException {
+    public ItemStack move(Trick trickSource, SpellContext ctx, int amount) throws BlunderException {
         var stack = getStack(trickSource, ctx);
 
         if (stack.getCount() < amount)
             throw new MissingItemBlunder(trickSource);
 
         var result = stack.copyWithCount(amount);
-        source.ifPresent(pos -> ctx.useMana(trickSource, (float) (amount * (32 + (ctx.getBlockPos().toCenterPos().distanceTo(pos.toCenterPos()) * 0.8)))));
+        source.ifPresent(pos -> ctx.useMana(trickSource, (float) (amount * (32 + (ctx.source().getBlockPos().toCenterPos().distanceTo(pos.toCenterPos()) * 0.8)))));
         stack.decrement(amount);
         return result;
     }
 
-    public Item getItem(Trick trickSource, SpellSource ctx) throws BlunderException {
+    public Item getItem(Trick trickSource, SpellContext ctx) throws BlunderException {
         return getStack(trickSource, ctx).getItem();
     }
 
-    private ItemStack getStack(Trick trickSource, SpellSource ctx) throws BlunderException {
+    private ItemStack getStack(Trick trickSource, SpellContext ctx) throws BlunderException {
         Inventory inventory;
         if (source.isPresent()) {
-            if (ctx.getWorld().getBlockEntity(source.get()) instanceof Inventory entity)
+            if (ctx.source().getWorld().getBlockEntity(source.get()) instanceof Inventory entity)
                 inventory = entity;
             else throw new BlockInvalidBlunder(trickSource);
         } else {
-            if (ctx.getPlayer().isPresent())
-                inventory = ctx.getPlayer().get().getInventory();
+            if (ctx.source().getPlayer().isPresent())
+                inventory = ctx.source().getPlayer().get().getInventory();
             else throw new NoPlayerBlunder(trickSource);
         }
 

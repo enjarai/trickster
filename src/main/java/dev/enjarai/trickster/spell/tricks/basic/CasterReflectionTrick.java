@@ -2,6 +2,7 @@ package dev.enjarai.trickster.spell.tricks.basic;
 
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.tricks.Trick;
@@ -16,8 +17,8 @@ public class CasterReflectionTrick extends Trick {
     }
 
     @Override
-    public Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
-        return ctx.getCaster().map(EntityFragment::from)
+    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+        return ctx.source().getCaster().map(EntityFragment::from)
                 .orElseThrow(() -> new NoPlayerBlunder(this));
     }
 }

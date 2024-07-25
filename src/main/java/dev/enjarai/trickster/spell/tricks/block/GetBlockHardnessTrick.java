@@ -2,6 +2,7 @@ package dev.enjarai.trickster.spell.tricks.block;
 
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
@@ -16,10 +17,10 @@ public class GetBlockHardnessTrick extends Trick {
     }
 
     @Override
-    public Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var pos = expectInput(fragments, FragmentType.VECTOR, 0);
         var blockPos = pos.toBlockPos();
-        var state = ctx.getWorld().getBlockState(blockPos);
+        var state = ctx.source().getWorld().getBlockState(blockPos);
         var hardness = state.getBlock().getHardness();
 
         return new NumberFragment(hardness < 0 ? Float.MAX_VALUE : hardness);

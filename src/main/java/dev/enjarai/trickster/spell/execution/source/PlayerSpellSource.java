@@ -29,10 +29,6 @@ public class PlayerSpellSource extends SpellSource {
     private final EquipmentSlot slot = EquipmentSlot.MAINHAND;
 
     public PlayerSpellSource(ServerPlayerEntity player) {
-        this(ModEntityCumponents.MANA.get(player), player);
-    }
-
-    public PlayerSpellSource(ManaPool manaPool, ServerPlayerEntity player) {
         super();
         this.player = player;
     }
@@ -40,18 +36,6 @@ public class PlayerSpellSource extends SpellSource {
     @Override
     public ManaPool getManaPool() {
         return player.getComponent(ModEntityCumponents.MANA);
-    }
-
-    @Override
-    public void useMana(Trick source, float amount) throws BlunderException {
-        try {
-            super.useMana(source, amount);
-        } catch (NotEnoughManaBlunder blunder) {
-            ModCriteria.MANA_OVERFLUX.trigger(player);
-            throw blunder;
-        }
-
-        ModCriteria.MANA_USED.trigger(player, amount);
     }
 
     @Override
@@ -77,6 +61,16 @@ public class PlayerSpellSource extends SpellSource {
                 .filter(this::isSpellStack)
                 .or(() -> Optional.ofNullable(player.getOffHandStack())
                         .filter(this::isSpellStack));
+    }
+
+    @Override
+    public float getHealth() {
+        return player.getHealth();
+    }
+
+    @Override
+    public float getMaxHealth() {
+        return player.getMaxHealth();
     }
 
     protected boolean isSpellStack(ItemStack stack) {
@@ -106,10 +100,5 @@ public class PlayerSpellSource extends SpellSource {
     @Override
     public void setCrowMind(Fragment fragment) {
         player.setAttached(ModAttachments.CROW_MIND, new CrowMind(fragment));
-    }
-
-    @Override
-    public void addManaLink(Trick source, LivingEntity target, float limit) {
-        addManaLink(source, new ManaLink(getManaPool(), target, player.getHealth(), limit));
     }
 }

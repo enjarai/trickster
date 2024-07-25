@@ -17,7 +17,7 @@ public class LeechEntityManaTrick extends AbstractLivingEntityQueryTrick {
     }
 
     @Override
-    public Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var target = getLivingEntity(ctx, fragments, 0);
         fragments = tryWard(ctx, target, fragments);
 

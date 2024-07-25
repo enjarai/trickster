@@ -8,9 +8,11 @@ import org.jetbrains.annotations.Nullable;
 public interface ManaPool {
     Supplier<MapCodec<ManaPool>> CODEC = Suppliers.memoize(() -> ManaPoolType.REGISTRY.getCodec().dispatchMap(pool -> {
         var type = pool.type();
+
         if (type == null) {
             throw new UnsupportedOperationException("This mana pool type cannot be serialized");
         }
+
         return type;
     }, ManaPoolType::codec));
 

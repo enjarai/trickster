@@ -2,6 +2,7 @@ package dev.enjarai.trickster.spell.tricks.entity.query;
 
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
@@ -14,7 +15,7 @@ public class GetEntityMaxHealthTrick extends AbstractLivingEntityQueryTrick {
     }
 
     @Override
-    public Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         return new NumberFragment(getLivingEntity(ctx, fragments, 0).getMaxHealth());
     }
 }

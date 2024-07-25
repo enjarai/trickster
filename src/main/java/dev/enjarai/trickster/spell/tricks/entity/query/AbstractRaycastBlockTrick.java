@@ -2,6 +2,7 @@ package dev.enjarai.trickster.spell.tricks.entity.query;
 
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import net.minecraft.util.hit.BlockHitResult;
@@ -14,7 +15,7 @@ public abstract class AbstractRaycastBlockTrick extends AbstractLivingEntityQuer
         super(pattern);
     }
 
-    public BlockHitResult getHit(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
+    public BlockHitResult getHit(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var entity = getLivingEntity(ctx, fragments, 0);
 
         return entity.getWorld().raycast(new RaycastContext(
@@ -24,5 +25,5 @@ public abstract class AbstractRaycastBlockTrick extends AbstractLivingEntityQuer
     }
 
     @Override
-    public abstract Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException;
+    public abstract Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException;
 }

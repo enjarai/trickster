@@ -2,6 +2,7 @@ package dev.enjarai.trickster.spell.tricks.entity.query;
 
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
@@ -18,7 +19,7 @@ public class GetPositionTrick extends Trick {
     }
 
     @Override
-    public Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var entity = expectInput(fragments, FragmentType.ENTITY, 0);
 
         var pos = entity.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this)).getPos();

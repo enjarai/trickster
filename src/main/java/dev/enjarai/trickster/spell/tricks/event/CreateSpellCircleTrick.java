@@ -6,6 +6,7 @@ import dev.enjarai.trickster.block.SpellCircleBlockEntity;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.PatternGlyph;
+import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
@@ -24,7 +25,7 @@ public class CreateSpellCircleTrick extends Trick {
     }
 
     @Override
-    public Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var position = expectInput(fragments, FragmentType.VECTOR, 0);
         var facingVector = expectInput(fragments, FragmentType.VECTOR, 1);
         var eventPart = expectInput(fragments, FragmentType.SPELL_PART, 2);
@@ -44,16 +45,15 @@ public class CreateSpellCircleTrick extends Trick {
         var facing = facingVector.toDirection();
         expectCanBuild(ctx, blockPos);
 
-        if (ctx.getWorld().getBlockState(blockPos).isAir()) {
+        if (ctx.source().getWorld().getBlockState(blockPos).isAir()) {
             ctx.useMana(this, 496);
 
             var spell = executable.deepClone();
             spell.brutallyMurderEphemerals();
 
-            ctx.getWorld().setBlockState(blockPos,
+            ctx.source().getWorld().setBlockState(blockPos,
                     ModBlocks.SPELL_CIRCLE.getDefaultState().with(SpellCircleBlock.FACING, facing));
-            ctx.setWorldAffected();
-            var entity = (SpellCircleBlockEntity) ctx.getWorld().getBlockEntity(blockPos);
+            var entity = (SpellCircleBlockEntity) ctx.source().getWorld().getBlockEntity(blockPos);
 
             entity.event = event;
             entity.spell = spell;

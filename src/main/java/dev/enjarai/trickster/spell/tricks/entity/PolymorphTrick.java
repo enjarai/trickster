@@ -3,6 +3,7 @@ package dev.enjarai.trickster.spell.tricks.entity;
 import dev.enjarai.trickster.cca.ModEntityCumponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
@@ -18,7 +19,7 @@ public class PolymorphTrick extends AbstractLivingEntityQueryTrick {
     }
 
     @Override
-    public Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var realSource = getLivingEntity(ctx, fragments, 1);
         fragments = tryWard(ctx, realSource, fragments);
 
@@ -36,7 +37,6 @@ public class PolymorphTrick extends AbstractLivingEntityQueryTrick {
             }
 
             cumpoonent.setUuid(uuid);
-            ctx.setWorldAffected();
         } else {
             throw new UnknownEntityBlunder(this);
         }

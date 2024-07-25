@@ -4,6 +4,7 @@ import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
@@ -23,28 +24,27 @@ public class ConjureFlowerTrick extends Trick {
     }
 
     @Override
-    public Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var pos = expectInput(fragments, FragmentType.VECTOR, 0);
-
         var blockPos = pos.toBlockPos();
+        var world = ctx.source().getWorld();
         expectCanBuild(ctx, blockPos);
 
-        if (!ctx.getWorld().getBlockState(blockPos).isAir()) {
+        if (!world.getBlockState(blockPos).isAir()) {
             throw new BlockOccupiedBlunder(this, pos);
         }
-        if (!ctx.getWorld().getBlockState(blockPos.down()).isSideSolidFullSquare(ctx.getWorld(), blockPos.down(), Direction.UP)) {
+        if (!world.getBlockState(blockPos.down()).isSideSolidFullSquare(world, blockPos.down(), Direction.UP)) {
             throw new BlockUnoccupiedBlunder(this, VectorFragment.of(blockPos.down()));
         }
 
-        var flowerType = Registries.BLOCK.getRandomEntry(ModItems.CONJURABLE_FLOWERS, ctx.getWorld().getOrCreateRandom(TRICK_RANDOM));
+        var flowerType = Registries.BLOCK.getRandomEntry(ModItems.CONJURABLE_FLOWERS, world.getOrCreateRandom(TRICK_RANDOM));
         ctx.useMana(this, 5);
         flowerType.ifPresent(flower -> {
-            ctx.getWorld().setBlockState(blockPos, flower.value().getDefaultState());
+            world.setBlockState(blockPos, flower.value().getDefaultState());
         });
-        ctx.setWorldAffected();
 
         var particlePos = blockPos.toCenterPos();
-        ctx.getWorld().spawnParticles(
+        world.spawnParticles(
                 ModParticles.PROTECTED_BLOCK, particlePos.x, particlePos.y, particlePos.z,
                 1, 0, 0, 0, 0
         );

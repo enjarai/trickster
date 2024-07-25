@@ -3,6 +3,7 @@ package dev.enjarai.trickster.spell.tricks.block;
 import dev.enjarai.trickster.cca.ModChunkCumponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
@@ -18,15 +19,16 @@ public class DispelBlockDisguiseTrick extends AbstractBlockDisguiseTrick {
     }
 
     @Override
-    public Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var pos = expectInput(fragments, FragmentType.VECTOR, 0);
         var blockPos = pos.toBlockPos();
+        var world = ctx.source().getWorld();
 
-        if (ctx.getWorld().getBlockState(blockPos).isAir()) {
+        if (world.getBlockState(blockPos).isAir()) {
             throw new BlockUnoccupiedBlunder(this, pos);
         }
 
-        var chunk = ctx.getWorld().getChunk(blockPos);
+        var chunk = world.getChunk(blockPos);
 
         if (!(chunk instanceof EmptyChunk)) {
             ctx.useMana(this, 10);

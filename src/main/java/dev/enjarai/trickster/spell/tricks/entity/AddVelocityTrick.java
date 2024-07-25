@@ -16,7 +16,7 @@ public class AddVelocityTrick extends Trick {
     }
 
     @Override
-    public Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var target = expectInput(fragments, FragmentType.ENTITY, 0)
                 .getEntity(ctx)
                 .orElseThrow(() -> new UnknownEntityBlunder(this));
@@ -28,7 +28,6 @@ public class AddVelocityTrick extends Trick {
         ctx.useMana(this, (float) lengthSquared * 2f);
         target.addVelocity(velocity.vector().x(), velocity.vector().y(), velocity.vector().z());
         target.velocityModified = true;
-        ctx.setWorldAffected();
 
         return VoidFragment.INSTANCE;
     }

@@ -17,7 +17,7 @@ public class ExecuteTrick extends Trick implements ForkingTrick {
     }
 
     @Override
-    public Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         return null;
     }
 

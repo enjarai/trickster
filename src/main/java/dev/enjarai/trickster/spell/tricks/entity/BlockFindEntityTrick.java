@@ -2,6 +2,7 @@ package dev.enjarai.trickster.spell.tricks.entity;
 
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.EntityTypeFragment;
@@ -22,7 +23,7 @@ public class BlockFindEntityTrick extends Trick {
     }
 
     @Override
-    public Fragment activate(SpellSource ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var pos = expectInput(fragments, FragmentType.VECTOR, 0);
         var type = supposeInput(fragments, FragmentType.ENTITY_TYPE, 1);
 
@@ -32,7 +33,7 @@ public class BlockFindEntityTrick extends Trick {
         var blockPos = pos.toBlockPos();
 
         var entities = new ArrayList<Entity>();
-        ctx.getWorld().collectEntitiesByType(
+        ctx.source().getWorld().collectEntitiesByType(
                 filter, Box.enclosing(blockPos, blockPos), e -> e.getBlockPos().equals(blockPos), entities, 1);
 
         return entities.stream().findFirst()

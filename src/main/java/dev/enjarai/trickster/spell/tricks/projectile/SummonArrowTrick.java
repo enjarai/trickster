@@ -2,6 +2,7 @@ package dev.enjarai.trickster.spell.tricks.projectile;
 
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import dev.enjarai.trickster.spell.tricks.blunder.ItemInvalidBlunder;
@@ -22,9 +23,9 @@ public class SummonArrowTrick extends AbstractProjectileTrick {
     }
 
     @Override
-    protected Entity makeProjectile(SpellSource ctx, Vector3dc pos, ItemStack stack, List<Fragment> extraInputs) throws BlunderException {
+    protected Entity makeProjectile(SpellContext ctx, Vector3dc pos, ItemStack stack, List<Fragment> extraInputs) throws BlunderException {
         if (stack.getItem() instanceof ProjectileItem item) {
-            return item.createEntity(ctx.getWorld(), new Vec3d(0, 0, 0).fromVector3d(pos), stack, Direction.DOWN);
+            return item.createEntity(ctx.source().getWorld(), new Vec3d(0, 0, 0).fromVector3d(pos), stack, Direction.DOWN);
         } else throw new ItemInvalidBlunder(this);
     }
 
