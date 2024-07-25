@@ -59,8 +59,12 @@ public class ExecutionState {
         return new ExecutionState(recursions + 1, arguments, poolOverride);
     }
 
+    public void decrementRecursions() {
+        recursions--;
+    }
+
     public ManaPool tryOverridePool(ManaPool pool) {
-        return poolOverride.isEmpty() ? pool : poolOverride.get();
+        return poolOverride.orElse(pool);
     }
 
     public List<Fragment> getArguments() {

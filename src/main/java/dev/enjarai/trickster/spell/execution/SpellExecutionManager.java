@@ -12,6 +12,7 @@ import dev.enjarai.trickster.spell.tricks.blunder.NaNBlunder;
 import net.minecraft.text.Text;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 public class SpellExecutionManager {
     public static final Codec<SpellExecutionManager> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -37,7 +38,7 @@ public class SpellExecutionManager {
         spells.add(new SpellExecutor(spell, new ExecutionState(arguments, poolOverride)));
     }
 
-    public void tick() {
+    public void tick(Consumer<SpellExecutor> executorDoneCallback) {
         if (source == null)
             return;
 
@@ -47,8 +48,10 @@ public class SpellExecutionManager {
             var spell = spells.poll(); assert spell != null;
 
             try {
-                if (spell.run(source).isEmpty())
+                if (spell.run(source).isEmpty()) {
                     spells.add(spell);
+                    executorDoneCallback.accept(spell);
+                }
             } catch (BlunderException e) {
                 if (e instanceof NaNBlunder)
                     source.getPlayer().ifPresent(ModCriteria.NAN_NUMBER::trigger);
@@ -62,5 +65,9 @@ public class SpellExecutionManager {
 
     public void setSource(SpellSource source) {
         this.source = source;
+    }
+
+    public void killAll() {
+        spells.clear();
     }
 }

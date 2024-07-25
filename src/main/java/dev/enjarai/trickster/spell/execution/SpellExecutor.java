@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
+import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 
 import java.util.ArrayList;
@@ -19,24 +20,29 @@ public class SpellExecutor {
     protected final Stack<Integer> scope = new Stack<>();
     protected ExecutionState state;
     protected Optional<SpellExecutor> child = Optional.empty();
+    protected Optional<Fragment> overrideReturnValue = Optional.empty();
+
+    protected int lastRunExecutions;
 
     public static final Codec<SpellExecutor> CODEC = Codec.recursive("spell_executor", self -> RecordCodecBuilder.create(instance -> instance.group(
             Codec.list(SerializedSpellInstruction.CODEC).fieldOf("instructions").forGetter(spellQueue -> spellQueue.instructions.stream().map(SpellInstruction::asSerialized).collect(Collectors.toList())),
             Codec.list(Fragment.CODEC.get().codec()).fieldOf("inputs").forGetter(spellQueue -> spellQueue.inputs),
             Codec.list(Codec.INT).fieldOf("scope").forGetter(spellQueue -> spellQueue.scope),
             ExecutionState.CODEC.fieldOf("state").forGetter(spellQueue -> spellQueue.state),
-            self.optionalFieldOf("child").forGetter(spellQueue -> spellQueue.child)
-    ).apply(instance, (instructions, inputs, scope, state, child) -> {
+            self.optionalFieldOf("child").forGetter(spellQueue -> spellQueue.child),
+            Fragment.CODEC.get().codec().optionalFieldOf("override_return_value").forGetter(spellQueue -> spellQueue.overrideReturnValue)
+    ).apply(instance, (instructions, inputs, scope, state, child, overrideReturnValue) -> {
         List<SpellInstruction> serializedInstructions = instructions.stream().map(SerializedSpellInstruction::toDeserialized).collect(Collectors.toList());
-        return new SpellExecutor(serializedInstructions, inputs, scope, state, child);
+        return new SpellExecutor(serializedInstructions, inputs, scope, state, child, overrideReturnValue);
     })));
 
-    private SpellExecutor(List<SpellInstruction> instructions, List<Fragment> inputs, List<Integer> scope, ExecutionState state, Optional<SpellExecutor> child) {
+    private SpellExecutor(List<SpellInstruction> instructions, List<Fragment> inputs, List<Integer> scope, ExecutionState state, Optional<SpellExecutor> child, Optional<Fragment> overrideReturnValue) {
         this.instructions.addAll(instructions);
         this.inputs.addAll(inputs);
         this.scope.addAll(scope);
         this.state = state;
         this.child = child;
+        this.overrideReturnValue = overrideReturnValue;
     }
 
     public SpellExecutor(SpellPart root, List<Fragment> arguments) {
@@ -73,6 +79,8 @@ public class SpellExecutor {
      * @throws BlunderException
      */
     protected Optional<Fragment> run(SpellContext ctx, int executions) throws BlunderException {
+        lastRunExecutions = 0;
+
         if (child.isPresent())
         {
             var result = runChild(ctx, executions);
@@ -94,7 +102,7 @@ public class SpellExecutor {
                 scope.pop();
 
                 if (scope.isEmpty())
-                    return Optional.of(inputs.pop());
+                    return overrideReturnValue.or(() -> Optional.of(inputs.pop()));
 
                 scope.push(scope.pop() + 1);
             } else {
@@ -108,14 +116,39 @@ public class SpellExecutor {
 
                 if (inst.forks(ctx, args)) {
                     var child = makeExecutor(ctx, inst, args);
+                    var isTail = true;
+                    Fragment returnValue = null;
 
-                    if (instructions.size() == 1) {
+                    // This may be a bit jank, but it should™ usually fail fast and not cause issues
+                    if (instructions.size() > 1) {
+                        for (var instruction : instructions) {
+                            if (instruction instanceof ExitScopeInstruction) {
+                                continue;
+                            } else if (instruction instanceof PatternGlyph patternGlyph && patternGlyph.pattern().isEmpty()) {
+                                returnValue = VoidFragment.INSTANCE;
+                                continue;
+                            }
+                            isTail = false;
+                            break;
+                        }
+                    }
+
+                    if (isTail) {
                         instructions.clear();
                         inputs.clear();
                         scope.clear();
 
+                        // We need to be able to do this to deal with subcircles return values being gobbled up.
+                        // Hopefully in the future, we can also adjust this to work for literals.
+                        if (overrideReturnValue.isEmpty()) {
+                            overrideReturnValue = Optional.ofNullable(returnValue);
+                        }
+
                         instructions.addAll(child.instructions);
                         state = child.state;
+                        // The new state will already have incremented recursion count, but since this isn't
+                        // *technically* a recursion, we can just decrement it again.
+                        state.decrementRecursions();
                         ctx = new SpellContext(ctx.source(), state);
                     } else {
                         this.child = Optional.of(child);
@@ -130,6 +163,7 @@ public class SpellExecutor {
                 }
 
                 executions++;
+                lastRunExecutions = executions;
             }
         }
     }
@@ -147,5 +181,9 @@ public class SpellExecutor {
 
     protected static SpellExecutor makeExecutor(SpellContext context, SpellInstruction inst, List<Fragment> args) throws BlunderException {
         return inst.makeFork(context, args);
+    }
+
+    public int getLastRunExecutions() {
+        return child.map(SpellExecutor::getLastRunExecutions).orElse(lastRunExecutions);
     }
 }
