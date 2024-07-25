@@ -2,6 +2,7 @@ package dev.enjarai.trickster.screen;
 
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.cca.CasterComponent;
+import dev.enjarai.trickster.config.TricksterConfig;
 import dev.enjarai.trickster.net.KillSpellPacket;
 import dev.enjarai.trickster.net.ModNetworking;
 import net.minecraft.client.gui.DrawContext;
@@ -9,12 +10,13 @@ import net.minecraft.client.gui.screen.ButtonTextures;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.Nullable;
 
 public class SpellSlotWidget extends ButtonWidget {
     public static final ButtonTextures TEXTURES_INACTIVE = new ButtonTextures(Trickster.id("spell_slot/inactive"), Trickster.id("spell_slot/inactive"));
-    public static final ButtonTextures TEXTURES_ACTIVE_OK = new ButtonTextures(Trickster.id("spell_slot/active_ok"), Trickster.id("spell_slot/active_ok_hovered"));
-    public static final ButtonTextures TEXTURES_ACTIVE_FULL = new ButtonTextures(Trickster.id("spell_slot/active_full"), Trickster.id("spell_slot/active_full_hovered"));
-    public static final ButtonTextures TEXTURES_ACTIVE_ERROR = new ButtonTextures(Trickster.id("spell_slot/active_error"), Trickster.id("spell_slot/active_error_hovered"));
+    public static final ButtonTextures TEXTURES_ACTIVE_OK = new ButtonTextures(Trickster.id("spell_slot/active_ok"), Trickster.id("spell_slot/active_ok_hover"));
+    public static final ButtonTextures TEXTURES_ACTIVE_FULL = new ButtonTextures(Trickster.id("spell_slot/active_full"), Trickster.id("spell_slot/active_full_hover"));
+    public static final ButtonTextures TEXTURES_ACTIVE_ERROR = new ButtonTextures(Trickster.id("spell_slot/active_error"), Trickster.id("spell_slot/active_error_hover"));
 
     public final int index;
     public State currentState = State.INACTIVE;
@@ -31,8 +33,13 @@ public class SpellSlotWidget extends ButtonWidget {
         }
     }
 
-    public void updateState(CasterComponent.RunningSpellData spellData) {
-        
+    public void updateState(@Nullable CasterComponent.RunningSpellData spellData) {
+        if (spellData == null) {
+            currentState = State.INACTIVE;
+        } else {
+            currentState = spellData.executionsLastTick() >= Trickster.CONFIG.maxExecutionsPerSpellPerTick()
+                    ? State.ACTIVE_FULL : State.ACTIVE_OK;
+        }
     }
 
     public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {

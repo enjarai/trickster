@@ -9,6 +9,9 @@ import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.mana.ManaPool;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
 import dev.enjarai.trickster.spell.tricks.blunder.NaNBlunder;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectIterator;
 import net.minecraft.text.Text;
 
 import java.util.*;
@@ -16,41 +19,56 @@ import java.util.function.Consumer;
 
 public class SpellExecutionManager {
     public static final Codec<SpellExecutionManager> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            SpellExecutor.CODEC.listOf().fieldOf("spells").forGetter((e) -> e.spells.stream().toList())
+            Codec.INT.optionalFieldOf("capacity", 5).forGetter(e -> e.capacity),
+            Codec.unboundedMap(Codec.STRING.xmap(Integer::parseInt, Object::toString), SpellExecutor.CODEC)
+                    .fieldOf("spells").forGetter((e) -> e.spells)
     ).apply(instance, SpellExecutionManager::new));
 
+    // NOT final, we want to be able to change this perchance
+    private int capacity;
     private SpellSource source;
-    private final Queue<SpellExecutor> spells = new ArrayDeque<>();
+    private final Int2ObjectMap<SpellExecutor> spells;
 
-    private SpellExecutionManager(List<SpellExecutor> spells) {
-        this.spells.addAll(spells);
+    private SpellExecutionManager(int initialCapacity, Map<Integer, SpellExecutor> spells) {
+        this(initialCapacity);
+        this.spells.putAll(spells);
     }
 
-    public SpellExecutionManager() {
-
+    public SpellExecutionManager(int initialCapacity) {
+        this.spells = new Int2ObjectOpenHashMap<>(initialCapacity);
+        this.capacity = initialCapacity;
     }
 
-    public void queue(SpellPart spell, List<Fragment> arguments) {
-        spells.add(new SpellExecutor(spell, arguments));
+    public boolean queue(SpellPart spell, List<Fragment> arguments) {
+        return queue(new SpellExecutor(spell, arguments));
     }
 
-    public void queue(SpellPart spell, List<Fragment> arguments, ManaPool poolOverride) {
-        spells.add(new SpellExecutor(spell, new ExecutionState(arguments, poolOverride)));
+    public boolean queue(SpellPart spell, List<Fragment> arguments, ManaPool poolOverride) {
+        return queue(new SpellExecutor(spell, new ExecutionState(arguments, poolOverride)));
     }
 
-    public void tick(Consumer<SpellExecutor> executorDoneCallback) {
+    public boolean queue(SpellExecutor executor) {
+        for (int i = 0; i < capacity; i++) {
+            if (spells.putIfAbsent(i, executor) == null) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void tick(ExecutorDoneCallback executorDoneCallback) {
         if (source == null)
             return;
 
-        int size = spells.size();
-
-        for (int i = 0; i < size; i++) {
-            var spell = spells.poll(); assert spell != null;
+        for (var iterator = spells.int2ObjectEntrySet().iterator(); iterator.hasNext(); ) {
+            var entry = iterator.next();
+            var spell = entry.getValue();
 
             try {
                 if (spell.run(source).isEmpty()) {
-                    spells.add(spell);
-                    executorDoneCallback.accept(spell);
+                    executorDoneCallback.callTheBack(entry.getIntKey(), spell);
+                } else {
+                    iterator.remove();
                 }
             } catch (BlunderException e) {
                 if (e instanceof NaNBlunder)
@@ -72,15 +90,10 @@ public class SpellExecutionManager {
     }
 
     public void kill(int index) {
-        int size = spells.size();
+        spells.remove(index);
+    }
 
-        for (int i = 0; i < size; i++) {
-            var spell = spells.poll();
-            assert spell != null;
-
-            if (i != index) {
-                spells.add(spell);
-            }
-        }
+    public interface ExecutorDoneCallback {
+        void callTheBack(int index, SpellExecutor executor);
     }
 }

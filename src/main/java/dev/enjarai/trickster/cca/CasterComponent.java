@@ -8,6 +8,8 @@ import dev.enjarai.trickster.spell.execution.SpellExecutionManager;
 import dev.enjarai.trickster.spell.mana.ManaPool;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.impl.ReflectiveEndecBuilder;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -18,26 +20,22 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class CasterComponent implements ServerTickingComponent, AutoSyncedComponent {
     private final PlayerEntity player;
     private SpellExecutionManager executionManager;
+    private Int2ObjectMap<RunningSpellData> runningSpellData = new Int2ObjectOpenHashMap<>();
+    private int lastSentSpellDataHash;
 
-    // Please ignore the terrible syncing im doing here, i promise ill fix it later.
-    // - Rai
-    private List<RunningSpellData> runningSpellData = new ArrayList<>();
-    private HashMap<Integer, RunningSpellData> clientRunningSpellData = new HashMap<>();
-
-    public static final Endec<List<RunningSpellData>> SPELL_DATA_ENDEC = ReflectiveEndecBuilder.SHARED_INSTANCE
-            .get(RunningSpellData.class).listOf();
+    public static final Endec<Map<Integer, RunningSpellData>> SPELL_DATA_ENDEC =
+            Endec.map(Endec.INT, ReflectiveEndecBuilder.SHARED_INSTANCE.get(RunningSpellData.class));
 
     public CasterComponent(PlayerEntity player) {
         this.player = player;
-        this.executionManager = new SpellExecutionManager();
+        // TODO: make capacity of execution manager an attribute
+        this.executionManager = new SpellExecutionManager(5);
 
         if (!player.getWorld().isClient()) {
             this.executionManager.setSource(new PlayerSpellSource((ServerPlayerEntity) player));
@@ -47,7 +45,8 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
     @Override
     public void serverTick() {
         runningSpellData.clear();
-        executionManager.tick(executor -> runningSpellData.add(new RunningSpellData(executor.hashCode(), executor.getLastRunExecutions())));
+        executionManager.tick((index, executor) ->
+                runningSpellData.put(index, new RunningSpellData(executor.getLastRunExecutions())));
         ModEntityCumponents.CASTER.sync(player);
     }
 
@@ -69,15 +68,20 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
 
     @Override
     public boolean shouldSyncWith(ServerPlayerEntity player) {
-        return player == this.player;
+        if (player != this.player) return false;
+
+        var hash = runningSpellData.hashCode();
+        if (hash != lastSentSpellDataHash) {
+            lastSentSpellDataHash = hash;
+            return true;
+        }
+        return false;
     }
 
     @Override
     public void applySyncPacket(RegistryByteBuf buf) {
-        var newSpellData = new ArrayList<>(buf.read(SPELL_DATA_ENDEC));
-        for (var entry : clientRunningSpellData.entrySet()) {
-//            if (newSpellData.stream().filter(data -> data.id == entry.))
-        }
+        runningSpellData.clear();
+        runningSpellData.putAll(buf.read(SPELL_DATA_ENDEC));
     }
 
     @Override
@@ -101,6 +105,10 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
         executionManager.kill(index);
     }
 
-    public record RunningSpellData(int id, int executionsLastTick) {
+    public Int2ObjectMap<RunningSpellData> getRunningSpellData() {
+        return runningSpellData;
+    }
+
+    public record RunningSpellData(int executionsLastTick) {
     }
 }
