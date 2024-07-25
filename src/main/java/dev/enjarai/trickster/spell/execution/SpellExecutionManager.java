@@ -70,4 +70,17 @@ public class SpellExecutionManager {
     public void killAll() {
         spells.clear();
     }
+
+    public void kill(int index) {
+        int size = spells.size();
+
+        for (int i = 0; i < size; i++) {
+            var spell = spells.poll();
+            assert spell != null;
+
+            if (i != index) {
+                spells.add(spell);
+            }
+        }
+    }
 }

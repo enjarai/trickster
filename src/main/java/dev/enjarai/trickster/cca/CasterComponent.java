@@ -7,7 +7,6 @@ import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
 import dev.enjarai.trickster.spell.execution.SpellExecutionManager;
 import dev.enjarai.trickster.spell.mana.ManaPool;
 import io.wispforest.endec.Endec;
-import io.wispforest.endec.impl.KeyedEndec;
 import io.wispforest.endec.impl.ReflectiveEndecBuilder;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -20,12 +19,18 @@ import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CasterComponent implements ServerTickingComponent, AutoSyncedComponent {
     private final PlayerEntity player;
     private SpellExecutionManager executionManager;
+
+    // Please ignore the terrible syncing im doing here, i promise ill fix it later.
+    // - Rai
     private List<RunningSpellData> runningSpellData = new ArrayList<>();
+    private HashMap<Integer, RunningSpellData> clientRunningSpellData = new HashMap<>();
 
     public static final Endec<List<RunningSpellData>> SPELL_DATA_ENDEC = ReflectiveEndecBuilder.SHARED_INSTANCE
             .get(RunningSpellData.class).listOf();
@@ -42,7 +47,7 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
     @Override
     public void serverTick() {
         runningSpellData.clear();
-        executionManager.tick(executor -> runningSpellData.add(new RunningSpellData(executor.getLastRunExecutions())));
+        executionManager.tick(executor -> runningSpellData.add(new RunningSpellData(executor.hashCode(), executor.getLastRunExecutions())));
         ModEntityCumponents.CASTER.sync(player);
     }
 
@@ -69,7 +74,10 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
 
     @Override
     public void applySyncPacket(RegistryByteBuf buf) {
-        runningSpellData = buf.read(SPELL_DATA_ENDEC);
+        var newSpellData = new ArrayList<>(buf.read(SPELL_DATA_ENDEC));
+        for (var entry : clientRunningSpellData.entrySet()) {
+//            if (newSpellData.stream().filter(data -> data.id == entry.))
+        }
     }
 
     @Override
@@ -89,6 +97,10 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
         executionManager.killAll();
     }
 
-    public record RunningSpellData(int executionsLastTick) {
+    public void kill(int index) {
+        executionManager.kill(index);
+    }
+
+    public record RunningSpellData(int id, int executionsLastTick) {
     }
 }
