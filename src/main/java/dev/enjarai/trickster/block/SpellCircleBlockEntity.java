@@ -38,7 +38,7 @@ public class SpellCircleBlockEntity extends BlockEntity {
     public int age;
     public int lastPower;
     public CrowMind crowMind = new CrowMind(VoidFragment.INSTANCE);
-    public SimpleManaPool manaPool = new SimpleManaPool(MAX_MANA) { //TODO: extract to class and register type (maybe?) (Eh, i dont think we need to honestly...) (aren't we losing the current mana on reload?) (no actually, see the read/write nbt methods. the simple pool actually has an endec thats used here)
+    public SimpleManaPool manaPool = new SimpleManaPool(MAX_MANA) {
         @Override
         public void set(float value) {
             super.set(value);
@@ -119,7 +119,10 @@ public class SpellCircleBlockEntity extends BlockEntity {
     }
 
     public boolean callEvent(List<Fragment> arguments) {
-        new SpellExecutor(spell, arguments).run(new BlockSpellSource((ServerWorld) getWorld(), getPos(), this));
-        return false;
+        try {
+            return new SpellExecutor(spell, arguments).singleTickRun(new BlockSpellSource((ServerWorld) getWorld(), getPos(), this)).asBoolean().bool();
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
