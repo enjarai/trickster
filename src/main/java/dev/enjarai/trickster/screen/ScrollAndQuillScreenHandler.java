@@ -6,6 +6,8 @@ import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.SpellComponent;
 import dev.enjarai.trickster.spell.Fragment;
+import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.execution.ExecutionState;
 import dev.enjarai.trickster.spell.execution.SpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
 import dev.enjarai.trickster.spell.SpellPart;
@@ -87,16 +89,10 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
                 var server = player().getServer();
                 if (server != null) {
                     server.execute(() -> {
-                        // TODO: find a way to deal with the now removed "destructive" evaluation mode.
-                        // TODO: How else can we do the mirror? Turn flattened spell queue back into spellpart??
                         if (greedyEvaluation) {
-                            ((ServerPlayerEntity) player()).getServerWorld().playSoundFromEntity(
-                                    null, player(), ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f));
-
-                            var newSpell = spell.deepClone();
-
                             try {
-                                newSpell.glyph = new SpellExecutor(spell, List.of()).singleTickRun(new PlayerSpellSource((ServerPlayerEntity) player()));
+                                spell.destructiveRun(new SpellContext(new PlayerSpellSource((ServerPlayerEntity) player()), new ExecutionState(List.of())));
+                                this.spell.set(spell);
                             } catch (BlunderException e) {
                                 if (e instanceof NaNBlunder)
                                     ModCriteria.NAN_NUMBER.trigger((ServerPlayerEntity) player());
@@ -106,7 +102,8 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
                                 player().sendMessage(Text.literal("Uncaught exception in spell: " + e.getMessage()));
                             }
 
-                            this.spell.set(newSpell);
+                            ((ServerPlayerEntity) player()).getServerWorld().playSoundFromEntity(
+                                    null, player(), ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f));
                         } else {
                             spell.brutallyMurderEphemerals();
                         }

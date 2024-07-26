@@ -6,6 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.enjarai.trickster.spell.execution.SpellExecutor;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
+import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.fragment.ZalgoFragment;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
 import io.wispforest.endec.Endec;
@@ -59,6 +60,26 @@ public final class SpellPart implements Fragment {
                 glyph = new ZalgoFragment();
             }
         }
+    }
+
+    public Fragment destructiveRun(SpellContext ctx) {
+        var arguments = new ArrayList<Fragment>();
+
+        for (var subpart : subParts) {
+            arguments.add(subpart.destructiveRun(ctx));
+        }
+
+        var value = glyph.activateAsGlyph(ctx, arguments);
+
+        if (!value.equals(VoidFragment.INSTANCE)) {
+            if (glyph != value) {
+                subParts.clear();
+            }
+
+            glyph = value;
+        }
+
+        return value;
     }
 
     public void buildClosure(Map<Pattern, Fragment> replacements) {
