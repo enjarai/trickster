@@ -134,6 +134,8 @@ public class Tricks {
     public static final AllTrick ALL = register("all", new AllTrick());
     public static final AnyTrick ANY = register("any", new AnyTrick());
     public static final NoneTrick NONE = register("none", new NoneTrick());
+    public static final GreaterThanTrick GREATER_THAN = register("greater_than", new GreaterThanTrick());
+    public static final LesserThanTrick LESSER_THAN = register("lesser_than", new LesserThanTrick());
 
     // List
     public static final ListAddTrick LIST_ADD = register("list_add", new ListAddTrick());
@@ -144,6 +146,7 @@ public class Tricks {
     public static final ListInsertTrick LIST_INSERT = register("list_insert", new ListInsertTrick());
     public static final ListRemoveElementTrick LIST_REMOVE_ELEMENT = register("list_remove_element", new ListRemoveElementTrick());
     public static final ListRemoveTrick LIST_REMOVE = register("list_remove", new ListRemoveTrick());
+    public static final ListSizeTrick LIST_SIZE = register("list_size", new ListSizeTrick());
 
     // Tree
     public static final LocateGlyphTrick LOCATE_GLYPH = register("locate_glyph", new LocateGlyphTrick());

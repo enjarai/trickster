@@ -23,6 +23,16 @@ Creates a new empty list.
 
 ;;;;;
 
+<|glyph@trickster:templates|trick-id=trickster:list_size,title=Tally Distortion|>
+
+any[] -> number
+
+---
+
+Returns the amount of elements in the given list.
+
+;;;;;
+
 <|glyph@trickster:templates|trick-id=trickster:list_add,title=Expansion Stratagem|>
 
 any[], any... -> any[]
