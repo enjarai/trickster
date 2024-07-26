@@ -22,6 +22,7 @@ import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class CasterComponent implements ServerTickingComponent, AutoSyncedComponent {
     private final PlayerEntity player;
@@ -110,5 +111,9 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
     }
 
     public record RunningSpellData(int executionsLastTick) {
+        @Override
+        public int hashCode() {
+            return Objects.hash(1, executionsLastTick);
+        }
     }
 }
