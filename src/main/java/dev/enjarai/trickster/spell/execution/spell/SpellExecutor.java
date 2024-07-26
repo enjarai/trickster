@@ -78,6 +78,23 @@ public class SpellExecutor {
 
     /**
      * Attempts to execute the spell within a single tick, throws ExecutionLimitReachedBlunder if single-tick execution is not feasible.
+     * <p>
+     * Before this function throws, it will append the additional spell stacktrace to the stacktrace in the provided context.
+     * @return the spell's result.
+     * @throws BlunderException
+     */
+    public Fragment singleTickRun(SpellContext context) throws BlunderException {
+        try {
+            return run(context.source()).orElseThrow(ExecutionLimitReachedBlunder::new);
+        } catch (Exception e) {
+            context.executionState().getStacktrace().clear();
+            context.executionState().getStacktrace().addAll(getCurrentState().getStacktrace());
+            throw e;
+        }
+    }
+
+    /**
+     * Attempts to execute the spell within a single tick, throws ExecutionLimitReachedBlunder if single-tick execution is not feasible.
      * @return the spell's result.
      * @throws BlunderException
      */
@@ -121,12 +138,17 @@ public class SpellExecutor {
             var inst = instructions.pop();
 
             if (inst instanceof EnterScopeInstruction) {
+                if (!scope.isEmpty())
+                    state.pushStackTrace(scope.peek());
+
                 scope.push(0);
             } else if (inst instanceof ExitScopeInstruction) {
                 scope.pop();
 
                 if (scope.isEmpty())
                     return overrideReturnValue.or(() -> Optional.of(inputs.pop()));
+                else
+                    state.popStackTrace();
 
                 scope.push(scope.pop() + 1);
             } else {
@@ -212,5 +234,9 @@ public class SpellExecutor {
 
     public int getLastRunExecutions() {
         return child.map(SpellExecutor::getLastRunExecutions).orElse(lastRunExecutions);
+    }
+
+    public ExecutionState getCurrentState() {
+        return child.map(SpellExecutor::getCurrentState).orElse(state);
     }
 }

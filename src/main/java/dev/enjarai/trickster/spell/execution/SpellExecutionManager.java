@@ -75,10 +75,12 @@ public class SpellExecutionManager {
                 if (e instanceof NaNBlunder)
                     source.getPlayer().ifPresent(ModCriteria.NAN_NUMBER::trigger);
 
-                source.getPlayer().ifPresent(player -> player.sendMessage(e.createMessage().append(" (").append("spell.formatStackTrace()").append(")")));
+                source.getPlayer().ifPresent(player -> player.sendMessage(e.createMessage()
+                        .append(" (").append(spell.getCurrentState().formatStackTrace()).append(")")));
             } catch (Exception e) {
                 iterator.remove();
-                source.getPlayer().ifPresent(player -> player.sendMessage(Text.literal("Uncaught exception in spell: " + e.getMessage())));
+                source.getPlayer().ifPresent(player -> player.sendMessage(Text.literal("Uncaught exception in spell: " + e.getMessage())
+                        .append(" (").append(spell.getCurrentState().formatStackTrace()).append(")")));
             }
         }
     }

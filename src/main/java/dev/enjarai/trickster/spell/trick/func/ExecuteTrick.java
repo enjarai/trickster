@@ -17,7 +17,7 @@ public class ExecuteTrick extends Trick implements ForkingTrick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        return makeFork(ctx, fragments).singleTickRun(ctx.source());
+        return makeFork(ctx, fragments).singleTickRun(ctx);
     }
 
     @Override

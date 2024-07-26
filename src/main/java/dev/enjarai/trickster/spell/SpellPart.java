@@ -41,6 +41,15 @@ public final class SpellPart implements Fragment {
     }
 
     @Override
+    public Fragment activateAsGlyph(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+        if (fragments.isEmpty()) {
+            return Fragment.super.activateAsGlyph(ctx, fragments);
+        } else {
+            return makeFork(ctx, fragments).singleTickRun(ctx);
+        }
+    }
+
+    @Override
     public boolean forks(SpellContext ctx, List<Fragment> args) {
         return !args.isEmpty();
     }

@@ -61,11 +61,20 @@ public class ExecutionState {
             throw new ExecutionLimitReachedBlunder();
         }
 
-        return new ExecutionState(recursions + 1, arguments, poolOverride);
+        var state = new ExecutionState(recursions + 1, arguments, poolOverride);
+        state.stacktrace.addAll(stacktrace);
+        state.stacktrace.push(-2);
+        return state;
     }
 
     public void decrementRecursions() {
         recursions--;
+        // Remove the function call instruction that was added by recursing from the stacktrace,
+        // and add a tail recursion one instead.
+        stacktrace.pop();
+        if (stacktrace.isEmpty() || stacktrace.peek() != -3) {
+            stacktrace.push(-3);
+        }
     }
 
     public ManaPool tryOverridePool(ManaPool pool) {
@@ -99,7 +108,8 @@ public class ExecutionState {
     /**
      * >0: Actual index
      * -1: Glyph call
-     * -2: Pattern call
+     * -2: Pattern call (Temporarily unused)
+     * -3: Tail recursion
      */
     public void pushStackTrace(int i) {
         stacktrace.push(i);
@@ -122,6 +132,7 @@ public class ExecutionState {
             result = result.append(switch (i) {
                 case -1 -> ">";
                 case -2 -> "#";
+                case -3 -> "&";
                 default -> "" + i;
             });
         }

@@ -90,16 +90,18 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
                 if (server != null) {
                     server.execute(() -> {
                         if (greedyEvaluation) {
+                            var executionState = new ExecutionState(List.of());
                             try {
-                                spell.destructiveRun(new SpellContext(new PlayerSpellSource((ServerPlayerEntity) player()), new ExecutionState(List.of())));
+                                spell.destructiveRun(new SpellContext(new PlayerSpellSource((ServerPlayerEntity) player()), executionState));
                                 this.spell.set(spell);
                             } catch (BlunderException e) {
                                 if (e instanceof NaNBlunder)
                                     ModCriteria.NAN_NUMBER.trigger((ServerPlayerEntity) player());
 
-                                player().sendMessage(e.createMessage().append(" (").append("spell.formatStackTrace()").append(")"));
+                                player().sendMessage(e.createMessage().append(" (").append(executionState.formatStackTrace()).append(")"));
                             } catch (Exception e) {
-                                player().sendMessage(Text.literal("Uncaught exception in spell: " + e.getMessage()));
+                                player().sendMessage(Text.literal("Uncaught exception in spell: " + e.getMessage())
+                                        .append(" (").append(executionState.formatStackTrace()).append(")"));
                             }
 
                             ((ServerPlayerEntity) player()).getServerWorld().playSoundFromEntity(
