@@ -6,8 +6,8 @@ import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
-import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
-import dev.enjarai.trickster.spell.tricks.blunder.ExecutionLimitReachedBlunder;
+import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
+import dev.enjarai.trickster.spell.trick.blunder.ExecutionLimitReachedBlunder;
 
 import java.util.ArrayList;
 import java.util.List;

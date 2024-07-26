@@ -12,7 +12,7 @@ import dev.enjarai.trickster.misc.ModDamageTypes;
 import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.screen.ModScreenHandlers;
-import dev.enjarai.trickster.spell.tricks.Tricks;
+import dev.enjarai.trickster.spell.trick.Tricks;
 import dev.enjarai.trickster.spell.world.SpellCircleEvent;
 import net.fabricmc.api.ModInitializer;
 

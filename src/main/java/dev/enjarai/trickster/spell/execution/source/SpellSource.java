@@ -2,11 +2,7 @@ package dev.enjarai.trickster.spell.execution.source;
 
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.mana.ManaPool;
-import dev.enjarai.trickster.spell.fragment.SlotFragment;
-import dev.enjarai.trickster.spell.tricks.Trick;
-import dev.enjarai.trickster.spell.tricks.blunder.*;
 import net.minecraft.entity.Entity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -14,7 +10,6 @@ import net.minecraft.util.math.BlockPos;
 import org.joml.Vector3d;
 
 import java.util.*;
-import java.util.function.Function;
 
 public abstract class SpellSource {
     public abstract ManaPool getManaPool();

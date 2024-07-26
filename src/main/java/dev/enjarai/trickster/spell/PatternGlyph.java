@@ -4,14 +4,13 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import dev.enjarai.trickster.spell.execution.SpellExecutor;
-import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
-import dev.enjarai.trickster.spell.tricks.Tricks;
-import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
-import dev.enjarai.trickster.spell.tricks.blunder.UnknownTrickBlunder;
-import dev.enjarai.trickster.spell.tricks.func.ForkingTrick;
+import dev.enjarai.trickster.spell.trick.Tricks;
+import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
+import dev.enjarai.trickster.spell.trick.blunder.UnknownTrickBlunder;
+import dev.enjarai.trickster.spell.trick.func.ForkingTrick;
 import net.minecraft.text.Text;
 import org.apache.commons.lang3.ArrayUtils;
 

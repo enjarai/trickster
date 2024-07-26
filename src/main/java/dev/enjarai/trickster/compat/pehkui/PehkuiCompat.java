@@ -1,6 +1,6 @@
 package dev.enjarai.trickster.compat.pehkui;
 
-import dev.enjarai.trickster.spell.tricks.Tricks;
+import dev.enjarai.trickster.spell.trick.Tricks;
 
 public class PehkuiCompat {
     public static final GetScaleTrick GET_SCALE = Tricks.register("get_scale", new GetScaleTrick());

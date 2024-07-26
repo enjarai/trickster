@@ -4,16 +4,13 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.MapCodec;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Fragment;
-import dev.enjarai.trickster.spell.tricks.Trick;
-import dev.enjarai.trickster.spell.tricks.Tricks;
-import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
-import dev.enjarai.trickster.spell.tricks.blunder.IncompatibleTypesBlunder;
-import dev.enjarai.trickster.spell.tricks.blunder.IncorrectFragmentBlunder;
+import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
+import dev.enjarai.trickster.spell.trick.blunder.IncorrectFragmentBlunder;
 import net.minecraft.text.Text;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public record ListFragment(List<Fragment> fragments) implements Fragment {
     public static final MapCodec<ListFragment> CODEC =
