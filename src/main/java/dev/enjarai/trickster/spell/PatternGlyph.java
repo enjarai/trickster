@@ -3,7 +3,7 @@ package dev.enjarai.trickster.spell;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
-import dev.enjarai.trickster.spell.execution.SpellExecutor;
+import dev.enjarai.trickster.spell.execution.spell.SpellExecutor;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
@@ -61,10 +61,10 @@ public record PatternGlyph(Pattern pattern) implements Fragment {
     public SpellExecutor makeFork(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var trick = Tricks.lookup(pattern);
 
-        if (trick == null)
-            throw new UnknownTrickBlunder();
+        if (trick instanceof ForkingTrick forkingTrick)
+            return forkingTrick.makeFork(ctx, fragments);
 
-        return ((ForkingTrick) trick).makeFork(ctx, fragments);
+        throw new UnknownTrickBlunder();
     }
 
     @Override

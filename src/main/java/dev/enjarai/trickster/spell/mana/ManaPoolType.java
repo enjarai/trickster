@@ -3,7 +3,6 @@ package dev.enjarai.trickster.spell.mana;
 import com.mojang.serialization.Lifecycle;
 import com.mojang.serialization.MapCodec;
 import dev.enjarai.trickster.Trickster;
-import dev.enjarai.trickster.cca.ManaComponent;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.SimpleRegistry;

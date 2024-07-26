@@ -3,8 +3,6 @@ package dev.enjarai.trickster.item;
 import dev.enjarai.trickster.ModSounds;
 import dev.enjarai.trickster.cca.ModEntityCumponents;
 import dev.enjarai.trickster.item.component.ModComponents;
-import dev.enjarai.trickster.spell.execution.SpellExecutor;
-import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

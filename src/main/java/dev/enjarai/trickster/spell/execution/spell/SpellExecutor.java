@@ -1,9 +1,14 @@
-package dev.enjarai.trickster.spell.execution;
+package dev.enjarai.trickster.spell.execution.spell;
 
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.*;
+import dev.enjarai.trickster.spell.execution.ExecutionState;
+import dev.enjarai.trickster.spell.execution.SerializedSpellInstruction;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
@@ -16,28 +21,28 @@ import java.util.Stack;
 import java.util.stream.Collectors;
 
 public class SpellExecutor {
+    public static final Supplier<MapCodec<SpellExecutor>> CODEC = Suppliers.memoize(() -> SpellExecutorType.REGISTRY.getCodec().dispatchMap(SpellExecutor::type, SpellExecutorType::codec));
+    public static final MapCodec<SpellExecutor> DEFAULT_CODEC = MapCodec.recursive("spell_executor", self -> RecordCodecBuilder.mapCodec(instance -> instance.group(
+            Codec.list(SerializedSpellInstruction.CODEC).fieldOf("instructions").forGetter(executor -> executor.instructions.stream().map(SpellInstruction::asSerialized).collect(Collectors.toList())),
+            Codec.list(Fragment.CODEC.get().codec()).fieldOf("inputs").forGetter(executor -> executor.inputs),
+            Codec.list(Codec.INT).fieldOf("scope").forGetter(executor -> executor.scope),
+            ExecutionState.CODEC.fieldOf("state").forGetter(executor -> executor.state),
+            self.optionalFieldOf("child").forGetter(executor -> executor.child),
+            Fragment.CODEC.get().codec().optionalFieldOf("override_return_value").forGetter(executor -> executor.overrideReturnValue)
+    ).apply(instance, (instructions, inputs, scope, state, child, overrideReturnValue) -> {
+        List<SpellInstruction> serializedInstructions = instructions.stream().map(SerializedSpellInstruction::toDeserialized).collect(Collectors.toList());
+        return new SpellExecutor(serializedInstructions, inputs, scope, state, child, overrideReturnValue);
+    })));
+
     protected final Stack<SpellInstruction> instructions = new Stack<>();
     protected final Stack<Fragment> inputs = new Stack<>();
     protected final Stack<Integer> scope = new Stack<>();
     protected ExecutionState state;
     protected Optional<SpellExecutor> child = Optional.empty();
     protected Optional<Fragment> overrideReturnValue = Optional.empty();
-
     protected int lastRunExecutions;
 
-    public static final Codec<SpellExecutor> CODEC = Codec.recursive("spell_executor", self -> RecordCodecBuilder.create(instance -> instance.group(
-            Codec.list(SerializedSpellInstruction.CODEC).fieldOf("instructions").forGetter(spellQueue -> spellQueue.instructions.stream().map(SpellInstruction::asSerialized).collect(Collectors.toList())),
-            Codec.list(Fragment.CODEC.get().codec()).fieldOf("inputs").forGetter(spellQueue -> spellQueue.inputs),
-            Codec.list(Codec.INT).fieldOf("scope").forGetter(spellQueue -> spellQueue.scope),
-            ExecutionState.CODEC.fieldOf("state").forGetter(spellQueue -> spellQueue.state),
-            self.optionalFieldOf("child").forGetter(spellQueue -> spellQueue.child),
-            Fragment.CODEC.get().codec().optionalFieldOf("override_return_value").forGetter(spellQueue -> spellQueue.overrideReturnValue)
-    ).apply(instance, (instructions, inputs, scope, state, child, overrideReturnValue) -> {
-        List<SpellInstruction> serializedInstructions = instructions.stream().map(SerializedSpellInstruction::toDeserialized).collect(Collectors.toList());
-        return new SpellExecutor(serializedInstructions, inputs, scope, state, child, overrideReturnValue);
-    })));
-
-    private SpellExecutor(List<SpellInstruction> instructions, List<Fragment> inputs, List<Integer> scope, ExecutionState state, Optional<SpellExecutor> child, Optional<Fragment> overrideReturnValue) {
+    protected SpellExecutor(List<SpellInstruction> instructions, List<Fragment> inputs, List<Integer> scope, ExecutionState state, Optional<SpellExecutor> child, Optional<Fragment> overrideReturnValue) {
         this.instructions.addAll(instructions);
         this.inputs.addAll(inputs);
         this.scope.addAll(scope);
@@ -54,6 +59,10 @@ public class SpellExecutor {
     public SpellExecutor(SpellPart root, ExecutionState executionState) {
         this.state = executionState;
         flattenNode(root);
+    }
+
+    public SpellExecutorType<?> type() {
+        return SpellExecutorType.DEFAULT;
     }
 
     protected void flattenNode(SpellPart node) {
@@ -148,6 +157,8 @@ public class SpellExecutor {
                             break;
                         }
                     }
+
+                    isTail = isTail && type().equals(child.type());
 
                     if (isTail) {
                         instructions.clear();

@@ -1,9 +1,9 @@
 package dev.enjarai.trickster.spell;
 
+import dev.enjarai.trickster.cca.ModEntityCumponents;
 import dev.enjarai.trickster.item.component.ModComponents;
-import dev.enjarai.trickster.spell.execution.SpellExecutor;
+import dev.enjarai.trickster.spell.execution.spell.SpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolItem;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -40,8 +40,7 @@ public interface ItemTriggerProvider {
         var spellComponent = stack.get(ModComponents.SPELL);
 
         if (spellComponent != null) {
-            // TODO: are we sure we dont want this to be multi tick capable? maybe with a limited amount of ticks?
-            new SpellExecutor(spellComponent.spell(), arguments).run(new PlayerSpellSource(player));
+            ModEntityCumponents.CASTER.get(player).queue(spellComponent.spell(), arguments);
         }
     }
 }

@@ -6,6 +6,7 @@ import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.SpellPart;
+import dev.enjarai.trickster.spell.execution.spell.SpellExecutor;
 import dev.enjarai.trickster.spell.mana.ManaPool;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
 import dev.enjarai.trickster.spell.trick.blunder.NaNBlunder;
@@ -18,7 +19,7 @@ import java.util.*;
 public class SpellExecutionManager {
     public static final Codec<SpellExecutionManager> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.INT.optionalFieldOf("capacity", 5).forGetter(e -> e.capacity),
-            Codec.unboundedMap(Codec.STRING.xmap(Integer::parseInt, Object::toString), SpellExecutor.CODEC)
+            Codec.unboundedMap(Codec.STRING.xmap(Integer::parseInt, Object::toString), SpellExecutor.CODEC.get().codec())
                     .fieldOf("spells").forGetter((e) -> e.spells)
     ).apply(instance, SpellExecutionManager::new));
 
@@ -69,11 +70,14 @@ public class SpellExecutionManager {
                     iterator.remove();
                 }
             } catch (BlunderException e) {
+                iterator.remove();
+
                 if (e instanceof NaNBlunder)
                     source.getPlayer().ifPresent(ModCriteria.NAN_NUMBER::trigger);
 
                 source.getPlayer().ifPresent(player -> player.sendMessage(e.createMessage().append(" (").append("spell.formatStackTrace()").append(")")));
             } catch (Exception e) {
+                iterator.remove();
                 source.getPlayer().ifPresent(player -> player.sendMessage(Text.literal("Uncaught exception in spell: " + e.getMessage())));
             }
         }

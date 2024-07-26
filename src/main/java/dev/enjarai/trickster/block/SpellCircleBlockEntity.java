@@ -2,9 +2,8 @@ package dev.enjarai.trickster.block;
 
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.*;
-import dev.enjarai.trickster.spell.execution.SpellExecutor;
+import dev.enjarai.trickster.spell.execution.spell.SpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.BlockSpellSource;
-import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.mana.SimpleManaPool;

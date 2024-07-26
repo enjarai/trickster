@@ -8,7 +8,7 @@ import dev.enjarai.trickster.item.component.SpellComponent;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.execution.ExecutionState;
-import dev.enjarai.trickster.spell.execution.SpellExecutor;
+import dev.enjarai.trickster.spell.execution.spell.SpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;

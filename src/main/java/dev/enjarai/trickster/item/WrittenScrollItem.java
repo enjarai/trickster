@@ -4,8 +4,6 @@ import dev.enjarai.trickster.ModSounds;
 import dev.enjarai.trickster.cca.ModEntityCumponents;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.screen.ScrollAndQuillScreenHandler;
-import dev.enjarai.trickster.spell.execution.SpellExecutor;
-import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
 import dev.enjarai.trickster.spell.mana.SimpleManaPool;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;

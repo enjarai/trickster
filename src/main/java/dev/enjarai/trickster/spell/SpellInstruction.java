@@ -1,7 +1,7 @@
 package dev.enjarai.trickster.spell;
 
 import dev.enjarai.trickster.spell.execution.SerializedSpellInstruction;
-import dev.enjarai.trickster.spell.execution.SpellExecutor;
+import dev.enjarai.trickster.spell.execution.spell.SpellExecutor;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
 import org.apache.commons.lang3.NotImplementedException;
 

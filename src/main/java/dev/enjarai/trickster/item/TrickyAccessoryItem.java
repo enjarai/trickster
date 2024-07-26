@@ -5,7 +5,7 @@ import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.PatternGlyph;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.execution.SpellExecutor;
+import dev.enjarai.trickster.spell.execution.spell.SpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
