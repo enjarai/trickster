@@ -1,15 +1,20 @@
 package dev.enjarai.trickster.spell.tricks.basic;
 
 import dev.enjarai.trickster.Trickster;
+import dev.enjarai.trickster.config.TricksterConfig;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.tricks.Trick;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
+import io.wispforest.owo.config.ConfigSynchronizer;
+import io.wispforest.owo.config.Option;
 import net.minecraft.text.Text;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class RevealTrick extends Trick {
     public RevealTrick() {
@@ -37,8 +42,9 @@ public class RevealTrick extends Trick {
 
         Text finalResult = result;
         ctx.source().getPlayer().ifPresent(player -> {
-            //TODO: this uses the server's setting, should use the client's preference
-            player.sendMessage(Text.of(finalResult), Trickster.CONFIG.revealToHotbar());
+            player.sendMessage(Text.of(finalResult), ConfigSynchronizer.getClientOptions(player, Trickster.CONFIG.name()) instanceof Map<Option.Key, ?> map
+                    ? (boolean) map.get(Trickster.CONFIG.keys.revealToHotbar)
+                    : Trickster.CONFIG.revealToHotbar());
         });
 
         return first;

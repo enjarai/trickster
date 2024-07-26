@@ -7,6 +7,7 @@ import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
+import dev.enjarai.trickster.spell.tricks.blunder.ExecutionLimitReachedBlunder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +68,15 @@ public class SpellExecutor {
     }
 
     /**
+     * Attempts to execute the spell within a single tick, throws ExecutionLimitReachedBlunder if single-tick execution is not feasible.
+     * @return the spell's result.
+     * @throws BlunderException
+     */
+    public Fragment singleTickRun(SpellSource source) throws BlunderException {
+        return run(source).orElseThrow(ExecutionLimitReachedBlunder::new);
+    }
+
+    /**
      * @return the spell's result, or Optional.empty() if the spell is not done executing.
      * @throws BlunderException
      */
@@ -90,6 +100,11 @@ public class SpellExecutor {
         }
 
         while (true) {
+            if (state.isDelayed()) {
+                state.decrementDelay();
+                return Optional.empty();
+            }
+
             if (executions >= Trickster.CONFIG.maxExecutionsPerSpellPerTick()) {
                 return Optional.empty();
             }
@@ -128,6 +143,7 @@ public class SpellExecutor {
                                 returnValue = VoidFragment.INSTANCE;
                                 continue;
                             }
+
                             isTail = false;
                             break;
                         }

@@ -1,14 +1,19 @@
 package dev.enjarai.trickster.screen;
 
 import dev.enjarai.trickster.ModSounds;
+import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.SpellComponent;
 import dev.enjarai.trickster.spell.Fragment;
+import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.execution.ExecutionState;
 import dev.enjarai.trickster.spell.execution.SpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
+import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
+import dev.enjarai.trickster.spell.tricks.blunder.NaNBlunder;
 import io.wispforest.endec.Endec;
 import io.wispforest.owo.client.screens.SyncedProperty;
 import net.minecraft.entity.EquipmentSlot;
@@ -18,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.text.Text;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -83,14 +89,26 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
                 var server = player().getServer();
                 if (server != null) {
                     server.execute(() -> {
+                        // TODO: find a way to deal with the now removed "destructive" evaluation mode.
+                        // TODO: How else can we do the mirror? Turn flattened spell queue back into spellpart??
                         if (greedyEvaluation) {
-                            // TODO: find a way to deal with the now removed "destructive" evaluation mode.
-                            // How else can we do the mirror? Turn flattened spell queue back into spellpart??
-                            new SpellExecutor(spell, List.of()).run(new PlayerSpellSource((ServerPlayerEntity) player()));
                             ((ServerPlayerEntity) player()).getServerWorld().playSoundFromEntity(
                                     null, player(), ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f));
 
-                            this.spell.set(spell);
+                            var newSpell = spell.deepClone();
+
+                            try {
+                                newSpell.glyph = new SpellExecutor(spell, List.of()).singleTickRun(new PlayerSpellSource((ServerPlayerEntity) player()));
+                            } catch (BlunderException e) {
+                                if (e instanceof NaNBlunder)
+                                    ModCriteria.NAN_NUMBER.trigger((ServerPlayerEntity) player());
+
+                                player().sendMessage(e.createMessage().append(" (").append("spell.formatStackTrace()").append(")"));
+                            } catch (Exception e) {
+                                player().sendMessage(Text.literal("Uncaught exception in spell: " + e.getMessage()));
+                            }
+
+                            this.spell.set(newSpell);
                         } else {
                             spell.brutallyMurderEphemerals();
                         }

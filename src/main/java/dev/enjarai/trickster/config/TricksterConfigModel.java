@@ -10,9 +10,12 @@ import io.wispforest.owo.config.annotation.Sync;
 public class TricksterConfigModel {
     public boolean dragDrawing = false;
     public boolean topHatInterceptScrolling = false;
-    public boolean revealToHotbar = true;
-    public boolean allowSwapBedrock = true;
+
+    @Sync(Option.SyncMode.INFORM_SERVER)
+    public boolean revealToHotbar = false;
 
     @Sync(Option.SyncMode.OVERRIDE_CLIENT)
-    public int maxExecutionsPerSpellPerTick = 255;
+    public int maxExecutionsPerSpellPerTick = 120;
+
+    public boolean allowSwapBedrock = true;
 }

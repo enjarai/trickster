@@ -21,34 +21,37 @@ public class ExecutionState {
     public static final int MAX_RECURSION_DEPTH = 255;
     public static final Codec<ExecutionState> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.INT.fieldOf("recursions").forGetter(ExecutionState::getRecursions),
+            Codec.INT.fieldOf("delay").forGetter(ExecutionState::getDelay),
             Fragment.CODEC.get().codec().listOf().fieldOf("arguments").forGetter(state -> state.arguments),
             Codec.INT.listOf().fieldOf("stacktrace").forGetter(state -> state.stacktrace.stream().toList()),
             ManaPool.CODEC.get().codec().optionalFieldOf("pool_override").forGetter(state -> state.poolOverride)
     ).apply(instance, ExecutionState::new));
 
     protected int recursions;
+    protected int delay;
     private final List<Fragment> arguments;
     private final Deque<Integer> stacktrace = new ArrayDeque<>();
     private final List<ManaLink> manaLinks = new ArrayList<>();
     private final Optional<ManaPool> poolOverride;
 
-    private ExecutionState(int recursions, List<Fragment> arguments, List<Integer> stacktrace, Optional<ManaPool> poolOverride) {
+    private ExecutionState(int recursions, int delay, List<Fragment> arguments, List<Integer> stacktrace, Optional<ManaPool> poolOverride) {
         this.recursions = recursions;
+        this.delay = delay;
         this.arguments = arguments;
         this.stacktrace.addAll(stacktrace);
         this.poolOverride = poolOverride;
     }
 
     public ExecutionState(List<Fragment> arguments) {
-        this(0, arguments, List.of(), Optional.empty());
+        this(0, 0, arguments, List.of(), Optional.empty());
     }
 
     public ExecutionState(List<Fragment> arguments, ManaPool poolOverride) {
-        this(0, arguments, List.of(), Optional.ofNullable(poolOverride));
+        this(0, 0, arguments, List.of(), Optional.ofNullable(poolOverride));
     }
 
     private ExecutionState(int recursions, List<Fragment> arguments, Optional<ManaPool> poolOverride) {
-        this(recursions, arguments, List.of(), poolOverride);
+        this(recursions, 0, arguments, List.of(), poolOverride);
     }
 
     public ExecutionState recurseOrThrow(List<Fragment> arguments) throws ExecutionLimitReachedBlunder {
@@ -73,6 +76,22 @@ public class ExecutionState {
 
     public int getRecursions() {
         return recursions;
+    }
+
+    public boolean isDelayed() {
+        return delay > 0;
+    }
+
+    public void addDelay(int ticks) {
+        delay += ticks;
+    }
+
+    public void decrementDelay() {
+        delay--;
+    }
+
+    public int getDelay() {
+        return delay;
     }
 
     /**
