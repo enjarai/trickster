@@ -24,6 +24,7 @@ public class ExecutionState {
             Codec.INT.fieldOf("delay").forGetter(ExecutionState::getDelay),
             Fragment.CODEC.get().codec().listOf().fieldOf("arguments").forGetter(state -> state.arguments),
             Codec.INT.listOf().fieldOf("stacktrace").forGetter(state -> state.stacktrace.stream().toList()),
+            ManaLink.CODEC.listOf().fieldOf("mana_links").forGetter(state -> state.manaLinks),
             ManaPool.CODEC.get().codec().optionalFieldOf("pool_override").forGetter(state -> state.poolOverride)
     ).apply(instance, ExecutionState::new));
 
@@ -34,24 +35,25 @@ public class ExecutionState {
     private final List<ManaLink> manaLinks = new ArrayList<>();
     private final Optional<ManaPool> poolOverride;
 
-    private ExecutionState(int recursions, int delay, List<Fragment> arguments, List<Integer> stacktrace, Optional<ManaPool> poolOverride) {
+    private ExecutionState(int recursions, int delay, List<Fragment> arguments, List<Integer> stacktrace, List<ManaLink> manaLinks, Optional<ManaPool> poolOverride) {
         this.recursions = recursions;
         this.delay = delay;
         this.arguments = arguments;
         this.stacktrace.addAll(stacktrace);
+        this.manaLinks.addAll(manaLinks);
         this.poolOverride = poolOverride;
     }
 
     public ExecutionState(List<Fragment> arguments) {
-        this(0, 0, arguments, List.of(), Optional.empty());
+        this(0, 0, arguments, List.of(), List.of(), Optional.empty());
     }
 
     public ExecutionState(List<Fragment> arguments, ManaPool poolOverride) {
-        this(0, 0, arguments, List.of(), Optional.ofNullable(poolOverride));
+        this(0, 0, arguments, List.of(), List.of(), Optional.ofNullable(poolOverride));
     }
 
     private ExecutionState(int recursions, List<Fragment> arguments, Optional<ManaPool> poolOverride) {
-        this(recursions, 0, arguments, List.of(), poolOverride);
+        this(recursions, 0, arguments, List.of(), List.of(), poolOverride);
     }
 
     public ExecutionState recurseOrThrow(List<Fragment> arguments) throws ExecutionLimitReachedBlunder {
@@ -158,7 +160,7 @@ public class ExecutionState {
                 float available = link.getAvailable();
                 float ratio = available / totalAvailable;
                 float ratioD = amount * ratio;
-                float used = link.useMana(trickSource, tryOverridePool(ctx.source().getManaPool()), ratioD);
+                float used = link.useMana(trickSource, ctx.source().getWorld(), tryOverridePool(ctx.source().getManaPool()), ratioD);
 
                 if (used < ratioD) {
                     leftOver += ratioD - used;

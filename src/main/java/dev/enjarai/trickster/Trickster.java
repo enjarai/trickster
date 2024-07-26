@@ -37,8 +37,6 @@ public class Trickster implements ModInitializer {
 
 	public static final TricksterConfig CONFIG = TricksterConfig.createAndLoad();
 
-	private static MinecraftServer currentServer;
-
 	@Override
 	public void onInitialize() {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
@@ -60,10 +58,6 @@ public class Trickster implements ModInitializer {
 		SpellCircleEvent.register();
 		ModCriteria.register();
 
-		ServerLifecycleEvents.SERVER_STARTING.register((server -> {
-			currentServer = server;
-		}));
-
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
 			TricksterCommand.register(dispatcher);
 		});
@@ -71,10 +65,6 @@ public class Trickster implements ModInitializer {
 		if (FabricLoader.getInstance().isModLoaded("pehkui")) {
 			PehkuiCompat.init();
 		}
-	}
-
-	public static MinecraftServer getCurrentServer() {
-		return currentServer;
 	}
 
 	public static Identifier id(String path) {
