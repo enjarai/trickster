@@ -13,6 +13,7 @@ public record SpellExecutorType<T extends SpellExecutor>(MapCodec<T> codec) {
 
     public static final SpellExecutorType<SpellExecutor> DEFAULT = register("default", SpellExecutor.DEFAULT_CODEC);
     public static final SpellExecutorType<IteratorSpellExecutor> ITERATOR = register("iterator", IteratorSpellExecutor.CODEC);
+    public static final SpellExecutorType<TryCatchSpellExecutor> TRY_CATCH = register("try_catch", TryCatchSpellExecutor.CODEC);
 
     private static <T extends SpellExecutor> SpellExecutorType<T> register(String name, MapCodec<T> codec) {
         return Registry.register(REGISTRY, Trickster.id(name), new SpellExecutorType<>(codec));

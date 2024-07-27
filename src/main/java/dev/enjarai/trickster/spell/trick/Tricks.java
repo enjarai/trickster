@@ -4,17 +4,13 @@ import com.mojang.serialization.Lifecycle;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.trick.entity.query.*;
-import dev.enjarai.trickster.spell.trick.func.ClosureTrick;
-import dev.enjarai.trickster.spell.trick.func.ExecuteTrick;
-import dev.enjarai.trickster.spell.trick.func.IteratorTrick;
-import dev.enjarai.trickster.spell.trick.func.LoadArgumentTrick;
+import dev.enjarai.trickster.spell.trick.func.*;
 import dev.enjarai.trickster.spell.trick.basic.*;
 import dev.enjarai.trickster.spell.trick.block.*;
 import dev.enjarai.trickster.spell.trick.bool.*;
 import dev.enjarai.trickster.spell.trick.entity.*;
 import dev.enjarai.trickster.spell.trick.event.CreateSpellCircleTrick;
 import dev.enjarai.trickster.spell.trick.event.DeleteSpellCircleTrick;
-import dev.enjarai.trickster.spell.trick.func.SupplierTrick;
 import dev.enjarai.trickster.spell.trick.inventory.*;
 import dev.enjarai.trickster.spell.trick.list.*;
 import dev.enjarai.trickster.spell.trick.math.*;
@@ -52,6 +48,7 @@ public class Tricks {
     // Functions
     public static final ExecuteTrick EXECUTE = register("execute", new ExecuteTrick());
     public static final IteratorTrick ITERATOR = register("iterator", new IteratorTrick());
+    public static final TryCatchTrick TRY_CATCH = register("try_catch", new TryCatchTrick());
     public static final ClosureTrick CLOSURE = register("closure", new ClosureTrick());
     public static final SupplierTrick SUPPLIER = register("supplier", new SupplierTrick());
     public static final LoadArgumentTrick LOAD_ARGUMENT_1 = register("load_argument_1", new LoadArgumentTrick(Pattern.of(4, 1), 0));

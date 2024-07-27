@@ -35,7 +35,7 @@ providing it with all other passed in fragments as arguments.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:iterator,title=Iteration Stratagem|>
+<|glyph@trickster:templates|trick-id=trickster:iterator,title=Iteration Distortion|>
 
 spell, any[] -> any[]
 
@@ -56,6 +56,16 @@ any, number, any[]
 Where the first argument is the item, the second is its index in the given list, 
 and the third is the given list. The results of each execution are collected into a new list, 
 which is the result of this glyph.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:try_catch,title=Cautious Distortion|>
+
+spell, spell, any... -> any
+
+---
+
+Attempts to execute the first spell. If it blunders, the second spell is run and the blunder is silenced. Excess values are arguments to both. 
 
 ;;;;;
 
