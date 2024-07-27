@@ -18,7 +18,7 @@ public abstract class AbstractRaycastBlockTrick extends AbstractLivingEntityQuer
         var entity = getLivingEntity(ctx, fragments, 0);
 
         return entity.getWorld().raycast(new RaycastContext(
-                entity.getEyePos(), entity.getEyePos().add(entity.getRotationVector().multiply(128d)),
+                entity.getEyePos(), entity.getEyePos().add(entity.getRotationVector().multiply(64d)),
                 RaycastContext.ShapeType.OUTLINE, RaycastContext.FluidHandling.NONE, entity
         ));
     }
