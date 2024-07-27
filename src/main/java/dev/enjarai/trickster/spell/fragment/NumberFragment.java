@@ -104,6 +104,10 @@ public final class NumberFragment implements Fragment, AddableFragment, Subtract
         return number - Math.floor(number) == 0;
     }
 
+    public int asInt() {
+        return (int) Math.floor(number);
+    }
+
     public double number() {
         return number;
     }

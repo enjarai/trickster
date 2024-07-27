@@ -5,6 +5,7 @@ import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.trick.Trick;
@@ -62,7 +63,7 @@ public class ImportHatTrick extends Trick implements ForkingTrick {
                 throw new ItemInvalidBlunder(this);
             }
 
-            return new SpellExecutor(component.spell(), fragments.subList(1, fragments.size()));
+            return new DefaultSpellExecutor(component.spell(), fragments.subList(1, fragments.size()));
         }
 
         throw new ItemInvalidBlunder(this);

@@ -5,7 +5,7 @@ import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.PatternGlyph;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
+import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
@@ -50,7 +50,7 @@ public class TrickyAccessoryItem extends AccessoryItem {
         boolean applyBacklashIfModified = true;
 
         try {
-            var result = new SpellExecutor(spell, List.of(new PatternGlyph(source.getPattern()), new ListFragment(inputs))).run(new PlayerSpellSource(player));
+            var result = new DefaultSpellExecutor(spell, List.of(new PatternGlyph(source.getPattern()), new ListFragment(inputs))).run(new PlayerSpellSource(player));
 
             if (result.orElseThrow(SlowWardBlunder::new).type() == FragmentType.LIST) {
                 var newInputs = ((ListFragment)result.get()).fragments();

@@ -3,6 +3,7 @@ package dev.enjarai.trickster.spell;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
@@ -56,7 +57,7 @@ public final class SpellPart implements Fragment {
 
     @Override
     public SpellExecutor makeFork(SpellContext ctx, List<Fragment> args) throws BlunderException {
-        return new SpellExecutor(this, ctx.executionState().recurseOrThrow(args));
+        return new DefaultSpellExecutor(this, ctx.executionState().recurseOrThrow(args));
     }
 
     public void brutallyMurderEphemerals() {

@@ -15,6 +15,9 @@ public class ModEntityCumponents implements EntityComponentInitializer {
     public static final ComponentKey<CasterComponent> CASTER =
             ComponentRegistry.getOrCreate(Trickster.id("caster"), CasterComponent.class);
 
+    public static final ComponentKey<BarsComponent> BARS =
+            ComponentRegistry.getOrCreate(Trickster.id("bars"), BarsComponent.class);
+
     public static final ComponentKey<DisguiseCumponent> DISGUISE =
             ComponentRegistry.getOrCreate(Trickster.id("disguise"), DisguiseCumponent.class);
 
@@ -25,6 +28,7 @@ public class ModEntityCumponents implements EntityComponentInitializer {
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
         registry.registerFor(LivingEntity.class, MANA, ManaComponent::new);
         registry.registerForPlayers(CASTER, CasterComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
+        registry.registerForPlayers(BARS, BarsComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
         registry.registerForPlayers(DISGUISE, DisguiseCumponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
         registry.registerForPlayers(IS_EDITING_SCROLL, IsEditingScrollComponent::new, RespawnCopyStrategy.NEVER_COPY);
     }

@@ -3,11 +3,14 @@ package dev.enjarai.trickster.cca;
 import com.mojang.serialization.DataResult;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellPart;
+import dev.enjarai.trickster.spell.execution.executor.ErroredSpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
 import dev.enjarai.trickster.spell.execution.SpellExecutionManager;
 import dev.enjarai.trickster.spell.mana.ManaPool;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.impl.ReflectiveEndecBuilder;
+import io.wispforest.endec.impl.StructEndecBuilder;
+import io.wispforest.owo.serialization.endec.MinecraftEndecs;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.entity.player.PlayerEntity;
@@ -17,12 +20,14 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 public class CasterComponent implements ServerTickingComponent, AutoSyncedComponent {
     private final PlayerEntity player;
@@ -32,7 +37,12 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
     private int wait;
 
     public static final Endec<Map<Integer, RunningSpellData>> SPELL_DATA_ENDEC =
-            Endec.map(Endec.INT, ReflectiveEndecBuilder.SHARED_INSTANCE.get(RunningSpellData.class));
+            Endec.map(Endec.INT, StructEndecBuilder.of(
+                    Endec.INT.fieldOf("executions_last_tick", RunningSpellData::executionsLastTick),
+                    Endec.BOOLEAN.fieldOf("errored", RunningSpellData::errored),
+                    MinecraftEndecs.TEXT.optionalOf().fieldOf("message", RunningSpellData::message),
+                    RunningSpellData::new
+            ));
 
     public CasterComponent(PlayerEntity player) {
         this.player = player;
@@ -52,8 +62,16 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
         }
 
         runningSpellData.clear();
-        executionManager.tick((index, executor) ->
-                runningSpellData.put(index, new RunningSpellData(executor.getLastRunExecutions())));
+        executionManager.tick((index, executor) -> {
+            Text message = null;
+            boolean errored = false;
+            if (executor instanceof ErroredSpellExecutor error) {
+                message = error.errorMessage();
+                errored = true;
+            }
+            runningSpellData.put(index, new RunningSpellData(
+                    executor.getLastRunExecutions(), errored, Optional.ofNullable(message)));
+        });
         ModEntityCumponents.CASTER.sync(player);
     }
 
@@ -121,10 +139,13 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
         return runningSpellData;
     }
 
-    public record RunningSpellData(int executionsLastTick) {
+    public record RunningSpellData(int executionsLastTick, boolean errored, Optional<Text> message) {
         @Override
         public int hashCode() {
-            return Objects.hash(1, executionsLastTick);
+            var result = Objects.hash(1, executionsLastTick);
+            result = 31 * result + Boolean.hashCode(errored);
+            result = 31 * result + Objects.hashCode(message);
+            return result;
         }
     }
 }

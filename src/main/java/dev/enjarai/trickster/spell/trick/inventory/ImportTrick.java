@@ -4,6 +4,7 @@ import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.trick.Trick;
@@ -38,7 +39,7 @@ public class ImportTrick extends Trick implements ForkingTrick {
                 var component = stack.get(ModComponents.SPELL);
 
                 if (component != null)
-                    return new SpellExecutor(component.spell(), fragments.subList(1, fragments.size()));
+                    return new DefaultSpellExecutor(component.spell(), fragments.subList(1, fragments.size()));
             }
         }
 

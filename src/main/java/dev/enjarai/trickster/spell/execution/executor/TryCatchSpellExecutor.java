@@ -13,9 +13,9 @@ import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
 import java.util.List;
 import java.util.Optional;
 
-public class TryCatchSpellExecutor extends SpellExecutor {
+public class TryCatchSpellExecutor extends DefaultSpellExecutor {
     public static final MapCodec<TryCatchSpellExecutor> CODEC = RecordCodecBuilder.mapCodec((instance) -> instance.group(
-            SpellExecutor.DEFAULT_CODEC.codec().fieldOf("self").forGetter(executor -> executor),
+            DefaultSpellExecutor.CODEC.codec().fieldOf("self").forGetter(executor -> executor),
             SpellExecutor.CODEC.get().fieldOf("try").forGetter(executor -> executor.trySpell),
             SpellExecutor.CODEC.get().fieldOf("catch").forGetter(executor -> executor.catchSpell),
             Codec.BOOL.fieldOf("catching").forGetter(executor -> executor.catching)
@@ -34,8 +34,8 @@ public class TryCatchSpellExecutor extends SpellExecutor {
 
     public TryCatchSpellExecutor(SpellPart trySpell, SpellPart catchSpell, List<Fragment> arguments) {
         super(new SpellPart(), List.of());
-        this.trySpell = new SpellExecutor(trySpell, arguments);
-        this.catchSpell = new SpellExecutor(catchSpell, arguments);
+        this.trySpell = new DefaultSpellExecutor(trySpell, arguments);
+        this.catchSpell = new DefaultSpellExecutor(catchSpell, arguments);
     }
 
     @Override

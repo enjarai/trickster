@@ -15,6 +15,7 @@ import dev.enjarai.trickster.spell.trick.inventory.*;
 import dev.enjarai.trickster.spell.trick.list.*;
 import dev.enjarai.trickster.spell.trick.math.*;
 import dev.enjarai.trickster.spell.trick.misc.DelayExecutionTrick;
+import dev.enjarai.trickster.spell.trick.misc.ShowBarTrick;
 import dev.enjarai.trickster.spell.trick.misc.TypeFragmentTrick;
 import dev.enjarai.trickster.spell.trick.projectile.SummonDragonBreathTrick;
 import dev.enjarai.trickster.spell.trick.projectile.SummonFireballTrick;
@@ -192,6 +193,7 @@ public class Tricks {
     // Misc
     public static final TypeFragmentTrick TYPE_FRAGMENT = register("type_fragment", new TypeFragmentTrick());
     public static final DelayExecutionTrick DELAY_EXECUTION = register("delay_execution", new DelayExecutionTrick());
+    public static final ShowBarTrick SHOW_BAR = register("show_bar", new ShowBarTrick());
 
     @ApiStatus.Internal
     public static <T extends Trick> T register(String path, T trick) {
