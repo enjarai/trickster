@@ -2,7 +2,7 @@ package dev.enjarai.trickster.block;
 
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.*;
-import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
+import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.BlockSpellSource;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
@@ -120,7 +120,7 @@ public class SpellCircleBlockEntity extends BlockEntity {
 
     public boolean callEvent(List<Fragment> arguments) {
         try {
-            return new SpellExecutor(spell, arguments).singleTickRun(new BlockSpellSource((ServerWorld) getWorld(), getPos(), this)).asBoolean().bool();
+            return new DefaultSpellExecutor(spell, arguments).singleTickRun(new BlockSpellSource((ServerWorld) getWorld(), getPos(), this)).asBoolean().bool();
         } catch (Exception e) {
             return false;
         }

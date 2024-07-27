@@ -8,7 +8,7 @@ import dev.enjarai.trickster.item.component.SpellComponent;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.execution.ExecutionState;
-import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
+import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
@@ -147,7 +147,7 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
         if (server != null) {
             server.execute(() -> {
                 if (player().getInventory().contains(ModItems.CAN_EVALUATE_DYNAMICALLY)) {
-                    var spell = new SpellExecutor(otherHandSpell.get(), List.of());
+                    var spell = new DefaultSpellExecutor(otherHandSpell.get(), List.of());
                     Fragment result = VoidFragment.INSTANCE;
 
                     try {

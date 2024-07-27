@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Stack;
 
-public class IteratorSpellExecutor extends SpellExecutor {
+public class IteratorSpellExecutor extends DefaultSpellExecutor {
     public static final MapCodec<IteratorSpellExecutor> CODEC = MapCodec.recursive("iterator_spell_executor", self -> RecordCodecBuilder.mapCodec(instance -> instance.group(
             SpellPart.CODEC.fieldOf("executable").forGetter(executor -> executor.executable),
             Codec.list(Fragment.CODEC.get().codec()).fieldOf("elements").forGetter(executor -> executor.elements),
@@ -68,7 +68,7 @@ public class IteratorSpellExecutor extends SpellExecutor {
                 return Optional.empty();
             }
 
-            child = Optional.of(new SpellExecutor(executable, List.of(elements.pop(), new NumberFragment(list.fragments().size() - elements.size() - 1), list)));
+            child = Optional.of(new DefaultSpellExecutor(executable, List.of(elements.pop(), new NumberFragment(list.fragments().size() - elements.size() - 1), list)));
             var result = runChild(ctx, executions);
 
             if (result.isEmpty()) {

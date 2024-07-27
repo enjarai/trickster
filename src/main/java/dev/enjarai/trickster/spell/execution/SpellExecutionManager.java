@@ -4,6 +4,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.spell.Fragment;
+import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
+import dev.enjarai.trickster.spell.execution.executor.ErroredSpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
@@ -39,16 +41,22 @@ public class SpellExecutionManager {
     }
 
     public boolean queue(SpellPart spell, List<Fragment> arguments) {
-        return queue(new SpellExecutor(spell, arguments));
+        return queue(new DefaultSpellExecutor(spell, arguments));
     }
 
     public boolean queue(SpellPart spell, List<Fragment> arguments, ManaPool poolOverride) {
-        return queue(new SpellExecutor(spell, new ExecutionState(arguments, poolOverride)));
+        return queue(new DefaultSpellExecutor(spell, new ExecutionState(arguments, poolOverride)));
     }
 
     public boolean queue(SpellExecutor executor) {
         for (int i = 0; i < capacity; i++) {
             if (spells.putIfAbsent(i, executor) == null) {
+                return true;
+            }
+        }
+        for (int i = 0; i < capacity; i++) {
+            if (spells.get(i) instanceof ErroredSpellExecutor) {
+                spells.put(i, executor);
                 return true;
             }
         }
@@ -70,17 +78,20 @@ public class SpellExecutionManager {
                     iterator.remove();
                 }
             } catch (BlunderException blunder) {
-                iterator.remove();
+                var message = blunder.createMessage()
+                        .append(" (").append(spell.getCurrentState().formatStackTrace()).append(")");
 
                 if (blunder instanceof NaNBlunder)
                     source.getPlayer().ifPresent(ModCriteria.NAN_NUMBER::trigger);
 
-                source.getPlayer().ifPresent(player -> player.sendMessage(blunder.createMessage()
-                        .append(" (").append(spell.getCurrentState().formatStackTrace()).append(")")));
+                entry.setValue(new ErroredSpellExecutor(message));
+                source.getPlayer().ifPresent(player -> player.sendMessage(message));
             } catch (Exception e) {
-                iterator.remove();
-                source.getPlayer().ifPresent(player -> player.sendMessage(Text.literal("Uncaught exception in spell: " + e.getMessage())
-                        .append(" (").append(spell.getCurrentState().formatStackTrace()).append(")")));
+                var message = Text.literal("Uncaught exception in spell: " + e.getMessage())
+                        .append(" (").append(spell.getCurrentState().formatStackTrace()).append(")");
+
+                entry.setValue(new ErroredSpellExecutor(message));
+                source.getPlayer().ifPresent(player -> player.sendMessage(message));
             }
         }
     }
