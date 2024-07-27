@@ -1,4 +1,4 @@
-package dev.enjarai.trickster.spell.execution.spell;
+package dev.enjarai.trickster.spell.execution.executor;
 
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;

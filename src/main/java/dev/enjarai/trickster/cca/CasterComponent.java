@@ -29,6 +29,7 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
     private SpellExecutionManager executionManager;
     private Int2ObjectMap<RunningSpellData> runningSpellData = new Int2ObjectOpenHashMap<>();
     private int lastSentSpellDataHash;
+    private int wait;
 
     public static final Endec<Map<Integer, RunningSpellData>> SPELL_DATA_ENDEC =
             Endec.map(Endec.INT, ReflectiveEndecBuilder.SHARED_INSTANCE.get(RunningSpellData.class));
@@ -45,6 +46,11 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
 
     @Override
     public void serverTick() {
+        if (wait > 0) {
+            wait--;
+            return;
+        }
+
         runningSpellData.clear();
         executionManager.tick((index, executor) ->
                 runningSpellData.put(index, new RunningSpellData(executor.getLastRunExecutions())));
@@ -59,6 +65,7 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
             executionManager = result.resultOrPartial().orElseThrow();
 
         executionManager.setSource(new PlayerSpellSource((ServerPlayerEntity) player));
+        waitTicks(20);
     }
 
     @Override
@@ -104,6 +111,10 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
 
     public void kill(int index) {
         executionManager.kill(index);
+    }
+
+    public void waitTicks(int ticks) {
+        wait += ticks;
     }
 
     public Int2ObjectMap<RunningSpellData> getRunningSpellData() {

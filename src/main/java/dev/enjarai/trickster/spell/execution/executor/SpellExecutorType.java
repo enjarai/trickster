@@ -1,4 +1,4 @@
-package dev.enjarai.trickster.spell.execution.spell;
+package dev.enjarai.trickster.spell.execution.executor;
 
 import com.mojang.serialization.Lifecycle;
 import com.mojang.serialization.MapCodec;

@@ -8,7 +8,7 @@ import dev.enjarai.trickster.item.component.SpellComponent;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.execution.ExecutionState;
-import dev.enjarai.trickster.spell.execution.spell.SpellExecutor;
+import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
@@ -147,12 +147,25 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
         if (server != null) {
             server.execute(() -> {
                 if (player().getInventory().contains(ModItems.CAN_EVALUATE_DYNAMICALLY)) {
-                    var fragment = new SpellExecutor(otherHandSpell.get(), List.of())
-                            .run(new PlayerSpellSource((ServerPlayerEntity) player()))
-                            .orElse(VoidFragment.INSTANCE);
+                    var spell = new SpellExecutor(otherHandSpell.get(), List.of());
+                    Fragment result = VoidFragment.INSTANCE;
+
+                    try {
+                        result = spell.singleTickRun(new PlayerSpellSource((ServerPlayerEntity) player()));
+                    } catch (BlunderException blunder) {
+                        if (blunder instanceof NaNBlunder)
+                            ModCriteria.NAN_NUMBER.trigger((ServerPlayerEntity) player());
+
+                        player().sendMessage(blunder.createMessage()
+                                .append(" (").append(spell.getCurrentState().formatStackTrace()).append(")"));
+                    } catch (Exception e) {
+                        player().sendMessage(Text.literal("Uncaught exception in spell: " + e.getMessage())
+                                .append(" (").append(spell.getCurrentState().formatStackTrace()).append(")"));
+                    }
+
+                    sendMessage(new Replace(result));
                     ((ServerPlayerEntity) player()).getServerWorld().playSoundFromEntity(
                             null, player(), ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f));
-                    sendMessage(new Replace(fragment));
                 }
             });
         } else {

@@ -6,7 +6,7 @@ import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.SpellPart;
-import dev.enjarai.trickster.spell.execution.spell.SpellExecutor;
+import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import dev.enjarai.trickster.spell.mana.ManaPool;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
 import dev.enjarai.trickster.spell.trick.blunder.NaNBlunder;
@@ -69,13 +69,13 @@ public class SpellExecutionManager {
                 } else {
                     iterator.remove();
                 }
-            } catch (BlunderException e) {
+            } catch (BlunderException blunder) {
                 iterator.remove();
 
-                if (e instanceof NaNBlunder)
+                if (blunder instanceof NaNBlunder)
                     source.getPlayer().ifPresent(ModCriteria.NAN_NUMBER::trigger);
 
-                source.getPlayer().ifPresent(player -> player.sendMessage(e.createMessage()
+                source.getPlayer().ifPresent(player -> player.sendMessage(blunder.createMessage()
                         .append(" (").append(spell.getCurrentState().formatStackTrace()).append(")")));
             } catch (Exception e) {
                 iterator.remove();

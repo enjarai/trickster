@@ -2,8 +2,6 @@ package dev.enjarai.trickster.spell;
 
 import dev.enjarai.trickster.cca.ModEntityCumponents;
 import dev.enjarai.trickster.item.component.ModComponents;
-import dev.enjarai.trickster.spell.execution.spell.SpellExecutor;
-import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolItem;
 import net.minecraft.server.network.ServerPlayerEntity;
