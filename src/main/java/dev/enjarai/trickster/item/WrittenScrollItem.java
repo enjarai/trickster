@@ -41,9 +41,7 @@ public class WrittenScrollItem extends Item {
             if (!world.isClient()) {
                 var spell = stack.get(ModComponents.SPELL);
                 if (spell != null) {
-                    ModEntityCumponents.CASTER.get(user).queue(spell.spell(), List.of(), SimpleManaPool.getSingleUse(meta.mana()));
-                    ((ServerPlayerEntity) user).getServerWorld().playSoundFromEntity(
-                            null, user, ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f));
+                    ModEntityCumponents.CASTER.get(user).queueAndCast(spell.spell(), List.of(), SimpleManaPool.getSingleUse(meta.mana()));
 
                     stack.decrement(1);
                     return TypedActionResult.success(stack);
