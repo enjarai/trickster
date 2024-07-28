@@ -134,14 +134,14 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
         buf.write(SPELL_DATA_ENDEC, runningSpellData);
     }
 
-    public void queueAndCast(SpellPart spell, List<Fragment> arguments) {
-        executionManager.queue(spell, arguments);
+    public boolean queueAndCast(SpellPart spell, List<Fragment> arguments) {
         playCastSound(0.8f, 0.1f);
+        return executionManager.queue(spell, arguments);
     }
 
-    public void queueAndCast(SpellPart spell, List<Fragment> arguments, ManaPool poolOverride) {
-        executionManager.queue(spell, arguments, poolOverride);
+    public boolean queueAndCast(SpellPart spell, List<Fragment> arguments, ManaPool poolOverride) {
         playCastSound(0.8f, 0.1f);
+        return executionManager.queue(spell, arguments, poolOverride);
     }
 
     public void killAll() {
