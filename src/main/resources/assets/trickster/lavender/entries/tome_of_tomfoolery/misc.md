@@ -53,3 +53,13 @@ number, number, [number] -> number
 ---
 
 Shows a bar on the caster's screen identified by the first number displaying the second number.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:clear_bar,title=Ploy of Obfuscation|>
+
+number -> boolean
+
+---
+
+Immediately clears a bar from the caster's screen identified by the given number.

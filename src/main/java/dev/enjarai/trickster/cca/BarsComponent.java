@@ -50,6 +50,10 @@ public class BarsComponent implements ServerTickingComponent, AutoSyncedComponen
         bar.age = 0;
     }
 
+    public void clearBar(int id) {
+        bars.remove(id);
+    }
+
     @Override
     public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
         // No-op
