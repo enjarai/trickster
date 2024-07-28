@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 
 import java.lang.ref.WeakReference;
+import java.math.BigDecimal;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -107,7 +108,7 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
         }
     }
 
-    record PositionMemory(int spell, double x, double y, double size) {
+    record PositionMemory(int spell, BigDecimal x, BigDecimal y, BigDecimal size) {
 
     }
 }

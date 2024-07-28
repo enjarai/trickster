@@ -35,18 +35,7 @@ providing it with all other passed in fragments as arguments.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:closure,title=Closure Stratagem|>
-
-spell, [spell, any]... -> spell
-
----
-
-Replaces any occurrence of any of the latter spell's patterns inside the first spell
-with the fragment immediately following them.
-
-;;;;;
-
-<|glyph@trickster:templates|trick-id=trickster:iterator,title=Iteration Stratagem|>
+<|glyph@trickster:templates|trick-id=trickster:iterator,title=Iteration Distortion|>
 
 spell, any[] -> any[]
 
@@ -70,6 +59,16 @@ which is the result of this glyph.
 
 ;;;;;
 
+<|glyph@trickster:templates|trick-id=trickster:try_catch,title=Cautious Distortion|>
+
+spell, spell, any... -> any
+
+---
+
+Attempts to execute the first spell. If it blunders, the second spell is run and the blunder is silenced. Excess values are arguments to both. 
+
+;;;;;
+
 <|glyph@trickster:templates|trick-id=trickster:supplier,title=Supply Distortion|>
 
 any -> spell
@@ -77,6 +76,17 @@ any -> spell
 ---
 
 Creates a new spell fragment which returns the previously provided fragment when executed.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:closure,title=Closure Stratagem|>
+
+spell, [spell, any]... -> spell
+
+---
+
+Replaces any occurrence of any of the latter spell's patterns inside the first spell
+with the fragment immediately following them.
 
 ;;;;;
 

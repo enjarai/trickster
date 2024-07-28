@@ -4,18 +4,19 @@ import dev.enjarai.trickster.cca.ModEntityCumponents;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.PatternGlyph;
-import dev.enjarai.trickster.spell.PlayerSpellContext;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
+import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
-import dev.enjarai.trickster.spell.tricks.Trick;
-import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
-import dev.enjarai.trickster.spell.tricks.blunder.WardModifiedSelfBlunder;
-import dev.enjarai.trickster.spell.tricks.blunder.WardReturnBlunder;
+import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
+import dev.enjarai.trickster.spell.trick.blunder.SlowWardBlunder;
+import dev.enjarai.trickster.spell.trick.blunder.WardModifiedSelfBlunder;
+import dev.enjarai.trickster.spell.trick.blunder.WardReturnBlunder;
 import io.wispforest.accessories.api.AccessoryItem;
 import io.wispforest.accessories.api.slot.SlotReference;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
@@ -27,7 +28,7 @@ public class TrickyAccessoryItem extends AccessoryItem {
     }
 
     public static List<Fragment> tryWard(SpellContext triggerCtx, ServerPlayerEntity player, Trick source, List<Fragment> inputs) throws BlunderException {
-        if (triggerCtx.getCaster().map(c -> c.equals(player)).orElse(false)) {
+        if (triggerCtx.source().getCaster().map(c -> c.equals(player)).orElse(false)) {
             return inputs;
         }
 
@@ -49,14 +50,10 @@ public class TrickyAccessoryItem extends AccessoryItem {
         boolean applyBacklashIfModified = true;
 
         try {
-            var ctx = new PlayerSpellContext(triggerCtx.getRecursions(), player, EquipmentSlot.MAINHAND);
-            ctx.pushPartGlyph(List.of(new PatternGlyph(source.getPattern()), new ListFragment(inputs)));
+            var result = new DefaultSpellExecutor(spell, List.of(new PatternGlyph(source.getPattern()), new ListFragment(inputs))).run(new PlayerSpellSource(player));
 
-            var result = spell.run(ctx);
-            ctx.popPartGlyph();
-
-            if (result.type() == FragmentType.LIST) {
-                var newInputs = ((ListFragment)result).fragments();
+            if (result.orElseThrow(SlowWardBlunder::new).type() == FragmentType.LIST) {
+                var newInputs = ((ListFragment)result.get()).fragments();
                 int index = 0;
 
                 if (newInputs.size() != inputs.size())

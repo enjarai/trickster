@@ -12,12 +12,15 @@ import dev.enjarai.trickster.misc.ModDamageTypes;
 import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.screen.ModScreenHandlers;
-import dev.enjarai.trickster.spell.tricks.Tricks;
+import dev.enjarai.trickster.spell.trick.Tricks;
 import dev.enjarai.trickster.spell.world.SpellCircleEvent;
 import net.fabricmc.api.ModInitializer;
 
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,6 +57,10 @@ public class Trickster implements ModInitializer {
 		Tricks.register();
 		SpellCircleEvent.register();
 		ModCriteria.register();
+
+		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
+			TricksterCommand.register(dispatcher);
+		});
 
 		if (FabricLoader.getInstance().isModLoaded("pehkui")) {
 			PehkuiCompat.init();

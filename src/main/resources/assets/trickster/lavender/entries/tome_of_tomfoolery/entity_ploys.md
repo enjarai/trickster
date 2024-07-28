@@ -26,7 +26,7 @@ entity, entity ->
 
 <|cost-rule@trickster:templates|formula=480kG|>
 
-Polymorphs the first entity to appear to be the second in every way. Only works on players.
+Polymorphs the first entity to appear to be the second in every way. Only works with players.
 
 ;;;;;
 

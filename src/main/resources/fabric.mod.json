@@ -36,6 +36,8 @@
 		"cardinal-components": [
 			"trickster:shadow_disguise_map",
 			"trickster:mana",
+			"trickster:caster",
+			"trickster:bars",
 			"trickster:ward",
 			"trickster:disguise",
 			"trickster:is_editing_scroll"

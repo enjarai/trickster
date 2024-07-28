@@ -1,9 +1,7 @@
-- Added Spell Resonator. (@StellarWitch7 and @enjarai)
-- Added more config options. (@StellarWitch7)
-- Added mana cost documentation to the book. (@enjarai)
-- Added advancements. (@StellarWitch7)
-- Added the basis for further inventory interaction spells. (@StellarWitch7)
-- Added a trick to place an arrow in the world. (@StellarWitch7)
-- Grant the guide book to every player on join. (@enjarai)
-- Made spell ink drinkable. (@StellarWitch7)
-- Allow Top Hat to be placed in the hat accessory slot. (@enjarai)
+- Rewrote the spell execution engine to allow spells to seamlessly execute over longer spans of time. (@StellarWitch7, @ArkoSammy12, and @enjarai)
+  - Spells will now continue running in the background for as long as is needed for them to complete.
+  - Running spells can be killed using new buttons in the inventory.
+  - Spells can run indefinitely by recursing infinitely if needed.
+- Added tricks to display vertical bars with spell-provided values on the user's screen. (@enjarai)
+- Added a pattern for error handling within spells. (@StellarWitch7)
+- Improved spell editing slightly. (@enjarai)

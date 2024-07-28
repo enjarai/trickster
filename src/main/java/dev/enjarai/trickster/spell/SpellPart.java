@@ -3,19 +3,18 @@ package dev.enjarai.trickster.spell;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.enjarai.trickster.advancement.criterion.ModCriteria;
+import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
+import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.fragment.ZalgoFragment;
-import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
-import dev.enjarai.trickster.spell.tricks.blunder.NaNBlunder;
+import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
 import io.wispforest.endec.Endec;
 import io.wispforest.owo.serialization.CodecUtils;
 import net.minecraft.text.Text;
 
 import java.util.*;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public final class SpellPart implements Fragment {
@@ -45,56 +44,20 @@ public final class SpellPart implements Fragment {
     @Override
     public Fragment activateAsGlyph(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         if (fragments.isEmpty()) {
-            return this;
+            return Fragment.super.activateAsGlyph(ctx, fragments);
         } else {
-            ctx.pushStackTrace(-1);
-            ctx.pushPartGlyph(fragments);
-            var result = run(ctx);
-            ctx.popPartGlyph();
-            ctx.popStackTrace();
-            return result;
+            return makeFork(ctx, fragments).singleTickRun(ctx);
         }
     }
 
-    public Fragment run(SpellContext ctx) throws BlunderException {
-        var fragments = new ArrayList<Fragment>();
-
-        int i = 0;
-        for (var part : subParts) {
-            ctx.pushStackTrace(i);
-            fragments.add(part.run(ctx));
-            ctx.popStackTrace();
-            i++;
-        }
-
-        var value = glyph.activateAsGlyph(ctx, fragments);
-
-        if (ctx.isDestructive() && !value.equals(VoidFragment.INSTANCE)) {
-            if (glyph != value) {
-                subParts.clear();
-            }
-            glyph = value;
-        }
-
-        return value;
+    @Override
+    public boolean forks(SpellContext ctx, List<Fragment> args) {
+        return !args.isEmpty();
     }
 
-    public Optional<Fragment> runSafely(SpellContext ctx, Consumer<Text> onError) {
-        try {
-            return Optional.of(run(ctx));
-        } catch (BlunderException e) {
-            if (e instanceof NaNBlunder)
-                ctx.getPlayer().ifPresent((player) -> ModCriteria.NAN_NUMBER.trigger(player));
-
-            onError.accept(e.createMessage().append(" (").append(ctx.formatStackTrace()).append(")"));
-        } catch (Exception e) {
-            onError.accept(Text.literal("Uncaught exception in spell: " + e.getMessage()));
-        }
-        return Optional.empty();
-    }
-
-    public Optional<Fragment> runSafely(SpellContext ctx) {
-        return runSafely(ctx, err -> ctx.getPlayer().ifPresent(player -> player.sendMessage(err)));
+    @Override
+    public SpellExecutor makeFork(SpellContext ctx, List<Fragment> args) throws BlunderException {
+        return new DefaultSpellExecutor(this, ctx.executionState().recurseOrThrow(args));
     }
 
     public void brutallyMurderEphemerals() {
@@ -107,6 +70,26 @@ public final class SpellPart implements Fragment {
                 glyph = new ZalgoFragment();
             }
         }
+    }
+
+    public Fragment destructiveRun(SpellContext ctx) {
+        var arguments = new ArrayList<Fragment>();
+
+        for (var subpart : subParts) {
+            arguments.add(subpart.destructiveRun(ctx));
+        }
+
+        var value = glyph.activateAsGlyph(ctx, arguments);
+
+        if (!value.equals(VoidFragment.INSTANCE)) {
+            if (glyph != value) {
+                subParts.clear();
+            }
+
+            glyph = value;
+        }
+
+        return value;
     }
 
     public void buildClosure(Map<Pattern, Fragment> replacements) {

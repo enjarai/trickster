@@ -2,8 +2,9 @@ package dev.enjarai.trickster.cca;
 
 import dev.enjarai.trickster.entity.ModEntities;
 import dev.enjarai.trickster.misc.ModDamageTypes;
-import dev.enjarai.trickster.spell.ManaPool;
-import dev.enjarai.trickster.spell.SimpleManaPool;
+import dev.enjarai.trickster.spell.mana.ManaPool;
+import dev.enjarai.trickster.spell.mana.ManaPoolType;
+import dev.enjarai.trickster.spell.mana.SimpleManaPool;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.RegistryByteBuf;
@@ -49,6 +50,11 @@ public class ManaComponent extends SimpleManaPool implements AutoSyncedComponent
 
         maxMana = ManaPool.manaFromHealth(entity.getMaxHealth());
         stdIncrease();
+    }
+
+    @Override
+    public ManaPoolType<?> type() {
+        return null;
     }
 
     /**

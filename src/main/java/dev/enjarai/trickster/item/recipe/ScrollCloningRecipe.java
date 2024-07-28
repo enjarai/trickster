@@ -3,6 +3,8 @@ package dev.enjarai.trickster.item.recipe;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.WrittenScrollItem;
 import dev.enjarai.trickster.item.component.ModComponents;
+import dev.enjarai.trickster.item.component.SpellComponent;
+import net.minecraft.component.ComponentType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
@@ -24,7 +26,7 @@ public class ScrollCloningRecipe extends SpecialCraftingRecipe {
         for(int j = 0; j < craftingRecipeInput.getSize(); ++j) {
             ItemStack itemStack2 = craftingRecipeInput.getStackInSlot(j);
             if (!itemStack2.isEmpty()) {
-                if (itemStack2.isOf(ModItems.WRITTEN_SCROLL)) {
+                if (itemStack2.isOf(ModItems.WRITTEN_SCROLL) && itemStack2.get(ModComponents.SPELL) instanceof SpellComponent spell && !spell.closed()) {
                     if (!itemStack.isEmpty()) {
                         return false;
                     }

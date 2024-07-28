@@ -5,15 +5,17 @@
   "plugin": "dev.enjarai.trickster.ConditionalMixins",
   "client": [
     "AbstractClientPlayerEntityMixin",
-    "tooltip.TooltipComponentMixin",
     "HeldItemRendererMixin",
     "InGameHudMixin",
+    "InventoryScreenMixin",
     "MouseMixin",
     "PlayerRendererMixin",
     "RenderedChunkMixin",
     "SillyHairsFeatureRendererMixin",
     "WorldRendererAccessor",
-    "sodium.WorldSliceMixin"
+    "accessories.AccessoriesScreenMixin",
+    "sodium.WorldSliceMixin",
+    "tooltip.TooltipComponentMixin"
   ],
   "injectors": {
     "defaultRequire": 1

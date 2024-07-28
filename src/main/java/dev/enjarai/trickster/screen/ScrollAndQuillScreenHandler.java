@@ -1,14 +1,19 @@
 package dev.enjarai.trickster.screen;
 
 import dev.enjarai.trickster.ModSounds;
+import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.SpellComponent;
 import dev.enjarai.trickster.spell.Fragment;
-import dev.enjarai.trickster.spell.PlayerSpellContext;
+import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.execution.ExecutionState;
+import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
+import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
-import dev.enjarai.trickster.spell.tricks.blunder.ImmutableItemBlunder;
+import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
+import dev.enjarai.trickster.spell.trick.blunder.NaNBlunder;
 import io.wispforest.endec.Endec;
 import io.wispforest.owo.client.screens.SyncedProperty;
 import net.minecraft.entity.EquipmentSlot;
@@ -18,7 +23,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.text.Text;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public class ScrollAndQuillScreenHandler extends ScreenHandler {
@@ -83,14 +90,22 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
                 if (server != null) {
                     server.execute(() -> {
                         if (greedyEvaluation) {
-                            var ctx = new PlayerSpellContext((ServerPlayerEntity) player(), slot).setDestructive();
-                            spell.runSafely(ctx, err -> {
-                            });
-                            if (ctx.hasAffectedWorld()) {
-                                ((ServerPlayerEntity) player()).getServerWorld().playSoundFromEntity(
-                                        null, player(), ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f));
+                            var executionState = new ExecutionState(List.of());
+                            try {
+                                spell.destructiveRun(new SpellContext(new PlayerSpellSource((ServerPlayerEntity) player()), executionState));
+                                this.spell.set(spell);
+                            } catch (BlunderException e) {
+                                if (e instanceof NaNBlunder)
+                                    ModCriteria.NAN_NUMBER.trigger((ServerPlayerEntity) player());
+
+                                player().sendMessage(e.createMessage().append(" (").append(executionState.formatStackTrace()).append(")"));
+                            } catch (Exception e) {
+                                player().sendMessage(Text.literal("Uncaught exception in spell: " + e.getMessage())
+                                        .append(" (").append(executionState.formatStackTrace()).append(")"));
                             }
-                            this.spell.set(spell);
+
+                            ((ServerPlayerEntity) player()).getServerWorld().playSoundFromEntity(
+                                    null, player(), ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f));
                         } else {
                             spell.brutallyMurderEphemerals();
                         }
@@ -132,12 +147,25 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
         if (server != null) {
             server.execute(() -> {
                 if (player().getInventory().contains(ModItems.CAN_EVALUATE_DYNAMICALLY)) {
-                    var fragment = otherHandSpell.get()
-                            .runSafely(new PlayerSpellContext((ServerPlayerEntity) player(), slot))
-                            .orElse(VoidFragment.INSTANCE);
+                    var spell = new DefaultSpellExecutor(otherHandSpell.get(), List.of());
+                    Fragment result = VoidFragment.INSTANCE;
+
+                    try {
+                        result = spell.singleTickRun(new PlayerSpellSource((ServerPlayerEntity) player()));
+                    } catch (BlunderException blunder) {
+                        if (blunder instanceof NaNBlunder)
+                            ModCriteria.NAN_NUMBER.trigger((ServerPlayerEntity) player());
+
+                        player().sendMessage(blunder.createMessage()
+                                .append(" (").append(spell.getCurrentState().formatStackTrace()).append(")"));
+                    } catch (Exception e) {
+                        player().sendMessage(Text.literal("Uncaught exception in spell: " + e.getMessage())
+                                .append(" (").append(spell.getCurrentState().formatStackTrace()).append(")"));
+                    }
+
+                    sendMessage(new Replace(result));
                     ((ServerPlayerEntity) player()).getServerWorld().playSoundFromEntity(
                             null, player(), ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f));
-                    sendMessage(new Replace(fragment));
                 }
             });
         } else {

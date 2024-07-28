@@ -5,8 +5,8 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.tricks.Trick;
-import dev.enjarai.trickster.spell.tricks.blunder.*;
+import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.trick.blunder.*;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -49,7 +49,7 @@ public record SlotFragment(int slot, Optional<BlockPos> source) implements Fragm
             throw new MissingItemBlunder(trickSource);
 
         var result = stack.copyWithCount(amount);
-        source.ifPresent(pos -> ctx.useMana(trickSource, (float) (amount * (32 + (ctx.getBlockPos().toCenterPos().distanceTo(pos.toCenterPos()) * 0.8)))));
+        source.ifPresent(pos -> ctx.useMana(trickSource, (float) (amount * (32 + (ctx.source().getBlockPos().toCenterPos().distanceTo(pos.toCenterPos()) * 0.8)))));
         stack.decrement(amount);
         return result;
     }
@@ -61,12 +61,12 @@ public record SlotFragment(int slot, Optional<BlockPos> source) implements Fragm
     private ItemStack getStack(Trick trickSource, SpellContext ctx) throws BlunderException {
         Inventory inventory;
         if (source.isPresent()) {
-            if (ctx.getWorld().getBlockEntity(source.get()) instanceof Inventory entity)
+            if (ctx.source().getWorld().getBlockEntity(source.get()) instanceof Inventory entity)
                 inventory = entity;
             else throw new BlockInvalidBlunder(trickSource);
         } else {
-            if (ctx.getPlayer().isPresent())
-                inventory = ctx.getPlayer().get().getInventory();
+            if (ctx.source().getPlayer().isPresent())
+                inventory = ctx.source().getPlayer().get().getInventory();
             else throw new NoPlayerBlunder(trickSource);
         }
 

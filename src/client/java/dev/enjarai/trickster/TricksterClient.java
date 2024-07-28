@@ -9,6 +9,7 @@ import dev.enjarai.trickster.net.ModClientNetworking;
 import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.particle.ProtectedBlockParticle;
+import dev.enjarai.trickster.render.BarsRenderer;
 import dev.enjarai.trickster.render.HoldableHatRenderer;
 import dev.enjarai.trickster.render.SpellCircleBlockEntityRenderer;
 import dev.enjarai.trickster.screen.ModHandledScreens;
@@ -21,6 +22,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.client.render.RenderLayer;
@@ -57,5 +59,7 @@ public class TricksterClient implements ClientModInitializer {
 				}
 			}
 		});
+
+		HudRenderCallback.EVENT.register(BarsRenderer::render);
 	}
 }

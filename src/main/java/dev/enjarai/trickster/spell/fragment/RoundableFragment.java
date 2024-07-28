@@ -1,7 +1,7 @@
 package dev.enjarai.trickster.spell.fragment;
 
 import dev.enjarai.trickster.spell.Fragment;
-import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
+import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
 
 public interface RoundableFragment extends Fragment {
     RoundableFragment floor() throws BlunderException;

@@ -138,6 +138,9 @@ trickster:
     other_hand: Juggling Delusion
 
     type_fragment: Argumentative Distortion
+    delay_execution: Ploy of Suspension
+    show_bar: Ploy of Clarity
+    clear_bar: Ploy of Obfuscation
 
     get_scale: Distortion of Occupation
     set_scale: Ploy of Occupation
@@ -199,4 +202,7 @@ text.config.trickster-config:
   option:
     dragDrawing: Draw by dragging
     topHatInterceptScrolling: Top Hat intercepts hotbar scrolling
+    barsHorizontal: Show spell-created bars horizontally
+    revealToHotbar: Write spell-revealed values to action bar
+    maxExecutionsPerSpellPerTick: Maximum operations per tick per spell
     allowSwapBedrock: Bedrock can be swapped with other blocks

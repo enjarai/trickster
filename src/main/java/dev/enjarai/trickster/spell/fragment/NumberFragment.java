@@ -3,11 +3,11 @@ package dev.enjarai.trickster.spell.fragment;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import dev.enjarai.trickster.spell.Fragment;
-import dev.enjarai.trickster.spell.tricks.Tricks;
-import dev.enjarai.trickster.spell.tricks.blunder.BlunderException;
-import dev.enjarai.trickster.spell.tricks.blunder.DivideByZeroBlunder;
-import dev.enjarai.trickster.spell.tricks.blunder.IncompatibleTypesBlunder;
-import dev.enjarai.trickster.spell.tricks.blunder.NaNBlunder;
+import dev.enjarai.trickster.spell.trick.Tricks;
+import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
+import dev.enjarai.trickster.spell.trick.blunder.DivideByZeroBlunder;
+import dev.enjarai.trickster.spell.trick.blunder.IncompatibleTypesBlunder;
+import dev.enjarai.trickster.spell.trick.blunder.NaNBlunder;
 import net.minecraft.text.Text;
 
 import java.util.Objects;
@@ -102,6 +102,10 @@ public final class NumberFragment implements Fragment, AddableFragment, Subtract
 
     public boolean isInteger() {
         return number - Math.floor(number) == 0;
+    }
+
+    public int asInt() {
+        return (int) Math.floor(number);
     }
 
     public double number() {

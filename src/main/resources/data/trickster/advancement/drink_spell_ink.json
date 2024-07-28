@@ -18,7 +18,7 @@
         "consume_item": {
             "trigger": "minecraft:consume_item",
             "conditions": {
-                "item": {
+                "items": {
                     "item": "trickster:spell_ink"
                 }
             }

@@ -1,8 +1,8 @@
 package dev.enjarai.trickster.screen.owo;
 
 import dev.enjarai.trickster.spell.Pattern;
-import dev.enjarai.trickster.spell.tricks.Trick;
-import dev.enjarai.trickster.spell.tricks.Tricks;
+import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.trick.Tricks;
 import io.wispforest.owo.ui.base.BaseComponent;
 import io.wispforest.owo.ui.core.OwoUIDrawContext;
 import io.wispforest.owo.ui.core.Sizing;

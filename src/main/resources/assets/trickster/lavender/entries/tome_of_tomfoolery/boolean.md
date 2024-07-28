@@ -72,3 +72,23 @@ boolean... -> boolean
 ---
 
 Will return true if none of the provided inputs are true.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:lesser_than,title=Lesser Distortion|>
+
+number, number -> boolean
+
+---
+
+Returns whether the first number is lesser than the second.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:greater_than,title=Greater Distortion|>
+
+number, number -> boolean
+
+---
+
+Returns whether the first number is greater than the second.
