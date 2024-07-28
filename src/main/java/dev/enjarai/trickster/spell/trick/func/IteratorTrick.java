@@ -25,6 +25,6 @@ public class IteratorTrick extends Trick implements ForkingTrick {
     public SpellExecutor makeFork(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var executable = expectInput(fragments, FragmentType.SPELL_PART, 0);
         var list = expectInput(fragments, FragmentType.LIST, 1);
-        return new IteratorSpellExecutor(executable, list);
+        return new IteratorSpellExecutor(ctx, executable, list);
     }
 }

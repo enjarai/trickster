@@ -25,6 +25,6 @@ public class TryCatchTrick extends Trick implements ForkingTrick {
     public SpellExecutor makeFork(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var try_spell = expectInput(fragments, FragmentType.SPELL_PART, 0);
         var catch_spell = expectInput(fragments, FragmentType.SPELL_PART, 1);
-        return new TryCatchSpellExecutor(try_spell, catch_spell, fragments.subList(2, fragments.size()));
+        return new TryCatchSpellExecutor(ctx, try_spell, catch_spell, fragments.subList(2, fragments.size()));
     }
 }

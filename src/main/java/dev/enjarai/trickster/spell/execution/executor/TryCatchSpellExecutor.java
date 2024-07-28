@@ -32,10 +32,11 @@ public class TryCatchSpellExecutor extends DefaultSpellExecutor {
         this.catching = catching;
     }
 
-    public TryCatchSpellExecutor(SpellPart trySpell, SpellPart catchSpell, List<Fragment> arguments) {
+    public TryCatchSpellExecutor(SpellContext ctx, SpellPart trySpell, SpellPart catchSpell, List<Fragment> arguments) {
         super(new SpellPart(), List.of());
-        this.trySpell = new DefaultSpellExecutor(trySpell, arguments);
-        this.catchSpell = new DefaultSpellExecutor(catchSpell, arguments);
+        this.state = ctx.executionState().recurseOrThrow(List.of());
+        this.trySpell = new DefaultSpellExecutor(trySpell, this.state.recurseOrThrow(arguments));
+        this.catchSpell = new DefaultSpellExecutor(catchSpell, this.state.recurseOrThrow(arguments));
     }
 
     @Override

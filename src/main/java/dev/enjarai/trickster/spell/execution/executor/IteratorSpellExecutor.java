@@ -37,8 +37,9 @@ public class IteratorSpellExecutor extends DefaultSpellExecutor {
         this.elements.addAll(elements);
     }
 
-    public IteratorSpellExecutor(SpellPart executable, ListFragment list) {
+    public IteratorSpellExecutor(SpellContext ctx, SpellPart executable, ListFragment list) {
         super(new SpellPart(), List.of());
+        this.state = ctx.executionState().recurseOrThrow(List.of());
         this.executable = executable;
         this.list = list;
         this.elements.addAll(list.fragments());
@@ -68,7 +69,7 @@ public class IteratorSpellExecutor extends DefaultSpellExecutor {
                 return Optional.empty();
             }
 
-            child = Optional.of(new DefaultSpellExecutor(executable, List.of(elements.pop(), new NumberFragment(list.fragments().size() - elements.size() - 1), list)));
+            child = Optional.of(new DefaultSpellExecutor(executable, ctx.executionState().recurseOrThrow(List.of(elements.pop(), new NumberFragment(list.fragments().size() - elements.size() - 1), list))));
             var result = runChild(ctx, executions);
 
             if (result.isEmpty()) {
