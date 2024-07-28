@@ -16,7 +16,7 @@ public class TricksterConfigModel {
     public boolean revealToHotbar = false;
 
     @Sync(Option.SyncMode.OVERRIDE_CLIENT)
-    public int maxExecutionsPerSpellPerTick = 120;
+    public int maxExecutionsPerSpellPerTick = 64;
 
     public boolean allowSwapBedrock = true;
 }

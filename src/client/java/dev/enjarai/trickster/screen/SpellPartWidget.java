@@ -428,7 +428,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
         int partCount = part.getSubParts().size();
         // We dont change this, its the same for all subcircles
-        var nextSize = Math.min(size / 2, size / (float) (partCount / 2));
+        var nextSize = Math.min(size / 2, size / (float) ((partCount + 1) / 2));
         int i = 0;
         for (var child : part.getSubParts()) {
             var angle = startingAngle + (2 * Math.PI) / partCount * i - (Math.PI / 2);

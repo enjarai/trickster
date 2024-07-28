@@ -89,7 +89,7 @@ public class SpellCircleRenderer {
             var nextX = x + (size * Math.cos(angle));
             var nextY = y + (size * Math.sin(angle));
 
-            var nextSize = Math.min(size / 2, size / (float) (partCount / 2));
+            var nextSize = Math.min(size / 2, size / (float) ((partCount + 1) / 2));
 
             renderPart(matrices, vertexConsumers, child, (float) nextX, (float) nextY, nextSize, angle, delta, alphaGetter, normal);
 
