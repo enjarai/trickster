@@ -63,7 +63,7 @@ public class SpellExecutionManager {
         return false;
     }
 
-    public void tick(ExecutorDoneCallback executorDoneCallback) {
+    public void tick(ExecutorCallback tickCallback, ExecutorCallback completeCallback, ExecutorCallback errorCallback) {
         if (source == null)
             return;
 
@@ -73,9 +73,10 @@ public class SpellExecutionManager {
 
             try {
                 if (spell.run(source).isEmpty()) {
-                    executorDoneCallback.callTheBack(entry.getIntKey(), spell);
+                    tickCallback.callTheBack(entry.getIntKey(), spell);
                 } else {
                     iterator.remove();
+                    completeCallback.callTheBack(entry.getIntKey(), spell);
                 }
             } catch (BlunderException blunder) {
                 var message = blunder.createMessage()
@@ -86,12 +87,14 @@ public class SpellExecutionManager {
 
                 entry.setValue(new ErroredSpellExecutor(message));
                 source.getPlayer().ifPresent(player -> player.sendMessage(message));
+                errorCallback.callTheBack(entry.getIntKey(), spell);
             } catch (Exception e) {
                 var message = Text.literal("Uncaught exception in spell: " + e.getMessage())
                         .append(" (").append(spell.getCurrentState().formatStackTrace()).append(")");
 
                 entry.setValue(new ErroredSpellExecutor(message));
                 source.getPlayer().ifPresent(player -> player.sendMessage(message));
+                errorCallback.callTheBack(entry.getIntKey(), spell);
             }
         }
     }
@@ -108,7 +111,7 @@ public class SpellExecutionManager {
         spells.remove(index);
     }
 
-    public interface ExecutorDoneCallback {
+    public interface ExecutorCallback {
         void callTheBack(int index, SpellExecutor executor);
     }
 }

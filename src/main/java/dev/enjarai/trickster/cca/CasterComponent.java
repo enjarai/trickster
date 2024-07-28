@@ -1,14 +1,15 @@
 package dev.enjarai.trickster.cca;
 
 import com.mojang.serialization.DataResult;
+import dev.enjarai.trickster.ModSounds;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.execution.executor.ErroredSpellExecutor;
+import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
 import dev.enjarai.trickster.spell.execution.SpellExecutionManager;
 import dev.enjarai.trickster.spell.mana.ManaPool;
 import io.wispforest.endec.Endec;
-import io.wispforest.endec.impl.ReflectiveEndecBuilder;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import io.wispforest.owo.serialization.endec.MinecraftEndecs;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -20,6 +21,7 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
@@ -62,17 +64,34 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
         }
 
         runningSpellData.clear();
-        executionManager.tick((index, executor) -> {
-            Text message = null;
-            boolean errored = false;
-            if (executor instanceof ErroredSpellExecutor error) {
-                message = error.errorMessage();
-                errored = true;
-            }
-            runningSpellData.put(index, new RunningSpellData(
-                    executor.getLastRunExecutions(), errored, Optional.ofNullable(message)));
-        });
+        executionManager.tick(this::afterExecutorTick, this::completeExecutor, this::executorError);
         ModEntityCumponents.CASTER.sync(player);
+    }
+
+    private void afterExecutorTick(int index, SpellExecutor executor) {
+        Text message = null;
+        boolean errored = false;
+        if (executor instanceof ErroredSpellExecutor error) {
+            message = error.errorMessage();
+            errored = true;
+        }
+        runningSpellData.put(index, new RunningSpellData(
+                executor.getLastRunExecutions(), errored, Optional.ofNullable(message)));
+    }
+
+    private void completeExecutor(int index, SpellExecutor executor) {
+        playCastSound(1.2f, 0.1f);
+    }
+
+    private void executorError(int index, SpellExecutor executor) {
+        playCastSound(0.5f, 0.1f);
+    }
+
+    private void playCastSound(float startPitch, float pitchRange) {
+        if (player instanceof ServerPlayerEntity serverPlayer) {
+            serverPlayer.getServerWorld().playSoundFromEntity(
+                    null, serverPlayer, ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(startPitch, pitchRange));
+        }
     }
 
     @Override
@@ -115,12 +134,14 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
         buf.write(SPELL_DATA_ENDEC, runningSpellData);
     }
 
-    public void queue(SpellPart spell, List<Fragment> arguments) {
+    public void queueAndCast(SpellPart spell, List<Fragment> arguments) {
         executionManager.queue(spell, arguments);
+        playCastSound(0.8f, 0.1f);
     }
 
-    public void queue(SpellPart spell, List<Fragment> arguments, ManaPool poolOverride) {
+    public void queueAndCast(SpellPart spell, List<Fragment> arguments, ManaPool poolOverride) {
         executionManager.queue(spell, arguments, poolOverride);
+        playCastSound(0.8f, 0.1f);
     }
 
     public void killAll() {
@@ -129,6 +150,7 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
 
     public void kill(int index) {
         executionManager.kill(index);
+//        playCastSound(0.6f, 0.1f);
     }
 
     public void waitTicks(int ticks) {

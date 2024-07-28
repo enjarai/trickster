@@ -17,6 +17,7 @@ import net.minecraft.util.math.Vec3d;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
@@ -58,12 +59,12 @@ public class SpellCircleRenderer {
         this.mouseY = mouseY;
     }
 
-    public void renderPart(MatrixStack matrices, VertexConsumerProvider vertexConsumers, SpellPart entry, float x, float y, float size, double startingAngle, float delta, Function<Float, Float> alphaGetter, Vec3d normal) {
-        var alpha = alphaGetter.apply(size);
+    public void renderPart(MatrixStack matrices, VertexConsumerProvider vertexConsumers, SpellPart entry, double x, double y, double size, double startingAngle, float delta, Function<Float, Float> alphaGetter, Vec3d normal) {
+        var alpha = alphaGetter.apply((float) size);
 
         drawTexturedQuad(
                 matrices, vertexConsumers, CIRCLE_TEXTURE,
-                x - size, x + size, y - size, y + size,
+                (float) (x - size), (float) (x + size), (float) (y - size), (float) (y + size),
                 0,
                 1f, 1f, 1f, alpha, normal
         );
@@ -75,7 +76,7 @@ public class SpellCircleRenderer {
 
         int partCount = entry.getSubParts().size();
 
-        drawDivider(matrices, vertexConsumers, x, y, startingAngle, size, partCount, alpha);
+        drawDivider(matrices, vertexConsumers, (float) x, (float) y, startingAngle, (float) size, partCount, alpha);
 
         matrices.push();
         if (!inUI) {
@@ -88,7 +89,7 @@ public class SpellCircleRenderer {
             var nextX = x + (size * Math.cos(angle));
             var nextY = y + (size * Math.sin(angle));
 
-            var nextSize = Math.min(size / 2, size / (float) (partCount / 2));
+            var nextSize = Math.min(size / 2, size / (float) ((partCount + 1) / 2));
 
             renderPart(matrices, vertexConsumers, child, (float) nextX, (float) nextY, nextSize, angle, delta, alphaGetter, normal);
 
@@ -124,19 +125,19 @@ public class SpellCircleRenderer {
 //        );
     }
 
-    protected void drawGlyph(MatrixStack matrices, VertexConsumerProvider vertexConsumers, SpellPart parent, float x, float y, float size, double startingAngle, float delta, Function<Float, Float> alphaGetter, Vec3d normal) {
+    protected void drawGlyph(MatrixStack matrices, VertexConsumerProvider vertexConsumers, SpellPart parent, double x, double y, double size, double startingAngle, float delta, Function<Float, Float> alphaGetter, Vec3d normal) {
         var glyph = parent.getGlyph();
         if (glyph instanceof SpellPart part) {
             renderPart(matrices, vertexConsumers, part, x, y, size / 3, startingAngle, delta, alphaGetter, normal);
         } else {
             matrices.push();
-            drawSide(matrices, vertexConsumers, parent, x, y, size, alphaGetter, glyph);
+            drawSide(matrices, vertexConsumers, parent, (float) x, (float) y, (float) size, alphaGetter, glyph);
             matrices.pop();
 
             if (!inUI) {
                 matrices.push();
                 matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
-                drawSide(matrices, vertexConsumers, parent, -x, y, size, alphaGetter, glyph);
+                drawSide(matrices, vertexConsumers, parent, (float) -x, (float) y, (float) size, alphaGetter, glyph);
                 matrices.pop();
             }
         }

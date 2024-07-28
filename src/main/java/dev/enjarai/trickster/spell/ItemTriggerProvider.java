@@ -38,7 +38,7 @@ public interface ItemTriggerProvider {
         var spellComponent = stack.get(ModComponents.SPELL);
 
         if (spellComponent != null) {
-            ModEntityCumponents.CASTER.get(player).queue(spellComponent.spell(), arguments);
+            ModEntityCumponents.CASTER.get(player).queueAndCast(spellComponent.spell(), arguments);
         }
     }
 }
