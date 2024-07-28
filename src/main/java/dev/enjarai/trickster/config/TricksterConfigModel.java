@@ -13,7 +13,7 @@ public class TricksterConfigModel {
     public boolean barsHorizontal = false;
 
     @Sync(Option.SyncMode.INFORM_SERVER)
-    public boolean revealToHotbar = false;
+    public boolean revealToHotbar = true;
 
     @Sync(Option.SyncMode.OVERRIDE_CLIENT)
     public int maxExecutionsPerSpellPerTick = 64;
