@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class SpellExecutionManager {
     public static final Codec<SpellExecutionManager> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.INT.optionalFieldOf("capacity", 5).forGetter(e -> e.capacity),
-            Codec.unboundedMap(Codec.STRING.xmap(Integer::parseInt, Object::toString), SpellExecutor.CODEC.get().codec())
+            Codec.unboundedMap(Codec.STRING.xmap(Integer::parseInt, Object::toString), SpellExecutor.CODEC.get())
                     .fieldOf("spells").forGetter((e) -> e.spells)
     ).apply(instance, SpellExecutionManager::new));
 

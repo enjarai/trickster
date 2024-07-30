@@ -23,7 +23,7 @@ public class DefaultSpellExecutor implements SpellExecutor {
             Codec.list(Fragment.CODEC.get().codec()).fieldOf("inputs").forGetter(executor -> executor.inputs),
             Codec.list(Codec.INT).fieldOf("scope").forGetter(executor -> executor.scope),
             ExecutionState.CODEC.fieldOf("state").forGetter(executor -> executor.state),
-            SpellExecutor.CODEC.get().codec().optionalFieldOf("child").forGetter(executor -> executor.child),
+            SpellExecutor.CODEC.get().optionalFieldOf("child").forGetter(executor -> executor.child),
             Fragment.CODEC.get().codec().optionalFieldOf("override_return_value").forGetter(executor -> executor.overrideReturnValue)
     ).apply(instance, (instructions, inputs, scope, state, child, overrideReturnValue) -> {
         List<SpellInstruction> serializedInstructions = instructions.stream().map(SerializedSpellInstruction::toDeserialized).collect(Collectors.toList());

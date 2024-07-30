@@ -16,8 +16,8 @@ import java.util.Optional;
 public class TryCatchSpellExecutor extends DefaultSpellExecutor {
     public static final MapCodec<TryCatchSpellExecutor> CODEC = RecordCodecBuilder.mapCodec((instance) -> instance.group(
             DefaultSpellExecutor.CODEC.codec().fieldOf("self").forGetter(executor -> executor),
-            SpellExecutor.CODEC.get().fieldOf("try").forGetter(executor -> executor.trySpell),
-            SpellExecutor.CODEC.get().fieldOf("catch").forGetter(executor -> executor.catchSpell),
+            SpellExecutor.MAP_CODEC.get().fieldOf("try").forGetter(executor -> executor.trySpell),
+            SpellExecutor.MAP_CODEC.get().fieldOf("catch").forGetter(executor -> executor.catchSpell),
             Codec.BOOL.fieldOf("catching").forGetter(executor -> executor.catching)
     ).apply(instance, (self, trySpell, catchSpell, catching) -> new TryCatchSpellExecutor(self.instructions, self.inputs, self.scope, self.state, self.child, self.overrideReturnValue, trySpell, catchSpell, catching)));
 

@@ -23,7 +23,7 @@ public class IteratorSpellExecutor extends DefaultSpellExecutor {
             ListFragment.CODEC.codec().fieldOf("list").forGetter(executor -> executor.list),
             Codec.list(Fragment.CODEC.get().codec()).fieldOf("inputs").forGetter(executor -> executor.inputs),
             ExecutionState.CODEC.fieldOf("state").forGetter(executor -> executor.state),
-            SpellExecutor.CODEC.get().codec().optionalFieldOf("child").forGetter(executor -> executor.child)
+            SpellExecutor.CODEC.get().optionalFieldOf("child").forGetter(executor -> executor.child)
     ).apply(instance, IteratorSpellExecutor::new)));
 
     protected final SpellPart executable;

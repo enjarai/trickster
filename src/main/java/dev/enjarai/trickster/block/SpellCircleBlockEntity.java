@@ -1,15 +1,22 @@
 package dev.enjarai.trickster.block;
 
 import dev.enjarai.trickster.Trickster;
+import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
+import dev.enjarai.trickster.spell.execution.executor.ErroredSpellExecutor;
+import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.BlockSpellSource;
+import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.mana.SimpleManaPool;
+import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
+import dev.enjarai.trickster.spell.trick.blunder.NaNBlunder;
 import dev.enjarai.trickster.spell.world.SpellCircleEvent;
 import io.wispforest.endec.impl.KeyedEndec;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtOps;
@@ -32,7 +39,11 @@ public class SpellCircleBlockEntity extends BlockEntity {
     public static final KeyedEndec<SimpleManaPool> MANA_POOL_ENDEC =
             SimpleManaPool.ENDEC.keyed("mana_pool", () -> new SimpleManaPool(MAX_MANA));
 
-    public SpellPart spell = new SpellPart();
+    // Used with single-tick events
+    public SpellPart spell;
+    // Used with multitick events
+    public SpellExecutor executor;
+
     public SpellCircleEvent event = SpellCircleEvent.NONE;
     public Text lastError;
     public int age;
@@ -51,6 +62,8 @@ public class SpellCircleBlockEntity extends BlockEntity {
         }
     };
 
+    public transient SpellSource spellSource;
+
     public SpellCircleBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlocks.SPELL_CIRCLE_ENTITY, pos, state);
     }
@@ -65,35 +78,63 @@ public class SpellCircleBlockEntity extends BlockEntity {
                     .ifPresent(pair -> spell = pair.getFirst());
         }
 
+        if (nbt.contains("executor")) {
+            SpellExecutor.CODEC.get().decode(NbtOps.INSTANCE, nbt.get("executor"))
+                    .resultOrPartial(err -> Trickster.LOGGER.warn("Failed to load executor in spell circle: {}", err))
+                    .ifPresent(pair -> executor = pair.getFirst());
+        }
+
         if (nbt.contains("event")) {
             event = SpellCircleEvent.REGISTRY.getEntry(Identifier.of(nbt.getString("event")))
                     .map(RegistryEntry.Reference::value).orElse(SpellCircleEvent.NONE);
         }
 
         manaPool = nbt.get(MANA_POOL_ENDEC);
+
+        lastPower = nbt.getInt("last_power");
     }
 
     @Override
     protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         super.writeNbt(nbt, registryLookup);
 
-        SpellPart.CODEC.encodeStart(NbtOps.INSTANCE, spell)
-                .resultOrPartial(err -> Trickster.LOGGER.warn("Failed to save spell in spell circle: {}", err))
-                .ifPresent(element -> nbt.put("spell", element));
+        if (spell != null) {
+            SpellPart.CODEC.encodeStart(NbtOps.INSTANCE, spell)
+                    .resultOrPartial(err -> Trickster.LOGGER.warn("Failed to save spell in spell circle: {}", err))
+                    .ifPresent(element -> nbt.put("spell", element));
+        }
+
+        if (executor != null) {
+            SpellExecutor.CODEC.get().encodeStart(NbtOps.INSTANCE, executor)
+                    .resultOrPartial(err -> Trickster.LOGGER.warn("Failed to save executor in spell circle: {}", err))
+                    .ifPresent(element -> nbt.put("executor", element));
+        }
 
         nbt.putString("event", event.id().toString());
 
         nbt.put(MANA_POOL_ENDEC, manaPool);
+
+        nbt.putInt("last_power", lastPower);
     }
 
     public void tick() {
         manaPool.stdIncrease();
 
-        if (event == SpellCircleEvent.TICK && !getWorld().isClient()) {
-            if (age % 10 == 0) {
-                var iterations = age / 10;
-                callEvent(List.of(new NumberFragment(iterations)));
-                markDirty();
+        if (event.isMultiTick() && !getWorld().isClient()) {
+            if (spellSource == null) {
+                spellSource = new BlockSpellSource((ServerWorld) getWorld(), getPos(), this);
+            }
+
+            try {
+                if (executor.run(spellSource).isPresent()) {
+                    getWorld().setBlockState(getPos(), Blocks.AIR.getDefaultState());
+                }
+            } catch (BlunderException blunder) {
+                lastError = blunder.createMessage()
+                        .append(" (").append(executor.getCurrentState().formatStackTrace()).append(")");
+            } catch (Exception e) {
+                lastError = Text.literal("Uncaught exception in spell: " + e.getMessage())
+                        .append(" (").append(executor.getCurrentState().formatStackTrace()).append(")");
             }
         }
         age++;
@@ -119,6 +160,10 @@ public class SpellCircleBlockEntity extends BlockEntity {
     }
 
     public boolean callEvent(List<Fragment> arguments) {
+        if (event.isMultiTick()) {
+            throw new UnsupportedOperationException("Cannot call multi-tick event directly.");
+        }
+
         try {
             return new DefaultSpellExecutor(spell, arguments).singleTickRun(new BlockSpellSource((ServerWorld) getWorld(), getPos(), this)).asBoolean().bool();
         } catch (Exception e) {
