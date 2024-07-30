@@ -4,6 +4,7 @@ import com.mojang.serialization.DataResult;
 import dev.enjarai.trickster.ModSounds;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellPart;
+import dev.enjarai.trickster.spell.execution.SpellQueueResult;
 import dev.enjarai.trickster.spell.execution.executor.ErroredSpellExecutor;
 import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
@@ -134,14 +135,14 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
         buf.write(SPELL_DATA_ENDEC, runningSpellData);
     }
 
-    public boolean queueAndCast(SpellPart spell, List<Fragment> arguments) {
+    public boolean queueSpell(SpellPart spell, List<Fragment> arguments) {
         playCastSound(0.8f, 0.1f);
         return executionManager.queue(spell, arguments);
     }
 
-    public boolean queueAndCast(SpellPart spell, List<Fragment> arguments, ManaPool poolOverride) {
+    public SpellQueueResult queueSpellAndCast(SpellPart spell, List<Fragment> arguments, ManaPool poolOverride) {
         playCastSound(0.8f, 0.1f);
-        return executionManager.queue(spell, arguments, poolOverride);
+        return executionManager.queueAndCast(spell, arguments, poolOverride);
     }
 
     public void killAll() {

@@ -3,6 +3,7 @@ package dev.enjarai.trickster.item;
 import dev.enjarai.trickster.cca.ModEntityCumponents;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.screen.ScrollAndQuillScreenHandler;
+import dev.enjarai.trickster.spell.execution.SpellQueueResult;
 import dev.enjarai.trickster.spell.mana.SimpleManaPool;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
@@ -38,7 +39,9 @@ public class WrittenScrollItem extends Item {
             if (!world.isClient()) {
                 var spell = stack.get(ModComponents.SPELL);
                 if (spell != null) {
-                    if (ModEntityCumponents.CASTER.get(user).queueAndCast(spell.spell(), List.of(), SimpleManaPool.getSingleUse(meta.mana())))
+                    var result = ModEntityCumponents.CASTER.get(user).queueSpellAndCast(spell.spell(), List.of(), SimpleManaPool.getSingleUse(meta.mana()));
+
+                    if (result.type() != SpellQueueResult.Type.NOT_QUEUED && result.state().hasUsedMana())
                         stack.decrement(1);
                     return TypedActionResult.success(stack);
                 }

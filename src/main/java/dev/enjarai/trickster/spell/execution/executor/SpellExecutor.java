@@ -22,7 +22,7 @@ public interface SpellExecutor {
      * <p>
      * Before this function throws, it will append the additional spell stacktrace to the stacktrace in the provided context.
      *
-     * @return the spell's result.
+     * @return the spell's type.
      * @throws BlunderException
      */
     default Fragment singleTickRun(SpellContext context) throws BlunderException {
@@ -38,7 +38,7 @@ public interface SpellExecutor {
     /**
      * Attempts to execute the spell within a single tick, throws ExecutionLimitReachedBlunder if single-tick execution is not feasible.
      *
-     * @return the spell's result.
+     * @return the spell's type.
      * @throws BlunderException
      */
     default Fragment singleTickRun(SpellSource source) throws BlunderException {
@@ -46,7 +46,7 @@ public interface SpellExecutor {
     }
 
     /**
-     * @return the spell's result, or Optional.empty() if the spell is not done executing.
+     * @return the spell's type, or Optional.empty() if the spell is not done executing.
      * @throws BlunderException
      */
     default Optional<Fragment> run(SpellSource source) throws BlunderException {
@@ -54,7 +54,7 @@ public interface SpellExecutor {
     }
 
     /**
-     * @return the spell's result, or Optional.empty() if the spell is not done executing.
+     * @return the spell's type, or Optional.empty() if the spell is not done executing.
      * @throws BlunderException
      */
     Optional<Fragment> run(SpellSource source, int executions) throws BlunderException;

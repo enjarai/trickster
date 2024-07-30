@@ -62,19 +62,38 @@ public class DefaultSpellExecutor implements SpellExecutor {
         return SpellExecutorType.DEFAULT;
     }
 
-    protected void flattenNode(SpellPart node) {
-        instructions.push(new ExitScopeInstruction());
-        instructions.push(node.glyph);
+    // made non-recursive by @ArkoSammy12
+    protected void flattenNode(SpellPart head) {
+        Stack<SpellPart> headStack = new Stack<>();
+        Stack<Integer> indexStack = new Stack<>();
 
-        for (var subNode : node.subParts.reversed()) {
-            flattenNode(subNode);
+        headStack.push(head);
+        indexStack.push(-1);
+
+        while (!headStack.isEmpty()) {
+            SpellPart currentNode = headStack.peek();
+            int currentIndex = indexStack.pop();
+
+            if (currentIndex == -1) {
+                instructions.push(new ExitScopeInstruction());
+                instructions.push(currentNode.glyph);
+            }
+
+            currentIndex++;
+
+            if (currentIndex < currentNode.subParts.size()) {
+                headStack.push(currentNode.subParts.reversed().get(currentIndex));
+                indexStack.push(currentIndex);
+                indexStack.push(-1);
+            } else {
+                headStack.pop();
+                instructions.push(new EnterScopeInstruction());
+            }
         }
-
-        instructions.push(new EnterScopeInstruction());
     }
 
     /**
-     * @return the spell's result, or Optional.empty() if the spell is not done executing.
+     * @return the spell's type, or Optional.empty() if the spell is not done executing.
      * @throws BlunderException
      */
     @Override
@@ -83,7 +102,7 @@ public class DefaultSpellExecutor implements SpellExecutor {
     }
 
     /**
-     * @return the spell's result, or Optional.empty() if the spell is not done executing.
+     * @return the spell's type, or Optional.empty() if the spell is not done executing.
      * @throws BlunderException
      */
     protected Optional<Fragment> run(SpellContext ctx, int executions) throws BlunderException {

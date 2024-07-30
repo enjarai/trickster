@@ -117,8 +117,8 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
                     });
                 }
             } else {
-//            var result = SpellPart.CODEC.encodeStart(JsonOps.INSTANCE, spell).result().get();
-//            Trickster.LOGGER.warn(result.toString());
+//            var type = SpellPart.CODEC.encodeStart(JsonOps.INSTANCE, spell).type().get();
+//            Trickster.LOGGER.warn(type.toString());
                 sendMessage(new SpellMessage(spell));
             }
         }

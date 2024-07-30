@@ -94,7 +94,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
                 // We're casting the big decimals down to doubles here, which means we're definitely not implementing
                 // infinite scrollability yet. We weren't using doubles in the renderer before though, so having that
                 // bit of extra precision might already make a big difference. If we actually do run into more issues,
-                // I *can* convert the renderer to big decimals as well, but that would result in an insane amount of
+                // I *can* convert the renderer to big decimals as well, but that would type in an insane amount of
                 // object allocations every frame, which could very well impact performance significantly.
                 x.doubleValue(), y.doubleValue(), size.doubleValue(), 0, delta,
                 size -> (float) Math.clamp(1 / (size / context.getScaledWindowHeight() * 2) - 0.2, 0, 1),
