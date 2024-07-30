@@ -120,7 +120,7 @@ public class SpellCircleBlockEntity extends BlockEntity {
     public void tick() {
         manaPool.stdIncrease();
 
-        if (event.isMultiTick() && !getWorld().isClient()) {
+        if (event.isMultiTick() && !getWorld().isClient() && executor != null) {
             if (spellSource == null) {
                 spellSource = new BlockSpellSource((ServerWorld) getWorld(), getPos(), this);
             }
@@ -136,6 +136,8 @@ public class SpellCircleBlockEntity extends BlockEntity {
                 lastError = Text.literal("Uncaught exception in spell: " + e.getMessage())
                         .append(" (").append(executor.getCurrentState().formatStackTrace()).append(")");
             }
+
+            markDirty();
         }
         age++;
     }

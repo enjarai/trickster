@@ -1,6 +1,6 @@
 ```json
 {
-  "title": "Block Events",
+  "title": "General Events",
   "icon": "minecraft:smooth_stone",
   "category": "trickster:events"
 }
@@ -14,11 +14,10 @@ This entry lists available event patterns relating to blocks and block interacti
 
 {gray}(Event pattern){}
 
-number
-
 ---
 
-Triggers automatically every half second, receiving the amount of times this circle was triggered previously.
+Triggers once when created, but can continue indefinitely so long as no blunder is encountered. 
+Spell circle is deleted when the spell ends.
 
 ;;;;;
 

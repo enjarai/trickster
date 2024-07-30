@@ -30,6 +30,16 @@ Delays the execution of the current spell by the given number of ticks, or until
 
 ;;;;;
 
+<|glyph@trickster:templates|trick-id=trickster:pin_chunk,title=Ploy of Celestial Pin|>
+
+vector -> boolean
+
+<|cost-rule@trickster:templates|formula=32kG|>
+
+Fully loads the chunk containing the given position for exactly 4 seconds.
+
+;;;;;
+
 <|page-title@lavender:book_components|title=Note: Bars|>Spells can display arbitrary values on the caster's screen as bars.
 
 

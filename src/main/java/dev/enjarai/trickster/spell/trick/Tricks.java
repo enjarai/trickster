@@ -14,10 +14,7 @@ import dev.enjarai.trickster.spell.trick.event.DeleteSpellCircleTrick;
 import dev.enjarai.trickster.spell.trick.inventory.*;
 import dev.enjarai.trickster.spell.trick.list.*;
 import dev.enjarai.trickster.spell.trick.math.*;
-import dev.enjarai.trickster.spell.trick.misc.ClearBarTrick;
-import dev.enjarai.trickster.spell.trick.misc.DelayExecutionTrick;
-import dev.enjarai.trickster.spell.trick.misc.ShowBarTrick;
-import dev.enjarai.trickster.spell.trick.misc.TypeFragmentTrick;
+import dev.enjarai.trickster.spell.trick.misc.*;
 import dev.enjarai.trickster.spell.trick.projectile.SummonDragonBreathTrick;
 import dev.enjarai.trickster.spell.trick.projectile.SummonFireballTrick;
 import dev.enjarai.trickster.spell.trick.projectile.SummonArrowTrick;
@@ -194,6 +191,7 @@ public class Tricks {
     // Misc
     public static final TypeFragmentTrick TYPE_FRAGMENT = register("type_fragment", new TypeFragmentTrick());
     public static final DelayExecutionTrick DELAY_EXECUTION = register("delay_execution", new DelayExecutionTrick());
+    public static final PinChunkTrick PIN_CHUNK = register("pin_chunk", new PinChunkTrick());
     public static final ShowBarTrick SHOW_BAR = register("show_bar", new ShowBarTrick());
     public static final ClearBarTrick CLEAR_BAR = register("clear_bar", new ClearBarTrick());
 

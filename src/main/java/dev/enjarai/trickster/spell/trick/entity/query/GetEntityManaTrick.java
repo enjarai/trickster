@@ -24,7 +24,7 @@ public class GetEntityManaTrick extends AbstractLivingEntityQueryTrick {
         Fragment result = supposeType(arg, FragmentType.ENTITY).map(entity -> {
             var target = entity.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this));
             if (!(target instanceof LivingEntity)) {
-                throw new EntityInvalidBlunder(this);
+                return new NumberFragment(0);
             }
 
             return new NumberFragment(ModEntityCumponents.MANA.get(target).get());
@@ -34,7 +34,7 @@ public class GetEntityManaTrick extends AbstractLivingEntityQueryTrick {
             result = supposeType(arg, FragmentType.VECTOR).map(vec -> {
                 var target = ctx.source().getWorld().getBlockEntity(vec.toBlockPos());
                 if (!(target instanceof SpellCircleBlockEntity)) {
-                    throw new BlockInvalidBlunder(this);
+                    return new NumberFragment(0);
                 }
 
                 return new NumberFragment(((SpellCircleBlockEntity) target).manaPool.get());

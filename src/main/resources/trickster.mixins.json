@@ -7,6 +7,7 @@
     "AbstractBlockStateMixin",
     "LivingEntityMixin",
     "WorldChunkMixin",
+    "chunk_pinning.MinecraftServerMixin",
     "event.EntityMixin",
     "event.ItemStackMixin",
     "event.LivingEntityMixin",

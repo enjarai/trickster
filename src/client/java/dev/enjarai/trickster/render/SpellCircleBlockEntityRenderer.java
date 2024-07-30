@@ -2,6 +2,7 @@ package dev.enjarai.trickster.render;
 
 import dev.enjarai.trickster.block.SpellCircleBlock;
 import dev.enjarai.trickster.block.SpellCircleBlockEntity;
+import dev.enjarai.trickster.spell.SpellPart;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
