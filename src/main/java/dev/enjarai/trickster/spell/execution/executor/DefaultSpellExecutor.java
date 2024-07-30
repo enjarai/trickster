@@ -93,7 +93,7 @@ public class DefaultSpellExecutor implements SpellExecutor {
     }
 
     /**
-     * @return the spell's type, or Optional.empty() if the spell is not done executing.
+     * @return the spell's result, or Optional.empty() if the spell is not done executing.
      * @throws BlunderException
      */
     @Override
@@ -102,7 +102,7 @@ public class DefaultSpellExecutor implements SpellExecutor {
     }
 
     /**
-     * @return the spell's type, or Optional.empty() if the spell is not done executing.
+     * @return the spell's result, or Optional.empty() if the spell is not done executing.
      * @throws BlunderException
      */
     protected Optional<Fragment> run(SpellContext ctx, int executions) throws BlunderException {
