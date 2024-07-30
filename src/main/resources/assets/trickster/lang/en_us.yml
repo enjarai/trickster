@@ -63,7 +63,9 @@ trickster:
 
     height_reflection: Stature Distortion
     sneaking_reflection: Alternative Distortion
-    raycast: Scout's Distortion
+    raycast: Archer's Distortion
+    raycast_side: Architect's Distortion
+    raycast_entity: Scout's Distortion
     get_entity_type: Motive Verification Distortion
     get_position: Locational Distortion
     get_facing: Directional Distortion
@@ -74,6 +76,9 @@ trickster:
     get_velocity: Movement Distortion
     leech_mana: Conduit's Ploy
     add_velocity: Impulse Ploy
+
+    polymorph: Polymorph Ploy
+    dispel_polymorph: Dispel Polymorph Ploy
 
     summon_arrow: Ballista's Ploy
     summon_fireball: Pyromancer's Ploy
