@@ -32,6 +32,8 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     public static final Pattern EXPAND_TO_OUTER_CIRCLE_GLYPH = Pattern.of(1, 2, 4, 6);
     public static final Pattern DELETE_CIRCLE_GLYPH = Pattern.of(0, 4, 8);
     public static final Pattern DELETE_BRANCH_GLYPH = Pattern.of(0, 4, 8, 5, 2, 1, 0, 3, 6, 7, 8);
+    public static final Pattern SHIFT_SUBCIRCLE_BACKWARDS_GLYPH = Pattern.of(1, 0, 3);
+    public static final Pattern SHIFT_SUBCIRCLE_FORWARDS_GLYPH = Pattern.of(1, 2, 5);
     public static final Pattern COPY_OFFHAND_LITERAL = Pattern.of(4, 0, 1, 4, 2, 1);
     public static final Pattern COPY_OFFHAND_LITERAL_INNER = Pattern.of(1, 2, 4, 1, 0, 4, 7);
     public static final Pattern COPY_OFFHAND_EXECUTE = Pattern.of(4, 3, 0, 4, 5, 2, 4, 1);
@@ -311,6 +313,12 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             } else {
                 drawingPart.setSubPartInTree(Optional.empty(), spellPart, false);
             }
+        } else if (compiled.equals(SHIFT_SUBCIRCLE_BACKWARDS_GLYPH)) {
+            if (!drawingPart.subParts.isEmpty())
+                drawingPart.subParts.add(drawingPart.subParts.removeFirst());
+        } else if (compiled.equals(SHIFT_SUBCIRCLE_FORWARDS_GLYPH)) {
+            if (!drawingPart.subParts.isEmpty())
+                drawingPart.subParts.addFirst(drawingPart.subParts.removeLast());
         } else if (compiled.equals(COPY_OFFHAND_LITERAL)) {
             if (drawingPart == spellPart) {
                 spellPart = otherHandSpellSupplier.get().deepClone();

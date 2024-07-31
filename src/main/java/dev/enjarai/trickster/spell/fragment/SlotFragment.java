@@ -42,14 +42,18 @@ public record SlotFragment(int slot, Optional<BlockPos> source) implements Fragm
         return move(trickSource, ctx, 1);
     }
 
-    public ItemStack move(Trick trickSource, SpellContext ctx, int amount) throws BlunderException {
+    public ItemStack move(Trick trickSource, SpellContext ctx, int amount) {
+        return move(trickSource, ctx, amount, ctx.source().getBlockPos());
+    }
+
+    public ItemStack move(Trick trickSource, SpellContext ctx, int amount, BlockPos pos) throws BlunderException {
         var stack = getStack(trickSource, ctx);
 
         if (stack.getCount() < amount)
             throw new MissingItemBlunder(trickSource);
 
         var result = stack.copyWithCount(amount);
-        source.ifPresent(pos -> ctx.useMana(trickSource, (float) (amount * (32 + (ctx.source().getBlockPos().toCenterPos().distanceTo(pos.toCenterPos()) * 0.8)))));
+        source.ifPresent(sourcePos -> ctx.useMana(trickSource, (float) (amount * (32 + (pos.toCenterPos().distanceTo(sourcePos.toCenterPos()) * 0.8)))));
         stack.decrement(amount);
         return result;
     }
