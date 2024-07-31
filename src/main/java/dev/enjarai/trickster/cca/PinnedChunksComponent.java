@@ -59,6 +59,10 @@ public class PinnedChunksComponent implements ServerTickingComponent {
         serverWorld.getChunkManager().addTicket(TICKET_TYPE, pos, 1, pos);
     }
 
+    public boolean isPinned(ChunkPos pos) {
+        return pins.containsKey(pos.toLong());
+    }
+
     public void pinThemAll() {
         // This means a server reboot will pin chunks for slightly longer than normal,
         // but that shouldn't be an issue in practice.
