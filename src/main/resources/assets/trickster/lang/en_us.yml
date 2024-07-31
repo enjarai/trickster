@@ -195,6 +195,8 @@ tag.item.trickster:
 
 death.attack:
   mana_overflux: "%1$s's magic show has met an untimely end."
+  mana_overflux.player: "%1$s's magic show has met an untimely end."
+  mana_overflux.entity: "%1$s's magic show has met an untimely end."
 
 key:
   categories:
