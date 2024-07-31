@@ -15,7 +15,8 @@
     "WorldRendererAccessor",
     "accessories.AccessoriesScreenMixin",
     "sodium.WorldSliceMixin",
-    "tooltip.TooltipComponentMixin"
+    "tooltip.TooltipComponentMixin",
+    "figura.AvatarManagerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

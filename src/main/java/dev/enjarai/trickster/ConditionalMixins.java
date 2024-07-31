@@ -16,7 +16,8 @@ public class ConditionalMixins implements IMixinConfigPlugin {
     private static final Supplier<Boolean> TRUE = () -> true;
 
     private static final Map<String, Supplier<Boolean>> CONDITIONS = ImmutableMap.of(
-            "dev.enjarai.trickster.mixin.client.sodium.WorldSliceMixin", () -> FabricLoader.getInstance().isModLoaded("sodium")
+            "dev.enjarai.trickster.mixin.client.sodium.WorldSliceMixin", () -> FabricLoader.getInstance().isModLoaded("sodium"),
+            "dev.enjarai.trickster.mixin.client.figura.AvatarManagerMixin", () -> FabricLoader.getInstance().isModLoaded("figura")
     );
 
     @Override
