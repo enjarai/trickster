@@ -26,7 +26,10 @@
 			"dev.enjarai.trickster.datagen.ModDataStuff"
 		],
 		"cardinal-components-chunk": [
-          	"dev.enjarai.trickster.cca.ModChunkCumponents"
+			"dev.enjarai.trickster.cca.ModChunkCumponents"
+		],
+		"cardinal-components-world": [
+			"dev.enjarai.trickster.cca.ModWorldCumponents"
 		],
 		"cardinal-components-entity": [
 			"dev.enjarai.trickster.cca.ModEntityCumponents"
@@ -40,7 +43,8 @@
 			"trickster:bars",
 			"trickster:ward",
 			"trickster:disguise",
-			"trickster:is_editing_scroll"
+			"trickster:is_editing_scroll",
+			"trickster:pinned_chunks"
 		]
 	},
 	"mixins": [

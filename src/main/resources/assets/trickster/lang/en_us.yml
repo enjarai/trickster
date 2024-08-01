@@ -63,7 +63,9 @@ trickster:
 
     height_reflection: Stature Distortion
     sneaking_reflection: Alternative Distortion
-    raycast: Scout's Distortion
+    raycast: Archer's Distortion
+    raycast_side: Architect's Distortion
+    raycast_entity: Scout's Distortion
     get_entity_type: Motive Verification Distortion
     get_position: Locational Distortion
     get_facing: Directional Distortion
@@ -74,6 +76,9 @@ trickster:
     get_velocity: Movement Distortion
     leech_mana: Conduit's Ploy
     add_velocity: Impulse Ploy
+
+    polymorph: Polymorph Ploy
+    dispel_polymorph: Dispel Polymorph Ploy
 
     summon_arrow: Ballista's Ploy
     summon_fireball: Pyromancer's Ploy
@@ -121,6 +126,7 @@ trickster:
     swap_block: Ploy of Exchange
     conjure_flower: Floral Ploy
     conjure_water: Aquatic Ploy
+    drain_fluid: Drought Ploy
     destabilize_block: Earthquake Ploy
     disguise_block: Shadow Ploy
     dispel_block_disguise: Revelation Ploy
@@ -139,6 +145,7 @@ trickster:
 
     type_fragment: Argumentative Distortion
     delay_execution: Ploy of Suspension
+    pin_chunk: Ploy of Celestial Pin
     show_bar: Ploy of Clarity
     clear_bar: Ploy of Obfuscation
 
@@ -189,6 +196,7 @@ tag.item.trickster:
 
 death.attack:
   mana_overflux: "%1$s's magic show has met an untimely end."
+  mana_overflux.player: "%2$ brought an end to %1$s's magic show."
 
 key:
   categories:

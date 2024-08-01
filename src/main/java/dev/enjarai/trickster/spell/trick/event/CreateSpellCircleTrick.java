@@ -7,6 +7,7 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.PatternGlyph;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.trick.Trick;
@@ -55,6 +56,9 @@ public class CreateSpellCircleTrick extends Trick {
             var entity = (SpellCircleBlockEntity) ctx.source().getWorld().getBlockEntity(blockPos);
 
             entity.event = event;
+            if (event.isMultiTick()) {
+                entity.executor = new DefaultSpellExecutor(spell, List.of());
+            }
             entity.spell = spell;
             entity.markDirty();
 

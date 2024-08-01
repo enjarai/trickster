@@ -14,10 +14,7 @@ import dev.enjarai.trickster.spell.trick.event.DeleteSpellCircleTrick;
 import dev.enjarai.trickster.spell.trick.inventory.*;
 import dev.enjarai.trickster.spell.trick.list.*;
 import dev.enjarai.trickster.spell.trick.math.*;
-import dev.enjarai.trickster.spell.trick.misc.ClearBarTrick;
-import dev.enjarai.trickster.spell.trick.misc.DelayExecutionTrick;
-import dev.enjarai.trickster.spell.trick.misc.ShowBarTrick;
-import dev.enjarai.trickster.spell.trick.misc.TypeFragmentTrick;
+import dev.enjarai.trickster.spell.trick.misc.*;
 import dev.enjarai.trickster.spell.trick.projectile.SummonDragonBreathTrick;
 import dev.enjarai.trickster.spell.trick.projectile.SummonFireballTrick;
 import dev.enjarai.trickster.spell.trick.projectile.SummonArrowTrick;
@@ -167,6 +164,7 @@ public class Tricks {
     public static final SwapBlockTrick SWAP_BLOCK = register("swap_block", new SwapBlockTrick());
     public static final ConjureFlowerTrick CONJURE_FLOWER = register("conjure_flower", new ConjureFlowerTrick());
     public static final ConjureWaterTrick CONJURE_WATER = register("conjure_water", new ConjureWaterTrick());
+    public static final DrainFluidTrick DRAIN_FLUID = register("drain_fluid", new DrainFluidTrick());
     public static final CheckBlockTrick CHECK_BLOCK = register("check_block", new CheckBlockTrick());
     public static final CanPlaceTrick CAN_PLACE_BLOCK = register("can_place_block", new CanPlaceTrick());
     public static final GetBlockHardnessTrick GET_BLOCK_HARDNESS = register("get_block_hardness", new GetBlockHardnessTrick());
@@ -184,6 +182,7 @@ public class Tricks {
     public static final OtherHandTrick OTHER_HAND = register("other_hand", new OtherHandTrick());
     public static final GetItemInSlotTrick GET_ITEM_IN_SLOT = register("get_item_in_slot", new GetItemInSlotTrick());
     public static final GetInventorySlotTrick GET_INVENTORY_SLOT = register("get_inventory_slot", new GetInventorySlotTrick());
+    public static final DropStackFromSlotTrick DROP_STACK_FROM_SLOT = register("drop_stack_from_slot", new DropStackFromSlotTrick());
 
     // Projectile
     public static final SummonArrowTrick SUMMON_ARROW = register("summon_arrow", new SummonArrowTrick());
@@ -194,6 +193,7 @@ public class Tricks {
     // Misc
     public static final TypeFragmentTrick TYPE_FRAGMENT = register("type_fragment", new TypeFragmentTrick());
     public static final DelayExecutionTrick DELAY_EXECUTION = register("delay_execution", new DelayExecutionTrick());
+    public static final PinChunkTrick PIN_CHUNK = register("pin_chunk", new PinChunkTrick());
     public static final ShowBarTrick SHOW_BAR = register("show_bar", new ShowBarTrick());
     public static final ClearBarTrick CLEAR_BAR = register("clear_bar", new ClearBarTrick());
 

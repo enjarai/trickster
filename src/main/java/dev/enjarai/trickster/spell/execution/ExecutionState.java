@@ -22,22 +22,28 @@ public class ExecutionState {
     public static final Codec<ExecutionState> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.INT.fieldOf("recursions").forGetter(ExecutionState::getRecursions),
             Codec.INT.fieldOf("delay").forGetter(ExecutionState::getDelay),
+            Codec.BOOL.fieldOf("has_used_mana").forGetter(ExecutionState::hasUsedMana),
+            Codec.INT.fieldOf("stacktrace_size_when_made").forGetter(ExecutionState::getInitialStacktraceSize),
             Fragment.CODEC.get().codec().listOf().fieldOf("arguments").forGetter(state -> state.arguments),
             Codec.INT.listOf().fieldOf("stacktrace").forGetter(state -> state.stacktrace.stream().toList()),
             ManaLink.CODEC.listOf().fieldOf("mana_links").forGetter(state -> state.manaLinks),
             ManaPool.CODEC.get().codec().optionalFieldOf("pool_override").forGetter(state -> state.poolOverride)
     ).apply(instance, ExecutionState::new));
 
-    protected int recursions;
-    protected int delay;
+    private int recursions;
+    private int delay;
+    private boolean hasUsedMana;
+    private final int initialStacktraceSize;
     private final List<Fragment> arguments;
     private final Deque<Integer> stacktrace = new ArrayDeque<>();
     private final List<ManaLink> manaLinks = new ArrayList<>();
     private final Optional<ManaPool> poolOverride;
 
-    private ExecutionState(int recursions, int delay, List<Fragment> arguments, List<Integer> stacktrace, List<ManaLink> manaLinks, Optional<ManaPool> poolOverride) {
+    private ExecutionState(int recursions, int delay, boolean hasUsedMana, int initialStacktraceSize, List<Fragment> arguments, List<Integer> stacktrace, List<ManaLink> manaLinks, Optional<ManaPool> poolOverride) {
         this.recursions = recursions;
         this.delay = delay;
+        this.hasUsedMana = hasUsedMana;
+        this.initialStacktraceSize = initialStacktraceSize;
         this.arguments = arguments;
         this.stacktrace.addAll(stacktrace);
         this.manaLinks.addAll(manaLinks);
@@ -45,15 +51,15 @@ public class ExecutionState {
     }
 
     public ExecutionState(List<Fragment> arguments) {
-        this(0, 0, arguments, List.of(), List.of(), Optional.empty());
+        this(0, 0, false, 0, arguments, List.of(), List.of(), Optional.empty());
     }
 
     public ExecutionState(List<Fragment> arguments, ManaPool poolOverride) {
-        this(0, 0, arguments, List.of(), List.of(), Optional.ofNullable(poolOverride));
+        this(0, 0, false, 0, arguments, List.of(), List.of(), Optional.ofNullable(poolOverride));
     }
 
-    private ExecutionState(int recursions, List<Fragment> arguments, Optional<ManaPool> poolOverride) {
-        this(recursions, 0, arguments, List.of(), List.of(), poolOverride);
+    private ExecutionState(int recursions, List<Fragment> arguments, Optional<ManaPool> poolOverride, Deque<Integer> stacktrace) {
+        this(recursions, 0, false, stacktrace.size(), arguments, stacktrace.stream().toList(), List.of(), poolOverride);
     }
 
     public ExecutionState recurseOrThrow(List<Fragment> arguments) throws ExecutionLimitReachedBlunder {
@@ -61,8 +67,7 @@ public class ExecutionState {
             throw new ExecutionLimitReachedBlunder();
         }
 
-        var state = new ExecutionState(recursions + 1, arguments, poolOverride);
-        state.stacktrace.addAll(stacktrace);
+        var state = new ExecutionState(recursions + 1, arguments, poolOverride, stacktrace);
         state.stacktrace.push(-2);
         return state;
     }
@@ -71,10 +76,12 @@ public class ExecutionState {
         recursions--;
         // Remove the function call instruction that was added by recursing from the stacktrace,
         // and add a tail recursion one instead.
-        stacktrace.pop();
-        if (stacktrace.isEmpty() || stacktrace.peek() != -3) {
-            stacktrace.push(-3);
+        while (!stacktrace.isEmpty() && stacktrace.size() >= initialStacktraceSize) {
+            stacktrace.pop();
         }
+
+        if (stacktrace.isEmpty() || stacktrace.peek() != -3)
+            stacktrace.push(-3);
     }
 
     public ManaPool tryOverridePool(ManaPool pool) {
@@ -144,6 +151,10 @@ public class ExecutionState {
         return stacktrace;
     }
 
+    public int getInitialStacktraceSize() {
+        return initialStacktraceSize;
+    }
+
     public void addManaLink(Trick trickSource, LivingEntity target, float ownerHealth, float limit) throws BlunderException {
         addManaLink(trickSource, new ManaLink(target, ownerHealth, limit));
     }
@@ -158,7 +169,13 @@ public class ExecutionState {
         manaLinks.add(link);
     }
 
+    public boolean hasUsedMana() {
+        return hasUsedMana;
+    }
+
     public void useMana(Trick trickSource, SpellContext ctx, ManaPool pool, float amount) throws NotEnoughManaBlunder {
+        hasUsedMana = true;
+
         if (!manaLinks.isEmpty()) {
             float totalAvailable = 0;
             float leftOver = 0;

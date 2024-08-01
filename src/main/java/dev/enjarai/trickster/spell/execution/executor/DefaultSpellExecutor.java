@@ -23,7 +23,7 @@ public class DefaultSpellExecutor implements SpellExecutor {
             Codec.list(Fragment.CODEC.get().codec()).fieldOf("inputs").forGetter(executor -> executor.inputs),
             Codec.list(Codec.INT).fieldOf("scope").forGetter(executor -> executor.scope),
             ExecutionState.CODEC.fieldOf("state").forGetter(executor -> executor.state),
-            SpellExecutor.CODEC.get().codec().optionalFieldOf("child").forGetter(executor -> executor.child),
+            SpellExecutor.CODEC.get().optionalFieldOf("child").forGetter(executor -> executor.child),
             Fragment.CODEC.get().codec().optionalFieldOf("override_return_value").forGetter(executor -> executor.overrideReturnValue)
     ).apply(instance, (instructions, inputs, scope, state, child, overrideReturnValue) -> {
         List<SpellInstruction> serializedInstructions = instructions.stream().map(SerializedSpellInstruction::toDeserialized).collect(Collectors.toList());
@@ -62,15 +62,34 @@ public class DefaultSpellExecutor implements SpellExecutor {
         return SpellExecutorType.DEFAULT;
     }
 
-    protected void flattenNode(SpellPart node) {
-        instructions.push(new ExitScopeInstruction());
-        instructions.push(node.glyph);
+    // made non-recursive by @ArkoSammy12
+    protected void flattenNode(SpellPart head) {
+        Stack<SpellPart> headStack = new Stack<>();
+        Stack<Integer> indexStack = new Stack<>();
 
-        for (var subNode : node.subParts.reversed()) {
-            flattenNode(subNode);
+        headStack.push(head);
+        indexStack.push(-1);
+
+        while (!headStack.isEmpty()) {
+            SpellPart currentNode = headStack.peek();
+            int currentIndex = indexStack.pop();
+
+            if (currentIndex == -1) {
+                instructions.push(new ExitScopeInstruction());
+                instructions.push(currentNode.glyph);
+            }
+
+            currentIndex++;
+
+            if (currentIndex < currentNode.subParts.size()) {
+                headStack.push(currentNode.subParts.reversed().get(currentIndex));
+                indexStack.push(currentIndex);
+                indexStack.push(-1);
+            } else {
+                headStack.pop();
+                instructions.push(new EnterScopeInstruction());
+            }
         }
-
-        instructions.push(new EnterScopeInstruction());
     }
 
     /**

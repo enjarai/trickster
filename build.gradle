@@ -124,6 +124,7 @@ dependencies {
 
 	include modImplementation("org.ladysnake.cardinal-components-api:cardinal-components-base:${property('deps.cardinal-components-api')}")
 	include modImplementation("org.ladysnake.cardinal-components-api:cardinal-components-chunk:${property('deps.cardinal-components-api')}")
+	include modImplementation("org.ladysnake.cardinal-components-api:cardinal-components-world:${property('deps.cardinal-components-api')}")
 	include modImplementation("org.ladysnake.cardinal-components-api:cardinal-components-entity:${property('deps.cardinal-components-api')}")
 
 	modImplementation "com.terraformersmc:modmenu:${property('deps.modmenu')}"

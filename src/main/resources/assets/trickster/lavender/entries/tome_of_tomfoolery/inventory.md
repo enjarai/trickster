@@ -34,13 +34,19 @@ Returns the type of item in the caster's other hand.
 
 number, [vector] -> slot
 
-<|cost-rule@trickster:templates|formula=When used:
-  if external
-    32kG + distance * 0.8
-  else
-    0kG|>
+---
 
 Returns the item slot at the given index in either the inventory of the caster, or the block at the given position.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:drop_stack_from_slot,title=Benevolent Distortion|>
+
+slot, vector, [number] -> entity
+
+---
+
+Drops items from the given slot at the given vector, and returns their entity. Optionally, the count of items can be specified.
 
 ;;;;;
 

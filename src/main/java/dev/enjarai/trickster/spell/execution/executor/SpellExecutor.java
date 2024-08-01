@@ -2,6 +2,7 @@ package dev.enjarai.trickster.spell.execution.executor;
 
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
@@ -13,7 +14,8 @@ import dev.enjarai.trickster.spell.trick.blunder.ExecutionLimitReachedBlunder;
 import java.util.Optional;
 
 public interface SpellExecutor {
-    Supplier<MapCodec<SpellExecutor>> CODEC = Suppliers.memoize(() -> SpellExecutorType.REGISTRY.getCodec().dispatchMap(SpellExecutor::type, SpellExecutorType::codec));
+    Supplier<MapCodec<SpellExecutor>> MAP_CODEC = Suppliers.memoize(() -> SpellExecutorType.REGISTRY.getCodec().dispatchMap(SpellExecutor::type, SpellExecutorType::codec));
+    Supplier<Codec<SpellExecutor>> CODEC = Suppliers.memoize(() -> MAP_CODEC.get().codec());
 
     SpellExecutorType<?> type();
 

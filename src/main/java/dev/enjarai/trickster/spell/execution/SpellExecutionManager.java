@@ -17,11 +17,12 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.text.Text;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SpellExecutionManager {
     public static final Codec<SpellExecutionManager> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.INT.optionalFieldOf("capacity", 5).forGetter(e -> e.capacity),
-            Codec.unboundedMap(Codec.STRING.xmap(Integer::parseInt, Object::toString), SpellExecutor.CODEC.get().codec())
+            Codec.unboundedMap(Codec.STRING.xmap(Integer::parseInt, Object::toString), SpellExecutor.CODEC.get())
                     .fieldOf("spells").forGetter((e) -> e.spells)
     ).apply(instance, SpellExecutionManager::new));
 
@@ -44,8 +45,28 @@ public class SpellExecutionManager {
         return queue(new DefaultSpellExecutor(spell, arguments));
     }
 
-    public boolean queue(SpellPart spell, List<Fragment> arguments, ManaPool poolOverride) {
-        return queue(new DefaultSpellExecutor(spell, new ExecutionState(arguments, poolOverride)));
+    public SpellQueueResult queueAndCast(SpellPart spell, List<Fragment> arguments, ManaPool poolOverride) {
+        var executor = new DefaultSpellExecutor(spell, new ExecutionState(arguments, poolOverride));
+        boolean queued = queue(executor);
+
+        if (queued) {
+            for (var iterator = spells.int2ObjectEntrySet().iterator(); iterator.hasNext();) {
+                var entry = iterator.next();
+
+                if (entry.getValue() == executor) {
+                    AtomicBoolean isDone = new AtomicBoolean(true);
+                    tryRun(entry,
+                            (index, executor1) -> isDone.set(false),
+                            (index, executor2) -> iterator.remove(),
+                            (index, executor3) -> { });
+                    return new SpellQueueResult(isDone.get()
+                            ? SpellQueueResult.Type.QUEUED_DONE
+                            : SpellQueueResult.Type.QUEUED_STILL_RUNNING, executor.getCurrentState());
+                }
+            }
+        }
+
+        return new SpellQueueResult(SpellQueueResult.Type.NOT_QUEUED, executor.getCurrentState());
     }
 
     public boolean queue(SpellExecutor executor) {
@@ -67,36 +88,54 @@ public class SpellExecutionManager {
         if (source == null)
             return;
 
-        for (var iterator = spells.int2ObjectEntrySet().iterator(); iterator.hasNext(); ) {
+        for (var iterator = spells.int2ObjectEntrySet().iterator(); iterator.hasNext();) {
             var entry = iterator.next();
-            var spell = entry.getValue();
-
-            try {
-                if (spell.run(source).isEmpty()) {
-                    tickCallback.callTheBack(entry.getIntKey(), spell);
-                } else {
-                    iterator.remove();
-                    completeCallback.callTheBack(entry.getIntKey(), spell);
-                }
-            } catch (BlunderException blunder) {
-                var message = blunder.createMessage()
-                        .append(" (").append(spell.getCurrentState().formatStackTrace()).append(")");
-
-                if (blunder instanceof NaNBlunder)
-                    source.getPlayer().ifPresent(ModCriteria.NAN_NUMBER::trigger);
-
-                entry.setValue(new ErroredSpellExecutor(message));
-                source.getPlayer().ifPresent(player -> player.sendMessage(message));
-                errorCallback.callTheBack(entry.getIntKey(), spell);
-            } catch (Exception e) {
-                var message = Text.literal("Uncaught exception in spell: " + e.getMessage())
-                        .append(" (").append(spell.getCurrentState().formatStackTrace()).append(")");
-
-                entry.setValue(new ErroredSpellExecutor(message));
-                source.getPlayer().ifPresent(player -> player.sendMessage(message));
-                errorCallback.callTheBack(entry.getIntKey(), spell);
-            }
+            tryRun(entry, tickCallback, (index, executor) -> {
+                iterator.remove();
+                completeCallback.callTheBack(index, executor);
+            }, errorCallback);
         }
+    }
+
+    /**
+     * Attempts to run the given entry's SpellExecutor.
+     * @param entry
+     * @param tickCallback
+     * @param completeCallback
+     * @param errorCallback
+     * @return whether the spell has finished running or not. Blunders and normal completion return true, otherwise returns false.
+     */
+    private boolean tryRun(Int2ObjectMap.Entry<SpellExecutor> entry, ExecutorCallback tickCallback, ExecutorCallback completeCallback, ExecutorCallback errorCallback) {
+        var spell = entry.getValue();
+
+        try {
+            if (spell.run(source).isEmpty()) {
+                tickCallback.callTheBack(entry.getIntKey(), spell);
+                return false;
+            } else {
+                completeCallback.callTheBack(entry.getIntKey(), spell);
+                return true;
+            }
+        } catch (BlunderException blunder) {
+            var message = blunder.createMessage()
+                    .append(" (").append(spell.getCurrentState().formatStackTrace()).append(")");
+
+            if (blunder instanceof NaNBlunder)
+                source.getPlayer().ifPresent(ModCriteria.NAN_NUMBER::trigger);
+
+            entry.setValue(new ErroredSpellExecutor(message));
+            source.getPlayer().ifPresent(player -> player.sendMessage(message));
+            errorCallback.callTheBack(entry.getIntKey(), spell);
+        } catch (Exception e) {
+            var message = Text.literal("Uncaught exception in spell: " + e.getMessage())
+                    .append(" (").append(spell.getCurrentState().formatStackTrace()).append(")");
+
+            entry.setValue(new ErroredSpellExecutor(message));
+            source.getPlayer().ifPresent(player -> player.sendMessage(message));
+            errorCallback.callTheBack(entry.getIntKey(), spell);
+        }
+
+        return true;
     }
 
     public void setSource(SpellSource source) {
