@@ -11,6 +11,8 @@ public class ModAttachments {
             .initializer(() -> new CrowMind(VoidFragment.INSTANCE))
             .persistent(CrowMind.CODEC)
             .buildAndRegister(Trickster.id("crow_mind"));
+    public static final AttachmentType<Boolean> WHY_IS_THERE_NO_WAY_TO_DETECT_THIS = AttachmentRegistry
+            .create(Trickster.id("why_is_there_no_way_to_detect_this"));
 
     public static void register() {
 

@@ -9,7 +9,7 @@
     "description": {
       "text": "...Once you're done studying"
     },
-    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png",
+    "background": "minecraft:textures/block/black_wool.png",
     "frame": "task",
     "announce_to_chat": true,
     "hidden": false

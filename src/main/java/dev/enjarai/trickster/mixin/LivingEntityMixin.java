@@ -1,10 +1,12 @@
 package dev.enjarai.trickster.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import dev.enjarai.trickster.ModAttachments;
 import dev.enjarai.trickster.cca.ModChunkCumponents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -19,7 +21,9 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+@SuppressWarnings("UnstableApiUsage")
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
     @Unique
@@ -68,6 +72,7 @@ public abstract class LivingEntityMixin extends Entity {
     )
     private void checkShadowBlockState(CallbackInfo ci) {
         inShadowBlock = inShadowBlock(getWorld(), BlockPos.ofFloored(this.getEyePos()));
+        setAttached(ModAttachments.WHY_IS_THERE_NO_WAY_TO_DETECT_THIS, null);
     }
 
     @Unique
@@ -81,5 +86,16 @@ public abstract class LivingEntityMixin extends Entity {
         var funnyState = shadowBlocks.getFunnyState(blockPos);
 
         return funnyState != null && funnyState.isSolidBlock(world, blockPos);
+    }
+
+    @Inject(
+            method = "tryUseTotem",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/entity/LivingEntity;setHealth(F)V"
+            )
+    )
+    private void detectTotemUsage(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
+        setAttached(ModAttachments.WHY_IS_THERE_NO_WAY_TO_DETECT_THIS, true);
     }
 }

@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.cca;
 
+import dev.enjarai.trickster.ModAttachments;
 import dev.enjarai.trickster.entity.ModEntities;
 import dev.enjarai.trickster.misc.ModDamageTypes;
 import dev.enjarai.trickster.spell.mana.ManaPool;
@@ -58,8 +59,9 @@ public class ManaComponent extends SimpleManaPool implements AutoSyncedComponent
     }
 
     /**
-     * Returns whether the entity is still alive.
+     * Returns whether the entity is still alive and hasn't triggered a totem.
      */
+    @SuppressWarnings("UnstableApiUsage")
     @Override
     public boolean decrease(float amount) {
         if (manaDevoid)
@@ -70,7 +72,7 @@ public class ManaComponent extends SimpleManaPool implements AutoSyncedComponent
 
         if (f < 0) {
             entity.damage(ModDamageTypes.of(entity.getWorld(), ModDamageTypes.MANA_OVERFLUX), ManaPool.healthFromMana(f * -1));
-            return entity.isAlive();
+            return entity.isAlive() && Boolean.FALSE.equals(entity.getAttached(ModAttachments.WHY_IS_THERE_NO_WAY_TO_DETECT_THIS));
         }
 
         return true;
