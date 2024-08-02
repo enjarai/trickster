@@ -189,6 +189,26 @@ When Ascension Revision is drawn in the blue circle, it deletes and replaces the
 
 ;;;;;
 
+<|pattern@trickster:templates|pattern=1\,2\,5,title=Shifting Revision|>
+
+{gray}(Scribing pattern){}
+
+---
+
+Shifts the subcircles of the circle it is drawn in, clockwise, so that the last subcircle is now the first.
+
+;;;;;
+
+<|pattern@trickster:templates|pattern=1\,0\,3,title=Reverse Shifting Revision|>
+
+{gray}(Scribing pattern){}
+
+---
+
+Accomplishes the opposite of the Shifting Revision, moving subcircles counter-clockwise.
+
+;;;;;
+
 <|pattern@trickster:templates|pattern=4\,0\,1\,4\,2\,1,title=Notulist's Revision|>
 
 {gray}(Scribing pattern){}
