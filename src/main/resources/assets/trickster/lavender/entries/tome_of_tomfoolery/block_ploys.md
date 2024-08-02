@@ -63,6 +63,16 @@ Conjures a small splash of water at the given position.
 
 ;;;;;
 
+<|glyph@trickster:templates|trick-id=trickster:drain_fluid,title=Drought Ploy|>
+
+vector ->
+
+<|cost-rule@trickster:templates|formula=15kG|>
+
+Drains any fluid at the given position.
+
+;;;;;
+
 <|glyph@trickster:templates|trick-id=trickster:destabilize_block,title=Earthquake Ploy|>
 
 vector ->

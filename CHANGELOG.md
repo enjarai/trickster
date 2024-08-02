@@ -1,7 +1,7 @@
-- Rewrote the spell execution engine to allow spells to seamlessly execute over longer spans of time. (@StellarWitch7, @ArkoSammy12, and @enjarai)
-  - Spells will now continue running in the background for as long as is needed for them to complete.
-  - Running spells can be killed using new buttons in the inventory.
-  - Spells can run indefinitely by recursing infinitely if needed.
-- Added tricks to display vertical bars with spell-provided values on the user's screen. (@enjarai)
-- Added a pattern for error handling within spells. (@StellarWitch7)
-- Improved spell editing slightly. (@enjarai)
+- Fixed multiple crash bugs in the new spell execution engine. (#24) (@StellarWitch7)
+- Make single-use scrolls not be consumed when failing early. (@StellarWitch7 and @ArkoSammy12)
+- Added a ploy for loading chunks. (@enjarai)
+- Reworked ticking spell circles to instead use one long-running multi-tick spell. (@enjarai)
+- Fixed some missing translations. (#23) (@StellarWitch7)
+- Fixed tail-optimised recursion... again. (@StellarWitch7)
+- Added a ploy for draining fluids. (@enjarai)

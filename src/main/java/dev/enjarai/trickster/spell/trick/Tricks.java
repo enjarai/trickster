@@ -164,6 +164,7 @@ public class Tricks {
     public static final SwapBlockTrick SWAP_BLOCK = register("swap_block", new SwapBlockTrick());
     public static final ConjureFlowerTrick CONJURE_FLOWER = register("conjure_flower", new ConjureFlowerTrick());
     public static final ConjureWaterTrick CONJURE_WATER = register("conjure_water", new ConjureWaterTrick());
+    public static final DrainFluidTrick DRAIN_FLUID = register("drain_fluid", new DrainFluidTrick());
     public static final CheckBlockTrick CHECK_BLOCK = register("check_block", new CheckBlockTrick());
     public static final CanPlaceTrick CAN_PLACE_BLOCK = register("can_place_block", new CanPlaceTrick());
     public static final GetBlockHardnessTrick GET_BLOCK_HARDNESS = register("get_block_hardness", new GetBlockHardnessTrick());
