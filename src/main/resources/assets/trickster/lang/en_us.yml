@@ -177,6 +177,7 @@ item.trickster:
   tome_of_tomfoolery: Tome of Tomfoolery
   mirror_of_evaluation: Mirror of Evaluation
   scroll_and_quill: Scroll and Quill
+  written_scroll: Written Scroll
   warding_charm: Warding Charm
   spell_ink: Spell Ink
   top_hat: Top Hat
@@ -196,7 +197,7 @@ tag.item.trickster:
 
 death.attack:
   mana_overflux: "%1$s's magic show has met an untimely end."
-  mana_overflux.player: "%2$ brought an end to %1$s's magic show."
+  mana_overflux.player: "%2$s brought an end to %1$s's magic show."
 
 key:
   categories:
