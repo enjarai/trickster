@@ -142,6 +142,9 @@ trickster:
     import_hat: Cranium Ploy
     check_hat: Cranium Delusion
     other_hand: Juggling Delusion
+    get_item_in_slot: Fence's Distortion
+    get_inventory_slot: Intrusive Distortion
+    drop_stack_from_slot: Benevolent Distortion
 
     type_fragment: Argumentative Distortion
     delay_execution: Ploy of Suspension
