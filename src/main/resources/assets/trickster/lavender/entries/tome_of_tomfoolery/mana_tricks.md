@@ -36,8 +36,7 @@ Given an entity or mana holding block position, returns its current mana.
 
 entity, number ->
 
-<|cost-rule@trickster:templates|formula=When used:
-  amountUsed / (casterHealth / targetHealth) * 1kG|>
+---
 
 Links the given entity to provide up to the given number's worth of mana towards this spell.
 

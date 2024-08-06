@@ -142,6 +142,9 @@ trickster:
     import_hat: Cranium Ploy
     check_hat: Cranium Delusion
     other_hand: Juggling Delusion
+    get_item_in_slot: Fence's Distortion
+    get_inventory_slot: Intrusive Distortion
+    drop_stack_from_slot: Benevolent Distortion
 
     type_fragment: Argumentative Distortion
     delay_execution: Ploy of Suspension
@@ -177,6 +180,7 @@ item.trickster:
   tome_of_tomfoolery: Tome of Tomfoolery
   mirror_of_evaluation: Mirror of Evaluation
   scroll_and_quill: Scroll and Quill
+  written_scroll: Written Scroll
   warding_charm: Warding Charm
   spell_ink: Spell Ink
   top_hat: Top Hat
@@ -196,7 +200,7 @@ tag.item.trickster:
 
 death.attack:
   mana_overflux: "%1$s's magic show has met an untimely end."
-  mana_overflux.player: "%2$ brought an end to %1$s's magic show."
+  mana_overflux.player: "%2$s brought an end to %1$s's magic show."
 
 key:
   categories:
