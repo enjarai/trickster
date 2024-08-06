@@ -9,13 +9,13 @@ import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
 
 import java.util.List;
 
-public class ManaReflectionTrick extends Trick {
-    public ManaReflectionTrick() {
-        super(Pattern.of(5, 7, 3, 1, 5, 2, 4, 0, 3, 4, 5));
+public class MaxManaReflectionTrick extends Trick {
+    public MaxManaReflectionTrick() {
+        super(Pattern.of(2, 5, 7, 3, 1, 5, 4, 3, 0, 4, 2, 1, 0));
     }
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        return new NumberFragment(ctx.getManaPool().get());
+        return new NumberFragment(ctx.getManaPool().getMax());
     }
 }

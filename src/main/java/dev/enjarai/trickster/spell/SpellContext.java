@@ -4,6 +4,7 @@ import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.spell.execution.ExecutionState;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.SlotFragment;
+import dev.enjarai.trickster.spell.mana.ManaPool;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.trick.blunder.*;
 import net.minecraft.entity.LivingEntity;
@@ -27,6 +28,10 @@ public record SpellContext(SpellSource source, ExecutionState executionState) {
         }
 
         source.getPlayer().ifPresent((player) -> ModCriteria.MANA_USED.trigger(player, amount));
+    }
+
+    public ManaPool getManaPool() {
+        return executionState().tryOverridePool(source.getManaPool());
     }
 
     // I am disappointed in myself for having written this.

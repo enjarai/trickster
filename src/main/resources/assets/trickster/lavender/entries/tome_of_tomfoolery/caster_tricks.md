@@ -47,3 +47,13 @@ Returns the entity casting the spell.
 ---
 
 Returns the amount of mana directly available to the spell.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:max_mana_reflection,title=Crowning Delusion|>
+
+-> number
+
+---
+
+Returns the maximum amount of mana that *could be* available to the spell.
