@@ -1,7 +1,5 @@
-- Fixed multiple crash bugs in the new spell execution engine. (#24) (@StellarWitch7)
-- Make single-use scrolls not be consumed when failing early. (@StellarWitch7 and @ArkoSammy12)
-- Added a ploy for loading chunks. (@enjarai)
-- Reworked ticking spell circles to instead use one long-running multi-tick spell. (@enjarai)
-- Fixed some missing translations. (#23) (@StellarWitch7)
-- Fixed tail-optimised recursion... again. (@StellarWitch7)
-- Added a ploy for draining fluids. (@enjarai)
+- Added a handful of missing book entries. (@StellarWitch7)
+- Added rotation shifting revision patterns. (@StellarWitch7)
+- Fixed some translations. (@enjarai)
+- Fixed a few bugs, probably.
+- I think I'm forgetting something, but its probably fine.
