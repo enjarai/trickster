@@ -18,7 +18,7 @@ public class SpellTooltipComponent implements TooltipComponent {
 
     public SpellTooltipComponent(SpellPart spell) {
         this.spell = spell;
-        this.renderer = new SpellCircleRenderer(true);
+        this.renderer = new SpellCircleRenderer(true, 1);
     }
 
     @Override

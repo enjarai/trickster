@@ -36,22 +36,25 @@ public class SpellCircleRenderer {
 
     private final boolean inUI;
     private final boolean inEditor;
+    private final double precisionOffset;
 
     private Supplier<SpellPart> drawingPartGetter;
     private Supplier<List<Byte>> drawingPatternGetter;
     private double mouseX;
     private double mouseY;
 
-    public SpellCircleRenderer(Boolean inUI) {
+    public SpellCircleRenderer(Boolean inUI, double precisionOffset) {
         this.inUI = inUI;
         this.inEditor = false;
+        this.precisionOffset = precisionOffset;
     }
 
-    public SpellCircleRenderer(Supplier<SpellPart> drawingPartGetter, Supplier<List<Byte>> drawingPatternGetter) {
+    public SpellCircleRenderer(Supplier<SpellPart> drawingPartGetter, Supplier<List<Byte>> drawingPatternGetter, double precisionOffset) {
         this.drawingPartGetter = drawingPartGetter;
         this.drawingPatternGetter = drawingPatternGetter;
         this.inUI = true;
         this.inEditor = true;
+        this.precisionOffset = precisionOffset;
     }
 
     public void setMousePosition(double mouseX, double mouseY) {
@@ -59,12 +62,16 @@ public class SpellCircleRenderer {
         this.mouseY = mouseY;
     }
 
+    private float toLocalSpace(double value) {
+        return (float) (value * precisionOffset);
+    }
+
     public void renderPart(MatrixStack matrices, VertexConsumerProvider vertexConsumers, SpellPart entry, double x, double y, double size, double startingAngle, float delta, Function<Float, Float> alphaGetter, Vec3d normal) {
-        var alpha = alphaGetter.apply((float) size);
+        var alpha = alphaGetter.apply(toLocalSpace(size));
 
         drawTexturedQuad(
                 matrices, vertexConsumers, CIRCLE_TEXTURE,
-                (float) (x - size), (float) (x + size), (float) (y - size), (float) (y + size),
+                toLocalSpace(x - size), toLocalSpace(x + size), toLocalSpace(y - size), toLocalSpace(y + size),
                 0,
                 1f, 1f, 1f, alpha, normal
         );
@@ -76,7 +83,7 @@ public class SpellCircleRenderer {
 
         int partCount = entry.getSubParts().size();
 
-        drawDivider(matrices, vertexConsumers, (float) x, (float) y, startingAngle, (float) size, partCount, alpha);
+        drawDivider(matrices, vertexConsumers, toLocalSpace(x), toLocalSpace(y), startingAngle, toLocalSpace(size), partCount, alpha);
 
         matrices.push();
         if (!inUI) {
@@ -131,13 +138,13 @@ public class SpellCircleRenderer {
             renderPart(matrices, vertexConsumers, part, x, y, size / 3, startingAngle, delta, alphaGetter, normal);
         } else {
             matrices.push();
-            drawSide(matrices, vertexConsumers, parent, (float) x, (float) y, (float) size, alphaGetter, glyph);
+            drawSide(matrices, vertexConsumers, parent, toLocalSpace(x), toLocalSpace(y), toLocalSpace(size), alphaGetter, glyph);
             matrices.pop();
 
             if (!inUI) {
                 matrices.push();
                 matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
-                drawSide(matrices, vertexConsumers, parent, (float) -x, (float) y, (float) size, alphaGetter, glyph);
+                drawSide(matrices, vertexConsumers, parent, toLocalSpace(-x), toLocalSpace(y), toLocalSpace(size), alphaGetter, glyph);
                 matrices.pop();
             }
         }

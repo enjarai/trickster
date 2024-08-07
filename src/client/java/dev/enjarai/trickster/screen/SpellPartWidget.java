@@ -39,13 +39,14 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     public static final Pattern COPY_OFFHAND_EXECUTE = Pattern.of(4, 3, 0, 4, 5, 2, 4, 1);
     public static final Pattern WRITE_OFFHAND_ADDRESS = Pattern.of(1, 0, 4, 8, 7, 6, 4, 2, 1, 4);
 
+    public static final double PRECISION_OFFSET = Math.pow(2, 50);
 
     private SpellPart spellPart;
 //    private List<SpellPartWidget> partWidgets;
 
-    public BigDecimal x;
-    public BigDecimal y;
-    public BigDecimal size;
+    public double x;
+    public double y;
+    public double size;
     private double amountDragged;
 
     private boolean isMutable = true;
@@ -65,14 +66,14 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
     public SpellPartWidget(SpellPart spellPart, double x, double y, double size, Consumer<SpellPart> spellUpdateListener, Consumer<SpellPart> otherHandSpellUpdateListener, Supplier<SpellPart> otherHandSpellSupplier, Runnable initializeReplace) {
         this.spellPart = spellPart;
-        this.x = new BigDecimal(x);
-        this.y = new BigDecimal(y);
-        this.size = new BigDecimal(size);
+        this.x = toScaledSpace(x);
+        this.y = toScaledSpace(y);
+        this.size = toScaledSpace(size);
         this.updateListener = spellUpdateListener;
         this.otherHandSpellUpdateListener = otherHandSpellUpdateListener;
         this.otherHandSpellSupplier = otherHandSpellSupplier;
         this.initializeReplace = initializeReplace;
-        this.renderer = new SpellCircleRenderer(() -> this.drawingPart, () -> this.drawingPattern);
+        this.renderer = new SpellCircleRenderer(() -> this.drawingPart, () -> this.drawingPattern, PRECISION_OFFSET);
     }
 
     @Override
@@ -93,12 +94,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         }
         this.renderer.renderPart(
                 context.getMatrices(), context.getVertexConsumers(), spellPart,
-                // We're casting the big decimals down to doubles here, which means we're definitely not implementing
-                // infinite scrollability yet. We weren't using doubles in the renderer before though, so having that
-                // bit of extra precision might already make a big difference. If we actually do run into more issues,
-                // I *can* convert the renderer to big decimals as well, but that would result in an insane amount of
-                // object allocations every frame, which could very well impact performance significantly.
-                x.doubleValue(), y.doubleValue(), size.doubleValue(), 0, delta,
+                x, y, size, 0, delta,
                 size -> (float) Math.clamp(1 / (size / context.getScaledWindowHeight() * 2) - 0.2, 0, 1),
                 new Vec3d(0, 0, -1)
         );
@@ -136,12 +132,10 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             return true;
         }
 
-        var ten = new BigDecimal(10);
-        var vertical = new BigDecimal(verticalAmount);
-
-        size = size.add(vertical.multiply(size).divide(ten, RoundingMode.DOWN)); // verticalAmount * size / 10
-        x = x.add(vertical.multiply(x.subtract(new BigDecimal(mouseX))).divide(ten, RoundingMode.DOWN)); // verticalAmount * (x - mouseX) / 10;
-        y = y.add(vertical.multiply(y.subtract(new BigDecimal(mouseY))).divide(ten, RoundingMode.DOWN)); // verticalAmount * (y - mouseY) / 10;
+        double scaledAmount = toScaledSpace(verticalAmount);
+        size += scaledAmount * toLocalSpace(size) / 10;
+        x += scaledAmount * (toLocalSpace(x) - mouseX) / 10;
+        y += scaledAmount * (toLocalSpace(y) - mouseY) / 10;
 
         return true;
     }
@@ -153,8 +147,8 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         }
 
         if (!isDrawing()) {
-            x = x.add(new BigDecimal(deltaX));
-            y = y.add(new BigDecimal(deltaY));
+            x += toScaledSpace(deltaX);
+            y += toScaledSpace(deltaY);
 
             amountDragged += Math.abs(deltaX) + Math.abs(deltaY);
             return true;
@@ -167,13 +161,13 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (isMutable || isDrawing()) {
             if (Trickster.CONFIG.dragDrawing() && button == 0 && !isDrawing()) {
-                if (propagateMouseEvent(spellPart, x.doubleValue(), y.doubleValue(), size.doubleValue(), 0, mouseX, mouseY,
+                if (propagateMouseEvent(spellPart, x, y, size, 0, toScaledSpace(mouseX), toScaledSpace(mouseY),
                         (part, x, y, size) -> selectPattern(part, x, y, size, mouseX, mouseY))) {
                     return true;
                 }
             } else {
                 // We need to return true on the mouse down event to make sure the screen knows if we're on a clickable node
-                if (propagateMouseEvent(spellPart, x.doubleValue(), y.doubleValue(), size.doubleValue(), 0, mouseX, mouseY,
+                if (propagateMouseEvent(spellPart, x, y, size, 0, toScaledSpace(mouseX), toScaledSpace(mouseY),
                         (part, x, y, size) -> true)) {
                     return true;
                 }
@@ -194,7 +188,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             }
 
             if (!Trickster.CONFIG.dragDrawing() && button == 0 && !isDrawing()) {
-                if (propagateMouseEvent(spellPart, x.doubleValue(), y.doubleValue(), size.doubleValue(), 0, mouseX, mouseY,
+                if (propagateMouseEvent(spellPart, x, y, size, 0, toScaledSpace(mouseX), toScaledSpace(mouseY),
                         (part, x, y, size) -> selectPattern(part, x, y, size, mouseX, mouseY))) {
                     return true;
                 }
@@ -212,7 +206,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     @Override
     public void mouseMoved(double mouseX, double mouseY) {
         if (isDrawing()) {
-            propagateMouseEvent(spellPart, x.doubleValue(), y.doubleValue(), size.doubleValue(), 0, mouseX, mouseY,
+            propagateMouseEvent(spellPart, x, y, size, 0, toScaledSpace(mouseX), toScaledSpace(mouseY),
                     (part, x, y, size) -> selectPattern(part, x, y, size, mouseX, mouseY));
         }
 
@@ -431,7 +425,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         var initialDiffX = x - mouseX;
         var initialDiffY = y - mouseY;
 
-        var centerAvailable = isCircleClickable(size) || part.glyph instanceof SpellPart;
+        var centerAvailable = isCircleClickable(toLocalSpace(size)) || part.glyph instanceof SpellPart;
         var closestDistanceSquared = centerAvailable ? initialDiffX * initialDiffX + initialDiffY * initialDiffY : Double.MAX_VALUE;
 
         int partCount = part.getSubParts().size();
@@ -459,7 +453,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             i++;
         }
 
-        if (Math.sqrt(closestDistanceSquared) <= size && size >= 16) {
+        if (Math.sqrt(closestDistanceSquared) <= size && toLocalSpace(size) >= 16) {
             if (closest == part) {
                 // Special handling for part glyphs, because of course
                 // This makes it impossible to interact with direct parents of part glyphs, but thats not an issue
@@ -467,7 +461,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
                     closest = centerPart;
                     closestSize /= 3;
                 } else {
-                    return callback.handle(closest, (float) closestX, (float) closestY, (float) closestSize);
+                    return callback.handle(closest, toLocalSpace(closestX), toLocalSpace(closestY), toLocalSpace(closestSize));
                 }
             }
 
@@ -475,6 +469,14 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         }
 
         return false;
+    }
+
+    private static float toLocalSpace(double value) {
+        return (float) (value * PRECISION_OFFSET);
+    }
+
+    private static double toScaledSpace(double value) {
+        return (float) (value / PRECISION_OFFSET);
     }
 
     interface MouseEventHandler {

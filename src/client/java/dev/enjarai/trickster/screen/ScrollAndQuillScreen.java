@@ -108,7 +108,7 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
         }
     }
 
-    record PositionMemory(int spell, BigDecimal x, BigDecimal y, BigDecimal size) {
+    record PositionMemory(int spell, double x, double y, double size) {
 
     }
 }

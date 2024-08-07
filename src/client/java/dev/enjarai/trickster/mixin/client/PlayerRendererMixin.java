@@ -23,7 +23,7 @@ import java.util.Optional;
 @Mixin(PlayerEntityRenderer.class)
 public abstract class PlayerRendererMixin {
     @Unique
-    public SpellCircleRenderer trickster$renderer = new SpellCircleRenderer(false);
+    public SpellCircleRenderer trickster$renderer = new SpellCircleRenderer(false, 1);
 
     @Inject(method = "render(Lnet/minecraft/client/network/AbstractClientPlayerEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At("HEAD"))
     public void trickster$onRender(AbstractClientPlayerEntity player, float $$1, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int $$5, CallbackInfo ci) {
