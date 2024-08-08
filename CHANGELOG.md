@@ -1,2 +1,2 @@
-- Added some mana-checking tricks. (@enjarai)
-- Slightly improve floating point precision errors while zooming into an editing spell. (@enjarai)
+- Added compatibility with transmog. (@enjarai)
+- Rewrote data serialization code to be more future-proof, existing worlds should be compatible. (@enjarai)
