@@ -1,16 +1,17 @@
 package dev.enjarai.trickster.spell.mana;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
+import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.cca.ManaComponent;
 import dev.enjarai.trickster.cca.ModEntityCumponents;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
 import dev.enjarai.trickster.spell.trick.blunder.NotEnoughManaBlunder;
 import dev.enjarai.trickster.spell.trick.blunder.UnknownEntityBlunder;
+import io.wispforest.endec.Endec;
+import io.wispforest.endec.StructEndec;
+import io.wispforest.endec.impl.StructEndecBuilder;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Uuids;
 
 import java.util.UUID;
 import java.util.function.BiFunction;
@@ -22,11 +23,12 @@ public final class ManaLink {
     public final float taxRatio;
     private float availableMana;
 
-    public static final Codec<ManaLink> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Uuids.CODEC.fieldOf("target_uuid").forGetter(manaLink -> manaLink.sourceUuid),
-            Codec.FLOAT.fieldOf("tax_ratio").forGetter(manaLink -> manaLink.taxRatio),
-            Codec.FLOAT.fieldOf("available_mana").forGetter(manaLink -> manaLink.availableMana)
-    ).apply(instance, ManaLink::new));
+    public static final StructEndec<ManaLink> ENDEC = StructEndecBuilder.of(
+            EndecTomfoolery.UUID.fieldOf("target_uuid", manaLink -> manaLink.sourceUuid),
+            Endec.FLOAT.fieldOf("tax_ratio", manaLink -> manaLink.taxRatio),
+            Endec.FLOAT.fieldOf("available_mana", manaLink -> manaLink.availableMana),
+            ManaLink::new
+    );
 
                                 // TODO: FIX ME AURI
     private ManaLink(UUID targetUuid, float taxRatio, float availableMana) {

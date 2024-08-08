@@ -1,8 +1,5 @@
 package dev.enjarai.trickster.spell.execution.executor;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.execution.ExecutionState;
@@ -10,6 +7,9 @@ import dev.enjarai.trickster.spell.execution.SerializedSpellInstruction;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
+import io.wispforest.endec.Endec;
+import io.wispforest.endec.StructEndec;
+import io.wispforest.endec.impl.StructEndecBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,17 +18,18 @@ import java.util.Stack;
 import java.util.stream.Collectors;
 
 public class DefaultSpellExecutor implements SpellExecutor {
-    public static final MapCodec<DefaultSpellExecutor> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Codec.list(SerializedSpellInstruction.CODEC).fieldOf("instructions").forGetter(executor -> executor.instructions.stream().map(SpellInstruction::asSerialized).collect(Collectors.toList())),
-            Codec.list(Fragment.CODEC.get().codec()).fieldOf("inputs").forGetter(executor -> executor.inputs),
-            Codec.list(Codec.INT).fieldOf("scope").forGetter(executor -> executor.scope),
-            ExecutionState.CODEC.fieldOf("state").forGetter(executor -> executor.state),
-            SpellExecutor.CODEC.get().optionalFieldOf("child").forGetter(executor -> executor.child),
-            Fragment.CODEC.get().codec().optionalFieldOf("override_return_value").forGetter(executor -> executor.overrideReturnValue)
-    ).apply(instance, (instructions, inputs, scope, state, child, overrideReturnValue) -> {
-        List<SpellInstruction> serializedInstructions = instructions.stream().map(SerializedSpellInstruction::toDeserialized).collect(Collectors.toList());
-        return new DefaultSpellExecutor(serializedInstructions, inputs, scope, state, child, overrideReturnValue);
-    }));
+    public static final StructEndec<DefaultSpellExecutor> ENDEC = StructEndecBuilder.of(
+            SerializedSpellInstruction.ENDEC.listOf().fieldOf("instructions", e -> e.instructions.stream().map(SpellInstruction::asSerialized).toList()),
+            Fragment.ENDEC.listOf().fieldOf("inputs", e -> e.inputs),
+            Endec.INT.listOf().fieldOf("scope", e -> e.scope),
+            ExecutionState.ENDEC.fieldOf("state", e -> e.state),
+            SpellExecutor.ENDEC.optionalOf().fieldOf("child", e -> e.child),
+            Fragment.ENDEC.optionalOf().fieldOf("override_return_value", e -> e.overrideReturnValue),
+            (instructions, inputs, scope, state, child, overrideReturnValue) -> {
+                List<SpellInstruction> serializedInstructions = instructions.stream().map(SerializedSpellInstruction::toDeserialized).collect(Collectors.toList());
+                return new DefaultSpellExecutor(serializedInstructions, inputs, scope, state, child, overrideReturnValue);
+            }
+    );
 
     protected final Stack<SpellInstruction> instructions = new Stack<>();
     protected final Stack<Fragment> inputs = new Stack<>();

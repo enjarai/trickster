@@ -1,13 +1,16 @@
 package dev.enjarai.trickster.spell.fragment;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
 import dev.enjarai.trickster.spell.Fragment;
+import io.wispforest.endec.Endec;
+import io.wispforest.endec.StructEndec;
+import io.wispforest.endec.impl.StructEndecBuilder;
 import net.minecraft.text.Text;
 
 public record BooleanFragment(boolean bool) implements Fragment {
-    public static final MapCodec<BooleanFragment> CODEC = Codec.BOOL
-            .fieldOf("bool").xmap(BooleanFragment::new, BooleanFragment::bool);
+    public static final StructEndec<BooleanFragment> ENDEC = StructEndecBuilder.of(
+            Endec.BOOLEAN.fieldOf("bool", BooleanFragment::bool),
+            BooleanFragment::new
+    );
     public static final BooleanFragment TRUE = new BooleanFragment(true);
     public static final BooleanFragment FALSE = new BooleanFragment(false);
 

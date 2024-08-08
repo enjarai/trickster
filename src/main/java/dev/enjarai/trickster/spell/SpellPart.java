@@ -1,8 +1,6 @@
 package dev.enjarai.trickster.spell;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
+import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
@@ -10,20 +8,19 @@ import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.fragment.ZalgoFragment;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
-import io.wispforest.endec.Endec;
-import io.wispforest.owo.serialization.CodecUtils;
+import io.wispforest.endec.StructEndec;
+import io.wispforest.endec.impl.StructEndecBuilder;
 import net.minecraft.text.Text;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public final class SpellPart implements Fragment {
-    public static final MapCodec<SpellPart> MAP_CODEC = MapCodec.recursive("spell_part", self -> RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Fragment.CODEC.get().fieldOf("glyph").forGetter(SpellPart::getGlyph),
-            self.listOf().fieldOf("sub_parts").forGetter(SpellPart::getSubParts)
-    ).apply(instance, SpellPart::new)));
-    public static final Codec<SpellPart> CODEC = MAP_CODEC.codec();
-    public static final Endec<SpellPart> ENDEC = CodecUtils.toEndec(CODEC);
+    public static final StructEndec<SpellPart> ENDEC = EndecTomfoolery.recursive(self -> StructEndecBuilder.of(
+            Fragment.ENDEC.fieldOf("glyph", SpellPart::getGlyph),
+            self.listOf().fieldOf("sub_parts", SpellPart::getSubParts),
+            SpellPart::new
+    ));
 
     public Fragment glyph;
     public List<SpellPart> subParts;

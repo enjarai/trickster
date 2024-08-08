@@ -1,24 +1,27 @@
 package dev.enjarai.trickster.spell;
 
-import com.google.common.base.Suppliers;
-import com.mojang.serialization.MapCodec;
+import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.spell.execution.SerializedSpellInstruction;
 import dev.enjarai.trickster.spell.execution.SpellInstructionType;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
 import io.wispforest.endec.Endec;
-import io.wispforest.owo.serialization.CodecUtils;
+import io.wispforest.endec.StructEndec;
+import io.wispforest.owo.serialization.endec.MinecraftEndecs;
 import net.minecraft.text.Text;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
-import java.util.function.Supplier;
 
 public non-sealed interface Fragment extends SpellInstruction {
-    Supplier<MapCodec<Fragment>> CODEC = Suppliers.memoize(() -> FragmentType.REGISTRY.getCodec().dispatchMap(Fragment::type, FragmentType::codec));
-    Supplier<Endec<Fragment>> ENDEC = Suppliers.memoize(() -> CodecUtils.toEndec(CODEC.get().codec()));
+    @SuppressWarnings("unchecked")
+    StructEndec<Fragment> ENDEC = EndecTomfoolery.lazy(() -> (StructEndec<Fragment>) Endec.dispatchedStruct(
+            FragmentType::endec,
+            Fragment::type,
+            MinecraftEndecs.ofRegistry(FragmentType.REGISTRY)
+    ));
 
     FragmentType<?> type();
 

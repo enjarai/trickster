@@ -1,8 +1,6 @@
 package dev.enjarai.trickster.spell.execution.executor;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
+import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
@@ -11,20 +9,23 @@ import dev.enjarai.trickster.spell.execution.ExecutionState;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
+import io.wispforest.endec.StructEndec;
+import io.wispforest.endec.impl.StructEndecBuilder;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Stack;
 
 public class IteratorSpellExecutor extends DefaultSpellExecutor {
-    public static final MapCodec<IteratorSpellExecutor> CODEC = MapCodec.recursive("iterator_spell_executor", self -> RecordCodecBuilder.mapCodec(instance -> instance.group(
-            SpellPart.CODEC.fieldOf("executable").forGetter(executor -> executor.executable),
-            Codec.list(Fragment.CODEC.get().codec()).fieldOf("elements").forGetter(executor -> executor.elements),
-            ListFragment.CODEC.codec().fieldOf("list").forGetter(executor -> executor.list),
-            Codec.list(Fragment.CODEC.get().codec()).fieldOf("inputs").forGetter(executor -> executor.inputs),
-            ExecutionState.CODEC.fieldOf("state").forGetter(executor -> executor.state),
-            SpellExecutor.CODEC.get().optionalFieldOf("child").forGetter(executor -> executor.child)
-    ).apply(instance, IteratorSpellExecutor::new)));
+    public static final StructEndec<IteratorSpellExecutor> ENDEC = EndecTomfoolery.lazy(() -> StructEndecBuilder.of(
+            SpellPart.ENDEC.fieldOf("executable", executor -> executor.executable),
+            Fragment.ENDEC.listOf().fieldOf("elements", executor -> executor.elements),
+            ListFragment.ENDEC.fieldOf("list", executor -> executor.list),
+            Fragment.ENDEC.listOf().fieldOf("inputs", executor -> executor.inputs),
+            ExecutionState.ENDEC.fieldOf("state", executor -> executor.state),
+            SpellExecutor.ENDEC.optionalOf().fieldOf("child", executor -> executor.child),
+            IteratorSpellExecutor::new
+    ));
 
     protected final SpellPart executable;
     protected final ListFragment list;

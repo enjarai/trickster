@@ -1,7 +1,7 @@
 package dev.enjarai.trickster.spell;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.serialization.Codec;
+import io.wispforest.endec.Endec;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -10,8 +10,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public record Pattern(List<PatternEntry> entries) {
-    public static final Codec<Pattern> CODEC = PatternEntry.CODEC
-            .listOf(0, Integer.MAX_VALUE).xmap(Pattern::new, Pattern::entries);
+    public static final Endec<Pattern> ENDEC = PatternEntry.ENDEC.listOf().xmap(Pattern::new, Pattern::entries);
     public static final Pattern EMPTY = Pattern.of();
 
     public static Pattern from(List<Byte> pattern) {
@@ -50,8 +49,8 @@ public record Pattern(List<PatternEntry> entries) {
     }
 
     public record PatternEntry(byte p1, byte p2) implements Comparable<PatternEntry> {
-        public static final Codec<PatternEntry> CODEC = Codec.BYTE.listOf(2, 2)
-                .xmap(list -> new PatternEntry(list.getFirst(), list.getLast()), entry -> List.of(entry.p1, entry.p2));
+        public static final Endec<PatternEntry> ENDEC = Endec.BYTES
+                .xmap(list -> new PatternEntry(list[0], list[1]), entry -> new byte[]{entry.p1, entry.p2});
 
         @Override
         public int compareTo(@NotNull Pattern.PatternEntry o) {

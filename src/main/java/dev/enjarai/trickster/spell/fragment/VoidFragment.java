@@ -1,13 +1,13 @@
 package dev.enjarai.trickster.spell.fragment;
 
-import com.mojang.serialization.MapCodec;
+import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.spell.Fragment;
-import net.minecraft.text.Style;
+import io.wispforest.endec.StructEndec;
 import net.minecraft.text.Text;
 
 public record VoidFragment() implements Fragment {
     public static final VoidFragment INSTANCE = new VoidFragment();
-    public static final MapCodec<VoidFragment> CODEC = MapCodec.unit(INSTANCE);
+    public static final StructEndec<VoidFragment> ENDEC = EndecTomfoolery.unit(INSTANCE);
 
     @Override
     public FragmentType<?> type() {

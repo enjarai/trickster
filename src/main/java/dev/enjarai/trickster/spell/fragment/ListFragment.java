@@ -1,20 +1,23 @@
 package dev.enjarai.trickster.spell.fragment;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.serialization.MapCodec;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
 import dev.enjarai.trickster.spell.trick.blunder.IncorrectFragmentBlunder;
+import io.wispforest.endec.StructEndec;
+import io.wispforest.endec.impl.StructEndecBuilder;
 import net.minecraft.text.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public record ListFragment(List<Fragment> fragments) implements Fragment {
-    public static final MapCodec<ListFragment> CODEC =
-            Fragment.CODEC.get().codec().listOf().fieldOf("fragments").xmap(ListFragment::new, ListFragment::fragments);
+    public static final StructEndec<ListFragment> ENDEC = StructEndecBuilder.of(
+            Fragment.ENDEC.listOf().fieldOf("fragments", ListFragment::fragments),
+            ListFragment::new
+    );
 
     @Override
     public FragmentType<?> type() {

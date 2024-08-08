@@ -1,7 +1,5 @@
 package dev.enjarai.trickster.spell.execution;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
@@ -12,6 +10,9 @@ import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import dev.enjarai.trickster.spell.mana.ManaPool;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
 import dev.enjarai.trickster.spell.trick.blunder.NaNBlunder;
+import io.wispforest.endec.Endec;
+import io.wispforest.endec.StructEndec;
+import io.wispforest.endec.impl.StructEndecBuilder;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.text.Text;
@@ -20,11 +21,11 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SpellExecutionManager {
-    public static final Codec<SpellExecutionManager> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Codec.INT.optionalFieldOf("capacity", 5).forGetter(e -> e.capacity),
-            Codec.unboundedMap(Codec.STRING.xmap(Integer::parseInt, Object::toString), SpellExecutor.CODEC.get())
-                    .fieldOf("spells").forGetter((e) -> e.spells)
-    ).apply(instance, SpellExecutionManager::new));
+    public static final StructEndec<SpellExecutionManager> ENDEC = StructEndecBuilder.of(
+            Endec.INT.optionalFieldOf("capacity", e -> e.capacity, 5),
+            Endec.map(Object::toString, Integer::parseInt, SpellExecutor.ENDEC).fieldOf("spells", e -> e.spells),
+            SpellExecutionManager::new
+    );
 
     // NOT final, we want to be able to change this perchance
     private int capacity;

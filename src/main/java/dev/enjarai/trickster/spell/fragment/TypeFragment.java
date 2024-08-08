@@ -1,14 +1,17 @@
 package dev.enjarai.trickster.spell.fragment;
 
-import com.mojang.serialization.MapCodec;
+import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.spell.Fragment;
+import io.wispforest.endec.StructEndec;
+import io.wispforest.endec.impl.StructEndecBuilder;
+import io.wispforest.owo.serialization.endec.MinecraftEndecs;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 
 public record TypeFragment(FragmentType<?> typeType) implements Fragment {
-    public static final MapCodec<TypeFragment> CODEC = Identifier.CODEC.fieldOf("of_type")
-            .xmap(identifier -> new TypeFragment(FragmentType.REGISTRY.get(identifier)),
-                    typeFragment -> FragmentType.REGISTRY.getId(typeFragment.typeType));
+    public static final StructEndec<TypeFragment> ENDEC = EndecTomfoolery.lazy(() -> StructEndecBuilder.of(
+            MinecraftEndecs.ofRegistry(FragmentType.REGISTRY).fieldOf("of_type", TypeFragment::typeType),
+            TypeFragment::new
+    ));
 
     @Override
     public FragmentType<?> type() {

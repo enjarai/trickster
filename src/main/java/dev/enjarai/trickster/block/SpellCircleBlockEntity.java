@@ -36,6 +36,10 @@ import java.util.List;
 public class SpellCircleBlockEntity extends BlockEntity {
     public static final int LISTENER_RADIUS = 16;
     public static final float MAX_MANA = 450;
+    public static final KeyedEndec<SpellPart> PART_ENDEC =
+            SpellPart.ENDEC.keyed("spell", () -> null);
+    public static final KeyedEndec<SpellExecutor> EXECUTOR_ENDEC =
+            SpellExecutor.ENDEC.keyed("executor", () -> null);
     public static final KeyedEndec<SimpleManaPool> MANA_POOL_ENDEC =
             SimpleManaPool.ENDEC.keyed("mana_pool", () -> new SimpleManaPool(MAX_MANA));
 
@@ -72,17 +76,8 @@ public class SpellCircleBlockEntity extends BlockEntity {
     protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         super.readNbt(nbt, registryLookup);
 
-        if (nbt.contains("spell")) {
-            SpellPart.CODEC.decode(NbtOps.INSTANCE, nbt.get("spell"))
-                    .resultOrPartial(err -> Trickster.LOGGER.warn("Failed to load spell in spell circle: {}", err))
-                    .ifPresent(pair -> spell = pair.getFirst());
-        }
-
-        if (nbt.contains("executor")) {
-            SpellExecutor.CODEC.get().decode(NbtOps.INSTANCE, nbt.get("executor"))
-                    .resultOrPartial(err -> Trickster.LOGGER.warn("Failed to load executor in spell circle: {}", err))
-                    .ifPresent(pair -> executor = pair.getFirst());
-        }
+        spell = nbt.get(PART_ENDEC);
+        executor = nbt.get(EXECUTOR_ENDEC);
 
         if (nbt.contains("event")) {
             event = SpellCircleEvent.REGISTRY.getEntry(Identifier.of(nbt.getString("event")))
@@ -98,16 +93,13 @@ public class SpellCircleBlockEntity extends BlockEntity {
     protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         super.writeNbt(nbt, registryLookup);
 
+
         if (spell != null) {
-            SpellPart.CODEC.encodeStart(NbtOps.INSTANCE, spell)
-                    .resultOrPartial(err -> Trickster.LOGGER.warn("Failed to save spell in spell circle: {}", err))
-                    .ifPresent(element -> nbt.put("spell", element));
+            nbt.put(PART_ENDEC, spell);
         }
 
         if (executor != null) {
-            SpellExecutor.CODEC.get().encodeStart(NbtOps.INSTANCE, executor)
-                    .resultOrPartial(err -> Trickster.LOGGER.warn("Failed to save executor in spell circle: {}", err))
-                    .ifPresent(element -> nbt.put("executor", element));
+            nbt.put(EXECUTOR_ENDEC, executor);
         }
 
         nbt.putString("event", event.id().toString());

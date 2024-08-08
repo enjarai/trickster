@@ -1,21 +1,22 @@
 package dev.enjarai.trickster.spell.execution.executor;
 
-import com.google.common.base.Supplier;
-import com.google.common.base.Suppliers;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
+import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.execution.ExecutionState;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
 import dev.enjarai.trickster.spell.trick.blunder.ExecutionLimitReachedBlunder;
+import io.wispforest.endec.Endec;
+import io.wispforest.endec.StructEndec;
+import io.wispforest.owo.serialization.endec.MinecraftEndecs;
 
 import java.util.Optional;
 
 public interface SpellExecutor {
-    Supplier<MapCodec<SpellExecutor>> MAP_CODEC = Suppliers.memoize(() -> SpellExecutorType.REGISTRY.getCodec().dispatchMap(SpellExecutor::type, SpellExecutorType::codec));
-    Supplier<Codec<SpellExecutor>> CODEC = Suppliers.memoize(() -> MAP_CODEC.get().codec());
+    @SuppressWarnings("unchecked")
+    StructEndec<SpellExecutor> ENDEC = EndecTomfoolery.lazy(() -> (StructEndec<SpellExecutor>) Endec.dispatchedStruct(
+            SpellExecutorType::endec, SpellExecutor::type, MinecraftEndecs.ofRegistry(SpellExecutorType.REGISTRY)));
 
     SpellExecutorType<?> type();
 

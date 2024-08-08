@@ -1,8 +1,5 @@
 package dev.enjarai.trickster.spell;
 
-import com.mojang.datafixers.util.Either;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
 import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
@@ -11,6 +8,8 @@ import dev.enjarai.trickster.spell.trick.Tricks;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
 import dev.enjarai.trickster.spell.trick.blunder.UnknownTrickBlunder;
 import dev.enjarai.trickster.spell.trick.func.ForkingTrick;
+import io.wispforest.endec.StructEndec;
+import io.wispforest.endec.impl.StructEndecBuilder;
 import net.minecraft.text.Text;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -18,13 +17,10 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public record PatternGlyph(Pattern pattern) implements Fragment {
-    public static final Codec<PatternGlyph> CODEC = Codec.either(Pattern.CODEC, Codec.BYTE.listOf())
-            .xmap(
-                    either -> either.left().orElseGet(() -> Pattern.from(either.right().orElseThrow())),
-                    Either::left
-            )
-            .xmap(PatternGlyph::new, PatternGlyph::pattern);
-    public static final MapCodec<PatternGlyph> MAP_CODEC = CODEC.fieldOf("pattern");
+    public static final StructEndec<PatternGlyph> ENDEC = StructEndecBuilder.of(
+            Pattern.ENDEC.fieldOf("pattern", PatternGlyph::pattern),
+            PatternGlyph::new
+    );
 
     public PatternGlyph() {
         this(Pattern.EMPTY);

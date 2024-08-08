@@ -1,20 +1,23 @@
 package dev.enjarai.trickster.spell.fragment;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.trick.Tricks;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
 import dev.enjarai.trickster.spell.trick.blunder.DivideByZeroBlunder;
 import dev.enjarai.trickster.spell.trick.blunder.IncompatibleTypesBlunder;
 import dev.enjarai.trickster.spell.trick.blunder.NaNBlunder;
+import io.wispforest.endec.Endec;
+import io.wispforest.endec.StructEndec;
+import io.wispforest.endec.impl.StructEndecBuilder;
 import net.minecraft.text.Text;
 
 import java.util.Objects;
 
 public final class NumberFragment implements Fragment, AddableFragment, SubtractableFragment, MultiplicableFragment, DivisibleFragment, RoundableFragment {
-    public static final MapCodec<NumberFragment> CODEC =
-            Codec.DOUBLE.fieldOf("number").xmap(NumberFragment::new, NumberFragment::number);
+    public static final StructEndec<NumberFragment> ENDEC = StructEndecBuilder.of(
+            Endec.DOUBLE.fieldOf("number", NumberFragment::number),
+            NumberFragment::new
+    );
 
     private final double number;
 

@@ -1,7 +1,5 @@
 package dev.enjarai.trickster.spell.execution;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.mana.ManaLink;
@@ -11,6 +9,9 @@ import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
 import dev.enjarai.trickster.spell.trick.blunder.EntityInvalidBlunder;
 import dev.enjarai.trickster.spell.trick.blunder.ExecutionLimitReachedBlunder;
 import dev.enjarai.trickster.spell.trick.blunder.NotEnoughManaBlunder;
+import io.wispforest.endec.Endec;
+import io.wispforest.endec.StructEndec;
+import io.wispforest.endec.impl.StructEndecBuilder;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -19,16 +20,17 @@ import java.util.*;
 
 public class ExecutionState {
     public static final int MAX_RECURSION_DEPTH = 255;
-    public static final Codec<ExecutionState> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Codec.INT.fieldOf("recursions").forGetter(ExecutionState::getRecursions),
-            Codec.INT.fieldOf("delay").forGetter(ExecutionState::getDelay),
-            Codec.BOOL.fieldOf("has_used_mana").forGetter(ExecutionState::hasUsedMana),
-            Codec.INT.fieldOf("stacktrace_size_when_made").forGetter(ExecutionState::getInitialStacktraceSize),
-            Fragment.CODEC.get().codec().listOf().fieldOf("arguments").forGetter(state -> state.arguments),
-            Codec.INT.listOf().fieldOf("stacktrace").forGetter(state -> state.stacktrace.stream().toList()),
-            ManaLink.CODEC.listOf().fieldOf("mana_links").forGetter(state -> state.manaLinks),
-            ManaPool.CODEC.get().codec().optionalFieldOf("pool_override").forGetter(state -> state.poolOverride)
-    ).apply(instance, ExecutionState::new));
+    public static final StructEndec<ExecutionState> ENDEC = StructEndecBuilder.of(
+            Endec.INT.fieldOf("recursions", ExecutionState::getRecursions),
+            Endec.INT.fieldOf("delay", ExecutionState::getDelay),
+            Endec.BOOLEAN.fieldOf("has_used_mana", ExecutionState::hasUsedMana),
+            Endec.INT.fieldOf("stacktrace_size_when_made", ExecutionState::getInitialStacktraceSize),
+            Fragment.ENDEC.listOf().fieldOf("arguments", state -> state.arguments),
+            Endec.INT.listOf().fieldOf("stacktrace", state -> state.stacktrace.stream().toList()),
+            ManaLink.ENDEC.listOf().fieldOf("mana_links", state -> state.manaLinks),
+            ManaPool.ENDEC.optionalOf().fieldOf("pool_override", state -> state.poolOverride),
+            ExecutionState::new
+    );
 
     private int recursions;
     private int delay;

@@ -1,6 +1,5 @@
 package dev.enjarai.trickster.cca;
 
-import com.mojang.serialization.DataResult;
 import dev.enjarai.trickster.ModSounds;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellPart;
@@ -11,14 +10,13 @@ import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
 import dev.enjarai.trickster.spell.execution.SpellExecutionManager;
 import dev.enjarai.trickster.spell.mana.ManaPool;
 import io.wispforest.endec.Endec;
+import io.wispforest.endec.impl.KeyedEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import io.wispforest.owo.serialization.endec.MinecraftEndecs;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -46,6 +44,8 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
                     MinecraftEndecs.TEXT.optionalOf().fieldOf("message", RunningSpellData::message),
                     RunningSpellData::new
             ));
+    public static final KeyedEndec<SpellExecutionManager> EXECUTION_MANAGER_ENDEC =
+            SpellExecutionManager.ENDEC.keyed("manager", () -> new SpellExecutionManager(5));
 
     public CasterComponent(PlayerEntity player) {
         this.player = player;
@@ -97,19 +97,14 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
 
     @Override
     public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-        DataResult<SpellExecutionManager> result = SpellExecutionManager.CODEC.parse(NbtOps.INSTANCE, tag.get("manager"));
-
-        if (result.hasResultOrPartial())
-            executionManager = result.resultOrPartial().orElseThrow();
-
+        executionManager = tag.get(EXECUTION_MANAGER_ENDEC);
         executionManager.setSource(new PlayerSpellSource((ServerPlayerEntity) player));
         waitTicks(20);
     }
 
     @Override
     public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-        DataResult<NbtElement> result = SpellExecutionManager.CODEC.encodeStart(NbtOps.INSTANCE, executionManager);
-        tag.put("manager", result.result().orElseThrow());
+        tag.put(EXECUTION_MANAGER_ENDEC, executionManager);
     }
 
     @Override

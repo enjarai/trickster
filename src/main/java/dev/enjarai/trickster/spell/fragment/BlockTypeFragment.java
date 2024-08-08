@@ -1,15 +1,18 @@
 package dev.enjarai.trickster.spell.fragment;
 
-import com.mojang.serialization.MapCodec;
 import dev.enjarai.trickster.spell.Fragment;
+import io.wispforest.endec.StructEndec;
+import io.wispforest.endec.impl.StructEndecBuilder;
+import io.wispforest.owo.serialization.endec.MinecraftEndecs;
 import net.minecraft.block.Block;
-import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 
 public record BlockTypeFragment(Block block) implements Fragment {
-    public static final MapCodec<BlockTypeFragment> CODEC = Registries.BLOCK.getCodec()
-            .xmap(BlockTypeFragment::new, BlockTypeFragment::block).fieldOf("block");
+    public static final StructEndec<BlockTypeFragment> ENDEC = StructEndecBuilder.of(
+            MinecraftEndecs.ofRegistry(Registries.BLOCK).fieldOf("block", BlockTypeFragment::block),
+            BlockTypeFragment::new
+    );
 
     @Override
     public FragmentType<?> type() {

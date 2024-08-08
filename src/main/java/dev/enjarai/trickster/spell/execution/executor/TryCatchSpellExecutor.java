@@ -1,25 +1,29 @@
 package dev.enjarai.trickster.spell.execution.executor;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.SpellInstruction;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.execution.ExecutionState;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
+import io.wispforest.endec.Endec;
+import io.wispforest.endec.StructEndec;
+import io.wispforest.endec.impl.StructEndecBuilder;
 
 import java.util.List;
 import java.util.Optional;
 
 public class TryCatchSpellExecutor extends DefaultSpellExecutor {
-    public static final MapCodec<TryCatchSpellExecutor> CODEC = RecordCodecBuilder.mapCodec((instance) -> instance.group(
-            DefaultSpellExecutor.CODEC.codec().fieldOf("self").forGetter(executor -> executor),
-            SpellExecutor.MAP_CODEC.get().fieldOf("try").forGetter(executor -> executor.trySpell),
-            SpellExecutor.MAP_CODEC.get().fieldOf("catch").forGetter(executor -> executor.catchSpell),
-            Codec.BOOL.fieldOf("catching").forGetter(executor -> executor.catching)
-    ).apply(instance, (self, trySpell, catchSpell, catching) -> new TryCatchSpellExecutor(self.instructions, self.inputs, self.scope, self.state, self.child, self.overrideReturnValue, trySpell, catchSpell, catching)));
+    public static final StructEndec<TryCatchSpellExecutor> ENDEC = StructEndecBuilder.of(
+            DefaultSpellExecutor.ENDEC.fieldOf("self", e -> e),
+            SpellExecutor.ENDEC.fieldOf("try", e -> e.trySpell),
+            SpellExecutor.ENDEC.fieldOf("catch", e -> e.catchSpell),
+            Endec.BOOLEAN.fieldOf("catching", e -> e.catching),
+            (self, trySpell, catchSpell, catching) -> new TryCatchSpellExecutor(
+                    self.instructions, self.inputs, self.scope, self.state, self.child, self.overrideReturnValue,
+                    trySpell, catchSpell, catching
+            )
+    );
 
     protected final SpellExecutor trySpell;
     protected final SpellExecutor catchSpell;

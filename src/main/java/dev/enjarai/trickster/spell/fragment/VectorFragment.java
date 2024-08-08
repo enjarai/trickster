@@ -1,12 +1,14 @@
 package dev.enjarai.trickster.spell.fragment;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
+import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.trick.Tricks;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
 import dev.enjarai.trickster.spell.trick.blunder.DivideByZeroBlunder;
 import dev.enjarai.trickster.spell.trick.blunder.IncompatibleTypesBlunder;
+import io.wispforest.endec.Endec;
+import io.wispforest.endec.StructEndec;
+import io.wispforest.endec.impl.StructEndecBuilder;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -15,13 +17,12 @@ import net.minecraft.util.math.Vec3i;
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
 
-import java.util.List;
-
 public record VectorFragment(Vector3dc vector) implements Fragment, AddableFragment, SubtractableFragment, MultiplicableFragment, DivisibleFragment, RoundableFragment {
-    public static final MapCodec<VectorFragment> CODEC = Codec.DOUBLE.listOf(3, 3)
-            .<Vector3dc>xmap(list -> new Vector3d(list.get(0), list.get(1), list.get(2)), vec -> List.of(vec.x(), vec.y(), vec.z()))
-            .xmap(VectorFragment::new, VectorFragment::vector)
-            .fieldOf("vector");
+    public static final StructEndec<VectorFragment> ENDEC = StructEndecBuilder.of(
+            EndecTomfoolery.<Double, Vector3dc>vectorEndec(Endec.DOUBLE, Vector3d::new, Vector3dc::x, Vector3dc::y, Vector3dc::z)
+                    .fieldOf("vector", VectorFragment::vector),
+            VectorFragment::new
+    );
     public static final VectorFragment ZERO = new VectorFragment(new Vector3d());
 
     @Override

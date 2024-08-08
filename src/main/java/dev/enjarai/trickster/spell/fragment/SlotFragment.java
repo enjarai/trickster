@@ -1,12 +1,13 @@
 package dev.enjarai.trickster.spell.fragment;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
+import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.trick.blunder.*;
+import io.wispforest.endec.Endec;
+import io.wispforest.endec.StructEndec;
+import io.wispforest.endec.impl.StructEndecBuilder;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -16,10 +17,11 @@ import net.minecraft.util.math.BlockPos;
 import java.util.Optional;
 
 public record SlotFragment(int slot, Optional<BlockPos> source) implements Fragment {
-    public static final MapCodec<SlotFragment> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Codec.INT.fieldOf("slot").forGetter(SlotFragment::slot),
-            BlockPos.CODEC.optionalFieldOf("source").forGetter(SlotFragment::source)
-    ).apply(instance, SlotFragment::new));
+    public static final StructEndec<SlotFragment> ENDEC = StructEndecBuilder.of(
+            Endec.INT.fieldOf("slot", SlotFragment::slot),
+            EndecTomfoolery.ALWAYS_READABLE_BLOCK_POS.optionalOf().fieldOf("source", SlotFragment::source),
+            SlotFragment::new
+    );
 
     @Override
     public FragmentType<?> type() {

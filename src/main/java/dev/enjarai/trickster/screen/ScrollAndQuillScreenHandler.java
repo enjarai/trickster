@@ -195,6 +195,6 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
     }
 
     public record Replace(Fragment fragment) {
-        public static final Endec<Replace> ENDEC = Fragment.ENDEC.get().xmap(Replace::new, Replace::fragment);
+        public static final Endec<Replace> ENDEC = Fragment.ENDEC.xmap(Replace::new, Replace::fragment);
     }
 }

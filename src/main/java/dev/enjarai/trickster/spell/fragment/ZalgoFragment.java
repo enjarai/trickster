@@ -1,7 +1,8 @@
 package dev.enjarai.trickster.spell.fragment;
 
-import com.mojang.serialization.MapCodec;
+import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.spell.Fragment;
+import io.wispforest.endec.StructEndec;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.random.LocalRandom;
@@ -10,7 +11,7 @@ import net.minecraft.util.math.random.Random;
 import java.util.List;
 
 public record ZalgoFragment(String string) implements Fragment {
-    public static final MapCodec<ZalgoFragment> CODEC = MapCodec.unit(ZalgoFragment::new);
+    public static final StructEndec<ZalgoFragment> ENDEC = EndecTomfoolery.unit(ZalgoFragment::new);
     public static final Random RANDOM = new LocalRandom(0xABABABA);
     public static final List<String> SILLIES = List.of(
             "amogus",

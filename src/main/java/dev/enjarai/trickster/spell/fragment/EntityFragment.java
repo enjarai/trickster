@@ -1,19 +1,21 @@
 package dev.enjarai.trickster.spell.fragment;
 
-import com.mojang.serialization.MapCodec;
+import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.execution.source.SpellSource;
+import io.wispforest.endec.StructEndec;
+import io.wispforest.endec.impl.StructEndecBuilder;
 import net.minecraft.entity.Entity;
 import net.minecraft.text.Text;
-import net.minecraft.util.Uuids;
 
 import java.util.Optional;
 import java.util.UUID;
 
 public record EntityFragment(UUID uuid, Text name) implements Fragment {
-    public static final MapCodec<EntityFragment> CODEC = Uuids.CODEC
-            .xmap(uuid -> new EntityFragment(uuid, Text.of(uuid)), EntityFragment::uuid).fieldOf("uuid");
+    public static final StructEndec<EntityFragment> ENDEC = StructEndecBuilder.of(
+            EndecTomfoolery.UUID.fieldOf("uuid", EntityFragment::uuid),
+            uuid -> new EntityFragment(uuid, Text.of(uuid))
+    );
 
     @Override
     public FragmentType<?> type() {

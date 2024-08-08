@@ -1,12 +1,14 @@
 package dev.enjarai.trickster.spell.mana;
 
-import com.google.common.base.Supplier;
-import com.google.common.base.Suppliers;
-import com.mojang.serialization.MapCodec;
+import dev.enjarai.trickster.EndecTomfoolery;
+import io.wispforest.endec.Endec;
+import io.wispforest.endec.StructEndec;
+import io.wispforest.owo.serialization.endec.MinecraftEndecs;
 import org.jetbrains.annotations.Nullable;
 
 public interface ManaPool {
-    Supplier<MapCodec<ManaPool>> CODEC = Suppliers.memoize(() -> ManaPoolType.REGISTRY.getCodec().dispatchMap(pool -> {
+    @SuppressWarnings("unchecked")
+    StructEndec<ManaPool> ENDEC = EndecTomfoolery.lazy(() -> (StructEndec<ManaPool>) Endec.dispatchedStruct(ManaPoolType::endec, pool -> {
         var type = pool.type();
 
         if (type == null) {
@@ -14,7 +16,7 @@ public interface ManaPool {
         }
 
         return type;
-    }, ManaPoolType::codec));
+    }, MinecraftEndecs.ofRegistry(ManaPoolType.REGISTRY)));
 
     static float healthFromMana(float mana) {
         return mana / 2;
