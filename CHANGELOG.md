@@ -1,5 +1,2 @@
-- Added a handful of missing book entries. (@StellarWitch7)
-- Added rotation shifting revision patterns. (@StellarWitch7)
-- Fixed some translations. (@enjarai)
-- Fixed a few bugs, probably.
-- I think I'm forgetting something, but its probably fine.
+- Added some mana-checking tricks. (@enjarai)
+- Slightly improve floating point precision errors while zooming into an editing spell. (@enjarai)
