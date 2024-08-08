@@ -60,7 +60,6 @@ public record SlotFragment(int slot, Optional<BlockPos> source) implements Fragm
 
     /**
      * Instead of taking items from the slot, directly reference the stored stack to modify it.
-     * This still consumes the same amount of mana as moving, and should preferably only be called once per trick.
      */
     public ItemStack reference(Trick trickSource, SpellContext ctx) {
         var stack = getStack(trickSource, ctx);
