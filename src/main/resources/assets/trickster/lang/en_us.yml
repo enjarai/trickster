@@ -143,6 +143,7 @@ trickster:
     import_hat: Cranium Ploy
     check_hat: Cranium Delusion
     other_hand: Juggling Delusion
+    other_hand_slot: Catch Delusion
     get_item_in_slot: Fence's Distortion
     get_inventory_slot: Intrusive Distortion
     drop_stack_from_slot: Benevolent Distortion
@@ -155,6 +156,11 @@ trickster:
 
     get_scale: Distortion of Occupation
     set_scale: Ploy of Occupation
+
+    transmog: Ploy of Transmogrification
+    hidden_transmog: Ploy of Subterfuge
+    remove_transmog: Ploy of Origin
+    get_transmog: Distortion of Transmogrification
 
   fragment.trickster:
     type: Type

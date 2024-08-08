@@ -5,17 +5,20 @@ import dev.enjarai.trickster.cca.ModEntityCumponents;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.CrowMind;
 import dev.enjarai.trickster.spell.Fragment;
+import dev.enjarai.trickster.spell.fragment.SlotFragment;
 import dev.enjarai.trickster.spell.mana.ManaPool;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import org.joml.Vector3d;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 @SuppressWarnings("UnstableApiUsage")
 public class PlayerSpellSource extends SpellSource {
@@ -43,18 +46,29 @@ public class PlayerSpellSource extends SpellSource {
     }
 
     @Override
-    public Optional<ItemStack> getOtherHandSpellStack() {
+    public Optional<ItemStack> getOtherHandStack(Predicate<ItemStack> filter) {
         if (slot == EquipmentSlot.MAINHAND) {
-            return Optional.ofNullable(player.getOffHandStack()).filter(this::isSpellStack);
+            return Optional.ofNullable(player.getOffHandStack()).filter(filter);
         } else if (slot == EquipmentSlot.OFFHAND) {
-            return Optional.ofNullable(player.getMainHandStack()).filter(this::isSpellStack);
+            return Optional.ofNullable(player.getMainHandStack()).filter(filter);
         }
 
         return Optional
                 .ofNullable(player.getMainHandStack())
-                .filter(this::isSpellStack)
+                .filter(filter)
                 .or(() -> Optional.ofNullable(player.getOffHandStack())
-                        .filter(this::isSpellStack));
+                        .filter(filter));
+    }
+
+    @Override
+    public Optional<SlotFragment> getOtherHandSlot() {
+        if (slot == EquipmentSlot.MAINHAND) {
+            return Optional.of(new SlotFragment(PlayerInventory.OFF_HAND_SLOT, Optional.empty()));
+        } else if (slot == EquipmentSlot.OFFHAND) {
+            return Optional.of(new SlotFragment(player.getInventory().selectedSlot, Optional.empty()));
+        } else {
+            return Optional.empty();
+        }
     }
 
     @Override
@@ -67,7 +81,7 @@ public class PlayerSpellSource extends SpellSource {
         return player.getMaxHealth();
     }
 
-    protected boolean isSpellStack(ItemStack stack) {
+    public static boolean isSpellStack(ItemStack stack) {
         return stack.contains(ModComponents.SPELL) ||
                 (stack.contains(DataComponentTypes.CONTAINER) && stack.contains(ModComponents.SELECTED_SLOT));
     }

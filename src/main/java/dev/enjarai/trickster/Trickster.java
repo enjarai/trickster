@@ -3,6 +3,7 @@ package dev.enjarai.trickster;
 import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.block.ModBlocks;
 import dev.enjarai.trickster.compat.pehkui.PehkuiCompat;
+import dev.enjarai.trickster.compat.transmog.TransmogCompat;
 import dev.enjarai.trickster.config.TricksterConfig;
 import dev.enjarai.trickster.effects.ModEffects;
 import dev.enjarai.trickster.item.ModItems;
@@ -64,6 +65,9 @@ public class Trickster implements ModInitializer {
 
 		if (FabricLoader.getInstance().isModLoaded("pehkui")) {
 			PehkuiCompat.init();
+		}
+		if (FabricLoader.getInstance().isModLoaded("transmog")) {
+			TransmogCompat.init();
 		}
 	}
 
