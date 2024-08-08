@@ -63,20 +63,11 @@ public record SlotFragment(int slot, Optional<BlockPos> source) implements Fragm
      * This still consumes the same amount of mana as moving, and should preferably only be called once per trick.
      */
     public ItemStack reference(Trick trickSource, SpellContext ctx) {
-        return reference(trickSource, ctx, ctx.source().getBlockPos());
-    }
-
-    /**
-     * Instead of taking items from the slot, directly reference the stored stack to modify it.
-     * This still consumes the same amount of mana as moving, and should preferably only be called once per trick.
-     */
-    public ItemStack reference(Trick trickSource, SpellContext ctx, BlockPos pos) {
         var stack = getStack(trickSource, ctx);
 
         if (stack.isEmpty())
             throw new MissingItemBlunder(trickSource);
 
-        source.ifPresent(sourcePos -> ctx.useMana(trickSource, (float) (stack.getCount() * (32 + (pos.toCenterPos().distanceTo(sourcePos.toCenterPos()) * 0.8)))));
         return stack;
     }
 
