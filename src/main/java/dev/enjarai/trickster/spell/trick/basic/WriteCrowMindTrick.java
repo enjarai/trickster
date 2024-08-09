@@ -4,6 +4,7 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
+import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
 
@@ -19,6 +20,6 @@ public class WriteCrowMindTrick extends Trick {
         var fragment = expectInput(fragments, 0);
 
         ctx.source().setCrowMind(fragment);
-        return BooleanFragment.TRUE;
+        return VoidFragment.INSTANCE;
     }
 }

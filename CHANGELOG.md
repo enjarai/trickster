@@ -1,1 +1,3 @@
-- Fix running spells not serializing properly. (@enjarai)
+- Fixed an issue causing bloodcasting to fail. (@StellarWitch7)
+- Fixed Crow Mind Ploy returning true instead of void. (#28) (@enjarai)
+- Removed "Why did you do that?" advancement temporarily until a fix can be made to its criteria. (@enjarai)
