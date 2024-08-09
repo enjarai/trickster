@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.item;
 
+import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.effects.ModEffects;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -8,6 +9,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.UseAction;
@@ -39,6 +41,9 @@ public class SpellInkItem extends Item {
                     true))
             ) user.damage(new DamageSource(user.getRegistryManager().get(DamageTypes.MAGIC.getRegistryRef()).entryOf(DamageTypes.MAGIC)), 22);
         }
+
+        if (user instanceof ServerPlayerEntity player)
+            ModCriteria.DRINK_SPELL.trigger(player);
 
         return super.finishUsing(stack, world, user);
     }
