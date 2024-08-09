@@ -21,8 +21,12 @@ public class ShowBarTrick extends Trick {
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var id = expectInput(fragments, FragmentType.NUMBER, 0);
         var value = expectInput(fragments, FragmentType.NUMBER, 1);
-        var maxValue = supposeInput(fragments, FragmentType.NUMBER, 2)
+        double maxValue = supposeInput(fragments, FragmentType.NUMBER, 2)
                 .map(NumberFragment::number).orElse(1d);
+
+        if (maxValue == 0) {
+            maxValue = 1.0;
+        }
 
         ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this))
                 .getComponent(ModEntityCumponents.BARS).setBar(id.asInt(), value.number() / maxValue);
