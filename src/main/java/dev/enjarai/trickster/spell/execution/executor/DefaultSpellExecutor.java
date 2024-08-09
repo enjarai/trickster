@@ -109,8 +109,7 @@ public class DefaultSpellExecutor implements SpellExecutor {
     protected Optional<Fragment> run(SpellContext ctx, int executions) throws BlunderException {
         lastRunExecutions = 0;
 
-        if (child.isPresent())
-        {
+        if (child.isPresent()) {
             var result = runChild(ctx, executions);
 
             if (result.isEmpty())
@@ -214,6 +213,7 @@ public class DefaultSpellExecutor implements SpellExecutor {
 
         if (result.isPresent()) {
             inputs.push(result.get());
+            state.syncLinksFrom(child.get().getCurrentState());
             child = Optional.empty();
         }
 
