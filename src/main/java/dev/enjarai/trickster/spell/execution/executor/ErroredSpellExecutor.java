@@ -6,15 +6,17 @@ import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
+import io.wispforest.owo.serialization.CodecUtils;
 import io.wispforest.owo.serialization.endec.MinecraftEndecs;
 import net.minecraft.text.Text;
+import net.minecraft.text.TextCodecs;
 
 import java.util.List;
 import java.util.Optional;
 
 public record ErroredSpellExecutor(Text errorMessage) implements SpellExecutor {
     public static final StructEndec<ErroredSpellExecutor> ENDEC = StructEndecBuilder.of(
-            MinecraftEndecs.TEXT.fieldOf("error_message", e -> e.errorMessage),
+            CodecUtils.toEndec(TextCodecs.STRINGIFIED_CODEC).fieldOf("error_message", e -> e.errorMessage),
             ErroredSpellExecutor::new
     );
 
