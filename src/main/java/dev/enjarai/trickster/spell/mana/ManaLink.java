@@ -63,7 +63,6 @@ public final class ManaLink {
         float result = availableMana;
 
         if (amount > availableMana) {
-
             if (!manaPool.decrease(availableMana))
                 availableMana -= oldMana;
             else
