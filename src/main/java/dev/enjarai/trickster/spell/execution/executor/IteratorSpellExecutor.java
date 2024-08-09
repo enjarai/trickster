@@ -55,8 +55,7 @@ public class IteratorSpellExecutor extends DefaultSpellExecutor {
     protected Optional<Fragment> run(SpellContext ctx, int executions) throws BlunderException {
         lastRunExecutions = 0;
 
-        if (child.isPresent())
-        {
+        if (child.isPresent()) {
             var result = runChild(ctx, executions);
 
             if (result.isEmpty())

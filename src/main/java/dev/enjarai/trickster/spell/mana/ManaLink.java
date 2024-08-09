@@ -59,17 +59,14 @@ public final class ManaLink {
             throw new NotEnoughManaBlunder(trickSource, amount);
 
         var manaPool = this.manaPool.apply(trickSource, world);
-        float oldMana = manaPool.get();
         float result = availableMana;
 
         if (amount > availableMana) {
-            if (!manaPool.decrease(availableMana))
-                availableMana -= oldMana;
-            else
-                availableMana = 0;
+            manaPool.decrease(availableMana);
+            availableMana = 0;
         } else {
             if (!manaPool.decrease(amount))
-                availableMana -= oldMana;
+                availableMana = 0;
             else
                 availableMana -= amount;
         }

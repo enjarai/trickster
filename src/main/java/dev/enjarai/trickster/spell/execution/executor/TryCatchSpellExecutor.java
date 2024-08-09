@@ -38,9 +38,9 @@ public class TryCatchSpellExecutor extends DefaultSpellExecutor {
 
     public TryCatchSpellExecutor(SpellContext ctx, SpellPart trySpell, SpellPart catchSpell, List<Fragment> arguments) {
         super(new SpellPart(), List.of());
-        this.state = ctx.executionState().recurseOrThrow(List.of());
-        this.trySpell = new DefaultSpellExecutor(trySpell, this.state.recurseOrThrow(arguments));
-        this.catchSpell = new DefaultSpellExecutor(catchSpell, this.state.recurseOrThrow(arguments));
+        this.trySpell = new DefaultSpellExecutor(trySpell, ctx.executionState().recurseOrThrow(arguments));
+        this.catchSpell = new DefaultSpellExecutor(catchSpell, ctx.executionState().recurseOrThrow(arguments));
+        this.state = this.trySpell.getCurrentState();
     }
 
     @Override
@@ -59,6 +59,8 @@ public class TryCatchSpellExecutor extends DefaultSpellExecutor {
             return trySpell.run(ctx.source());
         } catch (BlunderException blunder) {
             catching = true;
+            state = catchSpell.getCurrentState();
+            state.syncLinksFrom(trySpell.getCurrentState());
             return catchSpell.run(ctx.source());
         }
     }

@@ -71,6 +71,7 @@ public class ExecutionState {
 
         var state = new ExecutionState(recursions + 1, arguments, poolOverride, stacktrace);
         state.stacktrace.push(-2);
+        state.syncLinksFrom(this);
         return state;
     }
 
@@ -155,6 +156,11 @@ public class ExecutionState {
 
     public int getInitialStacktraceSize() {
         return initialStacktraceSize;
+    }
+
+    public void syncLinksFrom(ExecutionState state) {
+        manaLinks.clear();
+        manaLinks.addAll(state.manaLinks);
     }
 
     public void addManaLink(Trick trickSource, LivingEntity target, float ownerHealth, float limit) throws BlunderException {
