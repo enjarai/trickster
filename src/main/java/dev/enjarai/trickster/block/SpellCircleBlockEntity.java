@@ -1,10 +1,7 @@
 package dev.enjarai.trickster.block;
 
-import dev.enjarai.trickster.Trickster;
-import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
-import dev.enjarai.trickster.spell.execution.executor.ErroredSpellExecutor;
 import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.BlockSpellSource;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
@@ -12,14 +9,12 @@ import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.mana.SimpleManaPool;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
-import dev.enjarai.trickster.spell.trick.blunder.NaNBlunder;
 import dev.enjarai.trickster.spell.world.SpellCircleEvent;
 import io.wispforest.endec.impl.KeyedEndec;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
@@ -40,8 +35,6 @@ public class SpellCircleBlockEntity extends BlockEntity {
             SpellPart.ENDEC.keyed("spell", () -> null);
     public static final KeyedEndec<SpellExecutor> EXECUTOR_ENDEC =
             SpellExecutor.ENDEC.keyed("executor", () -> null);
-    public static final KeyedEndec<SimpleManaPool> MANA_POOL_ENDEC =
-            SimpleManaPool.ENDEC.keyed("mana_pool", () -> new SimpleManaPool(MAX_MANA));
 
     // Used with single-tick events
     public SpellPart spell;
@@ -84,7 +77,7 @@ public class SpellCircleBlockEntity extends BlockEntity {
                     .map(RegistryEntry.Reference::value).orElse(SpellCircleEvent.NONE);
         }
 
-        manaPool = nbt.get(MANA_POOL_ENDEC);
+        manaPool.set(nbt.getFloat("mana"));
 
         lastPower = nbt.getInt("last_power");
     }
@@ -104,7 +97,7 @@ public class SpellCircleBlockEntity extends BlockEntity {
 
         nbt.putString("event", event.id().toString());
 
-        nbt.put(MANA_POOL_ENDEC, manaPool);
+        nbt.putFloat("mana", manaPool.get());
 
         nbt.putInt("last_power", lastPower);
     }

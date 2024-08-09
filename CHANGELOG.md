@@ -1,1 +1,1 @@
-- Fixed entities within areas chunkloaded by spells not ticking properly. (@enjarai)
+- Fixed a bug that would half spell circle mana regeneration after reloading the chunk. (@enjarai)
