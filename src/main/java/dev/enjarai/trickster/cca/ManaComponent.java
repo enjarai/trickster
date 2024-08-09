@@ -72,7 +72,7 @@ public class ManaComponent extends SimpleManaPool implements AutoSyncedComponent
 
         if (f < 0) {
             entity.damage(ModDamageTypes.of(entity.getWorld(), ModDamageTypes.MANA_OVERFLUX), ManaPool.healthFromMana(f * -1));
-            return entity.isAlive() && Boolean.FALSE.equals(entity.getAttached(ModAttachments.WHY_IS_THERE_NO_WAY_TO_DETECT_THIS));
+            return entity.isAlive() && (entity.getAttached(ModAttachments.WHY_IS_THERE_NO_WAY_TO_DETECT_THIS) instanceof Boolean b) && Boolean.FALSE.equals(b);
         }
 
         return true;
