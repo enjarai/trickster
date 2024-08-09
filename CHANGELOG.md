@@ -1,2 +1,1 @@
-- Added compatibility with transmog. (@enjarai)
-- Rewrote data serialization code to be more future-proof, existing worlds should be compatible. (@enjarai)
+- Fix running spells not serializing properly. (@enjarai)

@@ -41,7 +41,7 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
             Endec.map(Endec.INT, StructEndecBuilder.of(
                     Endec.INT.fieldOf("executions_last_tick", RunningSpellData::executionsLastTick),
                     Endec.BOOLEAN.fieldOf("errored", RunningSpellData::errored),
-                    MinecraftEndecs.TEXT.optionalOf().fieldOf("message", RunningSpellData::message),
+                    MinecraftEndecs.TEXT.optionalOf().optionalFieldOf("message", RunningSpellData::message, Optional.empty()),
                     RunningSpellData::new
             ));
     public static final KeyedEndec<SpellExecutionManager> EXECUTION_MANAGER_ENDEC =

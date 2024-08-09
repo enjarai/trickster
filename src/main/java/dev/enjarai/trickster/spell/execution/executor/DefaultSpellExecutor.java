@@ -23,8 +23,8 @@ public class DefaultSpellExecutor implements SpellExecutor {
             Fragment.ENDEC.listOf().fieldOf("inputs", e -> e.inputs),
             Endec.INT.listOf().fieldOf("scope", e -> e.scope),
             ExecutionState.ENDEC.fieldOf("state", e -> e.state),
-            SpellExecutor.ENDEC.optionalOf().fieldOf("child", e -> e.child),
-            Fragment.ENDEC.optionalOf().fieldOf("override_return_value", e -> e.overrideReturnValue),
+            SpellExecutor.ENDEC.optionalOf().optionalFieldOf("child", e -> e.child, Optional.empty()),
+            Fragment.ENDEC.optionalOf().optionalFieldOf("override_return_value", e -> e.overrideReturnValue, Optional.empty()),
             (instructions, inputs, scope, state, child, overrideReturnValue) -> {
                 List<SpellInstruction> serializedInstructions = instructions.stream().map(SerializedSpellInstruction::toDeserialized).collect(Collectors.toList());
                 return new DefaultSpellExecutor(serializedInstructions, inputs, scope, state, child, overrideReturnValue);

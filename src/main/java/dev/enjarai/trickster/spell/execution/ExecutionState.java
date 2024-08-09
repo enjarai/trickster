@@ -28,7 +28,7 @@ public class ExecutionState {
             Fragment.ENDEC.listOf().fieldOf("arguments", state -> state.arguments),
             Endec.INT.listOf().fieldOf("stacktrace", state -> state.stacktrace.stream().toList()),
             ManaLink.ENDEC.listOf().fieldOf("mana_links", state -> state.manaLinks),
-            ManaPool.ENDEC.optionalOf().fieldOf("pool_override", state -> state.poolOverride),
+            ManaPool.ENDEC.optionalOf().optionalFieldOf("pool_override", state -> state.poolOverride, Optional.empty()),
             ExecutionState::new
     );
 
@@ -190,7 +190,7 @@ public class ExecutionState {
                 float available = link.getAvailable();
                 float ratio = available / totalAvailable;
                 float ratioD = amount * ratio;
-                float used = link.useMana(trickSource, ctx.source().getWorld(), tryOverridePool(ctx.source().getManaPool()), ratioD);
+                float used = link.useMana(trickSource, ctx.source().getWorld(), pool, ratioD);
 
                 if (used < ratioD) {
                     leftOver += ratioD - used;

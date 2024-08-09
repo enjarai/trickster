@@ -19,7 +19,7 @@ import java.util.Optional;
 public record SlotFragment(int slot, Optional<BlockPos> source) implements Fragment {
     public static final StructEndec<SlotFragment> ENDEC = StructEndecBuilder.of(
             Endec.INT.fieldOf("slot", SlotFragment::slot),
-            EndecTomfoolery.ALWAYS_READABLE_BLOCK_POS.optionalOf().fieldOf("source", SlotFragment::source),
+            EndecTomfoolery.ALWAYS_READABLE_BLOCK_POS.optionalOf().optionalFieldOf("source", SlotFragment::source, Optional.empty()),
             SlotFragment::new
     );
 

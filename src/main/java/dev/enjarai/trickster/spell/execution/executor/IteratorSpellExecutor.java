@@ -23,7 +23,7 @@ public class IteratorSpellExecutor extends DefaultSpellExecutor {
             ListFragment.ENDEC.fieldOf("list", executor -> executor.list),
             Fragment.ENDEC.listOf().fieldOf("inputs", executor -> executor.inputs),
             ExecutionState.ENDEC.fieldOf("state", executor -> executor.state),
-            SpellExecutor.ENDEC.optionalOf().fieldOf("child", executor -> executor.child),
+            SpellExecutor.ENDEC.optionalOf().optionalFieldOf("child", executor -> executor.child, Optional.empty()),
             IteratorSpellExecutor::new
     ));
 
