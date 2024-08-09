@@ -1,2 +1,1 @@
-- Fixed a critical crash issue. (@StellarWitch7 and @enjarai)
-- Fixed mana links not being shared between meta-executions. (@StellarWitch7)
+- Fixed entities within areas chunkloaded by spells not ticking properly. (@enjarai)

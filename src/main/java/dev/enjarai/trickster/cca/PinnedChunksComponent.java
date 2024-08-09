@@ -56,7 +56,7 @@ public class PinnedChunksComponent implements ServerTickingComponent {
         }
 
         pins.put(pos.toLong(), 80);
-        serverWorld.getChunkManager().addTicket(TICKET_TYPE, pos, 1, pos);
+        serverWorld.getChunkManager().addTicket(TICKET_TYPE, pos, 2, pos);
     }
 
     public boolean isPinned(ChunkPos pos) {
@@ -68,7 +68,7 @@ public class PinnedChunksComponent implements ServerTickingComponent {
         // but that shouldn't be an issue in practice.
         pins.keySet().forEach(chunk -> {
             var pos = new ChunkPos(chunk);
-            ((ServerWorld) world).getChunkManager().addTicket(TICKET_TYPE, pos, 1, pos);
+            ((ServerWorld) world).getChunkManager().addTicket(TICKET_TYPE, pos, 2, pos);
         });
     }
 }
