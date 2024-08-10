@@ -131,6 +131,10 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
                     var server = player().getServer();
                     if (server != null) {
                         server.execute(() -> {
+                            if (scrollStack.contains(ModComponents.SPELL) && scrollStack.get(ModComponents.SPELL).immutable()) {
+                                return;
+                            }
+
                             otherHandStack.set(ModComponents.SPELL, new SpellComponent(spell));
                             otherHandSpell.set(spell);
                         });

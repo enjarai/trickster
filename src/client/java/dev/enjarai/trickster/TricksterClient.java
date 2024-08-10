@@ -9,6 +9,7 @@ import dev.enjarai.trickster.net.ModClientNetworking;
 import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.particle.ProtectedBlockParticle;
+import dev.enjarai.trickster.particle.SpellParticle;
 import dev.enjarai.trickster.render.BarsRenderer;
 import dev.enjarai.trickster.render.HoldableHatRenderer;
 import dev.enjarai.trickster.render.SpellCircleBlockEntityRenderer;
@@ -45,6 +46,7 @@ public class TricksterClient implements ClientModInitializer {
 		UIParsing.registerFactory(Trickster.id("pattern"), GlyphComponent::parseList);
 
 		ParticleFactoryRegistry.getInstance().register(ModParticles.PROTECTED_BLOCK, ProtectedBlockParticle.Factory::new);
+		ParticleFactoryRegistry.getInstance().register(ModParticles.SPELL, SpellParticle.Factory::new);
 
 		AccessoriesRendererRegistry.registerRenderer(ModItems.TOP_HAT, HoldableHatRenderer::new);
 
