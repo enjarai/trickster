@@ -36,6 +36,7 @@ public class BlockFindEntityTrick extends Trick {
                 filter, Box.enclosing(blockPos, blockPos), e -> e.getBlockPos().equals(blockPos), entities, 1);
 
         return entities.stream().findFirst()
+                .filter(EntityFragment::isValidEntity)
                 .<Fragment>map(EntityFragment::from)
                 .orElse(VoidFragment.INSTANCE);
     }

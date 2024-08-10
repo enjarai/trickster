@@ -3,6 +3,7 @@ package dev.enjarai.trickster.spell.mana;
 import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.cca.ManaComponent;
 import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
 import dev.enjarai.trickster.spell.trick.blunder.NotEnoughManaBlunder;
@@ -35,8 +36,7 @@ public final class ManaLink {
         this.source = (trickSource, world) -> {
             var entity = world.getEntity(targetUuid);
 
-            if (entity instanceof LivingEntity living &&
-                    world.getChunkManager().chunkLoadingManager.getTicketManager().shouldTickEntities(entity.getChunkPos().toLong())) {
+            if (entity instanceof LivingEntity living && EntityFragment.isValidEntity(entity)) {
                 return living;
             }
 
