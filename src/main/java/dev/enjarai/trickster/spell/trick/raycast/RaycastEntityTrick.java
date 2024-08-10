@@ -23,32 +23,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-public class RaycastEntityTrick extends AbstractLivingEntityQueryTrick {
+public class RaycastEntityTrick extends AbstractRaycastTrick {
     public RaycastEntityTrick() {
         super(Pattern.of(3, 4, 5, 8, 4));
     }
 
     @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        Optional<Entity> entity = Optional.empty();
-        Vec3d vec1;
-        Vec3d vec2;
-
-        try {
-            var entity1 = getLivingEntity(ctx, fragments, 0);
-            vec1 = entity1.getEyePos();
-            vec2 = entity1.getRotationVector();
-            entity = Optional.of(entity1);
-        } catch (IncorrectFragmentBlunder blunder) {
-            var v1 = expectInput(fragments, FragmentType.VECTOR, 0).vector();
-            var v2 = expectInput(fragments, FragmentType.VECTOR, 1).vector();
-            vec1 = new Vec3d(v1.x(), v1.y(), v1.z());
-            vec2 = new Vec3d(v2.x(), v2.y(), v2.z());
-        }
-
-        var pos2 = vec1.add(vec2.multiply(64d));
-        var hit = raycast(ctx.source().getWorld(), entity, vec1, pos2, new Box(vec1, pos2), 64 * 64);
-
+    public Fragment activate(SpellContext ctx, Optional<Entity> entity, Vec3d position, Vec3d direction) throws BlunderException {
+        var multipliedDirection = position.add(direction.multiply(64d));
+        var hit = raycast(ctx.source().getWorld(), entity, position, multipliedDirection, new Box(position, multipliedDirection), 64 * 64);
         return hit == null ? VoidFragment.INSTANCE : EntityFragment.from(hit.getEntity());
     }
 
