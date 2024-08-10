@@ -305,11 +305,11 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
                 return current;
             }, spellPart, true);
         } else if (compiled.equals(DELETE_CIRCLE_GLYPH)) {
-            var firstSubpart = drawingPart.getSubParts().stream().findFirst().orElse(new SpellPart());
+            var firstSubpart = drawingPart.getSubParts().stream().findFirst();
             if (drawingPart == spellPart) {
-                spellPart = firstSubpart;
+                spellPart = firstSubpart.orElse(new SpellPart());
             } else {
-                drawingPart.setSubPartInTree(current -> firstSubpart, spellPart, false);
+                drawingPart.setSubPartInTree(current -> firstSubpart.orElse(null), spellPart, false);
             }
         } else if (compiled.equals(DELETE_BRANCH_GLYPH)) {
             if (drawingPart == spellPart) {
