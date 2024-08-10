@@ -25,6 +25,7 @@ import net.minecraft.block.cauldron.CauldronBehavior;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Identifier;
+import nl.enjarai.cicada.api.util.ProperLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +34,7 @@ public class Trickster implements ModInitializer {
 	// It is considered best practice to use your mod id as the logger's name.
 	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final String MOD_ID = "trickster";
-    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+    public static final Logger LOGGER = ProperLogger.getLogger(MOD_ID);
 
 	public static final Identifier SPELL_CIRCLE_ATTRIBUTE = id("spell_circle");
 	public static final EntityAttributeModifier NEGATE_ATTRIBUTE = new EntityAttributeModifier(Trickster.SPELL_CIRCLE_ATTRIBUTE, -1d, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);

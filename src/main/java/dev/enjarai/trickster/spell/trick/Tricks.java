@@ -42,6 +42,13 @@ public class Tricks {
     public static final Registry<Trick> REGISTRY = new SimpleRegistry<>(REGISTRY_KEY, Lifecycle.stable()) {
         @Override
         public RegistryEntry.Reference<Trick> add(RegistryKey<Trick> key, Trick value, RegistryEntryInfo info) {
+            if (LOOKUP.containsKey(value.getPattern())) {
+                Trickster.LOGGER.warn(
+                        "WARNING: A mod is overriding a pattern that is already defined! This may result in one of the tricks being unusable. ({} overrode {})",
+                        key.getValue(), getId(LOOKUP.get(value.getPattern()))
+                );
+            }
+
             LOOKUP.put(value.getPattern(), value);
             return super.add(key, value, info);
         }
