@@ -45,7 +45,7 @@ trickster:
     cross_product: Perpendicular Distortion
     normalize: Regularity Distortion
     align_vector: Aligned Regularity Distortion
-    reverse_vector: Inversion Distortion
+    invert: Inversion Distortion
     length: Magnitude Distortion
 
     two: Foundational Delusion
