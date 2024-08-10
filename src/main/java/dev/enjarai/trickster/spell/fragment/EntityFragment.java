@@ -28,7 +28,12 @@ public record EntityFragment(UUID uuid, Text name) implements Fragment {
     }
 
     public Optional<Entity> getEntity(SpellContext ctx) {
-        return Optional.ofNullable(ctx.source().getWorld().getEntity(uuid));
+        return Optional
+                .ofNullable(ctx.source().getWorld().getEntity(uuid))
+                .filter(entity -> ctx.source()
+                        .getWorld().getChunkManager().chunkLoadingManager.getTicketManager()
+                        .shouldTickEntities(entity.getChunkPos().toLong())
+                );
     }
 
     @Override
