@@ -30,6 +30,16 @@ Given an entity, returns its position in the world.
 
 ;;;;;
 
+<|glyph@trickster:templates|trick-id=trickster:get_eye_position,title=Perspective Distortion|>
+
+entity -> vector
+
+---
+
+Given an entity, returns the position of its head.
+
+;;;;;
+
 <|glyph@trickster:templates|trick-id=trickster:get_facing,title=Directional Distortion|>
 
 entity -> vector
@@ -62,11 +72,21 @@ Given an entity, returns its height in blocks.
 
 <|glyph@trickster:templates|trick-id=trickster:sneaking_reflection,title=Alternative Distortion|>
 
-entity -> number
+entity -> boolean
 
 ---
 
 Given an entity, returns whether the entity is crouching.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:sprinting_reflection,title=Trekking Distortion|>
+
+entity -> boolean
+
+---
+
+Given an entity, returns whether the entity is sprinting.
 
 ;;;;;
 

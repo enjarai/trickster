@@ -10,13 +10,9 @@ import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
 import dev.enjarai.trickster.spell.trick.blunder.ImmutableItemBlunder;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.ContainerComponent;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class WriteSpellTrick extends Trick {
     public WriteSpellTrick() {
@@ -29,33 +25,32 @@ public class WriteSpellTrick extends Trick {
     }
 
     public Fragment activate(SpellContext ctx, List<Fragment> fragments, boolean closed) throws BlunderException {
-        var spell = expectInput(fragments, FragmentType.SPELL_PART, 0);
+        var spell = supposeInput(fragments, 0).flatMap(s -> supposeType(s, FragmentType.SPELL_PART));
         var player = ctx.source().getPlayer();
 
-        if (player.isEmpty())
-            return BooleanFragment.FALSE;
+        return player.flatMap(serverPlayerEntity -> Optional.of(serverPlayerEntity.getOffHandStack())).map(stack -> {
+            var newSpell = spell.map(s -> {
+                var n = s.deepClone();
+                n.brutallyMurderEphemerals();
+                return n;
+            });
 
-        return Optional.of(player.get().getOffHandStack()).map(stack -> {
-            var newSpell = spell.deepClone();
-            newSpell.brutallyMurderEphemerals();
-
-            if (stack.contains(DataComponentTypes.CONTAINER) && stack.contains(ModComponents.SELECTED_SLOT)) {
-                var stacks = stack.get(DataComponentTypes.CONTAINER).stream().collect(Collectors.toCollection(ArrayList::new));
-                var index = stack.get(ModComponents.SELECTED_SLOT).slot();
-
-                var stack2 = stacks.get(index);
-                if (stack2.contains(ModComponents.SPELL) && stack2.get(ModComponents.SPELL).immutable()) {
+            newSpell.ifPresentOrElse(s -> {
+                if (!SpellComponent.setSpellPart(stack, s, closed)) {
                     throw new ImmutableItemBlunder(this);
                 }
-                stack2.set(ModComponents.SPELL, new SpellComponent(newSpell, false, closed));
+            }, () -> {
+                if (!SpellComponent.modifyReferencedStack(stack, s -> {
+                    if (s.get(ModComponents.SPELL).immutable()) {
+                        return false;
+                    }
 
-                stack.set(DataComponentTypes.CONTAINER, ContainerComponent.fromStacks(stacks));
-            } else {
-                if (stack.contains(ModComponents.SPELL) && stack.get(ModComponents.SPELL).immutable()) {
+                    s.remove(ModComponents.SPELL);
+                    return true;
+                })) {
                     throw new ImmutableItemBlunder(this);
                 }
-                stack.set(ModComponents.SPELL, new SpellComponent(newSpell, false, closed));
-            }
+            });
             return BooleanFragment.TRUE;
         }).orElse(BooleanFragment.FALSE);
     }

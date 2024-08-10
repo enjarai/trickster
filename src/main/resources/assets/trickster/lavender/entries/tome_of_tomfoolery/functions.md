@@ -59,7 +59,7 @@ which is the result of this glyph.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:try_catch,title=Cautious Distortion|>
+<|glyph@trickster:templates|trick-id=trickster:try_catch,title=Cautious Stratagem|>
 
 spell, spell, any... -> any
 

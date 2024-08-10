@@ -65,11 +65,13 @@ trickster:
 
     height_reflection: Stature Distortion
     sneaking_reflection: Alternative Distortion
+    sprinting_reflection: Trekking Distortion
     raycast: Archer's Distortion
     raycast_side: Architect's Distortion
     raycast_entity: Scout's Distortion
     get_entity_type: Motive Verification Distortion
     get_position: Locational Distortion
+    get_eye_position: Perspective Distortion
     get_facing: Directional Distortion
     get_max_health: Vigor Distortion
     get_health: Fettle Distortion
@@ -95,7 +97,7 @@ trickster:
 
     execute: Grand Stratagem
     iterator: Iteration Stratagem
-    try_catch: Cautious Distortion
+    try_catch: Cautious Stratagem
     closure: Closure Stratagem
     supplier: Supply Distortion
     load_argument_1: Primary Delusion

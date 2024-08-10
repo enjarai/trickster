@@ -43,7 +43,7 @@ If not, returns void.
 
 <|glyph@trickster:templates|trick-id=trickster:write_spell,title=Notulist's Ploy|>
 
-spell -> boolean
+spell | void -> boolean
 
 ---
 
@@ -59,17 +59,6 @@ spell -> boolean
 ---
 
 Same as Notulist's Ploy, but the spell cannot be read.
-
-;;;;;
-
-<|glyph@trickster:templates|trick-id=trickster:clear_spell,title=Censorship Ploy|>
-
--> boolean
-
----
-
-Removes an inscribed spell from the item held in the caster's other hand.
-Returns true or false depending on success.
 
 ;;;;;
 
