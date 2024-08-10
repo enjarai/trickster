@@ -52,6 +52,16 @@ Returns true or false depending on success.
 
 ;;;;;
 
+<|glyph@trickster:templates|trick-id=trickster:write_closed_spell,title=Proprietary Notulist's Ploy|>
+
+spell -> boolean
+
+---
+
+Same as Notulist's Ploy, but the spell cannot be read.
+
+;;;;;
+
 <|glyph@trickster:templates|trick-id=trickster:clear_spell,title=Censorship Ploy|>
 
 -> boolean

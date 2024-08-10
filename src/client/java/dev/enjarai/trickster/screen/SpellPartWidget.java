@@ -34,6 +34,8 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     public static final Pattern DELETE_BRANCH_GLYPH = Pattern.of(0, 4, 8, 5, 2, 1, 0, 3, 6, 7, 8);
     public static final Pattern SHIFT_SUBCIRCLE_BACKWARDS_GLYPH = Pattern.of(1, 0, 3);
     public static final Pattern SHIFT_SUBCIRCLE_FORWARDS_GLYPH = Pattern.of(1, 2, 5);
+    public static final Pattern SWAP_SUBCIRCLE_GLYPH = Pattern.of(2, 4, 3);
+    public static final Pattern CREATE_OUTER_SUBCIRCLE_GLYPH = Pattern.of(6, 3, 0, 4, 8);
     public static final Pattern COPY_OFFHAND_LITERAL = Pattern.of(4, 0, 1, 4, 2, 1);
     public static final Pattern COPY_OFFHAND_LITERAL_INNER = Pattern.of(1, 2, 4, 1, 0, 4, 7);
     public static final Pattern COPY_OFFHAND_EXECUTE = Pattern.of(4, 3, 0, 4, 5, 2, 4, 1);
@@ -276,7 +278,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             if (drawingPart == spellPart) {
                 spellPart = newPart;
             } else {
-                drawingPart.setSubPartInTree(Optional.of(newPart), spellPart, false);
+                drawingPart.setSubPartInTree(current -> newPart, spellPart, false);
             }
         } else if (compiled.equals(CREATE_PARENT_GLYPH_GLYPH)) {
             var newPart = new SpellPart();
@@ -284,28 +286,36 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             if (drawingPart == spellPart) {
                 spellPart = newPart;
             } else {
-                drawingPart.setSubPartInTree(Optional.of(newPart), spellPart, false);
+                drawingPart.setSubPartInTree(current -> newPart, spellPart, false);
             }
         } else if (compiled.equals(EXPAND_TO_OUTER_CIRCLE_GLYPH)) {
             if (drawingPart != spellPart) {
                 if (spellPart.glyph == drawingPart) {
                     spellPart = drawingPart;
                 } else {
-                    drawingPart.setSubPartInTree(Optional.of(drawingPart), spellPart, true);
+                    drawingPart.setSubPartInTree(current -> drawingPart, spellPart, true);
                 }
             }
+        } else if (compiled.equals(SWAP_SUBCIRCLE_GLYPH)) {
+            if (drawingPart.subParts.size() > 1)
+                drawingPart.subParts.addFirst(drawingPart.subParts.remove(1));
+        } else if (compiled.equals(CREATE_OUTER_SUBCIRCLE_GLYPH)) {
+            drawingPart.setSubPartInTree(current -> {
+                current.subParts.add(new SpellPart());
+                return current;
+            }, spellPart, true);
         } else if (compiled.equals(DELETE_CIRCLE_GLYPH)) {
-            var firstSubpart = drawingPart.getSubParts().stream().findFirst();
+            var firstSubpart = drawingPart.getSubParts().stream().findFirst().orElse(new SpellPart());
             if (drawingPart == spellPart) {
-                spellPart = firstSubpart.orElse(new SpellPart());
+                spellPart = firstSubpart;
             } else {
-                drawingPart.setSubPartInTree(firstSubpart, spellPart, false);
+                drawingPart.setSubPartInTree(current -> firstSubpart, spellPart, false);
             }
         } else if (compiled.equals(DELETE_BRANCH_GLYPH)) {
             if (drawingPart == spellPart) {
                 spellPart = new SpellPart();
             } else {
-                drawingPart.setSubPartInTree(Optional.empty(), spellPart, false);
+                drawingPart.setSubPartInTree(current -> null, spellPart, false);
             }
         } else if (compiled.equals(SHIFT_SUBCIRCLE_BACKWARDS_GLYPH)) {
             if (!drawingPart.subParts.isEmpty())
@@ -317,7 +327,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             if (drawingPart == spellPart) {
                 spellPart = otherHandSpellSupplier.get().deepClone();
             } else {
-                drawingPart.setSubPartInTree(Optional.of(otherHandSpellSupplier.get().deepClone()), spellPart, false);
+                drawingPart.setSubPartInTree(current -> otherHandSpellSupplier.get().deepClone(), spellPart, false);
             }
         } else if (compiled.equals(COPY_OFFHAND_LITERAL_INNER)) {
             drawingPart.glyph = otherHandSpellSupplier.get().deepClone();

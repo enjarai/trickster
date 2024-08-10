@@ -19,6 +19,9 @@ import dev.enjarai.trickster.spell.trick.projectile.SummonDragonBreathTrick;
 import dev.enjarai.trickster.spell.trick.projectile.SummonFireballTrick;
 import dev.enjarai.trickster.spell.trick.projectile.SummonArrowTrick;
 import dev.enjarai.trickster.spell.trick.projectile.SummonTntTrick;
+import dev.enjarai.trickster.spell.trick.raycast.RaycastBlockPosTrick;
+import dev.enjarai.trickster.spell.trick.raycast.RaycastBlockSideTrick;
+import dev.enjarai.trickster.spell.trick.raycast.RaycastEntityTrick;
 import dev.enjarai.trickster.spell.trick.tree.*;
 import dev.enjarai.trickster.spell.trick.vector.*;
 import net.minecraft.registry.Registry;
@@ -64,6 +67,7 @@ public class Tricks {
     public static final RevealTrick REVEAL = register("reveal", new RevealTrick());
     public static final ReadSpellTrick READ_SPELL = register("read_spell", new ReadSpellTrick());
     public static final WriteSpellTrick WRITE_SPELL = register("write_spell", new WriteSpellTrick());
+    public static final WriteClosedSpellTrick WRITE_CLOSED_SPELL = register("write_closed_spell", new WriteClosedSpellTrick());
     public static final ClearSpellTrick CLEAR_SPELL = register("clear_spell", new ClearSpellTrick());
     public static final ReadCrowMindTrick READ_CROW_MIND = register("read_crow_mind", new ReadCrowMindTrick());
     public static final WriteCrowMindTrick WRITE_CROW_MIND = register("write_crow_mind", new WriteCrowMindTrick());

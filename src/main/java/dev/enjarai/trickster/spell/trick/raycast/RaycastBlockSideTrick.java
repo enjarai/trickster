@@ -1,4 +1,4 @@
-package dev.enjarai.trickster.spell.trick.entity.query;
+package dev.enjarai.trickster.spell.trick.raycast;
 
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;

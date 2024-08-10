@@ -25,6 +25,10 @@ public class WriteSpellTrick extends Trick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+        return activate(ctx, fragments, false);
+    }
+
+    public Fragment activate(SpellContext ctx, List<Fragment> fragments, boolean closed) throws BlunderException {
         var spell = expectInput(fragments, FragmentType.SPELL_PART, 0);
         var player = ctx.source().getPlayer();
 
@@ -43,14 +47,14 @@ public class WriteSpellTrick extends Trick {
                 if (stack2.contains(ModComponents.SPELL) && stack2.get(ModComponents.SPELL).immutable()) {
                     throw new ImmutableItemBlunder(this);
                 }
-                stack2.set(ModComponents.SPELL, new SpellComponent(newSpell));
+                stack2.set(ModComponents.SPELL, new SpellComponent(newSpell, false, closed));
 
                 stack.set(DataComponentTypes.CONTAINER, ContainerComponent.fromStacks(stacks));
             } else {
                 if (stack.contains(ModComponents.SPELL) && stack.get(ModComponents.SPELL).immutable()) {
                     throw new ImmutableItemBlunder(this);
                 }
-                stack.set(ModComponents.SPELL, new SpellComponent(newSpell));
+                stack.set(ModComponents.SPELL, new SpellComponent(newSpell, false, closed));
             }
             return BooleanFragment.TRUE;
         }).orElse(BooleanFragment.FALSE);

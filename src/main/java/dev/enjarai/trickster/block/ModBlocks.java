@@ -1,8 +1,11 @@
 package dev.enjarai.trickster.block;
 
 import dev.enjarai.trickster.Trickster;
+import dev.enjarai.trickster.block.cauldron.EraseSpellCauldronBehavior;
+import dev.enjarai.trickster.item.ModItems;
 import net.fabricmc.fabric.api.object.builder.v1.world.poi.PointOfInterestHelper;
 import net.minecraft.block.Block;
+import net.minecraft.block.cauldron.CauldronBehavior;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -24,5 +27,7 @@ public class ModBlocks {
 
     public static void register() {
         Registry.register(Registries.BLOCK_ENTITY_TYPE, Trickster.id("spell_circle"), SPELL_CIRCLE_ENTITY);
+
+        CauldronBehavior.WATER_CAULDRON_BEHAVIOR.map().put(ModItems.WRITTEN_SCROLL, new EraseSpellCauldronBehavior());
     }
 }
