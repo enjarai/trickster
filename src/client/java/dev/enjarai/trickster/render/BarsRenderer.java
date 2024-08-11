@@ -3,6 +3,7 @@ package dev.enjarai.trickster.render;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.cca.ModEntityCumponents;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.*;
@@ -11,6 +12,8 @@ import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.random.LocalRandom;
 import net.minecraft.util.math.random.Random;
 import org.joml.Matrix4f;
+
+import java.util.Comparator;
 
 public class BarsRenderer {
     public static final Identifier BAR_TEXTURE = Trickster.id("bar/bar");
@@ -34,7 +37,7 @@ public class BarsRenderer {
             }
 
             int i = 0;
-            for (var entry : bars.int2ObjectEntrySet()) {
+            for (var entry : bars.int2ObjectEntrySet().stream().sorted(Comparator.comparingInt(Int2ObjectMap.Entry::getIntKey)).toList()) {
                 drawBar(context, i, entry.getIntKey(), 1, BAR_BACKGROUND_TEXTURE);
                 drawBar(context, i, entry.getIntKey(), entry.getValue().fill, BAR_TEXTURE);
 

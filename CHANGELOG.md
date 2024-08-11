@@ -1,1 +1,7 @@
-- Fixed a bug that would half spell circle mana regeneration after reloading the chunk. (@enjarai)
+- Added a bunch of utility patterns. (@enjarai)
+- Added a conjurable light source. (@enjarai)
+- Added entity-less raycasts. (@StellarWitch7)
+- Fixed an issue causing linked entities in lazy chunks to give infinite mana. (@enjarai)
+- Let signed scrolls be reused by using them on a water-filled cauldron. (@StellarWitch7)
+- Added one additional scribing pattern. (@StellarWitch7)
+- Modified spell-controlled bars to be ordered based on their id. (@enjarai)
