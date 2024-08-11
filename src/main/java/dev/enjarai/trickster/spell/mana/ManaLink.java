@@ -3,6 +3,7 @@ package dev.enjarai.trickster.spell.mana;
 import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.cca.ManaComponent;
 import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
@@ -21,18 +22,15 @@ public final class ManaLink {
     public final BiFunction<Trick, ServerWorld, LivingEntity> source;
     public final BiFunction<Trick, ServerWorld, ManaComponent> manaPool;
     public final UUID sourceUuid;
-    public final float taxRatio;
     private float availableMana;
 
     public static final StructEndec<ManaLink> ENDEC = StructEndecBuilder.of(
             EndecTomfoolery.UUID.fieldOf("target_uuid", manaLink -> manaLink.sourceUuid),
-            Endec.FLOAT.fieldOf("tax_ratio", manaLink -> manaLink.taxRatio),
             Endec.FLOAT.fieldOf("available_mana", manaLink -> manaLink.availableMana),
             ManaLink::new
     );
 
-                                // TODO: FIX ME AURI
-    private ManaLink(UUID targetUuid, float taxRatio, float availableMana) {
+    private ManaLink(UUID targetUuid, float availableMana) {
         this.source = (trickSource, world) -> {
             var entity = world.getEntity(targetUuid);
 
@@ -44,19 +42,22 @@ public final class ManaLink {
         };
         this.manaPool = (trickSource, world) -> ModEntityCumponents.MANA.get(source.apply(trickSource, world));
         this.sourceUuid = targetUuid;
-        this.taxRatio = taxRatio;
         this.availableMana = availableMana;
     }
 
-    public ManaLink(LivingEntity source, float ownerHealth, float availableMana) {
-        this(source.getUuid(), ownerHealth / source.getHealth(), availableMana);
+    public ManaLink(LivingEntity source, float availableMana) {
+        this(source.getUuid(), availableMana);
     }
 
-    public float useMana(Trick trickSource, ServerWorld world, ManaPool owner, float amount) throws BlunderException {
-        if (!owner.decrease(amount / taxRatio))
+    public float getTaxRatio(Trick trickSource, SpellSource source) {
+        return source.getHealth() / this.source.apply(trickSource, source.getWorld()).getHealth();
+    }
+
+    public float useMana(Trick trickSource, SpellSource source, ManaPool owner, float amount) throws BlunderException {
+        if (!owner.decrease(amount / getTaxRatio(trickSource, source)))
             throw new NotEnoughManaBlunder(trickSource, amount);
 
-        var manaPool = this.manaPool.apply(trickSource, world);
+        var manaPool = this.manaPool.apply(trickSource, source.getWorld());
         float result = availableMana;
 
         if (amount > availableMana) {

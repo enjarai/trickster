@@ -164,7 +164,7 @@ public class ExecutionState {
     }
 
     public void addManaLink(Trick trickSource, LivingEntity target, float ownerHealth, float limit) throws BlunderException {
-        addManaLink(trickSource, new ManaLink(target, ownerHealth, limit));
+        addManaLink(trickSource, new ManaLink(target, limit));
     }
 
     public void addManaLink(Trick source, ManaLink link) throws EntityInvalidBlunder {
@@ -196,7 +196,7 @@ public class ExecutionState {
                 float available = link.getAvailable();
                 float ratio = available / totalAvailable;
                 float ratioD = amount * ratio;
-                float used = link.useMana(trickSource, ctx.source().getWorld(), pool, ratioD);
+                float used = link.useMana(trickSource, ctx.source(), pool, ratioD);
 
                 if (used < ratioD) {
                     leftOver += ratioD - used;
