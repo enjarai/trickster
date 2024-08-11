@@ -3,10 +3,10 @@ package dev.enjarai.trickster.spell.mana;
 import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.cca.ManaComponent;
 import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.entity.ModEntities;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
-import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
 import dev.enjarai.trickster.spell.trick.blunder.NotEnoughManaBlunder;
 import dev.enjarai.trickster.spell.trick.blunder.UnknownEntityBlunder;
 import io.wispforest.endec.Endec;
@@ -45,17 +45,32 @@ public final class ManaLink {
         this.availableMana = availableMana;
     }
 
+    /**
+     * A link to a living entity's mana pool.
+     * @param source the living entity being linked.
+     * @param availableMana the total amount of mana this link may drain. Ignored if source is mana devoid.
+     */
     public ManaLink(LivingEntity source, float availableMana) {
-        this(source.getUuid(), availableMana);
+        this(source.getUuid(), source.getType().isIn(ModEntities.MANA_DEVOID) ? 0 : availableMana);
     }
 
     public float getTaxRatio(Trick trickSource, SpellSource source) {
         return source.getHealth() / this.source.apply(trickSource, source.getWorld()).getHealth();
     }
 
-    public float useMana(Trick trickSource, SpellSource source, ManaPool owner, float amount) throws BlunderException {
-        if (!owner.decrease(amount / getTaxRatio(trickSource, source)))
-            throw new NotEnoughManaBlunder(trickSource, amount);
+    /**
+     * Drains the source's mana, applying tax to the owner of the link.
+     * @param trickSource the trick this call originates from.
+     * @param owner the mana pool that this link belongs to.
+     * @param amount the amount of mana to drain from the linked source.
+     * @return the amount of mana drained from the linked source.
+     * @throws NotEnoughManaBlunder if the owner does not have sufficient mana to drain the linked source.
+     */
+    public float useMana(Trick trickSource, SpellSource source, ManaPool owner, float amount) throws NotEnoughManaBlunder {
+        var taxAmount = amount / getTaxRatio(trickSource, source);
+
+        if (!owner.decrease(taxAmount))
+            throw new NotEnoughManaBlunder(trickSource, taxAmount);
 
         var manaPool = this.manaPool.apply(trickSource, source.getWorld());
         float result = availableMana;
@@ -64,10 +79,9 @@ public final class ManaLink {
             manaPool.decrease(availableMana);
             availableMana = 0;
         } else {
-            if (!manaPool.decrease(amount))
-                availableMana = 0;
-            else
+            if (manaPool.decrease(amount))
                 availableMana -= amount;
+            else availableMana = 0;
         }
 
         return result - availableMana;
