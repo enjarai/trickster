@@ -3,6 +3,7 @@ package dev.enjarai.trickster.block.cauldron;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.LeveledCauldronBlock;
 import net.minecraft.block.cauldron.CauldronBehavior;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -17,6 +18,7 @@ public class EraseSpellCauldronBehavior implements CauldronBehavior {
         stack.remove(ModComponents.WRITTEN_SCROLL_META);
         stack.remove(ModComponents.SPELL);
         player.setStackInHand(hand, stack.withItem(ModItems.SCROLL_AND_QUILL));
+        LeveledCauldronBlock.decrementFluidLevel(state, world, pos);
         return ItemActionResult.SUCCESS;
     }
 }
