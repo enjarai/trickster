@@ -18,10 +18,9 @@ public record SignScrollPacket(Hand hand, String name) {
                 return;
             }
 
-            var spell = component.spell();
             var newStack = ModItems.WRITTEN_SCROLL.getDefaultStack();
 
-            newStack.set(ModComponents.SPELL, new SpellComponent(spell, true));
+            newStack.set(ModComponents.SPELL, new SpellComponent(component.spell(), true, component.closed()));
             newStack.set(ModComponents.WRITTEN_SCROLL_META, new WrittenScrollMetaComponent(
                     name(), player.getName().getString(), 0
             ));
