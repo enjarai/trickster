@@ -2,8 +2,19 @@ package dev.enjarai.trickster.item.component;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.spell.SpellPart;
+import dev.enjarai.trickster.spell.trick.blunder.ImmutableItemBlunder;
 import io.wispforest.owo.serialization.CodecUtils;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ContainerComponent;
+import net.minecraft.item.ItemStack;
+
+import java.util.ArrayList;
+import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public record SpellComponent(SpellPart spell, boolean immutable, boolean closed) {
     public static final Codec<SpellComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -22,5 +33,52 @@ public record SpellComponent(SpellPart spell, boolean immutable, boolean closed)
 
     public SpellComponent withClosed() {
         return new SpellComponent(spell, immutable, true);
+    }
+
+    public static Optional<SpellPart> getSpellPart(ItemStack stack) {
+        return getReferencedStack(stack)
+                .filter(stack2 -> stack2.contains(ModComponents.SPELL))
+                .map(stack2 -> stack2.get(ModComponents.SPELL))
+                .filter(component -> !component.closed())
+                .map(SpellComponent::spell);
+    }
+
+    public static boolean setSpellPart(ItemStack stack, SpellPart spell, boolean closed) {
+        return modifyReferencedStack(stack, stack2 -> {
+            if (stack2.contains(ModComponents.SPELL) && stack2.get(ModComponents.SPELL).immutable()) {
+                return false;
+            }
+
+            stack2.set(ModComponents.SPELL, new SpellComponent(spell, false, closed));
+            return true;
+        });
+    }
+
+    public static Optional<ItemStack> getReferencedStack(ItemStack stack) {
+        var stackOptional = Optional.of(stack);
+
+        if (stack.isIn(ModItems.HOLDABLE_HAT) && stack.contains(DataComponentTypes.CONTAINER) && stack.contains(ModComponents.SELECTED_SLOT)) {
+            stackOptional = stack.get(DataComponentTypes.CONTAINER).stream()
+                    .skip(stack.get(ModComponents.SELECTED_SLOT).slot())
+                    .findFirst();
+        }
+
+        return stackOptional;
+    }
+
+    public static boolean modifyReferencedStack(ItemStack stack, Function<ItemStack, Boolean> modifier) {
+        if (stack.isIn(ModItems.HOLDABLE_HAT) && stack.contains(DataComponentTypes.CONTAINER) && stack.contains(ModComponents.SELECTED_SLOT)) {
+            var stacks = stack.get(DataComponentTypes.CONTAINER).stream().collect(Collectors.toCollection(ArrayList::new));
+            var index = stack.get(ModComponents.SELECTED_SLOT).slot();
+
+            var stack2 = stacks.get(index);
+            if (modifier.apply(stack2)) {
+                stack.set(DataComponentTypes.CONTAINER, ContainerComponent.fromStacks(stacks));
+                return true;
+            }
+            return false;
+        } else {
+            return modifier.apply(stack);
+        }
     }
 }

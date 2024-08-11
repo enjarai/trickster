@@ -32,7 +32,6 @@ public class WrittenScrollItem extends Item {
         var stack = user.getStackInHand(hand);
         var otherStack = user.getStackInHand(hand == Hand.MAIN_HAND ? Hand.OFF_HAND : Hand.MAIN_HAND);
         var slot = hand == Hand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
-
         var meta = stack.get(ModComponents.WRITTEN_SCROLL_META);
 
         if (meta != null && meta.executable()) {

@@ -19,6 +19,9 @@ import dev.enjarai.trickster.spell.trick.projectile.SummonDragonBreathTrick;
 import dev.enjarai.trickster.spell.trick.projectile.SummonFireballTrick;
 import dev.enjarai.trickster.spell.trick.projectile.SummonArrowTrick;
 import dev.enjarai.trickster.spell.trick.projectile.SummonTntTrick;
+import dev.enjarai.trickster.spell.trick.raycast.RaycastBlockPosTrick;
+import dev.enjarai.trickster.spell.trick.raycast.RaycastBlockSideTrick;
+import dev.enjarai.trickster.spell.trick.raycast.RaycastEntityTrick;
 import dev.enjarai.trickster.spell.trick.tree.*;
 import dev.enjarai.trickster.spell.trick.vector.*;
 import net.minecraft.registry.Registry;
@@ -39,6 +42,13 @@ public class Tricks {
     public static final Registry<Trick> REGISTRY = new SimpleRegistry<>(REGISTRY_KEY, Lifecycle.stable()) {
         @Override
         public RegistryEntry.Reference<Trick> add(RegistryKey<Trick> key, Trick value, RegistryEntryInfo info) {
+            if (LOOKUP.containsKey(value.getPattern())) {
+                Trickster.LOGGER.warn(
+                        "WARNING: A mod is overriding a pattern that is already defined! This may result in one of the tricks being unusable. ({} overrode {})",
+                        key.getValue(), getId(LOOKUP.get(value.getPattern()))
+                );
+            }
+
             LOOKUP.put(value.getPattern(), value);
             return super.add(key, value, info);
         }
@@ -64,7 +74,7 @@ public class Tricks {
     public static final RevealTrick REVEAL = register("reveal", new RevealTrick());
     public static final ReadSpellTrick READ_SPELL = register("read_spell", new ReadSpellTrick());
     public static final WriteSpellTrick WRITE_SPELL = register("write_spell", new WriteSpellTrick());
-    public static final ClearSpellTrick CLEAR_SPELL = register("clear_spell", new ClearSpellTrick());
+    public static final WriteClosedSpellTrick WRITE_CLOSED_SPELL = register("write_closed_spell", new WriteClosedSpellTrick());
     public static final ReadCrowMindTrick READ_CROW_MIND = register("read_crow_mind", new ReadCrowMindTrick());
     public static final WriteCrowMindTrick WRITE_CROW_MIND = register("write_crow_mind", new WriteCrowMindTrick());
 
@@ -78,6 +88,7 @@ public class Tricks {
 
     // Entity
     public static final GetPositionTrick GET_POSITION = register("get_position", new GetPositionTrick());
+    public static final GetEyePositionTrick GET_EYE_POSITION = register("get_eye_position", new GetEyePositionTrick());
     public static final GetEntityTypeTrick GET_ENTITY_TYPE = register("get_entity_type", new GetEntityTypeTrick());
     public static final GetFacingTrick GET_FACING = register("get_facing", new GetFacingTrick());
     public static final GetVelocityTrick GET_VELOCITY = register("get_velocity", new GetVelocityTrick());
@@ -86,6 +97,7 @@ public class Tricks {
     public static final GetEntityArmourTrick GET_ARMOUR_VALUE = register("get_armour", new GetEntityArmourTrick());
     public static final HeightReflectionTrick HEIGHT_REFLECTION = register("height_reflection", new HeightReflectionTrick());
     public static final SneakingReflectionTrick SNEAKING_REFLECTION = register("sneaking_reflection", new SneakingReflectionTrick());
+    public static final SprintingReflectionTrick SPRINTING_REFLECTION = register("sprinting_reflection", new SprintingReflectionTrick());
     public static final RaycastBlockPosTrick RAYCAST = register("raycast", new RaycastBlockPosTrick());
     public static final RaycastBlockSideTrick RAYCAST_SIDE = register("raycast_side", new RaycastBlockSideTrick());
     public static final RaycastEntityTrick RAYCAST_ENTITY = register("raycast_entity", new RaycastEntityTrick());
@@ -121,7 +133,7 @@ public class Tricks {
     public static final CrossProductTrick CROSS_PRODUCT = register("cross_product", new CrossProductTrick());
     public static final NormalizeTrick NORMALIZE = register("normalize", new NormalizeTrick());
     public static final AlignVectorTrick ALIGN_VECTOR = register("align_vector", new AlignVectorTrick());
-    public static final ReverseVectorTrick REVERSE_ALIGN_VECTOR = register("reverse_vector", new ReverseVectorTrick());
+    public static final InvertTrick INVERT = register("invert", new InvertTrick());
     public static final MergeVectorTrick MERGE_VECTOR = register("merge_vector", new MergeVectorTrick());
 
     // Boolean
@@ -165,6 +177,7 @@ public class Tricks {
     public static final SwapBlockTrick SWAP_BLOCK = register("swap_block", new SwapBlockTrick());
     public static final ConjureFlowerTrick CONJURE_FLOWER = register("conjure_flower", new ConjureFlowerTrick());
     public static final ConjureWaterTrick CONJURE_WATER = register("conjure_water", new ConjureWaterTrick());
+    public static final ConjureLightTrick CONJURE_LIGHT = register("conjure_light", new ConjureLightTrick());
     public static final DrainFluidTrick DRAIN_FLUID = register("drain_fluid", new DrainFluidTrick());
     public static final CheckBlockTrick CHECK_BLOCK = register("check_block", new CheckBlockTrick());
     public static final CanPlaceTrick CAN_PLACE_BLOCK = register("can_place_block", new CanPlaceTrick());

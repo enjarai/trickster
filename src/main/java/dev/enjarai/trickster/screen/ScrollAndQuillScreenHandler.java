@@ -56,18 +56,11 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
         this.greedyEvaluation = greedyEvaluation;
 
         if (scrollStack != null) {
-            var spell = scrollStack.get(ModComponents.SPELL);
-            if (spell != null) {
-                this.spell.set(spell.spell());
-            }
+            SpellComponent.getSpellPart(scrollStack).ifPresent(this.spell::set);
         }
 
         if (otherHandStack != null) {
-            var spell = otherHandStack.get(ModComponents.SPELL);
-
-            if (spell != null && !spell.closed()) {
-                this.otherHandSpell.set(spell.spell());
-            }
+            SpellComponent.getSpellPart(otherHandStack).ifPresent(this.otherHandSpell::set);
         }
 
         this.isMutable.set(isMutable);
@@ -110,10 +103,7 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
                             spell.brutallyMurderEphemerals();
                         }
 
-                        if (scrollStack.contains(ModComponents.SPELL) && scrollStack.get(ModComponents.SPELL).immutable()) {
-                            return;
-                        }
-                        scrollStack.set(ModComponents.SPELL, new SpellComponent(spell));
+                        SpellComponent.setSpellPart(scrollStack, spell, false);
                     });
                 }
             } else {
@@ -131,7 +121,7 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
                     var server = player().getServer();
                     if (server != null) {
                         server.execute(() -> {
-                            otherHandStack.set(ModComponents.SPELL, new SpellComponent(spell));
+                            SpellComponent.setSpellPart(otherHandStack, spell, false);
                             otherHandSpell.set(spell);
                         });
                     }

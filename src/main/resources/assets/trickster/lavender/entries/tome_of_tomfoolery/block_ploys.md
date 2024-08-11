@@ -63,6 +63,16 @@ Conjures a small splash of water at the given position.
 
 ;;;;;
 
+<|glyph@trickster:templates|trick-id=trickster:conjure_light,title=Illumination Ploy|>
+
+vector ->
+
+<|cost-rule@trickster:templates|formula=20kG|>
+
+Conjures a permanent light source at the given position.
+
+;;;;;
+
 <|glyph@trickster:templates|trick-id=trickster:drain_fluid,title=Drought Ploy|>
 
 vector ->

@@ -63,7 +63,7 @@ public class ImportHatTrick extends Trick implements ForkingTrick {
                 throw new ItemInvalidBlunder(this);
             }
 
-            return new DefaultSpellExecutor(component.spell(), fragments.subList(1, fragments.size()));
+            return new DefaultSpellExecutor(component.spell(), ctx.executionState().recurseOrThrow(fragments.subList(1, fragments.size())));
         }
 
         throw new ItemInvalidBlunder(this);

@@ -40,6 +40,9 @@ public class RangeFindEntityTrick extends Trick {
                 e -> e.getPos().squaredDistanceTo(pos.x(), pos.y(), pos.z()) <= squaredRange, entities
         );
 
-        return new ListFragment(entities.stream().<Fragment>map(EntityFragment::from).toList());
+        return new ListFragment(entities.stream()
+                .filter(EntityFragment::isValidEntity)
+                .<Fragment>map(EntityFragment::from)
+                .toList());
     }
 }

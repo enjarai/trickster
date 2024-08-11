@@ -13,6 +13,7 @@ import io.wispforest.endec.impl.StructEndecBuilder;
 import net.minecraft.text.Text;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public final class SpellPart implements Fragment {
@@ -102,18 +103,15 @@ public final class SpellPart implements Fragment {
         }
     }
 
-    public boolean setSubPartInTree(Optional<SpellPart> replacement, SpellPart current, boolean targetIsInner) {
+    public boolean setSubPartInTree(Function<SpellPart, SpellPart> replace, SpellPart current, boolean targetIsInner) {
         if (current.glyph instanceof SpellPart part) {
             if (targetIsInner ? part.glyph == this : part == this) {
-                if (replacement.isPresent()) {
-                    current.glyph = replacement.get();
-                } else {
-                    current.glyph = new PatternGlyph();
-                }
+                var newPart = replace.apply(part);
+                current.glyph = newPart == null ? new PatternGlyph() : newPart;
                 return true;
             }
 
-            if (setSubPartInTree(replacement, part, targetIsInner)) {
+            if (setSubPartInTree(replace, part, targetIsInner)) {
                 return true;
             }
         }
@@ -121,15 +119,16 @@ public final class SpellPart implements Fragment {
         int i = 0;
         for (var part : current.subParts) {
             if (targetIsInner ? part.glyph == this : part == this) {
-                if (replacement.isPresent()) {
-                    current.subParts.set(i, replacement.get());
+                var newPart = replace.apply(part);
+                if (newPart != null) {
+                    current.subParts.set(i, newPart);
                 } else {
                     current.subParts.remove(i);
                 }
                 return true;
             }
 
-            if (setSubPartInTree(replacement, part, targetIsInner)) {
+            if (setSubPartInTree(replace, part, targetIsInner)) {
                 return true;
             }
             i++;

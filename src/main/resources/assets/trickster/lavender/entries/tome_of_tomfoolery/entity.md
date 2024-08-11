@@ -1,6 +1,6 @@
 ```json
 {
-  "title": "Entity Distortions",
+  "title": "Entity Querying",
   "icon": "minecraft:cow_spawn_egg",
   "category": "trickster:tricks"
 }
@@ -27,6 +27,16 @@ entity -> vector
 ---
 
 Given an entity, returns its position in the world.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:get_eye_position,title=Perspective Distortion|>
+
+entity -> vector
+
+---
+
+Given an entity, returns the position of its head.
 
 ;;;;;
 
@@ -62,11 +72,21 @@ Given an entity, returns its height in blocks.
 
 <|glyph@trickster:templates|trick-id=trickster:sneaking_reflection,title=Alternative Distortion|>
 
-entity -> number
+entity -> boolean
 
 ---
 
 Given an entity, returns whether the entity is crouching.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:sprinting_reflection,title=Trekking Distortion|>
+
+entity -> boolean
+
+---
+
+Given an entity, returns whether the entity is sprinting.
 
 ;;;;;
 
@@ -96,34 +116,4 @@ entity -> number
 
 ---
 
-Given an entity, returns its total armour value.
-
-;;;;;
-
-<|glyph@trickster:templates|trick-id=trickster:raycast,title=Archer's Distortion|>
-
-entity -> vector
-
----
-
-Given an entity, returns the block the entity is looking at.
-
-;;;;;
-
-<|glyph@trickster:templates|trick-id=trickster:raycast_side,title=Architect's Distortion|>
-
-entity -> vector
-
----
-
-Given an entity, returns a vector representing the side of the block the entity is looking at.
-
-;;;;;
-
-<|glyph@trickster:templates|trick-id=trickster:raycast_entity,title=Scout's Distortion|>
-
-entity -> entity
-
----
-
-Given an entity, returns the entity this entity is looking at.
+Given an entity, returns its total armor value.

@@ -1,7 +1,7 @@
 ```json
 {
   "title": "Projectiles",
-  "icon": "minecraft:spectral_arrow",
+  "icon": "minecraft:fire_charge",
   "category": "trickster:tricks"
 }
 ```

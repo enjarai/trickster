@@ -3,6 +3,7 @@ package dev.enjarai.trickster.spell.mana;
 import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.cca.ManaComponent;
 import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
 import dev.enjarai.trickster.spell.trick.blunder.NotEnoughManaBlunder;
@@ -35,8 +36,9 @@ public final class ManaLink {
         this.source = (trickSource, world) -> {
             var entity = world.getEntity(targetUuid);
 
-            if (entity instanceof LivingEntity living)
+            if (entity instanceof LivingEntity living && EntityFragment.isValidEntity(entity)) {
                 return living;
+            }
 
             throw new UnknownEntityBlunder(trickSource);
         };
@@ -47,11 +49,7 @@ public final class ManaLink {
     }
 
     public ManaLink(LivingEntity source, float ownerHealth, float availableMana) {
-        this.source = (trickSource, world) -> source;
-        this.manaPool = (trickSource, world) -> ModEntityCumponents.MANA.get(source);
-        this.sourceUuid = source.getUuid();
-        this.taxRatio = ownerHealth / source.getHealth();
-        this.availableMana = availableMana;
+        this(source.getUuid(), ownerHealth / source.getHealth(), availableMana);
     }
 
     public float useMana(Trick trickSource, ServerWorld world, ManaPool owner, float amount) throws BlunderException {

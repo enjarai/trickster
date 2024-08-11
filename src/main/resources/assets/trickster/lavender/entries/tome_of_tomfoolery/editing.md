@@ -109,6 +109,20 @@ as inner circles and spell fragments are the only way to move fragments back to 
 
 ;;;;;
 
+<|pattern@trickster:templates|pattern=6\,3\,0\,4\,8,title=Devotion Revision|>
+
+{gray}(Scribing pattern){}
+
+---
+
+Adds a new subcircle to the outer circle.
+
+;;;;;
+
+TODO: image
+
+;;;;;
+
 <|pattern@trickster:templates|pattern=3\,0\,4\,8,title=Split Revision|>
 
 {gray}(Scribing pattern){}
@@ -179,7 +193,7 @@ When Pruning Revision is drawn in the yellow circle, it and the red circles are 
 
 ---
 
-Expands the circle it is drawn in to replace its parent circle.
+Expands the circle it is drawn in to replace its outer circle.
 
 ;;;;;
 
@@ -206,6 +220,16 @@ Shifts the subcircles of the circle it is drawn in, clockwise, so that the last 
 ---
 
 Accomplishes the opposite of the Shifting Revision, moving subcircles counter-clockwise.
+
+;;;;;
+
+<|pattern@trickster:templates|pattern=2\,4\,3,title=Shuffling Revision|>
+
+{gray}(Scribing pattern){}
+
+---
+
+Swaps the first subcircle with the second subcircle.
 
 ;;;;;
 

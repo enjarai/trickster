@@ -1,4 +1,4 @@
-package dev.enjarai.trickster.spell.trick.entity.query;
+package dev.enjarai.trickster.spell.trick.raycast;
 
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
@@ -6,6 +6,7 @@ import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 
 import java.util.List;
@@ -16,8 +17,7 @@ public class RaycastBlockPosTrick extends AbstractRaycastBlockTrick {
     }
 
     @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var hit = getHit(ctx, fragments);
+    public Fragment activate(BlockHitResult hit) throws BlunderException {
         return hit.getType() == HitResult.Type.MISS ? VoidFragment.INSTANCE : VectorFragment.of(hit.getBlockPos());
     }
 }

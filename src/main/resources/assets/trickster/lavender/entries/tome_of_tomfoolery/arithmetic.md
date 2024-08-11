@@ -126,3 +126,13 @@ number -> number
 ---
 
 Returns the square root of the input.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:invert,title=Negation Distortion|>
+
+number -> number | vec -> vec
+
+---
+
+Inverts the given number or vector.

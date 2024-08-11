@@ -6,6 +6,7 @@ import dev.enjarai.trickster.spell.SpellContext;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import net.minecraft.entity.Entity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 
 import java.util.Optional;
@@ -28,7 +29,9 @@ public record EntityFragment(UUID uuid, Text name) implements Fragment {
     }
 
     public Optional<Entity> getEntity(SpellContext ctx) {
-        return Optional.ofNullable(ctx.source().getWorld().getEntity(uuid));
+        return Optional
+                .ofNullable(ctx.source().getWorld().getEntity(uuid))
+                .filter(EntityFragment::isValidEntity);
     }
 
     @Override
@@ -43,5 +46,13 @@ public record EntityFragment(UUID uuid, Text name) implements Fragment {
 
     public static EntityFragment from(Entity entity) {
         return new EntityFragment(entity.getUuid(), entity.getName());
+    }
+
+    public static boolean isValidEntity(Entity entity) {
+        if (entity.getWorld() instanceof ServerWorld serverWorld) {
+            return serverWorld.getChunkManager().chunkLoadingManager.getTicketManager()
+                    .shouldTickEntities(entity.getChunkPos().toLong());
+        }
+        return false;
     }
 }
