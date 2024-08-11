@@ -182,18 +182,20 @@ public class ExecutionState {
     }
 
     public void useMana(Trick trickSource, SpellContext ctx, ManaPool pool, float amount) throws NotEnoughManaBlunder {
+        var links = manaLinks.stream().filter(link -> link.getAvailable() > 0).toList();
         hasUsedMana = true;
 
-        if (!manaLinks.isEmpty()) {
+        if (!links.isEmpty()) {
             float totalAvailable = 0;
             float leftOver = 0;
 
-            for (var link : manaLinks) {
+            for (var link : links) {
                 totalAvailable += link.getAvailable();
             }
 
-            for (var link : manaLinks) {
+            for (var link : links) {
                 float available = link.getAvailable();
+
                 float ratio = available / totalAvailable;
                 float ratioD = amount * ratio;
                 float used = link.useMana(trickSource, ctx.source().getWorld(), pool, ratioD);
