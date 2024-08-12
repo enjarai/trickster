@@ -24,8 +24,9 @@ public class AddVelocityTrick extends Trick {
 
         var velocity = expectInput(fragments, FragmentType.VECTOR, 1);
         var lengthSquared = velocity.vector().lengthSquared();
-        ctx.useMana(this, (float) lengthSquared * 2f);
+        ctx.useMana(this, 3f + (float) lengthSquared * 2f);
         target.addVelocity(velocity.vector().x(), velocity.vector().y(), velocity.vector().z());
+        target.limitFallDistance();
         target.velocityModified = true;
 
         return VoidFragment.INSTANCE;
