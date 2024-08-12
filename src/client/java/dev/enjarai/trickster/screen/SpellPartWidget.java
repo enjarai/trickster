@@ -37,6 +37,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     public static final Pattern SWAP_SUBCIRCLE_GLYPH = Pattern.of(2, 4, 3);
     public static final Pattern CREATE_OUTER_SUBCIRCLE_GLYPH = Pattern.of(6, 3, 0, 4, 8);
     public static final Pattern COPY_OFFHAND_LITERAL = Pattern.of(4, 0, 1, 4, 2, 1);
+    public static final Pattern COPY_CROW_MIND_LITERAL = Pattern.of(4, 1, 2, 4, 3, 6, 8, 5);
     public static final Pattern COPY_OFFHAND_LITERAL_INNER = Pattern.of(1, 2, 4, 1, 0, 4, 7);
     public static final Pattern COPY_OFFHAND_EXECUTE = Pattern.of(4, 3, 0, 4, 5, 2, 4, 1);
     public static final Pattern WRITE_OFFHAND_ADDRESS = Pattern.of(1, 0, 4, 8, 7, 6, 4, 2, 1, 4);
@@ -329,6 +330,8 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             } else {
                 drawingPart.setSubPartInTree(current -> otherHandSpellSupplier.get().deepClone(), spellPart, false);
             }
+        } else if (compiled.equals(COPY_CROW_MIND_LITERAL)) {
+            //TODO
         } else if (compiled.equals(COPY_OFFHAND_LITERAL_INNER)) {
             drawingPart.glyph = otherHandSpellSupplier.get().deepClone();
         } else if (compiled.equals(COPY_OFFHAND_EXECUTE)) {
