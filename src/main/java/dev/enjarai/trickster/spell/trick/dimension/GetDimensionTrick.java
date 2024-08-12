@@ -11,7 +11,7 @@ import java.util.List;
 
 public class GetDimensionTrick extends Trick {
     public GetDimensionTrick() {
-        super(Pattern.of(4, 5, 8, 7, 6, 3, 0, 1, 2));
+        super(Pattern.of(4, 0, 1, 4, 3, 6, 5, 2, 4));
     }
 
     @Override
