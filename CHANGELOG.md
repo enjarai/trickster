@@ -1,3 +1,1 @@
-- Added a way to distinguish between dimensions. (@StellarWitch7)
-- Rebalanced the impulse trick. (@enjarai)
-- Fixed some misc bugs.
+- Let mana links be overridden. (@enjarai)

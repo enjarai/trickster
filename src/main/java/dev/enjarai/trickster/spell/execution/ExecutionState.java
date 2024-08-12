@@ -168,12 +168,7 @@ public class ExecutionState {
     }
 
     public void addManaLink(Trick source, ManaLink link) throws EntityInvalidBlunder {
-        for (var registeredLink : manaLinks) {
-            if (registeredLink.manaPool.equals(link.manaPool)) {
-                throw new EntityInvalidBlunder(source); //TODO: better exception
-            }
-        }
-
+        manaLinks.removeIf(registeredLink -> registeredLink.sourceUuid.equals(link.sourceUuid));
         manaLinks.add(link);
     }
 
