@@ -20,6 +20,7 @@ import net.minecraft.block.Waterloggable;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Items;
+import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
@@ -41,7 +42,8 @@ public class ConjureWaterTrick extends Trick {
 
         if (!(world.getBlockState(blockPos).isAir()
                 || world.getBlockState(blockPos).getBlock() instanceof Waterloggable
-                || world.getBlockState(blockPos).isOf(Blocks.CAULDRON))
+                || world.getBlockState(blockPos).isOf(Blocks.CAULDRON)
+                || world.getFluidState(blockPos).isIn(FluidTags.WATER))
         ) {
             throw new BlockOccupiedBlunder(this, pos);
         }

@@ -1,2 +1,3 @@
-- Fixed another infinite mana issue. (@StellarWitch7)
-- Fixed other issues with mana links as well. (@enjarai)
+- Added a way to distinguish between dimensions. (@StellarWitch7)
+- Rebalanced the impulse trick. (@enjarai)
+- Fixed some misc bugs.

@@ -16,6 +16,7 @@ import dev.enjarai.trickster.spell.trick.blunder.BlockUnoccupiedBlunder;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.util.math.Direction;
 
 import java.util.List;
@@ -35,7 +36,7 @@ public class ConjureLightTrick extends Trick {
         var waterlogged = false;
 
         if (!world.getBlockState(blockPos).isAir()) {
-            if (world.getFluidState(blockPos).getFluid() != Fluids.WATER) {
+            if (world.getFluidState(blockPos).isIn(FluidTags.WATER)) {
                 throw new BlockOccupiedBlunder(this, pos);
             }
             waterlogged = true;
