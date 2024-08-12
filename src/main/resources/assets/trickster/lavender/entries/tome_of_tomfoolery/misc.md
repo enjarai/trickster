@@ -32,7 +32,7 @@ Delays the execution of the current spell by the given number of ticks, or until
 
 <|glyph@trickster:templates|trick-id=trickster:pin_chunk,title=Ploy of Celestial Pin|>
 
-vector -> boolean
+vector ->
 
 <|cost-rule@trickster:templates|formula=32kG|>
 

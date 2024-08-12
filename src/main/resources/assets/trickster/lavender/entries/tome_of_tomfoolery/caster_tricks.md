@@ -40,6 +40,16 @@ Returns the entity casting the spell.
 
 ;;;;;
 
+<|glyph@trickster:templates|trick-id=trickster:get_dimension,title=Dimensional Delusion|>
+
+-> dimension
+
+---
+
+Returns the dimension which the caster is in.
+
+;;;;;
+
 <|glyph@trickster:templates|trick-id=trickster:mana_reflection,title=Authority Delusion|>
 
 -> number

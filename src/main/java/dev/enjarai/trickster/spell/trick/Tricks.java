@@ -3,6 +3,7 @@ package dev.enjarai.trickster.spell.trick;
 import com.mojang.serialization.Lifecycle;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.trick.dimension.GetDimensionTrick;
 import dev.enjarai.trickster.spell.trick.entity.query.*;
 import dev.enjarai.trickster.spell.trick.func.*;
 import dev.enjarai.trickster.spell.trick.basic.*;
@@ -204,6 +205,9 @@ public class Tricks {
     public static final SummonFireballTrick SUMMON_FIREBALL = register("summon_fireball", new SummonFireballTrick());
     public static final SummonDragonBreathTrick SUMMON_DRAGON_BREATH = register("summon_dragon_breath", new SummonDragonBreathTrick());
     public static final SummonTntTrick SUMMON_TNT = register("summon_tnt", new SummonTntTrick());
+
+    // Dimension
+    public static final GetDimensionTrick GET_DIMENSION = register("get_dimension", new GetDimensionTrick());
 
     // Misc
     public static final TypeFragmentTrick TYPE_FRAGMENT = register("type_fragment", new TypeFragmentTrick());

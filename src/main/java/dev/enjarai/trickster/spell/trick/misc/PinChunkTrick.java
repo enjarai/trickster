@@ -6,6 +6,7 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
+import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
 import net.minecraft.util.math.ChunkPos;
@@ -25,6 +26,6 @@ public class PinChunkTrick extends Trick {
         ctx.useMana(this, 32);
         ModWorldCumponents.PINNED_CHUNKS.get(ctx.source().getWorld()).pinChunk(chunkPos);
 
-        return BooleanFragment.TRUE;
+        return VoidFragment.INSTANCE;
     }
 }
