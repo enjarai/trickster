@@ -10,6 +10,7 @@ import io.wispforest.owo.config.annotation.Sync;
 public class TricksterConfigModel {
     public boolean dragDrawing = false;
     public boolean topHatInterceptScrolling = false;
+    public boolean invertTopHatScrolling = false;
     public boolean barsHorizontal = false;
 
     @Sync(Option.SyncMode.INFORM_SERVER)
