@@ -67,14 +67,14 @@ public class TrickyAccessoryItem extends AccessoryItem {
                         isModified = true;
                     }
 
-                    if (newInput.type() != inputType)
+                    if (!newInput.type().equals(inputType))
                         throw new WardReturnBlunder();
 
-                    if (inputType == FragmentType.ENTITY) {
+                    if (inputType.equals(FragmentType.ENTITY)) {
                         var entity = (EntityFragment)input;
                         var newEntity = (EntityFragment)newInput;
 
-                        if (entity.uuid() == player.getUuid() && newEntity.uuid() != entity.uuid())
+                        if (entity.uuid().equals(player.getUuid()) && !newEntity.uuid().equals(entity.uuid()))
                             throw new WardModifiedSelfBlunder();
                     }
 
