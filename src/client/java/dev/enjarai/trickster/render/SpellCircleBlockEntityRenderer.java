@@ -42,11 +42,13 @@ public class SpellCircleBlockEntityRenderer implements BlockEntityRenderer<Spell
 
         var normal = new Vec3d(new Vector3f(0, 0, -1).rotate(facing.getRotationQuaternion().conjugate()));
 
-        this.renderer.renderPart(
-                matrices, vertexConsumers, entity.spell,
-                0, 0, 0.5f, 0,
-                tickDelta, size -> 1f, normal
-        );
+        if (entity.spell != null) {
+            this.renderer.renderPart(
+                    matrices, vertexConsumers, entity.spell,
+                    0, 0, 0.5f, 0,
+                    tickDelta, size -> 1f, normal
+            );
+        }
         matrices.pop();
     }
 }
