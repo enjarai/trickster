@@ -5,6 +5,7 @@ import dev.enjarai.trickster.cca.ModEntityCumponents;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.CrowMind;
 import dev.enjarai.trickster.spell.Fragment;
+import dev.enjarai.trickster.spell.execution.SpellExecutionManager;
 import dev.enjarai.trickster.spell.fragment.SlotFragment;
 import dev.enjarai.trickster.spell.mana.ManaPool;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
@@ -69,6 +70,11 @@ public class PlayerSpellSource extends SpellSource {
         } else {
             return Optional.empty();
         }
+    }
+
+    @Override
+    public Optional<SpellExecutionManager> getExecutionManager() {
+        return Optional.of(ModEntityCumponents.CASTER.get(player).getExecutionManager());
     }
 
     @Override

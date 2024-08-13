@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.spell.execution.source;
 
 import dev.enjarai.trickster.spell.Fragment;
+import dev.enjarai.trickster.spell.execution.SpellExecutionManager;
 import dev.enjarai.trickster.spell.fragment.SlotFragment;
 import dev.enjarai.trickster.spell.mana.ManaPool;
 import net.minecraft.entity.Entity;
@@ -33,6 +34,10 @@ public abstract class SpellSource {
     }
 
     public Optional<SlotFragment> getOtherHandSlot() {
+        return Optional.empty();
+    }
+
+    public Optional<SpellExecutionManager> getExecutionManager() {
         return Optional.empty();
     }
 

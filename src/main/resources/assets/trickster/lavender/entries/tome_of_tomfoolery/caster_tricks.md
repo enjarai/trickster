@@ -67,3 +67,13 @@ Returns the amount of mana directly available to the spell.
 ---
 
 Returns the maximum amount of mana that *could be* available to the spell.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:hotbar_reflection,title=Framed Delusion|>
+
+-> number
+
+---
+
+Returns the selected hotbar slot of the caster, if available.

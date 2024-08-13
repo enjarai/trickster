@@ -35,6 +35,17 @@ providing it with all other passed in fragments as arguments.
 
 ;;;;;
 
+<|glyph@trickster:templates|trick-id=trickster:fork,title=Utensil Stratagem|>
+
+spell, any... ->
+
+---
+
+An alternative to Grand Stratagem, this dispatches the given spell to a new spell slot, 
+letting it run concurrently with this spell.
+
+;;;;;
+
 <|glyph@trickster:templates|trick-id=trickster:iterator,title=Iteration Distortion|>
 
 spell, any[] -> any[]

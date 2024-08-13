@@ -90,6 +90,16 @@ Given an entity, returns whether the entity is sprinting.
 
 ;;;;;
 
+<|glyph@trickster:templates|trick-id=trickster:blocking_reflection,title=Guard Distortion|>
+
+entity -> boolean
+
+---
+
+Given an entity, returns whether the entity is blocking using a shield.
+
+;;;;;
+
 <|glyph@trickster:templates|trick-id=trickster:get_max_health,title=Vigor Distortion|>
 
 entity -> number

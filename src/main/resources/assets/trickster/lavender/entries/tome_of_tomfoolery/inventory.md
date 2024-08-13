@@ -94,3 +94,13 @@ Grabs the spell from the specified slot in the caster's [Top Hat](^trickster:top
 ---
 
 Returns the selected slot in the caster's [Top Hat](^trickster:top_hat).
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:set_hat,title=Cranial Shift Ploy|>
+
+number -> boolean
+
+---
+
+Sets the selected slot in the caster's [Top Hat](^trickster:top_hat), returning a boolean based on success.

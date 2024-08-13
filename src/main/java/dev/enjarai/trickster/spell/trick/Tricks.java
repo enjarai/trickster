@@ -57,6 +57,7 @@ public class Tricks {
 
     // Functions
     public static final ExecuteTrick EXECUTE = register("execute", new ExecuteTrick());
+    public static final ForkTrick FORK = register("fork", new ForkTrick());
     public static final IteratorTrick ITERATOR = register("iterator", new IteratorTrick());
     public static final TryCatchTrick TRY_CATCH = register("try_catch", new TryCatchTrick());
     public static final ClosureTrick CLOSURE = register("closure", new ClosureTrick());
@@ -86,6 +87,7 @@ public class Tricks {
     public static final ManaReflectionTrick MANA_REFLECTION = register("mana_reflection", new ManaReflectionTrick());
     public static final MaxManaReflectionTrick MAX_MANA_REFLECTION = register("max_mana_reflection", new MaxManaReflectionTrick());
     public static final FacingReflectionTrick FACING_REFLECTION = register("facing_reflection", new FacingReflectionTrick());
+    public static final HotbarReflectionTrick HOTBAR_REFLECTION = register("hotbar_reflection", new HotbarReflectionTrick());
 
     // Entity
     public static final GetPositionTrick GET_POSITION = register("get_position", new GetPositionTrick());
@@ -99,6 +101,7 @@ public class Tricks {
     public static final HeightReflectionTrick HEIGHT_REFLECTION = register("height_reflection", new HeightReflectionTrick());
     public static final SneakingReflectionTrick SNEAKING_REFLECTION = register("sneaking_reflection", new SneakingReflectionTrick());
     public static final SprintingReflectionTrick SPRINTING_REFLECTION = register("sprinting_reflection", new SprintingReflectionTrick());
+    public static final BlockingReflectionTrick BLOCKING_REFLECTION = register("blocking_reflection", new BlockingReflectionTrick());
     public static final RaycastBlockPosTrick RAYCAST = register("raycast", new RaycastBlockPosTrick());
     public static final RaycastBlockSideTrick RAYCAST_SIDE = register("raycast_side", new RaycastBlockSideTrick());
     public static final RaycastEntityTrick RAYCAST_ENTITY = register("raycast_entity", new RaycastEntityTrick());
@@ -194,6 +197,7 @@ public class Tricks {
     public static final ImportTrick IMPORT = register("import", new ImportTrick());
     public static final ImportHatTrick IMPORT_HAT = register("import_hat", new ImportHatTrick());
     public static final CheckHatTrick CHECK_HAT = register("check_hat", new CheckHatTrick());
+    public static final SetHatTrick SET_HAT = register("set_hat", new SetHatTrick());
     public static final OtherHandTrick OTHER_HAND = register("other_hand", new OtherHandTrick());
     public static final OtherHandSlotTrick OTHER_HAND_SLOT = register("other_hand_slot", new OtherHandSlotTrick());
     public static final GetItemInSlotTrick GET_ITEM_IN_SLOT = register("get_item_in_slot", new GetItemInSlotTrick());

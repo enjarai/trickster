@@ -149,6 +149,10 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
 //        playCastSound(0.6f, 0.1f);
     }
 
+    public SpellExecutionManager getExecutionManager() {
+        return executionManager;
+    }
+
     public void waitTicks(int ticks) {
         wait += ticks;
     }

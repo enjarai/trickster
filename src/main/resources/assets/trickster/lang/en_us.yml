@@ -62,10 +62,12 @@ trickster:
     mana_reflection: Authority Delusion
     max_mana_reflection: Crowning Delusion
     facing_reflection: Directional Delusion
+    hotbar_reflection: Framed Delusion
 
     height_reflection: Stature Distortion
     sneaking_reflection: Alternative Distortion
     sprinting_reflection: Trekking Distortion
+    blocking_reflection: Guard Distortion
     raycast: Archer's Distortion
     raycast_side: Architect's Distortion
     raycast_entity: Scout's Distortion
@@ -96,6 +98,7 @@ trickster:
     delete_spell_circle: Cancellation Ploy
 
     execute: Grand Stratagem
+    fork: Utensil Stratagem
     iterator: Iteration Stratagem
     try_catch: Cautious Stratagem
     closure: Closure Stratagem
@@ -147,6 +150,7 @@ trickster:
     import: Assistance Ploy
     import_hat: Cranium Ploy
     check_hat: Cranium Delusion
+    set_hat: Cranial Shift Ploy
     other_hand: Juggling Delusion
     other_hand_slot: Catch Delusion
     get_item_in_slot: Fence's Distortion
