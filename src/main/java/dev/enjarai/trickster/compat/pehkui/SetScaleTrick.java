@@ -8,6 +8,7 @@ import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
 import dev.enjarai.trickster.spell.trick.blunder.UnknownEntityBlunder;
+import net.minecraft.util.math.MathHelper;
 import virtuoel.pehkui.api.ScaleTypes;
 
 import java.util.List;
@@ -23,12 +24,12 @@ public class SetScaleTrick extends Trick {
 
         fragments = tryWard(ctx, target, fragments);
 
-        var scale = expectInput(fragments, FragmentType.NUMBER, 1);
+        var scale = MathHelper.clamp(expectInput(fragments, FragmentType.NUMBER, 1).number(), 0.0625, 5.0);
         var scaleData = ScaleTypes.BASE.getScaleData(target);
 
-        var difference = Math.abs(scale.number() - scaleData.getScale());
-        ctx.useMana(this, (float) (difference * difference * 10));
-        scaleData.setScale((float) scale.number());
+        var difference = Math.abs(scale - scaleData.getScale());
+        ctx.useMana(this, (float) (difference * difference * 10 + scale * 50));
+        scaleData.setScale((float) scale);
 
         return BooleanFragment.TRUE;
     }

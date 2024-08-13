@@ -30,6 +30,6 @@ Returns the scale of the given entity.
 
 entity, number -> boolean
 
-<|cost-rule@trickster:templates|formula=abs(currentScale - newScale)^2 * 10|>
+<|cost-rule@trickster:templates|formula=abs(currentScale - newScale)^2 * 10kG + newScale * 50kG|>
 
-Changes the scale of the given entity.
+Changes the scale of the given entity. Entities cannot be scaled below 0.0625 or above 5 times their usual size.
