@@ -1,3 +1,1 @@
-- Added a bunch of new tricks we thought would be useful. (@enjarai)
-- Balanced pehkui compat. (@enjarai)
-- Fixed wards to actually work... probably. (@StellarWitch7)
+- Fix a problematic exploit using large scale area selection. (@enjarai)

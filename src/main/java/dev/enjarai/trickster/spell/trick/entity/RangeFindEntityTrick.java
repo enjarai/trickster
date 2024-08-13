@@ -6,6 +6,8 @@ import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.*;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
+import dev.enjarai.trickster.spell.trick.blunder.IndexOutOfBoundsBlunder;
+import dev.enjarai.trickster.spell.trick.blunder.OutOfRangeBlunder;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.TypeFilter;
 import net.minecraft.util.math.Box;
@@ -29,6 +31,10 @@ public class RangeFindEntityTrick extends Trick {
                 .orElse(TypeFilter.instanceOf(Entity.class));
         var pos = posFragment.vector();
         var range = rangeFragment.number();
+        if (range > 32.0) {
+            throw new OutOfRangeBlunder(this, 32.0, range);
+        }
+
         var squaredRange = range * range;
 
         var entities = new ArrayList<Entity>();
