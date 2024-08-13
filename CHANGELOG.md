@@ -1,1 +1,3 @@
-- Let mana links be overridden. (@enjarai)
+- Added a bunch of new tricks we thought would be useful. (@enjarai)
+- Balanced pehkui compat. (@enjarai)
+- Fixed wards to actually work... probably. (@StellarWitch7)
