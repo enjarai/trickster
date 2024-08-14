@@ -85,6 +85,10 @@ public class SpellCircleRenderer {
 
         drawDivider(matrices, vertexConsumers, toLocalSpace(x), toLocalSpace(y), startingAngle, toLocalSpace(size), partCount, alpha);
 
+        if (!inUI && size < 0.01f) {
+            return;
+        }
+
         matrices.push();
         if (!inUI) {
             matrices.translate(0, 0, -size / 8f);

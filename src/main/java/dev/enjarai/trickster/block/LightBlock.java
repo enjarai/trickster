@@ -46,12 +46,13 @@ public class LightBlock extends BlockWithEntity implements Waterloggable {
     @Override
     public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
         var blockEntity = world.getBlockEntity(pos);
-        if (blockEntity instanceof LightBlockEntity lightEntity) {
+        if (blockEntity instanceof SpellColoredBlockEntity coloredBlockEntity) {
             var particlePos = Vec3d.ofCenter(pos);
             var max = random.nextInt(3);
+            var colors = coloredBlockEntity.getColors();
             for (int i = 0; i < max; i++) {
                 world.addParticle(
-                        new SpellParticleOptions(lightEntity.color),
+                        new SpellParticleOptions(colors[random.nextInt(colors.length)]),
                         particlePos.x, particlePos.y, particlePos.z,
                         random.nextFloat() * 0.005f - 0.0025f,
                         random.nextFloat() * 0.02f + 0.01f,

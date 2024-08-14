@@ -10,8 +10,8 @@ import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
-public class LightBlockEntity extends BlockEntity {
-    public int color = 0xffffff;
+public class LightBlockEntity extends BlockEntity implements SpellColoredBlockEntity {
+    public int[] colors = new int[]{0xffffff};
 
     public LightBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlocks.LIGHT_ENTITY, pos, state);
@@ -19,12 +19,15 @@ public class LightBlockEntity extends BlockEntity {
 
     @Override
     protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
-        nbt.putInt("color", color);
+        nbt.putIntArray("colors", colors);
     }
 
     @Override
     protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
-        color = nbt.getInt("color");
+        colors = nbt.getIntArray("colors");
+        if (colors.length == 0) {
+            colors = new int[]{0xffffff};
+        }
     }
 
     @Nullable
@@ -36,5 +39,16 @@ public class LightBlockEntity extends BlockEntity {
     @Override
     public NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup registryLookup) {
         return createNbt(registryLookup);
+    }
+
+    @Override
+    public int[] getColors() {
+        return colors;
+    }
+
+    @Override
+    public void setColors(int[] colors) {
+        this.colors = colors;
+        markDirty();
     }
 }
