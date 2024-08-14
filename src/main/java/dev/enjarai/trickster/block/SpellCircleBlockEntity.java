@@ -11,6 +11,7 @@ import dev.enjarai.trickster.spell.mana.SimpleManaPool;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
 import dev.enjarai.trickster.spell.world.SpellCircleEvent;
 import io.wispforest.endec.impl.KeyedEndec;
+import io.wispforest.owo.serialization.CodecUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
@@ -22,19 +23,22 @@ import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
+import net.minecraft.text.TextCodecs;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class SpellCircleBlockEntity extends BlockEntity {
+public class SpellCircleBlockEntity extends BlockEntity implements SpellColoredBlockEntity {
     public static final int LISTENER_RADIUS = 16;
     public static final float MAX_MANA = 450;
     public static final KeyedEndec<SpellPart> PART_ENDEC =
             SpellPart.ENDEC.keyed("spell", () -> null);
     public static final KeyedEndec<SpellExecutor> EXECUTOR_ENDEC =
             SpellExecutor.ENDEC.keyed("executor", () -> null);
+    public static final KeyedEndec<Text> ERROR_ENDEC =
+            CodecUtils.toEndec(TextCodecs.STRINGIFIED_CODEC).keyed("last_error", () -> null);
 
     // Used with single-tick events
     public SpellPart spell;
@@ -58,6 +62,7 @@ public class SpellCircleBlockEntity extends BlockEntity {
             stdIncrease(2);
         }
     };
+    public int[] colors = new int[]{0xffffff};
 
     public transient SpellSource spellSource;
 
@@ -71,6 +76,7 @@ public class SpellCircleBlockEntity extends BlockEntity {
 
         spell = nbt.get(PART_ENDEC);
         executor = nbt.get(EXECUTOR_ENDEC);
+        lastError = nbt.get(ERROR_ENDEC);
 
         if (nbt.contains("event")) {
             event = SpellCircleEvent.REGISTRY.getEntry(Identifier.of(nbt.getString("event")))
@@ -78,8 +84,12 @@ public class SpellCircleBlockEntity extends BlockEntity {
         }
 
         manaPool.set(nbt.getFloat("mana"));
-
         lastPower = nbt.getInt("last_power");
+        colors = nbt.getIntArray("colors");
+
+        if (colors.length == 0) {
+            colors = new int[]{0xffffff};
+        }
     }
 
     @Override
@@ -95,17 +105,20 @@ public class SpellCircleBlockEntity extends BlockEntity {
             nbt.put(EXECUTOR_ENDEC, executor);
         }
 
+        if (lastError != null) {
+            nbt.put(ERROR_ENDEC, lastError);
+        }
+
         nbt.putString("event", event.id().toString());
-
         nbt.putFloat("mana", manaPool.get());
-
         nbt.putInt("last_power", lastPower);
+        nbt.putIntArray("colors", colors);
     }
 
     public void tick() {
         manaPool.stdIncrease();
 
-        if (event.isMultiTick() && !getWorld().isClient() && executor != null) {
+        if (event.isMultiTick() && !getWorld().isClient() && executor != null && lastError == null) {
             if (spellSource == null) {
                 spellSource = new BlockSpellSource((ServerWorld) getWorld(), getPos(), this);
             }
@@ -156,5 +169,15 @@ public class SpellCircleBlockEntity extends BlockEntity {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    @Override
+    public int[] getColors() {
+        return colors;
+    }
+
+    @Override
+    public void setColors(int[] colors) {
+        this.colors = colors;
     }
 }

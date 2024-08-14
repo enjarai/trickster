@@ -1,15 +1,22 @@
 package dev.enjarai.trickster.block;
 
 import com.mojang.serialization.MapCodec;
+import dev.enjarai.trickster.particle.SpellParticleOptions;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
@@ -28,7 +35,9 @@ public class SpellCircleBlock extends BlockWithEntity {
     };
 
     protected SpellCircleBlock() {
-        super(AbstractBlock.Settings.create().strength(0.5f).noCollision());
+        super(AbstractBlock.Settings.create()
+                .strength(0.5f).noCollision()
+                .sounds(BlockSoundGroup.AMETHYST_BLOCK).noBlockBreakParticles());
         setDefaultState(stateManager.getDefaultState().with(FACING, Direction.UP));
     }
 
@@ -53,14 +62,40 @@ public class SpellCircleBlock extends BlockWithEntity {
         return SHAPES[state.get(FACING).getId()];
     }
 
-//    @Override
-//    protected BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
-//        if (world.getBlockState(pos.offset(state.get(FACING).getOpposite())).isAir()) {
-//            return Blocks.AIR.getDefaultState();
-//        }
-//
-//        return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
-//    }
+    @Override
+    public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
+        var blockEntity = world.getBlockEntity(pos);
+        if (blockEntity instanceof SpellColoredBlockEntity coloredBlockEntity) {
+            var particlePos = Vec3d.of(pos);
+            var max = random.nextInt(3);
+            var shape = SHAPES[state.get(FACING).getId()].getBoundingBox();
+            var colors = coloredBlockEntity.getColors();
+            for (int i = 0; i < max; i++) {
+                world.addParticle(
+                        new SpellParticleOptions(colors[random.nextInt(colors.length)]),
+                        particlePos.x + shape.minX + random.nextFloat() * shape.getLengthX(),
+                        particlePos.y + shape.minY + random.nextFloat() * shape.getLengthY(),
+                        particlePos.z + shape.minZ + random.nextFloat() * shape.getLengthZ(),
+                        random.nextFloat() * 0.005f - 0.0025f,
+                        random.nextFloat() * 0.02f + 0.01f,
+                        random.nextFloat() * 0.005f - 0.0025f
+                );
+            }
+        }
+    }
+
+    @Override
+    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+        if (world.getBlockEntity(pos) instanceof SpellCircleBlockEntity blockEntity && blockEntity.lastError != null) {
+            if (world.isClient()) {
+                player.sendMessage(blockEntity.lastError);
+            }
+
+            return ActionResult.SUCCESS;
+        }
+
+        return super.onUse(state, world, pos, player, hit);
+    }
 
     @Nullable
     @Override

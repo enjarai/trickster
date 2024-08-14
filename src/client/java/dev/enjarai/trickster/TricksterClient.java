@@ -11,6 +11,7 @@ import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.particle.ProtectedBlockParticle;
 import dev.enjarai.trickster.particle.SpellParticle;
 import dev.enjarai.trickster.render.BarsRenderer;
+import dev.enjarai.trickster.render.CircleErrorRenderer;
 import dev.enjarai.trickster.render.HoldableHatRenderer;
 import dev.enjarai.trickster.render.SpellCircleBlockEntityRenderer;
 import dev.enjarai.trickster.screen.ModHandledScreens;
@@ -63,5 +64,6 @@ public class TricksterClient implements ClientModInitializer {
 		});
 
 		HudRenderCallback.EVENT.register(BarsRenderer::render);
+		HudRenderCallback.EVENT.register(CircleErrorRenderer::render);
 	}
 }

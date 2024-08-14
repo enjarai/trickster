@@ -33,11 +33,12 @@ public class SpellCircleBlockEntityRenderer implements BlockEntityRenderer<Spell
         matrices.multiply(facing.getRotationQuaternion());
         matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(90));
 
-        matrices.multiply(RotationAxis.POSITIVE_X.rotation((float) Math.sin((entity.age + tickDelta) * 0.1f) * 0.05f));
-        matrices.multiply(RotationAxis.POSITIVE_Y.rotation((float) Math.sin((entity.age + tickDelta) * 0.12f) * 0.05f));
+        int age = entity.age + (entity.getPos().getX() + entity.getPos().getY() + entity.getPos().getZ()) * 999;
+        matrices.multiply(RotationAxis.POSITIVE_X.rotation((float) Math.sin((age + tickDelta) * 0.1f) * 0.05f));
+        matrices.multiply(RotationAxis.POSITIVE_Y.rotation((float) Math.sin((age + tickDelta) * 0.12f) * 0.05f));
         matrices.translate(
                 0, 0,
-                (float) Math.sin((entity.age + tickDelta) * 0.14f) * 0.02f
+                (float) Math.sin((age + tickDelta) * 0.14f) * 0.02f
         );
 
         var normal = new Vec3d(new Vector3f(0, 0, -1).rotate(facing.getRotationQuaternion().conjugate()));
