@@ -17,6 +17,10 @@ public class ModComponents {
                     .codec(WrittenScrollMetaComponent.CODEC)
                     .packetCodec(WrittenScrollMetaComponent.PACKET_CODEC)
                     .cache());
+    public static final ComponentType<EntityStorageComponent> ENTITY_STORAGE =
+            register("entity_storage", builder -> builder
+                    .codec(EntityStorageComponent.CODEC)
+                    .cache());
 
     private static <T> ComponentType<T> register(String id, UnaryOperator<ComponentType.Builder<T>> builderOperator) {
         return Registry.register(Registries.DATA_COMPONENT_TYPE, Trickster.id(id), (builderOperator.apply(ComponentType.builder())).build());

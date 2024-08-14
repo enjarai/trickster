@@ -82,6 +82,8 @@ trickster:
     get_velocity: Movement Distortion
     leech_mana: Conduit's Ploy
     add_velocity: Impulse Ploy
+    store_entity: Containment Ploy
+    release_entity: Extrication Ploy
 
     polymorph: Polymorph Ploy
     dispel_polymorph: Dispel Polymorph Ploy

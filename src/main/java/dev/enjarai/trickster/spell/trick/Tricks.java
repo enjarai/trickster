@@ -110,6 +110,8 @@ public class Tricks {
     public static final DispelPolymorphTrick DISPEL_POLYMORPH = register("dispel_polymorph", new DispelPolymorphTrick());
     public static final GetEntityManaTrick GET_MANA = register("get_mana", new GetEntityManaTrick());
     public static final LeechEntityManaTrick LEECH_MANA = register("leech_mana", new LeechEntityManaTrick());
+    public static final StoreEntityTrick STORE_ENTITY = register("store_entity", new StoreEntityTrick());
+    public static final ReleaseEntityTrick RELEASE_ENTITY = register("release_entity", new ReleaseEntityTrick());
 
     // Entity Locating
     public static final BlockFindEntityTrick BLOCK_FIND_ENTITY = register("block_find_entity", new BlockFindEntityTrick());
