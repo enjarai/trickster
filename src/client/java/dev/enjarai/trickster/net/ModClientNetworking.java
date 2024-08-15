@@ -1,6 +1,9 @@
 package dev.enjarai.trickster.net;
 
 import dev.enjarai.trickster.mixin.client.WorldRendererAccessor;
+import dev.enjarai.trickster.spell.SpellPart;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.ChunkSectionPos;
 
 public class ModClientNetworking {
@@ -17,6 +20,24 @@ public class ModClientNetworking {
                                     ChunkSectionPos.unpackZ(chunk),
                                     true
                             ));
+        });
+        ModNetworking.CHANNEL.registerClientbound(GrabClipboardSpellPacket.class, (message, access) -> {
+            var clipboard = access.runtime().keyboard.getClipboard();
+
+            if (clipboard.isBlank()) {
+                access.player().sendMessage(Text.literal("Clipboard is empty").formatted(Formatting.RED));
+                return;
+            }
+
+            SpellPart spell;
+            try {
+                spell = SpellPart.fromBase64(clipboard);
+            } catch (Exception e) {
+                access.player().sendMessage(Text.literal("Failed to decode clipboard, does it contain a valid spell?").formatted(Formatting.RED));
+                return;
+            }
+
+            ModNetworking.CHANNEL.clientHandle().send(new ClipBoardSpellResponsePacket(spell));
         });
     }
 }

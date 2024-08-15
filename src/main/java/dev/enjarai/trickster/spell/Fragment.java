@@ -20,7 +20,8 @@ public non-sealed interface Fragment extends SpellInstruction {
     StructEndec<Fragment> ENDEC = EndecTomfoolery.lazy(() -> (StructEndec<Fragment>) Endec.dispatchedStruct(
             FragmentType::endec,
             Fragment::type,
-            MinecraftEndecs.ofRegistry(FragmentType.REGISTRY)
+            Endec.<FragmentType<?>>ifAttr(EndecTomfoolery.UBER_COMPACT_ATTRIBUTE, Endec.INT.xmap(FragmentType::getFromInt, FragmentType::getIntId))
+                    .orElse(MinecraftEndecs.ofRegistry(FragmentType.REGISTRY))
     ));
 
     FragmentType<?> type();
