@@ -7,4 +7,5 @@ import net.minecraft.registry.tag.TagKey;
 
 public class ModEntities {
     public static final TagKey<EntityType<?>> MANA_DEVOID = TagKey.of(RegistryKeys.ENTITY_TYPE, Trickster.id("mana_devoid"));
+    public static final TagKey<EntityType<?>> IRREPRESSIBLE = TagKey.of(RegistryKeys.ENTITY_TYPE, Trickster.id("irrepressible"));
 }

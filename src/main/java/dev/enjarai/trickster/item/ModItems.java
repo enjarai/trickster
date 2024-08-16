@@ -2,10 +2,7 @@ package dev.enjarai.trickster.item;
 
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.block.ModBlocks;
-import dev.enjarai.trickster.item.component.ModComponents;
-import dev.enjarai.trickster.item.component.SelectedSlotComponent;
-import dev.enjarai.trickster.item.component.SpellComponent;
-import dev.enjarai.trickster.item.component.WrittenScrollMetaComponent;
+import dev.enjarai.trickster.item.component.*;
 import dev.enjarai.trickster.spell.SpellPart;
 import io.wispforest.lavender.book.LavenderBookItem;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
@@ -41,10 +38,7 @@ public class ModItems {
             new EvaluationMirrorItem(new Item.Settings().maxCount(1)
                     .component(ModComponents.SPELL, new SpellComponent(new SpellPart()))));
     public static final TrickHatItem TOP_HAT = register("top_hat",
-            new TrickHatItem(new Item.Settings().maxCount(1)
-                    .component(DataComponentTypes.CONTAINER,
-                            ContainerComponent.fromStacks(DefaultedList.ofSize(27, ItemStack.EMPTY)))
-                    .component(ModComponents.SELECTED_SLOT, new SelectedSlotComponent(0, 27))));
+            new TrickHatItem(new Item.Settings()));
     public static final WandItem WAND = register("wand",
             new WandItem(new Item.Settings().maxCount(1)
                     .component(ModComponents.SPELL, new SpellComponent(new SpellPart()))));

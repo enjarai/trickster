@@ -1,8 +1,12 @@
 package dev.enjarai.trickster.item;
 
+import dev.enjarai.trickster.item.component.EntityStorageComponent;
+import dev.enjarai.trickster.item.component.ModComponents;
+import dev.enjarai.trickster.item.component.SelectedSlotComponent;
 import dev.enjarai.trickster.screen.ScrollAndQuillScreenHandler;
 import dev.enjarai.trickster.screen.ScrollContainerScreenHandler;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ContainerComponent;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -14,11 +18,19 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
+
+import java.util.Optional;
 
 public class TrickHatItem extends Item implements Equipment {
     public TrickHatItem(Settings settings) {
-        super(settings);
+        super(settings
+                .maxCount(1)
+                .component(DataComponentTypes.CONTAINER,
+                        ContainerComponent.fromStacks(DefaultedList.ofSize(27, ItemStack.EMPTY)))
+                .component(ModComponents.SELECTED_SLOT, new SelectedSlotComponent(0, 27))
+                .component(ModComponents.ENTITY_STORAGE, new EntityStorageComponent(Optional.empty())));
     }
 
     @Override
