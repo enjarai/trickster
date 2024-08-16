@@ -1,1 +1,5 @@
-- Fix a problematic exploit using large scale area selection. (@enjarai)
+- Added spell importing (creative only) and exporting using base64 strings. (@enjarai)
+- Added patterns to insert entities into and extract them from Top Hats. (@StellarWitch7)
+  - Added a Mana Hypoflux effect that gets applied when carrying an entity in a Top Hat. (@enjarai)
+- Polished in-world spell circle visuals. (@enjarai)
+- Fixed NPE crash with some in-world spell circles. (@enjarai)
