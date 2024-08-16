@@ -212,6 +212,7 @@ block.trickster:
 
 effect.trickster:
   mana_boost: Mana Hyperflux
+  mana_deficiency: Mana Hypoflux
 
 tag.item.trickster:
   can_evaluate_dynamically: Can Evaluate Dynamically
