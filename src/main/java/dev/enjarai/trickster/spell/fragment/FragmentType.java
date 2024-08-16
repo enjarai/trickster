@@ -7,17 +7,37 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.PatternGlyph;
 import dev.enjarai.trickster.spell.SpellPart;
 import io.wispforest.endec.StructEndec;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.SimpleRegistry;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.entry.RegistryEntryInfo;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 
 import java.util.OptionalInt;
 
 public record FragmentType<T extends Fragment>(StructEndec<T> endec, OptionalInt color) {
     public static final RegistryKey<Registry<FragmentType<?>>> REGISTRY_KEY = RegistryKey.ofRegistry(Trickster.id("fragment_type"));
-    public static final Registry<FragmentType<?>> REGISTRY = new SimpleRegistry<>(REGISTRY_KEY, Lifecycle.stable());
+    public static final Int2ObjectMap<Identifier> INT_ID_LOOKUP = new Int2ObjectOpenHashMap<>();
+    public static final Registry<FragmentType<?>> REGISTRY = new SimpleRegistry<>(REGISTRY_KEY, Lifecycle.stable()) {
+        @Override
+        public RegistryEntry.Reference<FragmentType<?>> add(RegistryKey<FragmentType<?>> key, FragmentType<?> value, RegistryEntryInfo info) {
+            var hash = key.getValue().hashCode();
+            if (INT_ID_LOOKUP.containsKey(hash)) {
+                Trickster.LOGGER.warn(
+                        "WARNING: Hashcode collision between two fragment types, spell imports and exports may not work as expected. ({} overrode {})",
+                        key.getValue(), INT_ID_LOOKUP.get(hash)
+                );
+            }
+
+            INT_ID_LOOKUP.put(hash, key.getValue());
+            return super.add(key, value, info);
+        }
+    };
 
     public static final FragmentType<TypeFragment> TYPE = register("type", TypeFragment.ENDEC, 0x66cc00);
     public static final FragmentType<NumberFragment> NUMBER = register("number", NumberFragment.ENDEC, 0xddaa00);
@@ -53,5 +73,18 @@ public record FragmentType<T extends Fragment>(StructEndec<T> endec, OptionalInt
             text = text.withColor(color.getAsInt());
         }
         return text;
+    }
+
+    public static FragmentType<?> getFromInt(int intId) {
+        var id = INT_ID_LOOKUP.get(intId);
+        if (id == null) {
+            throw new IllegalArgumentException("Not a valid int id for fragment type");
+        }
+
+        return REGISTRY.get(id);
+    }
+
+    public int getIntId() {
+        return REGISTRY.getId(this).hashCode();
     }
 }

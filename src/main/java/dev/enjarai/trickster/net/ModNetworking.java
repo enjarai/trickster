@@ -25,7 +25,9 @@ public class ModNetworking {
         CHANNEL.registerServerbound(IsEditingScrollPacket.class, IsEditingScrollPacket::handleServer);
         CHANNEL.registerServerbound(SignScrollPacket.class, SignScrollPacket::handleServer);
         CHANNEL.registerServerbound(KillSpellPacket.class, KillSpellPacket::handleServer);
+        CHANNEL.registerServerbound(ClipBoardSpellResponsePacket.class, ClipBoardSpellResponsePacket.ENDEC, ClipBoardSpellResponsePacket::handleServer);
 
         CHANNEL.registerClientboundDeferred(RebuildChunkPacket.class);
+        CHANNEL.registerClientboundDeferred(GrabClipboardSpellPacket.class);
     }
 }
