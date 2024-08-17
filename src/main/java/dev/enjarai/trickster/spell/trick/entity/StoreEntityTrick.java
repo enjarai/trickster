@@ -47,7 +47,6 @@ public class StoreEntityTrick extends Trick {
             target.saveSelfNbt(compound);
             offhand.set(ModComponents.ENTITY_STORAGE, new EntityStorageComponent(Optional.of(compound)));
             target.remove(Entity.RemovalReason.CHANGED_DIMENSION);
-            target.discard();
         } else throw new EntityAlreadyStoredBlunder(this);
 
         return VoidFragment.INSTANCE;

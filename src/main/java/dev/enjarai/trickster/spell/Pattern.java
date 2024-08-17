@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.spell;
 
 import com.google.common.collect.ImmutableList;
+import dev.enjarai.trickster.EndecTomfoolery;
 import io.wispforest.endec.Endec;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
@@ -10,8 +11,23 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public record Pattern(List<PatternEntry> entries) {
-    public static final Endec<Pattern> ENDEC = PatternEntry.ENDEC.listOf().xmap(Pattern::new, Pattern::entries);
+    public static final Endec<Pattern> ENDEC = Endec.ifAttr(EndecTomfoolery.UBER_COMPACT_ATTRIBUTE, Endec.INT.xmap(Pattern::from, Pattern::toInt))
+            .orElse(PatternEntry.ENDEC.listOf().xmap(Pattern::new, Pattern::entries));
     public static final Pattern EMPTY = Pattern.of();
+
+    private static final PatternEntry[] possibleLines = new PatternEntry[32];
+
+    static {
+        int i = 0;
+        for (byte p1 = 0; p1 < 9; p1++) {
+            for (byte p2 = 0; p2 < 9; p2++) {
+                if (p2 > p1 && p1 + p2 != 8) {
+                    possibleLines[i] = new PatternEntry(p1, p2);
+                    i++;
+                }
+            }
+        }
+    }
 
     public static Pattern from(List<Byte> pattern) {
         var list = new ArrayList<PatternEntry>();
@@ -30,6 +46,16 @@ public record Pattern(List<PatternEntry> entries) {
         return new Pattern(ImmutableList.copyOf(list));
     }
 
+    public static Pattern from(int pattern) {
+        var builder = ImmutableList.<PatternEntry>builder();
+        for (int i = 0; i < 32; i++) {
+            if ((pattern >> i & 0x1) == 1) {
+                builder.add(possibleLines[i]);
+            }
+        }
+        return new Pattern(builder.build());
+    }
+
     public static Pattern of(int... pattern) {
         return from(Stream.of(ArrayUtils.toObject(pattern)).map(Integer::byteValue).toList());
     }
@@ -46,6 +72,16 @@ public record Pattern(List<PatternEntry> entries) {
             }
         }
         return false;
+    }
+
+    public int toInt() {
+        var result = 0;
+        for (int i = 0; i < 32; i++) {
+            if (entries.contains(possibleLines[i])) {
+                result |= 1 << i;
+            }
+        }
+        return result;
     }
 
     public record PatternEntry(byte p1, byte p2) implements Comparable<PatternEntry> {

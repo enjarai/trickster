@@ -11,6 +11,7 @@ import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
+import dev.enjarai.trickster.spell.trick.blunder.EntityInvalidBlunder;
 import dev.enjarai.trickster.spell.trick.blunder.NoPlayerBlunder;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.math.Vec3d;
@@ -42,7 +43,9 @@ public class ReleaseEntityTrick extends Trick {
 
             if (entity.isPresent()) {
                 entity.get().setPos(pos.x(), pos.y(), pos.z());
-                ctx.source().getWorld().spawnEntity(entity.get());
+                if (!ctx.source().getWorld().spawnEntity(entity.get())) {
+                    throw new EntityInvalidBlunder(this);
+                }
                 return EntityFragment.from(entity.get());
             } else {
                 Trickster.LOGGER.warn("Failed to read entity from offhand due to invalid NBT, entity storage component has been cleared");
