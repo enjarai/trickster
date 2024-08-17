@@ -53,7 +53,7 @@ public record FragmentType<T extends Fragment>(StructEndec<T> endec, OptionalInt
     public static final FragmentType<SlotFragment> SLOT = register("slot", SlotFragment.ENDEC, 0x77aaee);
     public static final FragmentType<BlockTypeFragment> BLOCK_TYPE = register("block_type", BlockTypeFragment.ENDEC, 0x44aa33);
     public static final FragmentType<EntityTypeFragment> ENTITY_TYPE = register("entity_type", EntityTypeFragment.ENDEC, 0x8877bb);
-    public static final FragmentType<DimensionFragment> DIMENSION = register("dimension", DimensionFragment.ENDEC /*TODO: color?*/);
+    public static final FragmentType<DimensionFragment> DIMENSION = register("dimension", DimensionFragment.ENDEC, 0xdd55bb);
 
     private static <T extends Fragment> FragmentType<T> register(String name, StructEndec<T> codec, int color) {
         return Registry.register(REGISTRY, Trickster.id(name), new FragmentType<>(codec, OptionalInt.of(color)));

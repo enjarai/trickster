@@ -5,9 +5,11 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
+import io.wispforest.owo.serialization.CodecUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
+import net.minecraft.text.TextCodecs;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -15,7 +17,8 @@ import java.util.UUID;
 public record EntityFragment(UUID uuid, Text name) implements Fragment {
     public static final StructEndec<EntityFragment> ENDEC = StructEndecBuilder.of(
             EndecTomfoolery.UUID.fieldOf("uuid", EntityFragment::uuid),
-            uuid -> new EntityFragment(uuid, Text.of(uuid))
+            CodecUtils.toEndec(TextCodecs.STRINGIFIED_CODEC).fieldOf("name", EntityFragment::name),
+            EntityFragment::new
     );
 
     @Override
