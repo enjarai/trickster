@@ -18,6 +18,8 @@ trickster:
   scroll_hat: 'Selected slot: %d'
   scroll_executable: Single-use (%f Kilogandalfs)
 
+  unnamed_entity: Unnamed %s
+
   trick.trickster:
     add: Annexation Stratagem
     subtract: Desertion Stratagem
