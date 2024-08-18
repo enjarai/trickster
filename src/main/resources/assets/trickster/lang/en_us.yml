@@ -66,22 +66,22 @@ trickster:
     facing_reflection: Directional Delusion
     hotbar_reflection: Framed Delusion
 
-    height_reflection: Stature Distortion
-    sneaking_reflection: Alternative Distortion
-    sprinting_reflection: Trekking Distortion
-    blocking_reflection: Guard Distortion
-    raycast: Archer's Distortion
-    raycast_side: Architect's Distortion
-    raycast_entity: Scout's Distortion
-    get_entity_type: Motive Verification Distortion
-    get_position: Locational Distortion
-    get_eye_position: Perspective Distortion
-    get_facing: Directional Distortion
-    get_max_health: Vigor Distortion
-    get_health: Fettle Distortion
-    get_armour: Bulwark Distortion
-    get_mana: Distortion of Authority
-    get_velocity: Movement Distortion
+    height_reflection: Stature Ingress
+    sneaking_reflection: Alternative Ingress
+    sprinting_reflection: Trekking Ingress
+    blocking_reflection: Guard Ingress
+    raycast: Archer's Ingress
+    raycast_side: Architect's Ingress
+    raycast_entity: Scout's Ingress
+    get_entity_type: Motive Verification Ingress
+    get_position: Locational Ingress
+    get_eye_position: Perspective Ingress
+    get_facing: Directional Ingress
+    get_max_health: Vigor Ingress
+    get_health: Fettle Ingress
+    get_armour: Bulwark Ingress
+    get_mana: Ingress of Authority
+    get_velocity: Movement Ingress
     leech_mana: Conduit's Ploy
     add_velocity: Impulse Ploy
     store_entity: Containment Ploy
@@ -95,8 +95,8 @@ trickster:
     summon_dragon_breath: Dragon's Ploy
     summon_tnt: Demolitionist's Ploy
 
-    block_find_entity: Embracing Distortion
-    range_find_entity: Distortion of Shared Fate
+    block_find_entity: Embracing Ingress
+    range_find_entity: Ingress of Shared Fate
 
     create_spell_circle: Sisyphus Ploy
     delete_spell_circle: Ploy of the Bigger Boulder
@@ -145,11 +145,11 @@ trickster:
     dispel_block_disguise: Revelation Ploy
     power_resonator: Resonance Ploy
 
-    get_block_hardness: Distortion of Hardness
-    check_block: Distortion of Validation
-    can_place_block: Distortion of Suitability
-    check_resonator: Distortion of Resonance
-    get_redstone_power: Distortion of Logic
+    get_block_hardness: Ingress of Hardness
+    check_block: Ingress of Validation
+    can_place_block: Ingress of Suitability
+    check_resonator: Ingress of Resonance
+    get_redstone_power: Ingress of Logic
 
     import: Assistance Ploy
     import_hat: Cranium Ploy
@@ -157,9 +157,9 @@ trickster:
     set_hat: Cranial Shift Ploy
     other_hand: Juggling Delusion
     other_hand_slot: Catch Delusion
-    get_item_in_slot: Fence's Distortion
-    get_inventory_slot: Intrusive Distortion
-    drop_stack_from_slot: Benevolent Distortion
+    get_item_in_slot: Fence's Ingress
+    get_inventory_slot: Intrusive Ingress
+    drop_stack_from_slot: Benevolent Ploy
 
     type_fragment: Argumentative Distortion
     delay_execution: Ploy of Suspension
