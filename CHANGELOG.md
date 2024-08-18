@@ -1,5 +1,8 @@
-- Added spell importing (creative only) and exporting using base64 strings. (@enjarai)
-- Added patterns to insert entities into and extract them from Top Hats. (@StellarWitch7)
-  - Added a Mana Hypoflux effect that gets applied when carrying an entity in a Top Hat. (@enjarai)
-- Polished in-world spell circle visuals. (@enjarai)
-- Fixed NPE crash with some in-world spell circles. (@enjarai)
+- Removed event listening spell circles entirely. All placed circles now function purely as spell executors. (@enjarai)
+- Significantly overhauled the Tome of Tomfoolery with new categories and better organisation. (@enjarai)
+- Updated export string format to be more compact, the new version is incompatible with any exports from alpha 21. (@enjarai)
+- Rebalanced the Conduit's Ploy by limiting the maximum tax ratio in vanilla to 1/20th of the used mana. (@enjarai)
+  - Additionally made all golems mana-devoid by default.
+- Pehkui compat has been removed. (@enjarai)
+  - All scaling is now done using the vanilla scale attribute.
+  - Additionally, as a balancing measure, entities with changed scale will slowly revert back to their original scale over time.
