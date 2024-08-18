@@ -6,6 +6,9 @@ import dev.enjarai.trickster.cca.ModChunkCumponents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.AttributeContainer;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -17,15 +20,20 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.EmptyChunk;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import static dev.enjarai.trickster.spell.trick.entity.SetScaleTrick.SCALE_ID;
+
 @SuppressWarnings("UnstableApiUsage")
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
+    @Shadow public abstract AttributeContainer getAttributes();
+
     @Unique
     private static final StatusEffectInstance PERM_BLINDNESS = new StatusEffectInstance(StatusEffects.BLINDNESS, 100, 2);
     @Unique
@@ -70,9 +78,30 @@ public abstract class LivingEntityMixin extends Entity {
             method = "tick",
             at = @At("TAIL")
     )
-    private void checkShadowBlockState(CallbackInfo ci) {
-        inShadowBlock = inShadowBlock(getWorld(), BlockPos.ofFloored(this.getEyePos()));
+    private void tickTricksterThings(CallbackInfo ci) {
+        if ((Object) this instanceof PlayerEntity) {
+            inShadowBlock = inShadowBlock(getWorld(), BlockPos.ofFloored(this.getEyePos()));
+        }
+
         setAttached(ModAttachments.WHY_IS_THERE_NO_WAY_TO_DETECT_THIS, null);
+
+        // Handle scaling
+        var currentScale = 0d;
+        if (getAttributes().hasModifierForAttribute(EntityAttributes.GENERIC_SCALE, SCALE_ID)) {
+            currentScale = getAttributes().getModifierValue(EntityAttributes.GENERIC_SCALE, SCALE_ID);
+        }
+        var newScale = currentScale;
+
+        if (currentScale < -0.01 || currentScale > 0.01) {
+            newScale -= currentScale * 0.001;
+        } else {
+            newScale = 0;
+        }
+
+        if (newScale != currentScale) {
+            getAttributes().getCustomInstance(EntityAttributes.GENERIC_SCALE)
+                    .overwritePersistentModifier(new EntityAttributeModifier(SCALE_ID, newScale, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+        }
     }
 
     @Unique

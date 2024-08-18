@@ -112,6 +112,8 @@ public class Tricks {
     public static final LeechEntityManaTrick LEECH_MANA = register("leech_mana", new LeechEntityManaTrick());
     public static final StoreEntityTrick STORE_ENTITY = register("store_entity", new StoreEntityTrick());
     public static final ReleaseEntityTrick RELEASE_ENTITY = register("release_entity", new ReleaseEntityTrick());
+    public static final GetScaleTrick GET_SCALE = register("get_scale", new GetScaleTrick());
+    public static final SetScaleTrick SET_SCALE = register("set_scale", new SetScaleTrick());
 
     // Entity Locating
     public static final BlockFindEntityTrick BLOCK_FIND_ENTITY = register("block_find_entity", new BlockFindEntityTrick());

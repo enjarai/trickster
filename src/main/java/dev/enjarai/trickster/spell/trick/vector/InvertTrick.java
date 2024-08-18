@@ -19,12 +19,13 @@ public class InvertTrick extends Trick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var vec = supposeInput(fragments, FragmentType.VECTOR, 0);
+        var input = expectInput(fragments, 0);
+        var vec = supposeType(input, FragmentType.VECTOR);
         if (vec.isPresent()) {
             return new VectorFragment(vec.get().vector().mul(-1, new Vector3d()));
         }
 
-        var number = expectInput(fragments, FragmentType.NUMBER, 0);
+        var number = expectType(input, FragmentType.NUMBER);
         return new NumberFragment(-number.number());
     }
 }

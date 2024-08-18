@@ -59,3 +59,13 @@ vector -> entity | void
 
 Releases the entity stored in the caster's offhand item to the given position, returning it. 
 Returns void if there is no entity.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:set_scale,title=Ploy of Occupation|>
+
+entity, number -> boolean
+
+<|cost-rule@trickster:templates|formula=abs(currentScale - newScale)^2 * 10kG + newScale * 50kG|>
+
+Changes the scale of the given entity. Entities cannot be scaled below 0.0625 or above 8 times their usual size.

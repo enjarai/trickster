@@ -133,9 +133,6 @@ dependencies {
 	modImplementation("io.wispforest:accessories-fabric:${property('deps.accessories')}")
 
 	// Optional compat
-	modImplementation("com.github.Virtuoel:Pehkui:${property('deps.pehkui')}", {
-		exclude group: "net.fabricmc.fabric-api"
-	})
 	modImplementation "maven.modrinth:transmog:${property('deps.transmog')}"
 }
 
