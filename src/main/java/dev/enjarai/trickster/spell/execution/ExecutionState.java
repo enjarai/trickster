@@ -163,7 +163,7 @@ public class ExecutionState {
         manaLinks.addAll(state.manaLinks);
     }
 
-    public void addManaLink(Trick trickSource, LivingEntity target, float ownerHealth, float limit) throws BlunderException {
+    public void addManaLink(Trick trickSource, LivingEntity target, float limit) throws BlunderException {
         addManaLink(trickSource, new ManaLink(target, limit));
     }
 

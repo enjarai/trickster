@@ -16,7 +16,7 @@ import java.util.function.Function;
 
 public record SpellContext(SpellSource source, ExecutionState executionState) {
     public void addManaLink(Trick trickSource, LivingEntity target, float limit) throws BlunderException {
-        executionState.addManaLink(trickSource, target, source.getHealth(), limit);
+        executionState.addManaLink(trickSource, target, limit);
     }
 
     public void useMana(Trick trickSource, float amount) throws BlunderException {

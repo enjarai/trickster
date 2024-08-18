@@ -55,7 +55,7 @@ public final class ManaLink {
     }
 
     public float getTaxRatio(Trick trickSource, SpellSource source) {
-        return source.getHealth() / this.source.apply(trickSource, source.getWorld()).getHealth();
+        return Math.max(1, source.getHealth()) / Math.max(1, this.source.apply(trickSource, source.getWorld()).getHealth());
     }
 
     /**
