@@ -5,7 +5,6 @@ import dev.enjarai.trickster.block.SpellCircleBlock;
 import dev.enjarai.trickster.block.SpellCircleBlockEntity;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
-import dev.enjarai.trickster.spell.PatternGlyph;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
@@ -13,9 +12,6 @@ import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.trick.blunder.BlockOccupiedBlunder;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
-import dev.enjarai.trickster.spell.trick.blunder.InvalidEventBlunder;
-import dev.enjarai.trickster.spell.trick.blunder.UnknownEventBlunder;
-import dev.enjarai.trickster.spell.world.SpellCircleEvent;
 
 import java.util.List;
 
@@ -28,18 +24,7 @@ public class CreateSpellCircleTrick extends Trick {
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var position = expectInput(fragments, FragmentType.VECTOR, 0);
         var facingVector = expectInput(fragments, FragmentType.VECTOR, 1);
-        var eventPart = expectInput(fragments, FragmentType.SPELL_PART, 2);
-        var executable = expectInput(fragments, FragmentType.SPELL_PART, 3);
-
-        if (!(eventPart.glyph instanceof PatternGlyph)) {
-            throw new InvalidEventBlunder(this);
-        }
-
-        var pattern = ((PatternGlyph) eventPart.glyph).pattern();
-        var event = SpellCircleEvent.lookup(pattern);
-        if (event == null) {
-            throw new UnknownEventBlunder(this);
-        }
+        var executable = expectInput(fragments, FragmentType.SPELL_PART, 2);
 
         var blockPos = position.toBlockPos();
         var facing = facingVector.toDirection();
@@ -55,10 +40,7 @@ public class CreateSpellCircleTrick extends Trick {
                     ModBlocks.SPELL_CIRCLE.getDefaultState().with(SpellCircleBlock.FACING, facing));
             var entity = (SpellCircleBlockEntity) ctx.source().getWorld().getBlockEntity(blockPos);
 
-            entity.event = event;
-            if (event.isMultiTick()) {
-                entity.executor = new DefaultSpellExecutor(spell, List.of());
-            }
+            entity.executor = new DefaultSpellExecutor(spell, List.of());
             entity.spell = spell;
             entity.markDirty();
 

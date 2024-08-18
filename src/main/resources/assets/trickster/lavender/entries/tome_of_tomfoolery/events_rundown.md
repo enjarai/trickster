@@ -1,54 +1,47 @@
 ```json
 {
-  "title": "Events and You",
+  "title": "Placing Spells",
   "icon": "minecraft:gunpowder",
-  "category": "trickster:events"
+  "category": "trickster:basics"
 }
 ```
 
-Spell circles can be placed directly in the world when given an event pattern to react to.
-This will let them be independently cast when the given event occurs within their range,
-and return a value to dictate how to respond to it.
-
-
-Many events can be directly cancelled by this method, 
-but side effects and exceptions are very much supported.
+With some trickery and a large up-front cost, pre-designed spell circles can be placed directly in the world.
+This lets them cast completely independently, and run indefinitely on an internal regenerating mana buffer.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:create_spell_circle,title=Perceptive Ploy|>
+Placed spell circles benefit from a sizable 450kG base mana buffer, with double the usual recharge rate.
+While they can still leech from entities using [Conduit's Ploy](^trickster:mana_tricks#3), 
+they cannot themselves be leeched from.
 
-vector, vector, spell, spell -> boolean
+
+When the spell in a placed circle completes, the circle will dissipate by itself.
+If the spell unexpectedly blunders, the circle will remain in a frozen state, 
+and display its reason for failure to the caster.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:create_spell_circle,title=Sisyphus Ploy|>
+
+vector, vector, spell -> boolean
 
 <|cost-rule@trickster:templates|formula=496kG|>
 
-Places the latter spell at the position of the first vector, facing the second vector, and sets it 
-to listen for the former spell's event.
+Places the latter spell at the position of the first vector, facing the second vector.
 
 ;;;;;
 
-A spell fragment references an event when its root node contains a 
-pattern glyph corresponding to a defined event type, as listed in other entries in this category.
-
-
-Different events may provide different arguments to an event listening spell,
-these can be retrieved using the standard method as defined in [Spell Fragments](^trickster:functions).
+While placed spell circles can easily be broken by brute force, 
+they can also be unravelled from a distance when required.
 
 ;;;;;
 
-Since it is very much possible an event listening circle makes its caster unable to move and/or break blocks,
-there exists a utility pattern to easily destroy a spell circle given a specific block position.
-
-
-See the next page.
-
-;;;;;
-
-<|glyph@trickster:templates|trick-id=trickster:delete_spell_circle,title=Cancellation Ploy|>
+<|glyph@trickster:templates|trick-id=trickster:delete_spell_circle,title=Ploy of the Bigger Boulder|>
 
 vector -> boolean
 
 <|cost-rule@trickster:templates|formula=124kG|>
 
 Destroys any spell circle placed at the given vector position.
-Returns true if a spell circle was destroyed, or false if not.
+Returns true if a spell circle was destroyed.

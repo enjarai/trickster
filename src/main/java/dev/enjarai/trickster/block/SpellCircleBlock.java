@@ -102,13 +102,4 @@ public class SpellCircleBlock extends BlockWithEntity {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
         return validateTicker(type, ModBlocks.SPELL_CIRCLE_ENTITY, (world1, pos, state1, blockEntity) -> blockEntity.tick());
     }
-
-    @Override
-    protected void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
-        if (world.getBlockEntity(pos) instanceof SpellCircleBlockEntity spellBlockEntity) {
-            spellBlockEntity.redstoneUpdate(world.getReceivedRedstonePower(pos));
-        }
-
-        super.neighborUpdate(state, world, pos, sourceBlock, sourcePos, notify);
-    }
 }

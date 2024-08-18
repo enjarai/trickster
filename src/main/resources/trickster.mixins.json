@@ -12,11 +12,10 @@
     "chunk_pinning.ServerWorldMixin",
     "event.EntityMixin",
     "event.ItemStackMixin",
-    "event.LivingEntityMixin",
     "event.ServerPlayerInteractionManagerMixin",
     "tooltip.ItemMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-	}
+  }
 }

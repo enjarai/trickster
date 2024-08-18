@@ -2,7 +2,6 @@ package dev.enjarai.trickster;
 
 import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.block.ModBlocks;
-import dev.enjarai.trickster.block.cauldron.EraseSpellCauldronBehavior;
 import dev.enjarai.trickster.compat.pehkui.PehkuiCompat;
 import dev.enjarai.trickster.compat.transmog.TransmogCompat;
 import dev.enjarai.trickster.config.TricksterConfig;
@@ -15,19 +14,14 @@ import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.screen.ModScreenHandlers;
 import dev.enjarai.trickster.spell.trick.Tricks;
-import dev.enjarai.trickster.spell.world.SpellCircleEvent;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.block.cauldron.CauldronBehavior;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Identifier;
 import nl.enjarai.cicada.api.util.ProperLogger;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class Trickster implements ModInitializer {
 	// This logger is used to write text to the console and the log file.
@@ -59,7 +53,6 @@ public class Trickster implements ModInitializer {
 		ModRecipes.register();
 		ModDamageTypes.register();
 		Tricks.register();
-		SpellCircleEvent.register();
 		ModCriteria.register();
 
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
