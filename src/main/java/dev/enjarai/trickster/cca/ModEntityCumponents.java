@@ -24,6 +24,9 @@ public class ModEntityCumponents implements EntityComponentInitializer {
     public static final ComponentKey<IsEditingScrollComponent> IS_EDITING_SCROLL =
             ComponentRegistry.getOrCreate(Trickster.id("is_editing_scroll"), IsEditingScrollComponent.class);
 
+    public static final ComponentKey<GraceComponent> GRACE =
+            ComponentRegistry.getOrCreate(Trickster.id("grace"), GraceComponent.class);
+
     @Override
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
         registry.registerFor(LivingEntity.class, MANA, ManaComponent::new);
@@ -31,5 +34,6 @@ public class ModEntityCumponents implements EntityComponentInitializer {
         registry.registerForPlayers(BARS, BarsComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
         registry.registerForPlayers(DISGUISE, DisguiseCumponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
         registry.registerForPlayers(IS_EDITING_SCROLL, IsEditingScrollComponent::new, RespawnCopyStrategy.NEVER_COPY);
+        registry.registerFor(LivingEntity.class, GRACE, GraceComponent::new);
     }
 }

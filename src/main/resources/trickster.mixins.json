@@ -5,6 +5,7 @@
   "plugin": "dev.enjarai.trickster.ConditionalMixins",
   "mixins": [
     "AbstractBlockStateMixin",
+    "EntityMixin",
     "LivingEntityMixin",
     "WorldChunkMixin",
     "chunk_pinning.MinecraftServerMixin",

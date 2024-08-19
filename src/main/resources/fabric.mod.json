@@ -44,7 +44,8 @@
 			"trickster:ward",
 			"trickster:disguise",
 			"trickster:is_editing_scroll",
-			"trickster:pinned_chunks"
+			"trickster:pinned_chunks",
+			"trickster:grace"
 		]
 	},
 	"mixins": [

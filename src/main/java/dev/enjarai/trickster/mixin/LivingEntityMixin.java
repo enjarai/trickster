@@ -3,6 +3,7 @@ package dev.enjarai.trickster.mixin;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import dev.enjarai.trickster.ModAttachments;
 import dev.enjarai.trickster.cca.ModChunkCumponents;
+import dev.enjarai.trickster.cca.ModEntityCumponents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -85,22 +86,24 @@ public abstract class LivingEntityMixin extends Entity {
 
         setAttached(ModAttachments.WHY_IS_THERE_NO_WAY_TO_DETECT_THIS, null);
 
-        // Handle scaling
-        var currentScale = 0d;
-        if (getAttributes().hasModifierForAttribute(EntityAttributes.GENERIC_SCALE, SCALE_ID)) {
-            currentScale = getAttributes().getModifierValue(EntityAttributes.GENERIC_SCALE, SCALE_ID);
-        }
-        var newScale = currentScale;
+        if (!ModEntityCumponents.GRACE.get(this).isInGrace("scale")) {
+            // Handle slow scaling reset
+            var currentScale = 0d;
+            if (getAttributes().hasModifierForAttribute(EntityAttributes.GENERIC_SCALE, SCALE_ID)) {
+                currentScale = getAttributes().getModifierValue(EntityAttributes.GENERIC_SCALE, SCALE_ID);
+            }
+            var newScale = currentScale;
 
-        if (currentScale < -0.01 || currentScale > 0.01) {
-            newScale -= currentScale * 0.001;
-        } else {
-            newScale = 0;
-        }
+            if (currentScale < -0.01 || currentScale > 0.01) {
+                newScale -= currentScale * 0.001;
+            } else {
+                newScale = 0;
+            }
 
-        if (newScale != currentScale) {
-            getAttributes().getCustomInstance(EntityAttributes.GENERIC_SCALE)
-                    .overwritePersistentModifier(new EntityAttributeModifier(SCALE_ID, newScale, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            if (newScale != currentScale) {
+                getAttributes().getCustomInstance(EntityAttributes.GENERIC_SCALE)
+                        .overwritePersistentModifier(new EntityAttributeModifier(SCALE_ID, newScale, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            }
         }
     }
 
