@@ -1,6 +1,6 @@
 ```json
 {
-  "title": "Entity Ingresses",
+  "title": "Entity Querying",
   "icon": "minecraft:cow_spawn_egg",
   "category": "trickster:delusions_ingresses"
 }
@@ -117,6 +117,16 @@ entity -> number
 ---
 
 Given an entity, returns its current health.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:get_mana,title=Ingress of Authority|>
+
+entity | vector -> number
+
+---
+
+Given an entity or mana holding block position, returns its current mana.
 
 ;;;;;
 

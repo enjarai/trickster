@@ -151,8 +151,8 @@ trickster:
     check_resonator: Ingress of Resonance
     get_redstone_power: Ingress of Logic
 
-    import: Assistance Ploy
-    import_hat: Cranium Ploy
+    import: Assistance Stratagem
+    import_hat: Cranium Stratagem
     check_hat: Cranium Delusion
     set_hat: Cranial Shift Ploy
     other_hand: Juggling Delusion
@@ -174,7 +174,7 @@ trickster:
     transmog: Ploy of Transmogrification
     hidden_transmog: Ploy of Subterfuge
     remove_transmog: Ploy of Origin
-    get_transmog: Distortion of Transmogrification
+    get_transmog: Ingress of Transmogrification
 
   fragment.trickster:
     type: Type

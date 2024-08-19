@@ -22,7 +22,7 @@ item, any... -> any
 ---
 
 Searches the caster's inventory for a specific item.
-The first item found with an inscribed spell will be cast with the provided arguments and the result returned.
+The first item found with an inscribed spell will be cast with the provided arguments.
 
 ;;;;;
 

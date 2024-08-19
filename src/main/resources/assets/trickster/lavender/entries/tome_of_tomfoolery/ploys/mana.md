@@ -15,20 +15,10 @@ But you have the power to tap into them.
 ;;;;;
 
 There are two primary patterns for interacting with the mana of other creatures,
-Distortion of Authority and Conduit's ploy.
+[Distortion of Authority](^trickster:delusions_ingresses/entity#13) and Conduit's ploy.
 
 
 In many cases, you'll want to use them in conjunction to prevent a premature end to the life of yourself or your target.
-
-;;;;;
-
-<|glyph@trickster:templates|trick-id=trickster:get_mana,title=Ingress of Authority|>
-
-entity | vector -> number
-
----
-
-Given an entity or mana holding block position, returns its current mana.
 
 ;;;;;
 
@@ -54,5 +44,6 @@ When there are mana sources linked to your spell, they will be prioritised when 
 Mana links with greater limits provide a greater ratio of mana so that all links are drained of the same percentage of their available mana. 
 A tax is incurred on the caster prior to draining the source. 
 The tax percentage is the caster's health divided by the source's health. 
+Fractional health values below 1 are rounded up to 1.
 If the caster is not alive, a value of 25 is used in place of health.
 

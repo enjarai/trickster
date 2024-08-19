@@ -7,6 +7,7 @@ import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import io.wispforest.owo.serialization.CodecUtils;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextCodecs;
@@ -48,6 +49,10 @@ public record EntityFragment(UUID uuid, Text name) implements Fragment {
     }
 
     public static EntityFragment from(Entity entity) {
+        if (entity instanceof PlayerEntity) {
+            return new EntityFragment(entity.getUuid(), entity.getName());
+        }
+
         var name = entity.hasCustomName() ? entity.getCustomName() : Text.translatable("trickster.unnamed_entity", entity.getName());
         return new EntityFragment(entity.getUuid(), name);
     }

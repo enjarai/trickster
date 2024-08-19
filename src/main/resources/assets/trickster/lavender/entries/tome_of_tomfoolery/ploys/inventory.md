@@ -16,7 +16,7 @@ slot, vector, [number] -> entity
 
 ---
 
-Drops items from the given slot at the given vector, and returns their entity. Optionally, the count of items can be specified.
+Drops items from the given slot at a position, returning their entity. Optionally, an amount can be specified.
 
 ;;;;;
 

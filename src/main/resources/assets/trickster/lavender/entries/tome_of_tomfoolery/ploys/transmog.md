@@ -50,7 +50,7 @@ Removes any transmogrification from the item in the given slot. Returns true if 
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:get_transmog,title=Distortion of Transmogrification|>
+<|glyph@trickster:templates|trick-id=trickster:get_transmog,title=Ingress of Transmogrification|>
 
 slot -> item
 

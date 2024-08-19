@@ -1,22 +1,12 @@
 ```json
 {
-  "title": "Miscellaneous Tricks",
+  "title": "Misc Ploys",
   "icon": "minecraft:iron_ingot",
   "category": "trickster:ploys"
 }
 ```
 
-A few miscellaneous tricks that don't fit into any other category.
-
-;;;;;
-
-<|glyph@trickster:templates|trick-id=trickster:type_fragment,title=Argumentative Distortion|>
-
-any -> type
-
----
-
-Returns the type of the given fragment. Can be used to validate inputs, among other things.
+A few miscellaneous ploys that don't fit into any other category.
 
 ;;;;;
 
