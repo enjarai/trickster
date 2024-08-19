@@ -10,6 +10,8 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import org.joml.Vector3d;
+import org.ladysnake.cca.api.v3.component.Component;
+import org.ladysnake.cca.api.v3.component.ComponentKey;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -40,6 +42,8 @@ public abstract class SpellSource {
     public Optional<SpellExecutionManager> getExecutionManager() {
         return Optional.empty();
     }
+
+    public abstract <T extends Component> Optional<T> getComponent(ComponentKey<T> key);
 
     public float getMana() {
         return getManaPool().get();

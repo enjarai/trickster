@@ -17,6 +17,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import org.joml.Vector3d;
+import org.ladysnake.cca.api.v3.component.Component;
+import org.ladysnake.cca.api.v3.component.ComponentKey;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -75,6 +77,11 @@ public class PlayerSpellSource extends SpellSource {
     @Override
     public Optional<SpellExecutionManager> getExecutionManager() {
         return Optional.of(ModEntityCumponents.CASTER.get(player).getExecutionManager());
+    }
+
+    @Override
+    public <T extends Component> Optional<T> getComponent(ComponentKey<T> key) {
+        return key.maybeGet(player);
     }
 
     @Override

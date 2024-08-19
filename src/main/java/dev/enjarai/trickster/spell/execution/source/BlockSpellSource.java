@@ -8,8 +8,11 @@ import dev.enjarai.trickster.spell.mana.ManaPool;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import org.joml.Vector3d;
+import org.ladysnake.cca.api.v3.component.Component;
+import org.ladysnake.cca.api.v3.component.ComponentKey;
 
 import java.util.List;
+import java.util.Optional;
 
 public class BlockSpellSource extends SpellSource {
     public final ServerWorld world;
@@ -31,6 +34,11 @@ public class BlockSpellSource extends SpellSource {
     @Override
     public ManaPool getManaPool() {
         return blockEntity.manaPool;
+    }
+
+    @Override
+    public <T extends Component> Optional<T> getComponent(ComponentKey<T> key) {
+        return key.maybeGet(blockEntity);
     }
 
     @Override

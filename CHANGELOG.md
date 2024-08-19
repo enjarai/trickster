@@ -1,8 +1,3 @@
-- Removed event listening spell circles entirely. All placed circles now function purely as spell executors. (@enjarai)
-- Significantly overhauled the Tome of Tomfoolery with new categories and better organisation. (@enjarai)
-- Updated export string format to be more compact, the new version is incompatible with any exports from alpha 21. (@enjarai)
-- Rebalanced the Conduit's Ploy by limiting the maximum tax ratio in vanilla to 1/20th of the used mana. (@enjarai)
-  - Additionally made all golems mana-devoid by default.
-- Pehkui compat has been removed. (@enjarai)
-  - All scaling is now done using the vanilla scale attribute.
-  - Additionally, as a balancing measure, entities with changed scale will slowly revert back to their original scale over time.
+- Modified the Tome of Tomfoolery again based on received feedback. (@enjarai)
+- Made impulse flight with high ping slightly smoother. (@enjarai)
+- Changed scale ploys to have a small grace period before starting to return to normal scale. (@enjarai)
