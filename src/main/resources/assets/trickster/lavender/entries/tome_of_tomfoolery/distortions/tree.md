@@ -6,7 +6,7 @@
 }
 ```
 
-Although [Scribing Patterns](^trickster:basics/editing) allow for spells to be edited before they are cast, 
+Although [Scribing Patterns](^trickster:editing) allow for spells to be edited before they are cast, 
 the following patterns allow for a spell to modify other spells *during* the cast.
 
 ;;;;;

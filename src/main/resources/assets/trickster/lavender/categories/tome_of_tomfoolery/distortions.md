@@ -2,7 +2,8 @@
 {
   "title": "Distortions",
   "icon": "trickster:scroll_and_quill",
-  "ordinal": 2
+  "ordinal": 2,
+  "parent": "trickster:tricks"
 }
 ```
 

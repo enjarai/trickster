@@ -1,8 +1,7 @@
 ```json
 {
   "title": "Wards",
-  "icon": "minecraft:shield",
-  "category": "trickster:basics"
+  "icon": "minecraft:shield"
 }
 ```
 

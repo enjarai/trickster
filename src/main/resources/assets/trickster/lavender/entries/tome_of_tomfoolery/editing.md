@@ -1,8 +1,7 @@
 ```json
 {
   "title": "Basic Spell-Scribing",
-  "icon": "trickster:scroll_and_quill",
-  "category": "trickster:basics"
+  "icon": "trickster:scroll_and_quill"
 }
 ```
 

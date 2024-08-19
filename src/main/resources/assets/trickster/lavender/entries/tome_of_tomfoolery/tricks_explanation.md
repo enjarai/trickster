@@ -1,8 +1,7 @@
 ```json
 {
   "title": "Trick Types",
-  "icon": "minecraft:oak_leaves",
-  "category": "trickster:basics"
+  "icon": "minecraft:oak_leaves"
 }
 ```
 

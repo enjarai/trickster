@@ -2,7 +2,7 @@
 {
   "title": "Transmogrification",
   "icon": "transmog:void_fragment",
-  "category": "trickster:ploys",
+  "category": "trickster:tricks",
   "fabric:load_conditions": {
     "condition": "fabric:any_mods_loaded",
     "values": [

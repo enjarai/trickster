@@ -2,7 +2,7 @@
 {
   "title": "Placing Spells",
   "icon": "minecraft:gunpowder",
-  "category": "trickster:basics"
+  "category": "trickster:tricks"
 }
 ```
 

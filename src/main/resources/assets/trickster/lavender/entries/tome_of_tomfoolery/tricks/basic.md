@@ -1,8 +1,8 @@
 ```json
 {
-  "title": "Basic Ploys",
+  "title": "Basic Tricks",
   "icon": "minecraft:bricks",
-  "category": "trickster:ploys"
+  "category": "trickster:tricks"
 }
 ```
 
@@ -20,6 +20,17 @@ Some items may have additional interactions with inscribed spells,
 
 ;;;;;
 
+<|glyph@trickster:templates|trick-id=trickster:read_spell,title=Notulist's Delusion|>
+
+-> spell | void
+
+---
+
+If the item in the caster's other hand contains an inscribed spell, returns the spell.
+If not, returns void.
+
+;;;;;
+
 <|glyph@trickster:templates|trick-id=trickster:write_spell,title=Notulist's Ploy|>
 
 spell | void -> boolean
@@ -27,7 +38,7 @@ spell | void -> boolean
 ---
 
 Inscribes a spell onto the item held in the caster's other hand.
-Can be read using [Notulist's Delusion](^trickster:delusions_ingresses/basic#3).
+Returns a boolean based on success.
 
 ;;;;;
 
@@ -58,8 +69,15 @@ lets spells store and retrieve any one fragment, **persistently**, between casts
 This can be used for many things, such as counters, 
 marking locations, and selecting targets.
 
+;;;;;
 
-The Crow Mind can be read using [Crow Mind Delusion](^trickster:delusions_ingresses/basic#4).
+<|glyph@trickster:templates|trick-id=trickster:read_crow_mind,title=Crow Mind Delusion|>
+
+-> any
+
+---
+
+Returns the value currently stored in the caster's crow mind.
 
 ;;;;;
 

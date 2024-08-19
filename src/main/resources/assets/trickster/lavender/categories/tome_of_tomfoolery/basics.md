@@ -1,13 +1,9 @@
 ```json
 {
-  "title": "General",
+  "title": "Items",
   "icon": "trickster:top_hat",
   "ordinal": 0
 }
 ```
 
-Spell-scribing can be a daunting task to start with, 
-but the entries in this category should provide an introductory baseline to any newcomer.
-
-
-Some will also delve into specific tools in the magicians toolkit and their uses.
+Entries in this category go over some of the items available to the aspiring magician.

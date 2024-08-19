@@ -15,7 +15,7 @@ the upper circle will return the inner circle as a fragment.
 
 ;;;;;
 
-This fragment can then be used in a number of ways, including being written to an item using [Notulist's Ploy](^trickster:ploys/basic#4), 
+This fragment can then be used in a number of ways, including being written to an item using [Notulist's Ploy](^trickster:tricks/basic#4), 
 and being cast later or even multiple times within the same spell.
 
 

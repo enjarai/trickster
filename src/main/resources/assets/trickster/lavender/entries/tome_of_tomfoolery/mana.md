@@ -1,8 +1,7 @@
 ```json
 {
   "title": "Mana",
-  "icon": "minecraft:amethyst_shard",
-  "category": "trickster:basics"
+  "icon": "minecraft:glow_ink_sac"
 }
 ```
 
