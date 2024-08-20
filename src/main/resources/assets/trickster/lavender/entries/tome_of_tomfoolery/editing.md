@@ -1,7 +1,8 @@
 ```json
 {
   "title": "Basic Spell-Scribing",
-  "icon": "trickster:scroll_and_quill"
+  "icon": "trickster:scroll_and_quill",
+  "ordinal": 1
 }
 ```
 
@@ -108,20 +109,6 @@ as inner circles and spell fragments are the only way to move fragments back to 
 
 ;;;;;
 
-<|pattern@trickster:templates|pattern=6\,3\,0\,4\,8,title=Devotion Revision|>
-
-{gray}(Scribing pattern){}
-
----
-
-Adds a new subcircle to the outer circle.
-
-;;;;;
-
-TODO: image
-
-;;;;;
-
 <|pattern@trickster:templates|pattern=3\,0\,4\,8,title=Split Revision|>
 
 {gray}(Scribing pattern){}
@@ -199,6 +186,22 @@ Expands the circle it is drawn in to replace its outer circle.
 ![](trickster:textures/gui/img/ascension_revision.png,fit)
 
 When Ascension Revision is drawn in the blue circle, it deletes and replaces the red circle.
+
+;;;;;
+
+<|pattern@trickster:templates|pattern=6\,3\,0\,4\,8,title=Devotion Revision|>
+
+{gray}(Scribing pattern){}
+
+---
+
+Adds a new subcircle to the outer circle.
+
+;;;;;
+
+![](trickster:textures/gui/img/devotion_revision.png,fit)
+
+When Devotion Revision is drawn in the blue circle, the green circle is created.
 
 ;;;;;
 

@@ -1,3 +1,4 @@
 {
-  "texture": "trickster:textures/gui/white_book.png"
+  "texture": "trickster:textures/gui/white_book.png",
+  "intro_entry": "trickster:intro"
 }
