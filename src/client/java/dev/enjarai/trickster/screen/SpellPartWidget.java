@@ -3,9 +3,9 @@ package dev.enjarai.trickster.screen;
 import dev.enjarai.trickster.ModSounds;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.render.SpellCircleRenderer;
+import dev.enjarai.trickster.revision.RevisionContext;
+import dev.enjarai.trickster.revision.Revisions;
 import dev.enjarai.trickster.spell.*;
-import dev.enjarai.trickster.spell.fragment.ListFragment;
-import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
@@ -13,35 +13,12 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import static dev.enjarai.trickster.render.SpellCircleRenderer.*;
 
 public class SpellPartWidget extends AbstractParentElement implements Drawable, Selectable {
-    public static final Pattern CREATE_SUBCIRCLE_GLYPH = Pattern.of(0, 4, 8, 7);
-    public static final Pattern CREATE_GLYPH_CIRCLE_GLYPH = Pattern.of(0, 4, 8, 5);
-    public static final Pattern CREATE_PARENT_GLYPH = Pattern.of(3, 0, 4, 8);
-    public static final Pattern CREATE_PARENT_GLYPH_GLYPH = Pattern.of(1, 0, 4, 8);
-    public static final Pattern EXPAND_TO_OUTER_CIRCLE_GLYPH = Pattern.of(1, 2, 4, 6);
-    public static final Pattern DELETE_CIRCLE_GLYPH = Pattern.of(0, 4, 8);
-    public static final Pattern DELETE_BRANCH_GLYPH = Pattern.of(0, 4, 8, 5, 2, 1, 0, 3, 6, 7, 8);
-    public static final Pattern SHIFT_SUBCIRCLE_BACKWARDS_GLYPH = Pattern.of(1, 0, 3);
-    public static final Pattern SHIFT_SUBCIRCLE_FORWARDS_GLYPH = Pattern.of(1, 2, 5);
-    public static final Pattern SWAP_SUBCIRCLE_GLYPH = Pattern.of(2, 4, 3);
-    public static final Pattern CREATE_OUTER_SUBCIRCLE_GLYPH = Pattern.of(6, 3, 0, 4, 8);
-    public static final Pattern COPY_OFFHAND_LITERAL = Pattern.of(4, 0, 1, 4, 2, 1);
-    public static final Pattern COPY_CROW_MIND_LITERAL = Pattern.of(4, 1, 2, 4, 3, 6, 8, 5);
-    public static final Pattern COPY_OFFHAND_LITERAL_INNER = Pattern.of(1, 2, 4, 1, 0, 4, 7);
-    public static final Pattern COPY_OFFHAND_EXECUTE = Pattern.of(4, 3, 0, 4, 5, 2, 4, 1);
-    public static final Pattern WRITE_OFFHAND_ADDRESS = Pattern.of(1, 0, 4, 8, 7, 6, 4, 2, 1, 4);
-
     public static final double PRECISION_OFFSET = Math.pow(2, 50);
 
     private SpellPart spellPart;
@@ -50,32 +27,26 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     public double x;
     public double y;
     public double size;
-    private double amountDragged;
 
+    private double amountDragged;
     private boolean isMutable = true;
 
-    private Consumer<SpellPart> updateListener;
-    private Consumer<SpellPart> otherHandSpellUpdateListener;
-    private Supplier<SpellPart> otherHandSpellSupplier;
     @Nullable
     private SpellPart toBeReplaced;
-    private Runnable initializeReplace;
 
+    private final RevisionContext revisionContext;
     private SpellPart drawingPart;
     private Fragment oldGlyph;
     private List<Byte> drawingPattern;
 
     public final SpellCircleRenderer renderer;
 
-    public SpellPartWidget(SpellPart spellPart, double x, double y, double size, Consumer<SpellPart> spellUpdateListener, Consumer<SpellPart> otherHandSpellUpdateListener, Supplier<SpellPart> otherHandSpellSupplier, Runnable initializeReplace) {
+    public SpellPartWidget(SpellPart spellPart, double x, double y, double size, RevisionContext revisionContext) {
         this.spellPart = spellPart;
         this.x = toScaledSpace(x);
         this.y = toScaledSpace(y);
         this.size = toScaledSpace(size);
-        this.updateListener = spellUpdateListener;
-        this.otherHandSpellUpdateListener = otherHandSpellUpdateListener;
-        this.otherHandSpellSupplier = otherHandSpellSupplier;
-        this.initializeReplace = initializeReplace;
+        this.revisionContext = revisionContext;
         this.renderer = new SpellCircleRenderer(() -> this.drawingPart, () -> this.drawingPattern, PRECISION_OFFSET);
     }
 
@@ -266,86 +237,19 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     protected void stopDrawing() {
         var compiled = Pattern.from(drawingPattern);
         var patternSize = drawingPattern.size();
+        var rev = Revisions.lookup(compiled);
         var tryReset = true;
 
-        if (compiled.equals(CREATE_SUBCIRCLE_GLYPH)) {
-            drawingPart.subParts.add(new SpellPart());
-        } else if (compiled.equals(CREATE_GLYPH_CIRCLE_GLYPH)) {
-            drawingPart.glyph = new SpellPart();
-        } else if (compiled.equals(CREATE_PARENT_GLYPH)) {
-            var newPart = new SpellPart();
-            newPart.subParts.add(drawingPart);
-            if (drawingPart == spellPart) {
-                spellPart = newPart;
-            } else {
-                drawingPart.setSubPartInTree(current -> newPart, spellPart, false);
-            }
-        } else if (compiled.equals(CREATE_PARENT_GLYPH_GLYPH)) {
-            var newPart = new SpellPart();
-            newPart.glyph = drawingPart;
-            if (drawingPart == spellPart) {
-                spellPart = newPart;
-            } else {
-                drawingPart.setSubPartInTree(current -> newPart, spellPart, false);
-            }
-        } else if (compiled.equals(EXPAND_TO_OUTER_CIRCLE_GLYPH)) {
-            if (drawingPart != spellPart) {
-                if (spellPart.glyph == drawingPart) {
-                    spellPart = drawingPart;
-                } else {
-                    drawingPart.setSubPartInTree(current -> drawingPart, spellPart, true);
-                }
-            }
-        } else if (compiled.equals(SWAP_SUBCIRCLE_GLYPH)) {
-            if (drawingPart.subParts.size() > 1)
-                drawingPart.subParts.addFirst(drawingPart.subParts.remove(1));
-        } else if (compiled.equals(CREATE_OUTER_SUBCIRCLE_GLYPH)) {
-            drawingPart.setSubPartInTree(current -> {
-                current.subParts.add(new SpellPart());
-                return current;
-            }, spellPart, true);
-        } else if (compiled.equals(DELETE_CIRCLE_GLYPH)) {
-            var firstSubpart = drawingPart.getSubParts().stream().findFirst();
-            if (drawingPart == spellPart) {
-                spellPart = firstSubpart.orElse(new SpellPart());
-            } else {
-                drawingPart.setSubPartInTree(current -> firstSubpart.orElse(null), spellPart, false);
-            }
-        } else if (compiled.equals(DELETE_BRANCH_GLYPH)) {
-            if (drawingPart == spellPart) {
-                spellPart = new SpellPart();
-            } else {
-                drawingPart.setSubPartInTree(current -> null, spellPart, false);
-            }
-        } else if (compiled.equals(SHIFT_SUBCIRCLE_BACKWARDS_GLYPH)) {
-            if (!drawingPart.subParts.isEmpty())
-                drawingPart.subParts.add(drawingPart.subParts.removeFirst());
-        } else if (compiled.equals(SHIFT_SUBCIRCLE_FORWARDS_GLYPH)) {
-            if (!drawingPart.subParts.isEmpty())
-                drawingPart.subParts.addFirst(drawingPart.subParts.removeLast());
-        } else if (compiled.equals(COPY_OFFHAND_LITERAL)) {
-            if (drawingPart == spellPart) {
-                spellPart = otherHandSpellSupplier.get().deepClone();
-            } else {
-                drawingPart.setSubPartInTree(current -> otherHandSpellSupplier.get().deepClone(), spellPart, false);
-            }
-        } else if (compiled.equals(COPY_CROW_MIND_LITERAL)) {
-            //TODO
-        } else if (compiled.equals(COPY_OFFHAND_LITERAL_INNER)) {
-            drawingPart.glyph = otherHandSpellSupplier.get().deepClone();
-        } else if (compiled.equals(COPY_OFFHAND_EXECUTE)) {
-            toBeReplaced = drawingPart;
-            initializeReplace.run();
-        } else if (compiled.equals(WRITE_OFFHAND_ADDRESS)) {
-            var address = getAddress(spellPart, drawingPart);
-            if (address.isPresent()) {
-                var addressFragment = new ListFragment(address.get().stream().map(num -> (Fragment) new NumberFragment(num)).toList());
-                otherHandSpellUpdateListener.accept(new SpellPart(addressFragment, List.of()));
-            }
+        if (compiled.equals(Revisions.EXECUTE_OFF_HAND.pattern())) {
+            toBeReplaced = drawingPart; //TODO: allow handling this in a more generic way?
+            Revisions.EXECUTE_OFF_HAND.apply(revisionContext, spellPart, drawingPart);
+        } else if (rev.isPresent()) {
+            spellPart = rev.get().apply(revisionContext, spellPart, drawingPart);
         } else {
             if (patternSize >= 2) {
                 drawingPart.glyph = new PatternGlyph(compiled);
             }
+
             tryReset = false;
         }
 
@@ -356,7 +260,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         drawingPart = null;
         drawingPattern = null;
 
-        updateListener.accept(spellPart);
+        revisionContext.updateSpell(spellPart);
 
         MinecraftClient.getInstance().player.playSoundToPlayer(
                 ModSounds.COMPLETE, SoundCategory.MASTER,
@@ -368,48 +272,12 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         if (toBeReplaced != null) {
             toBeReplaced.glyph = fragment;
             toBeReplaced = null;
-            updateListener.accept(spellPart);
+            revisionContext.updateSpell(spellPart);
         }
     }
 
     public boolean isDrawing() {
         return drawingPart != null;
-    }
-
-    protected Optional<List<Integer>> getAddress(SpellPart node, SpellPart target) {
-        var address = new LinkedList<Integer>();
-        var found = getAddress(node, target, address, new LinkedList<>());
-        if (found) {
-            return Optional.of(address);
-        } else {
-            return Optional.empty();
-        }
-    }
-
-    protected boolean getAddress(SpellPart node, SpellPart target, List<Integer> address, List<SpellPart> glyphSpells) {
-        if (node == target) {
-            return true;
-        }
-        if (node.glyph instanceof SpellPart glyph) {
-            glyphSpells.add(glyph);
-        }
-
-        var subParts = node.subParts;
-
-        for (int i = 0; i < subParts.size(); i++) {
-            address.add(i);
-            var found = getAddress(subParts.get(i), target, address, glyphSpells);
-            if (found) return true;
-            address.removeLast();
-        }
-        if (address.isEmpty()) {
-            for (var glyph : glyphSpells) {
-                var found = getAddress(glyph, target, address, new LinkedList<>());
-                if (found) return true;
-            }
-        }
-
-        return false;
     }
 
     protected static boolean hasOverlappingLines(List<Byte> pattern, byte p1, byte p2) {

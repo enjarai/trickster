@@ -1,8 +1,8 @@
 package dev.enjarai.trickster.screen.owo;
 
-import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.net.LoadExampleSpellPacket;
 import dev.enjarai.trickster.net.ModNetworking;
+import dev.enjarai.trickster.revision.RevisionContext;
 import dev.enjarai.trickster.screen.SpellPartWidget;
 import dev.enjarai.trickster.spell.SpellPart;
 import io.wispforest.owo.ui.base.BaseComponent;
@@ -17,9 +17,6 @@ import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.text.Text;
 import org.w3c.dom.Element;
 
-import static dev.enjarai.trickster.render.SpellCircleRenderer.*;
-import static dev.enjarai.trickster.screen.SpellPartWidget.PRECISION_OFFSET;
-
 public class SpellPreviewComponent extends BaseComponent {
     protected final SpellPart spell;
     protected final SpellPartWidget wrapped;
@@ -27,14 +24,27 @@ public class SpellPreviewComponent extends BaseComponent {
     public SpellPreviewComponent(SpellPart spell) {
         super();
         this.spell = spell;
-        this.wrapped = new SpellPartWidget(
-                spell, 0, 0, 24,
-                s -> {
-                }, s -> {
-        }, () -> null,
-                () -> {
-                }
-        );
+        this.wrapped = new SpellPartWidget(spell, 0, 0, 24, new RevisionContext() {
+            @Override
+            public void updateSpell(SpellPart sp) {
+
+            }
+
+            @Override
+            public void updateOtherHandSpell(SpellPart sp) {
+
+            }
+
+            @Override
+            public SpellPart getOtherHandSpell() {
+                return null;
+            }
+
+            @Override
+            public void executeOffhand() {
+
+            }
+        });
         this.wrapped.setMutable(false);
         this.wrapped.renderer.setColor(0.2f, 0.2f, 0.2f);
         this.wrapped.renderer.setCircleTransparency(0.6f);

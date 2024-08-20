@@ -5,6 +5,7 @@ import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.SpellComponent;
+import dev.enjarai.trickster.revision.RevisionContext;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.execution.ExecutionState;
@@ -28,10 +29,9 @@ import net.minecraft.text.Text;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class ScrollAndQuillScreenHandler extends ScreenHandler {
+public class ScrollAndQuillScreenHandler extends ScreenHandler implements RevisionContext {
     private final ItemStack scrollStack;
     private final ItemStack otherHandStack;
-
 
     public final SyncedProperty<SpellPart> spell = createProperty(SpellPart.class, SpellPart.ENDEC, new SpellPart());
     public final SyncedProperty<SpellPart> otherHandSpell = createProperty(SpellPart.class, SpellPart.ENDEC, new SpellPart());
@@ -130,6 +130,11 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler {
                 sendMessage(new OtherHandSpellMessage(spell));
             }
         }
+    }
+
+    @Override
+    public SpellPart getOtherHandSpell() {
+        return otherHandSpell.get();
     }
 
     public void executeOffhand() {
