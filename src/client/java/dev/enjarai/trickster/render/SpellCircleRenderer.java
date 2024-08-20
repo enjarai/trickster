@@ -43,6 +43,9 @@ public class SpellCircleRenderer {
     private double mouseX;
     private double mouseY;
 
+    private float r = 1f, g = 1f, b = 1f;
+    private float circleTransparency = 1f;
+
     public SpellCircleRenderer(Boolean inUI, double precisionOffset) {
         this.inUI = inUI;
         this.inEditor = false;
@@ -62,6 +65,16 @@ public class SpellCircleRenderer {
         this.mouseY = mouseY;
     }
 
+    public void setColor(float r, float g, float b) {
+        this.r = r;
+        this.g = g;
+        this.b = b;
+    }
+
+    public void setCircleTransparency(float circleTransparency) {
+        this.circleTransparency = circleTransparency;
+    }
+
     private float toLocalSpace(double value) {
         return (float) (value * precisionOffset);
     }
@@ -73,7 +86,7 @@ public class SpellCircleRenderer {
                 matrices, vertexConsumers, CIRCLE_TEXTURE,
                 toLocalSpace(x - size), toLocalSpace(x + size), toLocalSpace(y - size), toLocalSpace(y + size),
                 0,
-                1f, 1f, 1f, alpha, normal
+                r, g, b, alpha * circleTransparency, normal
         );
         drawGlyph(
                 matrices, vertexConsumers, entry,
@@ -126,7 +139,7 @@ public class SpellCircleRenderer {
             c.accept(lineX + perpendicularVec.x + toCenterVec.x * 0.5f, lineY + perpendicularVec.y + toCenterVec.y * 0.5f);
             c.accept(lineX + perpendicularVec.x - toCenterVec.x, lineY + perpendicularVec.y - toCenterVec.y);
             c.accept(lineX - perpendicularVec.x - toCenterVec.x, lineY - perpendicularVec.y - toCenterVec.y);
-        }, 0, 0.5f, 0.5f, 1, alpha * 0.2f);
+        }, 0, 0.5f * r, 0.5f * g, 1 * b, alpha * 0.2f);
 
 //        drawTexturedQuad(
 //                context, CIRCLE_TEXTURE_HALF,
@@ -191,19 +204,19 @@ public class SpellCircleRenderer {
                     c.accept(pos.x - dotSize, pos.y + dotSize);
                     c.accept(pos.x + dotSize, pos.y + dotSize);
                     c.accept(pos.x + dotSize, pos.y - dotSize);
-                }, 0, isDrawing && isLinked ? 0.5f : 1, isDrawing && isLinked ? 0.5f : 1, 1, 0.5f * alpha);
+                }, 0, (isDrawing && isLinked ? 0.5f : 1) * r, (isDrawing && isLinked ? 0.5f : 1) * g, 1 * b, 0.7f * alpha);
             }
 
             for (var line : patternList.entries()) {
                 var first = getPatternDotPosition(x, y, line.p1(), patternSize);
                 var second = getPatternDotPosition(x, y, line.p2(), patternSize);
-                drawGlyphLine(matrices, vertexConsumers, first, second, pixelSize, isDrawing, 1, 0.5f * alpha);
+                drawGlyphLine(matrices, vertexConsumers, first, second, pixelSize, isDrawing, 1, r, g, b, 0.7f * alpha);
             }
 
             if (inEditor && isDrawing) {
                 var last = getPatternDotPosition(x, y, drawingPattern.getLast(), patternSize);
                 var now = new Vector2f((float) mouseX, (float) mouseY);
-                drawGlyphLine(matrices, vertexConsumers, last, now, pixelSize, true, 1, 0.5f * alpha);
+                drawGlyphLine(matrices, vertexConsumers, last, now, pixelSize, true, 1, r, g, b, 0.7f * alpha);
             }
         } else {
             var textRenderer = MinecraftClient.getInstance().textRenderer;
@@ -254,13 +267,13 @@ public class SpellCircleRenderer {
                         c.accept(pos.x - dotSize, pos.y + dotSize);
                         c.accept(pos.x + dotSize, pos.y + dotSize);
                         c.accept(pos.x + dotSize, pos.y - dotSize);
-                    }, 0, 1, 1, 1, 0.25f);
+                    }, 0, r, g, b, 0.25f);
                 }
             }
         }
     }
 
-    public static void drawGlyphLine(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Vector2f last, Vector2f now, float pixelSize, boolean isDrawing, float tone, float opacity) {
+    public static void drawGlyphLine(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Vector2f last, Vector2f now, float pixelSize, boolean isDrawing, float tone, float r, float g, float b, float opacity) {
         var parallelVec = new Vector2f(last.y - now.y, now.x - last.x).normalize().mul(pixelSize / 2);
         var directionVec = new Vector2f(last.x - now.x, last.y - now.y).normalize().mul(pixelSize * 3);
 
@@ -269,7 +282,7 @@ public class SpellCircleRenderer {
             c.accept(last.x + parallelVec.x - directionVec.x, last.y + parallelVec.y - directionVec.y);
             c.accept(now.x + parallelVec.x + directionVec.x, now.y + parallelVec.y + directionVec.y);
             c.accept(now.x - parallelVec.x + directionVec.x, now.y - parallelVec.y + directionVec.y);
-        }, 0, isDrawing ? 0.5f : tone, isDrawing ? 0.5f : tone, tone, opacity);
+        }, 0, (isDrawing ? 0.5f : tone) * r, (isDrawing ? 0.5f : tone) * g, tone * b, opacity);
     }
 
     public static Vector2f getPatternDotPosition(float x, float y, int i, float size) {
@@ -294,21 +307,21 @@ public class SpellCircleRenderer {
     }
 
     protected void drawTexturedQuad(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Identifier texture, float x1, float x2, float y1, float y2, float z, float r, float g, float b, float alpha, Vec3d normal) {
-        if (inUI) {
-            RenderSystem.setShaderTexture(0, texture);
-            RenderSystem.setShader(GameRenderer::getPositionTexProgram);
-            RenderSystem.enableBlend();
-            RenderSystem.enableDepthTest();
-            RenderSystem.setShaderColor(r, g, b, alpha);
-            Matrix4f position = matrices.peek().getPositionMatrix();
-            BufferBuilder bufferBuilder = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
-            bufferBuilder.vertex(position, x1, y1, z).texture((float) 0, (float) 0);
-            bufferBuilder.vertex(position, x1, y2, z).texture((float) 0, (float) 1);
-            bufferBuilder.vertex(position, x2, y2, z).texture((float) 1, (float) 1);
-            bufferBuilder.vertex(position, x2, y1, z).texture((float) 1, (float) 0);
-            BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
-            RenderSystem.setShaderColor(1, 1, 1, 1);
-        } else {
+//        if (inUI) {
+//            RenderSystem.setShaderTexture(0, texture);
+//            RenderSystem.setShader(GameRenderer::getPositionTexProgram);
+//            RenderSystem.enableBlend();
+//            RenderSystem.enableDepthTest();
+//            RenderSystem.setShaderColor(r, g, b, alpha);
+//            Matrix4f position = matrices.peek().getPositionMatrix();
+//            BufferBuilder bufferBuilder = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
+//            bufferBuilder.vertex(position, x1, y1, z).texture((float) 0, (float) 0);
+//            bufferBuilder.vertex(position, x1, y2, z).texture((float) 0, (float) 1);
+//            bufferBuilder.vertex(position, x2, y2, z).texture((float) 1, (float) 1);
+//            bufferBuilder.vertex(position, x2, y1, z).texture((float) 1, (float) 0);
+//            BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
+//            RenderSystem.setShaderColor(1, 1, 1, 1);
+//        } else {
             RenderSystem.enableBlend();
             RenderSystem.enableDepthTest();
             var matrixEntry = matrices.peek();
@@ -322,9 +335,7 @@ public class SpellCircleRenderer {
                     .light(LightmapTextureManager.MAX_LIGHT_COORDINATE).color(r, g, b, alpha).normal(matrixEntry, (float) normal.x, (float) normal.y, (float) normal.z);
             vertexConsumer.vertex(position, x2, y1, z).texture(1, 0).overlay(OverlayTexture.DEFAULT_UV)
                     .light(LightmapTextureManager.MAX_LIGHT_COORDINATE).color(r, g, b, alpha).normal(matrixEntry, (float) normal.x, (float) normal.y, (float) normal.z);
-//        BufferRenderer.drawWithGlobalProgram(vertexConsumer.end());
-//        RenderSystem.setShaderColor(1, 1, 1, 1);
-        }
+//        }
     }
 
     public static void drawFlatPolygon(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Consumer<BiConsumer<Float, Float>> vertexProvider, float z, float r, float g, float b, float alpha) {

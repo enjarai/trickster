@@ -12,6 +12,15 @@ trickster:
     scroll_sign_note:
       line0: 'Note: When you sign the scroll,'
       line1: it will no longer be editable.
+    load_button: Write to scroll
+
+  message:
+    missing_scroll: Hold a Scroll and Quill in your other hand to import example spells
+    immutable_scroll: "Invalid scroll: Can't be written to"
+    loaded_example: Example imported!
+    import_example:
+      .: Import this example spell?
+      description: This will §loverwrite§r the Scroll and Quill in your other hand with the chosen example spell.
 
   item_group: Trickster
 

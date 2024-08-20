@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.item;
 
 
+import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.screen.ScrollAndQuillScreenHandler;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
@@ -28,6 +29,11 @@ public class ScrollAndQuillItem extends Item {
         var stack = user.getStackInHand(hand);
         var otherStack = user.getStackInHand(hand == Hand.MAIN_HAND ? Hand.OFF_HAND : Hand.MAIN_HAND);
         var slot = hand == Hand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
+
+        var spell = stack.get(ModComponents.SPELL);
+        if (spell == null || spell.closed()) {
+            return TypedActionResult.fail(stack);
+        }
 
         if (user.isSneaking()) {
             if (world.isClient()) {

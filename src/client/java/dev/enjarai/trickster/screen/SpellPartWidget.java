@@ -65,7 +65,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     private Fragment oldGlyph;
     private List<Byte> drawingPattern;
 
-    private final SpellCircleRenderer renderer;
+    public final SpellCircleRenderer renderer;
 
     public SpellPartWidget(SpellPart spellPart, double x, double y, double size, Consumer<SpellPart> spellUpdateListener, Consumer<SpellPart> otherHandSpellUpdateListener, Supplier<SpellPart> otherHandSpellSupplier, Runnable initializeReplace) {
         this.spellPart = spellPart;
@@ -86,8 +86,6 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
     public void setSpell(SpellPart spellPart) {
         this.spellPart = spellPart;
-//        partWidgets.clear();
-//        spellPart.
     }
 
     @Override
@@ -98,9 +96,10 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         this.renderer.renderPart(
                 context.getMatrices(), context.getVertexConsumers(), spellPart,
                 x, y, size, 0, delta,
-                size -> (float) Math.clamp(1 / (size / context.getScaledWindowHeight() * 2) - 0.2, 0, 1),
-                new Vec3d(0, 0, -1)
+                size -> (float) Math.clamp(1 / (size / context.getScaledWindowHeight() * 3) - 0.2, 0, 1),
+                new Vec3d(-1, 0, 0)
         );
+        context.draw();
     }
 
     public static boolean isCircleClickable(double size) {
@@ -120,7 +119,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     public void setMutable(boolean mutable) {
         isMutable = mutable;
         if (!mutable) {
-            this.renderer.setMousePosition(Double.MIN_VALUE, Double.MIN_VALUE);
+            this.renderer.setMousePosition(Double.MAX_VALUE, Double.MAX_VALUE);
         }
     }
 

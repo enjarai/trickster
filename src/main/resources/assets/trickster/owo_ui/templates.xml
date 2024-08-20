@@ -75,5 +75,60 @@
                 <allow-overflow>true</allow-overflow>
             </flow-layout>
         </template>
+        <template name="spell-preview">
+            <flow-layout direction="vertical">
+                <children>
+<!--                    <label>-->
+<!--                        <text>{{title}}</text>-->
+<!--                        <color>dark-gray</color>-->
+
+<!--                        <horizontal-text-alignment>center</horizontal-text-alignment>-->
+
+<!--                        <margins>-->
+<!--                            <top>2</top>-->
+<!--                            <bottom>2</bottom>-->
+<!--                        </margins>-->
+<!--                        <sizing>-->
+<!--                            <horizontal method="fill">100</horizontal>-->
+<!--                        </sizing>-->
+<!--                    </label>-->
+
+                    <texture texture="{{book-texture}}" texture-width="512" texture-height="256"
+                             u="385" v="0" region-width="106" region-height="106">
+                        <blend>true</blend>
+                        <positioning type="relative">50,50</positioning>
+                    </texture>
+
+                    <trickster.spell-preview spell="{{spell}}">
+                        <margins>
+                            <all>3</all>
+                        </margins>
+                    </trickster.spell-preview>
+
+                    <button id="load-button">
+                        <tooltip-text translate="true">trickster.widget.load_button</tooltip-text>
+
+                        <renderer>
+                            <texture texture="{{book-texture}}" u="164" v="230"
+                                     texture-width="512" texture-height="256"/>
+                        </renderer>
+
+                        <sizing>
+                            <horizontal method="fixed">11</horizontal>
+                            <vertical method="fixed">13</vertical>
+                        </sizing>
+
+                        <positioning type="absolute">93,88</positioning>
+                        <active>true</active>
+
+                        <z-index>10</z-index>
+                    </button>
+                </children>
+                <horizontal-alignment>center</horizontal-alignment>
+                <sizing>
+                    <horizontal method="fill">100</horizontal>
+                </sizing>
+            </flow-layout>
+        </template>
     </templates>
 </owo-ui>
