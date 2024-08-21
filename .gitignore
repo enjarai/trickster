@@ -43,3 +43,6 @@ replay_*.log
 
 .envrc
 .direnv/
+
+# wiki
+wiki/
