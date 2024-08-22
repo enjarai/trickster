@@ -40,6 +40,9 @@ trickster:
     ceil: Distortion of Grandeur
     floor: Distortion of Humility
     round: Distortion of Objectivity
+    sin: Primary Distortion of Geometry
+    cos: Secondary Distortion of Geometry
+    tan: Tertiary Distortion of Geometry
 
     if_else: Decision Distortion
     equals: Parity Stratagem

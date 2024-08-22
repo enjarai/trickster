@@ -131,6 +131,9 @@ public class Tricks {
     public static final MaxTrick MAX = register("max", new MaxTrick());
     public static final MinTrick MIN = register("min", new MinTrick());
     public static final SqrtTrick SQRT = register("sqrt", new SqrtTrick());
+    public static final SinTrick SIN = register("sin", new SinTrick());
+    public static final CosTrick COS = register("cos", new CosTrick());
+    public static final TanTrick TAN = register("tan", new TanTrick());
 
     // Vector
     public static final ExtractXTrick EXTRACT_X = register("extract_x", new ExtractXTrick());

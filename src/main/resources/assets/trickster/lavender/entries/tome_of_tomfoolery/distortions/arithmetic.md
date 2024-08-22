@@ -146,3 +146,33 @@ number -> number | vec -> vec
 ---
 
 Inverts the given number or vector.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:sin,title=Primary Distortion of Geometry|>
+
+number -> number
+
+---
+
+Returns the sine of the given number.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:cos,title=Secondary Distortion of Geometry|>
+
+number -> number
+
+---
+
+Returns the cosine of the given number.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:tan,title=Tertiary Distortion of Geometry|>
+
+number -> number
+
+---
+
+Returns the tangent of the given number.

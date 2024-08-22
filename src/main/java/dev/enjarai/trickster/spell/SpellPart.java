@@ -246,7 +246,7 @@ public final class SpellPart implements Fragment {
     public static SpellPart fromBase64(String string) {
         var buf = Unpooled.buffer();
 
-        var byteStream = new ByteArrayInputStream(ArrayUtils.addAll(base64Header, Base64.getDecoder().decode(string)));
+        var byteStream = new ByteArrayInputStream(ArrayUtils.addAll(base64Header, Base64.getDecoder().decode(string.strip())));
         try (byteStream) {
             try (GZIPInputStream zipStream = new GZIPInputStream(byteStream)) {
                 buf.writeBytes(zipStream.readAllBytes());
