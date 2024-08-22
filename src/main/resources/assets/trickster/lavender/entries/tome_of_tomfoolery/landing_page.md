@@ -4,4 +4,4 @@
 }
 ```
 
-<|spell-preview@trickster:templates|spell=C5P35ndgmM/GFAZkMLg4cDGDGIwMDgyMIAZHCAMDg9azL5ogToCHQydYdIMPA0RakYGJEcwI4HHoxKcQaGAnE4TBwAEWYWBUQLICjxkLGhwaoVqZIArBDAYAAeIQnboAAAA=|>
+<|spell-preview@trickster:templates|spell=YwyT9+Z3YJjPxgRiMLg4cDGDGIwMDgyMIAZHCAMDg9azL5ogToCHQydYdIMPA0RakYGJEcwI4HHoxKcQaGAnE4TBwAEWYWBUQLICjxkLGhwaoVqZIArBDAYAAInoArsAAAA=|>

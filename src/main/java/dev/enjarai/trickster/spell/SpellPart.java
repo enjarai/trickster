@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.spell;
 
 import dev.enjarai.trickster.EndecTomfoolery;
+import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
@@ -220,6 +221,7 @@ public final class SpellPart implements Fragment {
 
     public String toBase64() {
         var buf = Unpooled.buffer();
+        buf.writeByte(1);
         ENDEC.encode(
                 SerializationContext.empty().withAttributes(EndecTomfoolery.UBER_COMPACT_ATTRIBUTE),
                 ByteBufSerializer.of(buf), this
@@ -251,6 +253,11 @@ public final class SpellPart implements Fragment {
             }
         } catch (IOException e) {
             throw new RuntimeException("Spell decoding broke. what.");
+        }
+
+        var protocolVersion = buf.readByte();
+        if (protocolVersion != 1) {
+            Trickster.LOGGER.warn("Attempting to import spell with unknown protocol version: " + protocolVersion);
         }
 
         var result = ENDEC.decode(
