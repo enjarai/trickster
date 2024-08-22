@@ -111,26 +111,26 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${property('deps.fabric-api')}"
 
-	annotationProcessor modImplementation("io.wispforest:owo-lib:${property('deps.owo-lib')}")
+	annotationProcessor modApi("io.wispforest:owo-lib:${property('deps.owo-lib')}")
 	include "io.wispforest:owo-sentinel:${property('deps.owo-lib')}"
 
-	modImplementation "io.wispforest:lavender:${property('deps.lavender')}"
+	modApi "io.wispforest:lavender:${property('deps.lavender')}"
 //	implementation "io.wispforest:endec:0.1.0-pre.8"
 	include modLocalRuntime("io.wispforest.lavender-md:owo-ui:0.1.2+1.21")
 
-	modImplementation("nl.enjarai:cicada-lib:${property('deps.cicada')}") {
+	modApi("nl.enjarai:cicada-lib:${property('deps.cicada')}") {
 		exclude group: "net.fabricmc.fabric-api"
 	}
 
-	include modImplementation("org.ladysnake.cardinal-components-api:cardinal-components-base:${property('deps.cardinal-components-api')}")
-	include modImplementation("org.ladysnake.cardinal-components-api:cardinal-components-chunk:${property('deps.cardinal-components-api')}")
-	include modImplementation("org.ladysnake.cardinal-components-api:cardinal-components-world:${property('deps.cardinal-components-api')}")
-	include modImplementation("org.ladysnake.cardinal-components-api:cardinal-components-entity:${property('deps.cardinal-components-api')}")
+	include modApi("org.ladysnake.cardinal-components-api:cardinal-components-base:${property('deps.cardinal-components-api')}")
+	include modApi("org.ladysnake.cardinal-components-api:cardinal-components-chunk:${property('deps.cardinal-components-api')}")
+	include modApi("org.ladysnake.cardinal-components-api:cardinal-components-world:${property('deps.cardinal-components-api')}")
+	include modApi("org.ladysnake.cardinal-components-api:cardinal-components-entity:${property('deps.cardinal-components-api')}")
 
 	modImplementation "com.terraformersmc:modmenu:${property('deps.modmenu')}"
 	modClientCompileOnly "maven.modrinth:sodium:${property('deps.sodium')}"
 
-	modImplementation("io.wispforest:accessories-fabric:${property('deps.accessories')}")
+	modApi("io.wispforest:accessories-fabric:${property('deps.accessories')}")
 
 	// Optional compat
 	modImplementation "maven.modrinth:transmog:${property('deps.transmog')}"
