@@ -2,12 +2,10 @@ package dev.enjarai.trickster.revision;
 
 import dev.enjarai.trickster.spell.Pattern;
 
-import java.util.Dictionary;
-import java.util.Hashtable;
-import java.util.Optional;
+import java.util.*;
 
 public class Revisions {
-    private static final Dictionary<Pattern, Revision> REGISTRY = new Hashtable<>();
+    private static final Map<Pattern, Revision> REGISTRY = new HashMap<>();
 
     public static final Revision CREATE_SUBCIRCLE = register(new CreateSubcircleRevision());
     public static final Revision CREATE_INNER_CIRCLE = register(new CreateInnerCircleRevision());
