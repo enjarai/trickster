@@ -426,7 +426,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         return false;
     }
 
-    protected static boolean propagateMouseEvent(SpellPart part, double x, double y, double size, float startingAngle, double mouseX, double mouseY, MouseEventHandler callback) {
+    protected boolean propagateMouseEvent(SpellPart part, double x, double y, double size, float startingAngle, double mouseX, double mouseY, MouseEventHandler callback) {
         var closest = part;
         var closestAngle = startingAngle;
         var closestX = x;
@@ -437,7 +437,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         var initialDiffX = x - mouseX;
         var initialDiffY = y - mouseY;
 
-        var centerAvailable = isCircleClickable(toLocalSpace(size)) || part.glyph instanceof SpellPart;
+        var centerAvailable = (isCircleClickable(toLocalSpace(size)) && (drawingPart == null || drawingPart == part)) || part.glyph instanceof SpellPart;
         var closestDistanceSquared = centerAvailable ? initialDiffX * initialDiffX + initialDiffY * initialDiffY : Double.MAX_VALUE;
 
         int partCount = part.getSubParts().size();
