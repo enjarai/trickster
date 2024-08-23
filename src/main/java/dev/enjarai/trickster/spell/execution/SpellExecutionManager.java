@@ -46,8 +46,8 @@ public class SpellExecutionManager {
         return queue(new DefaultSpellExecutor(spell, arguments));
     }
 
-    public SpellQueueResult queueAndCast(SpellPart spell, List<Fragment> arguments, ManaPool poolOverride) {
-        var executor = new DefaultSpellExecutor(spell, new ExecutionState(arguments, poolOverride));
+    public SpellQueueResult queueAndCast(SpellPart spell, List<Fragment> arguments, Optional<ManaPool> poolOverride) {
+        var executor = new DefaultSpellExecutor(spell, poolOverride.flatMap(pool -> Optional.of(new ExecutionState(arguments, pool))).orElse(new ExecutionState(arguments)));
         boolean queued = queue(executor);
 
         if (queued) {

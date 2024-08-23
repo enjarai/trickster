@@ -22,26 +22,36 @@ import java.util.Optional;
 
 @Mixin(Item.class)
 public abstract class ItemMixin {
-    @ModifyReturnValue(method = "hasGlint", at = @At("RETURN"))
-    private boolean thing(boolean original, ItemStack stack) {
+    @ModifyReturnValue(
+            method = "hasGlint",
+            at = @At("RETURN")
+    )
+    private boolean spellGlint(boolean original, ItemStack stack) {
         return original
                 || (stack.get(ModComponents.SPELL) instanceof SpellComponent spellComponent)
                 && !spellComponent.spell().isEmpty()
                 && !stack.isIn(ModItems.NO_SPELL_GLINT);
     }
 
-    @Inject(method = "appendTooltip", at = @At("HEAD"))
+    @Inject(
+            method = "appendTooltip",
+            at = @At("HEAD")
+    )
     private void addGarble(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType type, CallbackInfo ci) {
         var spellComponent = stack.get(ModComponents.SPELL);
 
-        if (spellComponent != null && !spellComponent.spell().isEmpty() && spellComponent.closed()) {
+        if (spellComponent != null && /*!spellComponent.spell().isEmpty() &&*/ spellComponent.closed()) {
             tooltip.add(spellComponent.name()
                     .flatMap(str -> Optional.of(Text.literal(str)))
                     .orElse(Text.literal("Mortal eyes upon my carvings").setStyle(Style.EMPTY.withObfuscated(true))));
         }
     }
 
-    @Inject(method = "getTooltipData", at = @At("HEAD"), cancellable = true)
+    @Inject(
+            method = "getTooltipData",
+            at = @At("HEAD"),
+            cancellable = true
+    )
     private void trickster$getSpellTooltipData(ItemStack stack, CallbackInfoReturnable<Optional<TooltipData>> cir) {
         var spellComponent = stack.get(ModComponents.SPELL);
 
