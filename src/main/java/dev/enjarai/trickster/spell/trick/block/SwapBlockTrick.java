@@ -34,6 +34,7 @@ public class SwapBlockTrick extends Trick {
         }
 
         expectCanPlace(ctx, blockPos1, blockPos2);
+        expectCanBreak(ctx, blockPos1, blockPos2);
 
         var state1 = world.getBlockState(blockPos1);
         var state2 = world.getBlockState(blockPos2);

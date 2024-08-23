@@ -33,6 +33,7 @@ public class StoreEntityTrick extends Trick {
             throw new EntityCannotBeStoredBlunder(this, target);
 
         expectCanInteract(ctx, target);
+        expectCanAttack(ctx, target);
 
         var player = ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this));
         var offhand = player.getOffHandStack();

@@ -110,7 +110,7 @@ public abstract class Trick {
     protected void expectCanBreak(SpellContext ctx, BlockPos... positions) {
         for (var pos : positions) {
             if (!CommonProtection.canBreakBlock(ctx.source().getWorld(), pos, ctx.source().getResponsibleProfile(), ctx.source().getPlayer().orElse(null))) {
-                throw new CantEditBlockBlunder(this, pos);
+                throw new CannotEditBlockBlunder(this, pos);
             }
         }
     }
@@ -118,7 +118,7 @@ public abstract class Trick {
     protected void expectCanInteract(SpellContext ctx, BlockPos... positions) {
         for (var pos : positions) {
             if (!CommonProtection.canInteractBlock(ctx.source().getWorld(), pos, ctx.source().getResponsibleProfile(), ctx.source().getPlayer().orElse(null))) {
-                throw new CantEditBlockBlunder(this, pos);
+                throw new CannotEditBlockBlunder(this, pos);
             }
         }
     }
@@ -126,7 +126,7 @@ public abstract class Trick {
     protected void expectCanPlace(SpellContext ctx, BlockPos... positions) {
         for (var pos : positions) {
             if (!CommonProtection.canPlaceBlock(ctx.source().getWorld(), pos, ctx.source().getResponsibleProfile(), ctx.source().getPlayer().orElse(null))) {
-                throw new CantEditBlockBlunder(this, pos);
+                throw new CannotEditBlockBlunder(this, pos);
             }
         }
 

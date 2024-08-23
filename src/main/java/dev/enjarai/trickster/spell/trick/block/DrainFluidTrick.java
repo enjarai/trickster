@@ -24,7 +24,7 @@ public class DrainFluidTrick extends Trick {
         var pos = expectInput(fragments, FragmentType.VECTOR, 0);
         var blockPos = pos.toBlockPos();
         var world = ctx.source().getWorld();
-        expectCanInteract(ctx, blockPos);
+        expectCanBreak(ctx, blockPos);
 
         var state = world.getBlockState(blockPos);
 
