@@ -25,6 +25,8 @@ public class DisguiseBlockTrick extends AbstractBlockDisguiseTrick {
         var blockPos = pos.toBlockPos();
         var world = ctx.source().getWorld();
 
+        expectCanInteract(ctx, blockPos);
+
         if (blockType.block().getDefaultState().isAir()) {
             throw new BlockInvalidBlunder(this);
         }

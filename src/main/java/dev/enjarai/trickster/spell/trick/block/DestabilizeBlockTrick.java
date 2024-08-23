@@ -24,7 +24,7 @@ public class DestabilizeBlockTrick extends Trick {
         var pos = expectInput(fragments, FragmentType.VECTOR, 0);
         var blockPos = pos.toBlockPos();
         var world = ctx.source().getWorld();
-        expectCanBuild(ctx, blockPos);
+        expectCanBreak(ctx, blockPos);
 
         var state = world.getBlockState(blockPos);
 

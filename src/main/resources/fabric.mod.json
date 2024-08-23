@@ -63,7 +63,8 @@
 		"owo": "*",
 		"lavender": "*",
 		"accessories": ">=1.0.0-beta.11",
-		"cicada": ">=0.8.2"
+		"cicada": ">=0.8.2",
+		"common-protection-api": "*"
 	},
 	"breaks": {
 		"sodium": "<0.5.11",

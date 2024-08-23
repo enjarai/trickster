@@ -33,7 +33,7 @@ public class SwapBlockTrick extends Trick {
             throw new OverlapBlunder(this, pos1, pos2);
         }
 
-        expectCanBuild(ctx, blockPos1, blockPos2);
+        expectCanPlace(ctx, blockPos1, blockPos2);
 
         var state1 = world.getBlockState(blockPos1);
         var state2 = world.getBlockState(blockPos2);

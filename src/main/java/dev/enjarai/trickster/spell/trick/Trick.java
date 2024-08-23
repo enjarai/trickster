@@ -7,6 +7,7 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.trick.blunder.*;
+import eu.pb4.common.protection.api.CommonProtection;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.MutableText;
@@ -106,22 +107,44 @@ public abstract class Trick {
         return fragments.get(index);
     }
 
-    protected void expectCanBuild(SpellContext ctx, BlockPos... positions) {
-        if (ctx.source().getPlayer().isEmpty()) {
-            return;
-        }
-
-        var player = ctx.source().getPlayer().get();
-
-        if (player.interactionManager.getGameMode().isBlockBreakingRestricted()) {
-            throw new CantEditBlockBlunder(this, positions[0]);
-        }
-
+    protected void expectCanBreak(SpellContext ctx, BlockPos... positions) {
         for (var pos : positions) {
-            if (!player.canModifyAt(ctx.source().getWorld(), pos)) {
+            if (!CommonProtection.canBreakBlock(ctx.source().getWorld(), pos, ctx.source().getResponsibleProfile(), ctx.source().getPlayer().orElse(null))) {
                 throw new CantEditBlockBlunder(this, pos);
             }
         }
+    }
+
+    protected void expectCanInteract(SpellContext ctx, BlockPos... positions) {
+        for (var pos : positions) {
+            if (!CommonProtection.canInteractBlock(ctx.source().getWorld(), pos, ctx.source().getResponsibleProfile(), ctx.source().getPlayer().orElse(null))) {
+                throw new CantEditBlockBlunder(this, pos);
+            }
+        }
+    }
+
+    protected void expectCanPlace(SpellContext ctx, BlockPos... positions) {
+        for (var pos : positions) {
+            if (!CommonProtection.canPlaceBlock(ctx.source().getWorld(), pos, ctx.source().getResponsibleProfile(), ctx.source().getPlayer().orElse(null))) {
+                throw new CantEditBlockBlunder(this, pos);
+            }
+        }
+
+//        if (ctx.source().getPlayer().isEmpty()) {
+//            return;
+//        }
+//
+//        var player = ctx.source().getPlayer().get();
+//
+//        if (player.interactionManager.getGameMode().isBlockBreakingRestricted()) {
+//            throw new CantEditBlockBlunder(this, positions[0]);
+//        }
+//
+//        for (var pos : positions) {
+//            if (!player.canModifyAt(ctx.source().getWorld(), pos)) {
+//                throw new CantEditBlockBlunder(this, pos);
+//            }
+//        }
     }
 
     protected List<Fragment> tryWard(SpellContext ctx, Entity target, List<Fragment> fragments) throws BlunderException {

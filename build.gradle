@@ -50,6 +50,8 @@ repositories {
 	maven {
 		url 'https://maven.shedaniel.me/'
 	}
+
+	maven { url "https://maven.nucleoid.xyz/" }
 }
 
 loom {
@@ -131,6 +133,8 @@ dependencies {
 	modClientCompileOnly "maven.modrinth:sodium:${property('deps.sodium')}"
 
 	modApi("io.wispforest:accessories-fabric:${property('deps.accessories')}")
+
+	include modImplementation ("eu.pb4:common-protection-api:${property('deps.common-protection-api')}")
 
 	// Optional compat
 	modImplementation "maven.modrinth:transmog:${property('deps.transmog')}"

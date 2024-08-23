@@ -2,22 +2,15 @@ package dev.enjarai.trickster.spell.trick.block;
 
 import dev.enjarai.trickster.block.LightBlock;
 import dev.enjarai.trickster.block.ModBlocks;
-import dev.enjarai.trickster.item.ModItems;
-import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.trick.blunder.BlockOccupiedBlunder;
-import dev.enjarai.trickster.spell.trick.blunder.BlockUnoccupiedBlunder;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.FluidTags;
-import net.minecraft.util.math.Direction;
 
 import java.util.List;
 
@@ -31,7 +24,7 @@ public class ConjureLightTrick extends Trick {
         var pos = expectInput(fragments, FragmentType.VECTOR, 0);
         var blockPos = pos.toBlockPos();
         var world = ctx.source().getWorld();
-        expectCanBuild(ctx, blockPos);
+        expectCanPlace(ctx, blockPos);
 
         var waterlogged = false;
 
