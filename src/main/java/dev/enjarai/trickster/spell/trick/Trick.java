@@ -147,6 +147,18 @@ public abstract class Trick {
 //        }
     }
 
+    protected void expectCanAttack(SpellContext ctx, Entity entity) {
+        if (!CommonProtection.canDamageEntity(ctx.source().getWorld(), entity, ctx.source().getResponsibleProfile(), ctx.source().getPlayer().orElse(null))) {
+            throw new CannotInteractWithEntityBlunder(this, entity);
+        }
+    }
+
+    protected void expectCanInteract(SpellContext ctx, Entity entity) {
+        if (!CommonProtection.canInteractEntity(ctx.source().getWorld(), entity, ctx.source().getResponsibleProfile(), ctx.source().getPlayer().orElse(null))) {
+            throw new CannotInteractWithEntityBlunder(this, entity);
+        }
+    }
+
     protected List<Fragment> tryWard(SpellContext ctx, Entity target, List<Fragment> fragments) throws BlunderException {
         if (target instanceof ServerPlayerEntity player) {
             return TrickyAccessoryItem.tryWard(ctx, player, this, fragments);

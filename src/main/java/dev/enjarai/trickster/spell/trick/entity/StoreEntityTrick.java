@@ -32,6 +32,8 @@ public class StoreEntityTrick extends Trick {
         if (target.getType().isIn(ModEntities.IRREPRESSIBLE))
             throw new EntityCannotBeStoredBlunder(this, target);
 
+        expectCanInteract(ctx, target);
+
         var player = ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this));
         var offhand = player.getOffHandStack();
         var entityStorage = offhand.get(ModComponents.ENTITY_STORAGE);

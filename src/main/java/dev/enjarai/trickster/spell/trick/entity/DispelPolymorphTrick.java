@@ -19,6 +19,8 @@ public class DispelPolymorphTrick extends AbstractLivingEntityQueryTrick {
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var target = getLivingEntity(ctx, fragments, 0);
+        
+        expectCanInteract(ctx, target);
 
         if (target instanceof ServerPlayerEntity player) {
             ctx.useMana(this, 70);
