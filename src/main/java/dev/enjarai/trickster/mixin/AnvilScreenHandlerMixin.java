@@ -1,5 +1,8 @@
 package dev.enjarai.trickster.mixin;
 
+import com.llamalad7.mixinextras.sugar.Local;
+import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
+import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
 import dev.enjarai.trickster.item.component.ModComponents;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -12,29 +15,26 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(AnvilScreenHandler.class)
 public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
-    @Shadow
-    @Final
-    private Property levelCost;
-
     public AnvilScreenHandlerMixin(@Nullable ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {
         super(type, syncId, playerInventory, context);
     }
 
-    @Inject(method = "updateResult", at = @At("RETURN"))
-    private void ensureValidity(CallbackInfo ci) {
+    @Inject(
+            method = "updateResult",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/component/type/ItemEnchantmentsComponent;getEnchantmentEntries()Ljava/util/Set;")
+    )
+    private void enableSpellTransfer(CallbackInfo ci, @Local(ordinal = 0) LocalIntRef i, @Local(ordinal = 1) LocalBooleanRef bl2) {
         var left = this.input.getStack(0);
         var middle = this.input.getStack(1);
-        var spellComponent = middle.get(ModComponents.SPELL);
 
-        if (!left.isEmpty() && middle.isOf(Items.ENCHANTED_BOOK) && spellComponent != null && this.levelCost.get() <= 0) {
-            var newStack = left.copy();
-            newStack.set(ModComponents.SPELL, spellComponent);
-            this.output.setStack(0, newStack);
-            this.levelCost.set(1);
+        if (middle.contains(ModComponents.SPELL) && left.getCount() <= 1 && !left.isOf(Items.BOOK)) {
+            i.set(i.get() + 1);
+            bl2.set(true);
         }
     }
 
