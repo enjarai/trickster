@@ -27,6 +27,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 public class ScrollAndQuillScreenHandler extends ScreenHandler implements RevisionContext {
@@ -103,7 +104,7 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
                             spell.brutallyMurderEphemerals();
                         }
 
-                        SpellComponent.setSpellPart(scrollStack, spell, false);
+                        SpellComponent.setSpellPart(scrollStack, spell, Optional.empty(), false);
                     });
                 }
             } else {
@@ -121,7 +122,7 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
                     var server = player().getServer();
                     if (server != null) {
                         server.execute(() -> {
-                            SpellComponent.setSpellPart(otherHandStack, spell, false);
+                            SpellComponent.setSpellPart(otherHandStack, spell, Optional.empty(), false);
                             otherHandSpell.set(spell);
                         });
                     }

@@ -5,6 +5,7 @@
   "plugin": "dev.enjarai.trickster.ConditionalMixins",
   "mixins": [
     "AbstractBlockStateMixin",
+    "AnvilScreenHandlerMixin",
     "EntityMixin",
     "LivingEntityMixin",
     "WorldChunkMixin",
@@ -14,7 +15,7 @@
     "event.EntityMixin",
     "event.ItemStackMixin",
     "event.ServerPlayerInteractionManagerMixin",
-    "tooltip.ItemMixin"
+    "ItemMixin"
   ],
   "injectors": {
     "defaultRequire": 1

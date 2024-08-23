@@ -13,6 +13,8 @@ import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
+import java.util.Optional;
+
 public class ScrollEnhancingRecipe extends SpecialCraftingRecipe {
     public ScrollEnhancingRecipe(CraftingRecipeCategory craftingRecipeCategory) {
         super(craftingRecipeCategory);
@@ -71,7 +73,7 @@ public class ScrollEnhancingRecipe extends SpecialCraftingRecipe {
         var spell = itemStack.get(ModComponents.SPELL);
         if (!itemStack.isEmpty() && i > 0 && meta != null && spell != null) {
             var newMeta = meta.withExecutable(i * 100);
-            var newSpell = spell.withClosed();
+            var newSpell = spell.withClosed(Optional.empty());
             ItemStack itemStack3 = itemStack.copyWithCount(1);
             itemStack3.set(ModComponents.WRITTEN_SCROLL_META, newMeta);
             itemStack3.set(ModComponents.SPELL, newSpell);
