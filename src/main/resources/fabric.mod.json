@@ -33,6 +33,9 @@
 		],
 		"cardinal-components-entity": [
 			"dev.enjarai.trickster.cca.ModEntityCumponents"
+		],
+		"cicada": [
+			"dev.enjarai.trickster.Trickster"
 		]
 	},
 	"custom": {
