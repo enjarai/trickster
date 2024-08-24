@@ -6,6 +6,7 @@ import dev.enjarai.trickster.item.component.SpellComponent;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.trick.Trick;
@@ -44,8 +45,15 @@ public class WriteSpellTrick extends Trick {
             spell.ifPresentOrElse(s -> {
                 var stack2 = stack;
 
-                if (stack2.isOf(Items.BOOK)) {
+                if (stack2.isOf(Items.BOOK)
+                        && !s.isEmpty()) {
                     serverPlayer.equipStack(EquipmentSlot.OFFHAND, stack2.withItem(Items.ENCHANTED_BOOK));
+                    stack2 = serverPlayer.getOffHandStack();
+                } else if (stack2.isOf(Items.ENCHANTED_BOOK)
+                        && s.isEmpty()
+                        && (stack.get(DataComponentTypes.STORED_ENCHANTMENTS) instanceof ItemEnchantmentsComponent enchants)
+                        && enchants.isEmpty()) {
+                    serverPlayer.equipStack(EquipmentSlot.OFFHAND, stack2.withItem(Items.BOOK));
                     stack2 = serverPlayer.getOffHandStack();
                 }
 
@@ -55,7 +63,9 @@ public class WriteSpellTrick extends Trick {
             }, () -> {
                 var stack2 = stack;
 
-                if (stack2.isOf(Items.ENCHANTED_BOOK) && (stack.get(DataComponentTypes.STORED_ENCHANTMENTS) instanceof ItemEnchantmentsComponent enchants) && enchants.isEmpty()) {
+                if (stack2.isOf(Items.ENCHANTED_BOOK)
+                        && (stack.get(DataComponentTypes.STORED_ENCHANTMENTS) instanceof ItemEnchantmentsComponent enchants)
+                        && enchants.isEmpty()) {
                     serverPlayer.equipStack(EquipmentSlot.OFFHAND, stack2.withItem(Items.BOOK));
                     stack2 = serverPlayer.getOffHandStack();
                 }
