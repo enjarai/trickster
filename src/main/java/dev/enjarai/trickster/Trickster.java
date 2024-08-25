@@ -60,7 +60,7 @@ public class Trickster implements ModInitializer {
 
 		PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, blockEntity) -> {
 			if (player instanceof ServerPlayerEntity serverPlayer)
-				ItemTriggerHelper.triggerMainHand(serverPlayer, VectorFragment.of(pos));
+				ItemTriggerHelper.triggerMainHand(serverPlayer, false, VectorFragment.of(pos));
 			else return true;
 
 			var newState = world.getBlockState(pos);

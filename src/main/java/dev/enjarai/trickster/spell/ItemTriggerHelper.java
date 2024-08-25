@@ -1,19 +1,22 @@
 package dev.enjarai.trickster.spell;
 
 import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolItem;
+import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.List;
 import java.util.Optional;
 
 public class ItemTriggerHelper {
-    public static void triggerMainHand(ServerPlayerEntity player, Fragment... arguments) {
+    public static void triggerMainHand(ServerPlayerEntity player, boolean isWeaponTrigger, Fragment... arguments) {
         var stack = player.getMainHandStack();
+        var item = stack.getItem();
 
-        if (stack.getItem() instanceof ToolItem) {
+        if (item instanceof ToolItem || (isWeaponTrigger && stack.isIn(ModItems.WEAPON_SPELL_TRIGGERS))) {
             trigger(player, stack, List.of(arguments));
         }
     }

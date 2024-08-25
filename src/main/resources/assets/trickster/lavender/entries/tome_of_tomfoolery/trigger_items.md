@@ -6,12 +6,12 @@
 ```
 
 While the [Wand](^trickster:basics/wand) is the most common, and most versatile, way of quickly casting spells, it is not the only one available. 
-Described here are several alternative options that are worth considering. 
+Other items may cast their inscribed spell upon certain criteria being met. These items and their criteria are described here. 
 
 ;;;;;
 
 <|page-title@lavender:book_components|title=Warrior's Rage|>On tools and melee weapons, 
-the Warrior's Rage executes the inscribed spell when bringing harm to an entity. The targeted entity received as the first argument.
+the Warrior's Rage executes the inscribed spell when bringing harm to an entity. The targeted entity is received as the first argument.
 
 ;;;;;
 

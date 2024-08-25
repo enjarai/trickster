@@ -27,6 +27,6 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
             )
     )
     private void triggerItemSpell(Entity target, CallbackInfo ci) {
-        ItemTriggerHelper.triggerMainHand((ServerPlayerEntity)(Object)this, EntityFragment.from(target));
+        ItemTriggerHelper.triggerMainHand((ServerPlayerEntity)(Object)this, true, EntityFragment.from(target));
     }
 }
