@@ -7,6 +7,7 @@ import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
+import eu.pb4.common.protection.api.CommonProtection;
 
 import java.util.List;
 
@@ -22,6 +23,10 @@ public class CanPlaceTrick extends Trick {
         var blockPos = pos.toBlockPos();
         var world = ctx.source().getWorld();
         boolean result;
+
+        if (!CommonProtection.canPlaceBlock(ctx.source().getWorld(), blockPos, ctx.source().getResponsibleProfile(), ctx.source().getPlayer().orElse(null))) {
+            return new BooleanFragment(false);
+        }
 
         result = blockType.map(blockTypeFragment -> blockTypeFragment.block().getDefaultState().canPlaceAt(world, blockPos))
                 .orElseGet(() -> world.getBlockState(blockPos).isAir());

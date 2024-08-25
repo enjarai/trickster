@@ -25,7 +25,9 @@ public class GetInventorySlotTrick extends Trick {
         Optional<BlockPos> maybePosition = Optional.empty();
 
         if (pos.isPresent()) {
-            var target = ctx.source().getWorld().getBlockEntity(pos.get().toBlockPos());
+            var blockPos = pos.get().toBlockPos();
+            var target = ctx.source().getWorld().getBlockEntity(blockPos);
+            expectCanInteract(ctx, blockPos);
 
             if (target instanceof Inventory) {
                 maybePosition = Optional.of(target.getPos());

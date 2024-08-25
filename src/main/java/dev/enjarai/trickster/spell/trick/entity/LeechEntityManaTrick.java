@@ -20,6 +20,8 @@ public class LeechEntityManaTrick extends AbstractLivingEntityQueryTrick {
         var target = getLivingEntity(ctx, fragments, 0);
         fragments = tryWard(ctx, target, fragments);
 
+        expectCanAttack(ctx, target);
+
         var limit = expectInput(fragments, FragmentType.NUMBER, 1).number();
 
         if (target instanceof LivingEntity living) {

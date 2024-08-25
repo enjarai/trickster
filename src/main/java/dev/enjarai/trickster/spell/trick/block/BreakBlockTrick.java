@@ -23,6 +23,8 @@ public class BreakBlockTrick extends Trick {
         var world = ctx.source().getWorld();
         var state = world.getBlockState(blockPos);
 
+        expectCanBreak(ctx, blockPos);
+
         if (state.isAir()) {
             throw new BlockUnoccupiedBlunder(this, pos);
         }

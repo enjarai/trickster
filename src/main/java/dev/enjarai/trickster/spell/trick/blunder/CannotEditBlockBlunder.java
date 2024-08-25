@@ -4,10 +4,10 @@ import dev.enjarai.trickster.spell.trick.Trick;
 import net.minecraft.text.MutableText;
 import net.minecraft.util.math.BlockPos;
 
-public class CantEditBlockBlunder extends TrickBlunderException {
+public class CannotEditBlockBlunder extends TrickBlunderException {
     public final BlockPos pos;
 
-    public CantEditBlockBlunder(Trick source, BlockPos pos) {
+    public CannotEditBlockBlunder(Trick source, BlockPos pos) {
         super(source);
         this.pos = pos;
     }

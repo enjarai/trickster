@@ -23,6 +23,8 @@ public class AddVelocityTrick extends Trick {
                 .getEntity(ctx)
                 .orElseThrow(() -> new UnknownEntityBlunder(this));
 
+        expectCanInteract(ctx, target);
+
         fragments = tryWard(ctx, target, fragments);
 
         var velocity = expectInput(fragments, FragmentType.VECTOR, 1);

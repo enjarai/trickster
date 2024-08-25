@@ -28,6 +28,8 @@ public class PlaceBlockTrick extends Trick {
         var blockPos = pos.toBlockPos();
         ItemStack stack;
 
+        expectCanPlace(ctx, blockPos);
+
         if (arg2 instanceof SlotFragment slot)
             stack = ctx.getStack(this, Optional.of(slot), item -> item instanceof BlockItem);
         else {

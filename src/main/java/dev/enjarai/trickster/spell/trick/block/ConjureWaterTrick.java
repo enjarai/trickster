@@ -38,7 +38,7 @@ public class ConjureWaterTrick extends Trick {
         var blockPos = pos.toBlockPos();
         var bucket = Items.WATER_BUCKET;
         var world = ctx.source().getWorld();
-        expectCanBuild(ctx, blockPos);
+        expectCanPlace(ctx, blockPos);
 
         if (!(world.getBlockState(blockPos).isAir()
                 || world.getBlockState(blockPos).getBlock() instanceof Waterloggable

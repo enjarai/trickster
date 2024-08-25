@@ -28,7 +28,7 @@ public class CreateSpellCircleTrick extends Trick {
 
         var blockPos = position.toBlockPos();
         var facing = facingVector.toDirection();
-        expectCanBuild(ctx, blockPos);
+        expectCanPlace(ctx, blockPos);
 
         if (ctx.source().getWorld().getBlockState(blockPos).isAir()) {
             ctx.useMana(this, 496);

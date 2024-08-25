@@ -23,6 +23,8 @@ public class DispelBlockDisguiseTrick extends AbstractBlockDisguiseTrick {
         var blockPos = pos.toBlockPos();
         var world = ctx.source().getWorld();
 
+        expectCanInteract(ctx, blockPos);
+
         if (world.getBlockState(blockPos).isAir()) {
             throw new BlockUnoccupiedBlunder(this, pos);
         }

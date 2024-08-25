@@ -27,7 +27,7 @@ public class ConjureFlowerTrick extends Trick {
         var pos = expectInput(fragments, FragmentType.VECTOR, 0);
         var blockPos = pos.toBlockPos();
         var world = ctx.source().getWorld();
-        expectCanBuild(ctx, blockPos);
+        expectCanPlace(ctx, blockPos);
 
         if (!world.getBlockState(blockPos).isAir()) {
             throw new BlockOccupiedBlunder(this, pos);

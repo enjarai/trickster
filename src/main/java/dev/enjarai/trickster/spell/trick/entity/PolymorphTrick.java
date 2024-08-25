@@ -27,6 +27,8 @@ public class PolymorphTrick extends AbstractLivingEntityQueryTrick {
         if (realSource.getUuid().equals(realTarget.getUuid()))
             return VoidFragment.INSTANCE;
 
+        expectCanInteract(ctx, realTarget);
+
         if (realTarget instanceof ServerPlayerEntity targetPlayer && realSource instanceof ServerPlayerEntity sourcePlayer) {
             ctx.useMana(this, 480);
 
