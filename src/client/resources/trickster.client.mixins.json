@@ -14,9 +14,9 @@
     "SillyHairsFeatureRendererMixin",
     "WorldRendererAccessor",
     "accessories.AccessoriesScreenMixin",
+    "figura.AvatarManagerMixin",
     "sodium.WorldSliceMixin",
-    "tooltip.TooltipComponentMixin",
-    "figura.AvatarManagerMixin"
+    "tooltip.TooltipComponentMixin"
   ],
   "injectors": {
     "defaultRequire": 1

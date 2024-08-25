@@ -13,11 +13,15 @@ import dev.enjarai.trickster.misc.ModDamageTypes;
 import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.screen.ModScreenHandlers;
+import dev.enjarai.trickster.spell.ItemTriggerHelper;
+import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.trick.Tricks;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import nl.enjarai.cicada.api.conversation.ConversationManager;
 import nl.enjarai.cicada.api.util.CicadaEntrypoint;
@@ -56,6 +60,15 @@ public class Trickster implements ModInitializer, CicadaEntrypoint {
 		ModDamageTypes.register();
 		Tricks.register();
 		ModCriteria.register();
+
+		PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, blockEntity) -> {
+			if (player instanceof ServerPlayerEntity serverPlayer)
+				ItemTriggerHelper.triggerMainHand(serverPlayer, false, VectorFragment.of(pos));
+			else return true;
+
+			var newState = world.getBlockState(pos);
+            return newState.getBlock() == state.getBlock() || newState.getHardness(world, pos) > 0;
+        });
 
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
 			TricksterCommand.register(dispatcher);
