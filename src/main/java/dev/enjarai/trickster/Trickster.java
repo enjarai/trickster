@@ -13,16 +13,23 @@ import dev.enjarai.trickster.misc.ModDamageTypes;
 import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.screen.ModScreenHandlers;
+import dev.enjarai.trickster.spell.ItemTriggerHelper;
+import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.trick.Tricks;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
+import nl.enjarai.cicada.api.conversation.ConversationManager;
+import nl.enjarai.cicada.api.util.CicadaEntrypoint;
+import nl.enjarai.cicada.api.util.JsonSource;
 import nl.enjarai.cicada.api.util.ProperLogger;
 import org.slf4j.Logger;
 
-public class Trickster implements ModInitializer {
+public class Trickster implements ModInitializer, CicadaEntrypoint {
 	// This logger is used to write text to the console and the log file.
 	// It is considered best practice to use your mod id as the logger's name.
 	// That way, it's clear which mod wrote info, warnings, and errors.
@@ -54,6 +61,15 @@ public class Trickster implements ModInitializer {
 		Tricks.register();
 		ModCriteria.register();
 
+		PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, blockEntity) -> {
+			if (player instanceof ServerPlayerEntity serverPlayer)
+				ItemTriggerHelper.triggerMainHand(serverPlayer, false, VectorFragment.of(pos));
+			else return true;
+
+			var newState = world.getBlockState(pos);
+            return newState.getBlock() == state.getBlock() || newState.getHardness(world, pos) > 0;
+        });
+
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
 			TricksterCommand.register(dispatcher);
 		});
@@ -61,6 +77,15 @@ public class Trickster implements ModInitializer {
 		if (ModCompat.TRANSMOG_LOADED) {
 			TransmogCompat.init();
 		}
+	}
+
+	@Override
+	public void registerConversations(ConversationManager conversationManager) {
+		conversationManager.registerSource(
+				JsonSource.fromUrl("https://raw.githubusercontent.com/enjarai/trickster/master/src/main/resources/cicada/trickster/conversations.json")
+						.or(JsonSource.fromResource("cicada/trickster/conversations.json")),
+				LOGGER::info
+		);
 	}
 
 	public static Identifier id(String path) {

@@ -25,6 +25,7 @@ import net.minecraft.text.Text;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -135,7 +136,7 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
         return executionManager.queue(spell, arguments);
     }
 
-    public SpellQueueResult queueSpellAndCast(SpellPart spell, List<Fragment> arguments, ManaPool poolOverride) {
+    public SpellQueueResult queueSpellAndCast(SpellPart spell, List<Fragment> arguments, Optional<ManaPool> poolOverride) {
         playCastSound(0.8f, 0.1f);
         return executionManager.queueAndCast(spell, arguments, poolOverride);
     }

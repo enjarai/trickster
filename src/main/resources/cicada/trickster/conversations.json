@@ -1,0 +1,118 @@
+{
+  "mod_id": "trickster",
+
+  "conversations": {
+    "cicada:greetings": {
+      "lines": [
+        {
+          "order": 35,
+          "text": "Heya!! You ready for a good time? :3"
+        },
+        {
+          "condition": {
+            "type": "cicada:mod_participates",
+            "mod_id": "omnihopper"
+          },
+          "order": 51,
+          "text": "Hey hoppy mchopperface!! Is it just me, or are we the only good content mods around this place?"
+        },
+        {
+          "condition": {
+            "type": "cicada:mod_participates",
+            "mod_id": "omnihopper"
+          },
+          "order": 53,
+          "text": "You sure about that old man? Cause I sure don't see any! >:3"
+        },
+        {
+          "condition": {
+            "type": "cicada:mod_participates",
+            "mod_id": "omnihopper"
+          },
+          "order": 55,
+          "text": "Mmmm, nahhh, fuck those guys. ITS ONLY ME AND YOU GRANDPA!!!!"
+        }
+      ]
+    },
+    "cicada:good_old_days": {
+      "lines": [
+        {
+          "order": 60,
+          "text": "I don't look back!! Only forward!!! LET US MARCH!!!!"
+        }
+      ]
+    },
+
+    "trickster:hexcasting": {
+      "priority": {
+        "priority": 100
+      },
+      "condition": {
+        "type": "cicada:mod_loaded",
+        "mod_id": "hexcasting"
+      },
+      "lines": [
+        {
+          "order": 0,
+          "text": "Oh hi Hexcasting..."
+        },
+        {
+          "order": 10,
+          "text": "Wait..."
+        },
+        {
+          "order": 20,
+          "text": "WHAT!!!!"
+        },
+        {
+          "order": 30,
+          "text": "YOU ACTUALLY UPDATED??? OMG IM YOUR BIGGEST FAN CAN I HAVE AN AUTOGRAPH!!!!"
+        }
+      ]
+    },
+    "do_a_barrel_roll:flight_sim": {
+      "lines": [
+        {
+          "order": 50,
+          "text": "Who needs a flight sim when you have.... MAGIC!!!!"
+        }
+      ]
+    },
+    "trickster:math": {
+      "priority": {
+        "priority": 100
+      },
+      "lines": [
+        {
+          "order": 0,
+          "text": "I really hope you did your math homework!"
+        },
+        {
+          "order": 10,
+          "text": "Specifically vector math, you're gonna need it!!"
+        },
+        {
+          "order": 20,
+          "text": ">:3"
+        }
+      ]
+    },
+
+    "cicada:christmas": {
+      "lines": [
+        {
+          "order": 15,
+          "text": "Christmas huh? TIME FOR PRESENTS!! :3"
+        }
+      ]
+    },
+    "cicada:new_year": {
+      "lines": [
+        {
+          "order": 25,
+          "text": "HAPPY NEW YEAR!!!!!!! :DDDD"
+        }
+      ]
+    }
+  }
+}

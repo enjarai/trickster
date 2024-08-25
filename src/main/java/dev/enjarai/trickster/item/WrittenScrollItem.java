@@ -21,6 +21,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
 import java.util.List;
+import java.util.Optional;
 
 public class WrittenScrollItem extends Item {
     public WrittenScrollItem(Settings settings) {
@@ -38,7 +39,7 @@ public class WrittenScrollItem extends Item {
             if (!world.isClient()) {
                 var spell = stack.get(ModComponents.SPELL);
                 if (spell != null) {
-                    var result = ModEntityCumponents.CASTER.get(user).queueSpellAndCast(spell.spell(), List.of(), SimpleManaPool.getSingleUse(meta.mana()));
+                    var result = ModEntityCumponents.CASTER.get(user).queueSpellAndCast(spell.spell(), List.of(), Optional.of(SimpleManaPool.getSingleUse(meta.mana())));
 
                     if (result.type() != SpellQueueResult.Type.NOT_QUEUED && result.state().hasUsedMana())
                         stack.decrement(1);

@@ -5,16 +5,16 @@
   "plugin": "dev.enjarai.trickster.ConditionalMixins",
   "mixins": [
     "AbstractBlockStateMixin",
+    "AnvilScreenHandlerMixin",
     "EntityMixin",
+    "ItemMixin",
     "LivingEntityMixin",
     "WorldChunkMixin",
     "chunk_pinning.MinecraftServerMixin",
     "chunk_pinning.ServerChunkLoadingManagerMixin",
     "chunk_pinning.ServerWorldMixin",
-    "event.EntityMixin",
-    "event.ItemStackMixin",
-    "event.ServerPlayerInteractionManagerMixin",
-    "tooltip.ItemMixin"
+    "event.ServerPlayerEntityMixin",
+    "event.ServerPlayerInteractionManagerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

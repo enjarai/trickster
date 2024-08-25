@@ -1,7 +1,5 @@
 package dev.enjarai.trickster.mixin.event;
 
-import dev.enjarai.trickster.spell.ItemTriggerProvider;
-import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.network.ServerPlayerInteractionManager;
 import net.minecraft.server.world.ServerWorld;
@@ -14,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerPlayerInteractionManager.class)
-public abstract class ServerPlayerInteractionManagerMixin implements ItemTriggerProvider {
+public abstract class ServerPlayerInteractionManagerMixin {
 	@Shadow protected ServerWorld world;
 
 	@Shadow @Final protected ServerPlayerEntity player;
@@ -36,10 +34,5 @@ public abstract class ServerPlayerInteractionManagerMixin implements ItemTrigger
 				player.networkHandler.sendPacket(packet);
 			}
 		}
-	}
-
-	@Inject(method = "finishMining", at = @At("RETURN"))
-	private void triggerItemSpell(BlockPos pos, int sequence, String reason, CallbackInfo ci) {
-		trickster$triggerMainHand(player, VectorFragment.of(pos));
 	}
 }

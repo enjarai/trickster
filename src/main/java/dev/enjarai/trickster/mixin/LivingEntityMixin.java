@@ -4,6 +4,9 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import dev.enjarai.trickster.ModAttachments;
 import dev.enjarai.trickster.cca.ModChunkCumponents;
 import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.spell.ItemTriggerHelper;
+import dev.enjarai.trickster.spell.fragment.NumberFragment;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -16,6 +19,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.EmptyChunk;
@@ -33,10 +37,12 @@ import static dev.enjarai.trickster.spell.trick.entity.SetScaleTrick.SCALE_ID;
 @SuppressWarnings("UnstableApiUsage")
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
-    @Shadow public abstract AttributeContainer getAttributes();
-
     @Unique
     private static final StatusEffectInstance PERM_BLINDNESS = new StatusEffectInstance(StatusEffects.BLINDNESS, 100, 2);
+
+    @Shadow
+    public abstract AttributeContainer getAttributes();
+
     @Unique
     private boolean inShadowBlock;
 
@@ -73,6 +79,19 @@ public abstract class LivingEntityMixin extends Entity {
         }
 
         return original;
+    }
+
+    @Inject(
+            method = "fall",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/entity/LivingEntity;applyMovementEffects(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/util/math/BlockPos;)V"
+            )
+    )
+    private void triggerBoots(double heightDifference, boolean onGround, BlockState state, BlockPos landedPosition, CallbackInfo ci) {
+        if ((LivingEntity)(Object)this instanceof ServerPlayerEntity player) {
+            ItemTriggerHelper.triggerBoots(player, new NumberFragment(this.fallDistance));
+        }
     }
 
     @Inject(
