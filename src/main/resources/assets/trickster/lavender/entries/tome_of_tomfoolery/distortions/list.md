@@ -1,7 +1,7 @@
 ```json
 {
   "title": "List Manipulation",
-  "icon": "minecraft:string",
+  "icon": "minecraft:shulker_box",
   "category": "trickster:distortions"
 }
 ```

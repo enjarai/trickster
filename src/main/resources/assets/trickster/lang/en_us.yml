@@ -136,6 +136,8 @@ trickster:
     list_remove: Expulsion Stratagem
     list_remove_element: Eviction Stratagem
 
+    empty_string: Blank Delusion
+
     locate_glyph: Pinpoint Distortion
     locate_glyphs: Discovering Distortion
     retrieve_glyph: Retrieval Distortion

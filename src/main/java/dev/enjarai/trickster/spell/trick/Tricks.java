@@ -23,6 +23,7 @@ import dev.enjarai.trickster.spell.trick.projectile.SummonTntTrick;
 import dev.enjarai.trickster.spell.trick.raycast.RaycastBlockPosTrick;
 import dev.enjarai.trickster.spell.trick.raycast.RaycastBlockSideTrick;
 import dev.enjarai.trickster.spell.trick.raycast.RaycastEntityTrick;
+import dev.enjarai.trickster.spell.trick.string.EmptyStringTrick;
 import dev.enjarai.trickster.spell.trick.tree.*;
 import dev.enjarai.trickster.spell.trick.vector.*;
 import net.minecraft.registry.Registry;
@@ -219,6 +220,9 @@ public class Tricks {
 
     // Dimension
     public static final GetDimensionTrick GET_DIMENSION = register("get_dimension", new GetDimensionTrick());
+
+    // String
+    public static final EmptyStringTrick EMPTY_STRING = register("empty_string", new EmptyStringTrick());
 
     // Misc
     public static final TypeFragmentTrick TYPE_FRAGMENT = register("type_fragment", new TypeFragmentTrick());
