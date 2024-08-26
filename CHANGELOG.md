@@ -1,8 +1,1 @@
-- Added the start of a tutorial to the Tome of Tomfoolery. (@enjarai)
-- Allow inscribed spells to be transferred between items using a vanilla anvil. (@StellarWitch7)
-  - Items may trigger their inscribed spell when certain actions are performed with them.
-    - For example, a pickaxe will trigger its spell when mining a block.
-  - This makes inscribed spells functionally similar to vanilla enchantments, though as yet more limited.
-- Reworked revision internals. (@StellarWitch7)
-- Broke spell import/export compatibility again, for the last time. (@enjarai)
-- Added sine, cosine, and tangent patterns. (@enjarai)
+- Fix critical crash bug on dedicated servers. (@enjarai)
