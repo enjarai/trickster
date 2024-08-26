@@ -11,6 +11,7 @@
     "MouseMixin",
     "PlayerRendererMixin",
     "SillyHairsFeatureRendererMixin",
+    "WeightedBakedModelMixin",
     "WorldRendererAccessor",
     "accessories.AccessoriesScreenMixin",
     "figura.AvatarManagerMixin",
