@@ -10,12 +10,10 @@
     "InventoryScreenMixin",
     "MouseMixin",
     "PlayerRendererMixin",
-    "RenderedChunkMixin",
     "SillyHairsFeatureRendererMixin",
     "WorldRendererAccessor",
     "accessories.AccessoriesScreenMixin",
     "figura.AvatarManagerMixin",
-    "sodium.WorldSliceMixin",
     "tooltip.TooltipComponentMixin"
   ],
   "injectors": {
