@@ -6,6 +6,7 @@ import dev.enjarai.trickster.render.SpellCircleRenderer;
 import dev.enjarai.trickster.revision.RevisionContext;
 import dev.enjarai.trickster.revision.Revisions;
 import dev.enjarai.trickster.spell.*;
+import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
@@ -238,7 +239,8 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         var compiled = Pattern.from(drawingPattern);
         var patternSize = drawingPattern.size();
         var rev = Revisions.lookup(compiled);
-        var tryReset = true;
+
+        drawingPart.glyph = oldGlyph;
 
         if (compiled.equals(Revisions.EXECUTE_OFF_HAND.pattern())) {
             toBeReplaced = drawingPart; //TODO: allow handling this in a more generic way?
@@ -248,13 +250,9 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         } else {
             if (patternSize >= 2) {
                 drawingPart.glyph = new PatternGlyph(compiled);
+            } else {
+                drawingPart.glyph = new PatternGlyph();
             }
-
-            tryReset = false;
-        }
-
-        if (tryReset && drawingPart.glyph instanceof PatternGlyph patternGlyph && patternGlyph.pattern().isEmpty()) {
-            drawingPart.glyph = oldGlyph;
         }
 
         drawingPart = null;
