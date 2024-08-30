@@ -20,9 +20,8 @@ public class PolymorphTrick extends AbstractLivingEntityQueryTrick {
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var realSource = getLivingEntity(ctx, fragments, 1);
-        fragments = tryWard(ctx, realSource, fragments);
-
         var realTarget = getLivingEntity(ctx, fragments, 0);
+        tryWard(ctx, realSource, fragments);
 
         if (realSource.getUuid().equals(realTarget.getUuid()))
             return VoidFragment.INSTANCE;
