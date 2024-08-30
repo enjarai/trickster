@@ -22,7 +22,7 @@ public record StringFragment(String value) implements Fragment {
     }
 
     @Override
-    public BooleanFragment asBoolean() {
-        return new BooleanFragment(!value.isEmpty());
+    public boolean asBoolean() {
+        return !value.isEmpty();
     }
 }

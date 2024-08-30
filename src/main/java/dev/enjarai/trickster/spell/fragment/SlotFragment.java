@@ -36,8 +36,8 @@ public record SlotFragment(int slot, Optional<BlockPos> source) implements Fragm
     }
 
     @Override
-    public BooleanFragment asBoolean() {
-        return BooleanFragment.TRUE;
+    public boolean asBoolean() {
+        return true;
     }
 
     public ItemStack move(Trick trickSource, SpellContext ctx) throws BlunderException {

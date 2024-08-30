@@ -42,8 +42,8 @@ public record VectorFragment(Vector3dc vector) implements Fragment, AddableFragm
     }
 
     @Override
-    public BooleanFragment asBoolean() {
-        return new BooleanFragment(!new Vector3d().equals(vector));
+    public boolean asBoolean() {
+        return this.equals(VectorFragment.ZERO);
     }
 
     @Override

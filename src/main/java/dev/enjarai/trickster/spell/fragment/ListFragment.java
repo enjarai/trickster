@@ -40,8 +40,8 @@ public record ListFragment(List<Fragment> fragments) implements Fragment {
     }
 
     @Override
-    public BooleanFragment asBoolean() {
-        return new BooleanFragment(!fragments.isEmpty());
+    public boolean asBoolean() {
+        return true;
     }
 
     public ListFragment addRange(ListFragment other) throws BlunderException {

@@ -25,7 +25,7 @@ public record ItemTypeFragment(Item item) implements Fragment {
     }
 
     @Override
-    public BooleanFragment asBoolean() {
-        return BooleanFragment.TRUE;
+    public boolean asBoolean() {
+        return true;
     }
 }

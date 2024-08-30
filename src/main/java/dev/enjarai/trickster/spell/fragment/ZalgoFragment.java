@@ -75,7 +75,7 @@ public record ZalgoFragment(String string) implements Fragment {
     }
 
     @Override
-    public BooleanFragment asBoolean() {
-        return BooleanFragment.FALSE;
+    public boolean asBoolean() {
+        return true;
     }
 }

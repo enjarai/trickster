@@ -39,8 +39,8 @@ public final class NumberFragment implements Fragment, AddableFragment, Subtract
     }
 
     @Override
-    public BooleanFragment asBoolean() {
-        return new BooleanFragment(number != 0);
+    public boolean asBoolean() {
+        return number != 0;
     }
 
     @Override

@@ -206,8 +206,8 @@ public final class SpellPart implements Fragment {
     }
 
     @Override
-    public BooleanFragment asBoolean() {
-        return new BooleanFragment(glyph.asBoolean().bool() || !subParts.isEmpty());
+    public boolean asBoolean() {
+        return glyph.asBoolean() || !subParts.isEmpty();
     }
 
     public SpellPart deepClone() {

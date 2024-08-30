@@ -20,7 +20,7 @@ public record VoidFragment() implements Fragment {
     }
 
     @Override
-    public BooleanFragment asBoolean() {
-        return BooleanFragment.FALSE;
+    public boolean asBoolean() {
+        return false;
     }
 }

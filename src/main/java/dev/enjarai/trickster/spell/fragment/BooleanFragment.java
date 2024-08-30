@@ -6,13 +6,23 @@ import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import net.minecraft.text.Text;
 
-public record BooleanFragment(boolean bool) implements Fragment {
+public class BooleanFragment implements Fragment {
+
+    final boolean bool;
+
+    private BooleanFragment(boolean bool) {
+        this.bool = bool;
+    }
+
     public static final StructEndec<BooleanFragment> ENDEC = StructEndecBuilder.of(
-            Endec.BOOLEAN.fieldOf("bool", BooleanFragment::bool),
-            BooleanFragment::new
+            Endec.BOOLEAN.fieldOf("bool", BooleanFragment::asBoolean),
+            BooleanFragment::of
     );
+
     public static final BooleanFragment TRUE = new BooleanFragment(true);
     public static final BooleanFragment FALSE = new BooleanFragment(false);
+
+    public static BooleanFragment of(boolean bool) { return bool ? TRUE : FALSE; }
 
     @Override
     public FragmentType<?> type() {
@@ -25,7 +35,7 @@ public record BooleanFragment(boolean bool) implements Fragment {
     }
 
     @Override
-    public BooleanFragment asBoolean() {
-        return bool ? TRUE : FALSE;
+    public boolean asBoolean() {
+        return bool;
     }
 }

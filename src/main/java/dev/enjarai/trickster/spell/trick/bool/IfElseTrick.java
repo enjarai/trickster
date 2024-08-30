@@ -19,7 +19,7 @@ public class IfElseTrick extends Trick {
         var params1 = expectInput(fragments, 1);
         var params2 = expectInput(fragments, 2);
 
-        if (check.asBoolean().bool()) {
+        if (check.asBoolean()) {
             return params1;
         } else {
             return params2;

@@ -3,7 +3,6 @@ package dev.enjarai.trickster.spell;
 import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.spell.execution.SerializedSpellInstruction;
 import dev.enjarai.trickster.spell.execution.SpellInstructionType;
-import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
 import io.wispforest.endec.Endec;
@@ -35,7 +34,7 @@ public non-sealed interface Fragment extends SpellInstruction {
         return asText();
     }
 
-    BooleanFragment asBoolean();
+    boolean asBoolean();
 
     default Fragment activateAsGlyph(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         return this;
