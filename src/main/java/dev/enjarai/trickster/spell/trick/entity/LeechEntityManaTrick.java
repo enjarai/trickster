@@ -18,9 +18,8 @@ public class LeechEntityManaTrick extends AbstractLivingEntityQueryTrick {
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var target = getLivingEntity(ctx, fragments, 0);
-        fragments = tryWard(ctx, target, fragments);
-
         var limit = expectInput(fragments, FragmentType.NUMBER, 1).number();
+        tryWard(ctx, target, fragments);
 
         if (target instanceof LivingEntity living) {
             ctx.addManaLink(this, living, (float)limit);

@@ -22,15 +22,15 @@ public class AddVelocityTrick extends Trick {
         var target = expectInput(fragments, FragmentType.ENTITY, 0)
                 .getEntity(ctx)
                 .orElseThrow(() -> new UnknownEntityBlunder(this));
-
-        fragments = tryWard(ctx, target, fragments);
-
         var velocity = expectInput(fragments, FragmentType.VECTOR, 1);
+        tryWard(ctx, target, fragments);
+
         var lengthSquared = velocity.vector().lengthSquared();
         ctx.useMana(this, 3f + (float) lengthSquared * 2f);
         target.addVelocity(velocity.vector().x(), velocity.vector().y(), velocity.vector().z());
         target.limitFallDistance();
         target.velocityModified = true;
+
         if (target instanceof PlayerEntity) {
             ModEntityCumponents.GRACE.get(target).triggerGrace("gravity", 2);
         }

@@ -124,12 +124,10 @@ public abstract class Trick {
         }
     }
 
-    protected List<Fragment> tryWard(SpellContext ctx, Entity target, List<Fragment> fragments) throws BlunderException {
+    protected void tryWard(SpellContext ctx, Entity target, List<Fragment> fragments) throws BlunderException {
         if (target instanceof ServerPlayerEntity player) {
-            return TrickyAccessoryItem.tryWard(ctx, player, this, fragments);
+            TrickyAccessoryItem.tryWard(ctx, player, this, fragments);
         }
-
-        return fragments;
     }
 
     public MutableText getName() {
