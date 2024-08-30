@@ -24,13 +24,13 @@ public class TrickyAccessoryItem extends AccessoryItem {
     }
 
     public static void tryWard(SpellContext triggerCtx, ServerPlayerEntity player, Trick source, List<Fragment> inputs) throws BlunderException {
-        var caster = triggerCtx.source().getCaster();
+        var triggerCaster = triggerCtx.source().getCaster();
 
-        if (caster.map(c -> c.equals(player)).orElse(false)) {
+        if (triggerCaster.map(c -> c.equals(player)).orElse(false)) {
             return;
         }
 
-        var sourceFragment = caster
+        var sourceFragment = triggerCaster
                 .<Fragment>map(EntityFragment::from)
                 .orElse(new VectorFragment(triggerCtx.source().getPos()));
 
