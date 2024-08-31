@@ -215,3 +215,13 @@ Reads a spell from the user's offhand and places it as a glyph in the center of 
 
 Reads a spell from the user's offhand, casts it, 
 and puts the result as a glyph in the center of the circle it is drawn in.
+
+;;;;;
+
+<|pattern@trickster:templates|pattern=1\,4\,7\,6\,4\,8\,7,title=Plagiarist's Revision|>
+
+{gray}(Scribing pattern){}
+
+---
+
+Copies the circle it is drawn in to the user's offhand.

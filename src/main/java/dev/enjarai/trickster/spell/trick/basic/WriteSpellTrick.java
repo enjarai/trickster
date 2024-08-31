@@ -1,12 +1,11 @@
 package dev.enjarai.trickster.spell.trick.basic;
 
-import com.ibm.icu.impl.Pair;
+import com.mojang.datafixers.util.Pair;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.SpellComponent;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.trick.Trick;
@@ -39,8 +38,8 @@ public class WriteSpellTrick extends Trick {
         });
 
         return player.map(serverPlayerEntity -> Pair.of(serverPlayerEntity, serverPlayerEntity.getOffHandStack())).map(pair -> {
-            var serverPlayer = pair.first;
-            var stack = pair.second;
+            var serverPlayer = pair.getFirst();
+            var stack = pair.getSecond();
 
             spell.ifPresentOrElse(s -> {
                 var stack2 = stack;

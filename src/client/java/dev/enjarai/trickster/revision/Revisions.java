@@ -23,6 +23,7 @@ public class Revisions {
     public static final Revision REPLACE_CIRCLE_WITH_CROW_MIND = register(new ReplaceCircleWithCrowMindRevision());
     public static final Revision EXECUTE_OFF_HAND = register(new ExecuteOffHandRevision());
     public static final Revision WRITE_ADDRESS_TO_OFF_HAND = register(new WriteAddressToOffHandRevision());
+    public static final Revision WRITE_BRANCH_TO_OFF_HAND = register(new WriteBranchToOffHandRevision());
 
     public static Optional<Revision> lookup(Pattern pattern) {
         return Optional.ofNullable(REGISTRY.get(pattern));

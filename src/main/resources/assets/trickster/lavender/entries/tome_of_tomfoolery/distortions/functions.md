@@ -35,6 +35,16 @@ providing it with all other passed in fragments as arguments.
 
 ;;;;;
 
+<|glyph@trickster:templates|trick-id=trickster:execute_same_scope,title=Quiet Distortion|>
+
+spell -> any
+
+---
+
+Executes the given spell with the current spell's arguments.
+
+;;;;;
+
 <|glyph@trickster:templates|trick-id=trickster:fork,title=Utensil Stratagem|>
 
 spell, any... ->

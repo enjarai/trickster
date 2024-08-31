@@ -114,6 +114,7 @@ trickster:
     delete_spell_circle: Ploy of the Bigger Boulder
 
     execute: Grand Stratagem
+    execute_same_scope: Quiet Distortion
     fork: Utensil Stratagem
     iterator: Iteration Stratagem
     try_catch: Cautious Stratagem
