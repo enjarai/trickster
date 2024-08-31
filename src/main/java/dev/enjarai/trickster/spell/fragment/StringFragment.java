@@ -1,13 +1,14 @@
 package dev.enjarai.trickster.spell.fragment;
 
 import dev.enjarai.trickster.spell.Fragment;
+import io.wispforest.accessories.endec.MinecraftEndecs;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import net.minecraft.text.Text;
 
-public record StringFragment(String value) implements Fragment {
+public record StringFragment(Text value) implements Fragment {
     public static final StructEndec<StringFragment> ENDEC = StructEndecBuilder.of(
-            StructEndec.STRING.fieldOf("value", StringFragment::value),
+            MinecraftEndecs.TEXT.fieldOf("value", StringFragment::value),
             StringFragment::new
     );
 
@@ -23,6 +24,6 @@ public record StringFragment(String value) implements Fragment {
 
     @Override
     public BooleanFragment asBoolean() {
-        return new BooleanFragment(!value.isEmpty());
+        return new BooleanFragment(!value.getString().isEmpty());
     }
 }

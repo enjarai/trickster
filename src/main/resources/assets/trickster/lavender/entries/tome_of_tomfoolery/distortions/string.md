@@ -17,3 +17,13 @@ Patterns related to acquiring and manipulating strings are described here.
 ---
 
 Creates a new empty string.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:read_book,title=Librarian's Delusion|>
+
+[slot] -> string[]
+
+---
+
+Reads the pages from the given slot, or the caster's offhand if no slot is provided.

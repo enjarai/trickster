@@ -6,6 +6,8 @@ import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.StringFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.text.Text;
 
 import java.util.List;
 
@@ -16,6 +18,6 @@ public class EmptyStringTrick extends Trick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        return new StringFragment("");
+        return new StringFragment(Text.literal(""));
     }
 }

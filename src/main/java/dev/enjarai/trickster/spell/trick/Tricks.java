@@ -24,6 +24,7 @@ import dev.enjarai.trickster.spell.trick.raycast.RaycastBlockPosTrick;
 import dev.enjarai.trickster.spell.trick.raycast.RaycastBlockSideTrick;
 import dev.enjarai.trickster.spell.trick.raycast.RaycastEntityTrick;
 import dev.enjarai.trickster.spell.trick.string.EmptyStringTrick;
+import dev.enjarai.trickster.spell.trick.string.ReadBookTrick;
 import dev.enjarai.trickster.spell.trick.tree.*;
 import dev.enjarai.trickster.spell.trick.vector.*;
 import net.minecraft.registry.Registry;
@@ -223,6 +224,7 @@ public class Tricks {
 
     // String
     public static final EmptyStringTrick EMPTY_STRING = register("empty_string", new EmptyStringTrick());
+    public static final ReadBookTrick READ_BOOK = register("read_book", new ReadBookTrick());
 
     // Misc
     public static final TypeFragmentTrick TYPE_FRAGMENT = register("type_fragment", new TypeFragmentTrick());
