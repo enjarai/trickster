@@ -38,4 +38,9 @@ public class BooleanFragment implements Fragment {
     public boolean asBoolean() {
         return bool;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof BooleanFragment other && other.bool == this.bool;
+    }
 }
