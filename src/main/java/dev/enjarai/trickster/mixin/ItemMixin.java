@@ -41,9 +41,7 @@ public abstract class ItemMixin {
         var spellComponent = stack.get(ModComponents.SPELL);
 
         if (spellComponent != null && /*!spellComponent.spell().isEmpty() &&*/ spellComponent.closed()) {
-            tooltip.add(spellComponent.name()
-                    .flatMap(str -> Optional.of(Text.literal(str)))
-                    .orElse(Text.literal("Mortal eyes upon my carvings").setStyle(Style.EMPTY.withObfuscated(true))));
+            tooltip.add(spellComponent.name().orElse(Text.literal("Mortal eyes upon my carvings").setStyle(Style.EMPTY.withObfuscated(true))));
         }
     }
 

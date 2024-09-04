@@ -4,23 +4,22 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.spell.SpellPart;
-import dev.enjarai.trickster.spell.trick.blunder.ImmutableItemBlunder;
 import io.wispforest.owo.serialization.CodecUtils;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ContainerComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
+import net.minecraft.text.TextCodecs;
 
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public record SpellComponent(SpellPart spell, Optional<String> name, boolean immutable, boolean closed) {
+public record SpellComponent(SpellPart spell, Optional<Text> name, boolean immutable, boolean closed) {
     public static final Codec<SpellComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             CodecUtils.toCodec(SpellPart.ENDEC).fieldOf("spell").forGetter(SpellComponent::spell),
-            Codec.STRING.optionalFieldOf("name").forGetter(SpellComponent::name),
+            TextCodecs.STRINGIFIED_CODEC.optionalFieldOf("name").forGetter(SpellComponent::name),
             Codec.BOOL.optionalFieldOf("immutable", false).forGetter(SpellComponent::immutable),
             Codec.BOOL.optionalFieldOf("closed", false).forGetter(SpellComponent::closed)
     ).apply(instance, SpellComponent::new));
@@ -33,7 +32,7 @@ public record SpellComponent(SpellPart spell, Optional<String> name, boolean imm
         this(spell, Optional.empty(), immutable, false);
     }
 
-    public SpellComponent withClosed(Optional<String> name) {
+    public SpellComponent withClosed(Optional<Text> name) {
         return new SpellComponent(spell, name, immutable, true);
     }
 
@@ -45,7 +44,7 @@ public record SpellComponent(SpellPart spell, Optional<String> name, boolean imm
                 .map(SpellComponent::spell);
     }
 
-    public static boolean setSpellPart(ItemStack stack, SpellPart spell, Optional<String> name, boolean closed) {
+    public static boolean setSpellPart(ItemStack stack, SpellPart spell, Optional<Text> name, boolean closed) {
         return modifyReferencedStack(stack, stack2 -> {
             if (stack2.contains(ModComponents.SPELL) && stack2.get(ModComponents.SPELL).immutable()) {
                 return false;
