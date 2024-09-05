@@ -24,9 +24,20 @@ public class AddTrick extends Trick {
             fragments = list.get().fragments();
         }
 
-        return fragments.stream()
-                .map(a -> expectType(a, AddableFragment.class))
-                .reduce(AddableFragment::add)
-                .orElseThrow(() -> new MissingInputsBlunder(this));
+        AddableFragment result = null;
+        for (int i = 0; i < fragments.size(); i++) {
+            var value = expectType(fragments.get(i), AddableFragment.class, list.isPresent() ? 0 : i);
+            if (result == null) {
+                result = value;
+            } else {
+                result = result.add(value);
+            }
+        }
+
+        if (result == null) {
+            throw new MissingInputsBlunder(this);
+        }
+
+        return result;
     }
 }
