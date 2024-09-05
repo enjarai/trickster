@@ -1,3 +1,1 @@
-- Re-work wards to be purely retaliatory. (@StellarWitch7)
-- Add a distortion for executing a spell in the current argument scope. (@Master-Bw3)
-- Add a revision for copying a circle to the offhand. (@StellarWitch7)
+- Fixed the revision for copying a circle to the offhand, as it would also copy to the main hand. (@StellarWitch7)
