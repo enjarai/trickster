@@ -1,1 +1,3 @@
-- Fix critical crash bug on dedicated servers. (@enjarai)
+- Re-work wards to be purely retaliatory. (@StellarWitch7)
+- Add a distortion for executing a spell in the current argument scope. (@Master-Bw3)
+- Add a revision for copying a circle to the offhand. (@StellarWitch7)
