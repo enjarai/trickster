@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.spell.execution.executor;
 
 import dev.enjarai.trickster.EndecTomfoolery;
+import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.execution.ExecutionState;
@@ -53,16 +54,32 @@ public interface SpellExecutor {
      * @throws BlunderException
      */
     default Optional<Fragment> run(SpellSource source) throws BlunderException {
-        return run(source, 0);
+        return run(source, new ExecutionCounter());
     }
 
     /**
      * @return the spell's result, or Optional.empty() if the spell is not done executing.
      * @throws BlunderException
      */
-    Optional<Fragment> run(SpellSource source, int executions) throws BlunderException;
+    Optional<Fragment> run(SpellSource source, ExecutionCounter executions) throws BlunderException;
 
     int getLastRunExecutions();
 
     ExecutionState getCurrentState();
+
+    class ExecutionCounter {
+        int executions;
+
+        public void increment() {
+            executions++;
+        }
+
+        public int getExecutions() {
+            return executions;
+        }
+
+        public boolean isLimitReached() {
+            return executions >= Trickster.CONFIG.maxExecutionsPerSpellPerTick();
+        }
+    }
 }

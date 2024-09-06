@@ -26,7 +26,7 @@ public record ErroredSpellExecutor(Text errorMessage) implements SpellExecutor {
     }
 
     @Override
-    public Optional<Fragment> run(SpellSource source, int executions) throws BlunderException {
+    public Optional<Fragment> run(SpellSource source, ExecutionCounter executions) throws BlunderException {
         return Optional.empty();
     }
 

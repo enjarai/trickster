@@ -98,7 +98,7 @@ public class DefaultSpellExecutor implements SpellExecutor {
      * @throws BlunderException
      */
     @Override
-    public Optional<Fragment> run(SpellSource source, int executions) throws BlunderException {
+    public Optional<Fragment> run(SpellSource source, ExecutionCounter executions) throws BlunderException {
         return run(new SpellContext(source, state), executions);
     }
 
@@ -106,7 +106,7 @@ public class DefaultSpellExecutor implements SpellExecutor {
      * @return the spell's result, or Optional.empty() if the spell is not done executing.
      * @throws BlunderException
      */
-    protected Optional<Fragment> run(SpellContext ctx, int executions) throws BlunderException {
+    protected Optional<Fragment> run(SpellContext ctx, ExecutionCounter executions) throws BlunderException {
         lastRunExecutions = 0;
 
         if (child.isPresent()) {
@@ -122,7 +122,7 @@ public class DefaultSpellExecutor implements SpellExecutor {
                 return Optional.empty();
             }
 
-            if (executions >= Trickster.CONFIG.maxExecutionsPerSpellPerTick()) {
+            if (executions.isLimitReached()) {
                 return Optional.empty();
             }
 
@@ -202,13 +202,13 @@ public class DefaultSpellExecutor implements SpellExecutor {
                     inputs.push(inst.getActivator().orElseThrow(UnsupportedOperationException::new).apply(ctx, args));
                 }
 
-                executions++;
-                lastRunExecutions = executions;
+                executions.increment();
+                lastRunExecutions = executions.getExecutions();
             }
         }
     }
 
-    protected Optional<Fragment> runChild(SpellContext ctx, int executions) {
+    protected Optional<Fragment> runChild(SpellContext ctx, ExecutionCounter executions) {
         var result = child.flatMap(c -> c.run(ctx.source(), executions));
 
         if (result.isPresent()) {

@@ -1,1 +1,2 @@
-- Fixed the revision for copying a circle to the offhand, as it would also copy to the main hand. (@StellarWitch7)
+- Fixed a major issue with the spell execution counter. (@enjarai)
+- Fixed a slight issue with negative index values in blunders. (@enjarai)

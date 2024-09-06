@@ -49,7 +49,7 @@ public class TryCatchSpellExecutor extends DefaultSpellExecutor {
     }
 
     @Override
-    public Optional<Fragment> run(SpellContext ctx, int executions) {
+    public Optional<Fragment> run(SpellContext ctx, ExecutionCounter executions) {
         lastRunExecutions = 0;
 
         if (catching)

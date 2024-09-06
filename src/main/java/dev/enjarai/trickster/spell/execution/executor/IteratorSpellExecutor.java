@@ -52,7 +52,7 @@ public class IteratorSpellExecutor extends DefaultSpellExecutor {
     }
 
     @Override
-    protected Optional<Fragment> run(SpellContext ctx, int executions) throws BlunderException {
+    protected Optional<Fragment> run(SpellContext ctx, ExecutionCounter executions) throws BlunderException {
         lastRunExecutions = 0;
 
         if (child.isPresent()) {
@@ -65,7 +65,7 @@ public class IteratorSpellExecutor extends DefaultSpellExecutor {
         int size = elements.size();
 
         for (int i = 0; i < size; i++) {
-            if (executions >= Trickster.CONFIG.maxExecutionsPerSpellPerTick()) {
+            if (executions.isLimitReached()) {
                 return Optional.empty();
             }
 
@@ -76,8 +76,8 @@ public class IteratorSpellExecutor extends DefaultSpellExecutor {
                 return result;
             }
 
-            executions++;
-            lastRunExecutions = executions;
+            executions.increment();
+            lastRunExecutions = executions.getExecutions();
         }
 
         return Optional.of(new ListFragment(inputs));
