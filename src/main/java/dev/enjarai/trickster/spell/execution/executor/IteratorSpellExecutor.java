@@ -1,7 +1,6 @@
 package dev.enjarai.trickster.spell.execution.executor;
 
 import dev.enjarai.trickster.EndecTomfoolery;
-import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.SpellPart;
@@ -35,7 +34,7 @@ public class IteratorSpellExecutor extends DefaultSpellExecutor {
         super(List.of(), inputs, List.of(), state, child, Optional.empty());
         this.executable = executable;
         this.list = list;
-        this.elements.addAll(elements);
+        this.elements.addAll(elements.reversed());
     }
 
     public IteratorSpellExecutor(SpellContext ctx, SpellPart executable, ListFragment list) {
@@ -43,7 +42,7 @@ public class IteratorSpellExecutor extends DefaultSpellExecutor {
         this.state = ctx.executionState().recurseOrThrow(List.of());
         this.executable = executable;
         this.list = list;
-        this.elements.addAll(list.fragments());
+        this.elements.addAll(list.fragments().reversed());
     }
 
     @Override
