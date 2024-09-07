@@ -4,6 +4,7 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.execution.ExecutionState;
+import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
@@ -42,19 +43,24 @@ public class TryCatchSpellExecutor implements SpellExecutor {
     }
 
     @Override
-    public Optional<Fragment> run(SpellContext ctx, ExecutionCounter executions) {
+    public Optional<Fragment> run(SpellSource source, ExecutionCounter executions) throws BlunderException {
         lastRunExecutions = 0;
 
         if (catching)
-            return catchSpell.run(ctx.source());
+            return catchSpell.run(source);
 
         try {
-            return trySpell.run(ctx.source());
+            return trySpell.run(source);
         } catch (BlunderException blunder) {
             catching = true;
             catchSpell.getCurrentState().syncLinksFrom(trySpell.getCurrentState());
-            return catchSpell.run(ctx.source());
+            return catchSpell.run(source);
         }
+    }
+
+    @Override
+    public Optional<Fragment> run(SpellContext ctx, ExecutionCounter executions) {
+        return run(ctx.source(), executions);
     }
 
     @Override

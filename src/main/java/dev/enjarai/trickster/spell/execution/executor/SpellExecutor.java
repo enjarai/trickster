@@ -67,9 +67,7 @@ public interface SpellExecutor {
      * @return the spell's result, or Optional.empty() if the spell is not done executing.
      * @throws BlunderException
      */
-    default Optional<Fragment> run(SpellSource source, ExecutionCounter executions) throws BlunderException {
-        return run(new SpellContext(source, getCurrentState()), executions);
-    }
+    Optional<Fragment> run(SpellSource source, ExecutionCounter executions) throws BlunderException;
 
     int getLastRunExecutions();
 

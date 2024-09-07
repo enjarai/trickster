@@ -5,6 +5,7 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.execution.ExecutionState;
+import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
@@ -61,6 +62,11 @@ public class FoldingSpellExecutor implements SpellExecutor {
     @Override
     public SpellExecutorType<?> type() {
         return SpellExecutorType.FOLDING;
+    }
+
+    @Override
+    public Optional<Fragment> run(SpellSource source, ExecutionCounter executions) throws BlunderException {
+        return run(new SpellContext(source, state), executions);
     }
 
     @Override
@@ -124,6 +130,6 @@ public class FoldingSpellExecutor implements SpellExecutor {
 
     @Override
     public ExecutionState getCurrentState() {
-        return state;
+        return child.map(SpellExecutor::getCurrentState).orElse(state);
     }
 }

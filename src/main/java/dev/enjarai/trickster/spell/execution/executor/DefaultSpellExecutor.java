@@ -3,6 +3,7 @@ package dev.enjarai.trickster.spell.execution.executor;
 import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.execution.ExecutionState;
 import dev.enjarai.trickster.spell.execution.SerializedSpellInstruction;
+import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
 import io.wispforest.endec.Endec;
@@ -63,6 +64,11 @@ public class DefaultSpellExecutor implements SpellExecutor {
     @Override
     public SpellExecutorType<?> type() {
         return SpellExecutorType.DEFAULT;
+    }
+
+    @Override
+    public Optional<Fragment> run(SpellSource source, ExecutionCounter executions) throws BlunderException {
+        return run(new SpellContext(source, state), executions);
     }
 
     public Optional<Fragment> run(SpellContext ctx, ExecutionCounter executions) throws BlunderException {
