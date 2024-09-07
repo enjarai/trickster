@@ -4,6 +4,8 @@ import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.block.ModBlocks;
 import dev.enjarai.trickster.item.component.*;
 import dev.enjarai.trickster.spell.SpellPart;
+import dev.enjarai.trickster.spell.fragment.Map.Hamt;
+import dev.enjarai.trickster.spell.fragment.Map.MapFragment;
 import io.wispforest.lavender.book.LavenderBookItem;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.block.Block;
@@ -39,6 +41,9 @@ public class ModItems {
     public static final WandItem WAND = register("wand",
             new WandItem(new Item.Settings().maxCount(1)
                     .component(ModComponents.SPELL, new SpellComponent(new SpellPart()))));
+    public static final Item MACRO_RING = register("macro_ring",
+            new Item(new Item.Settings().maxCount(1)
+                    .component(ModComponents.MAP, new MapComponent(Hamt.empty()))));
     public static final TrickyAccessoryItem WARDING_CHARM = register("warding_charm",
             new TrickyAccessoryItem(new Item.Settings().maxCount(1)
                     .component(ModComponents.SPELL, new SpellComponent(new SpellPart()))));
@@ -74,6 +79,7 @@ public class ModItems {
                 entries.add(TOP_HAT);
                 entries.add(WAND);
                 entries.add(WARDING_CHARM);
+                entries.add(MACRO_RING);
                 entries.add(SPELL_INK);
                 entries.add(SPELL_RESONATOR_BLOCK_ITEM);
             })

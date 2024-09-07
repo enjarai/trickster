@@ -3,6 +3,7 @@ package dev.enjarai.trickster.mixin;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import dev.enjarai.trickster.SpellTooltipData;
 import dev.enjarai.trickster.item.ModItems;
+import dev.enjarai.trickster.item.component.MapComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.SpellComponent;
 import net.minecraft.item.Item;
@@ -44,6 +45,23 @@ public abstract class ItemMixin {
             tooltip.add(spellComponent.name()
                     .flatMap(str -> Optional.of(Text.literal(str)))
                     .orElse(Text.literal("Mortal eyes upon my carvings").setStyle(Style.EMPTY.withObfuscated(true))));
+        }
+    }
+
+    @Inject(
+            method = "appendTooltip",
+            at = @At("HEAD")
+    )
+    private void addMapTooltip(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType type, CallbackInfo ci) {
+        var mapComponent = stack.get(ModComponents.MAP);
+
+        if (mapComponent != null && !(mapComponent.map().map().size() == 0)) {
+            var map = mapComponent.map().map();
+            map.iterator().forEachRemaining(entry -> tooltip.add(entry
+                    .getKey().asFormattedText().copy()
+                    .append(": ")
+                    .append(entry.getValue().asFormattedText())
+            ));
         }
     }
 
