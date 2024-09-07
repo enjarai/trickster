@@ -2,8 +2,7 @@ package dev.enjarai.trickster.spell.execution.executor;
 
 import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.Trickster;
-import dev.enjarai.trickster.spell.Fragment;
-import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.execution.ExecutionState;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
@@ -13,6 +12,7 @@ import io.wispforest.endec.StructEndec;
 import io.wispforest.owo.serialization.endec.MinecraftEndecs;
 
 import java.util.Optional;
+import java.util.Stack;
 
 public interface SpellExecutor {
     @SuppressWarnings("unchecked")
@@ -61,11 +61,52 @@ public interface SpellExecutor {
      * @return the spell's result, or Optional.empty() if the spell is not done executing.
      * @throws BlunderException
      */
-    Optional<Fragment> run(SpellSource source, ExecutionCounter executions) throws BlunderException;
+    Optional<Fragment> run(SpellContext ctx, ExecutionCounter executions) throws BlunderException;
+
+    /**
+     * @return the spell's result, or Optional.empty() if the spell is not done executing.
+     * @throws BlunderException
+     */
+    default Optional<Fragment> run(SpellSource source, ExecutionCounter executions) throws BlunderException {
+        return run(new SpellContext(source, getCurrentState()), executions);
+    }
 
     int getLastRunExecutions();
 
     ExecutionState getCurrentState();
+
+    // made non-recursive by @ArkoSammy12
+    default Stack<SpellInstruction> flattenNode(SpellPart head) {
+        Stack<SpellInstruction> instructions = new Stack<>();
+        Stack<SpellPart> headStack = new Stack<>();
+        Stack<Integer> indexStack = new Stack<>();
+
+        headStack.push(head);
+        indexStack.push(-1);
+
+        while (!headStack.isEmpty()) {
+            SpellPart currentNode = headStack.peek();
+            int currentIndex = indexStack.pop();
+
+            if (currentIndex == -1) {
+                instructions.push(new ExitScopeInstruction());
+                instructions.push(currentNode.glyph);
+            }
+
+            currentIndex++;
+
+            if (currentIndex < currentNode.subParts.size()) {
+                headStack.push(currentNode.subParts.reversed().get(currentIndex));
+                indexStack.push(currentIndex);
+                indexStack.push(-1);
+            } else {
+                headStack.pop();
+                instructions.push(new EnterScopeInstruction());
+            }
+        }
+
+        return instructions;
+    }
 
     class ExecutionCounter {
         int executions;

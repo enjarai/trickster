@@ -13,7 +13,7 @@ public record SpellExecutorType<T extends SpellExecutor>(StructEndec<T> endec) {
     public static final Registry<SpellExecutorType<?>> REGISTRY = new SimpleRegistry<>(REGISTRY_KEY, Lifecycle.stable());
 
     public static final SpellExecutorType<DefaultSpellExecutor> DEFAULT = register("default", DefaultSpellExecutor.ENDEC);
-    public static final SpellExecutorType<IteratorSpellExecutor> ITERATOR = register("iterator", IteratorSpellExecutor.ENDEC);
+    public static final SpellExecutorType<FoldingSpellExecutor> FOLDING = register("folding", FoldingSpellExecutor.ENDEC);
     public static final SpellExecutorType<TryCatchSpellExecutor> TRY_CATCH = register("try_catch", TryCatchSpellExecutor.ENDEC);
     public static final SpellExecutorType<ErroredSpellExecutor> ERRORED = register("errored", ErroredSpellExecutor.ENDEC);
 

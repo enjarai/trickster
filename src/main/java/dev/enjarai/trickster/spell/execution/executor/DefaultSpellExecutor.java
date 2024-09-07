@@ -1,10 +1,8 @@
 package dev.enjarai.trickster.spell.execution.executor;
 
-import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.execution.ExecutionState;
 import dev.enjarai.trickster.spell.execution.SerializedSpellInstruction;
-import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
 import io.wispforest.endec.Endec;
@@ -15,23 +13,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Stack;
-import java.util.stream.Collectors;
 
 public class DefaultSpellExecutor implements SpellExecutor {
     public static final StructEndec<DefaultSpellExecutor> ENDEC = StructEndecBuilder.of(
-            SerializedSpellInstruction.ENDEC.listOf().fieldOf("instructions", e -> e.instructions.stream().map(SpellInstruction::asSerialized).toList()),
+            SerializedSpellInstruction.ENDEC.listOf().xmap((l) -> {
+                var s = new Stack<SpellInstruction>();
+                s.addAll(l.stream().map(SerializedSpellInstruction::toDeserialized).toList());
+                return s;
+            }, (s) -> s.stream().map(SpellInstruction::asSerialized).toList()).fieldOf("instructions", e -> e.instructions),
             Fragment.ENDEC.listOf().fieldOf("inputs", e -> e.inputs),
             Endec.INT.listOf().fieldOf("scope", e -> e.scope),
             ExecutionState.ENDEC.fieldOf("state", e -> e.state),
             SpellExecutor.ENDEC.optionalOf().optionalFieldOf("child", e -> e.child, Optional.empty()),
             Fragment.ENDEC.optionalOf().optionalFieldOf("override_return_value", e -> e.overrideReturnValue, Optional.empty()),
-            (instructions, inputs, scope, state, child, overrideReturnValue) -> {
-                List<SpellInstruction> serializedInstructions = instructions.stream().map(SerializedSpellInstruction::toDeserialized).collect(Collectors.toList());
-                return new DefaultSpellExecutor(serializedInstructions, inputs, scope, state, child, overrideReturnValue);
-            }
+            DefaultSpellExecutor::new
     );
 
-    protected final Stack<SpellInstruction> instructions = new Stack<>();
+    protected final Stack<SpellInstruction> instructions;
     protected final Stack<Fragment> inputs = new Stack<>();
     protected final Stack<Integer> scope = new Stack<>();
     protected ExecutionState state;
@@ -39,8 +37,13 @@ public class DefaultSpellExecutor implements SpellExecutor {
     protected Optional<Fragment> overrideReturnValue = Optional.empty();
     protected int lastRunExecutions;
 
-    protected DefaultSpellExecutor(List<SpellInstruction> instructions, List<Fragment> inputs, List<Integer> scope, ExecutionState state, Optional<SpellExecutor> child, Optional<Fragment> overrideReturnValue) {
-        this.instructions.addAll(instructions);
+    protected DefaultSpellExecutor(Stack<SpellInstruction> instructions,
+                                   List<Fragment> inputs,
+                                   List<Integer> scope,
+                                   ExecutionState state,
+                                   Optional<SpellExecutor> child,
+                                   Optional<Fragment> overrideReturnValue) {
+        this.instructions = instructions;
         this.inputs.addAll(inputs);
         this.scope.addAll(scope);
         this.state = state;
@@ -50,12 +53,12 @@ public class DefaultSpellExecutor implements SpellExecutor {
 
     public DefaultSpellExecutor(SpellPart root, List<Fragment> arguments) {
         this.state = new ExecutionState(arguments);
-        flattenNode(root);
+        this.instructions = flattenNode(root);
     }
 
     public DefaultSpellExecutor(SpellPart root, ExecutionState executionState) {
         this.state = executionState;
-        flattenNode(root);
+        this.instructions = flattenNode(root);
     }
 
     @Override
@@ -63,50 +66,7 @@ public class DefaultSpellExecutor implements SpellExecutor {
         return SpellExecutorType.DEFAULT;
     }
 
-    // made non-recursive by @ArkoSammy12
-    protected void flattenNode(SpellPart head) {
-        Stack<SpellPart> headStack = new Stack<>();
-        Stack<Integer> indexStack = new Stack<>();
-
-        headStack.push(head);
-        indexStack.push(-1);
-
-        while (!headStack.isEmpty()) {
-            SpellPart currentNode = headStack.peek();
-            int currentIndex = indexStack.pop();
-
-            if (currentIndex == -1) {
-                instructions.push(new ExitScopeInstruction());
-                instructions.push(currentNode.glyph);
-            }
-
-            currentIndex++;
-
-            if (currentIndex < currentNode.subParts.size()) {
-                headStack.push(currentNode.subParts.reversed().get(currentIndex));
-                indexStack.push(currentIndex);
-                indexStack.push(-1);
-            } else {
-                headStack.pop();
-                instructions.push(new EnterScopeInstruction());
-            }
-        }
-    }
-
-    /**
-     * @return the spell's result, or Optional.empty() if the spell is not done executing.
-     * @throws BlunderException
-     */
-    @Override
-    public Optional<Fragment> run(SpellSource source, ExecutionCounter executions) throws BlunderException {
-        return run(new SpellContext(source, state), executions);
-    }
-
-    /**
-     * @return the spell's result, or Optional.empty() if the spell is not done executing.
-     * @throws BlunderException
-     */
-    protected Optional<Fragment> run(SpellContext ctx, ExecutionCounter executions) throws BlunderException {
+    public Optional<Fragment> run(SpellContext ctx, ExecutionCounter executions) throws BlunderException {
         lastRunExecutions = 0;
 
         if (child.isPresent()) {
@@ -161,9 +121,13 @@ public class DefaultSpellExecutor implements SpellExecutor {
                         for (var instruction : instructions) {
                             if (instruction instanceof ExitScopeInstruction) {
                                 continue;
-                            } else if (instruction instanceof PatternGlyph patternGlyph && patternGlyph.pattern().isEmpty()) {
-                                returnValue = VoidFragment.INSTANCE;
-                                continue;
+                            } else if (instruction instanceof PatternGlyph patternGlyph) {
+                                if (patternGlyph.pattern().isEmpty()) {
+                                    returnValue = VoidFragment.INSTANCE;
+                                    continue;
+                                }
+                            } else if (instruction instanceof Fragment fragment && !(instruction instanceof SpellPart)) {
+                                returnValue = fragment;
                             }
 
                             isTail = false;
@@ -179,7 +143,6 @@ public class DefaultSpellExecutor implements SpellExecutor {
                         scope.clear();
 
                         // We need to be able to do this to deal with subcircles return values being gobbled up.
-                        // Hopefully in the future, we can also adjust this to work for literals.
                         if (overrideReturnValue.isEmpty()) {
                             overrideReturnValue = Optional.ofNullable(returnValue);
                         }
@@ -194,9 +157,8 @@ public class DefaultSpellExecutor implements SpellExecutor {
                         this.child = Optional.of(child);
                         var result = runChild(ctx, executions);
 
-                        if (result.isEmpty()) {
+                        if (result.isEmpty())
                             return result;
-                        }
                     }
                 } else {
                     inputs.push(inst.getActivator().orElseThrow(UnsupportedOperationException::new).apply(ctx, args));
@@ -212,8 +174,8 @@ public class DefaultSpellExecutor implements SpellExecutor {
         var result = child.flatMap(c -> c.run(ctx.source(), executions));
 
         if (result.isPresent()) {
-            inputs.push(result.get());
             state.syncLinksFrom(child.get().getCurrentState());
+            inputs.push(result.get());
             child = Optional.empty();
         }
 
