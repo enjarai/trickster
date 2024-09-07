@@ -85,6 +85,10 @@ public class Tricks {
     public static final ReadCrowMindTrick READ_CROW_MIND = register("read_crow_mind", new ReadCrowMindTrick());
     public static final WriteCrowMindTrick WRITE_CROW_MIND = register("write_crow_mind", new WriteCrowMindTrick());
 
+    // Macro Ring
+    public static final AddMacroTrick ADD_MACRO = register("add_macro", new AddMacroTrick());
+
+
     // Caster
     public static final ReflectionTrick REFLECTION = register("reflection", new ReflectionTrick());
     public static final CasterReflectionTrick CASTER_REFLECTION = register("caster_reflection", new CasterReflectionTrick());
@@ -178,7 +182,6 @@ public class Tricks {
     public static final MapGetTrick MAP_GET = register("map_get", new MapGetTrick());
     public static final MapInsertTrick MAP_INSERT = register("map_insert", new MapInsertTrick());
     public static final MapRemoveTrick MAP_REMOVE = register("map_remove", new MapRemoveTrick());
-
 
     // Tree
     public static final LocateGlyphTrick LOCATE_GLYPH = register("locate_glyph", new LocateGlyphTrick());
