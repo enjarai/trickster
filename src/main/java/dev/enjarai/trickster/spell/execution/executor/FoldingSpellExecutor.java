@@ -18,12 +18,12 @@ import java.util.Stack;
 
 public class FoldingSpellExecutor implements SpellExecutor {
     public static final StructEndec<FoldingSpellExecutor> ENDEC = EndecTomfoolery.lazy(() -> StructEndecBuilder.of(
-            ExecutionState.ENDEC.fieldOf("state", executor -> executor.parentState),
+            ExecutionState.ENDEC.fieldOf("state", executor -> executor.state),
             SpellPart.ENDEC.fieldOf("executable", executor -> executor.executable),
             ListFragment.ENDEC.fieldOf("list", executor -> executor.list),
             Fragment.ENDEC.listOf().xmap((l) -> {
                 var s = new Stack<Fragment>();
-                s.addAll(l/*.reversed()*/); /*TODO*/
+                s.addAll(l);
                 return s;
             }, ArrayList::new).fieldOf("elements", executor -> executor.elements),
             SpellExecutor.ENDEC.optionalOf().optionalFieldOf("child", executor -> executor.child, Optional.empty()),
@@ -31,7 +31,7 @@ public class FoldingSpellExecutor implements SpellExecutor {
             FoldingSpellExecutor::new
     ));
 
-    protected final ExecutionState parentState;
+    protected final ExecutionState state;
     protected final SpellPart executable;
     protected final ListFragment list;
     protected final Stack<Fragment> elements;
@@ -39,13 +39,13 @@ public class FoldingSpellExecutor implements SpellExecutor {
     protected Fragment last;
     protected int lastRunExecutions;
 
-    protected FoldingSpellExecutor(ExecutionState parentState,
+    protected FoldingSpellExecutor(ExecutionState state,
                                    SpellPart executable,
                                    ListFragment list,
                                    Stack<Fragment> elements,
                                    Optional<SpellExecutor> child,
                                    Fragment last) {
-        this.parentState = parentState;
+        this.state = state.recurseOrThrow(List.of());
         this.executable = executable;
         this.list = list;
         this.elements = elements;
@@ -84,13 +84,12 @@ public class FoldingSpellExecutor implements SpellExecutor {
             child = Optional.of(
                     new DefaultSpellExecutor(
                             executable,
-                            ctx.executionState()
-                                    .recurseOrThrow(List.of(
-                                            last,
-                                            elements.pop(),
-                                            new NumberFragment(list.fragments().size() - elements.size() - 1),
-                                            list
-                                    ))
+                            state.recurseOrThrow(List.of(
+                                    last,
+                                    elements.pop(),
+                                    new NumberFragment(list.fragments().size() - elements.size() - 1),
+                                    list
+                            ))
                     )
             );
 
@@ -110,8 +109,8 @@ public class FoldingSpellExecutor implements SpellExecutor {
         var result = child.flatMap(c -> c.run(ctx.source(), executions));
 
         if (result.isPresent()) {
-            parentState.syncLinksFrom(child.get().getCurrentState());
             last = result.get();
+            state.syncLinksFrom(child.get().getCurrentState());
             child = Optional.empty();
         }
 
@@ -125,6 +124,6 @@ public class FoldingSpellExecutor implements SpellExecutor {
 
     @Override
     public ExecutionState getCurrentState() {
-        return parentState;
+        return state;
     }
 }

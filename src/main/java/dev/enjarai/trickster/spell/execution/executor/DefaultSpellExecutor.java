@@ -51,14 +51,13 @@ public class DefaultSpellExecutor implements SpellExecutor {
         this.overrideReturnValue = overrideReturnValue;
     }
 
-    public DefaultSpellExecutor(SpellPart root, List<Fragment> arguments) {
-        this.state = new ExecutionState(arguments);
-        this.instructions = flattenNode(root);
-    }
-
     public DefaultSpellExecutor(SpellPart root, ExecutionState executionState) {
         this.state = executionState;
         this.instructions = flattenNode(root);
+    }
+
+    public DefaultSpellExecutor(SpellPart root, List<Fragment> arguments) {
+        this(root, new ExecutionState(arguments));
     }
 
     @Override
@@ -121,13 +120,9 @@ public class DefaultSpellExecutor implements SpellExecutor {
                         for (var instruction : instructions) {
                             if (instruction instanceof ExitScopeInstruction) {
                                 continue;
-                            } else if (instruction instanceof PatternGlyph patternGlyph) {
-                                if (patternGlyph.pattern().isEmpty()) {
-                                    returnValue = VoidFragment.INSTANCE;
-                                    continue;
-                                }
-                            } else if (instruction instanceof Fragment fragment && !(instruction instanceof SpellPart)) {
-                                returnValue = fragment;
+                            } else if (instruction instanceof PatternGlyph patternGlyph && patternGlyph.pattern().isEmpty()) {
+                                returnValue = VoidFragment.INSTANCE;
+                                continue;
                             }
 
                             isTail = false;
@@ -135,7 +130,7 @@ public class DefaultSpellExecutor implements SpellExecutor {
                         }
                     }
 
-                    isTail = isTail && type().equals(child.type());
+                    isTail = isTail && type().equals(child.type()); //TODO: is this extra check needed?
 
                     if (isTail && child instanceof DefaultSpellExecutor castChild) {
                         instructions.clear();
@@ -143,6 +138,7 @@ public class DefaultSpellExecutor implements SpellExecutor {
                         scope.clear();
 
                         // We need to be able to do this to deal with subcircles return values being gobbled up.
+                        // Hopefully in the future, we can also adjust this to work for literals.
                         if (overrideReturnValue.isEmpty()) {
                             overrideReturnValue = Optional.ofNullable(returnValue);
                         }
@@ -174,8 +170,8 @@ public class DefaultSpellExecutor implements SpellExecutor {
         var result = child.flatMap(c -> c.run(ctx.source(), executions));
 
         if (result.isPresent()) {
-            state.syncLinksFrom(child.get().getCurrentState());
             inputs.push(result.get());
+            state.syncLinksFrom(child.get().getCurrentState());
             child = Optional.empty();
         }
 
