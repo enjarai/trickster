@@ -3,9 +3,9 @@ package dev.enjarai.trickster.mixin;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import dev.enjarai.trickster.SpellTooltipData;
 import dev.enjarai.trickster.item.ModItems;
-import dev.enjarai.trickster.item.component.MapComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.SpellComponent;
+import dev.enjarai.trickster.spell.PatternGlyph;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipData;
@@ -53,12 +53,12 @@ public abstract class ItemMixin {
             at = @At("HEAD")
     )
     private void addMapTooltip(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType type, CallbackInfo ci) {
-        var mapComponent = stack.get(ModComponents.MAP);
+        var mapComponent = stack.get(ModComponents.MACRO_MAP);
 
-        if (mapComponent != null && !(mapComponent.map().map().size() == 0)) {
-            var map = mapComponent.map().map();
-            map.iterator().forEachRemaining(entry -> tooltip.add(entry
-                    .getKey().asFormattedText().copy()
+        if (mapComponent != null && !(mapComponent.macros().size() == 0)) {
+            var map = mapComponent.macros();
+            map.iterator().forEachRemaining(entry -> tooltip.add(new PatternGlyph(entry
+                    .getKey()).asFormattedText().copy()
                     .append(": ")
                     .append(entry.getValue().asFormattedText())
             ));
