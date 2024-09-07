@@ -12,7 +12,7 @@ import java.util.List;
 
 public class MapRemoveTrick extends Trick {
     public MapRemoveTrick() {
-        super(Pattern.of(/*todo*/));
+        super(Pattern.of(0, 3, 6, 4, 2, 5, 8));
     }
 
     @Override

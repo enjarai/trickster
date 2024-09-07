@@ -15,6 +15,9 @@ import dev.enjarai.trickster.spell.trick.event.DeleteSpellCircleTrick;
 import dev.enjarai.trickster.spell.trick.inventory.*;
 import dev.enjarai.trickster.spell.trick.list.*;
 import dev.enjarai.trickster.spell.trick.map.MapCreateTrick;
+import dev.enjarai.trickster.spell.trick.map.MapGetTrick;
+import dev.enjarai.trickster.spell.trick.map.MapInsertTrick;
+import dev.enjarai.trickster.spell.trick.map.MapRemoveTrick;
 import dev.enjarai.trickster.spell.trick.math.*;
 import dev.enjarai.trickster.spell.trick.misc.*;
 import dev.enjarai.trickster.spell.trick.projectile.SummonDragonBreathTrick;
@@ -171,7 +174,10 @@ public class Tricks {
     public static final ListSizeTrick LIST_SIZE = register("list_size", new ListSizeTrick());
 
     // Map
-    public static final MapCreateTrick Map_CREATE = register("map_create", new MapCreateTrick());
+    public static final MapCreateTrick MAP_CREATE = register("map_create", new MapCreateTrick());
+    public static final MapGetTrick MAP_GET = register("map_get", new MapGetTrick());
+    public static final MapInsertTrick MAP_INSERT = register("map_insert", new MapInsertTrick());
+    public static final MapRemoveTrick MAP_REMOVE = register("map_remove", new MapRemoveTrick());
 
 
     // Tree
