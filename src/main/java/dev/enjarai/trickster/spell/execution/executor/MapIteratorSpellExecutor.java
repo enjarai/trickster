@@ -25,7 +25,7 @@ public class MapIteratorSpellExecutor extends DefaultSpellExecutor {
             SpellPart.ENDEC.fieldOf("executable", executor -> executor.executable),
             StructEndecBuilder.of(Fragment.ENDEC.fieldOf("key", Map.Entry::getKey), Fragment.ENDEC.fieldOf("value", Map.Entry::getValue), Map::entry)
                     .listOf().fieldOf("elements", executor -> executor.elements),
-            MapFragment.ENDEC.fieldOf("map", executor -> executor.map),
+            MapFragment.ENDEC.fieldOf("macros", executor -> executor.map),
             Fragment.ENDEC.listOf().fieldOf("inputs", executor -> executor.inputs),
             ExecutionState.ENDEC.fieldOf("state", executor -> executor.state),
             SpellExecutor.ENDEC.optionalOf().optionalFieldOf("child", executor -> executor.child, Optional.empty()),

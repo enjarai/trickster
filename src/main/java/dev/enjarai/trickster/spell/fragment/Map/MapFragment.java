@@ -12,7 +12,7 @@ public record MapFragment(Hamt<Fragment, Fragment> map) implements Fragment {
 
     public static final StructEndec<MapFragment> ENDEC = StructEndecBuilder.of(
             Endec.map(Fragment.ENDEC, Fragment.ENDEC).xmap(Hamt::fromMap, Hamt::asMap)
-                    .fieldOf("map", MapFragment::map),
+                    .fieldOf("macros", MapFragment::map),
             MapFragment::new
     );
 
