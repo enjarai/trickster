@@ -30,7 +30,7 @@ public class ClosureTrick extends Trick {
 
             i++;
             if (i >= fragments.size()) {
-                throw new MissingFragmentBlunder(this, i, Text.of("Any"));
+                throw new MissingFragmentBlunder(this, i, Text.of("any"));
             }
             var fragment = expectInput(fragments, i);
 

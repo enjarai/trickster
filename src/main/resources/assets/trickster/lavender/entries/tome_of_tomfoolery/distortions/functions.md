@@ -56,27 +56,30 @@ letting it run concurrently with this spell.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:iterator,title=Iteration Distortion|>
+<|glyph@trickster:templates|trick-id=trickster:fold,title=Folding Distortion|>
 
-spell, any[] -> any[]
+spell, any[], any -> any[]
 
 ---
 
-For each item in the given list, execute the given spell, creating a new list from the results.
+For each item in the given list, execute the given spell, passing the given fragment to the first iteration.
 
 ;;;;;
 
-Each execution receives three arguments:
+Each iteration receives four arguments:
 
 ---
 
-any, number, any[]
+any, any, number, any[]
 
 ---
 
-Where the first argument is the item, the second is its index in the given list, 
-and the third is the given list. The results of each execution are collected into a new list, 
-which is the result of this glyph.
+Where the first argument is the result of the last iteration, the second is the current item, the third is its index in the given list, 
+and the fourth is the given list.
+
+;;;;;
+
+The result of each execution is passed as the first argument to the next, where the last's result is the return of this trick.
 
 ;;;;;
 

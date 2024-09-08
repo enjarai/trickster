@@ -1,2 +1,2 @@
-- Fixed a major issue with the spell execution counter. (@enjarai)
-- Fixed a slight issue with negative index values in blunders. (@enjarai)
+# BREAKING CHANGES
+- Majorly re-worked Iteration Distortion: it is now Folding Distortion. All prior uses ***will fail***. (@StellarWitch7)

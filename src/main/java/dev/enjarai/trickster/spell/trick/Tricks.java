@@ -59,7 +59,7 @@ public class Tricks {
     public static final ExecuteTrick EXECUTE = register("execute", new ExecuteTrick());
     public static final ExecuteWithinCurrentScopeTrick EXECUTE_SAME_SCOPE = register("execute_same_scope", new ExecuteWithinCurrentScopeTrick());
     public static final ForkTrick FORK = register("fork", new ForkTrick());
-    public static final IteratorTrick ITERATOR = register("iterator", new IteratorTrick());
+    public static final FoldTrick FOLD = register("fold", new FoldTrick());
     public static final TryCatchTrick TRY_CATCH = register("try_catch", new TryCatchTrick());
     public static final ClosureTrick CLOSURE = register("closure", new ClosureTrick());
     public static final SupplierTrick SUPPLIER = register("supplier", new SupplierTrick());
