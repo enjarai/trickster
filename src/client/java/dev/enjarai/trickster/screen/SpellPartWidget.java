@@ -299,12 +299,8 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         var closestY = y;
         var closestSize = size;
 
-        // These two dont need to be updated for the actual closest
-        var initialDiffX = x - mouseX;
-        var initialDiffY = y - mouseY;
-
         var centerAvailable = (isCircleClickable(toLocalSpace(size)) && (drawingPart == null || drawingPart == part)) || part.glyph instanceof SpellPart;
-        var closestDistanceSquared = centerAvailable ? initialDiffX * initialDiffX + initialDiffY * initialDiffY : Double.MAX_VALUE;
+        var closestDistanceSquared = Double.MAX_VALUE;
 
         int partCount = part.getSubParts().size();
         // We dont change this, its the same for all subcircles
@@ -331,16 +327,21 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             i++;
         }
 
+        if (centerAvailable) {
+            if (part.glyph instanceof SpellPart centerPart) {
+                if (propagateMouseEvent(centerPart, x, y, size / 3, startingAngle, mouseX, mouseY, callback)) {
+                    return true;
+                }
+            } else {
+                if (callback.handle(part, toLocalSpace(x), toLocalSpace(y), toLocalSpace(size))) {
+                    return true;
+                }
+            }
+        }
+
         if (Math.sqrt(closestDistanceSquared) <= size && toLocalSpace(size) >= 16) {
             if (closest == part) {
-                // Special handling for part glyphs, because of course
-                // This makes it impossible to interact with direct parents of part glyphs, but thats not an issue
-                if (closest.glyph instanceof SpellPart centerPart) {
-                    closest = centerPart;
-                    closestSize /= 3;
-                } else {
-                    return callback.handle(closest, toLocalSpace(closestX), toLocalSpace(closestY), toLocalSpace(closestSize));
-                }
+                return false;
             }
 
             return propagateMouseEvent(closest, closestX, closestY, closestSize, closestAngle, mouseX, mouseY, callback);
