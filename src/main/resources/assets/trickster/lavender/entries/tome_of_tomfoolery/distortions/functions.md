@@ -103,6 +103,7 @@ Creates a new spell fragment which returns the previously provided fragment when
 <|glyph@trickster:templates|trick-id=trickster:closure,title=Closure Stratagem|>
 
 spell, [spell, any]... -> spell
+spell, {spell: any} -> spell
 
 ---
 
