@@ -5,6 +5,7 @@ import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.revision.RevisionContext;
 import dev.enjarai.trickster.screen.SpellPartWidget;
 import dev.enjarai.trickster.spell.SpellPart;
+import dev.enjarai.trickster.spell.fragment.Map.Hamt;
 import io.wispforest.owo.ui.base.BaseComponent;
 import io.wispforest.owo.ui.component.ButtonComponent;
 import io.wispforest.owo.ui.core.OwoUIDrawContext;
@@ -17,6 +18,8 @@ import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.text.Text;
 import org.w3c.dom.Element;
 
+import java.util.Map;
+
 public class SpellPreviewComponent extends BaseComponent {
     protected final SpellPart spell;
     protected final SpellPartWidget wrapped;
@@ -24,9 +27,14 @@ public class SpellPreviewComponent extends BaseComponent {
     public SpellPreviewComponent(SpellPart spell) {
         super();
         this.spell = spell;
-        this.wrapped = new SpellPartWidget(spell, 0, 0, 24, new RevisionContext() {
+        this.wrapped = new SpellPartWidget(spell, 0, 0, 24, Hamt.empty(), new RevisionContext() {
             @Override
             public void updateSpell(SpellPart sp) {
+
+            }
+
+            @Override
+            public void updateSpellWithSpell(SpellPart drawingPart, SpellPart spell) {
 
             }
 

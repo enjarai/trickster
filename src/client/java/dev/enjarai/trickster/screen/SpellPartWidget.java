@@ -3,9 +3,11 @@ package dev.enjarai.trickster.screen;
 import dev.enjarai.trickster.ModSounds;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.render.SpellCircleRenderer;
+import dev.enjarai.trickster.revision.Revision;
 import dev.enjarai.trickster.revision.RevisionContext;
 import dev.enjarai.trickster.revision.Revisions;
 import dev.enjarai.trickster.spell.*;
+import dev.enjarai.trickster.spell.fragment.Map.Hamt;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
@@ -15,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static dev.enjarai.trickster.render.SpellCircleRenderer.*;
 
@@ -22,6 +25,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     public static final double PRECISION_OFFSET = Math.pow(2, 50);
 
     private SpellPart spellPart;
+
 //    private List<SpellPartWidget> partWidgets;
 
     public double x;
@@ -34,6 +38,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     @Nullable
     private SpellPart toBeReplaced;
 
+    private Hamt<Pattern, SpellPart> macros;
     private final RevisionContext revisionContext;
     private SpellPart drawingPart;
     private Fragment oldGlyph;
@@ -41,11 +46,12 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
     public final SpellCircleRenderer renderer;
 
-    public SpellPartWidget(SpellPart spellPart, double x, double y, double size, RevisionContext revisionContext) {
+    public SpellPartWidget(SpellPart spellPart, double x, double y, double size, Hamt<Pattern, SpellPart> macros, RevisionContext revisionContext) {
         this.spellPart = spellPart;
         this.x = toScaledSpace(x);
         this.y = toScaledSpace(y);
         this.size = toScaledSpace(size);
+        this.macros = macros;
         this.revisionContext = revisionContext;
         this.renderer = new SpellCircleRenderer(() -> this.drawingPart, () -> this.drawingPattern, PRECISION_OFFSET);
     }
@@ -57,6 +63,10 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
     public void setSpell(SpellPart spellPart) {
         this.spellPart = spellPart;
+    }
+
+    public void setMacros(Hamt<Pattern, SpellPart> macros) {
+        this.macros = macros;
     }
 
     @Override
@@ -245,6 +255,12 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             Revisions.EXECUTE_OFF_HAND.apply(revisionContext, spellPart, drawingPart);
         } else if (rev.isPresent()) {
             spellPart = rev.get().apply(revisionContext, spellPart, drawingPart);
+        } else if (macros.get(compiled).isPresent()) {
+            var spell = macros.get(compiled).get();
+            var part = drawingPart.deepClone();
+            part.glyph = oldGlyph;
+            revisionContext.updateSpellWithSpell(part, spell);
+            return;
         } else {
             if (patternSize >= 2) {
                 drawingPart.glyph = new PatternGlyph(compiled);
@@ -274,6 +290,26 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             toBeReplaced = null;
             revisionContext.updateSpell(spellPart);
         }
+    }
+
+    public void updateDrawingPartCallback(Optional<SpellPart> spell) {
+        if (spell.isPresent()) {
+            drawingPart.glyph = spell.get().glyph;
+            drawingPart.subParts = spell.get().subParts;
+        } else {
+            drawingPart.glyph = oldGlyph;
+        }
+
+        var patternSize = drawingPattern.size();
+        drawingPart = null;
+        drawingPattern = null;
+
+        revisionContext.updateSpell(spellPart);
+
+        MinecraftClient.getInstance().player.playSoundToPlayer(
+                ModSounds.COMPLETE, SoundCategory.MASTER,
+                1f, patternSize > 1 ? 1f : 0.6f
+        );
     }
 
     public boolean isDrawing() {

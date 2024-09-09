@@ -1,7 +1,9 @@
 package dev.enjarai.trickster.screen;
 
 import dev.enjarai.trickster.item.ModItems;
+import dev.enjarai.trickster.item.component.MacroComponent;
 import dev.enjarai.trickster.spell.SpellPart;
+import io.wispforest.accessories.api.slot.SlotReference;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
 import net.minecraft.entity.player.PlayerInventory;
@@ -29,10 +31,15 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
     @Override
     protected void init() {
         super.init();
-
-        partWidget = new SpellPartWidget(handler.spell.get(), width / 2d, height / 2d, 64, handler);
+        partWidget = new SpellPartWidget(handler.spell.get(), width / 2d, height / 2d, 64, handler.macros.get(), handler);
         handler.replacerCallback = frag -> partWidget.replaceCallback(frag);
+        handler.updateDrawingPartCallback = spell -> partWidget.updateDrawingPartCallback(spell);
+
         addDrawableChild(partWidget);
+
+        this.handler.macros.observe(macros -> {
+            partWidget.setMacros(macros);
+        });
 
         this.handler.spell.observe(spell -> {
             partWidget.setSpell(spell);

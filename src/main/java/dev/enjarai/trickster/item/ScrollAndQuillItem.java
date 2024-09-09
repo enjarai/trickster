@@ -1,8 +1,11 @@
 package dev.enjarai.trickster.item;
 
 
+import dev.enjarai.trickster.item.component.MacroComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.screen.ScrollAndQuillScreenHandler;
+import dev.enjarai.trickster.spell.fragment.Map.Hamt;
+import io.wispforest.accessories.api.slot.SlotReference;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -30,6 +33,9 @@ public class ScrollAndQuillItem extends Item {
         var otherStack = user.getStackInHand(hand == Hand.MAIN_HAND ? Hand.OFF_HAND : Hand.MAIN_HAND);
         var slot = hand == Hand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
 
+        ItemStack ring = SlotReference.of(user, "ring", 0).getStack();
+        var mapComponent = MacroComponent.getMap(ring);
+
         var spell = stack.get(ModComponents.SPELL);
         if (spell == null || spell.closed()) {
             return TypedActionResult.fail(stack);
@@ -50,6 +56,7 @@ public class ScrollAndQuillItem extends Item {
                 public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
                     return new ScrollAndQuillScreenHandler(
                             syncId, playerInventory, stack, otherStack, slot,
+                            mapComponent.orElse(Hamt.empty()),
                             false, true
                     );
                 }

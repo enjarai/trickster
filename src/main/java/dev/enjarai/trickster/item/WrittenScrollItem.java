@@ -4,6 +4,7 @@ import dev.enjarai.trickster.cca.ModEntityCumponents;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.screen.ScrollAndQuillScreenHandler;
 import dev.enjarai.trickster.spell.execution.SpellQueueResult;
+import dev.enjarai.trickster.spell.fragment.Map.Hamt;
 import dev.enjarai.trickster.spell.mana.SimpleManaPool;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
@@ -57,6 +58,7 @@ public class WrittenScrollItem extends Item {
                 public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
                     return new ScrollAndQuillScreenHandler(
                             syncId, playerInventory, stack, otherStack, slot,
+                            Hamt.empty(),
                             false, false
                     );
                 }

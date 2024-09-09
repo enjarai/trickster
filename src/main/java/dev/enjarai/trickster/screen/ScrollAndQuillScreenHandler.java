@@ -6,16 +6,18 @@ import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.SpellComponent;
 import dev.enjarai.trickster.revision.RevisionContext;
-import dev.enjarai.trickster.spell.Fragment;
-import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.execution.ExecutionState;
 import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
-import dev.enjarai.trickster.spell.SpellPart;
+import dev.enjarai.trickster.spell.fragment.FragmentType;
+import dev.enjarai.trickster.spell.fragment.Map.Hamt;
+import dev.enjarai.trickster.spell.fragment.Map.MapFragment;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
 import dev.enjarai.trickster.spell.trick.blunder.NaNBlunder;
 import io.wispforest.endec.Endec;
+import io.wispforest.endec.impl.StructEndecBuilder;
 import io.wispforest.owo.client.screens.SyncedProperty;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
@@ -26,8 +28,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class ScrollAndQuillScreenHandler extends ScreenHandler implements RevisionContext {
@@ -37,17 +38,20 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
     public final SyncedProperty<SpellPart> spell = createProperty(SpellPart.class, SpellPart.ENDEC, new SpellPart());
     public final SyncedProperty<SpellPart> otherHandSpell = createProperty(SpellPart.class, SpellPart.ENDEC, new SpellPart());
     public final SyncedProperty<Boolean> isMutable = createProperty(Boolean.class, true);
+    public final SyncedProperty<Hamt> macros = createProperty(Hamt.class, Endec.map(Pattern.ENDEC, SpellPart.ENDEC).xmap(Hamt::fromMap, Hamt::asMap), Hamt.empty());
 
     public Consumer<Fragment> replacerCallback;
+    public Consumer<Optional<SpellPart>> updateDrawingPartCallback;
+
 
     public final EquipmentSlot slot;
     public final boolean greedyEvaluation;
 
     public ScrollAndQuillScreenHandler(int syncId, PlayerInventory playerInventory) {
-        this(syncId, playerInventory, null, null, null, false, true);
+        this(syncId, playerInventory, null, null, null, null, false, true);
     }
 
-    public ScrollAndQuillScreenHandler(int syncId, PlayerInventory playerInventory, ItemStack scrollStack, ItemStack otherHandStack, EquipmentSlot slot, boolean greedyEvaluation, boolean isMutable) {
+    public ScrollAndQuillScreenHandler(int syncId, PlayerInventory playerInventory, ItemStack scrollStack, ItemStack otherHandStack, EquipmentSlot slot, Hamt<Pattern, SpellPart> macros, boolean greedyEvaluation, boolean isMutable) {
         super(ModScreenHandlers.SCROLL_AND_QUILL, syncId);
 
         this.scrollStack = scrollStack;
@@ -55,6 +59,8 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
 
         this.slot = slot;
         this.greedyEvaluation = greedyEvaluation;
+
+        this.macros.set(macros);
 
         if (scrollStack != null) {
             SpellComponent.getSpellPart(scrollStack).ifPresent(this.spell::set);
@@ -68,14 +74,60 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
 
         addServerboundMessage(SpellMessage.class, SpellMessage.ENDEC, msg -> updateSpell(msg.spell()));
         addServerboundMessage(OtherHandSpellMessage.class, OtherHandSpellMessage.ENDEC, msg -> updateOtherHandSpell(msg.spell()));
+        addServerboundMessage(UpdateSpellWithSpellMessage.class, UpdateSpellWithSpellMessage.ENDEC, msg -> updateSpellWithSpell(msg.drawingPart, msg.spell));
 
         addServerboundMessage(ExecuteOffhand.class, msg -> executeOffhand());
+        addClientboundMessage(UpdateDrawingPartMessage.class, UpdateDrawingPartMessage.ENDEC, msg -> {
+            if (updateDrawingPartCallback != null) {
+                updateDrawingPartCallback.accept(msg.spell);
+            }
+        });
         addClientboundMessage(Replace.class, Replace.ENDEC, msg -> {
             if (replacerCallback != null) {
                 replacerCallback.accept(msg.fragment());
             }
         });
     }
+
+    @Override
+    public void updateSpellWithSpell(SpellPart drawingPart, SpellPart spell) {
+        if (isMutable.get()) {
+            if (scrollStack != null) {
+                var server = player().getServer();
+                if (server != null) {
+                    server.execute(() -> {
+                        var executionState = new ExecutionState(List.of(drawingPart));
+                        Fragment result = null;
+                        try {
+                            result = spell.destructiveRun(new SpellContext(new PlayerSpellSource((ServerPlayerEntity) player()), executionState));
+                        } catch (BlunderException e) {
+                            if (e instanceof NaNBlunder)
+                                ModCriteria.NAN_NUMBER.trigger((ServerPlayerEntity) player());
+
+                            player().sendMessage(e.createMessage().append(" (").append(executionState.formatStackTrace()).append(")"));
+                        } catch (Exception e) {
+                            player().sendMessage(Text.literal("Uncaught exception in spell: " + e.getMessage())
+                                    .append(" (").append(executionState.formatStackTrace()).append(")"));
+                        }
+
+                        if (result instanceof SpellPart) {
+                            sendMessage(new UpdateDrawingPartMessage(Optional.of((SpellPart) spell.glyph)));
+                        } else if (result == null) {
+                            sendMessage(new UpdateDrawingPartMessage(Optional.empty()));
+                        } else {
+                            player().sendMessage(Text.literal("Macro expansion failed: Macro must return a ").append(FragmentType.SPELL_PART.getName()
+                                    .append(" but it returned ").append(result.asFormattedText())));
+                            sendMessage(new UpdateDrawingPartMessage(Optional.empty()));
+                        }
+                    });
+                }
+            } else {
+                sendMessage(new UpdateSpellWithSpellMessage(drawingPart, spell));
+            }
+        }
+    }
+
+
 
     public void updateSpell(SpellPart spell) {
         if (isMutable.get()) {
@@ -183,6 +235,14 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
         public static final Endec<SpellMessage> ENDEC = SpellPart.ENDEC.xmap(SpellMessage::new, SpellMessage::spell);
     }
 
+    public record UpdateSpellWithSpellMessage(SpellPart drawingPart, SpellPart spell) {
+        public static final Endec<UpdateSpellWithSpellMessage> ENDEC = StructEndecBuilder.of(
+                SpellPart.ENDEC.fieldOf("drawing_part", UpdateSpellWithSpellMessage::drawingPart),
+                SpellPart.ENDEC.fieldOf("spell", UpdateSpellWithSpellMessage::spell),
+                UpdateSpellWithSpellMessage::new
+        );
+    }
+
     public record OtherHandSpellMessage(SpellPart spell) {
         public static final Endec<OtherHandSpellMessage> ENDEC = SpellPart.ENDEC.xmap(OtherHandSpellMessage::new, OtherHandSpellMessage::spell);
     }
@@ -192,5 +252,10 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
 
     public record Replace(Fragment fragment) {
         public static final Endec<Replace> ENDEC = Fragment.ENDEC.xmap(Replace::new, Replace::fragment);
+    }
+
+    private record UpdateDrawingPartMessage(Optional<SpellPart> spell) {
+        public static final Endec<UpdateDrawingPartMessage> ENDEC = SpellPart.ENDEC.optionalOf().xmap(UpdateDrawingPartMessage::new, UpdateDrawingPartMessage::spell);
+
     }
 }
