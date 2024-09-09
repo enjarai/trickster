@@ -192,6 +192,7 @@ public class Tricks {
     public static final SetSubtreeTrick SET_SUBTREE = register("set_subtree", new SetSubtreeTrick());
     public static final AddSubtreeTrick ADD_LEAF = register("add_subtree", new AddSubtreeTrick());
     public static final RemoveSubtreeTrick REMOVE_SUBTREE = register("remove_subtree", new RemoveSubtreeTrick());
+    public static final GetSubPartsTrick GET_SUB_PARTS = register("get_subparts", new GetSubPartsTrick());
 
     // Events
     public static final CreateSpellCircleTrick CREATE_SPELL_CIRCLE = register("create_spell_circle", new CreateSpellCircleTrick());

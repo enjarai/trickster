@@ -145,6 +145,7 @@ trickster:
     set_subtree: Grafting Distortion
     add_subtree: Branching Distortion
     remove_subtree: Pruning Distortion
+    get_subparts: Bundle Distortion
 
     break_block: Ploy of Destruction
     place_block: Ploy of Creation
