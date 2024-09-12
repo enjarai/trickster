@@ -10,13 +10,13 @@ Patterns related to acquiring and manipulating strings are described here.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:empty_string,title=Blank Delusion|>
+<|glyph@trickster:templates|trick-id=trickster:create_string,title=Editor's Distortion|>
 
--> string
+[any]... -> string
 
 ---
 
-Creates a new empty string.
+Creates a new empty string, appending the strings of all given fragments.
 
 ;;;;;
 

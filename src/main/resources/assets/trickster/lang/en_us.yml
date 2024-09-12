@@ -137,7 +137,7 @@ trickster:
     list_remove: Expulsion Stratagem
     list_remove_element: Eviction Stratagem
 
-    empty_string: Blank Delusion
+    create_string: Editor's Distortion
     read_book: Librarian's Delusion
 
     locate_glyph: Pinpoint Distortion

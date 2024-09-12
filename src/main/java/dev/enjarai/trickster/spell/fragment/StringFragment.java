@@ -19,7 +19,19 @@ public record StringFragment(Text value) implements Fragment {
 
     @Override
     public Text asText() {
-        return Text.literal("\"").append(value).append("\"");
+        return value;
+    }
+
+    @Override
+    public Text asFormattedText() {
+        if (type().color().isPresent()) {
+            return Text.literal("\"")
+                    .append(asText())
+                    .append(Text.literal("\""))
+                    .withColor(type().color().getAsInt());
+        }
+
+        return asText();
     }
 
     @Override

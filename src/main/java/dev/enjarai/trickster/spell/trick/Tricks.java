@@ -23,7 +23,7 @@ import dev.enjarai.trickster.spell.trick.projectile.SummonTntTrick;
 import dev.enjarai.trickster.spell.trick.raycast.RaycastBlockPosTrick;
 import dev.enjarai.trickster.spell.trick.raycast.RaycastBlockSideTrick;
 import dev.enjarai.trickster.spell.trick.raycast.RaycastEntityTrick;
-import dev.enjarai.trickster.spell.trick.string.EmptyStringTrick;
+import dev.enjarai.trickster.spell.trick.string.ConstructStringTrick;
 import dev.enjarai.trickster.spell.trick.string.ReadBookTrick;
 import dev.enjarai.trickster.spell.trick.tree.*;
 import dev.enjarai.trickster.spell.trick.vector.*;
@@ -224,7 +224,7 @@ public class Tricks {
     public static final GetDimensionTrick GET_DIMENSION = register("get_dimension", new GetDimensionTrick());
 
     // String
-    public static final EmptyStringTrick EMPTY_STRING = register("empty_string", new EmptyStringTrick());
+    public static final ConstructStringTrick CREATE_STRING = register("create_string", new ConstructStringTrick());
     public static final ReadBookTrick READ_BOOK = register("read_book", new ReadBookTrick());
 
     // Misc
