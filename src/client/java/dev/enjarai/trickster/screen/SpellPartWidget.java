@@ -21,7 +21,6 @@ import static dev.enjarai.trickster.render.SpellCircleRenderer.*;
 
 public class SpellPartWidget extends AbstractParentElement implements Drawable, Selectable {
     public static final double PRECISION_OFFSET = Math.pow(2, 50);
-    static{}
 
     private SpellPart spellPart;
 //    private List<SpellPartWidget> partWidgets;
