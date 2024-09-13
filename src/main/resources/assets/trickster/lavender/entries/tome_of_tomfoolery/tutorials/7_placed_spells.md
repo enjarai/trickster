@@ -1,8 +1,8 @@
 ```json
 {
-  "title": "4. Recursion",
+  "title": "7. Placed Spells",
   "icon": "minecraft:paper",
-  "ordinal": 3,
+  "ordinal": 6,
   "category": "trickster:tutorials"
 }
 ```

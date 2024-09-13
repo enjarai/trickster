@@ -1,6 +1,6 @@
 ```json
 {
-  "title": "Basic Spell-Scribing",
+  "title": "Spell-Scribing",
   "icon": "trickster:scroll_and_quill",
   "ordinal": 1
 }
