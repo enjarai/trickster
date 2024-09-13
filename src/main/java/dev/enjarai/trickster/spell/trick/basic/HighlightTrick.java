@@ -10,10 +10,10 @@ import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
 
 import java.util.List;
 
-public class FlourishTrick extends Trick {
-    public FlourishTrick() {super(
-            Pattern.of(2,0,1,2,3,5,8,7,6,3)
-    );}
+public class HighlightTrick extends Trick {
+    public HighlightTrick() {
+        super(Pattern.of(2, 0, 1, 2, 3, 4, 5, 8, 7, 6, 3));
+    }
 
 
     @Override
