@@ -83,8 +83,14 @@ public class WriteSpellTrick extends Trick {
                     if (spellComponent == null || spellComponent.immutable())
                         return false;
 
-                    //TODO:
-                    s.set(ModComponents.SPELL, new SpellComponent(new SpellPart(), false));
+                    var itemDefault = s.getItem().getDefaultStack().get(ModComponents.SPELL);
+
+                    if (itemDefault != null) {
+                        s.set(ModComponents.SPELL, itemDefault);
+                    } else {
+                        s.remove(ModComponents.SPELL);
+                    }
+
                     return true;
                 })) {
                     throw new ImmutableItemBlunder(this);
