@@ -62,16 +62,6 @@ Shows all given values as a chat message to the caster and returns the first.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:highlight,title=Flourish Ploy|>
-
-vector -> vector
-
----
-
-Highlights the given block then returns it
-
-;;;;;
-
 <|page-title@lavender:book_components|title=Note: The Crow Mind|>The Crow Mind, not to be confused with other black bird related minds, 
 lets spells store and retrieve any one fragment, **persistently**, between casts.
 
