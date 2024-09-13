@@ -16,6 +16,7 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 
 public non-sealed interface Fragment extends SpellInstruction {
+    @SuppressWarnings("unchecked")
     StructEndec<Fragment> ENDEC = EndecTomfoolery.lazy(() -> (StructEndec<Fragment>) Endec.dispatchedStruct(
             FragmentType::endec,
             Fragment::type,
