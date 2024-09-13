@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.spell.fragment;
 
+import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.trick.Trick;
@@ -19,7 +20,7 @@ import java.util.Optional;
 public record SlotFragment(int slot, Optional<BlockPos> source) implements Fragment {
     public static final StructEndec<SlotFragment> ENDEC = StructEndecBuilder.of(
             Endec.INT.fieldOf("slot", SlotFragment::slot),
-            MinecraftEndecs.BLOCK_POS.optionalOf().fieldOf("source", SlotFragment::source),
+            EndecTomfoolery.safeOptionalOf(EndecTomfoolery.ALWAYS_READABLE_BLOCK_POS).fieldOf("source", SlotFragment::source),
             SlotFragment::new
     );
 
