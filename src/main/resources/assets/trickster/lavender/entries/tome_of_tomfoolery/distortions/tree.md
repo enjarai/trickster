@@ -71,7 +71,7 @@ spell, number[], any -> spell
 
 ---
 
-Replaces the glyph of circle at the given address with the given fragment.
+Replaces the glyph of the circle at the given address with the given fragment.
 
 ;;;;;
 

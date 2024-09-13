@@ -3,6 +3,7 @@ package dev.enjarai.trickster.spell.trick.math;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.fragment.AddableFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.SubtractableFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
@@ -24,9 +25,20 @@ public class SubtractTrick extends Trick {
             fragments = list.get().fragments();
         }
 
-        return fragments.stream()
-                .map(a -> expectType(a, SubtractableFragment.class))
-                .reduce(SubtractableFragment::subtract)
-                .orElseThrow(() -> new MissingInputsBlunder(this));
+        SubtractableFragment result = null;
+        for (int i = 0; i < fragments.size(); i++) {
+            var value = expectType(fragments.get(i), SubtractableFragment.class, list.isPresent() ? 0 : i);
+            if (result == null) {
+                result = value;
+            } else {
+                result = result.subtract(value);
+            }
+        }
+
+        if (result == null) {
+            throw new MissingInputsBlunder(this);
+        }
+
+        return result;
     }
 }

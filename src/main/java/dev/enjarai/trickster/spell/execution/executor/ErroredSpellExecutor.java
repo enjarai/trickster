@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.spell.execution.executor;
 
 import dev.enjarai.trickster.spell.Fragment;
+import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.execution.ExecutionState;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
@@ -26,7 +27,12 @@ public record ErroredSpellExecutor(Text errorMessage) implements SpellExecutor {
     }
 
     @Override
-    public Optional<Fragment> run(SpellSource source, int executions) throws BlunderException {
+    public Optional<Fragment> run(SpellSource source, ExecutionCounter executions) throws BlunderException {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Fragment> run(SpellContext ctx, ExecutionCounter executions) throws BlunderException {
         return Optional.empty();
     }
 

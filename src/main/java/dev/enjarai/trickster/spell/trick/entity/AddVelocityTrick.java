@@ -9,6 +9,8 @@ import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
 import dev.enjarai.trickster.spell.trick.blunder.UnknownEntityBlunder;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import org.joml.Vector3d;
+import org.joml.Vector3dc;
 
 import java.util.List;
 
@@ -27,11 +29,17 @@ public class AddVelocityTrick extends Trick {
 
         var lengthSquared = velocity.vector().lengthSquared();
         ctx.useMana(this, 3f + (float) lengthSquared * 2f);
-        target.addVelocity(velocity.vector().x(), velocity.vector().y(), velocity.vector().z());
+
+        var vector = velocity.vector();
+        if (target instanceof PlayerEntity && ModEntityCumponents.GRACE.get(target).isInGrace("gravity")) {
+            vector = vector.add(0, -target.getFinalGravity(), 0, new Vector3d());
+        }
+
+        target.addVelocity(vector.x(), vector.y(), vector.z());
         target.limitFallDistance();
         target.velocityModified = true;
 
-        if (target instanceof PlayerEntity) {
+        if (target instanceof PlayerEntity && vector.x() >= 0) {
             ModEntityCumponents.GRACE.get(target).triggerGrace("gravity", 2);
         }
 

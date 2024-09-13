@@ -16,6 +16,7 @@ import dev.enjarai.trickster.spell.trick.inventory.*;
 import dev.enjarai.trickster.spell.trick.list.*;
 import dev.enjarai.trickster.spell.trick.math.*;
 import dev.enjarai.trickster.spell.trick.misc.*;
+import dev.enjarai.trickster.spell.trick.particle.HighlightTrick;
 import dev.enjarai.trickster.spell.trick.projectile.SummonDragonBreathTrick;
 import dev.enjarai.trickster.spell.trick.projectile.SummonFireballTrick;
 import dev.enjarai.trickster.spell.trick.projectile.SummonArrowTrick;
@@ -61,7 +62,7 @@ public class Tricks {
     public static final ExecuteTrick EXECUTE = register("execute", new ExecuteTrick());
     public static final ExecuteWithinCurrentScopeTrick EXECUTE_SAME_SCOPE = register("execute_same_scope", new ExecuteWithinCurrentScopeTrick());
     public static final ForkTrick FORK = register("fork", new ForkTrick());
-    public static final IteratorTrick ITERATOR = register("iterator", new IteratorTrick());
+    public static final FoldTrick FOLD = register("fold", new FoldTrick());
     public static final TryCatchTrick TRY_CATCH = register("try_catch", new TryCatchTrick());
     public static final ClosureTrick CLOSURE = register("closure", new ClosureTrick());
     public static final SupplierTrick SUPPLIER = register("supplier", new SupplierTrick());
@@ -77,6 +78,7 @@ public class Tricks {
     // Basic
     public static final OnePonyTrick TWO = register("two", new OnePonyTrick());
     public static final RevealTrick REVEAL = register("reveal", new RevealTrick());
+    public static final HighlightTrick HIGHLIGHT = register("highlight", new HighlightTrick());
     public static final ReadSpellTrick READ_SPELL = register("read_spell", new ReadSpellTrick());
     public static final WriteSpellTrick WRITE_SPELL = register("write_spell", new WriteSpellTrick());
     public static final WriteClosedSpellTrick WRITE_CLOSED_SPELL = register("write_closed_spell", new WriteClosedSpellTrick());

@@ -3,6 +3,7 @@ package dev.enjarai.trickster.spell.trick.math;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.fragment.AddableFragment;
 import dev.enjarai.trickster.spell.fragment.DivisibleFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.trick.Trick;
@@ -24,9 +25,20 @@ public class DivideTrick extends Trick {
             fragments = list.get().fragments();
         }
 
-        return fragments.stream()
-                .map(a -> expectType(a, DivisibleFragment.class))
-                .reduce(DivisibleFragment::divide)
-                .orElseThrow(() -> new MissingInputsBlunder(this));
+        DivisibleFragment result = null;
+        for (int i = 0; i < fragments.size(); i++) {
+            var value = expectType(fragments.get(i), DivisibleFragment.class, list.isPresent() ? 0 : i);
+            if (result == null) {
+                result = value;
+            } else {
+                result = result.divide(value);
+            }
+        }
+
+        if (result == null) {
+            throw new MissingInputsBlunder(this);
+        }
+
+        return result;
     }
 }

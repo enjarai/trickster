@@ -91,9 +91,9 @@ public abstract class Trick {
         return (T) fragment;
     }
 
-    protected <T extends Fragment> T expectType(Fragment fragment, Class<T> type) throws BlunderException {
+    protected <T extends Fragment> T expectType(Fragment fragment, Class<T> type, int index) throws BlunderException {
         if (!type.isInstance(fragment)) {
-            throw new IncorrectFragmentBlunder(this, -1, Text.literal(type.getSimpleName()), fragment);
+            throw new IncorrectFragmentBlunder(this, index, Text.literal(type.getSimpleName()), fragment);
         }
         //noinspection unchecked
         return (T) fragment;

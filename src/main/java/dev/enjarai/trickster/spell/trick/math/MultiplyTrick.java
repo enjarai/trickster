@@ -3,6 +3,7 @@ package dev.enjarai.trickster.spell.trick.math;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.fragment.AddableFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.MultiplicableFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
@@ -24,9 +25,20 @@ public class MultiplyTrick extends Trick {
             fragments = list.get().fragments();
         }
 
-        return fragments.stream()
-                .map(a -> expectType(a, MultiplicableFragment.class))
-                .reduce(MultiplicableFragment::multiply)
-                .orElseThrow(() -> new MissingInputsBlunder(this));
+        MultiplicableFragment result = null;
+        for (int i = 0; i < fragments.size(); i++) {
+            var value = expectType(fragments.get(i), MultiplicableFragment.class, list.isPresent() ? 0 : i);
+            if (result == null) {
+                result = value;
+            } else {
+                result = result.multiply(value);
+            }
+        }
+
+        if (result == null) {
+            throw new MissingInputsBlunder(this);
+        }
+
+        return result;
     }
 }

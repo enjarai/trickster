@@ -116,7 +116,7 @@ trickster:
     execute: Grand Stratagem
     execute_same_scope: Quiet Distortion
     fork: Utensil Stratagem
-    iterator: Iteration Stratagem
+    fold: Folding Distortion
     try_catch: Cautious Stratagem
     closure: Closure Stratagem
     supplier: Supply Distortion
@@ -136,6 +136,7 @@ trickster:
     list_index_of: Locating Distortion
     list_remove: Expulsion Stratagem
     list_remove_element: Eviction Stratagem
+    list_size: Tally Distortion
 
     create_string: Editor's Distortion
     read_book: Librarian's Delusion
@@ -183,6 +184,8 @@ trickster:
     get_dimension: Dimensional Delusion
     show_bar: Ploy of Clarity
     clear_bar: Ploy of Obfuscation
+
+    highlight: Flourish Ploy
 
     get_scale: Distortion of Occupation
     set_scale: Ploy of Occupation

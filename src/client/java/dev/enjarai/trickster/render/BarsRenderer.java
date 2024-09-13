@@ -51,6 +51,7 @@ public class BarsRenderer {
     private static void drawBar(DrawContext context, int index, int id, double fill, Identifier texture) {
         var sprite = MinecraftClient.getInstance().getGuiAtlasManager().getSprite(texture);
         var xOffset = index * 8;
+        fill = Math.clamp(fill, 0d, 1d);
 
         colorsRandom.setSeed(id);
 

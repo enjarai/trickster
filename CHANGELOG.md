@@ -1,1 +1,4 @@
-- Fix critical crash bug on dedicated servers. (@enjarai)
+- Fixed input issues with Notulist's Ploy, where a scroll could be made unwritable. (@StellarWitch7)
+- Added a ploy to spawn the block edit particle without editing a block. (@Vlue)
+- Made bars more respectful of the space they are given. (@redstonekasi)
+- Made the Ender Dragon, Warden, and Wither impossible to contain within a top hat. (@StellarWitch7)

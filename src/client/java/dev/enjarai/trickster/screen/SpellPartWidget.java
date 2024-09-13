@@ -65,6 +65,10 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         if (isMutable) {
             this.renderer.setMousePosition(mouseX, mouseY);
         }
+
+//        context.getMatrices().push();
+//        context.getMatrices().scale((float) PRECISION_OFFSET, (float) PRECISION_OFFSET, (float) PRECISION_OFFSET);
+
         this.renderer.renderPart(
                 context.getMatrices(), context.getVertexConsumers(), spellPart,
                 x, y, size, 0, delta,
@@ -72,6 +76,8 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
                 new Vec3d(-1, 0, 0)
         );
         context.draw();
+
+//        context.getMatrices().pop();
     }
 
     public static boolean isCircleClickable(double size) {
@@ -106,10 +112,9 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             return true;
         }
 
-        double scaledAmount = toScaledSpace(verticalAmount);
-        size += scaledAmount * toLocalSpace(size) / 10;
-        x += scaledAmount * (toLocalSpace(x) - mouseX) / 10;
-        y += scaledAmount * (toLocalSpace(y) - mouseY) / 10;
+        size += verticalAmount * size / 10;
+        x += verticalAmount * (x - toScaledSpace(mouseX)) / 10;
+        y += verticalAmount * (y - toScaledSpace(mouseY)) / 10;
 
         return true;
     }
@@ -292,23 +297,19 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         return false;
     }
 
-    protected boolean propagateMouseEvent(SpellPart part, double x, double y, double size, float startingAngle, double mouseX, double mouseY, MouseEventHandler callback) {
+    protected boolean propagateMouseEvent(SpellPart part, double x, double y, double size, double startingAngle, double mouseX, double mouseY, MouseEventHandler callback) {
         var closest = part;
         var closestAngle = startingAngle;
         var closestX = x;
         var closestY = y;
         var closestSize = size;
 
-        // These two dont need to be updated for the actual closest
-        var initialDiffX = x - mouseX;
-        var initialDiffY = y - mouseY;
-
         var centerAvailable = (isCircleClickable(toLocalSpace(size)) && (drawingPart == null || drawingPart == part)) || part.glyph instanceof SpellPart;
-        var closestDistanceSquared = centerAvailable ? initialDiffX * initialDiffX + initialDiffY * initialDiffY : Double.MAX_VALUE;
+        var closestDistanceSquared = Double.MAX_VALUE;
 
         int partCount = part.getSubParts().size();
         // We dont change this, its the same for all subcircles
-        var nextSize = Math.min(size / 2, size / (float) ((partCount + 1) / 2));
+        var nextSize = Math.min(size / 2, size / (double) ((partCount + 1) / 2));
         int i = 0;
         for (var child : part.getSubParts()) {
             var angle = startingAngle + (2 * Math.PI) / partCount * i - (Math.PI / 2);
@@ -321,9 +322,9 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
             if (distanceSquared < closestDistanceSquared) {
                 closest = child;
-                closestAngle = (float) angle;
-                closestX = (float) nextX;
-                closestY = (float) nextY;
+                closestAngle = angle;
+                closestX = nextX;
+                closestY = nextY;
                 closestSize = nextSize;
                 closestDistanceSquared = distanceSquared;
             }
@@ -331,16 +332,21 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             i++;
         }
 
+        if (centerAvailable) {
+            if (part.glyph instanceof SpellPart centerPart) {
+                if (propagateMouseEvent(centerPart, x, y, size / 3, startingAngle, mouseX, mouseY, callback)) {
+                    return true;
+                }
+            } else {
+                if (callback.handle(part, toLocalSpace(x), toLocalSpace(y), toLocalSpace(size))) {
+                    return true;
+                }
+            }
+        }
+
         if (Math.sqrt(closestDistanceSquared) <= size && toLocalSpace(size) >= 16) {
             if (closest == part) {
-                // Special handling for part glyphs, because of course
-                // This makes it impossible to interact with direct parents of part glyphs, but thats not an issue
-                if (closest.glyph instanceof SpellPart centerPart) {
-                    closest = centerPart;
-                    closestSize /= 3;
-                } else {
-                    return callback.handle(closest, toLocalSpace(closestX), toLocalSpace(closestY), toLocalSpace(closestSize));
-                }
+                return false;
             }
 
             return propagateMouseEvent(closest, closestX, closestY, closestSize, closestAngle, mouseX, mouseY, callback);
@@ -354,7 +360,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     }
 
     private static double toScaledSpace(double value) {
-        return (float) (value / PRECISION_OFFSET);
+        return value / PRECISION_OFFSET;
     }
 
     interface MouseEventHandler {

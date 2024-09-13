@@ -7,6 +7,7 @@
     "AbstractClientPlayerEntityMixin",
     "HeldItemRendererMixin",
     "InGameHudMixin",
+    "SubtitlesHudMixin",
     "InventoryScreenMixin",
     "MouseMixin",
     "PlayerRendererMixin",
