@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.spell.execution;
 
+import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.mana.ManaLink;
@@ -28,7 +29,7 @@ public class ExecutionState {
             Fragment.ENDEC.listOf().fieldOf("arguments", state -> state.arguments),
             Endec.INT.listOf().fieldOf("stacktrace", state -> state.stacktrace.stream().toList()),
             ManaLink.ENDEC.listOf().fieldOf("mana_links", state -> state.manaLinks),
-            ManaPool.ENDEC.optionalOf().optionalFieldOf("pool_override", state -> state.poolOverride, Optional.empty()),
+            EndecTomfoolery.safeOptionalOf(ManaPool.ENDEC).optionalFieldOf("pool_override", state -> state.poolOverride, Optional.empty()),
             ExecutionState::new
     );
 

@@ -27,7 +27,7 @@ public class FoldingSpellExecutor implements SpellExecutor {
                 s.addAll(l);
                 return s;
             }, ArrayList::new).fieldOf("elements", executor -> executor.elements),
-            SpellExecutor.ENDEC.optionalOf().optionalFieldOf("child", executor -> executor.child, Optional.empty()),
+            EndecTomfoolery.safeOptionalOf(SpellExecutor.ENDEC).optionalFieldOf("child", executor -> executor.child, Optional.empty()),
             Fragment.ENDEC.fieldOf("last", executor -> executor.last),
             FoldingSpellExecutor::new
     ));
