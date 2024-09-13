@@ -12,8 +12,8 @@ Various ploys for displaying particles in the world.
 
 <|glyph@trickster:templates|trick-id=trickster:highlight,title=Flourish Ploy|>
 
-vector -> vector
+vector... | vector[] -> vector
 
 ---
 
-Highlights the given block and returns the vector unmodified.
+Highlights the given blocks and returns the first vector unmodified.
