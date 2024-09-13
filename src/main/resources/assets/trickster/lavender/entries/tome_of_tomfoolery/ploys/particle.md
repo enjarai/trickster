@@ -16,4 +16,4 @@ vector... | vector[] -> vector
 
 ---
 
-Highlights the given blocks and returns the first vector unmodified.
+Highlights the given blocks and returns the first input unmodified.
