@@ -6,6 +6,7 @@ import dev.enjarai.trickster.item.component.SpellComponent;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.trick.Trick;
@@ -31,11 +32,14 @@ public class WriteSpellTrick extends Trick {
 
     public Fragment activate(SpellContext ctx, List<Fragment> fragments, boolean closed) throws BlunderException {
         var player = ctx.source().getPlayer();
-        var spell = supposeInput(fragments, 0).flatMap(s -> supposeType(s, FragmentType.SPELL_PART)).map(s -> {
-            var n = s.deepClone();
-            n.brutallyMurderEphemerals();
-            return n;
-        });
+        var input = supposeInput(fragments, 0);
+        var spell = input.flatMap(fragment -> supposeType(fragment, FragmentType.VOID).flatMap(_f -> Optional.of(new SpellPart())))
+                .or(() -> input.flatMap(fragment -> Optional.of(expectType(fragment, FragmentType.SPELL_PART)).map(s -> {
+                    var n = s.deepClone();
+                    n.brutallyMurderEphemerals();
+                    return n;
+                })));
+
 
         return player.map(serverPlayerEntity -> Pair.of(serverPlayerEntity, serverPlayerEntity.getOffHandStack())).map(pair -> {
             var serverPlayer = pair.getFirst();
@@ -75,7 +79,7 @@ public class WriteSpellTrick extends Trick {
                     if (spellComponent == null || spellComponent.immutable())
                         return false;
 
-                    s.remove(ModComponents.SPELL);
+                    s.set(ModComponents.SPELL, new SpellComponent(new SpellPart(), false));
                     return true;
                 })) {
                     throw new ImmutableItemBlunder(this);
