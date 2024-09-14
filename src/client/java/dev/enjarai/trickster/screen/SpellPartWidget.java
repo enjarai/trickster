@@ -364,11 +364,13 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             var result = rev.get().apply(revisionContext, spellPart, drawingPart);
 
             if (result != spellPart) {
-                var parent = parents.peek();
+                if (!parents.isEmpty()) {
+                    var parent = parents.peek();
 
-                for (int i = 0; i < parent.subParts.size(); i++) {
-                    if (parent.subParts.get(i) == spellPart) {
-                        parent.subParts.set(i, result);
+                    for (int i = 0; i < parent.subParts.size(); i++) {
+                        if (parent.subParts.get(i) == spellPart) {
+                            parent.subParts.set(i, result);
+                        }
                     }
                 }
 
