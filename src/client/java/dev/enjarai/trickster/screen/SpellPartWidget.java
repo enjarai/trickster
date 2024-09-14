@@ -69,6 +69,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         return List.of();
     }
 
+    //TODO: this causes the editor to reset when in the mirror
     public void setSpell(SpellPart spellPart) {
         this.rootSpellPart = spellPart;
         this.spellPart = spellPart;
@@ -154,32 +155,51 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         x += verticalAmount * (x - toScaledSpace(mouseX)) / 10;
         y += verticalAmount * (y - toScaledSpace(mouseY)) / 10;
 
-        if (toLocalSpace(size) > 400) {
-            resolveNewRoot(spellPart, toScaledSpace(mouseX), toScaledSpace(mouseY));
+        if (toLocalSpace(size) > 500) {
+            pushNewRoot(toScaledSpace(mouseX), toScaledSpace(mouseY));
         } else if (toLocalSpace(size) < 200 && !parents.empty()) {
-            spellPart = parents.pop();
-            angleOffsets.pop();
-            size += sizeOffsets.pop();
-
-            //TODO: recalculate completely from current zoom for absolute smoothness
-            var poppedOffset = positionOffsets.pop();
-            x -= poppedOffset.x;
-            y -= poppedOffset.y;
+            popOldRoot();
         }
 
         return true;
     }
 
-    private void resolveNewRoot(SpellPart current, double mouseX, double mouseY) {
-        var closest = current;
+    private void popOldRoot() {
+        var result = parents.pop();
+        angleOffsets.pop();
+        positionOffsets.pop();
+        size += sizeOffsets.pop();
+
+        int partCount = result.getSubParts().size();
+        var parentSize = Math.min(size * 2, size * (double) ((partCount + 1) / 2));
+        int i = 0;
+
+        //TODO: somehow gets everything *slightly* off, but still the closest I could get (using the popped values gives the same results)
+        for (var child : result.getSubParts()) {
+            if (child == spellPart) {
+                var angle = angleOffsets.peek() + (2 * Math.PI) / partCount * i - (Math.PI / 2);
+                x -= parentSize * Math.cos(angle);
+                y -= parentSize * Math.sin(angle);
+                break;
+            }
+
+            i++;
+        }
+
+        spellPart = result;
+    }
+
+    private void pushNewRoot(double mouseX, double mouseY) {
+        var closest = spellPart;
         var closestAngle = angleOffsets.peek();
         var closestDiff = positionOffsets.peek();
         var closestDistanceSquared = Double.MAX_VALUE;
 
-        int partCount = current.getSubParts().size();
+        int partCount = spellPart.getSubParts().size();
         var nextSize = Math.min(size / 2, size / (double) ((partCount + 1) / 2));
         int i = 0;
-        for (var child : current.getSubParts()) {
+
+        for (var child : spellPart.getSubParts()) {
             var angle = angleOffsets.peek() + (2 * Math.PI) / partCount * i - (Math.PI / 2);
             var nextX = x + (size * Math.cos(angle));
             var nextY = y + (size * Math.sin(angle));
