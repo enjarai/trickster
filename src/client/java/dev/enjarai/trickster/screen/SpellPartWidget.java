@@ -23,6 +23,7 @@ import static dev.enjarai.trickster.render.SpellCircleRenderer.*;
 public class SpellPartWidget extends AbstractParentElement implements Drawable, Selectable {
     public static final double PRECISION_OFFSET = Math.pow(2, 50);
 
+    private SpellPart rootSpellPart;
     private SpellPart spellPart;
     private final Stack<SpellPart> parentRoots = new Stack<>();
     private final Stack<Double> startingAngleOverride = new Stack<>();
@@ -38,6 +39,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     @Nullable
     private SpellPart toBeReplaced;
 
+    private final double originalSize;
     private final RevisionContext revisionContext;
     private SpellPart drawingPart;
     private Fragment oldGlyph;
@@ -46,9 +48,11 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     public final SpellCircleRenderer renderer;
 
     public SpellPartWidget(SpellPart spellPart, double x, double y, double size, RevisionContext revisionContext) {
+        this.rootSpellPart = spellPart;
         this.spellPart = spellPart;
         this.x = toScaledSpace(x);
         this.y = toScaledSpace(y);
+        this.originalSize = size;
         this.size = toScaledSpace(size);
         this.revisionContext = revisionContext;
         this.renderer = new SpellCircleRenderer(() -> this.drawingPart, () -> this.drawingPattern, PRECISION_OFFSET);
@@ -62,7 +66,16 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     }
 
     public void setSpell(SpellPart spellPart) {
+        this.rootSpellPart = spellPart;
         this.spellPart = spellPart;
+        this.size = toScaledSpace(originalSize);
+        this.x = 0;
+        this.y = 0;
+        this.parentRoots.clear();
+        this.startingAngleOverride.clear();
+        this.positionOffset.clear();
+        this.startingAngleOverride.push(0d);
+        this.positionOffset.push(new Vector2d(0, 0));
     }
 
     @Override
@@ -122,9 +135,9 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         y += verticalAmount * (y - toScaledSpace(mouseY)) / 10;
 
         //TODO: hardcoded values here are temporary, most likely
-        if (size > 0.0001) {
-            resolveNewRoot(spellPart);
-        } else if (size < 0.00001 && !parentRoots.empty()) {
+        if (toLocalSpace(size) > 256) {
+            resolveNewRoot(spellPart, toScaledSpace(mouseX), toScaledSpace(mouseY));
+        } else if (toLocalSpace(size) < 160 && !parentRoots.empty()) {
             spellPart = parentRoots.pop();
             startingAngleOverride.pop();
 
@@ -136,10 +149,10 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         return true;
     }
 
-    private void resolveNewRoot(SpellPart current) {
+    private void resolveNewRoot(SpellPart current, double mouseX, double mouseY) {
         var closest = current;
         var closestAngle = startingAngleOverride.peek();
-        var closestPosition = positionOffset.peek();
+        var closestDiff = positionOffset.peek();
         var closestDistanceSquared = Double.MAX_VALUE;
 
         int partCount = current.getSubParts().size();
@@ -147,16 +160,18 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         int i = 0;
         for (var child : current.getSubParts()) {
             var angle = startingAngleOverride.peek() + (2 * Math.PI) / partCount * i - (Math.PI / 2);
-            var closestX = x + (size * Math.cos(angle));
-            var closestY = y + (size * Math.sin(angle));
-            var diffX = closestX - x;
-            var diffY = closestY - y;
-            var distanceSquared = diffX * diffX + diffY * diffY;
+            var nextX = x + (size * Math.cos(angle));
+            var nextY = y + (size * Math.sin(angle));
+            var diffX = nextX - x;
+            var diffY = nextY - y;
+            var mDiffX = nextX - mouseX;
+            var mDiffY = nextY - mouseY;
+            var distanceSquared = mDiffX * mDiffX + mDiffY * mDiffY;
 
             if (distanceSquared < closestDistanceSquared) {
                 closest = child;
                 closestAngle = angle;
-                closestPosition = new Vector2d(closestX, closestY);
+                closestDiff = new Vector2d(diffX, diffY);
                 closestDistanceSquared = distanceSquared;
             }
 
@@ -165,11 +180,11 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
         this.parentRoots.push(spellPart);
         this.startingAngleOverride.push(closestAngle);
-        this.positionOffset.push(closestPosition);
+        this.positionOffset.push(closestDiff);
         this.spellPart = closest;
-        this.size = nextSize;
-        this.x += closestPosition.x;
-        this.y += closestPosition.y;
+        this.size -= nextSize;
+        this.x += closestDiff.x;
+        this.y += closestDiff.y;
     }
 
     @Override
@@ -316,7 +331,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         drawingPart = null;
         drawingPattern = null;
 
-        revisionContext.updateSpell(spellPart);
+        revisionContext.updateSpell(rootSpellPart);
 
         MinecraftClient.getInstance().player.playSoundToPlayer(
                 ModSounds.COMPLETE, SoundCategory.MASTER,
@@ -328,7 +343,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         if (toBeReplaced != null) {
             toBeReplaced.glyph = fragment;
             toBeReplaced = null;
-            revisionContext.updateSpell(spellPart);
+            revisionContext.updateSpell(rootSpellPart);
         }
     }
 
