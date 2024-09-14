@@ -5,6 +5,7 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.trick.blunder.*;
+import io.wispforest.accessories.endec.MinecraftEndecs;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
@@ -19,7 +20,7 @@ import java.util.Optional;
 public record SlotFragment(int slot, Optional<BlockPos> source) implements Fragment {
     public static final StructEndec<SlotFragment> ENDEC = StructEndecBuilder.of(
             Endec.INT.fieldOf("slot", SlotFragment::slot),
-            EndecTomfoolery.ALWAYS_READABLE_BLOCK_POS.optionalOf().optionalFieldOf("source", SlotFragment::source, Optional.empty()),
+            EndecTomfoolery.safeOptionalOf(EndecTomfoolery.ALWAYS_READABLE_BLOCK_POS).fieldOf("source", SlotFragment::source),
             SlotFragment::new
     );
 
@@ -30,9 +31,8 @@ public record SlotFragment(int slot, Optional<BlockPos> source) implements Fragm
 
     @Override
     public Text asText() {
-        return Text.literal("slot %d at %s".formatted(slot, source.isPresent()
-                ? "(%d, %d, %d)".formatted(source.get().getX(), source.get().getY(), source.get().getZ())
-                : "caster"));
+        return Text.literal("slot %d at %s".formatted(slot,
+                source.map(blockPos -> "(%d, %d, %d)".formatted(blockPos.getX(), blockPos.getY(), blockPos.getZ())).orElse("caster")));
     }
 
     @Override
