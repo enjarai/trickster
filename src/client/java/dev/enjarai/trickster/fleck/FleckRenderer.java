@@ -23,5 +23,5 @@ public interface FleckRenderer<T extends Fleck> {
 
 
 
-    void render(T fleck, ClientWorld world, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers);
+    void render(T fleck, ClientWorld world, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int color);
 }
