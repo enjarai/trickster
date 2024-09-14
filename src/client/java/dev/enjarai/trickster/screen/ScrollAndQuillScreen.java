@@ -7,12 +7,14 @@ import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
+import org.joml.Vector2d;
 
 import java.lang.ref.WeakReference;
 import java.math.BigDecimal;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
+import java.util.Stack;
 
 public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvider<ScrollAndQuillScreenHandler> {
     private static final ArrayList<PositionMemory> storedPositions = new ArrayList<>(5);
@@ -40,9 +42,7 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
             var spellHash = handler.spell.get().hashCode();
             for (var position : storedPositions) {
                 if (position.spell == spellHash) {
-                    partWidget.x = position.x;
-                    partWidget.y = position.y;
-                    partWidget.size = position.size;
+                    partWidget.load(position);
                     break;
                 }
             }
@@ -54,7 +54,7 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
     public void close() {
         var spellHash = handler.spell.get().hashCode();
         storedPositions.removeIf(position -> position.spell == spellHash);
-        storedPositions.add(new PositionMemory(spellHash, partWidget.x, partWidget.y, partWidget.size));
+        storedPositions.add(partWidget.save(spellHash));
         if (storedPositions.size() >= 5) {
             storedPositions.removeFirst();
         }
@@ -104,7 +104,12 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
         }
     }
 
-    record PositionMemory(int spell, double x, double y, double size) {
-
-    }
+    record PositionMemory(int spell,
+                          double x,
+                          double y,
+                          double size,
+                          Stack<SpellPart> parents,
+                          Stack<Double> angleOffsets,
+                          Stack<Vector2d> positionOffsets,
+                          Stack<Double> sizeOffsets) { }
 }
