@@ -6,6 +6,8 @@ import com.mojang.datafixers.util.Function3;
 import com.mojang.util.UndashedUuid;
 import io.wispforest.endec.*;
 import net.minecraft.util.math.BlockPos;
+import org.joml.Vector3d;
+import org.joml.Vector3dc;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,8 +17,8 @@ public class EndecTomfoolery {
     public static final Endec<BlockPos> ALWAYS_READABLE_BLOCK_POS =
             vectorEndec(Endec.INT, BlockPos::new, BlockPos::getX, BlockPos::getY, BlockPos::getZ);
     public static final Endec<UUID> UUID = Endec.STRING.xmap(UndashedUuid::fromStringLenient, java.util.UUID::toString);
-
     public static final SerializationAttribute.Marker UBER_COMPACT_ATTRIBUTE = SerializationAttribute.marker("uber_compact");
+    public static Endec<Vector3dc> VECTOR_3D_ENDEC = EndecTomfoolery.<Double, Vector3dc>vectorEndec(Endec.DOUBLE, Vector3d::new, Vector3dc::x, Vector3dc::y, Vector3dc::z);
 
     public static <C, V> Endec<V> vectorEndec(Endec<C> componentEndec, Function3<C, C, C, V> constructor, Function<V, C> xGetter, Function<V, C> yGetter, Function<V, C> zGetter) {
         return componentEndec.listOf().validate(ints -> {

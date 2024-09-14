@@ -10,10 +10,7 @@ import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.particle.ProtectedBlockParticle;
 import dev.enjarai.trickster.particle.SpellParticle;
-import dev.enjarai.trickster.render.BarsRenderer;
-import dev.enjarai.trickster.render.CircleErrorRenderer;
-import dev.enjarai.trickster.render.HoldableHatRenderer;
-import dev.enjarai.trickster.render.SpellCircleBlockEntityRenderer;
+import dev.enjarai.trickster.render.*;
 import dev.enjarai.trickster.screen.ModHandledScreens;
 import dev.enjarai.trickster.screen.ScrollAndQuillScreen;
 import dev.enjarai.trickster.screen.SignScrollScreen;
@@ -26,8 +23,8 @@ import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 
@@ -64,6 +61,8 @@ public class TricksterClient implements ClientModInitializer {
 				}
 			}
 		});
+
+		WorldRenderEvents.AFTER_ENTITIES.register(FlecksRenderer::render);
 
 		HudRenderCallback.EVENT.register(BarsRenderer::render);
 		HudRenderCallback.EVENT.register(CircleErrorRenderer::render);

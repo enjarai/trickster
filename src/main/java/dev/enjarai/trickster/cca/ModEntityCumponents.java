@@ -26,12 +26,15 @@ public class ModEntityCumponents implements EntityComponentInitializer {
 
     public static final ComponentKey<GraceComponent> GRACE =
             ComponentRegistry.getOrCreate(Trickster.id("grace"), GraceComponent.class);
+    public static final ComponentKey<FlecksComponent> FLECKS =
+            ComponentRegistry.getOrCreate(Trickster.id("flecks"), FlecksComponent.class);
 
     @Override
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
         registry.registerFor(LivingEntity.class, MANA, ManaComponent::new);
         registry.registerForPlayers(CASTER, CasterComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
         registry.registerForPlayers(BARS, BarsComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
+        registry.registerForPlayers(FLECKS, FlecksComponent::new, RespawnCopyStrategy.NEVER_COPY);
         registry.registerForPlayers(DISGUISE, DisguiseCumponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
         registry.registerForPlayers(IS_EDITING_SCROLL, IsEditingScrollComponent::new, RespawnCopyStrategy.NEVER_COPY);
         registry.registerFor(LivingEntity.class, GRACE, GraceComponent::new);
