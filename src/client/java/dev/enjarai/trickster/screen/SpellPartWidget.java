@@ -27,8 +27,6 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     private SpellPart spellPart;
     private final Stack<SpellPart> parents = new Stack<>();
     private final Stack<Double> angleOffsets = new Stack<>();
-    private final Stack<Vector2d> positionOffsets = new Stack<>();
-    private final Stack<Double> sizeOffsets = new Stack<>();
 
     public double x;
     public double y;
@@ -60,8 +58,6 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         this.revisionContext = revisionContext;
         this.renderer = new SpellCircleRenderer(() -> this.drawingPart, () -> this.drawingPattern, PRECISION_OFFSET);
         this.angleOffsets.push(0d);
-        this.positionOffsets.push(new Vector2d(0, 0));
-        this.sizeOffsets.push(0d);
     }
 
     @Override
@@ -78,15 +74,11 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         this.y = originalPosition.y;
         this.parents.clear();
         this.angleOffsets.clear();
-        this.positionOffsets.clear();
-        this.sizeOffsets.clear();
         this.angleOffsets.push(0d);
-        this.positionOffsets.push(new Vector2d(0, 0));
-        this.sizeOffsets.push(0d);
     }
 
     public ScrollAndQuillScreen.PositionMemory save(int spellHash) {
-        return new ScrollAndQuillScreen.PositionMemory(spellHash, x, y, size, parents, angleOffsets, positionOffsets, sizeOffsets);
+        return new ScrollAndQuillScreen.PositionMemory(spellHash, x, y, size, parents, angleOffsets);
     }
 
     public void load(ScrollAndQuillScreen.PositionMemory memory) {
@@ -95,8 +87,6 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         this.size = memory.size();
         this.parents.addAll(memory.parents());
         this.angleOffsets.addAll(memory.angleOffsets());
-        this.positionOffsets.addAll(memory.positionOffsets());
-        this.sizeOffsets.addAll(memory.sizeOffsets());
     }
 
     @Override
@@ -167,39 +157,53 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     private void popOldRoot() {
         var result = parents.pop();
         angleOffsets.pop();
-        positionOffsets.pop();
-        size += sizeOffsets.pop();
 
-        int partCount = result.getSubParts().size();
-        var parentSize = Math.min(size * 2, size * (double) ((partCount + 1) / 2));
+        int partCount = result.subParts.size();
+        var parentSize = size * 3;
         int i = 0;
 
-        //TODO: somehow gets everything *slightly* off, but still the closest I could get (using the popped values gives the same results)
-        for (var child : result.getSubParts()) {
-            if (child == spellPart) {
-                var angle = angleOffsets.peek() + (2 * Math.PI) / partCount * i - (Math.PI / 2);
-                x -= parentSize * Math.cos(angle);
-                y -= parentSize * Math.sin(angle);
-                break;
-            }
+        if (result.glyph instanceof SpellPart inner && inner == spellPart) {
+            //TODO: broken
+        } else {
+            parentSize = Math.max(size * 2, size * (double) ((partCount + 1) / 2));
 
-            i++;
+            for (var child : result.subParts) {
+                if (child == spellPart) {
+                    var angle = angleOffsets.peek() + (2 * Math.PI) / partCount * i - (Math.PI / 2);
+                    x -= parentSize * Math.cos(angle);
+                    y -= parentSize * Math.sin(angle);
+                    break;
+                }
+
+                i++;
+            }
         }
 
+        size = parentSize;
         spellPart = result;
     }
 
     private void pushNewRoot(double mouseX, double mouseY) {
         var closest = spellPart;
         var closestAngle = angleOffsets.peek();
-        var closestDiff = positionOffsets.peek();
+        var closestDiffX = 0d;
+        var closestDiffY = 0d;
         var closestDistanceSquared = Double.MAX_VALUE;
+        var closestSize = size / 3;
 
-        int partCount = spellPart.getSubParts().size();
+        int partCount = spellPart.subParts.size();
         var nextSize = Math.min(size / 2, size / (double) ((partCount + 1) / 2));
         int i = 0;
 
-        for (var child : spellPart.getSubParts()) {
+        if (spellPart.glyph instanceof SpellPart inner) {
+            var mDiffX = x - mouseX;
+            var mDiffY = y - mouseY;
+            var distanceSquared = mDiffX * mDiffX + mDiffY * mDiffY;
+            closest = inner;
+            closestDistanceSquared = distanceSquared;
+        }
+
+        for (var child : spellPart.subParts) {
             var angle = angleOffsets.peek() + (2 * Math.PI) / partCount * i - (Math.PI / 2);
             var nextX = x + (size * Math.cos(angle));
             var nextY = y + (size * Math.sin(angle));
@@ -212,8 +216,10 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             if (distanceSquared < closestDistanceSquared) {
                 closest = child;
                 closestAngle = angle;
-                closestDiff = new Vector2d(diffX, diffY);
+                closestDiffX = diffX;
+                closestDiffY = diffY;
                 closestDistanceSquared = distanceSquared;
+                closestSize = nextSize;
             }
 
             i++;
@@ -221,12 +227,10 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
         this.parents.push(spellPart);
         this.angleOffsets.push(closestAngle);
-        this.positionOffsets.push(closestDiff);
-        this.sizeOffsets.push(nextSize);
         this.spellPart = closest;
-        this.size -= nextSize;
-        this.x += closestDiff.x;
-        this.y += closestDiff.y;
+        this.size -= closestSize;
+        this.x += closestDiffX;
+        this.y += closestDiffY;
     }
 
     @Override

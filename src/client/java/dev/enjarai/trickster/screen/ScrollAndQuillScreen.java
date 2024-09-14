@@ -109,7 +109,5 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
                           double y,
                           double size,
                           Stack<SpellPart> parents,
-                          Stack<Double> angleOffsets,
-                          Stack<Vector2d> positionOffsets,
-                          Stack<Double> sizeOffsets) { }
+                          Stack<Double> angleOffsets) { }
 }
