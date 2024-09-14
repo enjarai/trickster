@@ -162,9 +162,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         var parentSize = size * 3;
         int i = 0;
 
-        if (result.glyph instanceof SpellPart inner && inner == spellPart) {
-            //TODO: broken
-        } else {
+        if (!(result.glyph instanceof SpellPart inner && inner == spellPart)) {
             parentSize = Math.max(size * 2, size * (double) ((partCount + 1) / 2));
 
             for (var child : result.subParts) {
@@ -219,7 +217,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
                 closestDiffX = diffX;
                 closestDiffY = diffY;
                 closestDistanceSquared = distanceSquared;
-                closestSize = nextSize;
+                closestSize = size - nextSize;
             }
 
             i++;
@@ -228,7 +226,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         this.parents.push(spellPart);
         this.angleOffsets.push(closestAngle);
         this.spellPart = closest;
-        this.size -= closestSize;
+        this.size = closestSize;
         this.x += closestDiffX;
         this.y += closestDiffY;
     }
