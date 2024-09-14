@@ -1,14 +1,9 @@
 package dev.enjarai.trickster.fleck;
 
-import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.spell.SpellPart;
-import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import org.joml.Vector3dc;
-
-import java.util.Optional;
-import java.util.UUID;
 
 import static dev.enjarai.trickster.EndecTomfoolery.VECTOR_3D_ENDEC;
 
@@ -25,6 +20,3 @@ public record SpellFleck(Vector3dc pos, Vector3dc facing, SpellPart spell) imple
         return FleckType.LINE;
     }
 }
-
-
-

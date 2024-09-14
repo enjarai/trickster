@@ -1,13 +1,8 @@
 package dev.enjarai.trickster.fleck;
 
-import dev.enjarai.trickster.EndecTomfoolery;
-import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import org.joml.Vector3dc;
-
-import java.util.Optional;
-import java.util.UUID;
 
 import static dev.enjarai.trickster.EndecTomfoolery.VECTOR_3D_ENDEC;
 
