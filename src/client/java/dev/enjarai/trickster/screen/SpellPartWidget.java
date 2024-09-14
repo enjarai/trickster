@@ -28,6 +28,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     private final Stack<SpellPart> parentRoots = new Stack<>();
     private final Stack<Double> startingAngleOverride = new Stack<>();
     private final Stack<Vector2d> positionOffset = new Stack<>();
+    private final Stack<Double> sizeOffset = new Stack<>();
 
     public double x;
     public double y;
@@ -39,6 +40,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     @Nullable
     private SpellPart toBeReplaced;
 
+    private final Vector2d originalPosition;
     private final double originalSize;
     private final RevisionContext revisionContext;
     private SpellPart drawingPart;
@@ -50,6 +52,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     public SpellPartWidget(SpellPart spellPart, double x, double y, double size, RevisionContext revisionContext) {
         this.rootSpellPart = spellPart;
         this.spellPart = spellPart;
+        this.originalPosition = new Vector2d(toScaledSpace(x), toScaledSpace(y));
         this.x = toScaledSpace(x);
         this.y = toScaledSpace(y);
         this.originalSize = size;
@@ -58,6 +61,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         this.renderer = new SpellCircleRenderer(() -> this.drawingPart, () -> this.drawingPattern, PRECISION_OFFSET);
         this.startingAngleOverride.push(0d);
         this.positionOffset.push(new Vector2d(0, 0));
+        this.sizeOffset.push(0d);
     }
 
     @Override
@@ -69,13 +73,15 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         this.rootSpellPart = spellPart;
         this.spellPart = spellPart;
         this.size = toScaledSpace(originalSize);
-        this.x = 0;
-        this.y = 0;
+        this.x = originalPosition.x;
+        this.y = originalPosition.y;
         this.parentRoots.clear();
         this.startingAngleOverride.clear();
         this.positionOffset.clear();
+        this.sizeOffset.clear();
         this.startingAngleOverride.push(0d);
         this.positionOffset.push(new Vector2d(0, 0));
+        this.sizeOffset.push(0d);
     }
 
     @Override
@@ -134,13 +140,14 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         x += verticalAmount * (x - toScaledSpace(mouseX)) / 10;
         y += verticalAmount * (y - toScaledSpace(mouseY)) / 10;
 
-        //TODO: hardcoded values here are temporary, most likely
-        if (toLocalSpace(size) > 256) {
+        if (toLocalSpace(size) > 400) {
             resolveNewRoot(spellPart, toScaledSpace(mouseX), toScaledSpace(mouseY));
-        } else if (toLocalSpace(size) < 160 && !parentRoots.empty()) {
+        } else if (toLocalSpace(size) < 200 && !parentRoots.empty()) {
             spellPart = parentRoots.pop();
             startingAngleOverride.pop();
+            size += sizeOffset.pop();
 
+            //TODO: recalculate completely from current zoom for absolute smoothness
             var poppedOffset = positionOffset.pop();
             x -= poppedOffset.x;
             y -= poppedOffset.y;
@@ -181,6 +188,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         this.parentRoots.push(spellPart);
         this.startingAngleOverride.push(closestAngle);
         this.positionOffset.push(closestDiff);
+        this.sizeOffset.push(nextSize);
         this.spellPart = closest;
         this.size -= nextSize;
         this.x += closestDiff.x;
@@ -319,7 +327,23 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             toBeReplaced = drawingPart; //TODO: allow handling this in a more generic way?
             Revisions.EXECUTE_OFF_HAND.apply(revisionContext, spellPart, drawingPart);
         } else if (rev.isPresent()) {
-            spellPart = rev.get().apply(revisionContext, spellPart, drawingPart);
+            var result = rev.get().apply(revisionContext, spellPart, drawingPart);
+
+            if (result != spellPart) {
+                var parent = parentRoots.peek();
+
+                for (int i = 0; i < parent.subParts.size(); i++) {
+                    if (parent.subParts.get(i) == spellPart) {
+                        parent.subParts.set(i, result);
+                    }
+                }
+
+                if (spellPart == rootSpellPart) {
+                    rootSpellPart = result;
+                }
+
+                spellPart = result;
+            }
         } else {
             if (patternSize >= 2) {
                 drawingPart.glyph = new PatternGlyph(compiled);
