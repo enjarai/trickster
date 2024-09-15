@@ -33,7 +33,7 @@ public class FlecksRenderer {
             //noinspection unchecked
             renderer.render(
                     fleck,
-                    worldRenderContext.world(), worldRenderContext.tickCounter().getTickDelta(false),
+                    worldRenderContext, worldRenderContext.world(), worldRenderContext.tickCounter().getTickDelta(false),
                     worldRenderContext.matrixStack(), worldRenderContext.consumers(), color
             );
         });

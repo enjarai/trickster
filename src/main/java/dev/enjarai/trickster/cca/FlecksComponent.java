@@ -19,6 +19,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FlecksComponent implements ServerTickingComponent, ClientTickingComponent, AutoSyncedComponent {
+    /*
+    * If the packet spam becomes an issue, we should store different maps on the server and the client
+    * Server Id : (Fleck, Age)
+    * Client Id : Fleck
+    *
+    * The client doesnt need to know the fleck's age, currently recursive/persistent fleck will send be sent to the client every tick. 1 packet per player. but not per fleck.
+    *
+    * TODO: make it so the client wont try to render too many flecks at once and crash
+    * TODO: hash fleck id with spell source hash, to prevent collisions
+    * */
 
     public static final Endec<Pair<Fleck, Integer>> PAIR_ENDEC = StructEndecBuilder.of(
             Fleck.ENDEC.fieldOf("first", Pair::getFirst),

@@ -6,16 +6,16 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
+import org.joml.Vector3f;
 
 import java.util.List;
 
-public class LineTrick extends Trick {
-    public LineTrick() {
+public class LineFleckTrick extends Trick {
+    public LineFleckTrick() {
         super(Pattern.of(
-                //TODO
+              2,5,7,4,3,1,2
         ));
     }
 
@@ -27,7 +27,10 @@ public class LineTrick extends Trick {
         var entities = supposeInput(fragments, FragmentType.LIST, 3); // list of entities / players to render to
 
         ctx.source().getWorld().getPlayers().stream().filter(n -> true).forEach( //todo only show this to relevant players
-                player -> player.getComponent(ModEntityCumponents.FLECKS).addFleck(id, new LineFleck(pos1, pos2))
+            player -> player.getComponent(ModEntityCumponents.FLECKS).addFleck(id, new LineFleck(
+                pos1.get(new Vector3f()),
+                pos2.get(new Vector3f())
+            ))
         );
 
         return fragments.getFirst(); //id for passthrough, like bars

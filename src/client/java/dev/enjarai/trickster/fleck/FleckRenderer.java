@@ -2,6 +2,7 @@ package dev.enjarai.trickster.fleck;
 
 import com.mojang.serialization.Lifecycle;
 import dev.enjarai.trickster.Trickster;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
@@ -21,7 +22,5 @@ public interface FleckRenderer<T extends Fleck> {
         return Registry.register(REGISTRY, FleckType.REGISTRY.getId(type), renderer);
     }
 
-
-
-    void render(T fleck, ClientWorld world, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int color);
+    void render(T fleck, WorldRenderContext context, ClientWorld world, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int color);
 }

@@ -184,6 +184,9 @@ trickster:
 
     highlight: Flourish Ploy
 
+    draw_spell: Marketer's Ploy
+    draw_line: Artist's Ploy
+
     get_scale: Distortion of Occupation
     set_scale: Ploy of Occupation
 

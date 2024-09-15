@@ -17,6 +17,8 @@ import dev.enjarai.trickster.spell.trick.list.*;
 import dev.enjarai.trickster.spell.trick.math.*;
 import dev.enjarai.trickster.spell.trick.misc.*;
 import dev.enjarai.trickster.spell.trick.particle.HighlightTrick;
+import dev.enjarai.trickster.spell.trick.particle.LineFleckTrick;
+import dev.enjarai.trickster.spell.trick.particle.SpellFleckTrick;
 import dev.enjarai.trickster.spell.trick.projectile.SummonDragonBreathTrick;
 import dev.enjarai.trickster.spell.trick.projectile.SummonFireballTrick;
 import dev.enjarai.trickster.spell.trick.projectile.SummonArrowTrick;
@@ -222,6 +224,12 @@ public class Tricks {
 
     // Dimension
     public static final GetDimensionTrick GET_DIMENSION = register("get_dimension", new GetDimensionTrick());
+
+    //Flecks
+    public static final LineFleckTrick DRAW_LINE = register("draw_line", new LineFleckTrick());
+    public static final SpellFleckTrick DRAW_SPELL = register("draw_spell", new SpellFleckTrick());
+
+    // todo more flecks, text fleck, if i do it now the type system will complain because master strings are strings not text
 
     // Misc
     public static final TypeFragmentTrick TYPE_FRAGMENT = register("type_fragment", new TypeFragmentTrick());
