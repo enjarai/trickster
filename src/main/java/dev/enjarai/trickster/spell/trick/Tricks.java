@@ -55,7 +55,7 @@ public class Tricks {
             LOOKUP.put(value.getPattern(), value);
             return super.add(key, value, info);
         }
-    }).attribute(RegistryAttribute.SYNCED).buildAndRegister();
+    }).buildAndRegister();
 
     // Functions
     public static final ExecuteTrick EXECUTE = register("execute", new ExecuteTrick());

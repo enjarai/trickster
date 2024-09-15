@@ -14,7 +14,10 @@ import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.screen.ModScreenHandlers;
 import dev.enjarai.trickster.spell.ItemTriggerHelper;
+import dev.enjarai.trickster.spell.execution.executor.SpellExecutorType;
+import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
+import dev.enjarai.trickster.spell.mana.ManaPoolType;
 import dev.enjarai.trickster.spell.trick.Tricks;
 import net.fabricmc.api.ModInitializer;
 
@@ -60,6 +63,9 @@ public class Trickster implements ModInitializer, CicadaEntrypoint {
 		ModDamageTypes.register();
 		Tricks.register();
 		ModCriteria.register();
+		FragmentType.register();
+		ManaPoolType.register();
+		SpellExecutorType.register();
 
 		PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, blockEntity) -> {
 			if (player instanceof ServerPlayerEntity serverPlayer)

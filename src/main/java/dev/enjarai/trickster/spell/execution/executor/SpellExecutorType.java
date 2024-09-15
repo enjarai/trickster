@@ -12,7 +12,7 @@ import net.minecraft.registry.SimpleRegistry;
 
 public record SpellExecutorType<T extends SpellExecutor>(StructEndec<T> endec) {
     public static final RegistryKey<Registry<SpellExecutorType<?>>> REGISTRY_KEY = RegistryKey.ofRegistry(Trickster.id("spell_executor_type"));
-    public static final Registry<SpellExecutorType<?>> REGISTRY = FabricRegistryBuilder.createSimple(REGISTRY_KEY).attribute(RegistryAttribute.SYNCED).buildAndRegister();
+    public static final Registry<SpellExecutorType<?>> REGISTRY = FabricRegistryBuilder.createSimple(REGISTRY_KEY).buildAndRegister();
 
     public static final SpellExecutorType<DefaultSpellExecutor> DEFAULT = register("default", DefaultSpellExecutor.ENDEC);
     public static final SpellExecutorType<FoldingSpellExecutor> FOLDING = register("folding", FoldingSpellExecutor.ENDEC);
@@ -21,5 +21,9 @@ public record SpellExecutorType<T extends SpellExecutor>(StructEndec<T> endec) {
 
     private static <T extends SpellExecutor> SpellExecutorType<T> register(String name, StructEndec<T> codec) {
         return Registry.register(REGISTRY, Trickster.id(name), new SpellExecutorType<>(codec));
+    }
+
+    public static void register() {
+        // init the class :brombeere:
     }
 }

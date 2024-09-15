@@ -39,7 +39,7 @@ public record FragmentType<T extends Fragment>(StructEndec<T> endec, OptionalInt
             INT_ID_LOOKUP.put(hash, key.getValue());
             return super.add(key, value, info);
         }
-    }).attribute(RegistryAttribute.SYNCED).buildAndRegister();;
+    }).buildAndRegister();
 
     public static final FragmentType<TypeFragment> TYPE = register("type", TypeFragment.ENDEC, 0x66cc00);
     public static final FragmentType<NumberFragment> NUMBER = register("number", NumberFragment.ENDEC, 0xddaa00);
@@ -64,6 +64,10 @@ public record FragmentType<T extends Fragment>(StructEndec<T> endec, OptionalInt
 
     private static <T extends Fragment> FragmentType<T> register(String name, StructEndec<T> codec) {
         return Registry.register(REGISTRY, Trickster.id(name), new FragmentType<>(codec, OptionalInt.empty()));
+    }
+
+    public static void register() {
+        // init the class :brombeere:
     }
 
     public MutableText getName() {
