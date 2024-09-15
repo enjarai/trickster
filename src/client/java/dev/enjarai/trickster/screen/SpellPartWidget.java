@@ -67,14 +67,26 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
     //TODO: this causes the editor to reset when in the mirror
     public void setSpell(SpellPart spellPart) {
+        var newParents = new Stack<SpellPart>();
+        newParents.push(spellPart);
+        var newAngleOffsets = new Stack<Double>();
+        newAngleOffsets.push(0d);
+
+        var reversed = parents.reversed();
+
+        for (int i = reversed.size(); i > 0; i--) {
+
+        }
+
         this.rootSpellPart = spellPart;
-        this.spellPart = spellPart;
-        this.size = toScaledSpace(originalSize);
-        this.x = originalPosition.x;
-        this.y = originalPosition.y;
+        this.spellPart = newParents.pop();
+//        this.size = toScaledSpace(originalSize);
+//        this.x = originalPosition.x;
+//        this.y = originalPosition.y;
         this.parents.clear();
+        this.parents.addAll(newParents);
         this.angleOffsets.clear();
-        this.angleOffsets.push(0d);
+        this.angleOffsets.addAll(newAngleOffsets);
     }
 
     public ScrollAndQuillScreen.PositionMemory save(int spellHash) {
