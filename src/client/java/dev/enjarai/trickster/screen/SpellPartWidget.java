@@ -116,13 +116,16 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     }
 
     public ScrollAndQuillScreen.PositionMemory save(int spellHash) {
-        return new ScrollAndQuillScreen.PositionMemory(spellHash, x, y, size, parents, angleOffsets);
+        return new ScrollAndQuillScreen.PositionMemory(spellHash, x, y, size, spellPart, new ArrayList<>(parents), new ArrayList<>(angleOffsets));
     }
 
     public void load(ScrollAndQuillScreen.PositionMemory memory) {
         this.x = memory.x();
         this.y = memory.y();
         this.size = memory.size();
+        this.spellPart = memory.spellPart();
+        this.parents.clear();
+        this.angleOffsets.clear();
         this.parents.addAll(memory.parents());
         this.angleOffsets.addAll(memory.angleOffsets());
     }
@@ -183,9 +186,9 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         x += verticalAmount * (x - toScaledSpace(mouseX)) / 10;
         y += verticalAmount * (y - toScaledSpace(mouseY)) / 10;
 
-        if (toLocalSpace(size) > 640) {
+        if (toLocalSpace(size) > 500) {
             pushNewRoot(toScaledSpace(mouseX), toScaledSpace(mouseY));
-        } else if (toLocalSpace(size) < 540 && !parents.empty()) {
+        } else if (toLocalSpace(size) < 200 && !parents.empty()) {
             popOldRoot();
         }
 
@@ -255,7 +258,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
                 closestDiffX = diffX;
                 closestDiffY = diffY;
                 closestDistanceSquared = distanceSquared;
-                closestSize = size - nextSize;
+                closestSize = nextSize;
             }
 
             i++;
