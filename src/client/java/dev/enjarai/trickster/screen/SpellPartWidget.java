@@ -65,28 +65,54 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         return List.of();
     }
 
-    //TODO: this causes the editor to reset when in the mirror
     public void setSpell(SpellPart spellPart) {
         var newParents = new Stack<SpellPart>();
-        newParents.push(spellPart);
         var newAngleOffsets = new Stack<Double>();
-        newAngleOffsets.push(0d);
+        newParents.push(spellPart);
 
-        var reversed = parents.reversed();
+        var currentParents = new ArrayList<>(this.parents);
+        var currentAngleOffsets = new ArrayList<>(this.angleOffsets);
+        newAngleOffsets.push(currentAngleOffsets.removeFirst());
 
-        for (int i = reversed.size(); i > 0; i--) {
+        for (int i = currentParents.size() - 1; i >= 0; i--) {
+            var currentParent = currentParents.removeFirst();
+            var currentChild = !currentParents.isEmpty() ? currentParents.getFirst() : this.spellPart;
 
+            if (currentParent.glyph instanceof SpellPart spellGlyph && spellGlyph == currentChild) {
+                if (newParents.peek().glyph instanceof SpellPart newSpellGlyph)
+                    newParents.push(newSpellGlyph);
+                else break;
+            } else {
+                var failed = true;
+                int i2 = 0;
+
+                for (var child : currentParent.subParts) {
+                    if (child == currentChild) {
+                        if (newParents.peek().subParts.size() > i2) {
+                            newParents.push(newParents.peek().subParts.get(i2));
+                            failed = false;
+                        }
+
+                        break;
+                    }
+
+                    i2++;
+                }
+
+                if (failed) {
+                    break;
+                }
+            }
+
+            newAngleOffsets.push(currentAngleOffsets.removeFirst());
         }
 
         this.rootSpellPart = spellPart;
         this.spellPart = newParents.pop();
-//        this.size = toScaledSpace(originalSize);
-//        this.x = originalPosition.x;
-//        this.y = originalPosition.y;
         this.parents.clear();
-        this.parents.addAll(newParents);
         this.angleOffsets.clear();
-        this.angleOffsets.addAll(newAngleOffsets);
+        this.parents.addAll(new ArrayList<>(newParents));
+        this.angleOffsets.addAll(new ArrayList<>(newAngleOffsets));
     }
 
     public ScrollAndQuillScreen.PositionMemory save(int spellHash) {
@@ -157,9 +183,9 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         x += verticalAmount * (x - toScaledSpace(mouseX)) / 10;
         y += verticalAmount * (y - toScaledSpace(mouseY)) / 10;
 
-        if (toLocalSpace(size) > 500) {
+        if (toLocalSpace(size) > 640) {
             pushNewRoot(toScaledSpace(mouseX), toScaledSpace(mouseY));
-        } else if (toLocalSpace(size) < 200 && !parents.empty()) {
+        } else if (toLocalSpace(size) < 540 && !parents.empty()) {
             popOldRoot();
         }
 
