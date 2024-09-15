@@ -39,7 +39,6 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     private SpellPart toBeReplaced;
 
     private final Vector2d originalPosition;
-    private final double originalSize;
     private final RevisionContext revisionContext;
     private SpellPart drawingPart;
     private Fragment oldGlyph;
@@ -53,7 +52,6 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         this.originalPosition = new Vector2d(toScaledSpace(x), toScaledSpace(y));
         this.x = toScaledSpace(x);
         this.y = toScaledSpace(y);
-        this.originalSize = size;
         this.size = toScaledSpace(size);
         this.revisionContext = revisionContext;
         this.renderer = new SpellCircleRenderer(() -> this.drawingPart, () -> this.drawingPattern, PRECISION_OFFSET);
@@ -100,6 +98,8 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
                 }
 
                 if (failed) {
+                    this.x = originalPosition.x;
+                    this.y = originalPosition.y;
                     break;
                 }
             }
