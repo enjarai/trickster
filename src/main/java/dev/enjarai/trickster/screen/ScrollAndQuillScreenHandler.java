@@ -102,6 +102,7 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
                                     null, player(), ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f));
                         } else {
                             spell.brutallyMurderEphemerals();
+                            this.spell.set(spell);
                         }
 
                         SpellComponent.setSpellPart(scrollStack, spell, Optional.empty(), false);

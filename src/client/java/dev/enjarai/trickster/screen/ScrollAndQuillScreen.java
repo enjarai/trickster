@@ -46,9 +46,9 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
 
     @Override
     public void close() {
-        var spellHash = handler.spell.get().hashCode();
-        storedPositions.removeIf(position -> position.spellHash == spellHash);
-        storedPositions.add(partWidget.save(spellHash));
+        var saved = partWidget.save();
+        storedPositions.removeIf(position -> position.spellHash == saved.spellHash);
+        storedPositions.add(saved);
         if (storedPositions.size() >= 5) {
             storedPositions.removeFirst();
         }

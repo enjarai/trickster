@@ -225,3 +225,13 @@ and puts the result as a glyph in the center of the circle it is drawn in.
 ---
 
 Copies the circle it is drawn in to the user's offhand.
+
+;;;;;
+
+<|pattern@trickster:templates|pattern=1\,0\,4\,8\,7\,6\,4\,2\,1\,4,title=Address Revision|>
+
+{gray}(Scribing pattern){}
+
+---
+
+When this scribing pattern is drawn, the [address](^trickster:distortions/tree#2) of the circle this pattern was drawn in is written to the item in your other hand.

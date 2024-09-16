@@ -115,8 +115,8 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         this.angleOffsets.addAll(new ArrayList<>(newAngleOffsets));
     }
 
-    public ScrollAndQuillScreen.PositionMemory save(int spellHash) {
-        return new ScrollAndQuillScreen.PositionMemory(spellHash, x, y, size, spellPart, new ArrayList<>(parents), new ArrayList<>(angleOffsets));
+    public ScrollAndQuillScreen.PositionMemory save() {
+        return new ScrollAndQuillScreen.PositionMemory(rootSpellPart.hashCode(), x, y, size, spellPart, new ArrayList<>(parents), new ArrayList<>(angleOffsets));
     }
 
     public void load(ScrollAndQuillScreen.PositionMemory memory) {

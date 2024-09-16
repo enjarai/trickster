@@ -24,16 +24,6 @@ that circle.
 
 ;;;;;
 
-<|pattern@trickster:templates|pattern=1\,0\,4\,8\,7\,6\,4\,2\,1\,4,title=Address Revision|>
-
-{gray}(Scribing pattern){}
-
----
-
-When this scribing pattern is drawn, the address of the circle this pattern was drawn in is written to the item in your other hand.
-
-;;;;;
-
 <|glyph@trickster:templates|trick-id=trickster:locate_glyph,title=Pinpoint Distortion|>
 
 spell, any -> number[] | void
