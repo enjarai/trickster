@@ -1,10 +1,2 @@
-- Solved certain serializations being invalid, causing client disconnects in some cases. (@enjarai)
-- Improved book tutorials. (@enjarai)
-- Made impulse grace more sensible. (@enjarai)
-- Majorly improved the depth available to the editing screen.
-  - Fixed doubles being downcast to floats, which resulted in precision loss. (@enjarai)
-  - Made the available depth virtually infinite. (@StellarWitch7)
-- Fixed a slight issue with the spell writing trick. (@StellarWitch7)
-- Fixed the main hand spell being rendered in front of the player when editing the offhand scroll. (@StellarWitch7)
-- Stopped the server from syncing mana to clients, as it is unneeded. (@StellarWitch7)
-- Fixed a broken internal book link. (@StellarWitch7)
+- Solved scroll and mirror UI not updating the item most of the time. (@StellarWitch7)
+- Fixed inconsistency in the distortions section of the book. (@StellarWitch7)
