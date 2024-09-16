@@ -4,7 +4,6 @@ import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import io.wispforest.owo.serialization.endec.MinecraftEndecs;
 import net.minecraft.text.Text;
-import org.joml.Vector3dc;
 import org.joml.Vector3fc;
 
 import static dev.enjarai.trickster.EndecTomfoolery.VECTOR_3F_ENDEC;

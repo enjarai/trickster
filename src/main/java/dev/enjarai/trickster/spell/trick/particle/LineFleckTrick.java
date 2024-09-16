@@ -15,7 +15,7 @@ import java.util.List;
 public class LineFleckTrick extends Trick {
     public LineFleckTrick() {
         super(Pattern.of(
-              2,5,7,4,3,1,2
+                2, 5, 7, 4, 3, 1, 2
         ));
     }
 
@@ -27,10 +27,10 @@ public class LineFleckTrick extends Trick {
         var entities = supposeInput(fragments, FragmentType.LIST, 3); // list of entities / players to render to
 
         ctx.source().getWorld().getPlayers().stream().filter(n -> true).forEach( //todo only show this to relevant players
-            player -> player.getComponent(ModEntityCumponents.FLECKS).addFleck(id, new LineFleck(
-                pos1.get(new Vector3f()),
-                pos2.get(new Vector3f())
-            ))
+                player -> player.getComponent(ModEntityCumponents.FLECKS).addFleck(id, new LineFleck(
+                        pos1.get(new Vector3f()),
+                        pos2.get(new Vector3f())
+                ))
         );
 
         return fragments.getFirst(); //id for passthrough, like bars

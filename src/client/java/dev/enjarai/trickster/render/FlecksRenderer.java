@@ -1,7 +1,9 @@
 package dev.enjarai.trickster.render;
 
+import com.mojang.datafixers.util.Pair;
 import dev.enjarai.trickster.cca.ModEntityCumponents;
 import dev.enjarai.trickster.fleck.*;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.math.ColorHelper;
@@ -17,8 +19,12 @@ public class FlecksRenderer {
             return;
         }
 
+        Int2ObjectMap<Pair<Fleck, Integer>> oldFlecks = player.getComponent(ModEntityCumponents.FLECKS).getOldFlecks();
+
         player.getComponent(ModEntityCumponents.FLECKS).getFlecks().forEach((id, pair) -> {
             var fleck = pair.getFirst();
+            var lastFleck = oldFlecks.getOrDefault((int) id, pair).getFirst();
+
             var fleckId = FleckType.REGISTRY.getId(fleck.type());
             // Not using a type parameter here SHOULD be safe.
             //noinspection rawtypes
@@ -33,7 +39,8 @@ public class FlecksRenderer {
             //noinspection unchecked
             renderer.render(
                     fleck,
-                    worldRenderContext, worldRenderContext.world(), worldRenderContext.tickCounter().getTickDelta(false),
+                    lastFleck,
+                    worldRenderContext, worldRenderContext.world(), worldRenderContext.tickCounter().getTickDelta(true),
                     worldRenderContext.matrixStack(), worldRenderContext.consumers(), color
             );
         });

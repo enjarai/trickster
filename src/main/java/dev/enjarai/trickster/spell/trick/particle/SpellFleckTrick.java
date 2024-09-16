@@ -16,20 +16,21 @@ public class SpellFleckTrick extends Trick {
     public SpellFleckTrick() {
         super(Pattern.of(3, 4, 5, 8, 7, 6, 3, 0, 1, 2, 5));
     }
+
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
 
-        var id = expectInput(fragments,FragmentType.NUMBER, 0).asInt();
+        var id = expectInput(fragments, FragmentType.NUMBER, 0).asInt();
         var position = expectInput(fragments, FragmentType.VECTOR, 1).vector();
         var facing = expectInput(fragments, FragmentType.VECTOR, 2).vector();
-        var spell = expectInput(fragments,FragmentType.SPELL_PART, 3);
+        var spell = expectInput(fragments, FragmentType.SPELL_PART, 3);
         var entities = supposeInput(fragments, FragmentType.LIST, 4);
 
         ctx.source().getWorld().getPlayers().stream().filter(n -> true).forEach(player ->
-            player.getComponent(ModEntityCumponents.FLECKS).addFleck(id,new SpellFleck(
-                position.get(new Vector3f()),
-                facing.get(new Vector3f()),
-                spell))
+                player.getComponent(ModEntityCumponents.FLECKS).addFleck(id, new SpellFleck(
+                        position.get(new Vector3f()),
+                        facing.get(new Vector3f()),
+                        spell))
         );
 
         return fragments.getFirst();

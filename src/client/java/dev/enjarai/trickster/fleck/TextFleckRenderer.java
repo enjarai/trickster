@@ -7,7 +7,5 @@ import net.minecraft.client.world.ClientWorld;
 
 public class TextFleckRenderer implements FleckRenderer<TextFleck> {
     @Override
-    public void render(TextFleck fleck, WorldRenderContext context, ClientWorld world, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int color) {
-
-    }
+    public void render(TextFleck fleck, TextFleck lastFleck, WorldRenderContext context, ClientWorld world, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int color) { }
 }

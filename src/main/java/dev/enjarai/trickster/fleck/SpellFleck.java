@@ -3,10 +3,8 @@ package dev.enjarai.trickster.fleck;
 import dev.enjarai.trickster.spell.SpellPart;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
-import org.joml.Vector3dc;
 import org.joml.Vector3fc;
 
-import static dev.enjarai.trickster.EndecTomfoolery.VECTOR_3D_ENDEC;
 import static dev.enjarai.trickster.EndecTomfoolery.VECTOR_3F_ENDEC;
 
 public record SpellFleck(Vector3fc pos, Vector3fc facing, SpellPart spell) implements Fleck {

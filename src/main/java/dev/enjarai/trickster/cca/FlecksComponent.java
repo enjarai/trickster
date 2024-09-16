@@ -15,32 +15,22 @@ import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.ClientTickingComponent;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class FlecksComponent implements ServerTickingComponent, ClientTickingComponent, AutoSyncedComponent {
     /*
-    * If the packet spam becomes an issue, we should store different maps on the server and the client
-    * Server Id : (Fleck, Age)
-    * Client Id : Fleck
-    *
-    * The client doesnt need to know the fleck's age, currently recursive/persistent fleck will send be sent to the client every tick. 1 packet per player. but not per fleck.
-    *
-    * TODO: make it so the client wont try to render too many flecks at once and crash
-    * TODO: hash fleck id with spell source hash, to prevent collisions
-    * */
+     * TODO: make it so the client wont try to render too many flecks at once and crash (probably not a change in this class)
+     * hash fleck id with spell source hash (e.g player uuid), to prevent collisions (only if it becomes annoying)
+     * */
 
-    public static final Endec<Pair<Fleck, Integer>> PAIR_ENDEC = StructEndecBuilder.of(
-            Fleck.ENDEC.fieldOf("first", Pair::getFirst),
-            Endec.INT.fieldOf("second", Pair::getSecond),
-            Pair::new
-    );
+    public static final Endec<Pair<Fleck, Integer>> PAIR_ENDEC = StructEndecBuilder.of(Fleck.ENDEC.fieldOf("first", Pair::getFirst), Endec.INT.fieldOf("second", Pair::getSecond), Pair::new);
 
     public static final Endec<Map<Integer, Pair<Fleck, Integer>>> FLECKS_ENDEC = Endec.map(Endec.INT, PAIR_ENDEC);
     private static final Integer STAY_FOR_TICKS = 20;
 
     private final PlayerEntity player;
     private final Int2ObjectMap<Pair<Fleck, Integer>> flecks = new Int2ObjectOpenHashMap<>();
+    private final Int2ObjectMap<Pair<Fleck, Integer>> oldFlecks = new Int2ObjectOpenHashMap<>();
     private boolean dirty;
 
     public FlecksComponent(PlayerEntity player) {
@@ -59,12 +49,14 @@ public class FlecksComponent implements ServerTickingComponent, ClientTickingCom
 
     @Override
     public void applySyncPacket(RegistryByteBuf buf) {
+        oldFlecks.clear();
+        oldFlecks.putAll(flecks);
+        flecks.clear();
         flecks.putAll(buf.read(FLECKS_ENDEC));
     }
 
     public void writeSyncPacket(RegistryByteBuf buf, ServerPlayerEntity recipient) {
         buf.write(FLECKS_ENDEC, flecks);
-        flecks.clear(); //dont store flecks on server, no point, aura's suggestion
     }
 
     public void addFleck(int id, Fleck fleck) {
@@ -72,8 +64,12 @@ public class FlecksComponent implements ServerTickingComponent, ClientTickingCom
         markDirty();
     }
 
-    public Int2ObjectMap<Pair<Fleck,Integer>> getFlecks(){
+    public Int2ObjectMap<Pair<Fleck, Integer>> getFlecks() {
         return this.flecks;
+    }
+
+    public Int2ObjectMap<Pair<Fleck, Integer>> getOldFlecks(){
+        return this.oldFlecks;
     }
 
     private void markDirty() {
@@ -82,12 +78,11 @@ public class FlecksComponent implements ServerTickingComponent, ClientTickingCom
 
     @Override
     public void clientTick() {
-        flecks.keySet().forEach(key ->
-            flecks.compute(key, this::update)
-        );
+
+        flecks.keySet().forEach(key -> flecks.compute(key, FlecksComponent::update));
     }
 
-    private Pair<Fleck, Integer> update(int key, Pair<Fleck, Integer> pair) {
+    private static Pair<Fleck, Integer> update(int key, Pair<Fleck, Integer> pair) {
         Integer life = pair.getSecond();
         Fleck fleck = pair.getFirst();
         return (--life >= 0) ? Pair.of(fleck, life) : null; // if its life is less than zero after decreasing, remove it from the map
