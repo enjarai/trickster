@@ -36,7 +36,7 @@ Secondly, spells can be infinitely* big and complex. While there *is* a limit to
 
 And last but not least, while mana is a resource required by all world-altering effects, it is possible to theoretically infinitely scale the amount of mana available to you. Mana is intended more as a balancing measure than a limiter on your potential.
 
-<sub>*Spell circles can't quite be infinitely nested yet due to floating point precision errors very deep into the editing screen, we plan to resolve this issue in the near future.</sub>
+<sub>*Spell circles can't quite be infinitely nested yet due to recursion limitations at extreme depth, we plan to resolve this issue in the near future.</sub>
 
 ## So how do I begin?
 
