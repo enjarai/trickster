@@ -21,30 +21,33 @@ public abstract class MementoItem extends Item {
         super(new Settings().component(ModComponents.MEMENTO_CHARGE, new MementoChargeComponent(500, 10)));
     }
 
-//    @Override
-//    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-//        finishUsing(user.getStackInHand(hand), world, user);
-//        return TypedActionResult.consume(user.getStackInHand(hand));
-//    }
+    @Override
+    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        var stack = user.getStackInHand(hand);
+        return Optional.ofNullable(stack.get(ModComponents.MEMENTO_CHARGE)).map(comp -> {
+            if (comp.usesLeft() > 0) {
+                user.setCurrentHand(hand);
+                return TypedActionResult.consume(stack);
+            }
+
+            return TypedActionResult.pass(stack);
+        }).orElse(TypedActionResult.pass(stack));
+    }
 
     @Override
     public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
-        if (user instanceof ServerPlayerEntity player) {
-            var vel = player.getRotationVector().multiply(remainingUseTicks).multiply((double) 1 / getMaxUseTime(stack, user));
-            world.addParticle(ParticleTypes.NOTE, player.getX(), player.getY(), player.getZ(), vel.x, vel.y, vel.z);
-        }
+        var vel = user.getRotationVector().multiply(remainingUseTicks).multiply((double) 1 / getMaxUseTime(stack, user));
+        world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, user.getEyePos().x, user.getEyePos().y, user.getEyePos().z, vel.x, vel.y, vel.z);
     }
 
     @Override
     public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
         if (user instanceof ServerPlayerEntity player) {
             Optional.ofNullable(stack.get(ModComponents.MEMENTO_CHARGE)).ifPresent(comp -> {
-                if (comp.usesLeft() > 0) {
-                    Optional.ofNullable(stack.get(ModComponents.SPELL)).ifPresent(spell -> {
-                        cast(world, player, spell.spell(), stack, comp.maxMana());
-                        comp.use(stack);
-                    });
-                }
+                Optional.ofNullable(stack.get(ModComponents.SPELL)).ifPresent(spell -> {
+                    cast(world, player, spell.spell(), stack, comp.maxMana());
+                    comp.use(stack);
+                });
             });
         }
 
@@ -53,11 +56,7 @@ public abstract class MementoItem extends Item {
 
     @Override
     public int getMaxUseTime(ItemStack stack, LivingEntity user) {
-        //noinspection DataFlowIssue
-        if (stack.get(ModComponents.MEMENTO_CHARGE).usesLeft() > 0)
-            return 30;
-
-        return 0;
+        return 30;
     }
 
     @Override
