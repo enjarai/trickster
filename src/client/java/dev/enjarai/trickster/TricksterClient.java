@@ -25,11 +25,14 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
+import net.minecraft.component.type.DyedColorComponent;
+import net.minecraft.util.math.ColorHelper;
 
 public class TricksterClient implements ClientModInitializer {
 	@Override
@@ -67,5 +70,16 @@ public class TricksterClient implements ClientModInitializer {
 
 		HudRenderCallback.EVENT.register(BarsRenderer::render);
 		HudRenderCallback.EVENT.register(CircleErrorRenderer::render);
+
+		ColorProviderRegistry.ITEM.register(
+				(stack, tintIndex) -> {
+                    var color = tintIndex == 1 ? DyedColorComponent.getColor(stack, 0) : -1;
+					if (color != 0 && color != -1) {
+						color = ColorHelper.Argb.withAlpha(220, color);
+					}
+					return color;
+                },
+				ModItems.SCROLL_AND_QUILL, ModItems.WRITTEN_SCROLL
+		);
 	}
 }
