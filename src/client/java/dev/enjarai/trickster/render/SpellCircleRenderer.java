@@ -97,6 +97,7 @@ public class SpellCircleRenderer {
 
         int partCount = entry.getSubParts().size();
 
+
         drawDivider(matrices, vertexConsumers, toLocalSpace(x), toLocalSpace(y), startingAngle, toLocalSpace(size), partCount, alpha);
 
         if (!inUI && size < 0.01f) {
@@ -112,7 +113,7 @@ public class SpellCircleRenderer {
             var angle = startingAngle + (2 * Math.PI) / partCount * i - (Math.PI / 2);
 
             var nextX = x + (size * Math.cos(angle));
-            var nextY = y + (size * Math.sin(angle));
+            var nextY = y + (size * Math.sin(angle) );
 
             var nextSize = Math.min(size / 2, size / (double) ((partCount + 1) / 2));
 

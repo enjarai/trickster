@@ -49,10 +49,14 @@ public class FlecksComponent implements ServerTickingComponent, ClientTickingCom
 
     @Override
     public void applySyncPacket(RegistryByteBuf buf) {
-        oldFlecks.clear();
-        oldFlecks.putAll(flecks);
-        flecks.clear();
-        flecks.putAll(buf.read(FLECKS_ENDEC));
+        var map = buf.read(FLECKS_ENDEC);
+        map.forEach((id,pair) -> {
+            var oldFleck = flecks.getOrDefault((int) id, pair);
+            if (pair.getFirst().type() == oldFleck.getFirst().type()) {
+                oldFlecks.putIfAbsent(id, oldFleck);
+            }
+        }); //once per client tick, and if the type matches update old flecks with the changes
+        flecks.putAll(map);
     }
 
     public void writeSyncPacket(RegistryByteBuf buf, ServerPlayerEntity recipient) {
@@ -78,8 +82,8 @@ public class FlecksComponent implements ServerTickingComponent, ClientTickingCom
 
     @Override
     public void clientTick() {
-
-        flecks.keySet().forEach(key -> flecks.compute(key, FlecksComponent::update));
+        flecks.keySet().forEach(key -> flecks.compute(key, FlecksComponent::update)); //intellij complains but it being null is the point
+        oldFlecks.clear();
     }
 
     private static Pair<Fleck, Integer> update(int key, Pair<Fleck, Integer> pair) {

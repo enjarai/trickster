@@ -2,7 +2,7 @@ package dev.enjarai.trickster.fleck;
 
 import dev.enjarai.trickster.render.SpellCircleRenderer;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
-import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.RotationAxis;
@@ -10,11 +10,15 @@ import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Debug;
 import org.joml.Vector3f;
 
+import static net.minecraft.client.render.RenderPhase.*;
+
 public class SpellFleckRenderer implements FleckRenderer<SpellFleck> {
     private final SpellCircleRenderer renderer = new SpellCircleRenderer(false, 1);
 
+
     @Override
     public void render(SpellFleck fleck, SpellFleck lastFleck, WorldRenderContext context, ClientWorld world, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int color) {
+
         matrices.push();
 
         var position = fleck.pos();
