@@ -31,15 +31,16 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
         addDrawableChild(partWidget);
 
         this.handler.spell.observe(spell -> {
-            partWidget.setSpell(spell);
+            var spellHash = spell.hashCode();
 
-            var spellHash = handler.spell.get().hashCode();
             for (var position : storedPositions) {
                 if (position.spellHash == spellHash) {
                     partWidget.load(position);
                     break;
                 }
             }
+
+            partWidget.setSpell(spell);
         });
         this.handler.isMutable.observe(mutable -> partWidget.setMutable(mutable));
     }
@@ -102,6 +103,7 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
                           double x,
                           double y,
                           double size,
+                          SpellPart rootSpellPart,
                           SpellPart spellPart,
                           ArrayList<SpellPart> parents,
                           ArrayList<Double> angleOffsets) { }

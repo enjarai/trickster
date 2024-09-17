@@ -116,13 +116,14 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     }
 
     public ScrollAndQuillScreen.PositionMemory save() {
-        return new ScrollAndQuillScreen.PositionMemory(rootSpellPart.hashCode(), x, y, size, spellPart, new ArrayList<>(parents), new ArrayList<>(angleOffsets));
+        return new ScrollAndQuillScreen.PositionMemory(rootSpellPart.hashCode(), x, y, size, rootSpellPart, spellPart, new ArrayList<>(parents), new ArrayList<>(angleOffsets));
     }
 
     public void load(ScrollAndQuillScreen.PositionMemory memory) {
         this.x = memory.x();
         this.y = memory.y();
         this.size = memory.size();
+        this.rootSpellPart = memory.rootSpellPart();
         this.spellPart = memory.spellPart();
         this.parents.clear();
         this.angleOffsets.clear();
