@@ -21,12 +21,11 @@ public abstract class MementoItem extends Item {
         super(new Settings().component(ModComponents.MEMENTO_CHARGE, new MementoChargeComponent(500, 10)));
     }
 
-    @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        //TODO: make this require a load time instead of being instant
-        finishUsing(user.getStackInHand(hand), world, user);
-        return TypedActionResult.consume(user.getStackInHand(hand));
-    }
+//    @Override
+//    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+//        finishUsing(user.getStackInHand(hand), world, user);
+//        return TypedActionResult.consume(user.getStackInHand(hand));
+//    }
 
     @Override
     public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
@@ -40,10 +39,12 @@ public abstract class MementoItem extends Item {
     public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
         if (user instanceof ServerPlayerEntity player) {
             Optional.ofNullable(stack.get(ModComponents.MEMENTO_CHARGE)).ifPresent(comp -> {
-                Optional.ofNullable(stack.get(ModComponents.SPELL)).ifPresent(spell -> {
-                    cast(world, player, spell.spell(), stack, comp.maxMana());
-                    comp.use(stack);
-                });
+                if (comp.usesLeft() > 0) {
+                    Optional.ofNullable(stack.get(ModComponents.SPELL)).ifPresent(spell -> {
+                        cast(world, player, spell.spell(), stack, comp.maxMana());
+                        comp.use(stack);
+                    });
+                }
             });
         }
 
