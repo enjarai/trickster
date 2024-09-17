@@ -1,2 +1,1 @@
-- Solved scroll and mirror UI not updating the item most of the time. (@StellarWitch7)
-- Fixed inconsistency in the distortions section of the book and made constants revisions. (@StellarWitch7)
+- Solved scroll and mirror UI not updating the item most of the time (again). (@StellarWitch7)
