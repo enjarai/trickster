@@ -3,6 +3,7 @@ package dev.enjarai.trickster.item;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.block.ModBlocks;
 import dev.enjarai.trickster.item.component.*;
+import dev.enjarai.trickster.item.memento.AmethystMementoItem;
 import dev.enjarai.trickster.spell.SpellPart;
 import io.wispforest.lavender.book.LavenderBookItem;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
@@ -53,6 +54,7 @@ public class ModItems {
                                     new FoodComponent.StatusEffectEntry(new StatusEffectInstance(StatusEffects.POISON, 60 * 20), 1),
                                     new FoodComponent.StatusEffectEntry(new StatusEffectInstance(StatusEffects.GLOWING, 60 * 20), 1),
                                     new FoodComponent.StatusEffectEntry(new StatusEffectInstance(StatusEffects.BLINDNESS, 60 * 20), 1))))));
+    public static final AmethystMementoItem AMETHYST_MEMENTO = register("amethyst_memento", new AmethystMementoItem());
     public static final BlockItem SPELL_RESONATOR_BLOCK_ITEM = register("spell_resonator", new BlockItem(ModBlocks.SPELL_RESONATOR, new Item.Settings()));
 
     public static final TagKey<Item> CAN_EVALUATE_DYNAMICALLY = TagKey.of(RegistryKeys.ITEM, Trickster.id("can_evaluate_dynamically"));

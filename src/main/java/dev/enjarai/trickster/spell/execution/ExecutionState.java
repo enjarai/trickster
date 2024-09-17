@@ -3,8 +3,10 @@ package dev.enjarai.trickster.spell.execution;
 import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.mana.ManaHandler;
 import dev.enjarai.trickster.spell.mana.ManaLink;
 import dev.enjarai.trickster.spell.mana.ManaPool;
+import dev.enjarai.trickster.spell.mana.handler.DefaultManaHandler;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
 import dev.enjarai.trickster.spell.trick.blunder.EntityInvalidBlunder;
@@ -30,6 +32,7 @@ public class ExecutionState {
             Endec.INT.listOf().fieldOf("stacktrace", state -> state.stacktrace.stream().toList()),
             ManaLink.ENDEC.listOf().fieldOf("mana_links", state -> state.manaLinks),
             EndecTomfoolery.safeOptionalOf(ManaPool.ENDEC).optionalFieldOf("pool_override", state -> state.poolOverride, Optional.empty()),
+            ManaHandler.ENDEC.optionalFieldOf("mana_handler", state -> state.manaHandler, new DefaultManaHandler()),
             ExecutionState::new
     );
 
@@ -41,8 +44,9 @@ public class ExecutionState {
     private final Deque<Integer> stacktrace = new ArrayDeque<>();
     private final List<ManaLink> manaLinks = new ArrayList<>();
     private final Optional<ManaPool> poolOverride;
+    private final ManaHandler manaHandler;
 
-    private ExecutionState(int recursions, int delay, boolean hasUsedMana, int initialStacktraceSize, List<Fragment> arguments, List<Integer> stacktrace, List<ManaLink> manaLinks, Optional<ManaPool> poolOverride) {
+    private ExecutionState(int recursions, int delay, boolean hasUsedMana, int initialStacktraceSize, List<Fragment> arguments, List<Integer> stacktrace, List<ManaLink> manaLinks, Optional<ManaPool> poolOverride, ManaHandler manaHandler) {
         this.recursions = recursions;
         this.delay = delay;
         this.hasUsedMana = hasUsedMana;
@@ -51,18 +55,23 @@ public class ExecutionState {
         this.stacktrace.addAll(stacktrace);
         this.manaLinks.addAll(manaLinks);
         this.poolOverride = poolOverride;
+        this.manaHandler = manaHandler;
     }
 
     public ExecutionState(List<Fragment> arguments) {
-        this(0, 0, false, 0, arguments, List.of(), List.of(), Optional.empty());
+        this(0, 0, false, 0, arguments, List.of(), List.of(), Optional.empty(), new DefaultManaHandler());
     }
 
     public ExecutionState(List<Fragment> arguments, ManaPool poolOverride) {
-        this(0, 0, false, 0, arguments, List.of(), List.of(), Optional.ofNullable(poolOverride));
+        this(0, 0, false, 0, arguments, List.of(), List.of(), Optional.ofNullable(poolOverride), new DefaultManaHandler());
     }
 
-    private ExecutionState(int recursions, List<Fragment> arguments, Optional<ManaPool> poolOverride, Deque<Integer> stacktrace) {
-        this(recursions, 0, false, stacktrace.size(), arguments, stacktrace.stream().toList(), List.of(), poolOverride);
+    public ExecutionState(List<Fragment> arguments, ManaPool poolOverride, ManaHandler manaHandler) {
+        this(0, 0, false, 0, arguments, List.of(), List.of(), Optional.ofNullable(poolOverride), manaHandler);
+    }
+
+    private ExecutionState(int recursions, List<Fragment> arguments, Optional<ManaPool> poolOverride, Deque<Integer> stacktrace, ManaHandler manaHandler) {
+        this(recursions, 0, false, stacktrace.size(), arguments, stacktrace.stream().toList(), List.of(), poolOverride, manaHandler);
     }
 
     public ExecutionState recurseOrThrow(List<Fragment> arguments) throws ExecutionLimitReachedBlunder {
@@ -70,7 +79,7 @@ public class ExecutionState {
             throw new ExecutionLimitReachedBlunder();
         }
 
-        var state = new ExecutionState(recursions + 1, arguments, poolOverride, stacktrace);
+        var state = new ExecutionState(recursions + 1, arguments, poolOverride, stacktrace, manaHandler);
         state.stacktrace.push(-2);
         state.syncLinksFrom(this);
         return state;
@@ -177,35 +186,8 @@ public class ExecutionState {
         return hasUsedMana;
     }
 
-    public void useMana(Trick trickSource, SpellContext ctx, ManaPool pool, float amount) throws NotEnoughManaBlunder {
-        var links = manaLinks.stream().filter(link -> link.getAvailable() > 0).toList();
+    public void useMana(Trick trickSource, SpellContext ctx, ManaPool pool, float amount) throws BlunderException {
         hasUsedMana = true;
-
-        if (!links.isEmpty()) {
-            float totalAvailable = 0;
-            float leftOver = 0;
-
-            for (var link : links) {
-                totalAvailable += link.getAvailable();
-            }
-
-            for (var link : links) {
-                float available = link.getAvailable();
-
-                float ratio = available / totalAvailable;
-                float ratioD = amount * ratio;
-                float used = link.useMana(trickSource, ctx.source(), pool, ratioD);
-
-                if (used < ratioD) {
-                    leftOver += ratioD - used;
-                }
-            }
-
-            amount = leftOver;
-        }
-
-        if (!pool.decrease(amount)) {
-            throw new NotEnoughManaBlunder(trickSource, amount);
-        }
+        manaHandler.handleUseMana(trickSource, ctx, pool, manaLinks, amount);
     }
 }

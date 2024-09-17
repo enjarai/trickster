@@ -2,6 +2,7 @@ package dev.enjarai.trickster.spell.mana;
 
 import com.mojang.serialization.Lifecycle;
 import dev.enjarai.trickster.Trickster;
+import dev.enjarai.trickster.item.memento.AmethystMementoItem;
 import io.wispforest.endec.StructEndec;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;

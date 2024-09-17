@@ -21,6 +21,10 @@ public class ModComponents {
             register("entity_storage", builder -> builder
                     .codec(EntityStorageComponent.CODEC)
                     .cache());
+    public static final ComponentType<MementoChargeComponent> MEMENTO_CHARGE =
+            register("memento_charge", builder -> builder
+                    .codec(MementoChargeComponent.CODEC)
+                    .cache());
 
     private static <T> ComponentType<T> register(String id, UnaryOperator<ComponentType.Builder<T>> builderOperator) {
         return Registry.register(Registries.DATA_COMPONENT_TYPE, Trickster.id(id), (builderOperator.apply(ComponentType.builder())).build());
