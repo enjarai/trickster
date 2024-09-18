@@ -73,10 +73,15 @@ public class TricksterClient implements ClientModInitializer {
 
 		ColorProviderRegistry.ITEM.register(
 				(stack, tintIndex) -> {
-                    var color = tintIndex == 1 ? DyedColorComponent.getColor(stack, 0) : -1;
-					if (color != 0 && color != -1) {
-						color = ColorHelper.Argb.withAlpha(220, color);
-					}
+                    var color = switch (tintIndex) {
+						case 0 -> DyedColorComponent.getColor(stack, 0) == 0 ? -1 : 0;
+						case 1 -> DyedColorComponent.getColor(stack, 0);
+						case 2 -> DyedColorComponent.getColor(stack, 0) != 0 ? -1 : 0;
+                        default -> -1;
+                    };
+//					if (color != 0 && color != -1) {
+//						color = ColorHelper.Argb.withAlpha(220, color);
+//					}
 					return color;
                 },
 				ModItems.SCROLL_AND_QUILL, ModItems.WRITTEN_SCROLL

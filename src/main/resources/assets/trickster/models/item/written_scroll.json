@@ -1,6 +1,8 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "trickster:item/written_scroll"
+    "layer0": "trickster:item/written_scroll",
+    "layer1": "trickster:item/written_scroll_overlay",
+    "layer2": "trickster:item/written_scroll_overlay_2"
   }
 }

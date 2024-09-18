@@ -2,6 +2,7 @@
   "parent": "minecraft:item/generated",
   "textures": {
     "layer0": "trickster:item/scroll_and_quill",
-    "layer1": "trickster:item/scroll_and_quill_overlay"
+    "layer1": "trickster:item/scroll_and_quill_overlay",
+    "layer2": "trickster:item/scroll_and_quill_overlay_2"
   }
 }
