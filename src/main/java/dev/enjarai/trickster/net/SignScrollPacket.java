@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.net;
 
 import dev.enjarai.trickster.item.ModItems;
+import dev.enjarai.trickster.item.ScrollAndQuillItem;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.SpellComponent;
 import dev.enjarai.trickster.item.component.WrittenScrollMetaComponent;
@@ -14,13 +15,15 @@ public record SignScrollPacket(Hand hand, String name) {
         var player = access.player();
         var stack = player.getStackInHand(hand());
 
-        if (stack.isOf(ModItems.SCROLL_AND_QUILL)) {
+        if (stack.getItem() instanceof ScrollAndQuillItem scrollAndQuillItem) {
             var component = stack.get(ModComponents.SPELL);
             if (component == null) {
                 return;
             }
 
-            var newStack = ModItems.WRITTEN_SCROLL.getDefaultStack();
+//            scrollAndQuillItem.
+
+            var newStack = ModItems.WRITTEN_SCROLL.getDefaultStack(); // TODO get the proper item
 
             newStack.set(ModComponents.SPELL, new SpellComponent(component.spell(), component.name(), true, component.closed()));
             newStack.set(ModComponents.WRITTEN_SCROLL_META, new WrittenScrollMetaComponent(

@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.item.recipe;
 
 import dev.enjarai.trickster.Trickster;
+import dev.enjarai.trickster.item.ModItems;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialRecipeSerializer;
 import net.minecraft.registry.Registries;
@@ -11,6 +12,9 @@ public class ModRecipes {
             Registry.register(Registries.RECIPE_SERIALIZER, Trickster.id("scroll_cloning"), new SpecialRecipeSerializer<>(ScrollCloningRecipe::new));
     public static final RecipeSerializer<ScrollEnhancingRecipe> SCROLL_ENHANCING_RECIPE =
             Registry.register(Registries.RECIPE_SERIALIZER, Trickster.id("scroll_enhancing"), new SpecialRecipeSerializer<>(ScrollEnhancingRecipe::new));
+    public static final RecipeSerializer<ScrollDyeingRecipe> SCROLL_AND_QUILL_DYEING =
+            Registry.register(Registries.RECIPE_SERIALIZER, Trickster.id("scroll_and_quill_dyeing"),
+                    new SpecialRecipeSerializer<>(c -> new ScrollDyeingRecipe(c, ModItems.SCROLL_AND_QUILL, Trickster.id("scroll_and_quill_dyeing"))));
 
     public static void register() {
 

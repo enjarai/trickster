@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "trickster:item/scroll_and_quill"
+    "layer0": "trickster:item/scroll_and_quill_cyan"
   }
 }

@@ -1,6 +1,7 @@
 {
   "values": [
     "trickster:scroll_and_quill",
-    "trickster:written_scroll"
+    "trickster:written_scroll",
+    "#trickster:dyed_scroll_and_quill"
   ]
 }
