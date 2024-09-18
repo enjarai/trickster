@@ -36,6 +36,10 @@ public class ModItems {
                     .component(ModComponents.SPELL, new SpellComponent(new SpellPart()))));
     public static final TrickHatItem TOP_HAT = register("top_hat",
             new TrickHatItem(new Item.Settings()));
+    public static final TrickHatItem WITCH_HAT = register("witch_hat",
+            new TrickHatItem(new Item.Settings()));
+    public static final TrickHatItem FEZ = register("fez",
+            new TrickHatItem(new Item.Settings()));
     public static final WandItem WAND = register("wand",
             new WandItem(new Item.Settings().maxCount(1)
                     .component(ModComponents.SPELL, new SpellComponent(new SpellPart()))));
@@ -72,6 +76,8 @@ public class ModItems {
                 entries.add(SCROLL_AND_QUILL);
                 entries.add(MIRROR_OF_EVALUATION);
                 entries.add(TOP_HAT);
+                entries.add(WITCH_HAT);
+                entries.add(FEZ);
                 entries.add(WAND);
                 entries.add(WARDING_CHARM);
                 entries.add(SPELL_INK);

@@ -221,6 +221,8 @@ item.trickster:
   warding_charm: Warding Charm
   spell_ink: Spell Ink
   top_hat: Top Hat
+  witch_hat: Witch Hat
+  fez: Fez
   wand: Wand
 
 block.trickster:
