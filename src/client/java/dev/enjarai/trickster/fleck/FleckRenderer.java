@@ -9,6 +9,7 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.SimpleRegistry;
+import org.jetbrains.annotations.Nullable;
 
 public interface FleckRenderer<T extends Fleck> {
     RegistryKey<Registry<FleckRenderer<?>>> REGISTRY_KEY = RegistryKey.ofRegistry(Trickster.id("fleck_renderer"));
@@ -23,6 +24,6 @@ public interface FleckRenderer<T extends Fleck> {
     }
 
     //todo, passing more data than necessary
-    void render(T fleck, T lastFleck, WorldRenderContext context, ClientWorld world, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int color);
+    void render(T fleck, @Nullable T lastFleck, WorldRenderContext context, ClientWorld world, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int color);
 
 }

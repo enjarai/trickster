@@ -9,6 +9,7 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.noise.SimplexNoiseSampler;
 import net.minecraft.util.math.random.Random;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
@@ -20,7 +21,7 @@ private static final float LINE_SEGMENT_LENGTH = 1.0F;
 private static final SimplexNoiseSampler sampler = new SimplexNoiseSampler(Random.create());
 
     @Override
-    public void render(LineFleck fleck, LineFleck lastFleck, WorldRenderContext context, ClientWorld world, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int color) {
+    public void render(LineFleck fleck, @Nullable LineFleck lastFleck, WorldRenderContext context, ClientWorld world, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int color) {
 
         var pos1 = fleck.pos();
         var pos2 = fleck.pos2();

@@ -1,9 +1,7 @@
 package dev.enjarai.trickster.render;
 
-import com.mojang.datafixers.util.Pair;
 import dev.enjarai.trickster.cca.ModEntityCumponents;
 import dev.enjarai.trickster.fleck.*;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.math.ColorHelper;
@@ -19,11 +17,13 @@ public class FlecksRenderer {
             return;
         }
 
-        Int2ObjectMap<Pair<Fleck, Integer>> oldFlecks = player.getComponent(ModEntityCumponents.FLECKS).getOldFlecks();
+        player.getComponent(ModEntityCumponents.FLECKS).getRenderFlecks().forEach(flecks -> {
+            var fleck = flecks.current();
+            var lastFleck = flecks.old();
 
-        player.getComponent(ModEntityCumponents.FLECKS).getFlecks().forEach((id, pair) -> {
-            var fleck = pair.getFirst();
-            var lastFleck = oldFlecks.getOrDefault((int) id, pair).getFirst();
+            if (lastFleck != null && lastFleck.type() != fleck.type()) {
+                lastFleck = null;
+            }
 
             var fleckId = FleckType.REGISTRY.getId(fleck.type());
             // Not using a type parameter here SHOULD be safe.
@@ -33,7 +33,7 @@ public class FlecksRenderer {
                 throw new IllegalStateException("Missing renderer for fleck " + fleckId + "!");
             }
 
-            colorsRandom.setSeed(id);
+            colorsRandom.setSeed(flecks.id());
             var color = ColorHelper.Argb.fromFloats(1f, colorsRandom.nextFloat(), colorsRandom.nextFloat(), colorsRandom.nextFloat());
 
             //noinspection unchecked

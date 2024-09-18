@@ -7,17 +7,15 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
-import org.jetbrains.annotations.Debug;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
-
-import static net.minecraft.client.render.RenderPhase.*;
 
 public class SpellFleckRenderer implements FleckRenderer<SpellFleck> {
     private final SpellCircleRenderer renderer = new SpellCircleRenderer(false, 1);
 
 
     @Override
-    public void render(SpellFleck fleck, SpellFleck lastFleck, WorldRenderContext context, ClientWorld world, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int color) {
+    public void render(SpellFleck fleck, @Nullable SpellFleck lastFleck, WorldRenderContext context, ClientWorld world, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int color) {
 
         matrices.push();
 
@@ -25,14 +23,19 @@ public class SpellFleckRenderer implements FleckRenderer<SpellFleck> {
         var facing = fleck.facing();
         var spell = fleck.spell();
 
-        var oldPosition = lastFleck.pos();
-        var oldFacing = lastFleck.facing();
+        var oldPosition = fleck.pos();
+        var oldFacing = fleck.facing();
+
+        if (lastFleck != null) {
+            oldPosition = lastFleck.pos();
+            oldFacing = lastFleck.facing();
+        }
 
         //only lerp if change is small?
         //float lerpAmount = position.distance(oldPosition) > 1 ? 1.0f : tickDelta
 
         var targetPosition = oldPosition.lerp(position, tickDelta, new Vector3f()).sub(context.camera().getPos().toVector3f());
-        var targetFacing = oldFacing.lerp(facing, tickDelta, new Vector3f());
+        var targetFacing = oldFacing.lerp(facing, tickDelta, new Vector3f()).normalize();
 
         var yaw = (float) Math.atan2(targetFacing.x(), targetFacing.z());
         var pitch = (float) (Math.asin(-targetFacing.y()) + Math.PI);
