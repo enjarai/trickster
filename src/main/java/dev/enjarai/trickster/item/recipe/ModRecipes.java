@@ -15,6 +15,9 @@ public class ModRecipes {
     public static final RecipeSerializer<ScrollDyeingRecipe> SCROLL_AND_QUILL_DYEING =
             Registry.register(Registries.RECIPE_SERIALIZER, Trickster.id("scroll_and_quill_dyeing"),
                     new SpecialRecipeSerializer<>(c -> new ScrollDyeingRecipe(c, ModItems.SCROLL_AND_QUILL, Trickster.id("scroll_and_quill_dyeing"))));
+    public static final RecipeSerializer<ScrollDyeingRecipe> WRITTEN_SCROLL_DYEING =
+            Registry.register(Registries.RECIPE_SERIALIZER, Trickster.id("written_scroll_dyeing"),
+                    new SpecialRecipeSerializer<>(c -> new ScrollDyeingRecipe(c, ModItems.WRITTEN_SCROLL, Trickster.id("written_scroll_dyeing"))));
 
     public static void register() {
 

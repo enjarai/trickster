@@ -1,14 +1,11 @@
 package dev.enjarai.trickster.net;
 
-import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.ScrollAndQuillItem;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.SpellComponent;
 import dev.enjarai.trickster.item.component.WrittenScrollMetaComponent;
 import io.wispforest.owo.network.ServerAccess;
 import net.minecraft.util.Hand;
-
-import java.util.Optional;
 
 public record SignScrollPacket(Hand hand, String name) {
     public void handleServer(ServerAccess access) {
@@ -21,9 +18,7 @@ public record SignScrollPacket(Hand hand, String name) {
                 return;
             }
 
-//            scrollAndQuillItem.
-
-            var newStack = ModItems.WRITTEN_SCROLL.getDefaultStack(); // TODO get the proper item
+            var newStack = scrollAndQuillItem.signedVersion.getDefaultStack();
 
             newStack.set(ModComponents.SPELL, new SpellComponent(component.spell(), component.name(), true, component.closed()));
             newStack.set(ModComponents.WRITTEN_SCROLL_META, new WrittenScrollMetaComponent(

@@ -20,8 +20,11 @@ import java.util.function.BiConsumer;
 public class ScrollAndQuillItem extends Item {
     public static BiConsumer<Text, Hand> screenOpener;
 
-    public ScrollAndQuillItem(Settings settings) {
+    public final WrittenScrollItem signedVersion;
+
+    public ScrollAndQuillItem(Settings settings, WrittenScrollItem signedVersion) {
         super(settings);
+        this.signedVersion = signedVersion;
     }
 
     @Override
