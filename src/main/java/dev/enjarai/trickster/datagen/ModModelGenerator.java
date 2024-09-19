@@ -38,6 +38,7 @@ public class ModModelGenerator extends FabricModelProvider {
 
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
+        itemModelGenerator.register(ModItems.SPELL_RESONATOR_BLOCK_ITEM, Models.GENERATED);
         ModItems.DYED_VARIANTS.forEach(v -> {
             itemModelGenerator.register(v.variant(), Models.GENERATED);
         });
