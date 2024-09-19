@@ -3,6 +3,7 @@ package dev.enjarai.trickster.datagen;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.block.ModBlocks;
 import dev.enjarai.trickster.block.SpellResonatorBlock;
+import dev.enjarai.trickster.item.ModItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.data.client.*;
@@ -37,6 +38,9 @@ public class ModModelGenerator extends FabricModelProvider {
 
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
-
+        itemModelGenerator.register(ModItems.SPELL_RESONATOR_BLOCK_ITEM, Models.GENERATED);
+        ModItems.DYED_VARIANTS.forEach(v -> {
+            itemModelGenerator.register(v.variant(), Models.GENERATED);
+        });
     }
 }
