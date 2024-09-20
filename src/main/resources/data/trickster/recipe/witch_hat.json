@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "p": {
+      "item": "minecraft:purple_wool"
+    },
+    "s": {
+      "item": "trickster:scroll_and_quill"
+    }
+  },
+  "pattern": [
+    " p ",
+    " p ",
+    "psp"
+  ],
+  "result": {
+    "count": 1,
+    "id": "trickster:witch_hat"
+  }
+}
