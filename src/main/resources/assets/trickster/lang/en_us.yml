@@ -264,6 +264,7 @@ block.trickster:
   spell_resonator: Spell Resonator
   spell_circle: Spell Circle
   light: Light
+  scroll_shelf: Scroll Shelf
 
 effect.trickster:
   mana_boost: Mana Hyperflux

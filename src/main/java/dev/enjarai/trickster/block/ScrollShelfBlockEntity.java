@@ -11,9 +11,13 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
@@ -37,9 +41,21 @@ public class ScrollShelfBlockEntity extends BlockEntity implements Inventory {
         Inventories.writeNbt(nbt, this.inventory, true, registryLookup);
     }
 
+    @Nullable
+    @Override
+    public Packet<ClientPlayPacketListener> toUpdatePacket() {
+        return BlockEntityUpdateS2CPacket.create(this);
+    }
+
+    @Override
+    public NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup registryLookup) {
+        return createNbt(registryLookup);
+    }
+
     @Override
     public void clear() {
         this.inventory.clear();
+        markDirty();
     }
 
     @Override
@@ -61,6 +77,7 @@ public class ScrollShelfBlockEntity extends BlockEntity implements Inventory {
     public ItemStack removeStack(int slot, int amount) {
         ItemStack itemStack = Objects.requireNonNullElse(this.inventory.get(slot), ItemStack.EMPTY);
         this.inventory.set(slot, ItemStack.EMPTY);
+        markDirty();
 
         return itemStack;
     }
@@ -74,6 +91,7 @@ public class ScrollShelfBlockEntity extends BlockEntity implements Inventory {
     public void setStack(int slot, ItemStack stack) {
         if (stack.isIn(ModItems.SCROLLS)) {
             this.inventory.set(slot, stack);
+            markDirty();
         } else if (stack.isEmpty()) {
             this.removeStack(slot, 1);
         }
