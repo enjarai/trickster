@@ -40,6 +40,11 @@ public record ListFragment(List<Fragment> fragments) implements Fragment {
     }
 
     @Override
+    public Fragment applyEphemeral() {
+        return new ListFragment(fragments.stream().map(Fragment::applyEphemeral).toList());
+    }
+
+    @Override
     public BooleanFragment asBoolean() {
         return new BooleanFragment(!fragments.isEmpty());
     }

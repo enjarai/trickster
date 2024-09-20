@@ -46,8 +46,8 @@ public non-sealed interface Fragment extends SpellInstruction {
         return new SerializedSpellInstruction(SpellInstructionType.FRAGMENT, this);
     }
 
-    default boolean isEphemeral() {
-        return false;
+    default Fragment applyEphemeral() {
+        return this;
     }
 
     default Optional<BiFunction<SpellContext, List<Fragment>, Fragment>> getActivator() {

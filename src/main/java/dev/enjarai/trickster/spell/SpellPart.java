@@ -75,9 +75,7 @@ public final class SpellPart implements Fragment {
         if (glyph instanceof SpellPart spellPart) {
             spellPart.brutallyMurderEphemerals();
         } else {
-            if (glyph.isEphemeral()) {
-                glyph = new ZalgoFragment();
-            }
+            glyph = glyph.applyEphemeral();
         }
     }
 
