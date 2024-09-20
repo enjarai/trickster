@@ -1,1 +1,1 @@
-- Fix a bug that sometimes prevents drawing in subcircles of circles with inner circles. (@enjarai)
+- Solved scroll and mirror UI not updating the item most of the time (again). (@StellarWitch7)

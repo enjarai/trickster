@@ -1,6 +1,8 @@
 package dev.enjarai.trickster.screen;
 
 import dev.enjarai.trickster.Trickster;
+import dev.enjarai.trickster.net.ModNetworking;
+import dev.enjarai.trickster.net.ScrollInGamePacket;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
@@ -48,11 +50,42 @@ public class ScrollContainerScreen extends HandledScreen<ScrollContainerScreenHa
         super.drawSlot(context, slot);
 
         context.getMatrices().push();
-        context.getMatrices().translate(0.0F, 0.0F, 110.0F);
+        context.getMatrices().translate(0.0F, 0.0F, 1000.0F);
         if (slot.id == handler.selectedSlot.get()) {
             context.drawTexture(SELECTED_SLOT_TEXTURE, slot.x - 4, slot.y - 4, 0, 0, 24, 24, 24, 24);
         }
         context.getMatrices().pop();
+    }
+
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
+        if (!super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount)) {
+            var maxSlot = 0;
+            var inventory = handler.getInventory();
+            for (int i = 0; i < inventory.size(); i++) {
+                if (!inventory.getStack(i).isEmpty()) {
+                    maxSlot = i + 1;
+                }
+            }
+
+            var newSlot = (int) Math.round(handler.selectedSlot.get() + verticalAmount);
+
+            if (maxSlot > 0) {
+                while (newSlot < 0) {
+                    newSlot += maxSlot;
+                }
+                while (newSlot >= maxSlot) {
+                    newSlot -= maxSlot;
+                }
+            } else {
+                newSlot = 0;
+            }
+
+            ModNetworking.CHANNEL.clientHandle().send(new ScrollInGamePacket((float) (Trickster.CONFIG.invertTopHatScrolling() ? -verticalAmount : verticalAmount)));
+            handler.selectedSlot.set(newSlot);
+        }
+
+        return true;
     }
 }
 

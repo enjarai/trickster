@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.cca;
 
+import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.ModSounds;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellPart;
@@ -42,7 +43,7 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
             Endec.map(Endec.INT, StructEndecBuilder.of(
                     Endec.INT.fieldOf("executions_last_tick", RunningSpellData::executionsLastTick),
                     Endec.BOOLEAN.fieldOf("errored", RunningSpellData::errored),
-                    MinecraftEndecs.TEXT.optionalOf().optionalFieldOf("message", RunningSpellData::message, Optional.empty()),
+                    EndecTomfoolery.safeOptionalOf(MinecraftEndecs.TEXT).optionalFieldOf("message", RunningSpellData::message, Optional.empty()),
                     RunningSpellData::new
             ));
     public static final KeyedEndec<SpellExecutionManager> EXECUTION_MANAGER_ENDEC =

@@ -25,6 +25,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static dev.enjarai.trickster.screen.SpellPartWidget.PRECISION_OFFSET;
 import static dev.enjarai.trickster.screen.SpellPartWidget.isCircleClickable;
 
 public class SpellCircleRenderer {
@@ -113,9 +114,9 @@ public class SpellCircleRenderer {
             var nextX = x + (size * Math.cos(angle));
             var nextY = y + (size * Math.sin(angle));
 
-            var nextSize = Math.min(size / 2, size / (float) ((partCount + 1) / 2));
+            var nextSize = Math.min(size / 2, size / (double) ((partCount + 1) / 2));
 
-            renderPart(matrices, vertexConsumers, child, (float) nextX, (float) nextY, nextSize, angle, delta, alphaGetter, normal);
+            renderPart(matrices, vertexConsumers, child, nextX, nextY, nextSize, angle, delta, alphaGetter, normal);
 
             i++;
         }
@@ -173,7 +174,6 @@ public class SpellCircleRenderer {
         var pixelSize = patternSize / PART_PIXEL_RADIUS;
 
         if (glyph instanceof PatternGlyph pattern) {
-
 
             var isDrawing = inEditor && drawingPartGetter.get() == parent;
             var drawingPattern = inEditor ? drawingPatternGetter.get() : null;
@@ -271,6 +271,11 @@ public class SpellCircleRenderer {
                 }
             }
         }
+    }
+
+    public long getTime() {
+        var world = MinecraftClient.getInstance().world;
+        return world != null ? world.getTime() : 0;
     }
 
     public static void drawGlyphLine(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Vector2f last, Vector2f now, float pixelSize, boolean isDrawing, float tone, float r, float g, float b, float opacity) {

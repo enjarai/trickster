@@ -31,11 +31,18 @@ public class WriteSpellTrick extends Trick {
 
     public Fragment activate(SpellContext ctx, List<Fragment> fragments, boolean closed) throws BlunderException {
         var player = ctx.source().getPlayer();
-        var spell = supposeInput(fragments, 0).flatMap(s -> supposeType(s, FragmentType.SPELL_PART)).map(s -> {
-            var n = s.deepClone();
-            n.brutallyMurderEphemerals();
-            return n;
-        });
+        var spell = supposeInput(fragments, 0)
+                .flatMap(s -> {
+                    if (supposeType(s, FragmentType.VOID).isPresent()) {
+                        return Optional.empty();
+                    } else {
+                        return Optional.of(expectType(s, FragmentType.SPELL_PART));
+                    }
+                }).map(s -> {
+                    var n = s.deepClone();
+                    n.brutallyMurderEphemerals();
+                    return n;
+                });
 
         return player.map(serverPlayerEntity -> Pair.of(serverPlayerEntity, serverPlayerEntity.getOffHandStack())).map(pair -> {
             var serverPlayer = pair.getFirst();
@@ -75,12 +82,20 @@ public class WriteSpellTrick extends Trick {
                     if (spellComponent == null || spellComponent.immutable())
                         return false;
 
-                    s.remove(ModComponents.SPELL);
+                    var itemDefault = s.getItem().getDefaultStack().get(ModComponents.SPELL);
+
+                    if (itemDefault != null) {
+                        s.set(ModComponents.SPELL, itemDefault);
+                    } else {
+                        s.remove(ModComponents.SPELL);
+                    }
+
                     return true;
                 })) {
                     throw new ImmutableItemBlunder(this);
                 }
             });
+
             return BooleanFragment.TRUE;
         }).orElse(BooleanFragment.FALSE);
     }

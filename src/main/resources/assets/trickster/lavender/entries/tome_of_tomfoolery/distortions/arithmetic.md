@@ -13,16 +13,6 @@ Many base arithmetical operations, though not all, will work on both single numb
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:two,title=Foundational Delusion|>
-
--> number (2)
-
----
-
-Returns the number two, always.
-
-;;;;;
-
 <|glyph@trickster:templates|trick-id=trickster:add,title=Annexation Stratagem|>
 
 number... | number[] -> number |

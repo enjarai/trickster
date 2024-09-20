@@ -12,8 +12,10 @@
     "PlayerRendererMixin",
     "RenderedChunkMixin",
     "SillyHairsFeatureRendererMixin",
+    "SubtitlesHudMixin",
     "WorldRendererAccessor",
-    "accessories.AccessoriesScreenMixin",
+    "animation.BipedEntityModelMixin",
+    "animation.PlayerEntityModelMixin",
     "figura.AvatarManagerMixin",
     "sodium.WorldSliceMixin",
     "tooltip.TooltipComponentMixin"

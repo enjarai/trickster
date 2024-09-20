@@ -27,7 +27,7 @@ public class ScrollEnhancingRecipe extends SpecialCraftingRecipe {
         for(int j = 0; j < craftingRecipeInput.getSize(); ++j) {
             ItemStack itemStack2 = craftingRecipeInput.getStackInSlot(j);
             if (!itemStack2.isEmpty()) {
-                if (itemStack2.isOf(ModItems.WRITTEN_SCROLL)) {
+                if (itemStack2.getItem() instanceof WrittenScrollItem) {
                     if (!itemStack.isEmpty()) {
                         return false;
                     }
@@ -53,7 +53,7 @@ public class ScrollEnhancingRecipe extends SpecialCraftingRecipe {
         for(int j = 0; j < craftingRecipeInput.getSize(); ++j) {
             ItemStack itemStack2 = craftingRecipeInput.getStackInSlot(j);
             if (!itemStack2.isEmpty()) {
-                if (itemStack2.isOf(ModItems.WRITTEN_SCROLL)) {
+                if (itemStack2.getItem() instanceof WrittenScrollItem) {
                     if (!itemStack.isEmpty()) {
                         return ItemStack.EMPTY;
                     }

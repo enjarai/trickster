@@ -13,16 +13,6 @@ Lists are zero indexed.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:list_create,title=Catalogue Delusion|>
-
--> any[]
-
----
-
-Creates a new empty list.
-
-;;;;;
-
 <|glyph@trickster:templates|trick-id=trickster:list_size,title=Tally Distortion|>
 
 any[] -> number

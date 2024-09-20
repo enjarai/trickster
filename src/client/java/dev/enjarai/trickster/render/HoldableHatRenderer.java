@@ -12,6 +12,7 @@ import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.RotationAxis;
 
 public class HoldableHatRenderer implements AccessoryRenderer {
     @Override
@@ -19,7 +20,9 @@ public class HoldableHatRenderer implements AccessoryRenderer {
         if (!(model instanceof BipedEntityModel<? extends LivingEntity> humanoidModel)) return;
 
         AccessoryRenderer.transformToFace(matrices, humanoidModel.head, Side.TOP);
-        matrices.translate(0.0, -0.3, 0.0);
+        matrices.scale(1.25f, 1.25f, 1.25f);
+        matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
+        matrices.translate(0.0, -0.4, 0.01);
 
         MinecraftClient.getInstance().getItemRenderer().renderItem(
                 stack, ModelTransformationMode.HEAD, light, OverlayTexture.DEFAULT_UV,
