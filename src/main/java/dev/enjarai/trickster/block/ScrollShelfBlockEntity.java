@@ -98,6 +98,14 @@ public class ScrollShelfBlockEntity extends BlockEntity implements Inventory {
     }
 
     @Override
+    public void markDirty() {
+        super.markDirty();
+        if (world != null) {
+            world.updateListeners(pos, getCachedState(), getCachedState(), 0);
+        }
+    }
+
+    @Override
     public boolean canPlayerUse(PlayerEntity player) {
         return Inventory.canPlayerUse(this, player);
     }

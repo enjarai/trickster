@@ -33,7 +33,7 @@ public class ScrollShelfBlockEntityRenderer implements BlockEntityRenderer<Scrol
             var y = i / GRID_HEIGHT;
             modelPartData.addChild("scroll_" + i, ModelPartBuilder.create()
                     .uv(0, 0)
-                    .cuboid(16f / GRID_WIDTH * x - 1.5f, 16f - (16f / GRID_HEIGHT * y - 1.5f), 16f, 3f, 3f, 1f),
+                    .cuboid(16f / GRID_WIDTH * x + 1.5f, 16f / GRID_HEIGHT * y + 1.5f, 16f, 3f, 3f, 1f),
                     ModelTransform.NONE);
         }
         return TexturedModelData.of(modelData, 16, 16);
@@ -53,7 +53,9 @@ public class ScrollShelfBlockEntityRenderer implements BlockEntityRenderer<Scrol
         light = WorldRenderer.getLightmapCoordinates(entity.getWorld(), entity.getPos().offset(facing));
 
         matrices.push();
+        matrices.translate(0.5f, 0, 0.5f);
         matrices.multiply(RotationAxis.NEGATIVE_Y.rotationDegrees(facing.asRotation()));
+        matrices.translate(-0.5f, 0, -0.5f);
 
         for (int i = 0; i < GRID_WIDTH * GRID_HEIGHT; i++) {
             var stack = entity.getStack(i);
