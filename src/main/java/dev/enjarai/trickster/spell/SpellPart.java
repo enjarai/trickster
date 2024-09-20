@@ -69,14 +69,13 @@ public final class SpellPart implements Fragment {
         return new DefaultSpellExecutor(this, ctx.executionState().recurseOrThrow(args));
     }
 
-    public void brutallyMurderEphemerals() {
-        subParts.forEach(SpellPart::brutallyMurderEphemerals);
-
-        if (glyph instanceof SpellPart spellPart) {
-            spellPart.brutallyMurderEphemerals();
-        } else {
-            glyph = glyph.applyEphemeral();
-        }
+    /**
+     * Since spell parts are mutable, this implementation deeply clones the entire object.
+     */
+    @Override
+    public SpellPart applyEphemeral() {
+        return new SpellPart(glyph.applyEphemeral(), subParts.stream()
+                .map(SpellPart::applyEphemeral).toList());
     }
 
     public Fragment destructiveRun(SpellContext ctx) {

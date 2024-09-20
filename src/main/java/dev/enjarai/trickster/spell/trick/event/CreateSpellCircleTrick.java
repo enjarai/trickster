@@ -33,8 +33,7 @@ public class CreateSpellCircleTrick extends Trick {
         if (ctx.source().getWorld().getBlockState(blockPos).isAir()) {
             ctx.useMana(this, 496);
 
-            var spell = executable.deepClone();
-            spell.brutallyMurderEphemerals();
+            var spell = executable.applyEphemeral();
 
             ctx.source().getWorld().setBlockState(blockPos,
                     ModBlocks.SPELL_CIRCLE.getDefaultState().with(SpellCircleBlock.FACING, facing));
