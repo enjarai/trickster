@@ -19,7 +19,7 @@ public class AbstractBlockStateMixin {
             cancellable = true
     )
     private void disguiseBlockOnMap(BlockView view, BlockPos pos, CallbackInfoReturnable<MapColor> cir) {
-        if (view instanceof ServerWorld world) {
+        if (view instanceof ServerWorld world && Thread.currentThread() == world.getServer().getThread()) {
             var chunk = world.getChunk(pos);
             var component = ModChunkCumponents.SHADOW_DISGUISE_MAP.getNullable(chunk);
             if (component != null) {

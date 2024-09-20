@@ -33,7 +33,7 @@ public class ScrollShelfBlockEntityRenderer implements BlockEntityRenderer<Scrol
             var y = i / GRID_HEIGHT;
             modelPartData.addChild("scroll_" + i, ModelPartBuilder.create()
                     .uv(0, 0)
-                    .cuboid(16f / GRID_WIDTH * x + 1.5f, 16f / GRID_HEIGHT * y + 1.5f, 16f, 3f, 3f, 1f),
+                    .cuboid(15f / GRID_WIDTH * x + 1.5f, 15f / GRID_HEIGHT * y + 1f, 16f, 3f, 3f, 1f),
                     ModelTransform.NONE);
         }
         return TexturedModelData.of(modelData, 16, 16);
