@@ -288,6 +288,10 @@ key:
 
 text.config.trickster-config:
   title: Trickster Config
+  section:
+    client: Client
+    server: Server
+    aurora-client: Aurora's Personal Client Tweaks
   option:
     dragDrawing: Draw by dragging
     topHatInterceptScrolling: Top Hat intercepts hotbar scrolling
