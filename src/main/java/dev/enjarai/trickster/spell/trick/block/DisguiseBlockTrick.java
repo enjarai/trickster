@@ -6,9 +6,9 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.trick.blunder.BlockInvalidBlunder;
-import dev.enjarai.trickster.spell.trick.blunder.BlockUnoccupiedBlunder;
-import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.BlockInvalidBlunder;
+import dev.enjarai.trickster.spell.blunder.BlockUnoccupiedBlunder;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
 import net.minecraft.world.chunk.EmptyChunk;
 
 import java.util.List;

@@ -5,12 +5,10 @@ import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
-import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
-import dev.enjarai.trickster.spell.trick.blunder.UnknownEntityBlunder;
-import net.minecraft.entity.LivingEntity;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
 import net.minecraft.entity.player.PlayerEntity;
 import org.joml.Vector3d;
-import org.joml.Vector3dc;
 
 import java.util.List;
 

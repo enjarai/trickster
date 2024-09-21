@@ -2,10 +2,10 @@ package dev.enjarai.trickster.spell.fragment;
 
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.trick.Tricks;
-import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
-import dev.enjarai.trickster.spell.trick.blunder.DivideByZeroBlunder;
-import dev.enjarai.trickster.spell.trick.blunder.IncompatibleTypesBlunder;
-import dev.enjarai.trickster.spell.trick.blunder.NaNBlunder;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.DivideByZeroBlunder;
+import dev.enjarai.trickster.spell.blunder.IncompatibleTypesBlunder;
+import dev.enjarai.trickster.spell.blunder.NaNBlunder;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
