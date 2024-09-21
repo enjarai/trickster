@@ -187,9 +187,9 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         x += verticalAmount * (x - toScaledSpace(mouseX)) / 10;
         y += verticalAmount * (y - toScaledSpace(mouseY)) / 10;
 
-        if (toLocalSpace(size) > 500) {
+        if (toLocalSpace(size) > 600) {
             pushNewRoot(toScaledSpace(mouseX), toScaledSpace(mouseY));
-        } else if (toLocalSpace(size) < 200 && !parents.empty()) {
+        } else if (toLocalSpace(size) < 300 && !parents.empty()) {
             popOldRoot();
         }
 
