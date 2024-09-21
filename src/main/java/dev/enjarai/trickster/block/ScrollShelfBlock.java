@@ -52,7 +52,7 @@ public class ScrollShelfBlock extends BlockWithEntity {
         builder.add(FACING);
     }
 
-    private OptionalInt getSlotForHitPos(BlockHitResult hit, BlockState state) {
+    public static OptionalInt getSlotForHitPos(BlockHitResult hit, BlockState state) {
         return getHitPos(hit, state.get(HorizontalFacingBlock.FACING)).map(hitPos -> {
             int x = Math.clamp((int) (hitPos.x * GRID_WIDTH), 0, GRID_WIDTH - 1);
             int y = Math.clamp((int) (hitPos.y * GRID_HEIGHT), 0, GRID_HEIGHT - 1);
@@ -61,7 +61,7 @@ public class ScrollShelfBlock extends BlockWithEntity {
         }).orElseGet(OptionalInt::empty);
     }
 
-    private static Optional<Vec2f> getHitPos(BlockHitResult hit, Direction facing) {
+    public static Optional<Vec2f> getHitPos(BlockHitResult hit, Direction facing) {
         Direction direction = hit.getSide();
         if (facing != direction) {
             return Optional.empty();
@@ -93,7 +93,7 @@ public class ScrollShelfBlock extends BlockWithEntity {
             if (!stack.isIn(ModItems.SCROLLS)) {
                 return ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
             } else {
-                OptionalInt slot = this.getSlotForHitPos(hit, state);
+                OptionalInt slot = getSlotForHitPos(hit, state);
                 if (slot.isEmpty()) {
                     return ItemActionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
                 } else {
@@ -118,7 +118,7 @@ public class ScrollShelfBlock extends BlockWithEntity {
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if (world.getBlockEntity(pos) instanceof ScrollShelfBlockEntity blockEntity) {
-            OptionalInt slot = this.getSlotForHitPos(hit, state);
+            OptionalInt slot = getSlotForHitPos(hit, state);
             if (slot.isEmpty()) {
                 return ActionResult.PASS;
             } else if (blockEntity.getStack(slot.getAsInt()).isEmpty()) {

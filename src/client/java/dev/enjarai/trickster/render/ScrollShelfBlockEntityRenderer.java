@@ -3,6 +3,8 @@ package dev.enjarai.trickster.render;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.block.ScrollShelfBlock;
 import dev.enjarai.trickster.block.ScrollShelfBlockEntity;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -13,8 +15,12 @@ import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.registry.Registries;
+import net.minecraft.text.Text;
+import net.minecraft.util.Colors;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.RotationAxis;
+import org.joml.Matrix4f;
 
 import static dev.enjarai.trickster.block.ScrollShelfBlock.GRID_HEIGHT;
 import static dev.enjarai.trickster.block.ScrollShelfBlock.GRID_WIDTH;
@@ -32,8 +38,8 @@ public class ScrollShelfBlockEntityRenderer implements BlockEntityRenderer<Scrol
             var x = i % GRID_WIDTH;
             var y = i / GRID_HEIGHT;
             modelPartData.addChild("scroll_" + i, ModelPartBuilder.create()
-                    .uv(0, 0)
-                    .cuboid(15f / GRID_WIDTH * x + 1.5f, 15f / GRID_HEIGHT * y + 1f, 16f, 3f, 3f, 1f),
+                            .uv(0, 0)
+                            .cuboid(15f / GRID_WIDTH * x + 1.5f, 15f / GRID_HEIGHT * y + 1f, 16f, 3f, 3f, 1f),
                     ModelTransform.NONE);
         }
         return TexturedModelData.of(modelData, 16, 16);
@@ -66,6 +72,43 @@ public class ScrollShelfBlockEntityRenderer implements BlockEntityRenderer<Scrol
                 scrollModels[i].render(matrices, vertexConsumer, light, overlay);
             }
         }
+
+        if (MinecraftClient.getInstance().crosshairTarget instanceof BlockHitResult blockHit
+                && blockHit.getBlockPos().equals(entity.getPos())
+                && blockHit.getSide() == entity.getCachedState().get(ScrollShelfBlock.FACING)) {
+            var slot = ScrollShelfBlock.getSlotForHitPos(blockHit, entity.getCachedState());
+            if (slot.isPresent()) {
+                var stack = entity.getStack(slot.getAsInt());
+                if (!stack.isEmpty()) {
+                    renderLabel(entity, tickDelta, matrices, vertexConsumers, light, slot.getAsInt(), stack.getName());
+                }
+            }
+        }
+
+        matrices.pop();
+    }
+
+    public void renderLabel(ScrollShelfBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int slot, Text name) {
+        matrices.push();
+        matrices.translate(0, 0, 1.1f);
+
+        var pixel = 1f / 16f;
+        var x = pixel * 15f / GRID_WIDTH * (slot % GRID_WIDTH) + pixel * 3f;
+        //noinspection IntegerDivisionInFloatingPointContext
+        var y = pixel * 15f / GRID_HEIGHT * (slot / GRID_HEIGHT) + pixel * 7f;
+        matrices.translate(x, y, 0);
+
+        matrices.scale(0.018F, -0.018F, 0.018F);
+
+        Matrix4f matrix4f = matrices.peek().getPositionMatrix();
+        MinecraftClient client = MinecraftClient.getInstance();
+        float opacity = client.options.getTextBackgroundOpacity(0.25F);
+        int backgroundColor = (int) (opacity * 255.0F) << 24;
+        TextRenderer textRenderer = client.textRenderer;
+        float offsetX = (float) (-textRenderer.getWidth(name) / 2);
+
+//        textRenderer.draw(name, offsetX, 0, 553648127, false, matrix4f, vertexConsumers, TextRenderer.TextLayerType.NORMAL, backgroundColor, light);
+        textRenderer.draw(name, offsetX, 0, Colors.WHITE, false, matrix4f, vertexConsumers, TextRenderer.TextLayerType.NORMAL, 0, light);
 
         matrices.pop();
     }
