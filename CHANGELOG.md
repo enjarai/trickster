@@ -7,3 +7,4 @@
 - Updated multiple textures courtesy of @Crephan.
 - Fixed a bug letting players save ephemeral fragments within lists. (@enjarai)
 - Tweaked how bloodcasting damage is applied, making it less forgiving. (@enjarai)
+- Fixed a slight oddity in the spell editor, where one could interact with a fake root as if it is the real root. (@StellarWitch7)
