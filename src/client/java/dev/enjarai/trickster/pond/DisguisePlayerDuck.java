@@ -1,7 +1,7 @@
-package dev.enjarai.trickster.quack;
+package dev.enjarai.trickster.pond;
 
 import net.minecraft.client.network.PlayerListEntry;
 
-public interface DisguisePlayerQuack {
+public interface DisguisePlayerDuck {
     PlayerListEntry trickster$getApplicableEntry();
 }

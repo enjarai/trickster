@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.item;
 
+import com.google.common.collect.ImmutableList;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.block.ModBlocks;
 import dev.enjarai.trickster.item.component.*;
@@ -16,25 +17,31 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.text.Text;
+import net.minecraft.util.DyeColor;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 public class ModItems {
     public static final LavenderBookItem TOME_OF_TOMFOOLERY = LavenderBookItem.registerForBook(
             Trickster.id("tome_of_tomfoolery"), new Item.Settings().maxCount(1));
-    public static final ScrollAndQuillItem SCROLL_AND_QUILL = register("scroll_and_quill",
-            new ScrollAndQuillItem(new Item.Settings().maxCount(16)
-                    .component(ModComponents.SPELL, new SpellComponent(new SpellPart()))));
     public static final WrittenScrollItem WRITTEN_SCROLL = register("written_scroll",
             new WrittenScrollItem(new Item.Settings().maxCount(16)
                     .component(ModComponents.SPELL, new SpellComponent(new SpellPart(), true))
                     .component(ModComponents.WRITTEN_SCROLL_META,
                             new WrittenScrollMetaComponent("Unknown", "Unknown", 0))));
+    public static final ScrollAndQuillItem SCROLL_AND_QUILL = register("scroll_and_quill",
+            new ScrollAndQuillItem(new Item.Settings().maxCount(16)
+                    .component(ModComponents.SPELL, new SpellComponent(new SpellPart())), WRITTEN_SCROLL));
     public static final EvaluationMirrorItem MIRROR_OF_EVALUATION = register("mirror_of_evaluation",
             new EvaluationMirrorItem(new Item.Settings().maxCount(1)
                     .component(ModComponents.SPELL, new SpellComponent(new SpellPart()))));
     public static final TrickHatItem TOP_HAT = register("top_hat",
+            new TrickHatItem(new Item.Settings()));
+    public static final TrickHatItem WITCH_HAT = register("witch_hat",
+            new TrickHatItem(new Item.Settings()));
+    public static final TrickHatItem FEZ = register("fez",
             new TrickHatItem(new Item.Settings()));
     public static final WandItem WAND = register("wand",
             new WandItem(new Item.Settings().maxCount(1)
@@ -64,14 +71,43 @@ public class ModItems {
     public static final TagKey<Item> WEAPON_SPELL_TRIGGERS = TagKey.of(RegistryKeys.ITEM, Trickster.id("weapon_spell_triggers"));
     public static final TagKey<Block> CONJURABLE_FLOWERS = TagKey.of(RegistryKeys.BLOCK, Trickster.id("conjurable_flowers"));
 
+    public static final WrittenScrollItem[] COLORED_WRITTEN_SCROLLS = new WrittenScrollItem[DyeColor.values().length];
+    public static final ScrollAndQuillItem[] COLORED_SCROLLS_AND_QUILLS = new ScrollAndQuillItem[DyeColor.values().length];
+    public static final List<DyedVariant> DYED_VARIANTS;
+
+    static {
+        var list = ImmutableList.<DyedVariant>builder();
+        for (int i = 0; i < DyeColor.values().length; i++) {
+            var color = DyeColor.values()[i];
+
+            var writtenScroll = register("written_scroll_" + color.getName(),
+                    new WrittenScrollItem(new Item.Settings().maxCount(16)
+                            .component(ModComponents.SPELL, new SpellComponent(new SpellPart(), true))
+                            .component(ModComponents.WRITTEN_SCROLL_META,
+                                    new WrittenScrollMetaComponent("Unknown", "Unknown", 0))));
+            list.add(new DyedVariant(WRITTEN_SCROLL, writtenScroll, color));
+            COLORED_WRITTEN_SCROLLS[i] = writtenScroll;
+
+            var scrollAndQuill = register("scroll_and_quill_" + color.getName(),
+                    new ScrollAndQuillItem(new Item.Settings().maxCount(16)
+                            .component(ModComponents.SPELL, new SpellComponent(new SpellPart())), writtenScroll));
+            list.add(new DyedVariant(SCROLL_AND_QUILL, scrollAndQuill, color));
+            COLORED_SCROLLS_AND_QUILLS[i] = scrollAndQuill;
+        }
+        DYED_VARIANTS = list.build();
+    }
+
     public static final ItemGroup ITEM_GROUP = FabricItemGroup.builder()
             .icon(WAND::getDefaultStack)
             .displayName(Text.translatable("trickster.item_group"))
             .entries((context, entries) -> {
                 entries.add(TOME_OF_TOMFOOLERY);
                 entries.add(SCROLL_AND_QUILL);
+                entries.addAll(Arrays.stream(COLORED_SCROLLS_AND_QUILLS).map(ItemStack::new).toList());
                 entries.add(MIRROR_OF_EVALUATION);
                 entries.add(TOP_HAT);
+                entries.add(WITCH_HAT);
+                entries.add(FEZ);
                 entries.add(WAND);
                 entries.add(WARDING_CHARM);
                 entries.add(SPELL_INK);
@@ -86,4 +122,6 @@ public class ModItems {
     public static void register() {
         Registry.register(Registries.ITEM_GROUP, Trickster.id("trickster"), ITEM_GROUP);
     }
+
+    public record DyedVariant(Item original, Item variant, DyeColor color) {}
 }

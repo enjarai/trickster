@@ -46,8 +46,13 @@ public non-sealed interface Fragment extends SpellInstruction {
         return new SerializedSpellInstruction(SpellInstructionType.FRAGMENT, this);
     }
 
-    default boolean isEphemeral() {
-        return false;
+    /**
+     * Potentially recursively remove ephemeral values from this fragment.
+     * May return <pre>this</pre> or any other new fragment.
+     * Potentially results in cloning the entire fragment if required.
+     */
+    default Fragment applyEphemeral() {
+        return this;
     }
 
     default Optional<BiFunction<SpellContext, List<Fragment>, Fragment>> getActivator() {
