@@ -1,12 +1,12 @@
 package dev.enjarai.trickster.spell.trick.entity;
 
-import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
-import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
-import dev.enjarai.trickster.spell.trick.blunder.UnknownEntityBlunder;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
 import dev.enjarai.trickster.spell.trick.entity.query.AbstractLivingEntityQueryTrick;
 import net.minecraft.server.network.ServerPlayerEntity;
 
@@ -29,8 +29,8 @@ public class PolymorphTrick extends AbstractLivingEntityQueryTrick {
         if (realTarget instanceof ServerPlayerEntity targetPlayer && realSource instanceof ServerPlayerEntity sourcePlayer) {
             ctx.useMana(this, 480);
 
-            var cumpoonent = targetPlayer.getComponent(ModEntityCumponents.DISGUISE);
-            var sourceCumponent = sourcePlayer.getComponent(ModEntityCumponents.DISGUISE);
+            var cumpoonent = targetPlayer.getComponent(ModEntityComponents.DISGUISE);
+            var sourceCumponent = sourcePlayer.getComponent(ModEntityComponents.DISGUISE);
             var uuid = sourcePlayer.getUuid();
 
             if (sourceCumponent.getUuid() != null) {

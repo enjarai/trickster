@@ -5,7 +5,7 @@ import dev.enjarai.trickster.spell.execution.SerializedSpellInstruction;
 import dev.enjarai.trickster.spell.execution.SpellInstructionType;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.owo.serialization.endec.MinecraftEndecs;
@@ -46,8 +46,13 @@ public non-sealed interface Fragment extends SpellInstruction {
         return new SerializedSpellInstruction(SpellInstructionType.FRAGMENT, this);
     }
 
-    default boolean isEphemeral() {
-        return false;
+    /**
+     * Potentially recursively remove ephemeral values from this fragment.
+     * May return <pre>this</pre> or any other new fragment.
+     * Potentially results in cloning the entire fragment if required.
+     */
+    default Fragment applyEphemeral() {
+        return this;
     }
 
     default Optional<BiFunction<SpellContext, List<Fragment>, Fragment>> getActivator() {

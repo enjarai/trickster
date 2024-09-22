@@ -1,6 +1,6 @@
 package dev.enjarai.trickster.item;
 
-import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.PatternGlyph;
@@ -10,7 +10,7 @@ import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
-import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
 import io.wispforest.accessories.api.AccessoryItem;
 import io.wispforest.accessories.api.slot.SlotReference;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -45,7 +45,7 @@ public class TrickyAccessoryItem extends AccessoryItem {
         }
 
         var spell = spellComponent.spell();
-        var caster = ModEntityCumponents.CASTER.get(player);
+        var caster = ModEntityComponents.CASTER.get(player);
 
         caster.queueSpellAndCast(spell, List.of(new SpellPart(new PatternGlyph(source.getPattern())), sourceFragment, new ListFragment(inputs)), Optional.empty());
     }

@@ -68,7 +68,7 @@ public class ScrollContainerScreen extends HandledScreen<ScrollContainerScreenHa
                 }
             }
 
-            var newSlot = (int) Math.round(handler.selectedSlot.get() + verticalAmount);
+            var newSlot = (int) Math.round(handler.selectedSlot.get() + (Trickster.CONFIG.invertTopHatScrolling() ? verticalAmount : -verticalAmount));
 
             if (maxSlot > 0) {
                 while (newSlot < 0) {
@@ -81,7 +81,7 @@ public class ScrollContainerScreen extends HandledScreen<ScrollContainerScreenHa
                 newSlot = 0;
             }
 
-            ModNetworking.CHANNEL.clientHandle().send(new ScrollInGamePacket((float) (Trickster.CONFIG.invertTopHatScrolling() ? -verticalAmount : verticalAmount)));
+            ModNetworking.CHANNEL.clientHandle().send(new ScrollInGamePacket((float) (Trickster.CONFIG.invertTopHatScrolling() ? verticalAmount : -verticalAmount)));
             handler.selectedSlot.set(newSlot);
         }
 

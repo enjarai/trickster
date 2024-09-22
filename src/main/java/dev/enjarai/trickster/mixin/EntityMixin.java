@@ -1,6 +1,6 @@
 package dev.enjarai.trickster.mixin;
 
-import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.cca.ModEntityComponents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -17,7 +17,7 @@ public class EntityMixin {
             cancellable = true
     )
     private void applyGravityGrace(CallbackInfoReturnable<Double> cir) {
-        if ((Object) this instanceof LivingEntity && ModEntityCumponents.GRACE.get(this).isInGrace("gravity")) {
+        if ((Object) this instanceof LivingEntity && ModEntityComponents.GRACE.get(this).isInGrace("gravity")) {
             cir.setReturnValue(0.0);
         }
     }

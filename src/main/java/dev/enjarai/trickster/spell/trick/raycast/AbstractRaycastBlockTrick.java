@@ -3,17 +3,13 @@ package dev.enjarai.trickster.spell.trick.raycast;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
-import dev.enjarai.trickster.spell.trick.blunder.IncorrectFragmentBlunder;
-import dev.enjarai.trickster.spell.trick.entity.query.AbstractLivingEntityQueryTrick;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
 
-import java.util.List;
 import java.util.Optional;
 
 public abstract class AbstractRaycastBlockTrick extends AbstractRaycastTrick {

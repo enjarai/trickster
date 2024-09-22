@@ -136,5 +136,9 @@
                 </sizing>
             </flow-layout>
         </template>
+        <template name="item-tag">
+            <trickster.item-tag tag-id="{{tag-id}}">
+            </trickster.item-tag>
+        </template>
     </templates>
 </owo-ui>

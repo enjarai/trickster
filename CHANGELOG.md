@@ -1,1 +1,10 @@
-- Solved scroll and mirror UI not updating the item most of the time (again). (@StellarWitch7)
+- Added 16 colors of dyed spell scrolls. (@enjarai)
+- Added two extra hat types. (@enjarai)
+  - These function exactly the same as the Top Hat, just with a different aesthetic.
+- Added a third person animation when taking off and putting on a hat. (@enjarai)
+- Added a HUD element showing the currently selected scroll when holding a hat in your offhand. (@enjarai)
+- Generally polished hat interactions.
+- Updated multiple textures courtesy of @Crephan.
+- Fixed a bug letting players save ephemeral fragments within lists. (@enjarai)
+- Tweaked how bloodcasting damage is applied, making it less forgiving. (@enjarai)
+- Fixed a slight oddity in the spell editor, where one could interact with a fake root as if it is the real root. (@StellarWitch7)

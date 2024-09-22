@@ -49,7 +49,7 @@ public class IsEditingScrollComponent implements AutoSyncedComponent {
 
     public void setEditing(Boolean editing) {
         this.editing = editing;
-        ModEntityCumponents.IS_EDITING_SCROLL.sync(player);
+        ModEntityComponents.IS_EDITING_SCROLL.sync(player);
     }
 
 }

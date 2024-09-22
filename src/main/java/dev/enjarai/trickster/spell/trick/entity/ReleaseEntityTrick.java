@@ -10,9 +10,9 @@ import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
-import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
-import dev.enjarai.trickster.spell.trick.blunder.EntityInvalidBlunder;
-import dev.enjarai.trickster.spell.trick.blunder.NoPlayerBlunder;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.EntityInvalidBlunder;
+import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.math.Vec3d;
 

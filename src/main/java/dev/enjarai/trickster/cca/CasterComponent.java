@@ -26,7 +26,6 @@ import net.minecraft.text.Text;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -68,7 +67,7 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
 
         runningSpellData.clear();
         executionManager.tick(this::afterExecutorTick, this::completeExecutor, this::executorError);
-        ModEntityCumponents.CASTER.sync(player);
+        ModEntityComponents.CASTER.sync(player);
     }
 
     private void afterExecutorTick(int index, SpellExecutor executor) {

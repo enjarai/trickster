@@ -1,6 +1,6 @@
 package dev.enjarai.trickster.mixin;
 
-import dev.enjarai.trickster.cca.ModChunkCumponents;
+import dev.enjarai.trickster.cca.ModChunkComponents;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.MapColor;
 import net.minecraft.server.world.ServerWorld;
@@ -21,7 +21,7 @@ public class AbstractBlockStateMixin {
     private void disguiseBlockOnMap(BlockView view, BlockPos pos, CallbackInfoReturnable<MapColor> cir) {
         if (view instanceof ServerWorld world && Thread.currentThread() == world.getServer().getThread()) {
             var chunk = world.getChunk(pos);
-            var component = ModChunkCumponents.SHADOW_DISGUISE_MAP.getNullable(chunk);
+            var component = ModChunkComponents.SHADOW_DISGUISE_MAP.getNullable(chunk);
             if (component != null) {
                 var disguise = component.getFunnyState(pos);
                 if (disguise != null) {

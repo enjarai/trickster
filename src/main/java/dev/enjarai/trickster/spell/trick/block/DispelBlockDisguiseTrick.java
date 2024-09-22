@@ -1,13 +1,13 @@
 package dev.enjarai.trickster.spell.trick.block;
 
-import dev.enjarai.trickster.cca.ModChunkCumponents;
+import dev.enjarai.trickster.cca.ModChunkComponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.trick.blunder.BlockUnoccupiedBlunder;
-import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.BlockUnoccupiedBlunder;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
 import net.minecraft.world.chunk.EmptyChunk;
 
 import java.util.List;
@@ -32,7 +32,7 @@ public class DispelBlockDisguiseTrick extends AbstractBlockDisguiseTrick {
         if (!(chunk instanceof EmptyChunk)) {
             ctx.useMana(this, 10);
 
-            var component = ModChunkCumponents.SHADOW_DISGUISE_MAP.get(chunk);
+            var component = ModChunkComponents.SHADOW_DISGUISE_MAP.get(chunk);
 
             if (component.clearFunnyState(blockPos)) {
                 updateShadow(ctx, blockPos);

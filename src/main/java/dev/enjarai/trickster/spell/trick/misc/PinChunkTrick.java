@@ -1,14 +1,13 @@
 package dev.enjarai.trickster.spell.trick.misc;
 
-import dev.enjarai.trickster.cca.ModWorldCumponents;
+import dev.enjarai.trickster.cca.ModWorldComponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
-import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
 import net.minecraft.util.math.ChunkPos;
 
 import java.util.List;
@@ -24,7 +23,7 @@ public class PinChunkTrick extends Trick {
         var chunkPos = new ChunkPos(pos.toBlockPos());
 
         ctx.useMana(this, 32);
-        ModWorldCumponents.PINNED_CHUNKS.get(ctx.source().getWorld()).pinChunk(chunkPos);
+        ModWorldComponents.PINNED_CHUNKS.get(ctx.source().getWorld()).pinChunk(chunkPos);
 
         return VoidFragment.INSTANCE;
     }

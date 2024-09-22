@@ -1,6 +1,6 @@
 package dev.enjarai.trickster.mixin.chunk_pinning;
 
-import dev.enjarai.trickster.cca.ModWorldCumponents;
+import dev.enjarai.trickster.cca.ModWorldComponents;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -29,7 +29,7 @@ public abstract class ServerWorldMixin extends World {
             cancellable = true
     )
     private void worldPinTick(ChunkPos pos, CallbackInfoReturnable<Boolean> cir) {
-        if (ModWorldCumponents.PINNED_CHUNKS.get(this).isPinned(pos)) {
+        if (ModWorldComponents.PINNED_CHUNKS.get(this).isPinned(pos)) {
             cir.setReturnValue(true);
         }
     }

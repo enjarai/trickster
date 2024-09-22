@@ -21,13 +21,23 @@ It is also possible to write to a scroll programmatically using [Notulist's Ploy
 
 <recipe;trickster:scroll_and_quill>
 
-A Scroll and Quill can be signed by shift-right-clicking it.
+;;;;;
+
+Scrolls can be dyed by combining them with any dye in a crafting table:
+
+<|item-tag@trickster:templates|tag-id=trickster:dyed_scroll_and_quill|>
+
+A Scroll and Quill can also be signed by shift-right-clicking it.
+This lets you give it a custom name for free, but it cannot be written to anymore by any means.
 
 ;;;;;
 
-Signed scrolls are immutable. They cannot be written to by any means. However, they can be charged with one to eight vials of spell ink, 
-a special concoction that imbues scrolls with a single-use pool of mana. 
-Scrolls that have been imbued with mana can have their contained spell cast at no risk to the user, however, doing so consumes the scroll. 
+However, signed scrolls can be charged with one to eight vials of spell ink, 
+a special concoction that imbues scrolls with a single-use pool of mana.
+
+
+Scrolls that have been imbued with mana can have their contained spell cast at no risk to the user, 
+however, doing so consumes the scroll. 
 
 ;;;;;
 

@@ -26,6 +26,8 @@ import dev.enjarai.trickster.spell.trick.raycast.RaycastBlockSideTrick;
 import dev.enjarai.trickster.spell.trick.raycast.RaycastEntityTrick;
 import dev.enjarai.trickster.spell.trick.tree.*;
 import dev.enjarai.trickster.spell.trick.vector.*;
+import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
+import net.fabricmc.fabric.api.event.registry.RegistryAttribute;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.SimpleRegistry;
@@ -41,7 +43,7 @@ public class Tricks {
     private static final Map<Pattern, Trick> LOOKUP = new HashMap<>();
 
     public static final RegistryKey<Registry<Trick>> REGISTRY_KEY = RegistryKey.ofRegistry(Trickster.id("trick"));
-    public static final Registry<Trick> REGISTRY = new SimpleRegistry<>(REGISTRY_KEY, Lifecycle.stable()) {
+    public static final Registry<Trick> REGISTRY = FabricRegistryBuilder.from(new SimpleRegistry<>(REGISTRY_KEY, Lifecycle.stable()) {
         @Override
         public RegistryEntry.Reference<Trick> add(RegistryKey<Trick> key, Trick value, RegistryEntryInfo info) {
             if (LOOKUP.containsKey(value.getPattern())) {
@@ -54,7 +56,7 @@ public class Tricks {
             LOOKUP.put(value.getPattern(), value);
             return super.add(key, value, info);
         }
-    };
+    }).buildAndRegister();
 
     // Functions
     public static final ExecuteTrick EXECUTE = register("execute", new ExecuteTrick());

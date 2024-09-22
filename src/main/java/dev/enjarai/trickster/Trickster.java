@@ -14,7 +14,10 @@ import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.screen.ModScreenHandlers;
 import dev.enjarai.trickster.spell.ItemTriggerHelper;
+import dev.enjarai.trickster.spell.execution.executor.SpellExecutorType;
+import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
+import dev.enjarai.trickster.spell.mana.ManaPoolType;
 import dev.enjarai.trickster.spell.trick.Tricks;
 import net.fabricmc.api.ModInitializer;
 
@@ -34,7 +37,7 @@ public class Trickster implements ModInitializer, CicadaEntrypoint {
 	// It is considered best practice to use your mod id as the logger's name.
 	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final String MOD_ID = "trickster";
-    public static final Logger LOGGER = ProperLogger.getLogger(MOD_ID);
+	public static final Logger LOGGER = ProperLogger.getLogger(MOD_ID);
 
 	public static final Identifier SPELL_CIRCLE_ATTRIBUTE = id("spell_circle");
 	public static final EntityAttributeModifier NEGATE_ATTRIBUTE = new EntityAttributeModifier(Trickster.SPELL_CIRCLE_ATTRIBUTE, -1d, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
@@ -60,6 +63,9 @@ public class Trickster implements ModInitializer, CicadaEntrypoint {
 		ModDamageTypes.register();
 		Tricks.register();
 		ModCriteria.register();
+		FragmentType.register();
+		ManaPoolType.register();
+		SpellExecutorType.register();
 
 		PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, blockEntity) -> {
 			if (player instanceof ServerPlayerEntity serverPlayer)

@@ -7,8 +7,7 @@ import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
-import dev.enjarai.trickster.spell.fragment.ZalgoFragment;
-import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
 import io.netty.buffer.Unpooled;
 import io.wispforest.endec.SerializationContext;
 import io.wispforest.endec.StructEndec;
@@ -69,16 +68,13 @@ public final class SpellPart implements Fragment {
         return new DefaultSpellExecutor(this, ctx.executionState().recurseOrThrow(args));
     }
 
-    public void brutallyMurderEphemerals() {
-        subParts.forEach(SpellPart::brutallyMurderEphemerals);
-
-        if (glyph instanceof SpellPart spellPart) {
-            spellPart.brutallyMurderEphemerals();
-        } else {
-            if (glyph.isEphemeral()) {
-                glyph = new ZalgoFragment();
-            }
-        }
+    /**
+     * Since spell parts are mutable, this implementation deeply clones the entire object.
+     */
+    @Override
+    public SpellPart applyEphemeral() {
+        return new SpellPart(glyph.applyEphemeral(), subParts.stream()
+                .map(SpellPart::applyEphemeral).toList());
     }
 
     public Fragment destructiveRun(SpellContext ctx) {
