@@ -71,6 +71,7 @@
 	},
 	"breaks": {
 		"sodium": "<0.6.0-",
-		"optifabric": "*"
+		"optifabric": "*",
+		"embeddium": "*"
 	}
 }
