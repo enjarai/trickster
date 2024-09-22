@@ -9,7 +9,7 @@ import org.joml.Vector3f;
 
 import java.util.List;
 
-public class SpellFleckTrick extends AbstactFleckTrick {
+public class SpellFleckTrick extends AbstractFleckTrick {
     public SpellFleckTrick() {
         super(Pattern.of(3, 4, 5, 8, 7, 6, 3, 0, 1, 2, 5));
     }

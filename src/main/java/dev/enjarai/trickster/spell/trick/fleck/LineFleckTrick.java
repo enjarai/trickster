@@ -1,18 +1,16 @@
 package dev.enjarai.trickster.spell.trick.fleck;
 
-import dev.enjarai.trickster.cca.ModEntityCumponents;
 import dev.enjarai.trickster.fleck.LineFleck;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import org.joml.Vector3f;
 
 import java.util.List;
 
-public class LineFleckTrick extends AbstactFleckTrick {
+public class LineFleckTrick extends AbstractFleckTrick {
     public LineFleckTrick() {
         super(Pattern.of(2, 5, 7, 4, 3, 1, 2));
     }

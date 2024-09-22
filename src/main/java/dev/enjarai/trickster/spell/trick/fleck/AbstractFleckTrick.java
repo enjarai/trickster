@@ -5,6 +5,7 @@ import dev.enjarai.trickster.fleck.Fleck;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.trick.Trick;
@@ -16,9 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-public abstract class AbstactFleckTrick extends Trick {
+public abstract class AbstractFleckTrick extends Trick {
 
-    public AbstactFleckTrick(Pattern pattern) {
+    public AbstractFleckTrick(Pattern pattern) {
         super(pattern);
     }
 
@@ -56,5 +57,5 @@ public abstract class AbstactFleckTrick extends Trick {
         return fragments.getFirst();
     }
 
-    protected abstract Fleck makeFleck(SpellContext ctx, List<Fragment> fragments);
+    protected abstract Fleck makeFleck(SpellContext ctx, List<Fragment> fragments) throws BlunderException;
 }
