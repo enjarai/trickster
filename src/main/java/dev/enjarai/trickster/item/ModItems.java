@@ -113,6 +113,7 @@ public class ModItems {
                 entries.add(WARDING_CHARM);
                 entries.add(SPELL_INK);
                 entries.add(SPELL_RESONATOR_BLOCK_ITEM);
+                entries.add(SCROLL_SHELF_BLOCK_ITEM);
             })
             .build();
 
