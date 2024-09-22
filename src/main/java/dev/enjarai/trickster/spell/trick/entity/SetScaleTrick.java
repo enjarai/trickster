@@ -1,7 +1,7 @@
 package dev.enjarai.trickster.spell.trick.entity;
 
 import dev.enjarai.trickster.Trickster;
-import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
@@ -46,7 +46,7 @@ public class SetScaleTrick extends Trick {
         ctx.useMana(this, (float) (difference * difference * 10 + scale * 50));
         livingEntity.getAttributes().getCustomInstance(EntityAttributes.GENERIC_SCALE)
                 .overwritePersistentModifier(new EntityAttributeModifier(SCALE_ID, scale, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
-        ModEntityCumponents.GRACE.get(livingEntity).triggerGrace("scale", 100);
+        ModEntityComponents.GRACE.get(livingEntity).triggerGrace("scale", 100);
 
         return BooleanFragment.TRUE;
     }

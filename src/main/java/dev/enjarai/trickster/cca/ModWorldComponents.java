@@ -6,7 +6,7 @@ import org.ladysnake.cca.api.v3.component.ComponentRegistry;
 import org.ladysnake.cca.api.v3.world.WorldComponentFactoryRegistry;
 import org.ladysnake.cca.api.v3.world.WorldComponentInitializer;
 
-public class ModWorldCumponents implements WorldComponentInitializer {
+public class ModWorldComponents implements WorldComponentInitializer {
     public static final ComponentKey<PinnedChunksComponent> PINNED_CHUNKS =
             ComponentRegistry.getOrCreate(Trickster.id("pinned_chunks"), PinnedChunksComponent.class);
 

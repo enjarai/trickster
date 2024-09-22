@@ -1,6 +1,6 @@
 package dev.enjarai.trickster.item;
 
-import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.PatternGlyph;
@@ -45,7 +45,7 @@ public class TrickyAccessoryItem extends AccessoryItem {
         }
 
         var spell = spellComponent.spell();
-        var caster = ModEntityCumponents.CASTER.get(player);
+        var caster = ModEntityComponents.CASTER.get(player);
 
         caster.queueSpellAndCast(spell, List.of(new SpellPart(new PatternGlyph(source.getPattern())), sourceFragment, new ListFragment(inputs)), Optional.empty());
     }

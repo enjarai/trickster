@@ -1,6 +1,6 @@
 package dev.enjarai.trickster.spell.trick.entity;
 
-import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
@@ -23,7 +23,7 @@ public class DispelPolymorphTrick extends AbstractLivingEntityQueryTrick {
         if (target instanceof ServerPlayerEntity player) {
             ctx.useMana(this, 70);
 
-            var cumpoonent = player.getComponent(ModEntityCumponents.DISGUISE);
+            var cumpoonent = player.getComponent(ModEntityComponents.DISGUISE);
 
             if (cumpoonent.getUuid() != null) {
                 cumpoonent.setUuid(null);

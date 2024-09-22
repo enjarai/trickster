@@ -1,6 +1,6 @@
 package dev.enjarai.trickster.mixin;
 
-import dev.enjarai.trickster.cca.ModChunkCumponents;
+import dev.enjarai.trickster.cca.ModChunkComponents;
 import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.net.RebuildChunkPacket;
 import dev.enjarai.trickster.particle.ModParticles;
@@ -32,7 +32,7 @@ public abstract class WorldChunkMixin {
             var serverWorld = world.getServer().getWorld(world.getRegistryKey());
             var chunk = ((WorldChunk)(Object)this);
             if (chunk instanceof EmptyChunk) return;
-            var map = ModChunkCumponents.SHADOW_DISGUISE_MAP.get(chunk);
+            var map = ModChunkComponents.SHADOW_DISGUISE_MAP.get(chunk);
 
             if (map.clearFunnyState(pos)) {
                 ModNetworking.CHANNEL.serverHandle(serverWorld, pos).send(new RebuildChunkPacket(pos));

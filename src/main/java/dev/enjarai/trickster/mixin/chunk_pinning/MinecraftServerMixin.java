@@ -1,7 +1,7 @@
 package dev.enjarai.trickster.mixin.chunk_pinning;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import dev.enjarai.trickster.cca.ModWorldCumponents;
+import dev.enjarai.trickster.cca.ModWorldComponents;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.WorldGenerationProgressListener;
 import net.minecraft.server.world.ServerWorld;
@@ -20,6 +20,6 @@ public class MinecraftServerMixin {
             )
     )
     private void loadPinChunks(WorldGenerationProgressListener worldGenerationProgressListener, CallbackInfo ci, @Local(ordinal = 1) ServerWorld serverWorld) {
-        ModWorldCumponents.PINNED_CHUNKS.get(serverWorld).pinThemAll();
+        ModWorldComponents.PINNED_CHUNKS.get(serverWorld).pinThemAll();
     }
 }

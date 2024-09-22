@@ -2,7 +2,7 @@ package dev.enjarai.trickster.spell.mana;
 
 import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.cca.ManaComponent;
-import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.entity.ModEntities;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
@@ -40,7 +40,7 @@ public final class ManaLink {
 
             throw new UnknownEntityBlunder(trickSource);
         };
-        this.manaPool = (trickSource, world) -> ModEntityCumponents.MANA.get(source.apply(trickSource, world));
+        this.manaPool = (trickSource, world) -> ModEntityComponents.MANA.get(source.apply(trickSource, world));
         this.sourceUuid = targetUuid;
         this.availableMana = availableMana;
     }
