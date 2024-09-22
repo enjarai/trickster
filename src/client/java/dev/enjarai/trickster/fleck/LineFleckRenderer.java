@@ -15,8 +15,8 @@ import org.joml.Vector3fc;
 
 public class LineFleckRenderer implements FleckRenderer<LineFleck> {
     static final Identifier LINE_TEXTURE = Trickster.id("textures/flecks/line.png");
-    private static final float LINE_SEGMENT_WIDTH = 0.3f;
-    private static final float LINE_SEGMENT_LENGTH = (float) (LINE_SEGMENT_WIDTH); //todo its not noticable, but it does stretch, probably because of the uv manip.
+    private static final float LINE_SEGMENT_WIDTH = 0.05f;
+    private static final float LINE_SEGMENT_LENGTH = (float) Math.sqrt(2); //todo its not noticable, but it does stretch, probably because of the uv manip.
     private static final int LINE_ALPHA = 180;
 
     @Override
@@ -66,30 +66,15 @@ public class LineFleckRenderer implements FleckRenderer<LineFleck> {
         var cornerOffset = 3.0f / 16.0f;
         //distance from the corner of the texture to the corner of the part we tile. 3/16 = 3 pixels
         //if you change the line texture, make sure to change this.
-
-        uvfactor = 1f; //remove if you want to debug
-
-        /* todo figure out how to fix the uv's of the last segment so they arent squished
-        idea: uvfactor = segment length / step_size
-        if the segment length is half the step size, the uv's would be twice as squished
-
-        so we sample from half the texture.
-        sliding the top left and top right of the uv bounding box down the length of the texture toward the bottom left and bottom right.
-        so when the segment length is half the stepsize, then bounding box "height" would be half the texture length
-
-        but the aspect ratio of the sampled rectangle in the uv's widens, (since were making it shorter, it becomes wider relative to its length)
-        so we need to narrow the quad itself (width *= uvfactor) (uvfactor is always <1.0f)
-
-        but it also slides out to the side (X axis in  this billboarded space). and i dunno why */
+        
         //                                     bottom left corner                  top left corner
         var topLeftUV = new Vector2f(0, cornerOffset).lerp(new Vector2f(1 - cornerOffset, 1), uvfactor);
         //                                     bottom right corner                 top right corner
         var topRightUV = new Vector2f(cornerOffset, 0).lerp(new Vector2f(1, 1 - cornerOffset), uvfactor);
-        width *= uvfactor;
 
         buffer.vertex(positionMatrix, width, 0, 0) // top left
                 .color(argb)
-                .texture(topLeftUV.x, topLeftUV.y)
+                .texture(cornerOffset, 0)
                 .overlay(OverlayTexture.DEFAULT_UV)
                 .light(light)
                 .normal(top, 0, 1, 0);
@@ -103,7 +88,7 @@ public class LineFleckRenderer implements FleckRenderer<LineFleck> {
 
         buffer.vertex(positionMatrix, -width, -distance, 0) //bottom right
                 .color(argb)
-                .texture(cornerOffset, 0)
+                .texture(topLeftUV.x, topLeftUV.y)
                 .overlay(OverlayTexture.DEFAULT_UV)
                 .light(light)
                 .normal(top, 0, 1, 0);
