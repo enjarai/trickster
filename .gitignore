@@ -46,3 +46,6 @@ replay_*.log
 
 # wiki
 wiki/
+
+# idk something
+.factorypath
