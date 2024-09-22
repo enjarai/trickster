@@ -34,6 +34,7 @@ public class ModModelGenerator extends FabricModelProvider {
                         )
                 )
         );
+        blockStateModelGenerator.registerNorthDefaultHorizontalRotated(ModBlocks.SCROLL_SHELF, TexturedModel.ORIENTABLE_WITH_BOTTOM);
     }
 
     @Override

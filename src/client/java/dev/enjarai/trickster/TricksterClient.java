@@ -10,10 +10,7 @@ import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.particle.ProtectedBlockParticle;
 import dev.enjarai.trickster.particle.SpellParticle;
-import dev.enjarai.trickster.render.BarsRenderer;
-import dev.enjarai.trickster.render.CircleErrorRenderer;
-import dev.enjarai.trickster.render.HoldableHatRenderer;
-import dev.enjarai.trickster.render.SpellCircleBlockEntityRenderer;
+import dev.enjarai.trickster.render.*;
 import dev.enjarai.trickster.screen.ModHandledScreens;
 import dev.enjarai.trickster.screen.ScrollAndQuillScreen;
 import dev.enjarai.trickster.screen.SignScrollScreen;
@@ -26,6 +23,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
@@ -43,6 +41,7 @@ public class TricksterClient implements ClientModInitializer {
 		ModClientNetworking.register();
 
 		BlockEntityRendererFactories.register(ModBlocks.SPELL_CIRCLE_ENTITY, SpellCircleBlockEntityRenderer::new);
+		BlockEntityRendererFactories.register(ModBlocks.SCROLL_SHELF_ENTITY, ScrollShelfBlockEntityRenderer::new);
 
 		UIParsing.registerFactory(Trickster.id("glyph"), GlyphComponent::parseTrick);
 		UIParsing.registerFactory(Trickster.id("pattern"), GlyphComponent::parseList);
@@ -70,5 +69,7 @@ public class TricksterClient implements ClientModInitializer {
 
 		HudRenderCallback.EVENT.register(BarsRenderer::render);
 		HudRenderCallback.EVENT.register(CircleErrorRenderer::render);
+
+		EntityModelLayerRegistry.registerModelLayer(ScrollShelfBlockEntityRenderer.MODEL_LAYER, ScrollShelfBlockEntityRenderer::getTexturedModelData);
 	}
 }
