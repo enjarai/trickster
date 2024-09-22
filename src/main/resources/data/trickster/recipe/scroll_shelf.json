@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "s": {
-      "item": "#minecraft:wooden_slabs"
+      "tag": "minecraft:wooden_slabs"
     }
   },
   "pattern": [
