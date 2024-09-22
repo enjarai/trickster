@@ -5,7 +5,6 @@ import io.wispforest.endec.impl.KeyedEndec;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.registry.RegistryWrapper;
@@ -57,7 +56,7 @@ public class GraceComponent implements ServerTickingComponent, ClientTickingComp
 
     public void triggerGrace(String grace, int ticks) {
         graces.put(grace, ticks);
-        ModEntityCumponents.GRACE.sync(entity);
+        ModEntityComponents.GRACE.sync(entity);
     }
 
     @Override

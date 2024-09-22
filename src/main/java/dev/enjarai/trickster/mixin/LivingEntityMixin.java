@@ -2,9 +2,8 @@ package dev.enjarai.trickster.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import dev.enjarai.trickster.ModAttachments;
-import dev.enjarai.trickster.cca.ModChunkCumponents;
-import dev.enjarai.trickster.cca.ModEntityCumponents;
-import dev.enjarai.trickster.misc.ModDamageTypes;
+import dev.enjarai.trickster.cca.ModChunkComponents;
+import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.pond.DirectlyDamageDuck;
 import dev.enjarai.trickster.spell.ItemTriggerHelper;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
@@ -134,7 +133,7 @@ public abstract class LivingEntityMixin extends Entity implements DirectlyDamage
 
         setAttached(ModAttachments.WHY_IS_THERE_NO_WAY_TO_DETECT_THIS, null);
 
-        if (!ModEntityCumponents.GRACE.get(this).isInGrace("scale")) {
+        if (!ModEntityComponents.GRACE.get(this).isInGrace("scale")) {
             // Handle slow scaling reset
             var currentScale = 0d;
             if (getAttributes().hasModifierForAttribute(EntityAttributes.GENERIC_SCALE, SCALE_ID)) {
@@ -162,7 +161,7 @@ public abstract class LivingEntityMixin extends Entity implements DirectlyDamage
         if (chunk instanceof EmptyChunk)
             return false;
 
-        var shadowBlocks = ModChunkCumponents.SHADOW_DISGUISE_MAP.get(chunk);
+        var shadowBlocks = ModChunkComponents.SHADOW_DISGUISE_MAP.get(chunk);
         var funnyState = shadowBlocks.getFunnyState(blockPos);
 
         return funnyState != null && funnyState.isSolidBlock(world, blockPos);

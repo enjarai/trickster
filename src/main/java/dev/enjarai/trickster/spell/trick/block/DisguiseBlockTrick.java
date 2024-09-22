@@ -1,6 +1,6 @@
 package dev.enjarai.trickster.spell.trick.block;
 
-import dev.enjarai.trickster.cca.ModChunkCumponents;
+import dev.enjarai.trickster.cca.ModChunkComponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
@@ -38,7 +38,7 @@ public class DisguiseBlockTrick extends AbstractBlockDisguiseTrick {
         if (!(chunk instanceof EmptyChunk)) {
             ctx.useMana(this, 20);
 
-            var component = ModChunkCumponents.SHADOW_DISGUISE_MAP.get(chunk);
+            var component = ModChunkComponents.SHADOW_DISGUISE_MAP.get(chunk);
 
             if (component.setFunnyState(blockPos, blockType.block())) {
                 updateShadow(ctx, blockPos);

@@ -1,6 +1,6 @@
 package dev.enjarai.trickster.spell.trick.misc;
 
-import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
@@ -22,7 +22,7 @@ public class ClearBarTrick extends Trick {
         var id = expectInput(fragments, FragmentType.NUMBER, 0);
 
         ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this))
-                .getComponent(ModEntityCumponents.BARS).clearBar(id.asInt());
+                .getComponent(ModEntityComponents.BARS).clearBar(id.asInt());
 
         return BooleanFragment.TRUE;
     }
