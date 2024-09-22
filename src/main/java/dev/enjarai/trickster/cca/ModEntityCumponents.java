@@ -29,6 +29,9 @@ public class ModEntityCumponents implements EntityComponentInitializer {
     public static final ComponentKey<FlecksComponent> FLECKS =
             ComponentRegistry.getOrCreate(Trickster.id("flecks"), FlecksComponent.class);
 
+    public static final ComponentKey<PlayerAnimationComponent> PLAYER_ANIMATION =
+            ComponentRegistry.getOrCreate(Trickster.id("player_animation"), PlayerAnimationComponent.class);
+
     @Override
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
         registry.registerFor(LivingEntity.class, MANA, ManaComponent::new);
@@ -38,5 +41,6 @@ public class ModEntityCumponents implements EntityComponentInitializer {
         registry.registerForPlayers(DISGUISE, DisguiseCumponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
         registry.registerForPlayers(IS_EDITING_SCROLL, IsEditingScrollComponent::new, RespawnCopyStrategy.NEVER_COPY);
         registry.registerFor(LivingEntity.class, GRACE, GraceComponent::new);
+        registry.registerForPlayers(PLAYER_ANIMATION, PlayerAnimationComponent::new, RespawnCopyStrategy.NEVER_COPY);
     }
 }

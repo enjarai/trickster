@@ -5,14 +5,10 @@ import dev.enjarai.trickster.spell.SpellPart;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 
-import java.lang.ref.WeakReference;
-import java.math.BigDecimal;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Deque;
+import java.util.Stack;
 
 public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvider<ScrollAndQuillScreenHandler> {
     private static final ArrayList<PositionMemory> storedPositions = new ArrayList<>(5);
@@ -35,26 +31,25 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
         addDrawableChild(partWidget);
 
         this.handler.spell.observe(spell -> {
-            partWidget.setSpell(spell);
+            var spellHash = spell.hashCode();
 
-            var spellHash = handler.spell.get().hashCode();
             for (var position : storedPositions) {
-                if (position.spell == spellHash) {
-                    partWidget.x = position.x;
-                    partWidget.y = position.y;
-                    partWidget.size = position.size;
+                if (position.spellHash == spellHash) {
+                    partWidget.load(position);
                     break;
                 }
             }
+
+            partWidget.setSpell(spell);
         });
         this.handler.isMutable.observe(mutable -> partWidget.setMutable(mutable));
     }
 
     @Override
     public void close() {
-        var spellHash = handler.spell.get().hashCode();
-        storedPositions.removeIf(position -> position.spell == spellHash);
-        storedPositions.add(new PositionMemory(spellHash, partWidget.x, partWidget.y, partWidget.size));
+        var saved = partWidget.save();
+        storedPositions.removeIf(position -> position.spellHash == saved.spellHash);
+        storedPositions.add(saved);
         if (storedPositions.size() >= 5) {
             storedPositions.removeFirst();
         }
@@ -104,7 +99,12 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
         }
     }
 
-    record PositionMemory(int spell, double x, double y, double size) {
-
-    }
+    record PositionMemory(int spellHash,
+                          double x,
+                          double y,
+                          double size,
+                          SpellPart rootSpellPart,
+                          SpellPart spellPart,
+                          ArrayList<SpellPart> parents,
+                          ArrayList<Double> angleOffsets) { }
 }

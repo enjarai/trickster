@@ -4,26 +4,33 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import dev.enjarai.trickster.ModAttachments;
 import dev.enjarai.trickster.cca.ModChunkCumponents;
 import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.misc.ModDamageTypes;
+import dev.enjarai.trickster.pond.DirectlyDamageDuck;
 import dev.enjarai.trickster.spell.ItemTriggerHelper;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LimbAnimator;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.AttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageTracker;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.EmptyChunk;
+import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -36,12 +43,34 @@ import static dev.enjarai.trickster.spell.trick.entity.SetScaleTrick.SCALE_ID;
 
 @SuppressWarnings("UnstableApiUsage")
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin extends Entity {
+public abstract class LivingEntityMixin extends Entity implements DirectlyDamageDuck {
     @Unique
     private static final StatusEffectInstance PERM_BLINDNESS = new StatusEffectInstance(StatusEffects.BLINDNESS, 100, 2);
 
     @Shadow
     public abstract AttributeContainer getAttributes();
+
+    @Shadow public abstract DamageTracker getDamageTracker();
+
+    @Shadow public abstract void setHealth(float health);
+
+    @Shadow public abstract float getHealth();
+
+
+    @Shadow protected float lastDamageTaken;
+    @Shadow public int maxHurtTime;
+    @Shadow public int hurtTime;
+    @Shadow @Final public LimbAnimator limbAnimator;
+
+    @Shadow public abstract boolean isDead();
+
+    @Shadow @Nullable protected abstract SoundEvent getDeathSound();
+
+    @Shadow public abstract void onDeath(DamageSource damageSource);
+
+    @Shadow public abstract void playSound(@Nullable SoundEvent sound);
+
+    @Shadow protected abstract void playHurtSound(DamageSource damageSource);
 
     @Unique
     private boolean inShadowBlock;
@@ -148,5 +177,32 @@ public abstract class LivingEntityMixin extends Entity {
     )
     private void detectTotemUsage(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
         setAttached(ModAttachments.WHY_IS_THERE_NO_WAY_TO_DETECT_THIS, true);
+    }
+
+    @Override
+    public boolean trickster$damageDirectly(DamageSource source, float amount) {
+        this.getWorld().sendEntityDamage(this, source);
+
+        this.lastDamageTaken = amount;
+        this.timeUntilRegen = 20;
+
+        this.getDamageTracker().onDamage(source, amount);
+        this.setHealth(this.getHealth() - amount);
+//        this.setAbsorptionAmount(this.getAbsorptionAmount() - amount);
+        this.emitGameEvent(GameEvent.ENTITY_DAMAGE);
+
+        this.maxHurtTime = 10;
+        this.hurtTime = this.maxHurtTime;
+
+        this.limbAnimator.setSpeed(1.5F);
+
+        if (this.isDead()) {
+            this.playSound(this.getDeathSound());
+            this.onDeath(source);
+        } else {
+            this.playHurtSound(source);
+        }
+
+        return true;
     }
 }

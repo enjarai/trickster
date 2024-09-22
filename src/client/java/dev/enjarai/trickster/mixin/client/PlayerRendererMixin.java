@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.mixin.client;
 
 import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.render.SpellCircleRenderer;
 import dev.enjarai.trickster.spell.SpellPart;
@@ -57,13 +58,13 @@ public abstract class PlayerRendererMixin {
         var offHandSpell = offHandStack.get(ModComponents.SPELL);
 
         if (entity.getComponent(ModEntityCumponents.IS_EDITING_SCROLL).isEditing()) {
-            if (mainHandStack.get(ModComponents.SPELL) != null && mainHandSpell != null) {
+            if (mainHandStack.isIn(ModItems.SCROLLS) && mainHandStack.get(ModComponents.SPELL) != null && mainHandSpell != null) {
                 return Optional.of(mainHandSpell.spell());
-            } else if (mainHandStack.get(ModComponents.SPELL) != null && offHandSpell != null) {
+            } else if (offHandStack.isIn(ModItems.SCROLLS) && offHandStack.get(ModComponents.SPELL) != null && offHandSpell != null) {
                 return Optional.of(offHandSpell.spell());
             }
         }
-        return Optional.empty();
 
+        return Optional.empty();
     }
 }

@@ -5,7 +5,7 @@ import dev.enjarai.trickster.effects.ModEffects;
 import dev.enjarai.trickster.entity.ModEntities;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.misc.ModDamageTypes;
-import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
+import dev.enjarai.trickster.pond.DirectlyDamageDuck;
 import dev.enjarai.trickster.spell.mana.ManaPool;
 import dev.enjarai.trickster.spell.mana.ManaPoolType;
 import dev.enjarai.trickster.spell.mana.SimpleManaPool;
@@ -13,13 +13,12 @@ import io.wispforest.accessories.api.slot.SlotReference;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.network.ServerPlayerEntity;
-import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
+import net.minecraft.world.event.GameEvent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
-public class ManaComponent extends SimpleManaPool implements AutoSyncedComponent, CommonTickingComponent {
+public class ManaComponent extends SimpleManaPool implements CommonTickingComponent {
     private final LivingEntity entity;
     private final boolean manaDevoid;
 
@@ -37,16 +36,6 @@ public class ManaComponent extends SimpleManaPool implements AutoSyncedComponent
     @Override
     public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
         tag.putFloat("mana", mana);
-    }
-
-    @Override
-    public void applySyncPacket(RegistryByteBuf buf) {
-        mana = buf.readFloat();
-    }
-
-    @Override
-    public void writeSyncPacket(RegistryByteBuf buf, ServerPlayerEntity recipient) {
-        buf.writeFloat(mana);
     }
 
     @Override
@@ -126,7 +115,7 @@ public class ManaComponent extends SimpleManaPool implements AutoSyncedComponent
         super.decrease(amount);
 
         if (f < 0) {
-            entity.damage(ModDamageTypes.of(entity.getWorld(), ModDamageTypes.MANA_OVERFLUX), ManaPool.healthFromMana(f * -1));
+            ((DirectlyDamageDuck) entity).trickster$damageDirectly(ModDamageTypes.of(entity.getWorld(), ModDamageTypes.MANA_OVERFLUX), ManaPool.healthFromMana(f * -1));
             return entity.isAlive() && !((entity.getAttached(ModAttachments.WHY_IS_THERE_NO_WAY_TO_DETECT_THIS) instanceof Boolean b) && Boolean.TRUE.equals(b));
         }
 

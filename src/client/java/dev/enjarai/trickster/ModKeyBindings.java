@@ -43,7 +43,7 @@ public class ModKeyBindings {
                     || (player.isSneaking()
                         && player.getMainHandStack().contains(ModComponents.SELECTED_SLOT)))
         ) {
-            ModNetworking.CHANNEL.clientHandle().send(new ScrollInGamePacket(Trickster.CONFIG.invertTopHatScrolling() ? -amount : amount));
+            ModNetworking.CHANNEL.clientHandle().send(new ScrollInGamePacket(Trickster.CONFIG.invertTopHatScrolling() ? amount : -amount));
             return true;
         }
         return false;

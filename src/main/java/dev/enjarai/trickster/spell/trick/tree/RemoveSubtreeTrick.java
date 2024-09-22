@@ -3,8 +3,8 @@ package dev.enjarai.trickster.spell.trick.tree;
 import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
-import dev.enjarai.trickster.spell.trick.blunder.AddressNotInTreeBlunder;
-import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.AddressNotInTreeBlunder;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
 
 import java.util.List;
 

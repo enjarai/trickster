@@ -7,8 +7,8 @@ import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
-import dev.enjarai.trickster.spell.trick.blunder.BlockUnoccupiedBlunder;
-import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.BlockUnoccupiedBlunder;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FluidDrainable;
 

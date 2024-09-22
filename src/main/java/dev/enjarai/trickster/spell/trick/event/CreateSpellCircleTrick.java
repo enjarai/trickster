@@ -10,8 +10,8 @@ import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.trick.Trick;
-import dev.enjarai.trickster.spell.trick.blunder.BlockOccupiedBlunder;
-import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.BlockOccupiedBlunder;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
 
 import java.util.List;
 
@@ -33,8 +33,7 @@ public class CreateSpellCircleTrick extends Trick {
         if (ctx.source().getWorld().getBlockState(blockPos).isAir()) {
             ctx.useMana(this, 496);
 
-            var spell = executable.deepClone();
-            spell.brutallyMurderEphemerals();
+            var spell = executable.applyEphemeral();
 
             ctx.source().getWorld().setBlockState(blockPos,
                     ModBlocks.SPELL_CIRCLE.getDefaultState().with(SpellCircleBlock.FACING, facing));
