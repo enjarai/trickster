@@ -25,5 +25,4 @@ public interface FleckRenderer<T extends Fleck> {
 
     //todo, passing more data than necessary
     void render(T fleck, @Nullable T lastFleck, WorldRenderContext context, ClientWorld world, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int color);
-
 }

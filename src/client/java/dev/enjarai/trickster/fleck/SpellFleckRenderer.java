@@ -7,15 +7,15 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
+
+import java.util.function.Function;
 
 public class SpellFleckRenderer implements FleckRenderer<SpellFleck> {
     private final SpellCircleRenderer renderer = new SpellCircleRenderer(false, 1);
 
-
     @Override
-    public void render(SpellFleck fleck, @Nullable SpellFleck lastFleck, WorldRenderContext context, ClientWorld world, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int color) {
+    public void render(SpellFleck fleck, SpellFleck lastFleck, WorldRenderContext context, ClientWorld world, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int color) {
 
         matrices.push();
 
