@@ -5,10 +5,9 @@ import dev.enjarai.trickster.fleck.Fleck;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.trick.Trick;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
-import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Box;
@@ -24,7 +23,7 @@ public abstract class AbstactFleckTrick extends Trick {
     }
 
     @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment activate(SpellContext ctx, List<Fragment> fragments) {
 
         var playerList = supposeType(fragments.getLast(), FragmentType.LIST) // take either a list of entities
             .map(listFragment -> listFragment.fragments().stream()
@@ -57,5 +56,5 @@ public abstract class AbstactFleckTrick extends Trick {
         return fragments.getFirst();
     }
 
-    protected abstract Fleck makeFleck(SpellContext ctx, List<Fragment> fragments) throws BlunderException, BlunderException, BlunderException;
+    protected abstract Fleck makeFleck(SpellContext ctx, List<Fragment> fragments);
 }

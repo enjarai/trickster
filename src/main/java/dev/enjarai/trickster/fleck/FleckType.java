@@ -8,7 +8,6 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.SimpleRegistry;
 
 public record FleckType<T extends Fleck>(StructEndec<T> endec) {
-
     public static final RegistryKey<Registry<FleckType<?>>> REGISTRY_KEY = RegistryKey.ofRegistry(Trickster.id("fleck_type"));
     public static final Registry<FleckType<?>> REGISTRY = new SimpleRegistry<>(REGISTRY_KEY, Lifecycle.stable());
 

@@ -6,7 +6,9 @@
 }
 ```
 
-Flecks are ... and can be optionally only shown to a given player or list of players. all flecks return their id, for convenience
+Flecks are ... 
+All flecks take an ID as their first parameter, this ID is global and can be overwritten by other players.
+All flecks can also take an optional list of players, or a sole player, for which the flecks will display only to them.
 
 ;;;;;
 
@@ -24,4 +26,4 @@ Displays a spell circle at the given location.
 
 number, vector, vector, [entity[] | entity] -> number
 
-Displays a line between two given position, optionally only drawing it to the given player(s). returning the given id.
+Displays a line between two given position.
