@@ -18,6 +18,7 @@ import dev.enjarai.trickster.screen.ModHandledScreens;
 import dev.enjarai.trickster.screen.ScrollAndQuillScreen;
 import dev.enjarai.trickster.screen.SignScrollScreen;
 import dev.enjarai.trickster.screen.owo.GlyphComponent;
+import dev.enjarai.trickster.screen.owo.ItemTagComponent;
 import dev.enjarai.trickster.screen.owo.SpellPreviewComponent;
 import io.wispforest.accessories.api.client.AccessoriesRendererRegistry;
 import io.wispforest.owo.ui.parsing.UIParsing;
@@ -50,6 +51,7 @@ public class TricksterClient implements ClientModInitializer {
 		UIParsing.registerFactory(Trickster.id("glyph"), GlyphComponent::parseTrick);
 		UIParsing.registerFactory(Trickster.id("pattern"), GlyphComponent::parseList);
 		UIParsing.registerFactory(Trickster.id("spell-preview"), SpellPreviewComponent::parse);
+		UIParsing.registerFactory(Trickster.id("item-tag"), ItemTagComponent::parse);
 
 		ParticleFactoryRegistry.getInstance().register(ModParticles.PROTECTED_BLOCK, ProtectedBlockParticle.Factory::new);
 		ParticleFactoryRegistry.getInstance().register(ModParticles.SPELL, SpellParticle.Factory::new);
