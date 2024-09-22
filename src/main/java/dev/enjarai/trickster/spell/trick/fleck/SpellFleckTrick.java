@@ -1,13 +1,10 @@
 package dev.enjarai.trickster.spell.trick.fleck;
 
-import dev.enjarai.trickster.cca.ModEntityCumponents;
 import dev.enjarai.trickster.fleck.SpellFleck;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.trick.Trick;
-import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
 import org.joml.Vector3f;
 
 import java.util.List;
@@ -18,7 +15,7 @@ public class SpellFleckTrick extends AbstactFleckTrick {
     }
 
     @Override
-    public SpellFleck makeFleck(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    public SpellFleck makeFleck(SpellContext ctx, List<Fragment> fragments) {
         var position = expectInput(fragments, FragmentType.VECTOR, 0).vector();
         var facing = expectInput(fragments, FragmentType.VECTOR, 1).vector();
         var spell = expectInput(fragments, FragmentType.SPELL_PART, 2);

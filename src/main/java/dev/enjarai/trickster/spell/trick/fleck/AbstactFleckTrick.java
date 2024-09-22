@@ -7,8 +7,8 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.trick.Trick;
-import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
-import dev.enjarai.trickster.spell.trick.blunder.UnknownEntityBlunder;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Box;
@@ -57,5 +57,5 @@ public abstract class AbstactFleckTrick extends Trick {
         return fragments.getFirst();
     }
 
-    protected abstract Fleck makeFleck(SpellContext ctx, List<Fragment> fragments);
+    protected abstract Fleck makeFleck(SpellContext ctx, List<Fragment> fragments) throws BlunderException, BlunderException, BlunderException;
 }
