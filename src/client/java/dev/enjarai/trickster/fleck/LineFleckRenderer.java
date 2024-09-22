@@ -66,10 +66,10 @@ public class LineFleckRenderer implements FleckRenderer<LineFleck> {
         var cornerOffset = 3.0f / 16.0f;
         //distance from the corner of the texture to the corner of the part we tile. 3/16 = 3 pixels
         //if you change the line texture, make sure to change this.
-//
-//        uvfactor = 1f;
-        /* todo figure out how to fix the uv's of the last segment so they arent squished
 
+        uvfactor = 1f; //remove if you want to debug
+
+        /* todo figure out how to fix the uv's of the last segment so they arent squished
         idea: uvfactor = segment length / step_size
         if the segment length is half the step size, the uv's would be twice as squished
 
@@ -80,9 +80,7 @@ public class LineFleckRenderer implements FleckRenderer<LineFleck> {
         but the aspect ratio of the sampled rectangle in the uv's widens, (since were making it shorter, it becomes wider relative to its length)
         so we need to narrow the quad itself (width *= uvfactor) (uvfactor is always <1.0f)
 
-        but it also slides out to the side (X axis in this billboarded space). and i dunno why
-
-         */
+        but it also slides out to the side (X axis in  this billboarded space). and i dunno why */
         //                                     bottom left corner                  top left corner
         var topLeftUV = new Vector2f(0, cornerOffset).lerp(new Vector2f(1 - cornerOffset, 1), uvfactor);
         //                                     bottom right corner                 top right corner

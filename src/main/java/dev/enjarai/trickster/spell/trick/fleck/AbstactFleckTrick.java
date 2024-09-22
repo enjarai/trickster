@@ -30,7 +30,7 @@ public abstract class AbstactFleckTrick extends Trick {
                 .map(entry -> expectType(entry, FragmentType.ENTITY)))
             .or(() -> supposeType(fragments.getLast(), FragmentType.ENTITY) // or a single entity
                 .map(Stream::of))
-            .map(stream -> stream                                           // and throw if it doesn't exit
+            .map(stream -> stream                                           // and throw if an entity doesn't exit
                 .map(frag -> frag.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this))).toList());
 
         var id = expectType(fragments.removeFirst(), FragmentType.NUMBER).asInt();

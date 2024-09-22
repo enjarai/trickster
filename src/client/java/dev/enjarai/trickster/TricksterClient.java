@@ -2,6 +2,7 @@ package dev.enjarai.trickster;
 
 import dev.enjarai.trickster.block.ModBlocks;
 import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.fleck.FleckRenderer;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.ScrollAndQuillItem;
 import dev.enjarai.trickster.net.IsEditingScrollPacket;
@@ -22,14 +23,11 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
-import net.minecraft.component.type.DyedColorComponent;
-import net.minecraft.util.math.ColorHelper;
 
 public class TricksterClient implements ClientModInitializer {
 	@Override
@@ -37,6 +35,8 @@ public class TricksterClient implements ClientModInitializer {
 		ScrollAndQuillItem.screenOpener = (text, hand) -> {
 			MinecraftClient.getInstance().setScreen(new SignScrollScreen(text, hand));
 		};
+
+		FleckRenderer.register();
 
 		ModHandledScreens.register();
 		ModKeyBindings.register();
