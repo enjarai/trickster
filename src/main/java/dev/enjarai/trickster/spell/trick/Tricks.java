@@ -5,6 +5,7 @@ import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.trick.dimension.GetDimensionTrick;
 import dev.enjarai.trickster.spell.trick.entity.query.*;
+import dev.enjarai.trickster.spell.trick.fleck.GetFleckTrick;
 import dev.enjarai.trickster.spell.trick.func.*;
 import dev.enjarai.trickster.spell.trick.basic.*;
 import dev.enjarai.trickster.spell.trick.block.*;
@@ -29,7 +30,6 @@ import dev.enjarai.trickster.spell.trick.raycast.RaycastEntityTrick;
 import dev.enjarai.trickster.spell.trick.tree.*;
 import dev.enjarai.trickster.spell.trick.vector.*;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
-import net.fabricmc.fabric.api.event.registry.RegistryAttribute;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.SimpleRegistry;
@@ -230,8 +230,7 @@ public class Tricks {
     //Flecks
     public static final LineFleckTrick DRAW_LINE = register("draw_line", new LineFleckTrick());
     public static final SpellFleckTrick DRAW_SPELL = register("draw_spell", new SpellFleckTrick());
-
-    // todo more flecks, text fleck, if i do it now the type system will complain because master strings are strings not text
+    public static final GetFleckTrick GET_FLECKS = register("get_fleck", new GetFleckTrick());
 
     // Misc
     public static final TypeFragmentTrick TYPE_FRAGMENT = register("type_fragment", new TypeFragmentTrick());
