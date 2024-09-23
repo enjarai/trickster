@@ -38,6 +38,6 @@ public class ConjureLightTrick extends Trick {
         ctx.useMana(this, 20);
         world.setBlockState(blockPos, ModBlocks.LIGHT.getDefaultState().with(LightBlock.WATERLOGGED, waterlogged));
 
-        return VoidFragment.INSTANCE;
+        return pos;
     }
 }

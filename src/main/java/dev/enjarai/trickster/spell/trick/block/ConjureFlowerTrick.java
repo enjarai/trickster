@@ -48,6 +48,6 @@ public class ConjureFlowerTrick extends Trick {
                 1, 0, 0, 0, 0
         );
 
-        return VoidFragment.INSTANCE;
+        return pos;
     }
 }

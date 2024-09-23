@@ -9,9 +9,11 @@ import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
+import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.ImmutableItemBlunder;
+import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.entity.EquipmentSlot;
@@ -93,7 +95,7 @@ public class WriteSpellTrick extends Trick {
                 }
             });
 
-            return BooleanFragment.TRUE;
-        }).orElse(BooleanFragment.FALSE);
+            return spell.<Fragment>map(n -> n).orElse(VoidFragment.INSTANCE);
+        }).orElseThrow(() -> new NoPlayerBlunder(this));
     }
 }

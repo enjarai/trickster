@@ -66,7 +66,7 @@ public class ConjureWaterTrick extends Trick {
                 1, 0, 0, 0, 0
         );
 
-        return VoidFragment.INSTANCE;
+        return pos;
     }
 
     private boolean tryPlaceWater(World world, BlockPos pos) {

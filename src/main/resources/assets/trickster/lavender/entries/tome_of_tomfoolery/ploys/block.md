@@ -12,7 +12,7 @@ This entry contains tricks that operate directly on blocks in the world.
 
 <|glyph@trickster:templates|trick-id=trickster:break_block,title=Ploy of Destruction|>
 
-vector -> 
+vector -> vector
 
 <|cost-rule@trickster:templates|formula=max(hardness * 1kG\, 8kG)|>
 
@@ -24,7 +24,7 @@ Breaks the block at the given position.
 
 vector, slot |
 
-vector, block ->
+vector, block -> vector
 
 <|cost-rule@trickster:templates|formula=20kG + max((distance - 5kG) * 1.5\, 0kG)|>
 
@@ -44,7 +44,7 @@ Exchanges the blocks at two positions in the world. Neither of the positions can
 
 <|glyph@trickster:templates|trick-id=trickster:conjure_flower,title=Floral Ploy|>
 
-vector ->
+vector -> vector
 
 <|cost-rule@trickster:templates|formula=5kG|>
 
@@ -55,7 +55,7 @@ The block underneath must have a solid top face.
 
 <|glyph@trickster:templates|trick-id=trickster:conjure_water,title=Aquatic Ploy|>
 
-vector ->
+vector -> vector
 
 <|cost-rule@trickster:templates|formula=15kG|>
 
@@ -65,7 +65,7 @@ Conjures a small splash of water at the given position.
 
 <|glyph@trickster:templates|trick-id=trickster:conjure_light,title=Illumination Ploy|>
 
-vector ->
+vector -> vector
 
 <|cost-rule@trickster:templates|formula=20kG|>
 
@@ -75,7 +75,7 @@ Conjures a permanent light source at the given position.
 
 <|glyph@trickster:templates|trick-id=trickster:drain_fluid,title=Drought Ploy|>
 
-vector ->
+vector -> vector
 
 <|cost-rule@trickster:templates|formula=15kG|>
 
@@ -85,11 +85,12 @@ Drains any fluid at the given position.
 
 <|glyph@trickster:templates|trick-id=trickster:destabilize_block,title=Earthquake Ploy|>
 
-vector ->
+vector -> entity
 
 <|cost-rule@trickster:templates|formula=10kG|>
 
-Makes the target block temporarily affected by gravity as if it were sand.
+Makes the target block temporarily affected by gravity as if it were sand. 
+Returns the resulting falling block.
 
 ;;;;;
 

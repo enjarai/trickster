@@ -33,18 +33,18 @@ If not, returns void.
 
 <|glyph@trickster:templates|trick-id=trickster:write_spell,title=Notulist's Ploy|>
 
-spell | void -> boolean
+spell | void -> spell | void
 
 ---
 
 Inscribes a spell onto the item held in the caster's other hand.
-Returns a boolean based on success.
+Returns its input, after ephemeral decay.
 
 ;;;;;
 
 <|glyph@trickster:templates|trick-id=trickster:write_closed_spell,title=Proprietary Notulist's Ploy|>
 
-spell -> boolean
+spell | void -> spell | void
 
 ---
 
@@ -83,7 +83,7 @@ Returns the value currently stored in the caster's crow mind.
 
 <|glyph@trickster:templates|trick-id=trickster:write_crow_mind,title=Crow Mind Ploy|>
 
-any ->
+any -> any
 
 ---
 

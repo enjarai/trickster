@@ -49,7 +49,7 @@ public class PlaceBlockTrick extends Trick {
             ctx.useMana(this, (float) (20 + Math.max((dist - 5) * 1.5, 0)));
             world.setBlockState(blockPos, state);
 
-            return VoidFragment.INSTANCE;
+            return pos;
         } catch (BlunderException blunder) {
             var thisPos = ctx.source().getPos();
             world.spawnEntity(new ItemEntity(world, thisPos.x, thisPos.y, thisPos.z, stack));

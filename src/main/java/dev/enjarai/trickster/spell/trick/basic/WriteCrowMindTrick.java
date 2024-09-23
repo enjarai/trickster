@@ -19,6 +19,6 @@ public class WriteCrowMindTrick extends Trick {
         var fragment = expectInput(fragments, 0);
 
         ctx.source().setCrowMind(fragment);
-        return VoidFragment.INSTANCE;
+        return fragment;
     }
 }

@@ -34,6 +34,6 @@ public class BreakBlockTrick extends Trick {
             ctx.source().getCaster().ifPresentOrElse(c -> world.breakBlock(blockPos, true, c), () -> world.breakBlock(blockPos, true));
         }
 
-        return VoidFragment.INSTANCE;
+        return pos;
     }
 }

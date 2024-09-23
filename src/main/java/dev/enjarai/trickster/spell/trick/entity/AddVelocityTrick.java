@@ -3,7 +3,7 @@ package dev.enjarai.trickster.spell.trick.entity;
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.fragment.VoidFragment;
+import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
@@ -41,6 +41,6 @@ public class AddVelocityTrick extends Trick {
             ModEntityComponents.GRACE.get(target).triggerGrace("gravity", 2);
         }
 
-        return VoidFragment.INSTANCE;
+        return EntityFragment.from(target);
     }
 }
