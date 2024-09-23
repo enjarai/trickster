@@ -6,17 +6,17 @@
 }
 ```
 
-The caster's hat is quite an ingenious piece of kit.
+The caster's hat is quite an ingenious accessory.
 After equipping it on their head, a caster can press the <keybind;key.trickster.take_hat> 
 button to take the hat into their offhand quickly.
 
 
-When a hat is held in your offhand, you can right-click to open the ui, and insert up to 27 scrolls.
+When a hat is held in your offhand, you can right-click to open it, and insert up to 27 scrolls.
 These scrolls can then be selected by shift-scrolling while holding the hat.
 
 ;;;;;
 
-Now, when a spell cast from your main hand tries to access the spell in your other hand via [Notulist's Delusion](^trickster:ploys/basic#3),
+Now, when a running spell tries to access the spell in your other hand via [Notulist's Delusion](^trickster:ploys/basic#3),
 it will read the spell from the selected scroll in the held hat instead.
 
 
