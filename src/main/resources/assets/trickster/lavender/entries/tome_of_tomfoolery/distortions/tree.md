@@ -67,11 +67,21 @@ Replaces the glyph of the circle at the given address with the given fragment.
 
 <|glyph@trickster:templates|trick-id=trickster:retrieve_subtree,title=Felling Distortion|>
 
-spell, number[] -> spell
+spell, number[] -> spell | void
 
 ---
 
 Returns the circle (and its branches) at the given address.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:retrieve_subtree_list,title=Flock Distortion|>
+
+spell, number[] -> spell[] | void
+
+---
+
+Returns the subcircles (and their branches) of the circle at the given address.
 
 ;;;;;
 
