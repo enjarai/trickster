@@ -1,11 +1,10 @@
 package dev.enjarai.trickster.spell;
 
-import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolItem;
-import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.List;
@@ -42,7 +41,7 @@ public class ItemTriggerHelper {
         var spellComponent = stack.get(ModComponents.SPELL);
 
         if (spellComponent != null) {
-            ModEntityCumponents.CASTER.get(player).queueSpellAndCast(spellComponent.spell(), arguments, Optional.empty());
+            ModEntityComponents.CASTER.get(player).queueSpellAndCast(spellComponent.spell(), arguments, Optional.empty());
         }
     }
 }

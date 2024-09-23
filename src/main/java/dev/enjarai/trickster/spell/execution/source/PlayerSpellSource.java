@@ -1,7 +1,7 @@
 package dev.enjarai.trickster.spell.execution.source;
 
 import dev.enjarai.trickster.ModAttachments;
-import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.CrowMind;
 import dev.enjarai.trickster.spell.Fragment;
@@ -35,7 +35,7 @@ public class PlayerSpellSource extends SpellSource {
 
     @Override
     public ManaPool getManaPool() {
-        return player.getComponent(ModEntityCumponents.MANA);
+        return player.getComponent(ModEntityComponents.MANA);
     }
 
     @Override
@@ -76,7 +76,7 @@ public class PlayerSpellSource extends SpellSource {
 
     @Override
     public Optional<SpellExecutionManager> getExecutionManager() {
-        return Optional.of(ModEntityCumponents.CASTER.get(player).getExecutionManager());
+        return Optional.of(ModEntityComponents.CASTER.get(player).getExecutionManager());
     }
 
     @Override

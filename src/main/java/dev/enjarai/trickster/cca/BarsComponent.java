@@ -37,7 +37,7 @@ public class BarsComponent implements ServerTickingComponent, AutoSyncedComponen
                 entry.getValue().age++;
             }
         }
-        ModEntityCumponents.BARS.sync(player);
+        ModEntityComponents.BARS.sync(player);
     }
 
     public Int2ObjectMap<Bar> getBars() {

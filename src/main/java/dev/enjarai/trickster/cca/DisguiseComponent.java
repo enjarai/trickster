@@ -10,11 +10,11 @@ import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 
 import java.util.UUID;
 
-public class DisguiseCumponent implements AutoSyncedComponent {
+public class DisguiseComponent implements AutoSyncedComponent {
     private final PlayerEntity player;
     private UUID targetUuid = null;
 
-    public DisguiseCumponent(PlayerEntity player) {
+    public DisguiseComponent(PlayerEntity player) {
         this.player = player;
     }
 
@@ -25,7 +25,7 @@ public class DisguiseCumponent implements AutoSyncedComponent {
 
     public void setUuid(@Nullable UUID targetUuid) {
         this.targetUuid = targetUuid;
-        ModEntityCumponents.DISGUISE.sync(player);
+        ModEntityComponents.DISGUISE.sync(player);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package dev.enjarai.trickster.item;
 
-import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.component.ModComponents;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -23,7 +23,7 @@ public class WandItem extends Item {
         if (!world.isClient()) {
             var spell = stack.get(ModComponents.SPELL);
             if (spell != null) {
-                ModEntityCumponents.CASTER.get(user).queueSpell(spell.spell(), List.of());
+                ModEntityComponents.CASTER.get(user).queueSpell(spell.spell(), List.of());
             }
         }
 

@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.mojang.authlib.GameProfile;
 import dev.enjarai.trickster.DisguiseUtil;
 import dev.enjarai.trickster.Trickster;
-import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.pond.DisguisePlayerDuck;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.PlayerListEntry;
@@ -32,7 +32,7 @@ public abstract class AbstractClientPlayerEntityMixin extends PlayerEntityMixin 
     }
 
     public PlayerListEntry trickster$getApplicableEntry() {
-        var disguise = getComponent(ModEntityCumponents.DISGUISE);
+        var disguise = getComponent(ModEntityComponents.DISGUISE);
         if (disguise.getUuid() != null) {
             if (disguisePlayerListEntry == null || !disguisePlayerListEntry.getProfile().getId().equals(disguise.getUuid())) {
                 // Update the entry if its out of date

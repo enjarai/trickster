@@ -6,7 +6,7 @@
       "item": "minecraft:purple_wool"
     },
     "s": {
-      "item": "trickster:scroll_and_quill"
+      "tag": "trickster:scrolls"
     }
   },
   "pattern": [

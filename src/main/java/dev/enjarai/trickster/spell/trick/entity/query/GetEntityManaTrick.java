@@ -1,7 +1,7 @@
 package dev.enjarai.trickster.spell.trick.entity.query;
 
 import dev.enjarai.trickster.block.SpellCircleBlockEntity;
-import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
@@ -27,7 +27,7 @@ public class GetEntityManaTrick extends AbstractLivingEntityQueryTrick {
                 throw new EntityInvalidBlunder(this);
             }
 
-            return new NumberFragment(ModEntityCumponents.MANA.get(target).get());
+            return new NumberFragment(ModEntityComponents.MANA.get(target).get());
         }).orElse(null);
 
         if (result == null) {

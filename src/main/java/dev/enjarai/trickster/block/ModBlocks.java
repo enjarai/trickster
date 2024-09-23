@@ -20,11 +20,14 @@ public class ModBlocks {
     public static final SpellResonatorBlock SPELL_RESONATOR = register("spell_resonator", new SpellResonatorBlock());
     public static final SpellCircleBlock SPELL_CIRCLE = register("spell_circle", new SpellCircleBlock());
     public static final LightBlock LIGHT = register("light", new LightBlock());
+    public static final ScrollShelfBlock SCROLL_SHELF = register("scroll_shelf", new ScrollShelfBlock());
 
     public static final BlockEntityType<SpellCircleBlockEntity> SPELL_CIRCLE_ENTITY =
             BlockEntityType.Builder.create(SpellCircleBlockEntity::new, SPELL_CIRCLE).build(null);
     public static final BlockEntityType<LightBlockEntity> LIGHT_ENTITY =
             BlockEntityType.Builder.create(LightBlockEntity::new, LIGHT).build(null);
+    public static final BlockEntityType<ScrollShelfBlockEntity> SCROLL_SHELF_ENTITY =
+            BlockEntityType.Builder.create(ScrollShelfBlockEntity::new, SCROLL_SHELF).build(null);
 
     public static final PointOfInterestType SPELL_CIRCLE_POI =
             PointOfInterestHelper.register(Trickster.id("spell_circle"), 0, 2, SPELL_CIRCLE);
@@ -36,6 +39,7 @@ public class ModBlocks {
     public static void register() {
         Registry.register(Registries.BLOCK_ENTITY_TYPE, Trickster.id("spell_circle"), SPELL_CIRCLE_ENTITY);
         Registry.register(Registries.BLOCK_ENTITY_TYPE, Trickster.id("light"), LIGHT_ENTITY);
+        Registry.register(Registries.BLOCK_ENTITY_TYPE, Trickster.id("scroll_shelf"), SCROLL_SHELF_ENTITY);
 
         var cauldronMap = CauldronBehavior.WATER_CAULDRON_BEHAVIOR.map();
         cauldronMap.put(ModItems.WRITTEN_SCROLL, new EraseSpellCauldronBehavior());

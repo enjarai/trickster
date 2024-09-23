@@ -26,13 +26,13 @@
 			"dev.enjarai.trickster.datagen.ModDataStuff"
 		],
 		"cardinal-components-chunk": [
-			"dev.enjarai.trickster.cca.ModChunkCumponents"
+			"dev.enjarai.trickster.cca.ModChunkComponents"
 		],
 		"cardinal-components-world": [
-			"dev.enjarai.trickster.cca.ModWorldCumponents"
+			"dev.enjarai.trickster.cca.ModWorldComponents"
 		],
 		"cardinal-components-entity": [
-			"dev.enjarai.trickster.cca.ModEntityCumponents"
+          "dev.enjarai.trickster.cca.ModEntityComponents"
 		],
 		"cicada": [
 			"dev.enjarai.trickster.Trickster"
@@ -71,7 +71,9 @@
 		"cicada": ">=0.8.2"
 	},
 	"breaks": {
-		"sodium": "<0.5.11",
-		"optifabric": "*"
+		"sodium": "<0.6.0-",
+		"optifabric": "*",
+		"embeddium": "*",
+		"surveyor": "*"
 	}
 }

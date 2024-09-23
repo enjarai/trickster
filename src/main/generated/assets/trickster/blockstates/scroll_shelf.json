@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "trickster:block/scroll_shelf",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "trickster:block/scroll_shelf"
+    },
+    "facing=south": {
+      "model": "trickster:block/scroll_shelf",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "trickster:block/scroll_shelf",
+      "y": 270
+    }
+  }
+}

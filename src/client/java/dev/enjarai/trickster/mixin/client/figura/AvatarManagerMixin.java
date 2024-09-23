@@ -2,7 +2,7 @@ package dev.enjarai.trickster.mixin.client.figura;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
-import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.cca.ModEntityComponents;
 import net.minecraft.client.MinecraftClient;
 import org.spongepowered.asm.mixin.Dynamic;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,7 +27,7 @@ public class AvatarManagerMixin {
         if (world != null) {
             var player = world.getPlayerByUuid(uuidRef.get());
             if (player != null) {
-                var disguise = ModEntityCumponents.DISGUISE.get(player).getUuid();
+                var disguise = ModEntityComponents.DISGUISE.get(player).getUuid();
                 if (disguise != null) {
                     uuidRef.set(disguise);
                 }

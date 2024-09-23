@@ -1,6 +1,6 @@
 package dev.enjarai.trickster.spell.trick.misc;
 
-import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
@@ -29,7 +29,7 @@ public class ShowBarTrick extends Trick {
         }
 
         ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this))
-                .getComponent(ModEntityCumponents.BARS).setBar(id.asInt(), value.number() / maxValue);
+                .getComponent(ModEntityComponents.BARS).setBar(id.asInt(), value.number() / maxValue);
 
         return value;
     }

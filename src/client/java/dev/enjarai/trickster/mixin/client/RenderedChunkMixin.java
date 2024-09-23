@@ -1,7 +1,7 @@
 package dev.enjarai.trickster.mixin.client;
 
 import com.google.common.base.Suppliers;
-import dev.enjarai.trickster.cca.ModChunkCumponents;
+import dev.enjarai.trickster.cca.ModChunkComponents;
 import dev.enjarai.trickster.cca.ShadowDisguiseMapComponent;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
@@ -23,7 +23,7 @@ public class RenderedChunkMixin {
     private WorldChunk chunk;
     @Unique
     private final Supplier<ShadowDisguiseMapComponent> disguises =
-            Suppliers.memoize(() -> ModChunkCumponents.SHADOW_DISGUISE_MAP.getNullable(chunk));
+            Suppliers.memoize(() -> ModChunkComponents.SHADOW_DISGUISE_MAP.getNullable(chunk));
 
     @Inject(
             method = "getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;",

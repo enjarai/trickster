@@ -1,6 +1,6 @@
 package dev.enjarai.trickster.spell.trick.entity;
 
-import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
@@ -29,8 +29,8 @@ public class PolymorphTrick extends AbstractLivingEntityQueryTrick {
         if (realTarget instanceof ServerPlayerEntity targetPlayer && realSource instanceof ServerPlayerEntity sourcePlayer) {
             ctx.useMana(this, 480);
 
-            var cumpoonent = targetPlayer.getComponent(ModEntityCumponents.DISGUISE);
-            var sourceCumponent = sourcePlayer.getComponent(ModEntityCumponents.DISGUISE);
+            var cumpoonent = targetPlayer.getComponent(ModEntityComponents.DISGUISE);
+            var sourceCumponent = sourcePlayer.getComponent(ModEntityComponents.DISGUISE);
             var uuid = sourcePlayer.getUuid();
 
             if (sourceCumponent.getUuid() != null) {
