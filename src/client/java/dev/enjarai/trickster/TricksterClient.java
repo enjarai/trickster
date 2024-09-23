@@ -1,6 +1,7 @@
 package dev.enjarai.trickster;
 
 import dev.enjarai.trickster.block.ModBlocks;
+import dev.enjarai.trickster.render.fleck.FleckRenderer;
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.ScrollAndQuillItem;
@@ -25,6 +26,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
@@ -35,6 +37,8 @@ public class TricksterClient implements ClientModInitializer {
 		ScrollAndQuillItem.screenOpener = (text, hand) -> {
 			MinecraftClient.getInstance().setScreen(new SignScrollScreen(text, hand));
 		};
+
+		FleckRenderer.register();
 
 		ModHandledScreens.register();
 		ModKeyBindings.register();
@@ -66,6 +70,8 @@ public class TricksterClient implements ClientModInitializer {
 				}
 			}
 		});
+
+		WorldRenderEvents.AFTER_ENTITIES.register(FlecksRenderer::render);
 
 		HudRenderCallback.EVENT.register(BarsRenderer::render);
 		HudRenderCallback.EVENT.register(CircleErrorRenderer::render);

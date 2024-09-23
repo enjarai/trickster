@@ -23,7 +23,7 @@ public class WandItem extends Item {
         if (!world.isClient()) {
             var spell = stack.get(ModComponents.SPELL);
             if (spell != null) {
-                user.getComponent(ModEntityComponents.CASTER).queueSpell(spell.spell(), List.of());
+                ModEntityComponents.CASTER.get(user).queueSpell(spell.spell(), List.of());
             }
         }
 

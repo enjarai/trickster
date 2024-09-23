@@ -5,6 +5,7 @@ import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.trick.dimension.GetDimensionTrick;
 import dev.enjarai.trickster.spell.trick.entity.query.*;
+import dev.enjarai.trickster.spell.trick.fleck.GetFlecksTrick;
 import dev.enjarai.trickster.spell.trick.func.*;
 import dev.enjarai.trickster.spell.trick.basic.*;
 import dev.enjarai.trickster.spell.trick.block.*;
@@ -17,6 +18,8 @@ import dev.enjarai.trickster.spell.trick.list.*;
 import dev.enjarai.trickster.spell.trick.math.*;
 import dev.enjarai.trickster.spell.trick.misc.*;
 import dev.enjarai.trickster.spell.trick.particle.HighlightTrick;
+import dev.enjarai.trickster.spell.trick.fleck.LineFleckTrick;
+import dev.enjarai.trickster.spell.trick.fleck.SpellFleckTrick;
 import dev.enjarai.trickster.spell.trick.projectile.SummonDragonBreathTrick;
 import dev.enjarai.trickster.spell.trick.projectile.SummonFireballTrick;
 import dev.enjarai.trickster.spell.trick.projectile.SummonArrowTrick;
@@ -27,7 +30,6 @@ import dev.enjarai.trickster.spell.trick.raycast.RaycastEntityTrick;
 import dev.enjarai.trickster.spell.trick.tree.*;
 import dev.enjarai.trickster.spell.trick.vector.*;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
-import net.fabricmc.fabric.api.event.registry.RegistryAttribute;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.SimpleRegistry;
@@ -224,6 +226,11 @@ public class Tricks {
 
     // Dimension
     public static final GetDimensionTrick GET_DIMENSION = register("get_dimension", new GetDimensionTrick());
+
+    //Flecks
+    public static final LineFleckTrick DRAW_LINE = register("draw_line", new LineFleckTrick());
+    public static final SpellFleckTrick DRAW_SPELL = register("draw_spell", new SpellFleckTrick());
+    public static final GetFlecksTrick GET_FLECKS = register("get_flecks", new GetFlecksTrick());
 
     // Misc
     public static final TypeFragmentTrick TYPE_FRAGMENT = register("type_fragment", new TypeFragmentTrick());
