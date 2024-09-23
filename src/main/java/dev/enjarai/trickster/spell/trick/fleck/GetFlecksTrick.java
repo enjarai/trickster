@@ -1,6 +1,6 @@
 package dev.enjarai.trickster.spell.trick.fleck;
 
-import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
@@ -24,7 +24,7 @@ public class GetFlecksTrick extends Trick {
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         return new ListFragment(
             supposeInput(fragments, FragmentType.ENTITY, 0).map(n -> n.getEntity(ctx))
-                .orElseGet(() -> ctx.source().getPlayer().map(n -> n)).map(ModEntityCumponents.FLECKS::get)
+                .orElseGet(() -> ctx.source().getPlayer().map(n -> n)).map(ModEntityComponents.FLECKS::get)
                 .orElseThrow(() -> new NoPlayerBlunder(this))
                 .getRenderFlecks().stream().<Fragment>map(n -> new NumberFragment(n.id())).toList()
         );

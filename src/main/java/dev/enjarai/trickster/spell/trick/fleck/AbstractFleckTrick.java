@@ -1,6 +1,6 @@
 package dev.enjarai.trickster.spell.trick.fleck;
 
-import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.fleck.Fleck;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
@@ -52,7 +52,7 @@ public abstract class AbstractFleckTrick extends Trick {
 
         entities.stream()
             .filter(serverPlayer -> playerList.map(list -> list.contains(serverPlayer)).orElse(true)) //if a list of players was specified, filter against it
-            .forEach(serverPlayer -> serverPlayer.getComponent(ModEntityCumponents.FLECKS).addFleck(id, makeFleck(ctx, fragments)));
+            .forEach(serverPlayer -> serverPlayer.getComponent(ModEntityComponents.FLECKS).addFleck(id, makeFleck(ctx, fragments)));
 
         return fragments.getFirst();
     }

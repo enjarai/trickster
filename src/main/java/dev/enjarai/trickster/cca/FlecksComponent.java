@@ -100,7 +100,7 @@ public class FlecksComponent implements ServerTickingComponent, ClientTickingCom
     @Override
     public void serverTick() {
         if (dirty) {
-            ModEntityCumponents.FLECKS.sync(player);
+            ModEntityComponents.FLECKS.sync(player);
             dirty = false;
         }
 

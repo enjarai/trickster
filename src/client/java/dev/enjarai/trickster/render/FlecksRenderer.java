@@ -1,6 +1,6 @@
 package dev.enjarai.trickster.render;
 
-import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.fleck.*;
 import dev.enjarai.trickster.render.fleck.*;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
@@ -18,7 +18,7 @@ public class FlecksRenderer {
             return;
         }
 
-        player.getComponent(ModEntityCumponents.FLECKS).getRenderFlecks().forEach(flecks -> {
+        player.getComponent(ModEntityComponents.FLECKS).getRenderFlecks().forEach(flecks -> {
             var fleck = flecks.current();
             var lastFleck = flecks.old();
 
