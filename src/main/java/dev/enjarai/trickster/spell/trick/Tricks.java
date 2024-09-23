@@ -5,7 +5,7 @@ import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.trick.dimension.GetDimensionTrick;
 import dev.enjarai.trickster.spell.trick.entity.query.*;
-import dev.enjarai.trickster.spell.trick.fleck.GetFleckTrick;
+import dev.enjarai.trickster.spell.trick.fleck.GetFlecksTrick;
 import dev.enjarai.trickster.spell.trick.func.*;
 import dev.enjarai.trickster.spell.trick.basic.*;
 import dev.enjarai.trickster.spell.trick.block.*;
@@ -230,7 +230,7 @@ public class Tricks {
     //Flecks
     public static final LineFleckTrick DRAW_LINE = register("draw_line", new LineFleckTrick());
     public static final SpellFleckTrick DRAW_SPELL = register("draw_spell", new SpellFleckTrick());
-    public static final GetFleckTrick GET_FLECKS = register("get_fleck", new GetFleckTrick());
+    public static final GetFlecksTrick GET_FLECKS = register("get_flecks", new GetFlecksTrick());
 
     // Misc
     public static final TypeFragmentTrick TYPE_FRAGMENT = register("type_fragment", new TypeFragmentTrick());

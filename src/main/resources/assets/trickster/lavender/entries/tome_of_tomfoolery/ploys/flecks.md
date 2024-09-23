@@ -6,9 +6,37 @@
 }
 ```
 
-Flecks are ... 
-All flecks take an ID as their first parameter, this ID is global and can be overwritten by other players.
-All flecks can also take an optional list of players, or a sole player, for which the flecks will display only to them.
+*In this world,*
+
+*I wander.*
+
+
+*In our minds,*
+
+*I carve.*
+
+
+*In their eyes,*
+
+*I behold,*
+
+
+*A beauty so fine,*
+
+*It cannot be held.*
+
+
+-- Oapheli
+
+;;;;;
+
+Flecks are a method of displaying data to select players. 
+They last for a mere second, needing to be continuously refreshed.
+
+
+All fleck-creating tricks take an identifying number, which may be used by any caster to update and overwrite the fleck. 
+The number is returned for chaining. 
+All flecks can also take an optional list of players, or a sole player, for which the fleck will display only to them.
 
 ;;;;;
 
@@ -18,7 +46,7 @@ number, vector, vector, spell, [entity[] | entity] -> number
 
 ---
 
-Displays a spell circle at the given location.
+At the given position, with the given facing, display the given spell.
 
 ;;;;;
 
@@ -26,4 +54,16 @@ Displays a spell circle at the given location.
 
 number, vector, vector, [entity[] | entity] -> number
 
-Displays a line between two given position.
+---
+
+Draws a line between the given positions.
+
+;;;;;
+ 
+<|glyph@trickster:templates|trick-id=trickster:get_flecks,title=Observer's Ingress|>
+
+[entity] -> number[]
+
+---
+
+Return the identifiers of all the flecks the caster or the given player can see. 

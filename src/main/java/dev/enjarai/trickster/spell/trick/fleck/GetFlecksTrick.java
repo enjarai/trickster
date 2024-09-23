@@ -6,22 +6,27 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
+import dev.enjarai.trickster.spell.fragment.EntityFragment;
+import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
+import net.minecraft.entity.Entity;
 
 import java.util.List;
 
-public class GetFleckTrick extends Trick {
-    public GetFleckTrick() {
-        super(Pattern.of());
+public class GetFlecksTrick extends Trick {
+    public GetFlecksTrick() {
+        super(Pattern.of(0,4,8,7,4,1,2,4,6)); // bluetooth symbol
     }
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         return new ListFragment(
-            ctx.source().getPlayer().map(ModEntityCumponents.FLECKS::get).orElseThrow(() -> new NoPlayerBlunder(this))
-            .getRenderFlecks().stream().<Fragment>map(n -> new NumberFragment(n.id())).toList()
+            supposeInput(fragments, FragmentType.ENTITY, 0).map(n -> n.getEntity(ctx))
+                .orElseGet(() -> ctx.source().getPlayer().map(n -> n)).map(ModEntityCumponents.FLECKS::get)
+                .orElseThrow(() -> new NoPlayerBlunder(this))
+                .getRenderFlecks().stream().<Fragment>map(n -> new NumberFragment(n.id())).toList()
         );
     }
 }

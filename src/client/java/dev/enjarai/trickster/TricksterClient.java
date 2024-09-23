@@ -2,7 +2,7 @@ package dev.enjarai.trickster;
 
 import dev.enjarai.trickster.block.ModBlocks;
 import dev.enjarai.trickster.cca.ModEntityCumponents;
-import dev.enjarai.trickster.fleck.FleckRenderer;
+import dev.enjarai.trickster.render.fleck.FleckRenderer;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.ScrollAndQuillItem;
 import dev.enjarai.trickster.net.IsEditingScrollPacket;
