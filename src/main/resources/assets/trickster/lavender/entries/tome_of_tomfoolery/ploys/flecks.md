@@ -57,13 +57,3 @@ number, vector, vector, [entity[] | entity] -> number
 ---
 
 Draws a line between the given positions.
-
-;;;;;
- 
-<|glyph@trickster:templates|trick-id=trickster:get_flecks,title=Observer's Ingress|>
-
-[entity] -> number[]
-
----
-
-Return the identifiers of all the flecks the caster or the given player can see. 

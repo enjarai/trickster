@@ -147,3 +147,13 @@ entity -> number
 ---
 
 Returns the scale of the given entity.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:get_flecks,title=Observer's Ingress|>
+
+[entity] -> number[]
+
+---
+
+Returns the identifiers of all the flecks the caster or the given player can see.
