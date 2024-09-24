@@ -6,12 +6,11 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
-import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
-import net.minecraft.entity.Entity;
+import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
 
 import java.util.List;
 
@@ -22,11 +21,13 @@ public class GetFlecksTrick extends Trick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        return new ListFragment(
-            supposeInput(fragments, FragmentType.ENTITY, 0).map(n -> n.getEntity(ctx))
-                .orElseGet(() -> ctx.source().getPlayer().map(n -> n)).map(ModEntityComponents.FLECKS::get)
-                .orElseThrow(() -> new NoPlayerBlunder(this))
-                .getRenderFlecks().stream().<Fragment>map(n -> new NumberFragment(n.id())).toList()
+        return new ListFragment(ModEntityComponents.FLECKS.get(supposeInput(fragments, FragmentType.ENTITY, 0)
+                    .map(fragment -> fragment.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this)))
+                    .orElseGet(() -> ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this))))
+                .getRenderFlecks()
+                .stream()
+                .map(fleck -> new NumberFragment(fleck.id()))
+                .toList()
         );
     }
 }

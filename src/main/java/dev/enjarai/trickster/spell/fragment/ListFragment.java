@@ -13,9 +13,9 @@ import net.minecraft.text.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-public record ListFragment(List<Fragment> fragments) implements Fragment {
+public record ListFragment(List<? extends Fragment> fragments) implements Fragment {
     public static final StructEndec<ListFragment> ENDEC = StructEndecBuilder.of(
-            Fragment.ENDEC.listOf().fieldOf("fragments", ListFragment::fragments),
+            Fragment.ENDEC.listOf().fieldOf("fragments", ListFragment::contents),
             ListFragment::new
     );
 
@@ -47,6 +47,10 @@ public record ListFragment(List<Fragment> fragments) implements Fragment {
     @Override
     public BooleanFragment asBoolean() {
         return new BooleanFragment(!fragments.isEmpty());
+    }
+
+    public List<Fragment> contents() {
+        return fragments.stream().<Fragment>map(n -> n).toList();
     }
 
     public ListFragment addRange(ListFragment other) throws BlunderException {

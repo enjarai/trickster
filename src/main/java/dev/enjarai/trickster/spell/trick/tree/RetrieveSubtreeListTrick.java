@@ -21,7 +21,7 @@ public class RetrieveSubtreeListTrick extends MetaTrick {
         var addressFragment = expectInput(fragments, ListFragment.class, 1);
 
 	return findNode(spell, addressFragment)
-	    .<Fragment>map(n -> new ListFragment(n.subParts.stream().<Fragment>map(n2 -> n2).toList()))
+	    .<Fragment>map(n -> new ListFragment(n.subParts))
 	    .orElse(VoidFragment.INSTANCE);
     }
 }

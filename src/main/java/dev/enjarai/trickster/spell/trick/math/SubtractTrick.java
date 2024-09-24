@@ -4,6 +4,7 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
+import dev.enjarai.trickster.spell.fragment.ListFragment;
 import dev.enjarai.trickster.spell.fragment.SubtractableFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
@@ -18,15 +19,14 @@ public class SubtractTrick extends Trick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var list = supposeInput(fragments, 0).flatMap(l -> supposeType(l, FragmentType.LIST));
-
-        if (list.isPresent()) {
-            fragments = list.get().fragments();
-        }
+        fragments = supposeInput(fragments, 0)
+           .flatMap(l -> supposeType(l, FragmentType.LIST))
+           .map(ListFragment::contents)
+           .orElse(fragments);
 
         SubtractableFragment result = null;
         for (int i = 0; i < fragments.size(); i++) {
-            var value = expectType(fragments.get(i), SubtractableFragment.class, list.isPresent() ? 0 : i);
+            var value = expectType(fragments.get(i), SubtractableFragment.class, i);
             if (result == null) {
                 result = value;
             } else {

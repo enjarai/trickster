@@ -51,7 +51,7 @@ public abstract class AbstractFleckTrick extends Trick {
         }
 
         entities.stream()
-            .filter(serverPlayer -> playerList.map(list -> list.contains(serverPlayer)).orElse(true)) //if a list of players was specified, filter against it
+            .filter(serverPlayer -> playerList.map(list -> list.contains(serverPlayer)).orElse(true)) // if a list of players was specified, filter against it
             .forEach(serverPlayer -> serverPlayer.getComponent(ModEntityComponents.FLECKS).addFleck(id, makeFleck(ctx, fragments)));
 
         return fragments.getFirst();

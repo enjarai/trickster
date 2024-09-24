@@ -5,6 +5,7 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
+import dev.enjarai.trickster.spell.fragment.ListFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 
@@ -17,14 +18,8 @@ public class HighlightTrick extends Trick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var list = supposeInput(fragments, 0).flatMap(l -> supposeType(l, FragmentType.LIST));
         var ret = expectInput(fragments, 0);
-
-        if (list.isPresent()) {
-            fragments = list.get().fragments();
-        }
-
-        expectInput(fragments, 0);
+        fragments = supposeInput(fragments, 0).flatMap(l -> supposeType(l, FragmentType.LIST)).map(ListFragment::contents).orElse(fragments);
 
         for (int i = 0; i < fragments.size(); i++) {
             var block = expectInput(fragments, FragmentType.VECTOR, i).toBlockPos().toCenterPos();
