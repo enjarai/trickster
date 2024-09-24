@@ -15,25 +15,23 @@ Many base arithmetical operations, though not all, will work on both single numb
 
 <|glyph@trickster:templates|trick-id=trickster:add,title=Annexation Stratagem|>
 
-number... | number[] -> number |
-vec... | vec[] -> vec
+(number | vec)... | (number | vec)[] -> (number | vec)
 
 ---
 
-Adds up an arbitrary sequence of numbers into a single value.
-Works with vectors.
+Adds many numbers or vectors into a single value. 
+A number and a vector will combine into a vector.
 
 ;;;;;
 
 <|glyph@trickster:templates|trick-id=trickster:subtract,title=Desertion Stratagem|>
 
-number... | number[] -> number |
-vec... | vec[] -> vec
+(number | vec)... | (number | vec)[] -> (number | vec)
 
 ---
 
-Sequentially subtracts an arbitrary sequence of numbers into a single value.
-Works with vectors.
+Subtracts many numbers or vectors into a single value.
+A number and a vector will combine into a vector.
 
 ;;;;;
 
@@ -75,7 +73,7 @@ number... | number[] -> number
 
 ---
 
-Returns highest of many input values.
+Returns the highest of many input values.
 
 ;;;;;
 
@@ -85,7 +83,7 @@ number... | number[] -> number
 
 ---
 
-Returns lowest of many input values.
+Returns the lowest of many input values.
 
 ;;;;;
 
@@ -105,7 +103,7 @@ number -> number
 
 ---
 
-Returns value of the input rounded down.
+Returns the value of the input rounded down.
 
 ;;;;;
 

@@ -9,11 +9,12 @@ import dev.enjarai.trickster.spell.blunder.NaNBlunder;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
+import org.joml.Vector3d;
 import net.minecraft.text.Text;
 
 import java.util.Objects;
 
-public final class NumberFragment implements Fragment, AddableFragment, SubtractableFragment, MultiplicableFragment, DivisibleFragment, RoundableFragment {
+public final class NumberFragment implements AddableFragment, SubtractableFragment, MultiplicableFragment, DivisibleFragment, RoundableFragment {
     public static final StructEndec<NumberFragment> ENDEC = StructEndecBuilder.of(
             Endec.DOUBLE.fieldOf("number", NumberFragment::number),
             NumberFragment::new
@@ -47,7 +48,11 @@ public final class NumberFragment implements Fragment, AddableFragment, Subtract
     public AddableFragment add(Fragment other) throws BlunderException {
         if (other instanceof NumberFragment num) {
             return new NumberFragment(number + num.number);
+        } else if (other instanceof VectorFragment vec) {
+            var vector = vec.vector();
+            return new VectorFragment(new Vector3d(number + vector.x(), number + vector.y(), number + vector.z()));
         }
+
         throw new IncompatibleTypesBlunder(Tricks.ADD);
     }
 
@@ -55,7 +60,11 @@ public final class NumberFragment implements Fragment, AddableFragment, Subtract
     public SubtractableFragment subtract(Fragment other) throws BlunderException {
         if (other instanceof NumberFragment num) {
             return new NumberFragment(number - num.number);
+        } else if (other instanceof VectorFragment vec) {
+            var vector = vec.vector();
+            return new VectorFragment(new Vector3d(number - vector.x(), number - vector.y(), number - vector.z()));
         }
+
         throw new IncompatibleTypesBlunder(Tricks.SUBTRACT);
     }
 
@@ -63,7 +72,11 @@ public final class NumberFragment implements Fragment, AddableFragment, Subtract
     public MultiplicableFragment multiply(Fragment other) throws BlunderException {
         if (other instanceof NumberFragment num) {
             return new NumberFragment(number * num.number);
+        } else if (other instanceof VectorFragment vec) {
+            var vector = vec.vector();
+            return new VectorFragment(new Vector3d(number * vector.x(), number * vector.y(), number * vector.z()));
         }
+
         throw new IncompatibleTypesBlunder(Tricks.MULTIPLY);
     }
 
@@ -75,7 +88,16 @@ public final class NumberFragment implements Fragment, AddableFragment, Subtract
             }
 
             return new NumberFragment(number / num.number);
+        } else if (other instanceof VectorFragment vec) {
+            var vector = vec.vector();
+
+            if (vector.x() * vector.y() * vector.z() == 0) {
+                throw new DivideByZeroBlunder(Tricks.DIVIDE);
+            }
+
+            return new VectorFragment(new Vector3d(number / vector.x(), number / vector.y(), number / vector.z()));
         }
+
         throw new IncompatibleTypesBlunder(Tricks.DIVIDE);
     }
 
