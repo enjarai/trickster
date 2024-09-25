@@ -181,7 +181,7 @@ public class ExecutionState {
         var links = manaLinks.stream().filter(link -> link.getAvailable() > 0).toList();
         hasUsedMana = true;
 
-        if (!links.isEmpty()) {
+/*        if (!links.isEmpty()) {
             float totalAvailable = 0;
             float leftOver = 0;
 
@@ -202,7 +202,8 @@ public class ExecutionState {
             }
 
             amount = leftOver;
-        }
+        }*/
+
 
         if (!pool.decrease(amount)) {
             throw new NotEnoughManaBlunder(trickSource, amount);
