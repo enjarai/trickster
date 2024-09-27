@@ -180,6 +180,11 @@ public abstract class LivingEntityMixin extends Entity implements DirectlyDamage
 
     @Override
     public boolean trickster$damageDirectly(DamageSource source, float amount) {
+        //noinspection ConstantValue
+        if ((Object) this instanceof PlayerEntity player && (player.isCreative() || player.isSpectator())) {
+            return false;
+        }
+
         this.getWorld().sendEntityDamage(this, source);
 
         this.lastDamageTaken = amount;
