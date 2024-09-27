@@ -8,7 +8,7 @@ public class ModNetworking {
 
     public static void register() {
         CHANNEL.registerServerbound(MladyPacket.class, MladyPacket::handleServer);
-        CHANNEL.registerServerbound(ScrollInGamePacket.class, ScrollInGamePacket::handleServer);
+        CHANNEL.registerServerbound(ScrollHatPacket.class, ScrollHatPacket::handleServer);
         CHANNEL.registerServerbound(IsEditingScrollPacket.class, IsEditingScrollPacket::handleServer);
         CHANNEL.registerServerbound(SignScrollPacket.class, SignScrollPacket::handleServer);
         CHANNEL.registerServerbound(KillSpellPacket.class, KillSpellPacket::handleServer);

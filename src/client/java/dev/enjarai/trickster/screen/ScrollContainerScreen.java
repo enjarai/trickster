@@ -2,7 +2,7 @@ package dev.enjarai.trickster.screen;
 
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.net.ModNetworking;
-import dev.enjarai.trickster.net.ScrollInGamePacket;
+import dev.enjarai.trickster.net.ScrollHatPacket;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
@@ -81,7 +81,7 @@ public class ScrollContainerScreen extends HandledScreen<ScrollContainerScreenHa
                 newSlot = 0;
             }
 
-            ModNetworking.CHANNEL.clientHandle().send(new ScrollInGamePacket((float) (Trickster.CONFIG.invertTopHatScrolling() ? verticalAmount : -verticalAmount)));
+            ModNetworking.CHANNEL.clientHandle().send(new ScrollHatPacket((float) (Trickster.CONFIG.invertTopHatScrolling() ? verticalAmount : -verticalAmount), false));
             handler.selectedSlot.set(newSlot);
         }
 

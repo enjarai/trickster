@@ -7,14 +7,14 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 
-public record ScrollInGamePacket(float amount) {
+public record ScrollHatPacket(float amount, boolean inGame) {
     public void handleServer(ServerAccess access) {
         var player = access.player();
 
         if (Math.abs(amount()) >= 1f) {
             ItemStack stack = null;
 
-            if (player.isSneaking() && player.getMainHandStack().contains(ModComponents.SELECTED_SLOT)) {
+            if ((player.isSneaking() || !inGame()) && player.getMainHandStack().contains(ModComponents.SELECTED_SLOT)) {
                 stack = player.getMainHandStack();
             } else if (player.getOffHandStack().contains(ModComponents.SELECTED_SLOT)) {
                 stack = player.getOffHandStack();
