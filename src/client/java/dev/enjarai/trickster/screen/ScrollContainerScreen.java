@@ -50,7 +50,7 @@ public class ScrollContainerScreen extends HandledScreen<ScrollContainerScreenHa
         super.drawSlot(context, slot);
 
         context.getMatrices().push();
-        context.getMatrices().translate(0.0F, 0.0F, 1000.0F);
+        context.getMatrices().translate(0.0F, 0.0F, 110.0F);
         if (slot.id == handler.selectedSlot.get()) {
             context.drawTexture(SELECTED_SLOT_TEXTURE, slot.x - 4, slot.y - 4, 0, 0, 24, 24, 24, 24);
         }
