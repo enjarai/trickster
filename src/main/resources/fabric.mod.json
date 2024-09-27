@@ -73,7 +73,6 @@
 	"breaks": {
 		"sodium": "<0.6.0-",
 		"optifabric": "*",
-		"embeddium": "*",
-		"surveyor": "*"
+		"embeddium": "*"
 	}
 }
