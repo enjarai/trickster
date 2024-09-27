@@ -16,7 +16,7 @@ import java.util.List;
 
 public class GetFlecksTrick extends Trick {
     public GetFlecksTrick() {
-        super(Pattern.of(0,4,8,7,4,1,2,4,6)); // bluetooth symbol
+        super(Pattern.of(0, 4, 8, 7, 4, 1, 2, 4, 6)); // bluetooth symbol
     }
 
     @Override
