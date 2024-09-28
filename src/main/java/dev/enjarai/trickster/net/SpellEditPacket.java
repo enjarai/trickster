@@ -19,7 +19,7 @@ public record SpellEditPacket() {
         if (!player.isCreative()) return;
 
         var stack = player.getMainHandStack();
-        if (stack.isEmpty() || stack.isIn(ModItems.HOLDABLE_HAT)) return;
+        if (stack.isEmpty()) return;
 
         player.openHandledScreen(new NamedScreenHandlerFactory() {
             @Override
