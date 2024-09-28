@@ -1,6 +1,6 @@
 package dev.enjarai.trickster.mixin.chunk_pinning;
 
-import dev.enjarai.trickster.cca.ModWorldCumponents;
+import dev.enjarai.trickster.cca.ModWorldComponents;
 import net.minecraft.server.world.ServerChunkLoadingManager;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.ChunkPos;
@@ -22,7 +22,7 @@ public class ServerChunkLoadingManagerMixin {
             cancellable = true
     )
     private void enableTicksFromWorldPin(ChunkPos pos, CallbackInfoReturnable<Boolean> cir) {
-        if (ModWorldCumponents.PINNED_CHUNKS.get(world).isPinned(pos)) {
+        if (ModWorldComponents.PINNED_CHUNKS.get(world).isPinned(pos)) {
             cir.setReturnValue(true);
         }
     }

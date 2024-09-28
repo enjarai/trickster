@@ -6,8 +6,8 @@ import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
-import dev.enjarai.trickster.spell.trick.blunder.BlockUnoccupiedBlunder;
-import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.BlockUnoccupiedBlunder;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
 
 import java.util.List;
 
@@ -34,6 +34,6 @@ public class BreakBlockTrick extends Trick {
             ctx.source().getCaster().ifPresentOrElse(c -> world.breakBlock(blockPos, true, c), () -> world.breakBlock(blockPos, true));
         }
 
-        return VoidFragment.INSTANCE;
+        return pos;
     }
 }

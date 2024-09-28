@@ -1,7 +1,7 @@
 package dev.enjarai.trickster.mixin.client;
 
 import dev.enjarai.trickster.Trickster;
-import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.cca.ModEntityComponents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.SubtitlesHud;
@@ -16,7 +16,7 @@ public class SubtitlesHudMixin {
     private void offsetSubtitles(DrawContext context, CallbackInfo ci) {
         var player = MinecraftClient.getInstance().player;
         if (player == null) return;
-        var barsComponent = player.getComponent(ModEntityCumponents.BARS);
+        var barsComponent = player.getComponent(ModEntityComponents.BARS);
         var bars = barsComponent.getBars();
 
         if (Trickster.CONFIG.barsHorizontal()) {

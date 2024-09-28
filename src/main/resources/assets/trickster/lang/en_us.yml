@@ -143,6 +143,7 @@ trickster:
     retrieve_glyph: Retrieval Distortion
     set_glyph: Replacement Distortion
     retrieve_subtree: Felling Distortion
+    retrieve_subtree_list: Flock Distortion
     set_subtree: Grafting Distortion
     add_subtree: Branching Distortion
     remove_subtree: Pruning Distortion
@@ -184,6 +185,10 @@ trickster:
 
     highlight: Flourish Ploy
 
+    draw_spell: Marketer's Ploy
+    draw_line: Artist's Ploy
+    get_flecks: Observer's Ingress
+
     get_scale: Distortion of Occupation
     set_scale: Ploy of Occupation
 
@@ -216,17 +221,55 @@ trickster:
 item.trickster:
   tome_of_tomfoolery: Tome of Tomfoolery
   mirror_of_evaluation: Mirror of Evaluation
+
   scroll_and_quill: Scroll and Quill
+  scroll_and_quill_black: Black Scroll and Quill
+  scroll_and_quill_blue: Blue Scroll and Quill
+  scroll_and_quill_brown: Brown Scroll and Quill
+  scroll_and_quill_cyan: Cyan Scroll and Quill
+  scroll_and_quill_gray: Gray Scroll and Quill
+  scroll_and_quill_green: Green Scroll and Quill
+  scroll_and_quill_light_blue: Light Blue Scroll and Quill
+  scroll_and_quill_light_gray: Light Gray Scroll and Quill
+  scroll_and_quill_lime: Lime Scroll and Quill
+  scroll_and_quill_magenta: Magenta Scroll and Quill
+  scroll_and_quill_orange: Orange Scroll and Quill
+  scroll_and_quill_pink: Pink Scroll and Quill
+  scroll_and_quill_purple: Purple Scroll and Quill
+  scroll_and_quill_red: Red Scroll and Quill
+  scroll_and_quill_white: White Scroll and Quill
+  scroll_and_quill_yellow: Yellow Scroll and Quill
+
   written_scroll: Written Scroll
+  written_scroll_black: Black Written Scroll
+  written_scroll_blue: Blue Written Scroll
+  written_scroll_brown: Brown Written Scroll
+  written_scroll_cyan: Cyan Written Scroll
+  written_scroll_gray: Gray Written Scroll
+  written_scroll_green: Green Written Scroll
+  written_scroll_light_blue: Light Blue Written Scroll
+  written_scroll_light_gray: Light Gray Written Scroll
+  written_scroll_lime: Lime Written Scroll
+  written_scroll_magenta: Magenta Written Scroll
+  written_scroll_orange: Orange Written Scroll
+  written_scroll_pink: Pink Written Scroll
+  written_scroll_purple: Purple Written Scroll
+  written_scroll_red: Red Written Scroll
+  written_scroll_white: White Written Scroll
+  written_scroll_yellow: Yellow Written Scroll
+
   warding_charm: Warding Charm
   spell_ink: Spell Ink
   top_hat: Top Hat
+  witch_hat: Witch Hat
+  fez: Fez
   wand: Wand
 
 block.trickster:
   spell_resonator: Spell Resonator
   spell_circle: Spell Circle
   light: Light
+  scroll_shelf: Scroll Shelf
 
 effect.trickster:
   mana_boost: Mana Hyperflux
@@ -252,6 +295,10 @@ key:
 
 text.config.trickster-config:
   title: Trickster Config
+  section:
+    client: Client
+    server: Server
+    aurora-client: Aurora's Personal Client Tweaks
   option:
     dragDrawing: Draw by dragging
     topHatInterceptScrolling: Top Hat intercepts hotbar scrolling

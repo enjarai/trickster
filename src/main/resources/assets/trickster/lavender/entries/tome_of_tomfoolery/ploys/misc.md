@@ -12,17 +12,18 @@ A few miscellaneous ploys that don't fit into any other category.
 
 <|glyph@trickster:templates|trick-id=trickster:delay_execution,title=Ploy of Suspension|>
 
-[number] ->
+[number] -> number
 
 ---
 
-Delays the execution of the current spell by the given number of ticks, or until the next tick.
+Delays the execution of the current spell by the given number of ticks, or until the next tick. 
+Returns the delay.
 
 ;;;;;
 
 <|glyph@trickster:templates|trick-id=trickster:pin_chunk,title=Ploy of Celestial Pin|>
 
-vector ->
+vector -> vector
 
 <|cost-rule@trickster:templates|formula=32kG|>
 
@@ -58,7 +59,7 @@ Shows a bar on the caster's screen identified by the first number displaying the
 
 <|glyph@trickster:templates|trick-id=trickster:clear_bar,title=Ploy of Obfuscation|>
 
-number -> boolean
+number -> number
 
 ---
 

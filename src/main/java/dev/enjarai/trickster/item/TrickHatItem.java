@@ -60,4 +60,27 @@ public class TrickHatItem extends Item implements Equipment {
 
         return TypedActionResult.success(stack);
     }
+
+    public static ItemStack getScrollRelative(ItemStack hatStack, int offset) {
+        var slot = hatStack.get(ModComponents.SELECTED_SLOT);
+        var container = hatStack.get(DataComponentTypes.CONTAINER);
+        if (slot != null && container != null) {
+            var selected = slot.slot() + offset;
+            var maxSlot = (int) Math.min(slot.maxSlot(), container.stream().count());
+
+            if (maxSlot > 0) {
+                while (selected < 0) {
+                    selected += maxSlot;
+                }
+                while (selected >= maxSlot) {
+                    selected -= maxSlot;
+                }
+            } else {
+                selected = 0;
+            }
+
+            return container.stream().skip(selected).findFirst().orElse(ItemStack.EMPTY);
+        }
+        return ItemStack.EMPTY;
+    }
 }

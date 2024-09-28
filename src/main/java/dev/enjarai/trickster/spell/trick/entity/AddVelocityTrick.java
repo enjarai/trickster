@@ -1,16 +1,14 @@
 package dev.enjarai.trickster.spell.trick.entity;
 
-import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.fragment.VoidFragment;
+import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
-import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
-import dev.enjarai.trickster.spell.trick.blunder.UnknownEntityBlunder;
-import net.minecraft.entity.LivingEntity;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
 import net.minecraft.entity.player.PlayerEntity;
 import org.joml.Vector3d;
-import org.joml.Vector3dc;
 
 import java.util.List;
 
@@ -31,7 +29,7 @@ public class AddVelocityTrick extends Trick {
         ctx.useMana(this, 3f + (float) lengthSquared * 2f);
 
         var vector = velocity.vector();
-        if (target instanceof PlayerEntity && ModEntityCumponents.GRACE.get(target).isInGrace("gravity")) {
+        if (target instanceof PlayerEntity && ModEntityComponents.GRACE.get(target).isInGrace("gravity")) {
             vector = vector.add(0, -target.getFinalGravity(), 0, new Vector3d());
         }
 
@@ -40,9 +38,9 @@ public class AddVelocityTrick extends Trick {
         target.velocityModified = true;
 
         if (target instanceof PlayerEntity && vector.x() >= 0) {
-            ModEntityCumponents.GRACE.get(target).triggerGrace("gravity", 2);
+            ModEntityComponents.GRACE.get(target).triggerGrace("gravity", 2);
         }
 
-        return VoidFragment.INSTANCE;
+        return EntityFragment.from(target);
     }
 }

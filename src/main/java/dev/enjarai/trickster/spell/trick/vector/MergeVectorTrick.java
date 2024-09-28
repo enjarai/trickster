@@ -5,8 +5,9 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
+import dev.enjarai.trickster.spell.fragment.ListFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
-import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
 import org.joml.Vector3d;
 
 import java.util.List;
@@ -18,16 +19,14 @@ public class MergeVectorTrick extends Trick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var vectorFragments = fragments;
+        fragments = supposeInput(fragments, 0)
+            .flatMap(l -> supposeType(l, FragmentType.LIST))
+            .map(ListFragment::contents)
+            .orElse(fragments);
 
-        var list = supposeInput(fragments, 0).flatMap(l -> supposeType(l, FragmentType.LIST));
-        if (list.isPresent()) {
-            vectorFragments = list.get().fragments();
-        }
-
-        var x = expectInput(vectorFragments, FragmentType.NUMBER, 0);
-        var y = expectInput(vectorFragments, FragmentType.NUMBER, 1);
-        var z = expectInput(vectorFragments, FragmentType.NUMBER, 2);
+        var x = expectInput(fragments, FragmentType.NUMBER, 0);
+        var y = expectInput(fragments, FragmentType.NUMBER, 1);
+        var z = expectInput(fragments, FragmentType.NUMBER, 2);
 
         return new VectorFragment(new Vector3d(x.number(), y.number(), z.number()));
     }

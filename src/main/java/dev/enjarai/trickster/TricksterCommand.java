@@ -3,7 +3,7 @@ package dev.enjarai.trickster;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.SpellComponent;
@@ -81,7 +81,7 @@ public class TricksterCommand {
     }
 
     private static int killSpells(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
-        context.getSource().getPlayerOrThrow().getComponent(ModEntityCumponents.CASTER).killAll();
+        context.getSource().getPlayerOrThrow().getComponent(ModEntityComponents.CASTER).killAll();
         context.getSource().sendFeedback(() -> Text.literal("Killed running spells."), true);
         return 1;
     }

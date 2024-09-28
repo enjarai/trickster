@@ -1,11 +1,11 @@
 package dev.enjarai.trickster.spell.trick.entity;
 
-import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.fragment.BooleanFragment;
-import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
+import dev.enjarai.trickster.spell.fragment.EntityFragment;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.trick.entity.query.AbstractLivingEntityQueryTrick;
 import net.minecraft.server.network.ServerPlayerEntity;
 
@@ -22,15 +22,9 @@ public class DispelPolymorphTrick extends AbstractLivingEntityQueryTrick {
 
         if (target instanceof ServerPlayerEntity player) {
             ctx.useMana(this, 70);
-
-            var cumpoonent = player.getComponent(ModEntityCumponents.DISGUISE);
-
-            if (cumpoonent.getUuid() != null) {
-                cumpoonent.setUuid(null);
-                return BooleanFragment.TRUE;
-            }
+            player.getComponent(ModEntityComponents.DISGUISE).setUuid(null);
         }
 
-        return BooleanFragment.FALSE;
+        return EntityFragment.from(target);
     }
 }

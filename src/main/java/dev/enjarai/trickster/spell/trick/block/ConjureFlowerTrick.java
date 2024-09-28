@@ -9,9 +9,9 @@ import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
-import dev.enjarai.trickster.spell.trick.blunder.BlockOccupiedBlunder;
-import dev.enjarai.trickster.spell.trick.blunder.BlockUnoccupiedBlunder;
-import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.BlockOccupiedBlunder;
+import dev.enjarai.trickster.spell.blunder.BlockUnoccupiedBlunder;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.math.Direction;
 
@@ -48,6 +48,6 @@ public class ConjureFlowerTrick extends Trick {
                 1, 0, 0, 0, 0
         );
 
-        return VoidFragment.INSTANCE;
+        return pos;
     }
 }

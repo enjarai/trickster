@@ -6,11 +6,14 @@ import dev.enjarai.trickster.item.component.SpellComponent;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
+import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
-import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
-import dev.enjarai.trickster.spell.trick.blunder.ImmutableItemBlunder;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.ImmutableItemBlunder;
+import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.entity.EquipmentSlot;
@@ -38,11 +41,7 @@ public class WriteSpellTrick extends Trick {
                     } else {
                         return Optional.of(expectType(s, FragmentType.SPELL_PART));
                     }
-                }).map(s -> {
-                    var n = s.deepClone();
-                    n.brutallyMurderEphemerals();
-                    return n;
-                });
+                }).map(SpellPart::applyEphemeral);
 
         return player.map(serverPlayerEntity -> Pair.of(serverPlayerEntity, serverPlayerEntity.getOffHandStack())).map(pair -> {
             var serverPlayer = pair.getFirst();
@@ -96,7 +95,7 @@ public class WriteSpellTrick extends Trick {
                 }
             });
 
-            return BooleanFragment.TRUE;
-        }).orElse(BooleanFragment.FALSE);
+            return spell.<Fragment>map(n -> n).orElse(VoidFragment.INSTANCE);
+        }).orElseThrow(() -> new NoPlayerBlunder(this));
     }
 }

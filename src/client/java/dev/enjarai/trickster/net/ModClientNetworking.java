@@ -1,7 +1,9 @@
 package dev.enjarai.trickster.net;
 
+import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.mixin.client.WorldRendererAccessor;
 import dev.enjarai.trickster.spell.SpellPart;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.ChunkSectionPos;
@@ -38,6 +40,12 @@ public class ModClientNetworking {
             }
 
             ModNetworking.CHANNEL.clientHandle().send(new ClipBoardSpellResponsePacket(spell));
+        });
+        ModNetworking.CHANNEL.registerClientbound(MladyAnimationPacket.class, (message, access) -> {
+            var entity = access.player().clientWorld.getEntityById(message.entityId());
+            if (entity instanceof PlayerEntity player) {
+                ModEntityComponents.PLAYER_ANIMATION.get(player).hatTakeyNess = 1;
+            }
         });
     }
 }

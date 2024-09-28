@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.mixin;
 
-import dev.enjarai.trickster.cca.ModChunkCumponents;
+import dev.enjarai.trickster.cca.ModChunkComponents;
+import dev.enjarai.trickster.compat.ModCompat;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.MapColor;
 import net.minecraft.server.world.ServerWorld;
@@ -19,9 +20,14 @@ public class AbstractBlockStateMixin {
             cancellable = true
     )
     private void disguiseBlockOnMap(BlockView view, BlockPos pos, CallbackInfoReturnable<MapColor> cir) {
-        if (view instanceof ServerWorld world) {
+        // A temporary measure to prevent hanging on world load with Antique Atlas installed.
+        if (ModCompat.SURVEYOR_LOADED) {
+            return;
+        }
+
+        if (view instanceof ServerWorld world && Thread.currentThread() == world.getServer().getThread()) {
             var chunk = world.getChunk(pos);
-            var component = ModChunkCumponents.SHADOW_DISGUISE_MAP.getNullable(chunk);
+            var component = ModChunkComponents.SHADOW_DISGUISE_MAP.getNullable(chunk);
             if (component != null) {
                 var disguise = component.getFunnyState(pos);
                 if (disguise != null) {
