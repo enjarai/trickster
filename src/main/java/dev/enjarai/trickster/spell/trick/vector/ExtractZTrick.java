@@ -17,8 +17,6 @@ public class ExtractZTrick extends Trick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var vector = expectInput(fragments, FragmentType.VECTOR, 0);
-
-        return new NumberFragment(vector.vector().z());
+        return new NumberFragment(expectInput(fragments, FragmentType.VECTOR, 0).vector().z());
     }
 }
