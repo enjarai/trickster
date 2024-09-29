@@ -7,7 +7,6 @@ import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.SlotFragment;
 import dev.enjarai.trickster.spell.mana.ManaPool;
 import dev.enjarai.trickster.spell.trick.Trick;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -15,13 +14,9 @@ import java.util.Optional;
 import java.util.function.Function;
 
 public record SpellContext(SpellSource source, ExecutionState executionState) {
-    public void addManaLink(Trick trickSource, LivingEntity target, float limit) throws BlunderException {
-        executionState.addManaLink(trickSource, target, limit);
-    }
-
     public void useMana(Trick trickSource, float amount) throws BlunderException {
         try {
-            executionState.useMana(trickSource, this, executionState.tryOverridePool(source.getManaPool()), amount);
+            executionState.useMana(trickSource, this, amount);
         } catch (NotEnoughManaBlunder blunder) {
             source.getPlayer().ifPresent(ModCriteria.MANA_OVERFLUX::trigger);
             throw blunder;

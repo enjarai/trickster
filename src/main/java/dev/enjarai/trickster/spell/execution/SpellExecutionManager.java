@@ -29,7 +29,6 @@ public class SpellExecutionManager {
 
     // NOT final, we want to be able to change this perchance
     private int capacity;
-    private SpellSource source;
     private final Int2ObjectMap<SpellExecutor> spells;
 
     private SpellExecutionManager(int initialCapacity, Map<Integer, SpellExecutor> spells) {
@@ -46,7 +45,7 @@ public class SpellExecutionManager {
         return queue(new DefaultSpellExecutor(spell, arguments));
     }
 
-    public SpellQueueResult queueAndCast(SpellPart spell, List<Fragment> arguments, Optional<ManaPool> poolOverride) {
+    public SpellQueueResult queueAndCast(SpellSource source, SpellPart spell, List<Fragment> arguments, Optional<ManaPool> poolOverride) {
         var executor = new DefaultSpellExecutor(spell, poolOverride.flatMap(pool -> Optional.of(new ExecutionState(arguments, pool))).orElse(new ExecutionState(arguments)));
         boolean queued = queue(executor);
 
@@ -56,7 +55,7 @@ public class SpellExecutionManager {
 
                 if (entry.getValue() == executor) {
                     AtomicBoolean isDone = new AtomicBoolean(true);
-                    tryRun(entry,
+                    tryRun(source, entry,
                             (index, executor1) -> isDone.set(false),
                             (index, executor2) -> iterator.remove(),
                             (index, executor3) -> { });
@@ -85,13 +84,10 @@ public class SpellExecutionManager {
         return false;
     }
 
-    public void tick(ExecutorCallback tickCallback, ExecutorCallback completeCallback, ExecutorCallback errorCallback) {
-        if (source == null)
-            return;
-
+    public void tick(SpellSource source, ExecutorCallback tickCallback, ExecutorCallback completeCallback, ExecutorCallback errorCallback) {
         for (var iterator = spells.int2ObjectEntrySet().iterator(); iterator.hasNext();) {
             var entry = iterator.next();
-            tryRun(entry, tickCallback, (index, executor) -> {
+            tryRun(source, entry, tickCallback, (index, executor) -> {
                 iterator.remove();
                 completeCallback.callTheBack(index, executor);
             }, errorCallback);
@@ -100,13 +96,14 @@ public class SpellExecutionManager {
 
     /**
      * Attempts to run the given entry's SpellExecutor.
-     * @param entry
-     * @param tickCallback
-     * @param completeCallback
-     * @param errorCallback
+     * @param source TODO
+     * @param entry TODO
+     * @param tickCallback TODO
+     * @param completeCallback TODO
+     * @param errorCallback TODO
      * @return whether the spell has finished running or not. Blunders and normal completion return true, otherwise returns false.
      */
-    private boolean tryRun(Int2ObjectMap.Entry<SpellExecutor> entry, ExecutorCallback tickCallback, ExecutorCallback completeCallback, ExecutorCallback errorCallback) {
+    private boolean tryRun(SpellSource source, Int2ObjectMap.Entry<SpellExecutor> entry, ExecutorCallback tickCallback, ExecutorCallback completeCallback, ExecutorCallback errorCallback) {
         var spell = entry.getValue();
 
         try {
@@ -137,10 +134,6 @@ public class SpellExecutionManager {
         }
 
         return true;
-    }
-
-    public void setSource(SpellSource source) {
-        this.source = source;
     }
 
     public void killAll() {

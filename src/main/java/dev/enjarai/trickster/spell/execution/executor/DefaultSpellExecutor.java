@@ -178,7 +178,6 @@ public class DefaultSpellExecutor implements SpellExecutor {
 
         if (result.isPresent()) {
             inputs.push(result.get());
-            state.syncLinksFrom(child.get().getCurrentState());
             child = Optional.empty();
         }
 

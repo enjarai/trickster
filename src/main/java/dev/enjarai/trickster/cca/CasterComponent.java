@@ -52,10 +52,6 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
         this.player = player;
         // TODO: make capacity of execution manager an attribute
         this.executionManager = new SpellExecutionManager(5);
-
-        if (!player.getWorld().isClient()) {
-            this.executionManager.setSource(new PlayerSpellSource((ServerPlayerEntity) player));
-        }
     }
 
     @Override
@@ -66,7 +62,7 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
         }
 
         runningSpellData.clear();
-        executionManager.tick(this::afterExecutorTick, this::completeExecutor, this::executorError);
+        executionManager.tick(new PlayerSpellSource((ServerPlayerEntity) player), this::afterExecutorTick, this::completeExecutor, this::executorError);
         ModEntityComponents.CASTER.sync(player);
     }
 
@@ -99,7 +95,6 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
     @Override
     public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
         executionManager = tag.get(EXECUTION_MANAGER_ENDEC);
-        executionManager.setSource(new PlayerSpellSource((ServerPlayerEntity) player));
         waitTicks(20);
     }
 
@@ -138,7 +133,7 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
 
     public SpellQueueResult queueSpellAndCast(SpellPart spell, List<Fragment> arguments, Optional<ManaPool> poolOverride) {
         playCastSound(0.8f, 0.1f);
-        return executionManager.queueAndCast(spell, arguments, poolOverride);
+        return executionManager.queueAndCast(new PlayerSpellSource((ServerPlayerEntity) player), spell, arguments, poolOverride);
     }
 
     public void killAll() {

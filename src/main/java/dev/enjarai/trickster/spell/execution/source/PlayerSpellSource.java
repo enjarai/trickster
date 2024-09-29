@@ -4,17 +4,19 @@ import dev.enjarai.trickster.ModAttachments;
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.CrowMind;
+import net.minecraft.util.math.BlockPos;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.execution.SpellExecutionManager;
 import dev.enjarai.trickster.spell.fragment.SlotFragment;
-import dev.enjarai.trickster.spell.mana.ManaPool;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
+import dev.enjarai.trickster.spell.mana.ManaPool;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
+import dev.enjarai.trickster.spell.mana.CachedInventoryManaPool;
 import net.minecraft.server.world.ServerWorld;
 import org.joml.Vector3d;
 import org.ladysnake.cca.api.v3.component.Component;
@@ -24,18 +26,14 @@ import java.util.*;
 import java.util.function.Predicate;
 
 @SuppressWarnings("UnstableApiUsage")
-public class PlayerSpellSource extends SpellSource {
+public class PlayerSpellSource implements SpellSource {
     private final ServerPlayerEntity player;
+    private final ManaPool pool;
     private final EquipmentSlot slot = EquipmentSlot.MAINHAND;
 
     public PlayerSpellSource(ServerPlayerEntity player) {
-        super();
         this.player = player;
-    }
-
-    @Override
-    public ManaPool getManaPool() {
-        return player.getComponent(ModEntityComponents.MANA);
+        this.pool = new CachedInventoryManaPool(player.getInventory());
     }
 
     @Override
@@ -94,6 +92,11 @@ public class PlayerSpellSource extends SpellSource {
         return player.getMaxHealth();
     }
 
+    @Override
+    public ManaPool getManaPool() {
+        return pool;
+    }
+
     public static boolean isSpellStack(ItemStack stack) {
         return stack.contains(ModComponents.SPELL) ||
                 (stack.contains(DataComponentTypes.CONTAINER) && stack.contains(ModComponents.SELECTED_SLOT));
@@ -102,6 +105,11 @@ public class PlayerSpellSource extends SpellSource {
     @Override
     public Vector3d getPos() {
         return new Vector3d(player.getX(), player.getY(), player.getZ());
+    }
+
+    @Override
+    public BlockPos getBlockPos() {
+        return player.getBlockPos();
     }
 
     @Override

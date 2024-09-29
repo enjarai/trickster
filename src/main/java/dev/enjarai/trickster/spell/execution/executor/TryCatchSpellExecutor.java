@@ -53,7 +53,6 @@ public class TryCatchSpellExecutor implements SpellExecutor {
             return trySpell.run(source);
         } catch (BlunderException blunder) {
             catching = true;
-            catchSpell.getCurrentState().syncLinksFrom(trySpell.getCurrentState());
             return catchSpell.run(source);
         }
     }

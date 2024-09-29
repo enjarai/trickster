@@ -1,56 +1,41 @@
 package dev.enjarai.trickster.spell.mana;
 
-import dev.enjarai.trickster.EndecTomfoolery;
 import io.wispforest.endec.Endec;
-import io.wispforest.endec.StructEndec;
-import io.wispforest.owo.serialization.endec.MinecraftEndecs;
-import org.jetbrains.annotations.Nullable;
 
-public interface ManaPool {
-    @SuppressWarnings("unchecked")
-    StructEndec<ManaPool> ENDEC = EndecTomfoolery.lazy(() -> (StructEndec<ManaPool>) Endec.dispatchedStruct(ManaPoolType::endec, pool -> {
-        var type = pool.type();
+public interface ManaPool extends ImmutableManaPool {
+    public static final Endec<ManaPool> ENDEC = ImmutableManaPool.ENDEC.xmap(imp -> (ManaPool) imp, mp -> mp);
 
-        if (type == null) {
-            throw new UnsupportedOperationException("This mana pool type cannot be serialized");
-        }
+    void set(float current);
 
-        return type;
-    }, MinecraftEndecs.ofRegistry(ManaPoolType.REGISTRY)));
+    void setMax(float max);
 
-    static float healthFromMana(float mana) {
-        return mana / 2;
-    }
-
-    static float manaFromHealth(float health) {
-        return health * 12;
-    }
-
-    @Nullable
-    ManaPoolType<?> type();
-
-    void set(float value);
-
-    float get();
-
-    float getMax();
-
-    default void increase(float amount) {
-        if (Float.isNaN(get()))
+    /**
+     * @param amount the amount to consume from this pool.
+     * @return the amount not consumed from this pool.
+     */
+    default float use(float amount) {
+        if (get() >= amount) {
+            set(get() - amount);
+            return 0;
+        } else {
+            var result = amount - get();
             set(0);
-
-        set(get() + amount);
+            return result;
+        }
     }
 
     /**
-     * Returns whether the pool still has mana.
+     * @param amount the amount to refill this pool with.
+     * @return the amount that could not be added to this pool.
      */
-    default boolean decrease(float amount) {
-        if (Float.isNaN(get()))
-            set(0);
-
-        float f = get() - amount;
-        set(f);
-        return !(f < 0);
+    default float refill(float amount) {
+        if (getMax() - get() >= amount) {
+            set(get() + amount);
+            return 0;
+        } else {
+            var result = amount - (getMax() - get());
+            set(getMax());
+            return result;
+        }
     }
 }

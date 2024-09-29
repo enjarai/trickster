@@ -116,7 +116,6 @@ public class FoldingSpellExecutor implements SpellExecutor {
 
         if (result.isPresent()) {
             last = result.get();
-            state.syncLinksFrom(child.get().getCurrentState());
             child = Optional.empty();
         }
 

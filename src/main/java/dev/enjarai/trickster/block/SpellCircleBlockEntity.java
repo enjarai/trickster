@@ -45,16 +45,12 @@ public class SpellCircleBlockEntity extends BlockEntity implements SpellColoredB
     public int age;
     public int lastPower;
     public CrowMind crowMind = new CrowMind(VoidFragment.INSTANCE);
+    //TODO: make this use a mana crystal item instead
     public SimpleManaPool manaPool = new SimpleManaPool(MAX_MANA) {
         @Override
         public void set(float value) {
             super.set(value);
             markDirty();
-        }
-
-        @Override
-        public void stdIncrease() {
-            stdIncrease(2);
         }
     };
     public int[] colors = new int[]{0xffffff};
@@ -105,8 +101,6 @@ public class SpellCircleBlockEntity extends BlockEntity implements SpellColoredB
     }
 
     public void tick() {
-        manaPool.stdIncrease();
-
         if (!getWorld().isClient() && executor != null && lastError == null) {
             if (spellSource == null) {
                 spellSource = new BlockSpellSource((ServerWorld) getWorld(), getPos(), this);

@@ -39,16 +39,13 @@ public class SimpleManaPool implements ManaPool {
     }
 
     @Override
+    public void setMax(float value) {
+        maxMana = value;
+    }
+
+    @Override
     public float getMax() {
         return maxMana;
-    }
-
-    public void stdIncrease() {
-        stdIncrease(1);
-    }
-
-    public void stdIncrease(float multiplier) {
-        increase((maxMana / 4000) * multiplier);
     }
 
     public static SimpleManaPool getSingleUse(float mana) {

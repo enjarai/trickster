@@ -16,57 +16,49 @@ import org.ladysnake.cca.api.v3.component.ComponentKey;
 import java.util.*;
 import java.util.function.Predicate;
 
-public abstract class SpellSource {
-    public abstract ManaPool getManaPool();
-
-    public Optional<ServerPlayerEntity> getPlayer() {
+public interface SpellSource {
+    default Optional<ServerPlayerEntity> getPlayer() {
         return Optional.empty();
     }
 
-    public Optional<Entity> getCaster() {
+    default Optional<Entity> getCaster() {
         return Optional.empty();
     }
 
-    public Optional<ItemStack> getOtherHandStack() {
+    default Optional<ItemStack> getOtherHandStack() {
         return getOtherHandStack(i -> true);
     }
 
-    public Optional<ItemStack> getOtherHandStack(Predicate<ItemStack> filter) {
+    default Optional<ItemStack> getOtherHandStack(Predicate<ItemStack> filter) {
         return Optional.empty();
     }
 
-    public Optional<SlotFragment> getOtherHandSlot() {
+    default Optional<SlotFragment> getOtherHandSlot() {
         return Optional.empty();
     }
 
-    public Optional<SpellExecutionManager> getExecutionManager() {
+    default Optional<SpellExecutionManager> getExecutionManager() {
         return Optional.empty();
     }
 
-    public abstract <T extends Component> Optional<T> getComponent(ComponentKey<T> key);
-
-    public float getMana() {
-        return getManaPool().get();
-    }
-
-    public float getMaxMana() {
-        return getManaPool().getMax();
-    }
-
-    public abstract float getHealth();
-
-    public abstract float getMaxHealth();
-
-    public abstract Vector3d getPos();
-
-    public BlockPos getBlockPos() {
+    default BlockPos getBlockPos() {
         var pos = getPos();
         return new BlockPos((int) pos.x, (int) pos.y, (int) pos.z);
     }
 
-    public abstract ServerWorld getWorld();
+    <T extends Component> Optional<T> getComponent(ComponentKey<T> key);
 
-    public abstract Fragment getCrowMind();
+    float getHealth();
 
-    public abstract void setCrowMind(Fragment fragment);
+    float getMaxHealth();
+
+    ManaPool getManaPool();
+
+    Vector3d getPos();
+
+    ServerWorld getWorld();
+
+    Fragment getCrowMind();
+
+    void setCrowMind(Fragment fragment);
 }
