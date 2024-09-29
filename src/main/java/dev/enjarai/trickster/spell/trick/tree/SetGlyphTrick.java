@@ -10,7 +10,7 @@ import dev.enjarai.trickster.spell.blunder.BlunderException;
 
 import java.util.List;
 
-public class SetGlyphTrick extends MetaTrick {
+public class SetGlyphTrick extends AbstractMetaTrick {
     public SetGlyphTrick() {
         super(Pattern.of(0, 1, 2, 4, 8, 7, 6));
     }

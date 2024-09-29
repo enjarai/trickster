@@ -7,7 +7,7 @@ import dev.enjarai.trickster.spell.blunder.BlunderException;
 
 import java.util.List;
 
-public class AddSubtreeTrick extends MetaTrick {
+public class AddSubtreeTrick extends AbstractMetaTrick {
     public AddSubtreeTrick() {
         super(Pattern.of(2, 1, 0, 4, 8, 7, 6, 4, 2, 5, 8));
     }

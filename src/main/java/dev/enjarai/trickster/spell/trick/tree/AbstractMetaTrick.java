@@ -7,8 +7,8 @@ import dev.enjarai.trickster.spell.trick.Trick;
 
 import java.util.Optional;
 
-public abstract class MetaTrick extends Trick {
-    public MetaTrick(Pattern pattern) {
+public abstract class AbstractMetaTrick extends Trick {
+    public AbstractMetaTrick(Pattern pattern) {
         super(pattern);
     }
 
