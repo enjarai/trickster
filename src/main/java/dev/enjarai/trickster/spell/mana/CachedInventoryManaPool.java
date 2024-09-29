@@ -9,7 +9,7 @@ import dev.enjarai.trickster.item.component.ManaComponent;
 import java.util.List;
 import java.util.ArrayList;
 
-public class CachedInventoryManaPool implements ManaPool {
+public class CachedInventoryManaPool implements MutableManaPool {
     private final List<ItemStack> stacks = new ArrayList<>();
 
     public CachedInventoryManaPool(Inventory inv) {

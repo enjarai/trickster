@@ -2,7 +2,7 @@ package dev.enjarai.trickster.spell.execution;
 
 import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.spell.Fragment;
-import dev.enjarai.trickster.spell.mana.ManaPool;
+import dev.enjarai.trickster.spell.mana.MutableManaPool;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.ExecutionLimitReachedBlunder;
@@ -24,7 +24,7 @@ public class ExecutionState {
             Endec.INT.fieldOf("stacktrace_size_when_made", ExecutionState::getInitialStacktraceSize),
             Fragment.ENDEC.listOf().fieldOf("arguments", state -> state.arguments),
             Endec.INT.listOf().fieldOf("stacktrace", state -> state.stacktrace.stream().toList()),
-            EndecTomfoolery.safeOptionalOf(ManaPool.ENDEC).optionalFieldOf("pool_override", state -> state.poolOverride, Optional.empty()),
+            EndecTomfoolery.safeOptionalOf(MutableManaPool.ENDEC).optionalFieldOf("pool_override", state -> state.poolOverride, Optional.empty()),
             ExecutionState::new
     );
 
@@ -34,9 +34,9 @@ public class ExecutionState {
     private final int initialStacktraceSize;
     private final List<Fragment> arguments;
     private final Deque<Integer> stacktrace = new ArrayDeque<>();
-    private final Optional<ManaPool> poolOverride;
+    private final Optional<MutableManaPool> poolOverride;
 
-    private ExecutionState(int recursions, int delay, boolean hasUsedMana, int initialStacktraceSize, List<Fragment> arguments, List<Integer> stacktrace, Optional<ManaPool> poolOverride) {
+    private ExecutionState(int recursions, int delay, boolean hasUsedMana, int initialStacktraceSize, List<Fragment> arguments, List<Integer> stacktrace, Optional<MutableManaPool> poolOverride) {
         this.recursions = recursions;
         this.delay = delay;
         this.hasUsedMana = hasUsedMana;
@@ -50,11 +50,11 @@ public class ExecutionState {
         this(0, 0, false, 0, arguments, List.of(), Optional.empty());
     }
 
-    public ExecutionState(List<Fragment> arguments, ManaPool poolOverride) {
+    public ExecutionState(List<Fragment> arguments, MutableManaPool poolOverride) {
         this(0, 0, false, 0, arguments, List.of(), Optional.ofNullable(poolOverride));
     }
 
-    private ExecutionState(int recursions, List<Fragment> arguments, Optional<ManaPool> poolOverride, Deque<Integer> stacktrace) {
+    private ExecutionState(int recursions, List<Fragment> arguments, Optional<MutableManaPool> poolOverride, Deque<Integer> stacktrace) {
         this(recursions, 0, false, stacktrace.size(), arguments, stacktrace.stream().toList(), poolOverride);
     }
 
@@ -80,7 +80,7 @@ public class ExecutionState {
             stacktrace.push(-3);
     }
 
-    public ManaPool tryOverridePool(ManaPool pool) {
+    public MutableManaPool tryOverridePool(MutableManaPool pool) {
         return poolOverride.orElse(pool);
     }
 

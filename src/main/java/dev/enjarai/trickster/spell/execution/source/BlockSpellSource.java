@@ -3,7 +3,7 @@ package dev.enjarai.trickster.spell.execution.source;
 import dev.enjarai.trickster.block.SpellCircleBlockEntity;
 import dev.enjarai.trickster.spell.CrowMind;
 import dev.enjarai.trickster.spell.Fragment;
-import dev.enjarai.trickster.spell.mana.ManaPool;
+import dev.enjarai.trickster.spell.mana.MutableManaPool;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import org.joml.Vector3d;
@@ -39,7 +39,7 @@ public class BlockSpellSource implements SpellSource {
     }
 
     @Override
-    public ManaPool getManaPool() {
+    public MutableManaPool getManaPool() {
         return blockEntity.manaPool;
     }
 

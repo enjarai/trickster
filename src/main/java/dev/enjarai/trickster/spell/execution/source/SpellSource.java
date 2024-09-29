@@ -3,7 +3,7 @@ package dev.enjarai.trickster.spell.execution.source;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.execution.SpellExecutionManager;
 import dev.enjarai.trickster.spell.fragment.SlotFragment;
-import dev.enjarai.trickster.spell.mana.ManaPool;
+import dev.enjarai.trickster.spell.mana.MutableManaPool;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -52,7 +52,7 @@ public interface SpellSource {
 
     float getMaxHealth();
 
-    ManaPool getManaPool();
+    MutableManaPool getManaPool();
 
     Vector3d getPos();
 

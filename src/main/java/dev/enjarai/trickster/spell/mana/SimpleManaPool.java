@@ -4,10 +4,10 @@ import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 
-public class SimpleManaPool implements ManaPool {
+public class SimpleManaPool implements MutableManaPool {
     public static final StructEndec<SimpleManaPool> ENDEC = StructEndecBuilder.of(
-            Endec.FLOAT.fieldOf("mana", ManaPool::get),
-            Endec.FLOAT.fieldOf("max_mana", ManaPool::getMax),
+            Endec.FLOAT.fieldOf("mana", MutableManaPool::get),
+            Endec.FLOAT.fieldOf("max_mana", MutableManaPool::getMax),
             SimpleManaPool::new
     );
 

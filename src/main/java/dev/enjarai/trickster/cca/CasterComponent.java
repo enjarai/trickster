@@ -9,7 +9,7 @@ import dev.enjarai.trickster.spell.execution.executor.ErroredSpellExecutor;
 import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
 import dev.enjarai.trickster.spell.execution.SpellExecutionManager;
-import dev.enjarai.trickster.spell.mana.ManaPool;
+import dev.enjarai.trickster.spell.mana.MutableManaPool;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.impl.KeyedEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
@@ -131,7 +131,7 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
         return executionManager.queue(spell, arguments);
     }
 
-    public SpellQueueResult queueSpellAndCast(SpellPart spell, List<Fragment> arguments, Optional<ManaPool> poolOverride) {
+    public SpellQueueResult queueSpellAndCast(SpellPart spell, List<Fragment> arguments, Optional<MutableManaPool> poolOverride) {
         playCastSound(0.8f, 0.1f);
         return executionManager.queueAndCast(new PlayerSpellSource((ServerPlayerEntity) player), spell, arguments, poolOverride);
     }

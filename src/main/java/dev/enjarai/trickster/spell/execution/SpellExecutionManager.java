@@ -7,7 +7,7 @@ import dev.enjarai.trickster.spell.execution.executor.ErroredSpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
-import dev.enjarai.trickster.spell.mana.ManaPool;
+import dev.enjarai.trickster.spell.mana.MutableManaPool;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.NaNBlunder;
 import io.wispforest.endec.Endec;
@@ -45,7 +45,7 @@ public class SpellExecutionManager {
         return queue(new DefaultSpellExecutor(spell, arguments));
     }
 
-    public SpellQueueResult queueAndCast(SpellSource source, SpellPart spell, List<Fragment> arguments, Optional<ManaPool> poolOverride) {
+    public SpellQueueResult queueAndCast(SpellSource source, SpellPart spell, List<Fragment> arguments, Optional<MutableManaPool> poolOverride) {
         var executor = new DefaultSpellExecutor(spell, poolOverride.flatMap(pool -> Optional.of(new ExecutionState(arguments, pool))).orElse(new ExecutionState(arguments)));
         boolean queued = queue(executor);
 

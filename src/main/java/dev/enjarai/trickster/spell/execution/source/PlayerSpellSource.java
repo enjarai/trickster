@@ -9,7 +9,7 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.execution.SpellExecutionManager;
 import dev.enjarai.trickster.spell.fragment.SlotFragment;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
-import dev.enjarai.trickster.spell.mana.ManaPool;
+import dev.enjarai.trickster.spell.mana.MutableManaPool;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
@@ -28,7 +28,7 @@ import java.util.function.Predicate;
 @SuppressWarnings("UnstableApiUsage")
 public class PlayerSpellSource implements SpellSource {
     private final ServerPlayerEntity player;
-    private final ManaPool pool;
+    private final MutableManaPool pool;
     private final EquipmentSlot slot = EquipmentSlot.MAINHAND;
 
     public PlayerSpellSource(ServerPlayerEntity player) {
@@ -93,7 +93,7 @@ public class PlayerSpellSource implements SpellSource {
     }
 
     @Override
-    public ManaPool getManaPool() {
+    public MutableManaPool getManaPool() {
         return pool;
     }
 
