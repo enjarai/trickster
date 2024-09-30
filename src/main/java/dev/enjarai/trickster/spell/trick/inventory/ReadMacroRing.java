@@ -6,6 +6,7 @@ import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.Map.Hamt;
 import dev.enjarai.trickster.spell.fragment.Map.MapFragment;
+import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
 import dev.enjarai.trickster.spell.trick.blunder.IncorrectFragmentBlunder;
@@ -16,8 +17,8 @@ import net.minecraft.item.ItemStack;
 import java.util.HashMap;
 import java.util.List;
 
-public class AddMacroTrick extends Trick {
-    public AddMacroTrick() {
+public class ReadMacroRing extends Trick {
+    public ReadMacroRing() {
         super(Pattern.of(1, 2, 5, 8, 7, 6, 3, 0, 1, 5, 7, 3, 1));
     }
 
@@ -25,39 +26,25 @@ public class AddMacroTrick extends Trick {
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var player = ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this));
 
-        var mapFragmemnt = expectInput(fragments, FragmentType.MAP, 0);
+        Fragment mapFragmemnt = VoidFragment.INSTANCE;
 
         ItemStack ring = SlotReference.of(player, "ring", 0).getStack();
         var mapComponent = MacroComponent.getMap(ring);
 
         if (ring != null && mapComponent.isPresent()) {
-            MacroComponent.setMap(ring, expectMacroMap(mapFragmemnt.map()));
-
-            return BooleanFragment.TRUE;
-        } else {
-            return BooleanFragment.FALSE;
+            mapFragmemnt = convertToMapFragment(mapComponent.get());
         }
+
+        return mapFragmemnt;
     }
 
-    private Hamt<Pattern, SpellPart> expectMacroMap(Hamt<Fragment, Fragment> map) {
-        var macros = new HashMap<Pattern, SpellPart>();
+    private MapFragment convertToMapFragment(Hamt<Pattern, SpellPart> map) {
+        var macros = new HashMap<Fragment, Fragment>();
 
-        map.iterator().forEachRemaining(entry -> {
-            if (entry.getKey() instanceof SpellPart spellKey && spellKey.glyph instanceof PatternGlyph pattern
-                    && entry.getValue() instanceof SpellPart spell) {
-                macros.put(pattern.pattern(), spell);
-            } else {
-                throw new IncorrectFragmentBlunder(this, 0,
-                        FragmentType.MAP.getName()
-                                .append("<")
-                                .append(FragmentType.PATTERN.getName())
-                                .append(", ")
-                                .append(FragmentType.SPELL_PART.getName())
-                                .append(">"),
-                        new MapFragment(map));
-            }
-        });
+        map.iterator().forEachRemaining(entry ->
+                macros.put(new PatternGlyph(entry.getKey()), entry.getValue())
+        );
 
-        return Hamt.fromMap(macros);
+        return new MapFragment(Hamt.fromMap(macros));
     }
 }

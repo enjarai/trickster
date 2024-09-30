@@ -86,7 +86,8 @@ public class Tricks {
     public static final WriteCrowMindTrick WRITE_CROW_MIND = register("write_crow_mind", new WriteCrowMindTrick());
 
     // Macro Ring
-    public static final AddMacroTrick ADD_MACRO = register("add_macro", new AddMacroTrick());
+    public static final WriteMacroRing WRITE_MACRO_RING = register("write_macro_ring", new WriteMacroRing());
+    public static final ReadMacroRing READ_MACRO_RING = register("read_macro_ring", new ReadMacroRing());
 
 
     // Caster
@@ -143,6 +144,8 @@ public class Tricks {
     public static final SinTrick SIN = register("sin", new SinTrick());
     public static final CosTrick COS = register("cos", new CosTrick());
     public static final TanTrick TAN = register("tan", new TanTrick());
+    public static final PowerTrick POWER = register("power", new PowerTrick());
+
 
     // Vector
     public static final ExtractXTrick EXTRACT_X = register("extract_x", new ExtractXTrick());
