@@ -12,7 +12,7 @@ Various tricks related to manipulating entities.
 
 <|glyph@trickster:templates|trick-id=trickster:add_velocity,title=Impulse Ploy|>
 
-entity, vector ->
+entity, vector -> entity
 
 <|cost-rule@trickster:templates|formula=3kG + length^2 * 2kG|>
 
@@ -32,7 +32,7 @@ Polymorphs the first entity to appear to be the second in every way. Only works 
 
 <|glyph@trickster:templates|trick-id=trickster:dispel_polymorph,title=Dispel Polymorph Ploy|>
 
-entity ->
+entity -> entity
 
 <|cost-rule@trickster:templates|formula=70kG|>
 
@@ -64,7 +64,7 @@ Returns void if there is no entity.
 
 <|glyph@trickster:templates|trick-id=trickster:set_scale,title=Ploy of Occupation|>
 
-entity, number -> boolean
+entity, number -> entity
 
 <|cost-rule@trickster:templates|formula=abs(currentScale - newScale)^2 * 10kG + newScale * 50kG|>
 

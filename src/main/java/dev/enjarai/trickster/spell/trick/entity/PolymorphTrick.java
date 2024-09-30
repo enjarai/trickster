@@ -1,12 +1,12 @@
 package dev.enjarai.trickster.spell.trick.entity;
 
-import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
-import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
-import dev.enjarai.trickster.spell.trick.blunder.UnknownEntityBlunder;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
 import dev.enjarai.trickster.spell.trick.entity.query.AbstractLivingEntityQueryTrick;
 import net.minecraft.server.network.ServerPlayerEntity;
 
@@ -20,9 +20,8 @@ public class PolymorphTrick extends AbstractLivingEntityQueryTrick {
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var realSource = getLivingEntity(ctx, fragments, 1);
-        fragments = tryWard(ctx, realSource, fragments);
-
         var realTarget = getLivingEntity(ctx, fragments, 0);
+        tryWard(ctx, realSource, fragments);
 
         if (realSource.getUuid().equals(realTarget.getUuid()))
             return VoidFragment.INSTANCE;
@@ -30,8 +29,8 @@ public class PolymorphTrick extends AbstractLivingEntityQueryTrick {
         if (realTarget instanceof ServerPlayerEntity targetPlayer && realSource instanceof ServerPlayerEntity sourcePlayer) {
             ctx.useMana(this, 480);
 
-            var cumpoonent = targetPlayer.getComponent(ModEntityCumponents.DISGUISE);
-            var sourceCumponent = sourcePlayer.getComponent(ModEntityCumponents.DISGUISE);
+            var cumpoonent = targetPlayer.getComponent(ModEntityComponents.DISGUISE);
+            var sourceCumponent = sourcePlayer.getComponent(ModEntityComponents.DISGUISE);
             var uuid = sourcePlayer.getUuid();
 
             if (sourceCumponent.getUuid() != null) {

@@ -1,17 +1,13 @@
 package dev.enjarai.trickster;
 
 import com.mojang.authlib.GameProfile;
-import dev.enjarai.trickster.cca.DisguiseCumponent;
-import dev.enjarai.trickster.cca.ModChunkCumponents;
+import dev.enjarai.trickster.cca.DisguiseComponent;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.chunk.EmptyChunk;
 import org.jetbrains.annotations.Nullable;
 
 public class DisguiseUtil {
     @Nullable
-    public static GameProfile getGameProfile(DisguiseCumponent component) {
+    public static GameProfile getGameProfile(DisguiseComponent component) {
         if (component.getUuid() == null) {
             return null;
         }

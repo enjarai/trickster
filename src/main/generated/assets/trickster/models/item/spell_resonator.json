@@ -1,3 +1,6 @@
 {
-  "parent": "trickster:block/spell_resonator"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "trickster:item/spell_resonator"
+  }
 }

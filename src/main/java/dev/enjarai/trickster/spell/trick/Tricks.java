@@ -5,6 +5,7 @@ import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.trick.dimension.GetDimensionTrick;
 import dev.enjarai.trickster.spell.trick.entity.query.*;
+import dev.enjarai.trickster.spell.trick.fleck.GetFlecksTrick;
 import dev.enjarai.trickster.spell.trick.func.*;
 import dev.enjarai.trickster.spell.trick.basic.*;
 import dev.enjarai.trickster.spell.trick.block.*;
@@ -20,6 +21,9 @@ import dev.enjarai.trickster.spell.trick.map.MapInsertTrick;
 import dev.enjarai.trickster.spell.trick.map.MapRemoveTrick;
 import dev.enjarai.trickster.spell.trick.math.*;
 import dev.enjarai.trickster.spell.trick.misc.*;
+import dev.enjarai.trickster.spell.trick.particle.HighlightTrick;
+import dev.enjarai.trickster.spell.trick.fleck.LineFleckTrick;
+import dev.enjarai.trickster.spell.trick.fleck.SpellFleckTrick;
 import dev.enjarai.trickster.spell.trick.projectile.SummonDragonBreathTrick;
 import dev.enjarai.trickster.spell.trick.projectile.SummonFireballTrick;
 import dev.enjarai.trickster.spell.trick.projectile.SummonArrowTrick;
@@ -29,6 +33,7 @@ import dev.enjarai.trickster.spell.trick.raycast.RaycastBlockSideTrick;
 import dev.enjarai.trickster.spell.trick.raycast.RaycastEntityTrick;
 import dev.enjarai.trickster.spell.trick.tree.*;
 import dev.enjarai.trickster.spell.trick.vector.*;
+import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.SimpleRegistry;
@@ -44,7 +49,7 @@ public class Tricks {
     private static final Map<Pattern, Trick> LOOKUP = new HashMap<>();
 
     public static final RegistryKey<Registry<Trick>> REGISTRY_KEY = RegistryKey.ofRegistry(Trickster.id("trick"));
-    public static final Registry<Trick> REGISTRY = new SimpleRegistry<>(REGISTRY_KEY, Lifecycle.stable()) {
+    public static final Registry<Trick> REGISTRY = FabricRegistryBuilder.from(new SimpleRegistry<>(REGISTRY_KEY, Lifecycle.stable()) {
         @Override
         public RegistryEntry.Reference<Trick> add(RegistryKey<Trick> key, Trick value, RegistryEntryInfo info) {
             if (LOOKUP.containsKey(value.getPattern())) {
@@ -57,13 +62,13 @@ public class Tricks {
             LOOKUP.put(value.getPattern(), value);
             return super.add(key, value, info);
         }
-    };
+    }).buildAndRegister();
 
     // Functions
     public static final ExecuteTrick EXECUTE = register("execute", new ExecuteTrick());
     public static final ExecuteWithinCurrentScopeTrick EXECUTE_SAME_SCOPE = register("execute_same_scope", new ExecuteWithinCurrentScopeTrick());
     public static final ForkTrick FORK = register("fork", new ForkTrick());
-    public static final IteratorTrick ITERATOR = register("iterator", new IteratorTrick());
+    public static final FoldTrick FOLD = register("fold", new FoldTrick());
     public static final TryCatchTrick TRY_CATCH = register("try_catch", new TryCatchTrick());
     public static final ClosureTrick CLOSURE = register("closure", new ClosureTrick());
     public static final SupplierTrick SUPPLIER = register("supplier", new SupplierTrick());
@@ -79,6 +84,7 @@ public class Tricks {
     // Basic
     public static final OnePonyTrick TWO = register("two", new OnePonyTrick());
     public static final RevealTrick REVEAL = register("reveal", new RevealTrick());
+    public static final HighlightTrick HIGHLIGHT = register("highlight", new HighlightTrick());
     public static final ReadSpellTrick READ_SPELL = register("read_spell", new ReadSpellTrick());
     public static final WriteSpellTrick WRITE_SPELL = register("write_spell", new WriteSpellTrick());
     public static final WriteClosedSpellTrick WRITE_CLOSED_SPELL = register("write_closed_spell", new WriteClosedSpellTrick());
@@ -191,7 +197,8 @@ public class Tricks {
     public static final LocateGlyphsTrick LOCATE_GLYPHS = register("locate_glyphs", new LocateGlyphsTrick());
     public static final RetrieveGlyphTrick RETRIEVE_GLYPH = register("retrieve_glyph", new RetrieveGlyphTrick());
     public static final SetGlyphTrick SET_GLYPH = register("set_glyph", new SetGlyphTrick());
-    public static final RetrieveSubtreeTrick RETRIEVE_SUBTREE= register("retrieve_subtree", new RetrieveSubtreeTrick());
+    public static final RetrieveSubtreeTrick RETRIEVE_SUBTREE = register("retrieve_subtree", new RetrieveSubtreeTrick());
+    public static final RetrieveSubtreeListTrick RETRIEVE_SUBTREE_LIST = register("retrieve_subtree_list", new RetrieveSubtreeListTrick());
     public static final SetSubtreeTrick SET_SUBTREE = register("set_subtree", new SetSubtreeTrick());
     public static final AddSubtreeTrick ADD_LEAF = register("add_subtree", new AddSubtreeTrick());
     public static final RemoveSubtreeTrick REMOVE_SUBTREE = register("remove_subtree", new RemoveSubtreeTrick());
@@ -238,6 +245,11 @@ public class Tricks {
 
     // Dimension
     public static final GetDimensionTrick GET_DIMENSION = register("get_dimension", new GetDimensionTrick());
+
+    //Flecks
+    public static final LineFleckTrick DRAW_LINE = register("draw_line", new LineFleckTrick());
+    public static final SpellFleckTrick DRAW_SPELL = register("draw_spell", new SpellFleckTrick());
+    public static final GetFlecksTrick GET_FLECKS = register("get_flecks", new GetFlecksTrick());
 
     // Misc
     public static final TypeFragmentTrick TYPE_FRAGMENT = register("type_fragment", new TypeFragmentTrick());

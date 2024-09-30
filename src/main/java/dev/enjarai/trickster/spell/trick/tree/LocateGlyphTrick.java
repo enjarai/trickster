@@ -7,7 +7,7 @@ import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
-import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
 import oshi.util.tuples.Pair;
 
 import java.util.*;

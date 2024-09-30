@@ -14,19 +14,22 @@ import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector2d;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Stack;
 
 import static dev.enjarai.trickster.render.SpellCircleRenderer.*;
 
 public class SpellPartWidget extends AbstractParentElement implements Drawable, Selectable {
     public static final double PRECISION_OFFSET = Math.pow(2, 50);
 
+    private SpellPart rootSpellPart;
     private SpellPart spellPart;
-
-//    private List<SpellPartWidget> partWidgets;
+    private final Stack<SpellPart> parents = new Stack<>();
+    private final Stack<Double> angleOffsets = new Stack<>();
 
     public double x;
     public double y;
@@ -39,6 +42,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     private SpellPart toBeReplaced;
 
     private Hamt<Pattern, SpellPart> macros;
+    private final Vector2d originalPosition;
     private final RevisionContext revisionContext;
     private SpellPart drawingPart;
     private Fragment oldGlyph;
@@ -47,13 +51,16 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     public final SpellCircleRenderer renderer;
 
     public SpellPartWidget(SpellPart spellPart, double x, double y, double size, Hamt<Pattern, SpellPart> macros, RevisionContext revisionContext) {
+        this.rootSpellPart = spellPart;
         this.spellPart = spellPart;
+        this.originalPosition = new Vector2d(toScaledSpace(x), toScaledSpace(y));
         this.x = toScaledSpace(x);
         this.y = toScaledSpace(y);
         this.size = toScaledSpace(size);
         this.macros = macros;
         this.revisionContext = revisionContext;
         this.renderer = new SpellCircleRenderer(() -> this.drawingPart, () -> this.drawingPattern, PRECISION_OFFSET);
+        this.angleOffsets.push(0d);
     }
 
     @Override
@@ -62,7 +69,71 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     }
 
     public void setSpell(SpellPart spellPart) {
-        this.spellPart = spellPart;
+        var newParents = new Stack<SpellPart>();
+        var newAngleOffsets = new Stack<Double>();
+        newParents.push(spellPart);
+
+        var currentParents = new ArrayList<>(this.parents);
+        var currentAngleOffsets = new ArrayList<>(this.angleOffsets);
+        newAngleOffsets.push(currentAngleOffsets.removeFirst());
+
+        for (int i = currentParents.size() - 1; i >= 0; i--) {
+            var currentParent = currentParents.removeFirst();
+            var currentChild = !currentParents.isEmpty() ? currentParents.getFirst() : this.spellPart;
+
+            if (currentParent.glyph instanceof SpellPart spellGlyph && spellGlyph == currentChild) {
+                if (newParents.peek().glyph instanceof SpellPart newSpellGlyph)
+                    newParents.push(newSpellGlyph);
+                else break;
+            } else {
+                var failed = true;
+                int i2 = 0;
+
+                for (var child : currentParent.subParts) {
+                    if (child == currentChild) {
+                        if (newParents.peek().subParts.size() > i2) {
+                            newParents.push(newParents.peek().subParts.get(i2));
+                            failed = false;
+                        }
+
+                        break;
+                    }
+
+                    i2++;
+                }
+
+                if (failed) {
+                    this.x = originalPosition.x;
+                    this.y = originalPosition.y;
+                    break;
+                }
+            }
+
+            newAngleOffsets.push(currentAngleOffsets.removeFirst());
+        }
+
+        this.rootSpellPart = spellPart;
+        this.spellPart = newParents.pop();
+        this.parents.clear();
+        this.angleOffsets.clear();
+        this.parents.addAll(new ArrayList<>(newParents));
+        this.angleOffsets.addAll(new ArrayList<>(newAngleOffsets));
+    }
+
+    public ScrollAndQuillScreen.PositionMemory save() {
+        return new ScrollAndQuillScreen.PositionMemory(rootSpellPart.hashCode(), x, y, size, rootSpellPart, spellPart, new ArrayList<>(parents), new ArrayList<>(angleOffsets));
+    }
+
+    public void load(ScrollAndQuillScreen.PositionMemory memory) {
+        this.x = memory.x();
+        this.y = memory.y();
+        this.size = memory.size();
+        this.rootSpellPart = memory.rootSpellPart();
+        this.spellPart = memory.spellPart();
+        this.parents.clear();
+        this.angleOffsets.clear();
+        this.parents.addAll(memory.parents());
+        this.angleOffsets.addAll(memory.angleOffsets());
     }
 
     public void setMacros(Hamt<Pattern, SpellPart> macros) {
@@ -74,13 +145,19 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         if (isMutable) {
             this.renderer.setMousePosition(mouseX, mouseY);
         }
+
+//        context.getMatrices().push();
+//        context.getMatrices().scale((float) PRECISION_OFFSET, (float) PRECISION_OFFSET, (float) PRECISION_OFFSET);
+
         this.renderer.renderPart(
                 context.getMatrices(), context.getVertexConsumers(), spellPart,
-                x, y, size, 0, delta,
+                x, y, size, angleOffsets.peek(), delta,
                 size -> (float) Math.clamp(1 / (size / context.getScaledWindowHeight() * 3) - 0.2, 0, 1),
                 new Vec3d(-1, 0, 0)
         );
         context.draw();
+
+//        context.getMatrices().pop();
     }
 
     public static boolean isCircleClickable(double size) {
@@ -115,12 +192,94 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             return true;
         }
 
-        double scaledAmount = toScaledSpace(verticalAmount);
-        size += scaledAmount * toLocalSpace(size) / 10;
-        x += scaledAmount * (toLocalSpace(x) - mouseX) / 10;
-        y += scaledAmount * (toLocalSpace(y) - mouseY) / 10;
+        size += verticalAmount * size / 10;
+        x += verticalAmount * (x - toScaledSpace(mouseX)) / 10;
+        y += verticalAmount * (y - toScaledSpace(mouseY)) / 10;
+
+        if (toLocalSpace(size) > 600) {
+            pushNewRoot(toScaledSpace(mouseX), toScaledSpace(mouseY));
+        } else if (toLocalSpace(size) < 300 && !parents.empty()) {
+            popOldRoot();
+        }
 
         return true;
+    }
+
+    private void popOldRoot() {
+        var result = parents.pop();
+        angleOffsets.pop();
+
+        int partCount = result.subParts.size();
+        var parentSize = size * 3;
+        int i = 0;
+
+        if (!(result.glyph instanceof SpellPart inner && inner == spellPart)) {
+            parentSize = Math.max(size * 2, size * (double) ((partCount + 1) / 2));
+
+            for (var child : result.subParts) {
+                if (child == spellPart) {
+                    var angle = angleOffsets.peek() + (2 * Math.PI) / partCount * i - (Math.PI / 2);
+                    x -= parentSize * Math.cos(angle);
+                    y -= parentSize * Math.sin(angle);
+                    break;
+                }
+
+                i++;
+            }
+        }
+
+        size = parentSize;
+        spellPart = result;
+    }
+
+    private void pushNewRoot(double mouseX, double mouseY) {
+        var closest = spellPart;
+        var closestAngle = angleOffsets.peek();
+        var closestDiffX = 0d;
+        var closestDiffY = 0d;
+        var closestDistanceSquared = Double.MAX_VALUE;
+        var closestSize = size / 3;
+
+        int partCount = spellPart.subParts.size();
+        var nextSize = Math.min(size / 2, size / (double) ((partCount + 1) / 2));
+        int i = 0;
+
+        if (spellPart.glyph instanceof SpellPart inner) {
+            var mDiffX = x - mouseX;
+            var mDiffY = y - mouseY;
+            var distanceSquared = mDiffX * mDiffX + mDiffY * mDiffY;
+            closest = inner;
+            closestDistanceSquared = distanceSquared;
+        }
+
+        for (var child : spellPart.subParts) {
+            var angle = angleOffsets.peek() + (2 * Math.PI) / partCount * i - (Math.PI / 2);
+            var nextX = x + (size * Math.cos(angle));
+            var nextY = y + (size * Math.sin(angle));
+            var diffX = nextX - x;
+            var diffY = nextY - y;
+            var mDiffX = nextX - mouseX;
+            var mDiffY = nextY - mouseY;
+            var distanceSquared = mDiffX * mDiffX + mDiffY * mDiffY;
+
+            if (distanceSquared < closestDistanceSquared) {
+                closest = child;
+                closestAngle = angle;
+                closestDiffX = diffX;
+                closestDiffY = diffY;
+                closestDistanceSquared = distanceSquared;
+                closestSize = nextSize;
+            }
+
+            i++;
+        }
+
+        this.parents.push(spellPart);
+        this.angleOffsets.push(closestAngle);
+        this.spellPart = closest;
+        this.size = closestSize;
+        this.x += closestDiffX;
+        this.y += closestDiffY;
     }
 
     @Override
@@ -144,13 +303,13 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (isMutable || isDrawing()) {
             if (Trickster.CONFIG.dragDrawing() && button == 0 && !isDrawing()) {
-                if (propagateMouseEvent(spellPart, x, y, size, 0, toScaledSpace(mouseX), toScaledSpace(mouseY),
+                if (propagateMouseEvent(spellPart, x, y, size, angleOffsets.peek(), toScaledSpace(mouseX), toScaledSpace(mouseY),
                         (part, x, y, size) -> selectPattern(part, x, y, size, mouseX, mouseY))) {
                     return true;
                 }
             } else {
                 // We need to return true on the mouse down event to make sure the screen knows if we're on a clickable node
-                if (propagateMouseEvent(spellPart, x, y, size, 0, toScaledSpace(mouseX), toScaledSpace(mouseY),
+                if (propagateMouseEvent(spellPart, x, y, size, angleOffsets.peek(), toScaledSpace(mouseX), toScaledSpace(mouseY),
                         (part, x, y, size) -> true)) {
                     return true;
                 }
@@ -171,7 +330,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             }
 
             if (!Trickster.CONFIG.dragDrawing() && button == 0 && !isDrawing()) {
-                if (propagateMouseEvent(spellPart, x, y, size, 0, toScaledSpace(mouseX), toScaledSpace(mouseY),
+                if (propagateMouseEvent(spellPart, x, y, size, angleOffsets.peek(), toScaledSpace(mouseX), toScaledSpace(mouseY),
                         (part, x, y, size) -> selectPattern(part, x, y, size, mouseX, mouseY))) {
                     return true;
                 }
@@ -189,7 +348,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     @Override
     public void mouseMoved(double mouseX, double mouseY) {
         if (isDrawing()) {
-            propagateMouseEvent(spellPart, x, y, size, 0, toScaledSpace(mouseX), toScaledSpace(mouseY),
+            propagateMouseEvent(spellPart, x, y, size, angleOffsets.peek(), toScaledSpace(mouseX), toScaledSpace(mouseY),
                     (part, x, y, size) -> selectPattern(part, x, y, size, mouseX, mouseY));
         }
 
@@ -248,12 +407,32 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         var compiled = Pattern.from(drawingPattern);
         var patternSize = drawingPattern.size();
         var rev = Revisions.lookup(compiled);
-        var tryReset = true;
+
+        drawingPart.glyph = oldGlyph;
 
         if (compiled.equals(Revisions.EXECUTE_OFF_HAND.pattern())) {
             toBeReplaced = drawingPart; //TODO: allow handling this in a more generic way?
             Revisions.EXECUTE_OFF_HAND.apply(revisionContext, spellPart, drawingPart);
         } else if (rev.isPresent()) {
+            var result = rev.get().apply(revisionContext, spellPart, drawingPart);
+
+            if (result != spellPart) {
+                if (!parents.isEmpty()) {
+                    var parent = parents.peek();
+
+                    for (int i = 0; i < parent.subParts.size(); i++) {
+                        if (parent.subParts.get(i) == spellPart) {
+                            parent.subParts.set(i, result);
+                        }
+                    }
+                }
+
+                if (spellPart == rootSpellPart) {
+                    rootSpellPart = result;
+                }
+
+                spellPart = result;
+            }
             spellPart = rev.get().apply(revisionContext, spellPart, drawingPart);
         } else if (macros.get(compiled).isPresent()) {
             var spell = macros.get(compiled).get();
@@ -264,19 +443,15 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         } else {
             if (patternSize >= 2) {
                 drawingPart.glyph = new PatternGlyph(compiled);
+            } else {
+                drawingPart.glyph = new PatternGlyph();
             }
-
-            tryReset = false;
-        }
-
-        if (tryReset && drawingPart.glyph instanceof PatternGlyph patternGlyph && patternGlyph.pattern().isEmpty()) {
-            drawingPart.glyph = oldGlyph;
         }
 
         drawingPart = null;
         drawingPattern = null;
 
-        revisionContext.updateSpell(spellPart);
+        revisionContext.updateSpell(rootSpellPart);
 
         MinecraftClient.getInstance().player.playSoundToPlayer(
                 ModSounds.COMPLETE, SoundCategory.MASTER,
@@ -288,7 +463,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         if (toBeReplaced != null) {
             toBeReplaced.glyph = fragment;
             toBeReplaced = null;
-            revisionContext.updateSpell(spellPart);
+            revisionContext.updateSpell(rootSpellPart);
         }
     }
 
@@ -330,23 +505,19 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         return false;
     }
 
-    protected boolean propagateMouseEvent(SpellPart part, double x, double y, double size, float startingAngle, double mouseX, double mouseY, MouseEventHandler callback) {
+    protected boolean propagateMouseEvent(SpellPart part, double x, double y, double size, double startingAngle, double mouseX, double mouseY, MouseEventHandler callback) {
         var closest = part;
         var closestAngle = startingAngle;
         var closestX = x;
         var closestY = y;
         var closestSize = size;
 
-        // These two dont need to be updated for the actual closest
-        var initialDiffX = x - mouseX;
-        var initialDiffY = y - mouseY;
-
         var centerAvailable = (isCircleClickable(toLocalSpace(size)) && (drawingPart == null || drawingPart == part)) || part.glyph instanceof SpellPart;
-        var closestDistanceSquared = centerAvailable ? initialDiffX * initialDiffX + initialDiffY * initialDiffY : Double.MAX_VALUE;
+        var closestDistanceSquared = Double.MAX_VALUE;
 
         int partCount = part.getSubParts().size();
         // We dont change this, its the same for all subcircles
-        var nextSize = Math.min(size / 2, size / (float) ((partCount + 1) / 2));
+        var nextSize = Math.min(size / 2, size / (double) ((partCount + 1) / 2));
         int i = 0;
         for (var child : part.getSubParts()) {
             var angle = startingAngle + (2 * Math.PI) / partCount * i - (Math.PI / 2);
@@ -359,9 +530,9 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
             if (distanceSquared < closestDistanceSquared) {
                 closest = child;
-                closestAngle = (float) angle;
-                closestX = (float) nextX;
-                closestY = (float) nextY;
+                closestAngle = angle;
+                closestX = nextX;
+                closestY = nextY;
                 closestSize = nextSize;
                 closestDistanceSquared = distanceSquared;
             }
@@ -369,16 +540,21 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             i++;
         }
 
+        if (centerAvailable) {
+            if (part.glyph instanceof SpellPart centerPart) {
+                if (propagateMouseEvent(centerPart, x, y, size / 3, startingAngle, mouseX, mouseY, callback)) {
+                    return true;
+                }
+            } else {
+                if (callback.handle(part, toLocalSpace(x), toLocalSpace(y), toLocalSpace(size))) {
+                    return true;
+                }
+            }
+        }
+
         if (Math.sqrt(closestDistanceSquared) <= size && toLocalSpace(size) >= 16) {
             if (closest == part) {
-                // Special handling for part glyphs, because of course
-                // This makes it impossible to interact with direct parents of part glyphs, but thats not an issue
-                if (closest.glyph instanceof SpellPart centerPart) {
-                    closest = centerPart;
-                    closestSize /= 3;
-                } else {
-                    return callback.handle(closest, toLocalSpace(closestX), toLocalSpace(closestY), toLocalSpace(closestSize));
-                }
+                return false;
             }
 
             return propagateMouseEvent(closest, closestX, closestY, closestSize, closestAngle, mouseX, mouseY, callback);
@@ -392,7 +568,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     }
 
     private static double toScaledSpace(double value) {
-        return (float) (value / PRECISION_OFFSET);
+        return value / PRECISION_OFFSET;
     }
 
     interface MouseEventHandler {

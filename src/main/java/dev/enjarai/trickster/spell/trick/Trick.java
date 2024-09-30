@@ -5,8 +5,11 @@ import dev.enjarai.trickster.item.TrickyAccessoryItem;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.CantEditBlockBlunder;
+import dev.enjarai.trickster.spell.blunder.IncorrectFragmentBlunder;
+import dev.enjarai.trickster.spell.blunder.MissingFragmentBlunder;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.trick.blunder.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.MutableText;
@@ -91,9 +94,9 @@ public abstract class Trick {
         return (T) fragment;
     }
 
-    protected <T extends Fragment> T expectType(Fragment fragment, Class<T> type) throws BlunderException {
+    protected <T extends Fragment> T expectType(Fragment fragment, Class<T> type, int index) throws BlunderException {
         if (!type.isInstance(fragment)) {
-            throw new IncorrectFragmentBlunder(this, -1, Text.literal(type.getSimpleName()), fragment);
+            throw new IncorrectFragmentBlunder(this, index, Text.literal(type.getSimpleName()), fragment);
         }
         //noinspection unchecked
         return (T) fragment;
@@ -124,12 +127,10 @@ public abstract class Trick {
         }
     }
 
-    protected List<Fragment> tryWard(SpellContext ctx, Entity target, List<Fragment> fragments) throws BlunderException {
+    protected void tryWard(SpellContext ctx, Entity target, List<Fragment> fragments) throws BlunderException {
         if (target instanceof ServerPlayerEntity player) {
-            return TrickyAccessoryItem.tryWard(ctx, player, this, fragments);
+            TrickyAccessoryItem.tryWard(ctx, player, this, fragments);
         }
-
-        return fragments;
     }
 
     public MutableText getName() {

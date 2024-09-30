@@ -1,14 +1,14 @@
 package dev.enjarai.trickster.spell.trick.entity;
 
-import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.fragment.VoidFragment;
+import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
-import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
-import dev.enjarai.trickster.spell.trick.blunder.UnknownEntityBlunder;
-import net.minecraft.entity.LivingEntity;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
 import net.minecraft.entity.player.PlayerEntity;
+import org.joml.Vector3d;
 
 import java.util.List;
 
@@ -22,19 +22,25 @@ public class AddVelocityTrick extends Trick {
         var target = expectInput(fragments, FragmentType.ENTITY, 0)
                 .getEntity(ctx)
                 .orElseThrow(() -> new UnknownEntityBlunder(this));
-
-        fragments = tryWard(ctx, target, fragments);
-
         var velocity = expectInput(fragments, FragmentType.VECTOR, 1);
+        tryWard(ctx, target, fragments);
+
         var lengthSquared = velocity.vector().lengthSquared();
         ctx.useMana(this, 3f + (float) lengthSquared * 2f);
-        target.addVelocity(velocity.vector().x(), velocity.vector().y(), velocity.vector().z());
-        target.limitFallDistance();
-        target.velocityModified = true;
-        if (target instanceof PlayerEntity) {
-            ModEntityCumponents.GRACE.get(target).triggerGrace("gravity", 2);
+
+        var vector = velocity.vector();
+        if (target instanceof PlayerEntity && ModEntityComponents.GRACE.get(target).isInGrace("gravity")) {
+            vector = vector.add(0, -target.getFinalGravity(), 0, new Vector3d());
         }
 
-        return VoidFragment.INSTANCE;
+        target.addVelocity(vector.x(), vector.y(), vector.z());
+        target.limitFallDistance();
+        target.velocityModified = true;
+
+        if (target instanceof PlayerEntity && vector.x() >= 0) {
+            ModEntityComponents.GRACE.get(target).triggerGrace("gravity", 2);
+        }
+
+        return EntityFragment.from(target);
     }
 }

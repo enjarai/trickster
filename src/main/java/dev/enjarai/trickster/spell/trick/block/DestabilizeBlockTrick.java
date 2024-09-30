@@ -5,11 +5,11 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.fragment.VoidFragment;
+import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
-import dev.enjarai.trickster.spell.trick.blunder.BlockInvalidBlunder;
-import dev.enjarai.trickster.spell.trick.blunder.BlockUnoccupiedBlunder;
-import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.BlockInvalidBlunder;
+import dev.enjarai.trickster.spell.blunder.BlockUnoccupiedBlunder;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
 import net.minecraft.entity.FallingBlockEntity;
 
 import java.util.List;
@@ -38,7 +38,7 @@ public class DestabilizeBlockTrick extends Trick {
         }
 
         ctx.useMana(this, 10);
-        FallingBlockEntity.spawnFromBlock(world, blockPos, state);
+        var entity = FallingBlockEntity.spawnFromBlock(world, blockPos, state);
 
         var particlePos = blockPos.toCenterPos();
         world.spawnParticles(
@@ -46,6 +46,6 @@ public class DestabilizeBlockTrick extends Trick {
                 1, 0, 0, 0, 0
         );
 
-        return VoidFragment.INSTANCE;
+        return EntityFragment.from(entity);
     }
 }

@@ -8,9 +8,9 @@ import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
-import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
-import dev.enjarai.trickster.spell.trick.blunder.IncorrectFragmentBlunder;
-import dev.enjarai.trickster.spell.trick.blunder.IndexOutOfBoundsBlunder;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.IncorrectFragmentBlunder;
+import dev.enjarai.trickster.spell.blunder.IndexOutOfBoundsBlunder;
 import net.minecraft.util.math.MathHelper;
 
 import java.util.ArrayList;

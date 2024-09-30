@@ -5,8 +5,8 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.trick.Trick;
-import dev.enjarai.trickster.spell.trick.blunder.EntityInvalidBlunder;
-import dev.enjarai.trickster.spell.trick.blunder.UnknownEntityBlunder;
+import dev.enjarai.trickster.spell.blunder.EntityInvalidBlunder;
+import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
 import net.minecraft.entity.LivingEntity;
 
 import java.util.List;

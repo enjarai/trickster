@@ -24,16 +24,6 @@ that circle.
 
 ;;;;;
 
-<|pattern@trickster:templates|pattern=1\,0\,4\,8\,7\,6\,4\,2\,1\,4,title=Address Revision|>
-
-{gray}(Scribing pattern){}
-
----
-
-When this scribing pattern is drawn, the address of the circle this pattern was drawn in is written to the item in your other hand.
-
-;;;;;
-
 <|glyph@trickster:templates|trick-id=trickster:locate_glyph,title=Pinpoint Distortion|>
 
 spell, any -> number[] | void
@@ -71,7 +61,7 @@ spell, number[], any -> spell
 
 ---
 
-Replaces the glyph of circle at the given address with the given fragment.
+Replaces the glyph of the circle at the given address with the given fragment.
 
 ;;;;;
 
@@ -87,11 +77,21 @@ Returns the branches of a spell as a list.
 
 <|glyph@trickster:templates|trick-id=trickster:retrieve_subtree,title=Felling Distortion|>
 
-spell, number[] -> spell
+spell, number[] -> spell | void
 
 ---
 
 Returns the circle (and its branches) at the given address.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:retrieve_subtree_list,title=Flock Distortion|>
+
+spell, number[] -> spell[] | void
+
+---
+
+Returns the subcircles (and their branches) of the circle at the given address.
 
 ;;;;;
 

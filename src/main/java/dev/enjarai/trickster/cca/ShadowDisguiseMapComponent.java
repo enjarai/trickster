@@ -6,7 +6,6 @@ import io.wispforest.owo.serialization.endec.MinecraftEndecs;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.registry.Registries;
@@ -23,7 +22,7 @@ public class ShadowDisguiseMapComponent implements AutoSyncedComponent {
         MinecraftEndecs.ofRegistry(Registries.BLOCK)
     ).xmap(Int2ObjectOpenHashMap::new, map -> map).keyed("disguises", Int2ObjectOpenHashMap::new);
 
-    private Int2ObjectOpenHashMap<Block> disguises = new Int2ObjectOpenHashMap<>(0);
+    private volatile Int2ObjectOpenHashMap<Block> disguises = new Int2ObjectOpenHashMap<>(0);
     private final Chunk chunk;
 
     public ShadowDisguiseMapComponent(Chunk chunk) {
@@ -74,7 +73,7 @@ public class ShadowDisguiseMapComponent implements AutoSyncedComponent {
     public boolean setFunnyState(BlockPos pos, Block block) {
         if (disguises.put(encodePos(pos), block) != block) {
             chunk.setNeedsSaving(true);
-            ModChunkCumponents.SHADOW_DISGUISE_MAP.sync(chunk);
+            ModChunkComponents.SHADOW_DISGUISE_MAP.sync(chunk);
             return true;
         }
 
@@ -84,7 +83,7 @@ public class ShadowDisguiseMapComponent implements AutoSyncedComponent {
     public boolean clearFunnyState(BlockPos pos) {
         if (disguises.remove(encodePos(pos)) != null) {
             chunk.setNeedsSaving(true);
-            ModChunkCumponents.SHADOW_DISGUISE_MAP.sync(chunk);
+            ModChunkComponents.SHADOW_DISGUISE_MAP.sync(chunk);
             return true;
         }
 

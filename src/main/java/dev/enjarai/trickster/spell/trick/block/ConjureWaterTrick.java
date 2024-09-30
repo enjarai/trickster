@@ -7,8 +7,8 @@ import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
-import dev.enjarai.trickster.spell.trick.blunder.BlockOccupiedBlunder;
-import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.BlockOccupiedBlunder;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
@@ -66,7 +66,7 @@ public class ConjureWaterTrick extends Trick {
                 1, 0, 0, 0, 0
         );
 
-        return VoidFragment.INSTANCE;
+        return pos;
     }
 
     private boolean tryPlaceWater(World world, BlockPos pos) {

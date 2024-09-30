@@ -44,8 +44,8 @@ public record EntityFragment(UUID uuid, Text name) implements Fragment {
     }
 
     @Override
-    public boolean isEphemeral() {
-        return true;
+    public Fragment applyEphemeral() {
+        return new ZalgoFragment();
     }
 
     public static EntityFragment from(Entity entity) {

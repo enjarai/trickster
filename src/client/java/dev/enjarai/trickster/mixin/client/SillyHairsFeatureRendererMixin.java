@@ -3,7 +3,7 @@ package dev.enjarai.trickster.mixin.client;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.authlib.GameProfile;
-import dev.enjarai.trickster.quack.DisguisePlayerQuack;
+import dev.enjarai.trickster.pond.DisguisePlayerDuck;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import nl.enjarai.cicada.util.SillyHairsFeatureRenderer;
 import org.spongepowered.asm.mixin.Mixin;
@@ -19,7 +19,7 @@ public class SillyHairsFeatureRendererMixin {
             )
     )
     private GameProfile fixSillyHairs(GameProfile original, @Local(argsOnly = true) AbstractClientPlayerEntity player) {
-        DisguisePlayerQuack theFunny = (DisguisePlayerQuack) player;
+        DisguisePlayerDuck theFunny = (DisguisePlayerDuck) player;
         var entry = theFunny.trickster$getApplicableEntry();
         if (entry != null) {
             return entry.getProfile();

@@ -1,14 +1,15 @@
 package dev.enjarai.trickster.spell.execution;
 
+import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.mana.ManaLink;
 import dev.enjarai.trickster.spell.mana.ManaPool;
 import dev.enjarai.trickster.spell.trick.Trick;
-import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
-import dev.enjarai.trickster.spell.trick.blunder.EntityInvalidBlunder;
-import dev.enjarai.trickster.spell.trick.blunder.ExecutionLimitReachedBlunder;
-import dev.enjarai.trickster.spell.trick.blunder.NotEnoughManaBlunder;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.EntityInvalidBlunder;
+import dev.enjarai.trickster.spell.blunder.ExecutionLimitReachedBlunder;
+import dev.enjarai.trickster.spell.blunder.NotEnoughManaBlunder;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
@@ -28,7 +29,7 @@ public class ExecutionState {
             Fragment.ENDEC.listOf().fieldOf("arguments", state -> state.arguments),
             Endec.INT.listOf().fieldOf("stacktrace", state -> state.stacktrace.stream().toList()),
             ManaLink.ENDEC.listOf().fieldOf("mana_links", state -> state.manaLinks),
-            ManaPool.ENDEC.optionalOf().optionalFieldOf("pool_override", state -> state.poolOverride, Optional.empty()),
+            EndecTomfoolery.safeOptionalOf(ManaPool.ENDEC).optionalFieldOf("pool_override", state -> state.poolOverride, Optional.empty()),
             ExecutionState::new
     );
 

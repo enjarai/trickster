@@ -3,8 +3,8 @@ package dev.enjarai.trickster.spell.trick.entity;
 import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
-import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
-import dev.enjarai.trickster.spell.trick.blunder.EntityInvalidBlunder;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.EntityInvalidBlunder;
 import dev.enjarai.trickster.spell.trick.entity.query.AbstractLivingEntityQueryTrick;
 import net.minecraft.entity.LivingEntity;
 
@@ -18,9 +18,8 @@ public class LeechEntityManaTrick extends AbstractLivingEntityQueryTrick {
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var target = getLivingEntity(ctx, fragments, 0);
-        fragments = tryWard(ctx, target, fragments);
-
         var limit = expectInput(fragments, FragmentType.NUMBER, 1).number();
+        tryWard(ctx, target, fragments);
 
         if (target instanceof LivingEntity living) {
             ctx.addManaLink(this, living, (float)limit);

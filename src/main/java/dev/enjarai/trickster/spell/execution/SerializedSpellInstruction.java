@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.spell.execution;
 
+import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.spell.EnterScopeInstruction;
 import dev.enjarai.trickster.spell.ExitScopeInstruction;
 import dev.enjarai.trickster.spell.Fragment;
@@ -14,7 +15,7 @@ import java.util.Optional;
 public record SerializedSpellInstruction(SpellInstructionType type, @Nullable Fragment fragment) {
     public static final StructEndec<SerializedSpellInstruction> ENDEC = StructEndecBuilder.of(
             Endec.INT.fieldOf("instruction_id", s -> s.type.getId()),
-            Fragment.ENDEC.optionalOf().optionalFieldOf("fragment", s -> Optional.ofNullable(s.fragment), Optional.empty()),
+            EndecTomfoolery.safeOptionalOf(Fragment.ENDEC).optionalFieldOf("fragment", s -> Optional.ofNullable(s.fragment), Optional.empty()),
             (id, optionalFragment) -> new SerializedSpellInstruction(SpellInstructionType.fromId(id), optionalFragment.orElse(null))
     );
 

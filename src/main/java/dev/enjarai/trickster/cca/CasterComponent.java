@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.cca;
 
+import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.ModSounds;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellPart;
@@ -25,7 +26,6 @@ import net.minecraft.text.Text;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -42,7 +42,7 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
             Endec.map(Endec.INT, StructEndecBuilder.of(
                     Endec.INT.fieldOf("executions_last_tick", RunningSpellData::executionsLastTick),
                     Endec.BOOLEAN.fieldOf("errored", RunningSpellData::errored),
-                    MinecraftEndecs.TEXT.optionalOf().optionalFieldOf("message", RunningSpellData::message, Optional.empty()),
+                    EndecTomfoolery.safeOptionalOf(MinecraftEndecs.TEXT).optionalFieldOf("message", RunningSpellData::message, Optional.empty()),
                     RunningSpellData::new
             ));
     public static final KeyedEndec<SpellExecutionManager> EXECUTION_MANAGER_ENDEC =
@@ -67,7 +67,7 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
 
         runningSpellData.clear();
         executionManager.tick(this::afterExecutorTick, this::completeExecutor, this::executorError);
-        ModEntityCumponents.CASTER.sync(player);
+        ModEntityComponents.CASTER.sync(player);
     }
 
     private void afterExecutorTick(int index, SpellExecutor executor) {

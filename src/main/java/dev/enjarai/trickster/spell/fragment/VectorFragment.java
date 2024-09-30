@@ -3,9 +3,9 @@ package dev.enjarai.trickster.spell.fragment;
 import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.trick.Tricks;
-import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
-import dev.enjarai.trickster.spell.trick.blunder.DivideByZeroBlunder;
-import dev.enjarai.trickster.spell.trick.blunder.IncompatibleTypesBlunder;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.DivideByZeroBlunder;
+import dev.enjarai.trickster.spell.blunder.IncompatibleTypesBlunder;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
@@ -17,7 +17,7 @@ import net.minecraft.util.math.Vec3i;
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
 
-public record VectorFragment(Vector3dc vector) implements Fragment, AddableFragment, SubtractableFragment, MultiplicableFragment, DivisibleFragment, RoundableFragment {
+public record VectorFragment(Vector3dc vector) implements AddableFragment, SubtractableFragment, MultiplicableFragment, DivisibleFragment, RoundableFragment {
     public static final StructEndec<VectorFragment> ENDEC = StructEndecBuilder.of(
             EndecTomfoolery.<Double, Vector3dc>vectorEndec(Endec.DOUBLE, Vector3d::new, Vector3dc::x, Vector3dc::y, Vector3dc::z)
                     .fieldOf("vector", VectorFragment::vector),
@@ -50,7 +50,10 @@ public record VectorFragment(Vector3dc vector) implements Fragment, AddableFragm
     public AddableFragment add(Fragment other) throws BlunderException {
         if (other instanceof VectorFragment vec) {
             return new VectorFragment(vector.add(vec.vector, new Vector3d()));
+        } else if (other instanceof NumberFragment num) {
+            return new VectorFragment(new Vector3d(vector.x() + num.number(), vector.y() + num.number(), vector.z() + num.number()));
         }
+
         throw new IncompatibleTypesBlunder(Tricks.ADD);
     }
 
@@ -58,24 +61,28 @@ public record VectorFragment(Vector3dc vector) implements Fragment, AddableFragm
     public SubtractableFragment subtract(Fragment other) throws BlunderException {
         if (other instanceof VectorFragment vec) {
             return new VectorFragment(vector.sub(vec.vector, new Vector3d()));
+        } else if (other instanceof NumberFragment num) {
+            return new VectorFragment(new Vector3d(vector.x() - num.number(), vector.y() - num.number(), vector.z() - num.number()));
         }
+
         throw new IncompatibleTypesBlunder(Tricks.SUBTRACT);
     }
 
     @Override
     public MultiplicableFragment multiply(Fragment other) throws BlunderException {
-        if (other instanceof NumberFragment num) {
-            return new VectorFragment(vector.mul(num.number(), new Vector3d()));
-        } else if (other instanceof VectorFragment vec) {
+        if (other instanceof VectorFragment vec) {
             return new VectorFragment(vector.mul(vec.vector, new Vector3d()));
+        } else if (other instanceof NumberFragment num) {
+            return new VectorFragment(vector.mul(num.number(), new Vector3d()));
         }
+
         throw new IncompatibleTypesBlunder(Tricks.MULTIPLY);
     }
 
     @Override
     public DivisibleFragment divide(Fragment other) throws BlunderException {
         if (other instanceof VectorFragment vec) {
-            if (vec.vector.x() == 0 || vec.vector.y() == 0 || vec.vector.z() == 0) {
+            if (vec.vector.x() * vec.vector.y() * vec.vector.z() == 0) {
                 throw new DivideByZeroBlunder(Tricks.DIVIDE);
             }
 
@@ -87,6 +94,7 @@ public record VectorFragment(Vector3dc vector) implements Fragment, AddableFragm
 
             return new VectorFragment(vector.div(num.number(), new Vector3d()));
         }
+
         throw new IncompatibleTypesBlunder(Tricks.DIVIDE);
     }
 

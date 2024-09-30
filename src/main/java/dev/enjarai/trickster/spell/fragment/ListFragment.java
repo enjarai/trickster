@@ -4,8 +4,8 @@ import com.google.common.collect.ImmutableList;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.trick.Trick;
-import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
-import dev.enjarai.trickster.spell.trick.blunder.IncorrectFragmentBlunder;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.IncorrectFragmentBlunder;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import net.minecraft.text.Text;
@@ -13,9 +13,9 @@ import net.minecraft.text.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-public record ListFragment(List<Fragment> fragments) implements Fragment {
+public record ListFragment(List<? extends Fragment> fragments) implements Fragment {
     public static final StructEndec<ListFragment> ENDEC = StructEndecBuilder.of(
-            Fragment.ENDEC.listOf().fieldOf("fragments", ListFragment::fragments),
+            Fragment.ENDEC.listOf().fieldOf("fragments", ListFragment::contents),
             ListFragment::new
     );
 
@@ -40,8 +40,17 @@ public record ListFragment(List<Fragment> fragments) implements Fragment {
     }
 
     @Override
+    public Fragment applyEphemeral() {
+        return new ListFragment(fragments.stream().map(Fragment::applyEphemeral).toList());
+    }
+
+    @Override
     public boolean asBoolean() {
         return true;
+    }
+
+    public List<Fragment> contents() {
+        return fragments.stream().<Fragment>map(n -> n).toList();
     }
 
     public ListFragment addRange(ListFragment other) throws BlunderException {

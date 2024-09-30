@@ -3,20 +3,29 @@ package dev.enjarai.trickster;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.mojang.datafixers.util.Function3;
+import com.mojang.serialization.Codec;
 import com.mojang.util.UndashedUuid;
 import io.wispforest.endec.*;
+import io.wispforest.owo.serialization.CodecUtils;
 import net.minecraft.util.math.BlockPos;
+import org.joml.Vector3d;
+import org.joml.Vector3dc;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
+import org.joml.Vector3f;
+import org.joml.Vector3fc;
 
 public class EndecTomfoolery {
     public static final Endec<BlockPos> ALWAYS_READABLE_BLOCK_POS =
             vectorEndec(Endec.INT, BlockPos::new, BlockPos::getX, BlockPos::getY, BlockPos::getZ);
     public static final Endec<UUID> UUID = Endec.STRING.xmap(UndashedUuid::fromStringLenient, java.util.UUID::toString);
-
     public static final SerializationAttribute.Marker UBER_COMPACT_ATTRIBUTE = SerializationAttribute.marker("uber_compact");
+    public static Endec<Vector3dc> VECTOR_3D_ENDEC = EndecTomfoolery.<Double, Vector3dc>vectorEndec(Endec.DOUBLE, Vector3d::new, Vector3dc::x, Vector3dc::y, Vector3dc::z);
+    public static Endec<Vector3fc> VECTOR_3F_ENDEC = EndecTomfoolery.<Float, Vector3fc>vectorEndec(Endec.FLOAT, Vector3f::new, Vector3fc::x, Vector3fc::y, Vector3fc::z);
+    public static final SerializationAttribute.Marker CODEC_SAFE = SerializationAttribute.marker("codec_safe");
 
     public static <C, V> Endec<V> vectorEndec(Endec<C> componentEndec, Function3<C, C, C, V> constructor, Function<V, C> xGetter, Function<V, C> yGetter, Function<V, C> zGetter) {
         return componentEndec.listOf().validate(ints -> {
@@ -27,6 +36,31 @@ public class EndecTomfoolery {
                 components -> constructor.apply(components.get(0), components.get(1), components.get(2)),
                 vector -> List.of(xGetter.apply(vector), yGetter.apply(vector), zGetter.apply(vector))
         );
+    }
+
+    public static <T> Endec<Optional<T>> safeOptionalOf(Endec<T> endec) {
+        return Endec.ifAttr(CODEC_SAFE, Endec.<Optional<T>>of(
+                (ctx, serializer, value) -> {
+                    try (var struct = serializer.struct()) {
+                        struct.field("present", ctx, Endec.BOOLEAN, value.isPresent());
+                        value.ifPresent(t -> struct.field("value", ctx, endec, t));
+                    }
+                },
+                (ctx, deserializer) -> {
+                    var struct = deserializer.struct();
+                    //noinspection DataFlowIssue
+                    if (struct.field("present", ctx, Endec.BOOLEAN)) {
+                        //noinspection DataFlowIssue
+                        return Optional.of(struct.field("value", ctx, endec));
+                    } else {
+                        return Optional.empty();
+                    }
+                }
+        )).orElse(endec.optionalOf());
+    }
+
+    public static <T> Codec<T> toCodec(Endec<T> endec) {
+        return CodecUtils.toCodec(endec, SerializationContext.attributes(CODEC_SAFE));
     }
 
     public static <T> StructEndec<T> recursive(Function<StructEndec<T>, StructEndec<T>> wrapped) {

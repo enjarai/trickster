@@ -5,9 +5,9 @@ import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.Map.Hamt;
 import dev.enjarai.trickster.spell.fragment.Map.MapFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
-import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
-import dev.enjarai.trickster.spell.trick.blunder.IncorrectFragmentBlunder;
-import dev.enjarai.trickster.spell.trick.blunder.MissingFragmentBlunder;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.IncorrectFragmentBlunder;
+import dev.enjarai.trickster.spell.blunder.MissingFragmentBlunder;
 import net.minecraft.text.Text;
 
 import java.util.HashMap;
@@ -20,7 +20,7 @@ public class ClosureTrick extends Trick {
     }
 
     @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment activate(SpellContext ctx, List<Fragment> fragments) {
         var executable = expectInput(fragments, FragmentType.SPELL_PART, 0);
 
         Map<Pattern, Fragment> replacements;
@@ -36,7 +36,7 @@ public class ClosureTrick extends Trick {
 
                 i++;
                 if (i >= fragments.size()) {
-                    throw new MissingFragmentBlunder(this, i, Text.of("Any"));
+                    throw new MissingFragmentBlunder(this, i, Text.of("any"));
                 }
                 var fragment = expectInput(fragments, i);
 

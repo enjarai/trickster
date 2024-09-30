@@ -2,7 +2,7 @@ package dev.enjarai.trickster.render;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.enjarai.trickster.Trickster;
-import dev.enjarai.trickster.cca.ModEntityCumponents;
+import dev.enjarai.trickster.cca.ModEntityComponents;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -25,7 +25,7 @@ public class BarsRenderer {
         var player = MinecraftClient.getInstance().player;
 
         if (player != null) {
-            var barsComponent = player.getComponent(ModEntityCumponents.BARS);
+            var barsComponent = player.getComponent(ModEntityComponents.BARS);
             var bars = barsComponent.getBars();
 
             context.getMatrices().push();
@@ -51,6 +51,7 @@ public class BarsRenderer {
     private static void drawBar(DrawContext context, int index, int id, double fill, Identifier texture) {
         var sprite = MinecraftClient.getInstance().getGuiAtlasManager().getSprite(texture);
         var xOffset = index * 8;
+        fill = Math.clamp(fill, 0d, 1d);
 
         colorsRandom.setSeed(id);
 

@@ -1,6 +1,6 @@
 ```json
 {
-  "title": "Basic Spell-Scribing",
+  "title": "Spell-Scribing",
   "icon": "trickster:scroll_and_quill",
   "ordinal": 1
 }
@@ -215,3 +215,23 @@ Reads a spell from the user's offhand and places it as a glyph in the center of 
 
 Reads a spell from the user's offhand, casts it, 
 and puts the result as a glyph in the center of the circle it is drawn in.
+
+;;;;;
+
+<|pattern@trickster:templates|pattern=1\,4\,7\,6\,4\,8\,7,title=Plagiarist's Revision|>
+
+{gray}(Scribing pattern){}
+
+---
+
+Copies the circle it is drawn in to the user's offhand.
+
+;;;;;
+
+<|pattern@trickster:templates|pattern=1\,0\,4\,8\,7\,6\,4\,2\,1\,4,title=Address Revision|>
+
+{gray}(Scribing pattern){}
+
+---
+
+When this scribing pattern is drawn, the [address](^trickster:distortions/tree#2) of the circle this pattern was drawn in is written to the item in your other hand.
