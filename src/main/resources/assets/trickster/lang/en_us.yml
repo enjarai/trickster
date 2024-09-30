@@ -228,6 +228,7 @@ item.trickster:
   spell_ink: Spell Ink
   top_hat: Top Hat
   wand: Wand
+  macro_ring: Macro Ring
 
 block.trickster:
   spell_resonator: Spell Resonator

@@ -19,7 +19,7 @@ import java.util.List;
 
 public class ReadMacroRing extends Trick {
     public ReadMacroRing() {
-        super(Pattern.of(1, 2, 5, 8, 7, 6, 3, 0, 1, 5, 7, 3, 1));
+        super(Pattern.of(1, 2, 5, 8, 7, 6, 3, 0, 1, 5, 7, 3, 1, 4, 7));
     }
 
     @Override
