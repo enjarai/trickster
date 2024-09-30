@@ -7,7 +7,7 @@ import dev.enjarai.trickster.spell.fragment.MultiplicableFragment;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.fragment.RoundableFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
-import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
 
 import java.util.List;
 

@@ -7,9 +7,9 @@ import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.Map.Hamt;
 import dev.enjarai.trickster.spell.fragment.Map.MapFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
-import dev.enjarai.trickster.spell.trick.blunder.BlunderException;
-import dev.enjarai.trickster.spell.trick.blunder.IncorrectFragmentBlunder;
-import dev.enjarai.trickster.spell.trick.blunder.NoPlayerBlunder;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.IncorrectFragmentBlunder;
+import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
 import io.wispforest.accessories.api.slot.SlotReference;
 import net.minecraft.item.ItemStack;
 

@@ -433,7 +433,6 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
                 spellPart = result;
             }
-            spellPart = rev.get().apply(revisionContext, spellPart, drawingPart);
         } else if (macros.get(compiled).isPresent()) {
             var spell = macros.get(compiled).get();
             var part = drawingPart.deepClone();
