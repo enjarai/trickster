@@ -58,8 +58,9 @@ public class CachedInventoryManaPool implements MutableManaPool {
             .reduce(amount, (prev, stack) -> {
                 if (prev > 0) {
                     var pool = new SimpleManaPool(0);
-                    var result = stack.get(ModComponents.MANA).pool().use(prev, pool);
-                    stack.set(ModComponents.MANA, new ManaComponent(pool));
+                    var component = stack.get(ModComponents.MANA);
+                    var result = component.pool().use(prev, pool);
+                    stack.set(ModComponents.MANA, component.with(pool));
                     return result;
                 }
 
@@ -73,9 +74,13 @@ public class CachedInventoryManaPool implements MutableManaPool {
             .reduce(amount, (prev, stack) -> {
                 if (prev > 0) {
                     var pool = new SimpleManaPool(0);
-                    var result = stack.get(ModComponents.MANA).pool().refill(prev, pool);
-                    stack.set(ModComponents.MANA, new ManaComponent(pool));
-                    return result;
+                    var component = stack.get(ModComponents.MANA);
+
+                    if (component.rechargable()) {
+                        var result = component.pool().refill(prev, pool);
+                        stack.set(ModComponents.MANA, component.with(pool));
+                        return result;
+                    }
                 }
 
                 return prev;
