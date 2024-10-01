@@ -64,7 +64,7 @@ public class ModItems {
     public static final BlockItem SPELL_RESONATOR_BLOCK_ITEM = register("spell_resonator", new BlockItem(ModBlocks.SPELL_RESONATOR, new Item.Settings()));
     public static final BlockItem SCROLL_SHELF_BLOCK_ITEM = register("scroll_shelf", new BlockItem(ModBlocks.SCROLL_SHELF, new Item.Settings()));
     public static final ManaCrystalItem AMETHYST_MANA_CRYSTAL = register("amethyst_mana_crystal", new ManaCrystalItem(new Item.Settings()
-            .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(500, 500), false))));
+            .component(ModComponents.MANA, new ManaComponent(SimpleManaPool.getSingleUse(500), false))));
     public static final ManaCrystalItem EMERALD_MANA_CRYSTAL = register("emerald_mana_crystal", new ManaCrystalItem(new Item.Settings()
             .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(1000)))));
     public static final ManaCrystalItem DIAMOND_MANA_CRYSTAL = register("diamond_mana_crystal", new ManaCrystalItem(new Item.Settings()
