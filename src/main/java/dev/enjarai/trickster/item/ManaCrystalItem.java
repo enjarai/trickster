@@ -7,6 +7,7 @@ import dev.enjarai.trickster.spell.mana.SharedManaPool;
 import dev.enjarai.trickster.spell.mana.SimpleManaPool;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
 
 public class ManaCrystalItem extends Item {
     public ManaCrystalItem(Settings settings) {
@@ -54,4 +55,26 @@ public class ManaCrystalItem extends Item {
     // emerald: boring asf, mid capacity
     // diamond: also boring asf, tho high capacity
     // echo shard: splits when ibuesddded (Aurora's hopefully clarifying comment: rai meant that the crafting recipe for a echo shard mana crystal would produce a pair which share the same mana pool)
+
+
+    @Override
+    public boolean isItemBarVisible(ItemStack stack) {
+        return stack.contains(ModComponents.MANA);
+    }
+
+    @Override
+    public int getItemBarColor(ItemStack stack) {
+        return 0xbb99ff;
+    }
+
+    @Override
+    public int getItemBarStep(ItemStack stack) {
+        var manaComponent = stack.get(ModComponents.MANA);
+        if (manaComponent == null) {
+            return 0;
+        }
+
+        return MathHelper.clamp(
+                Math.round(manaComponent.pool().get() * 13.0F / manaComponent.pool().getMax()), 0, 13);
+    }
 }
