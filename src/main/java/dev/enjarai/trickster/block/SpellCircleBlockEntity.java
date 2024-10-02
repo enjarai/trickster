@@ -10,7 +10,6 @@ import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import io.wispforest.endec.impl.KeyedEndec;
 import io.wispforest.owo.serialization.CodecUtils;
-import io.wispforest.owo.serialization.endec.MinecraftEndecs;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
@@ -40,8 +39,6 @@ public class SpellCircleBlockEntity extends BlockEntity implements SpellColoredB
             SpellExecutor.ENDEC.keyed("executor", () -> null);
     public static final KeyedEndec<Text> ERROR_ENDEC =
             CodecUtils.toEndec(TextCodecs.STRINGIFIED_CODEC).keyed("last_error", () -> null);
-    public static final KeyedEndec<Optional<ItemStack>> STACK_ENDEC =
-            MinecraftEndecs.ITEM_STACK.optionalOf().keyed("stack", Optional.empty());
 
     // Used for rendering
     public SpellPart spell;

@@ -53,6 +53,7 @@
 			"trickster:is_editing_scroll",
 			"trickster:pinned_chunks",
 			"trickster:grace",
+            "trickster:mana_handler",
 			"trickster:player_animation"
 		]
 	},

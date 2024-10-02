@@ -43,6 +43,8 @@ public class ModModelGenerator extends FabricModelProvider {
         itemModelGenerator.register(ModItems.AMETHYST_MANA_CRYSTAL, Models.GENERATED);
         itemModelGenerator.register(ModItems.EMERALD_MANA_CRYSTAL, Models.GENERATED);
         itemModelGenerator.register(ModItems.DIAMOND_MANA_CRYSTAL, Models.GENERATED);
+        itemModelGenerator.register(ModItems.ECHO_MANA_CRYSTAL, Models.GENERATED);
+
         ModItems.DYED_VARIANTS.forEach(v -> {
             itemModelGenerator.register(v.variant(), Models.GENERATED);
         });
