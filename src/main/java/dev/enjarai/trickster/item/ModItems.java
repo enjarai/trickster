@@ -118,6 +118,10 @@ public class ModItems {
                 entries.add(SPELL_INK);
                 entries.add(SPELL_RESONATOR_BLOCK_ITEM);
                 entries.add(SCROLL_SHELF_BLOCK_ITEM);
+                entries.add(AMETHYST_MANA_CRYSTAL);
+                entries.add(EMERALD_MANA_CRYSTAL);
+                entries.add(DIAMOND_MANA_CRYSTAL);
+                entries.add(ECHO_MANA_CRYSTAL);
             })
             .build();
 

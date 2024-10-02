@@ -265,6 +265,11 @@ item.trickster:
   fez: Fez
   wand: Wand
 
+  amethyst_mana_crystal: Amethyst BETTER NAME
+  emerald_mana_crystal: Emerald BETTER NAME
+  diamond_mana_crystal: Diamond BETTER NAME
+  echo_mana_crystal: Echo BETTER NAME
+
 block.trickster:
   spell_resonator: Spell Resonator
   spell_circle: Spell Circle
