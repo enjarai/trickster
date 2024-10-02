@@ -5,19 +5,19 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
-import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.trick.DistortionTrick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import org.joml.Vector3d;
 
 import java.util.List;
 
-public class CrossProductTrick extends Trick {
+public class CrossProductTrick extends DistortionTrick {
     public CrossProductTrick() {
         super(Pattern.of(0, 4, 8, 6, 4, 2));
     }
 
     @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment distort(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var vec1 = expectInput(fragments, FragmentType.VECTOR, 0);
         var vec2 = expectInput(fragments, FragmentType.VECTOR, 1);
 

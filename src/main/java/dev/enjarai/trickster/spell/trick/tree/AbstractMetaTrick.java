@@ -3,11 +3,11 @@ package dev.enjarai.trickster.spell.trick.tree;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
-import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.trick.DistortionTrick;
 
 import java.util.Optional;
 
-public abstract class AbstractMetaTrick extends Trick {
+public abstract class AbstractMetaTrick extends DistortionTrick {
     public AbstractMetaTrick(Pattern pattern) {
         super(pattern);
     }

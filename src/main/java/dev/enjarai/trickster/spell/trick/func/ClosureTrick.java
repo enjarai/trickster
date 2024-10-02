@@ -5,7 +5,7 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.PatternGlyph;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.trick.DistortionTrick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.IncorrectFragmentBlunder;
 import dev.enjarai.trickster.spell.blunder.MissingFragmentBlunder;
@@ -14,13 +14,13 @@ import net.minecraft.text.Text;
 import java.util.HashMap;
 import java.util.List;
 
-public class ClosureTrick extends Trick {
+public class ClosureTrick extends DistortionTrick {
     public ClosureTrick() {
         super(Pattern.of(5, 8, 7, 6, 3, 0, 1));
     }
 
     @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment distort(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var executable = expectInput(fragments, FragmentType.SPELL_PART, 0);
         var replacements = new HashMap<Pattern, Fragment>();
 

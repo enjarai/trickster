@@ -5,18 +5,18 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
-import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.trick.DistortionTrick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 
 import java.util.List;
 
-public class DotProductTrick extends Trick {
+public class DotProductTrick extends DistortionTrick {
     public DotProductTrick() {
         super(Pattern.of(4, 3, 0, 1, 2, 5, 8, 4));
     }
 
     @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment distort(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var vec1 = expectInput(fragments, FragmentType.VECTOR, 0);
         var vec2 = expectInput(fragments, FragmentType.VECTOR, 1);
 

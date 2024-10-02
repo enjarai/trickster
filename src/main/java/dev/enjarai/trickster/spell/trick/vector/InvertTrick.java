@@ -6,19 +6,19 @@ import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
-import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.trick.DistortionTrick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import org.joml.Vector3d;
 
 import java.util.List;
 
-public class InvertTrick extends Trick {
+public class InvertTrick extends DistortionTrick {
     public InvertTrick() {
         super(Pattern.of(3, 4, 5, 2, 3));
     }
 
     @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment distort(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var input = expectInput(fragments, 0);
         var vec = supposeType(input, FragmentType.VECTOR);
         if (vec.isPresent()) {

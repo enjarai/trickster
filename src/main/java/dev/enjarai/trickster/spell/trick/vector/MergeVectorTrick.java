@@ -6,19 +6,19 @@ import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
-import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.trick.DistortionTrick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import org.joml.Vector3d;
 
 import java.util.List;
 
-public class MergeVectorTrick extends Trick {
+public class MergeVectorTrick extends DistortionTrick {
     public MergeVectorTrick() {
         super(Pattern.of(1, 3, 4, 5, 1, 4, 7));
     }
 
     @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment distort(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         fragments = supposeInput(fragments, 0)
             .flatMap(l -> supposeType(l, FragmentType.LIST))
             .map(ListFragment::contents)
