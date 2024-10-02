@@ -25,27 +25,5 @@ public interface ManaPool {
 
     float getMax();
 
-    /**
-     * Overwrites `result` with this pool's current and maximum, then applies this operation using `result`'s implementation.
-     * @param amount the amount to consume from this pool.
-     * @param result the ManaPool to overwrite with the result of this operation.
-     * @return the amount not consumed from this pool.
-     */
-    default float use(float amount, MutableManaPool result) {
-        result.setMax(getMax());
-        result.set(get());
-        return result.use(amount);
-    }
-
-    /**
-     * Overwrites `result` with this pool's current and maximum, then applies this operation using `result`'s implementation.
-     * @param amount the amount to refill this pool with.
-     * @param result the ManaPool to overwrite with the result of this operation.
-     * @return the amount that could not be added to this pool.
-     */
-    default float refill(float amount, MutableManaPool result) {
-        result.setMax(getMax());
-        result.set(get());
-        return result.refill(amount);
-    }
+    MutableManaPool makeClone() throws UnsupportedOperationException;
 }

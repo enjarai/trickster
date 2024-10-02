@@ -5,7 +5,6 @@ import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.block.ModBlocks;
 import dev.enjarai.trickster.item.component.*;
 import dev.enjarai.trickster.spell.SpellPart;
-import dev.enjarai.trickster.spell.mana.SimpleManaPool;
 import io.wispforest.lavender.book.LavenderBookItem;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.block.Block;
@@ -63,12 +62,10 @@ public class ModItems {
                                     new FoodComponent.StatusEffectEntry(new StatusEffectInstance(StatusEffects.BLINDNESS, 60 * 20), 1))))));
     public static final BlockItem SPELL_RESONATOR_BLOCK_ITEM = register("spell_resonator", new BlockItem(ModBlocks.SPELL_RESONATOR, new Item.Settings()));
     public static final BlockItem SCROLL_SHELF_BLOCK_ITEM = register("scroll_shelf", new BlockItem(ModBlocks.SCROLL_SHELF, new Item.Settings()));
-    public static final ManaCrystalItem AMETHYST_MANA_CRYSTAL = register("amethyst_mana_crystal", new ManaCrystalItem(new Item.Settings()
-            .component(ModComponents.MANA, new ManaComponent(SimpleManaPool.getSingleUse(500), false))));
-    public static final ManaCrystalItem EMERALD_MANA_CRYSTAL = register("emerald_mana_crystal", new ManaCrystalItem(new Item.Settings()
-            .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(1000)))));
-    public static final ManaCrystalItem DIAMOND_MANA_CRYSTAL = register("diamond_mana_crystal", new ManaCrystalItem(new Item.Settings()
-            .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(2500)))));
+    public static final ManaCrystalItem.Amethyst AMETHYST_MANA_CRYSTAL = register("amethyst_mana_crystal", new ManaCrystalItem.Amethyst());
+    public static final ManaCrystalItem.Emerald EMERALD_MANA_CRYSTAL = register("emerald_mana_crystal", new ManaCrystalItem.Emerald());
+    public static final ManaCrystalItem.Diamond DIAMOND_MANA_CRYSTAL = register("diamond_mana_crystal", new ManaCrystalItem.Diamond());
+    public static final ManaCrystalItem.Echo ECHO_MANA_CRYSTAL = register("echo_mana_crystal", new ManaCrystalItem.Echo());
 
     public static final TagKey<Item> CAN_EVALUATE_DYNAMICALLY = TagKey.of(RegistryKeys.ITEM, Trickster.id("can_evaluate_dynamically"));
     public static final TagKey<Item> HOLDABLE_HAT = TagKey.of(RegistryKeys.ITEM, Trickster.id("holdable_hat"));

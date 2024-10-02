@@ -18,6 +18,8 @@ public class ModRecipes {
     public static final RecipeSerializer<ScrollDyeingRecipe> WRITTEN_SCROLL_DYEING =
             Registry.register(Registries.RECIPE_SERIALIZER, Trickster.id("written_scroll_dyeing"),
                     new SpecialRecipeSerializer<>(c -> new ScrollDyeingRecipe(c, ModItems.WRITTEN_SCROLL, Trickster.id("written_scroll_dyeing"))));
+    public static final RecipeSerializer<EchoManaCrystalRecipe> ECHO_MANA_CRYSTAL_RECIPE =
+            Registry.register(Registries.RECIPE_SERIALIZER, Trickster.id("echo_mana_crystal"), new SpecialRecipeSerializer<>(EchoManaCrystalRecipe::new));
 
     public static void register() {
 

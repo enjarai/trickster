@@ -1,0 +1,58 @@
+package dev.enjarai.trickster.cca;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
+import org.jetbrains.annotations.Nullable;
+import org.ladysnake.cca.api.v3.component.Component;
+
+import dev.enjarai.trickster.EndecTomfoolery;
+import dev.enjarai.trickster.spell.mana.SimpleManaPool;
+import io.wispforest.endec.Endec;
+import io.wispforest.endec.impl.KeyedEndec;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryWrapper.WrapperLookup;
+import net.minecraft.scoreboard.Scoreboard;
+import net.minecraft.server.MinecraftServer;
+
+public class SharedManaComponent implements Component {
+    //TODO: write this better, this is absolutely cursed
+    public static SharedManaComponent INSTANCE;
+
+    private static final KeyedEndec<Map<UUID, SimpleManaPool>> POOLS_ENDEC = new KeyedEndec<>("pools", Endec.map(EndecTomfoolery.UUID, SimpleManaPool.ENDEC), new HashMap<>());
+
+    private final Map<UUID, SimpleManaPool> pools = new HashMap<>();
+    private final Scoreboard provider;
+
+    public SharedManaComponent(Scoreboard provider, @Nullable MinecraftServer server) {
+        this.provider = provider;
+        INSTANCE = this;
+    }
+
+	@Override
+	public void readFromNbt(NbtCompound tag, WrapperLookup registryLookup) {
+        pools.putAll(tag.get(POOLS_ENDEC));
+	}
+
+	@Override
+	public void writeToNbt(NbtCompound tag, WrapperLookup registryLookup) {
+        tag.put(POOLS_ENDEC, pools);
+	}
+
+    public UUID allocate(SimpleManaPool pool) {
+        //TODO: add ref counting :3
+        var uuid = UUID.randomUUID();
+
+        while (pools.containsKey(uuid)) {
+            uuid = UUID.randomUUID();
+        }
+
+        pools.put(uuid, pool);
+        return uuid;
+    }
+
+    public SimpleManaPool get(UUID uuid) {
+        return pools.get(uuid);
+    }
+}

@@ -48,6 +48,11 @@ public class SimpleManaPool implements MutableManaPool {
         return maxMana;
     }
 
+    @Override
+    public MutableManaPool makeClone() {
+        return new SimpleManaPool(mana, maxMana);
+    }
+
     public static SimpleManaPool getSingleUse(float mana) {
         return new SimpleManaPool(mana, mana);
     }

@@ -4,7 +4,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.inventory.Inventory;
 import org.jetbrains.annotations.Nullable;
 import dev.enjarai.trickster.item.component.ModComponents;
-import dev.enjarai.trickster.item.component.ManaComponent;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -57,9 +56,9 @@ public class CachedInventoryManaPool implements MutableManaPool {
         return stacks.stream()
             .reduce(amount, (prev, stack) -> {
                 if (prev > 0) {
-                    var pool = new SimpleManaPool(0);
                     var component = stack.get(ModComponents.MANA);
-                    var result = component.pool().use(prev, pool);
+                    var pool = component.pool().makeClone();
+                    var result = pool.use(prev);
                     stack.set(ModComponents.MANA, component.with(pool));
                     return result;
                 }
@@ -73,11 +72,11 @@ public class CachedInventoryManaPool implements MutableManaPool {
         return stacks.stream()
             .reduce(amount, (prev, stack) -> {
                 if (prev > 0) {
-                    var pool = new SimpleManaPool(0);
                     var component = stack.get(ModComponents.MANA);
 
-                    if (component.rechargable()) {
-                        var result = component.pool().refill(prev, pool);
+                    if (component.rechargeable()) {
+                        var pool = component.pool().makeClone();
+                        var result = pool.refill(prev);
                         stack.set(ModComponents.MANA, component.with(pool));
                         return result;
                     }
@@ -85,5 +84,10 @@ public class CachedInventoryManaPool implements MutableManaPool {
 
                 return prev;
             }, (f1, f2) -> f2);
+    }
+
+    @Override
+    public MutableManaPool makeClone() throws UnsupportedOperationException {
+        throw new UnsupportedOperationException();
     }
 }

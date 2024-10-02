@@ -28,6 +28,9 @@
 		"cardinal-components-chunk": [
 			"dev.enjarai.trickster.cca.ModChunkComponents"
 		],
+        "cardinal-components-scoreboard": [
+            "dev.enjarai.trickster.cca.ModGlobalComponents"
+        ],
 		"cardinal-components-world": [
 			"dev.enjarai.trickster.cca.ModWorldComponents"
 		],
@@ -45,6 +48,7 @@
 			"trickster:bars",
 			"trickster:flecks",
 			"trickster:ward",
+            "trickster:shared_mana",
 			"trickster:disguise",
 			"trickster:is_editing_scroll",
 			"trickster:pinned_chunks",

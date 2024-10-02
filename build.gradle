@@ -106,6 +106,7 @@ dependencies {
     include modApi("org.ladysnake.cardinal-components-api:cardinal-components-base:${property('deps.cardinal-components-api')}")
     include modApi("org.ladysnake.cardinal-components-api:cardinal-components-chunk:${property('deps.cardinal-components-api')}")
     include modApi("org.ladysnake.cardinal-components-api:cardinal-components-world:${property('deps.cardinal-components-api')}")
+    include modApi("org.ladysnake.cardinal-components-api:cardinal-components-scoreboard:${property('deps.cardinal-components-api')}")
     include modApi("org.ladysnake.cardinal-components-api:cardinal-components-entity:${property('deps.cardinal-components-api')}")
 
     modCompileOnly modLocalRuntime("com.terraformersmc:modmenu:${property('deps.modmenu')}")
