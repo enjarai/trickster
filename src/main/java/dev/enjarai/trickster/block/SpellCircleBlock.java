@@ -1,17 +1,22 @@
 package dev.enjarai.trickster.block;
 
 import com.mojang.serialization.MapCodec;
+
+import dev.enjarai.trickster.item.ManaCrystalItem;
 import dev.enjarai.trickster.particle.SpellParticleOptions;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -20,7 +25,6 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 
 public class SpellCircleBlock extends BlockWithEntity {
@@ -86,15 +90,44 @@ public class SpellCircleBlock extends BlockWithEntity {
 
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-        if (world.getBlockEntity(pos) instanceof SpellCircleBlockEntity blockEntity && blockEntity.lastError != null) {
-            if (world.isClient()) {
-                player.sendMessage(blockEntity.lastError);
+        if (world.getBlockEntity(pos) instanceof SpellCircleBlockEntity blockEntity) {
+            if (blockEntity.lastError != null) {
+                if (world.isClient()) {
+                    player.sendMessage(blockEntity.lastError);
+                }
+            }
+
+            var playerStack = player.getMainHandStack();
+            
+            if (playerStack == ItemStack.EMPTY || playerStack.getItem() instanceof ManaCrystalItem) {
+                player.equipStack(EquipmentSlot.MAINHAND, blockEntity.removeStack(0));
+                blockEntity.setStack(0, playerStack);
             }
 
             return ActionResult.SUCCESS;
         }
 
         return super.onUse(state, world, pos, player, hit);
+    }
+
+    @Override
+    protected void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+        if (!state.isOf(newState.getBlock())) {
+            BlockEntity blockEntity = world.getBlockEntity(pos);
+            if (blockEntity instanceof SpellCircleBlockEntity spellCircle && !spellCircle.isEmpty()) {
+                //TODO: unneeded for loop, please clean it up eventually
+                for (int i = 0; i < spellCircle.size(); ++i) {
+                    ItemStack itemStack = spellCircle.getStack(i);
+                    if (!itemStack.isEmpty()) {
+                        ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), itemStack);
+                    }
+                }
+
+                spellCircle.clear();
+            }
+
+            super.onStateReplaced(state, world, pos, newState, moved);
+        }
     }
 
     @Nullable

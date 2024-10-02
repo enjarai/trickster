@@ -3,7 +3,10 @@ package dev.enjarai.trickster.spell.execution.source;
 import dev.enjarai.trickster.block.SpellCircleBlockEntity;
 import dev.enjarai.trickster.spell.CrowMind;
 import dev.enjarai.trickster.spell.Fragment;
+import dev.enjarai.trickster.spell.mana.CachedInventoryManaPool;
 import dev.enjarai.trickster.spell.mana.MutableManaPool;
+import dev.enjarai.trickster.spell.mana.generation.InventoryBlockManaHandler;
+import dev.enjarai.trickster.spell.mana.generation.ManaHandler;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import org.joml.Vector3d;
@@ -12,15 +15,17 @@ import org.ladysnake.cca.api.v3.component.ComponentKey;
 
 import java.util.Optional;
 
-public class BlockSpellSource implements SpellSource {
+public class SpellCircleSpellSource implements SpellSource {
     public final ServerWorld world;
     public final BlockPos pos;
     public final SpellCircleBlockEntity blockEntity;
+    public final CachedInventoryManaPool pool;
 
-    public BlockSpellSource(ServerWorld world, BlockPos pos, SpellCircleBlockEntity blockEntity) {
+    public SpellCircleSpellSource(ServerWorld world, BlockPos pos, SpellCircleBlockEntity blockEntity) {
         this.world = world;
         this.pos = pos;
         this.blockEntity = blockEntity;
+        this.pool = new CachedInventoryManaPool(blockEntity);
     }
 
     @Override
@@ -40,7 +45,7 @@ public class BlockSpellSource implements SpellSource {
 
     @Override
     public MutableManaPool getManaPool() {
-        return blockEntity.manaPool;
+        return pool;
     }
 
     @Override
@@ -68,4 +73,9 @@ public class BlockSpellSource implements SpellSource {
         blockEntity.crowMind = new CrowMind(fragment);
         blockEntity.markDirty();
     }
+
+	@Override
+	public ManaHandler getManaHandler() {
+        return new InventoryBlockManaHandler(pos);
+	}
 }

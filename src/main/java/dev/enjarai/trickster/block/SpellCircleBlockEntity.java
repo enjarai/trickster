@@ -4,16 +4,19 @@ import dev.enjarai.trickster.ModSounds;
 import dev.enjarai.trickster.particle.SpellParticleOptions;
 import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
-import dev.enjarai.trickster.spell.execution.source.BlockSpellSource;
+import dev.enjarai.trickster.spell.execution.source.SpellCircleSpellSource;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
-import dev.enjarai.trickster.spell.mana.SimpleManaPool;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import io.wispforest.endec.impl.KeyedEndec;
 import io.wispforest.owo.serialization.CodecUtils;
+import io.wispforest.owo.serialization.endec.MinecraftEndecs;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
@@ -25,16 +28,20 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TextCodecs;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+
+import java.util.Optional;
+
 import org.jetbrains.annotations.Nullable;
 
-public class SpellCircleBlockEntity extends BlockEntity implements SpellColoredBlockEntity {
-    public static final float MAX_MANA = 450;
+public class SpellCircleBlockEntity extends BlockEntity implements SpellColoredBlockEntity, Inventory {
     public static final KeyedEndec<SpellPart> PART_ENDEC =
             SpellPart.ENDEC.keyed("spell", () -> null);
     public static final KeyedEndec<SpellExecutor> EXECUTOR_ENDEC =
             SpellExecutor.ENDEC.keyed("executor", () -> null);
     public static final KeyedEndec<Text> ERROR_ENDEC =
             CodecUtils.toEndec(TextCodecs.STRINGIFIED_CODEC).keyed("last_error", () -> null);
+    public static final KeyedEndec<Optional<ItemStack>> STACK_ENDEC =
+            MinecraftEndecs.ITEM_STACK.optionalOf().keyed("stack", Optional.empty());
 
     // Used for rendering
     public SpellPart spell;
@@ -45,17 +52,11 @@ public class SpellCircleBlockEntity extends BlockEntity implements SpellColoredB
     public int age;
     public int lastPower;
     public CrowMind crowMind = new CrowMind(VoidFragment.INSTANCE);
-    //TODO: make this use a mana crystal item instead
-    public SimpleManaPool manaPool = new SimpleManaPool(MAX_MANA) {
-        @Override
-        public void set(float value) {
-            super.set(value);
-            markDirty();
-        }
-    };
     public int[] colors = new int[]{0xffffff};
 
     public transient SpellSource spellSource;
+
+    private Optional<ItemStack> stack = Optional.empty();
 
     public SpellCircleBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlocks.SPELL_CIRCLE_ENTITY, pos, state);
@@ -69,7 +70,7 @@ public class SpellCircleBlockEntity extends BlockEntity implements SpellColoredB
         executor = nbt.get(EXECUTOR_ENDEC);
         lastError = nbt.get(ERROR_ENDEC);
 
-        manaPool.set(nbt.getFloat("mana"));
+        stack = ItemStack.fromNbt(registryLookup, nbt.get("stack"));//.flatMap(s -> s == ItemStack.EMPTY ? Optional.empty() : Optional.of(s));
         lastPower = nbt.getInt("last_power");
         colors = nbt.getIntArray("colors");
 
@@ -95,7 +96,7 @@ public class SpellCircleBlockEntity extends BlockEntity implements SpellColoredB
             nbt.put(ERROR_ENDEC, lastError);
         }
 
-        nbt.putFloat("mana", manaPool.get());
+        stack.ifPresent(s -> nbt.put("stack", s.encode(registryLookup, new NbtCompound())));
         nbt.putInt("last_power", lastPower);
         nbt.putIntArray("colors", colors);
     }
@@ -103,7 +104,7 @@ public class SpellCircleBlockEntity extends BlockEntity implements SpellColoredB
     public void tick() {
         if (!getWorld().isClient() && executor != null && lastError == null) {
             if (spellSource == null) {
-                spellSource = new BlockSpellSource((ServerWorld) getWorld(), getPos(), this);
+                spellSource = new SpellCircleSpellSource((ServerWorld) getWorld(), getPos(), this);
             }
 
             try {
@@ -167,4 +168,58 @@ public class SpellCircleBlockEntity extends BlockEntity implements SpellColoredB
     public void setColors(int[] colors) {
         this.colors = colors;
     }
+
+	@Override
+	public void clear() {
+        markDirty();
+        this.stack = Optional.empty();
+	}
+
+	@Override
+	public boolean canPlayerUse(PlayerEntity player) {
+        return true;
+	}
+
+	@Override
+	public ItemStack getStack(int slot) {
+        markDirty();
+        return stack.orElse(ItemStack.EMPTY);
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return stack.isEmpty() || stack.get() == ItemStack.EMPTY;
+	}
+
+	@Override
+	public ItemStack removeStack(int slot) {
+        markDirty();
+        var result = this.stack.orElse(ItemStack.EMPTY);
+        this.stack = Optional.empty();
+        return result;
+	}
+
+	@Override
+	public ItemStack removeStack(int slot, int amount) {
+        markDirty();
+        return this.stack.map(s -> {
+            if (s.getCount() > amount) {
+                return s.split(amount);
+            } else {
+                this.stack = Optional.empty();
+                return s;
+            }
+        }).orElse(ItemStack.EMPTY);
+	}
+
+	@Override
+	public void setStack(int slot, ItemStack stack) {
+        markDirty();
+        this.stack = stack == ItemStack.EMPTY ? Optional.empty() : Optional.of(stack);
+	}
+
+	@Override
+	public int size() {
+        return 1;
+	}
 }

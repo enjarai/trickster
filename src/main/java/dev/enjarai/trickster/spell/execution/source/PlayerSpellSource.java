@@ -10,6 +10,8 @@ import dev.enjarai.trickster.spell.execution.SpellExecutionManager;
 import dev.enjarai.trickster.spell.fragment.SlotFragment;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.mana.MutableManaPool;
+import dev.enjarai.trickster.spell.mana.generation.ManaHandler;
+import dev.enjarai.trickster.spell.mana.generation.PlayerManaHandler;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
@@ -28,7 +30,7 @@ import java.util.function.Predicate;
 @SuppressWarnings("UnstableApiUsage")
 public class PlayerSpellSource implements SpellSource {
     private final ServerPlayerEntity player;
-    private final MutableManaPool pool;
+    private final CachedInventoryManaPool pool;
     private final EquipmentSlot slot = EquipmentSlot.MAINHAND;
 
     public PlayerSpellSource(ServerPlayerEntity player) {
@@ -130,4 +132,9 @@ public class PlayerSpellSource implements SpellSource {
     public void setCrowMind(Fragment fragment) {
         player.setAttached(ModAttachments.CROW_MIND, new CrowMind(fragment));
     }
+
+	@Override
+	public ManaHandler getManaHandler() {
+        return new PlayerManaHandler(player);
+	}
 }

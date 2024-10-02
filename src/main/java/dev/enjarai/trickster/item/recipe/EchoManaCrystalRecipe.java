@@ -20,6 +20,7 @@ public class EchoManaCrystalRecipe extends SpecialCraftingRecipe {
         int i = 0;
         ItemStack itemStack = ItemStack.EMPTY;
 
+        //TODO: this is horrible
         for(int j = 0; j < craftingRecipeInput.getSize(); ++j) {
             ItemStack itemStack2 = craftingRecipeInput.getStackInSlot(j);
             
