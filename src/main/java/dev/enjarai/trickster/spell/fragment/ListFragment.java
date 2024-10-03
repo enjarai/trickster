@@ -49,6 +49,15 @@ public record ListFragment(List<? extends Fragment> fragments) implements Fragme
         return fragments.size() > 0;
     }
 
+    @Override
+    public int getWeight() {
+        int weight = 0;
+        for (Fragment fragment : fragments) {
+            weight += fragment.getWeight();
+        }
+        return weight;
+    }
+
     public List<Fragment> contents() {
         return fragments.stream().<Fragment>map(n -> n).toList();
     }

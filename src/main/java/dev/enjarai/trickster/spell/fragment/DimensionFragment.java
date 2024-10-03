@@ -31,6 +31,11 @@ public record DimensionFragment(RegistryKey<World> world) implements Fragment {
         return true;
     }
 
+    @Override
+    public int getWeight() {
+        return 16;
+    }
+
     public static DimensionFragment of(World world) {
         return new DimensionFragment(world.getRegistryKey());
     }

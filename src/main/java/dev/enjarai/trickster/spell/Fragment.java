@@ -15,6 +15,7 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 
 public non-sealed interface Fragment extends SpellInstruction {
+    int MAX_WEIGHT = 6400;
     @SuppressWarnings("unchecked")
     StructEndec<Fragment> ENDEC = EndecTomfoolery.lazy(() -> (StructEndec<Fragment>) Endec.dispatchedStruct(
             FragmentType::endec,
@@ -53,6 +54,12 @@ public non-sealed interface Fragment extends SpellInstruction {
     default Fragment applyEphemeral() {
         return this;
     }
+
+    /**
+     * The weight of this fragment in terms of memory footprint.
+     * If possible, should be *roughly* equivalent to the amount of bytes in the fields of this fragment.
+     */
+    int getWeight();
 
     default Optional<BiFunction<SpellContext, List<Fragment>, Fragment>> getActivator() {
         return Optional.of(this::activateAsGlyph);

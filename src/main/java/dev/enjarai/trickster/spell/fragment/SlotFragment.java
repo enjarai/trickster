@@ -39,6 +39,11 @@ public record SlotFragment(int slot, Optional<BlockPos> source) implements Fragm
         return true;
     }
 
+    @Override
+    public int getWeight() {
+        return 48;
+    }
+
     public ItemStack move(Trick trickSource, SpellContext ctx) throws BlunderException {
         return move(trickSource, ctx, 1);
     }

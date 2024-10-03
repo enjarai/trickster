@@ -23,4 +23,9 @@ public record VoidFragment() implements Fragment {
     public boolean asBoolean() {
         return false;
     }
+
+    @Override
+    public int getWeight() {
+        return 1;
+    }
 }

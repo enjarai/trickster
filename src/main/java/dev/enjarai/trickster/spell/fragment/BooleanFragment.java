@@ -53,4 +53,9 @@ public class BooleanFragment implements Fragment {
     public static BooleanFragment of(boolean bool) {
         return bool ? TRUE : FALSE;
     }
+
+    @Override
+    public int getWeight() {
+        return 1;
+    }
 }

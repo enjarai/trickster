@@ -225,6 +225,7 @@ trickster:
   blunder:
     incorrect_fragment: Incorrect argument at index %d. Expected %s, got %s
     missing_fragment: Missing at index %d, expected %s
+    overweight_fragment: Result fragment is overweight, result is %s
 
 item.trickster:
   tome_of_tomfoolery: Tome of Tomfoolery

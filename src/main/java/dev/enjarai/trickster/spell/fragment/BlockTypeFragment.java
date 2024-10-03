@@ -28,4 +28,9 @@ public record BlockTypeFragment(Block block) implements Fragment {
     public boolean asBoolean() {
         return true;
     }
+
+    @Override
+    public int getWeight() {
+        return 16;
+    }
 }

@@ -25,4 +25,9 @@ public record StringFragment(String value) implements Fragment {
     public boolean asBoolean() {
         return !value.isEmpty();
     }
+
+    @Override
+    public int getWeight() {
+        return value.length() * 2;
+    }
 }
