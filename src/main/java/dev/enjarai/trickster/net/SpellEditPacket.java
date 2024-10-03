@@ -14,11 +14,12 @@ import net.minecraft.text.Text;
 
 public record SpellEditPacket() {
     public void handleServer(ServerAccess access) {
-        ServerPlayerEntity player = access.player();
+        var player = access.player();
 
         if (!player.isCreative()) return;
 
         var stack = player.getMainHandStack();
+
         if (stack.isEmpty()) return;
 
         player.openHandledScreen(new NamedScreenHandlerFactory() {

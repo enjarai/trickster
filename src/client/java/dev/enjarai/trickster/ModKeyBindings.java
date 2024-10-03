@@ -39,7 +39,7 @@ public class ModKeyBindings {
 
                 if (MODIFY_SPELL.wasPressed()) {
                     // Avoid unnecessary packets
-                    if (client.player.isCreative()) {
+                    if (client.player.isCreative() && !client.player.getMainHandStack().isEmpty()) {
                         ModNetworking.CHANNEL.clientHandle().send(new SpellEditPacket());
                     }
                     // Consume remaining key presses
