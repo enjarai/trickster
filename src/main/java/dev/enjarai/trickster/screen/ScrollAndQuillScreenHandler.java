@@ -11,7 +11,6 @@ import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.Map.Hamt;
-import dev.enjarai.trickster.spell.fragment.Map.MapFragment;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.NaNBlunder;
@@ -37,7 +36,8 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
     public final SyncedProperty<SpellPart> spell = createProperty(SpellPart.class, SpellPart.ENDEC, new SpellPart());
     public final SyncedProperty<SpellPart> otherHandSpell = createProperty(SpellPart.class, SpellPart.ENDEC, new SpellPart());
     public final SyncedProperty<Boolean> isMutable = createProperty(Boolean.class, true);
-    public final SyncedProperty<Hamt> macros = createProperty(Hamt.class, Endec.map(Pattern.ENDEC, SpellPart.ENDEC).xmap(Hamt::fromMap, Hamt::asMap), Hamt.empty());
+    @SuppressWarnings("unchecked") // I hate Java generics, sorry about the horrid cast -- Aurora
+	public final SyncedProperty<Hamt<Pattern, SpellPart>> macros = (SyncedProperty<Hamt<Pattern, SpellPart>>) (Object) createProperty(Hamt.class, Endec.map(Pattern.ENDEC, SpellPart.ENDEC).xmap(Hamt::fromMap, Hamt::asMap), Hamt.empty());
 
     public Consumer<Fragment> replacerCallback;
     public Consumer<Optional<SpellPart>> updateDrawingPartCallback;
@@ -187,6 +187,11 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
     @Override
     public SpellPart getOtherHandSpell() {
         return otherHandSpell.get();
+    }
+
+    @Override
+    public Hamt<Pattern, SpellPart> getMacros() {
+        return macros.get();
     }
 
     public void executeOffhand() {

@@ -43,7 +43,7 @@ public record VectorFragment(Vector3dc vector) implements AddableFragment, Subtr
 
     @Override
     public boolean asBoolean() {
-        return this.equals(VectorFragment.ZERO);
+        return !this.equals(VectorFragment.ZERO);
     }
 
     @Override

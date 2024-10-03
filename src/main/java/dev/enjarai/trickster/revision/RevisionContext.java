@@ -1,8 +1,8 @@
 package dev.enjarai.trickster.revision;
 
+import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellPart;
-
-import java.util.List;
+import dev.enjarai.trickster.spell.fragment.Map.Hamt;
 
 public interface RevisionContext {
     void updateSpell(SpellPart sp);
@@ -10,4 +10,5 @@ public interface RevisionContext {
     void updateOtherHandSpell(SpellPart sp);
     SpellPart getOtherHandSpell();
     void executeOffhand();
+    Hamt<Pattern, SpellPart> getMacros();
 }

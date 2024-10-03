@@ -1,17 +1,14 @@
 package dev.enjarai.trickster.spell.fragment;
 
 import com.mojang.serialization.Lifecycle;
-import com.mojang.serialization.MapCodec;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.PatternGlyph;
 import dev.enjarai.trickster.spell.SpellPart;
-import dev.enjarai.trickster.spell.fragment.Map.MapFragment;
 import io.wispforest.endec.StructEndec;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
-import net.fabricmc.fabric.api.event.registry.RegistryAttribute;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.SimpleRegistry;

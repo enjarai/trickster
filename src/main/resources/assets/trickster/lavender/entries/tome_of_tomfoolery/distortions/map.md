@@ -13,39 +13,29 @@ similarly to how a dictionary associates a word to a definition.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:map_create,title=Atlas Delusion|>
-
--> map
-
----
-
-Creates a new empty map.
-
-;;;;;
-
 <|glyph@trickster:templates|trick-id=trickster:map_insert,title=Charting Stratagem|>
 
-map, [fragment, fragment]... -> fragment
+{any: any}, [any, any]... -> any
 
 ---
 
-inserts key-value pairs into te given map.
+Inserts key-value pairs into the given map.
 
 ;;;;;
 
 <|glyph@trickster:templates|trick-id=trickster:map_get,title=Navigator's Distortion|>
 
-map, fragment -> fragment
+{any: any}, any -> any
 
 ---
 
-If there is a value associated with the given fragment, returns it. Otherwise, returns Void.
+If there is a value associated with the given fragment, returns it. Otherwise, returns void.
 
 ;;;;;
 
 <|glyph@trickster:templates|trick-id=trickster:map_remove,title=Erasing Distortion|>
 
-map, fragment -> fragment
+{any: any}, any -> {any: any}
 
 ---
 

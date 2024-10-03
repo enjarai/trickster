@@ -344,7 +344,7 @@ public class Hamt<K, V> implements Iterable<Map.Entry<K, V>> {
     }
 
     @SuppressWarnings("unchecked")
-    public static<K, V> Hamt<K, V> empty() {
+    public static <K, V> Hamt<K, V> empty() {
         return new Hamt<>(null);
     }
 

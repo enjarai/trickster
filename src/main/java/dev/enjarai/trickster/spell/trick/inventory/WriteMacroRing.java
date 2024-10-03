@@ -5,7 +5,7 @@ import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.Map.Hamt;
-import dev.enjarai.trickster.spell.fragment.Map.MapFragment;
+import dev.enjarai.trickster.spell.fragment.MapFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.IncorrectFragmentBlunder;
@@ -39,7 +39,7 @@ public class WriteMacroRing extends Trick {
         }
     }
 
-    private Hamt<Pattern, SpellPart> expectMacroMap(Hamt<Fragment, Fragment> map) {
+    private Hamt<Pattern, SpellPart> expectMacroMap(Hamt<Fragment, Fragment> map) throws IncorrectFragmentBlunder {
         var macros = new HashMap<Pattern, SpellPart>();
 
         map.iterator().forEachRemaining(entry -> {

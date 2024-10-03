@@ -46,7 +46,7 @@ public record ListFragment(List<? extends Fragment> fragments) implements Fragme
 
     @Override
     public boolean asBoolean() {
-        return true;
+        return fragments.size() > 0;
     }
 
     public List<Fragment> contents() {

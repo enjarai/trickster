@@ -22,7 +22,9 @@ public class ModComponents {
                     .codec(EntityStorageComponent.CODEC)
                     .cache());
     public static final ComponentType<MacroComponent> MACRO_MAP =
-            register("macros", builder -> builder.codec(MacroComponent.CODEC).cache());
+            register("macros", builder -> builder
+                    .codec(MacroComponent.CODEC)
+                    .cache());
 
     private static <T> ComponentType<T> register(String id, UnaryOperator<ComponentType.Builder<T>> builderOperator) {
         return Registry.register(Registries.DATA_COMPONENT_TYPE, Trickster.id(id), (builderOperator.apply(ComponentType.builder())).build());

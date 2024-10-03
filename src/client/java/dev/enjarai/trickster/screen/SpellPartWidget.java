@@ -41,7 +41,6 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     @Nullable
     private SpellPart toBeReplaced;
 
-    private Hamt<Pattern, SpellPart> macros;
     private final Vector2d originalPosition;
     private final RevisionContext revisionContext;
     private SpellPart drawingPart;
@@ -50,14 +49,13 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
     public final SpellCircleRenderer renderer;
 
-    public SpellPartWidget(SpellPart spellPart, double x, double y, double size, Hamt<Pattern, SpellPart> macros, RevisionContext revisionContext) {
+    public SpellPartWidget(SpellPart spellPart, double x, double y, double size, RevisionContext revisionContext) {
         this.rootSpellPart = spellPart;
         this.spellPart = spellPart;
         this.originalPosition = new Vector2d(toScaledSpace(x), toScaledSpace(y));
         this.x = toScaledSpace(x);
         this.y = toScaledSpace(y);
         this.size = toScaledSpace(size);
-        this.macros = macros;
         this.revisionContext = revisionContext;
         this.renderer = new SpellCircleRenderer(() -> this.drawingPart, () -> this.drawingPattern, PRECISION_OFFSET);
         this.angleOffsets.push(0d);
@@ -134,10 +132,6 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         this.angleOffsets.clear();
         this.parents.addAll(memory.parents());
         this.angleOffsets.addAll(memory.angleOffsets());
-    }
-
-    public void setMacros(Hamt<Pattern, SpellPart> macros) {
-        this.macros = macros;
     }
 
     @Override
@@ -433,8 +427,8 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
                 spellPart = result;
             }
-        } else if (macros.get(compiled).isPresent()) {
-            var spell = macros.get(compiled).get();
+        } else if (revisionContext.getMacros().get(compiled).isPresent()) {
+            var spell = revisionContext.getMacros().get(compiled).get();
             var part = drawingPart.deepClone();
             part.glyph = oldGlyph;
             revisionContext.updateSpellWithSpell(part, spell);

@@ -76,6 +76,6 @@ public record ZalgoFragment(String string) implements Fragment {
 
     @Override
     public boolean asBoolean() {
-        return true;
+        return false;
     }
 }

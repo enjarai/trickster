@@ -3,7 +3,7 @@ package dev.enjarai.trickster.spell.trick.map;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.fragment.Map.MapFragment;
+import dev.enjarai.trickster.spell.fragment.MapFragment;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
@@ -16,9 +16,6 @@ public class MapGetTrick extends Trick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var map = expectInput(fragments, MapFragment.class, 0).map();
-        Fragment key = expectInput(fragments, 1);
-
-        return map.get(key).orElse(VoidFragment.INSTANCE);
+        return expectInput(fragments, MapFragment.class, 0).map().get(expectInput(fragments, 1)).orElse(VoidFragment.INSTANCE);
     }
 }

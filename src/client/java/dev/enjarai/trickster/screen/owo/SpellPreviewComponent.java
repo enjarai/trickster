@@ -11,6 +11,7 @@ import io.wispforest.owo.ui.component.ButtonComponent;
 import io.wispforest.owo.ui.core.OwoUIDrawContext;
 import io.wispforest.owo.ui.core.ParentComponent;
 import io.wispforest.owo.ui.core.Sizing;
+import dev.enjarai.trickster.spell.Pattern;
 import io.wispforest.owo.ui.parsing.UIModelParsingException;
 import io.wispforest.owo.ui.parsing.UIParsing;
 import net.minecraft.client.MinecraftClient;
@@ -27,7 +28,7 @@ public class SpellPreviewComponent extends BaseComponent {
     public SpellPreviewComponent(SpellPart spell) {
         super();
         this.spell = spell;
-        this.wrapped = new SpellPartWidget(spell, 0, 0, 24, Hamt.empty(), new RevisionContext() {
+        this.wrapped = new SpellPartWidget(spell, 0, 0, 24, new RevisionContext() {
             @Override
             public void updateSpell(SpellPart sp) {
 
@@ -51,6 +52,11 @@ public class SpellPreviewComponent extends BaseComponent {
             @Override
             public void executeOffhand() {
 
+            }
+
+            @Override
+            public Hamt<Pattern, SpellPart> getMacros() {
+                return Hamt.empty();
             }
         });
         this.wrapped.setMutable(false);

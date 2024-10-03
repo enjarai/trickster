@@ -4,7 +4,6 @@ import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
-import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.blunder.BlunderException;

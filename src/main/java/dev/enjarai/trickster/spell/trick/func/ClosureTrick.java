@@ -3,7 +3,7 @@ package dev.enjarai.trickster.spell.trick.func;
 import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.Map.Hamt;
-import dev.enjarai.trickster.spell.fragment.Map.MapFragment;
+import dev.enjarai.trickster.spell.fragment.MapFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.IncorrectFragmentBlunder;
@@ -20,7 +20,7 @@ public class ClosureTrick extends Trick {
     }
 
     @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) {
+    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var executable = expectInput(fragments, FragmentType.SPELL_PART, 0);
 
         Map<Pattern, Fragment> replacements;
@@ -55,7 +55,7 @@ public class ClosureTrick extends Trick {
         return result;
     }
 
-    private Map<Pattern, Fragment> expectPatternMap(Hamt<Fragment, Fragment> map) {
+    private Map<Pattern, Fragment> expectPatternMap(Hamt<Fragment, Fragment> map) throws IncorrectFragmentBlunder {
         var replacements = new HashMap<Pattern, Fragment>();
 
         map.iterator().forEachRemaining(entry -> {

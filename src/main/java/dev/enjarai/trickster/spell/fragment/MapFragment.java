@@ -1,15 +1,14 @@
-package dev.enjarai.trickster.spell.fragment.Map;
+package dev.enjarai.trickster.spell.fragment;
 
 import dev.enjarai.trickster.spell.Fragment;
-import dev.enjarai.trickster.spell.fragment.FragmentType;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import net.minecraft.text.MutableText;
+import dev.enjarai.trickster.spell.fragment.Map.Hamt;
 import net.minecraft.text.Text;
 
 public record MapFragment(Hamt<Fragment, Fragment> map) implements Fragment {
-
     public static final StructEndec<MapFragment> ENDEC = StructEndecBuilder.of(
             Endec.map(Fragment.ENDEC, Fragment.ENDEC).xmap(Hamt::fromMap, Hamt::asMap)
                     .fieldOf("macros", MapFragment::map),
@@ -24,7 +23,7 @@ public record MapFragment(Hamt<Fragment, Fragment> map) implements Fragment {
     @Override
     public Text asText() {
         MutableText out = Text.empty();
-        out.append("{ ");
+        out.append("{");
         var iterator = map.iterator();
 
         iterator.forEachRemaining(entry -> {
@@ -33,7 +32,7 @@ public record MapFragment(Hamt<Fragment, Fragment> map) implements Fragment {
                 out.append(", ");
         });
 
-        out.append(" }");
+        out.append("}");
 
         return out;
     }
