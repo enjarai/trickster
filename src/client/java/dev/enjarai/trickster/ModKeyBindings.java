@@ -5,6 +5,7 @@ import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.net.MladyPacket;
 import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.net.ScrollHatPacket;
+import dev.enjarai.trickster.net.SpellEditPacket;
 import io.wispforest.accessories.api.slot.SlotReference;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -14,10 +15,12 @@ import net.minecraft.entity.EquipmentSlot;
 import org.lwjgl.glfw.GLFW;
 
 public class ModKeyBindings {
-    public static final KeyBinding TAKE_HAT = new KeyBinding("key.trickster.take_hat", GLFW.GLFW_KEY_G, "trickster");
+    public static final KeyBinding TAKE_HAT = new KeyBinding("key.trickster.take_hat", GLFW.GLFW_KEY_G, "key.categories.trickster");
+    public static final KeyBinding MODIFY_SPELL = new KeyBinding("key.trickster.modify_spell", GLFW.GLFW_KEY_F6, "key.categories.trickster");
 
     public static void register() {
         KeyBindingHelper.registerKeyBinding(TAKE_HAT);
+        KeyBindingHelper.registerKeyBinding(MODIFY_SPELL);
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             var player = client.player;
@@ -30,6 +33,17 @@ public class ModKeyBindings {
                     } else if (((hatStack != null && hatStack.isEmpty()) || player.getEquippedStack(EquipmentSlot.HEAD).isEmpty()) && player.getOffHandStack().isIn(ModItems.HOLDABLE_HAT)) {
                         ModNetworking.CHANNEL.clientHandle().send(new MladyPacket(false));
                     }
+                    // Consume remaining key presses
+                    while (TAKE_HAT.wasPressed()) { }
+                }
+
+                if (MODIFY_SPELL.wasPressed()) {
+                    // Avoid unnecessary packets
+                    if (client.player.isCreative() && !client.player.getMainHandStack().isEmpty()) {
+                        ModNetworking.CHANNEL.clientHandle().send(new SpellEditPacket());
+                    }
+                    // Consume remaining key presses
+                    while (MODIFY_SPELL.wasPressed()) { }
                 }
             }
         });
