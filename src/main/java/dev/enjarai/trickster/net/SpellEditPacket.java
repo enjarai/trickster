@@ -4,12 +4,11 @@ import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.screen.ScrollAndQuillScreenHandler;
 import io.wispforest.owo.network.ServerAccess;
 import net.minecraft.entity.EquipmentSlot;
+import dev.enjarai.trickster.spell.fragment.Map.Hamt;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
 public record SpellEditPacket() {
@@ -32,7 +31,7 @@ public record SpellEditPacket() {
             public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
                 return new ScrollAndQuillScreenHandler(
                   syncId, playerInventory, stack, player.getOffHandStack(), EquipmentSlot.MAINHAND,
-                  stack.isOf(ModItems.MIRROR_OF_EVALUATION), true
+                  Hamt.empty(), stack.isOf(ModItems.MIRROR_OF_EVALUATION), true
                 );
             }
         });
