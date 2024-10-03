@@ -429,10 +429,9 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             }
         } else if (revisionContext.getMacros().get(compiled).isPresent()) {
             var spell = revisionContext.getMacros().get(compiled).get();
-            var part = drawingPart.deepClone();
-            part.glyph = oldGlyph;
+            var part = drawingPart;
+            toBeReplaced = drawingPart;
             revisionContext.updateSpellWithSpell(part, spell);
-            return;
         } else {
             if (patternSize >= 2) {
                 drawingPart.glyph = new PatternGlyph(compiled);
@@ -443,7 +442,6 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
         drawingPart = null;
         drawingPattern = null;
-
         revisionContext.updateSpell(rootSpellPart);
 
         MinecraftClient.getInstance().player.playSoundToPlayer(
@@ -461,23 +459,15 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     }
 
     public void updateDrawingPartCallback(Optional<SpellPart> spell) {
-        if (spell.isPresent()) {
-            drawingPart.glyph = spell.get().glyph;
-            drawingPart.subParts = spell.get().subParts;
-        } else {
-            drawingPart.glyph = oldGlyph;
+        if (toBeReplaced != null) {
+            if (spell.isPresent()) {
+                toBeReplaced.glyph = spell.get().glyph;
+                toBeReplaced.subParts = spell.get().subParts;
+            }
+
+            toBeReplaced = null;
+            revisionContext.updateSpell(rootSpellPart);
         }
-
-        var patternSize = drawingPattern.size();
-        drawingPart = null;
-        drawingPattern = null;
-
-        revisionContext.updateSpell(spellPart);
-
-        MinecraftClient.getInstance().player.playSoundToPlayer(
-                ModSounds.COMPLETE, SoundCategory.MASTER,
-                1f, patternSize > 1 ? 1f : 0.6f
-        );
     }
 
     public boolean isDrawing() {

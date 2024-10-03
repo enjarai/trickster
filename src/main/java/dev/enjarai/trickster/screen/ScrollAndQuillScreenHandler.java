@@ -2,6 +2,7 @@ package dev.enjarai.trickster.screen;
 
 import dev.enjarai.trickster.ModSounds;
 import dev.enjarai.trickster.advancement.criterion.ModCriteria;
+import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.SpellComponent;
 import dev.enjarai.trickster.revision.RevisionContext;
@@ -98,7 +99,7 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
                         var executionState = new ExecutionState(List.of(drawingPart));
                         Fragment result = null;
                         try {
-                            result = spell.destructiveRun(new SpellContext(new PlayerSpellSource((ServerPlayerEntity) player()), executionState));
+                            result = new DefaultSpellExecutor(spell, executionState).singleTickRun(new PlayerSpellSource((ServerPlayerEntity) player()));
                         } catch (BlunderException e) {
                             if (e instanceof NaNBlunder)
                                 ModCriteria.NAN_NUMBER.trigger((ServerPlayerEntity) player());
@@ -109,8 +110,8 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
                                     .append(" (").append(executionState.formatStackTrace()).append(")"));
                         }
 
-                        if (result instanceof SpellPart) {
-                            sendMessage(new UpdateDrawingPartMessage(Optional.of((SpellPart) spell.glyph)));
+                        if (result instanceof SpellPart spellResult) {
+                            sendMessage(new UpdateDrawingPartMessage(Optional.of(spellResult)));
                         } else if (result == null) {
                             sendMessage(new UpdateDrawingPartMessage(Optional.empty()));
                         } else {
