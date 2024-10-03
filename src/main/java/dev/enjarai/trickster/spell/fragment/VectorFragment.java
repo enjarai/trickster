@@ -47,6 +47,11 @@ public record VectorFragment(Vector3dc vector) implements AddableFragment, Subtr
     }
 
     @Override
+    public int getWeight() {
+        return 24;
+    }
+
+    @Override
     public AddableFragment add(Fragment other) throws BlunderException {
         if (other instanceof VectorFragment vec) {
             return new VectorFragment(vector.add(vec.vector, new Vector3d()));

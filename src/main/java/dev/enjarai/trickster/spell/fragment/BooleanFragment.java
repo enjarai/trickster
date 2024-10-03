@@ -28,4 +28,9 @@ public record BooleanFragment(boolean bool) implements Fragment {
     public BooleanFragment asBoolean() {
         return bool ? TRUE : FALSE;
     }
+
+    @Override
+    public int getWeight() {
+        return 1;
+    }
 }

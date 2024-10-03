@@ -77,6 +77,16 @@ public final class SpellPart implements Fragment {
                 .map(SpellPart::applyEphemeral).toList());
     }
 
+    @Override
+    public int getWeight() {
+        int weight = 0;
+        weight += glyph.getWeight();
+        for (SpellPart subPart : subParts) {
+            weight += subPart.getWeight();
+        }
+        return weight;
+    }
+
     public Fragment destructiveRun(SpellContext ctx) {
         var arguments = new ArrayList<Fragment>();
 
