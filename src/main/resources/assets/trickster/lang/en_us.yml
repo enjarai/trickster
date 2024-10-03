@@ -211,6 +211,7 @@ trickster:
     boolean: Boolean
     vector: Vector
     list: List
+    map: Map
     void: Void
     pattern: Pattern
     spell_part: Spell

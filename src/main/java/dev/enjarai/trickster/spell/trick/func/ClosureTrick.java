@@ -63,12 +63,11 @@ public class ClosureTrick extends Trick {
                 replacements.put(pattern.pattern(), entry.getValue());
             } else {
                 throw new IncorrectFragmentBlunder(this, 1,
-                        FragmentType.MAP.getName()
-                                .append("<")
-                                .append(FragmentType.PATTERN.getName())
-                                .append(", ")
-                                .append(Text.of("Any"))
-                                .append(">"),
+                        Text.literal("{")
+                                .append("pattern")
+                                .append(": ")
+                                .append(Text.of("any"))
+                                .append("}"),
                         new MapFragment(map));
             }
         });

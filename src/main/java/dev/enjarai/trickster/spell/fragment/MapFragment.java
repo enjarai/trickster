@@ -41,4 +41,16 @@ public record MapFragment(Hamt<Fragment, Fragment> map) implements Fragment {
     public boolean asBoolean() {
         return map.size() > 0;
     }
+
+	@Override
+	public int getWeight() {
+        int weight = 0;
+
+        for (var kv : map) {
+            weight += kv.getKey().getWeight();
+            weight += kv.getValue().getWeight();
+        }
+
+        return weight;
+	}
 }
