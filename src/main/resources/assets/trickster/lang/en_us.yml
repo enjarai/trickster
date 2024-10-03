@@ -300,6 +300,7 @@ key:
 
   trickster:
     take_hat: Take Hat
+    modify_spell: Modify Spell (Creative only)
 
 text.config.trickster-config:
   title: Trickster Config
