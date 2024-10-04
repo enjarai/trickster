@@ -1,0 +1,17 @@
+{
+  "draw": {
+    "sounds": [
+      "trickster:draw"
+    ]
+  },
+  "complete": {
+    "sounds": [
+      "trickster:complete"
+    ]
+  },
+  "cast": {
+    "sounds": [
+      "trickster:cast"
+    ]
+  }
+}

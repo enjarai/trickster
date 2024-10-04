@@ -1,0 +1,22 @@
+{
+  "required": true,
+  "package": "dev.enjarai.trickster.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "plugin": "dev.enjarai.trickster.ConditionalMixins",
+  "mixins": [
+    "AbstractBlockStateMixin",
+    "AnvilScreenHandlerMixin",
+    "EntityMixin",
+    "ItemMixin",
+    "LivingEntityMixin",
+    "WorldChunkMixin",
+    "chunk_pinning.MinecraftServerMixin",
+    "chunk_pinning.ServerChunkLoadingManagerMixin",
+    "chunk_pinning.ServerWorldMixin",
+    "event.ServerPlayerEntityMixin",
+    "event.ServerPlayerInteractionManagerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "bottom": "trickster:block/scroll_shelf_bottom",
+    "front": "trickster:block/scroll_shelf_front",
+    "side": "trickster:block/scroll_shelf_side",
+    "top": "trickster:block/scroll_shelf_top"
+  }
+}

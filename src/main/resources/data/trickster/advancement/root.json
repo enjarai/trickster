@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": {
+      "id": "trickster:tome_of_tomfoolery"
+    },
+    "title": {
+      "text": "Let The Show Begin!"
+    },
+    "description": {
+      "text": "...Once you're done studying"
+    },
+    "background": "minecraft:textures/block/black_wool.png",
+    "frame": "task",
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "tick": {
+      "trigger": "minecraft:tick"
+    }
+  },
+  "rewards": {
+    "loot": [
+      "trickster:grant_guidebook"
+    ]
+  }
+}

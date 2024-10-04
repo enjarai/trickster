@@ -1,0 +1,22 @@
+{
+  "display": {
+    "icon": {
+      "id": "trickster:mirror_of_evaluation"
+    },
+    "title": {
+      "text": "Pre-Show Prep"
+    },
+    "description": {
+      "text": "Execute a world-altering trick"
+    },
+    "frame": "goal",
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "trickster:root",
+  "criteria": {
+    "use_mana": {
+      "trigger": "trickster:mana_used"
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "required": true,
+  "package": "dev.enjarai.trickster.mixin.client",
+  "compatibilityLevel": "JAVA_21",
+  "plugin": "dev.enjarai.trickster.ConditionalMixins",
+  "client": [
+    "AbstractClientPlayerEntityMixin",
+    "BakedModelManagerMixin",
+    "HeldItemRendererMixin",
+    "InGameHudMixin",
+    "InventoryScreenMixin",
+    "MouseMixin",
+    "PlayerRendererMixin",
+    "RenderedChunkMixin",
+    "SillyHairsFeatureRendererMixin",
+    "SubtitlesHudMixin",
+    "WorldRendererAccessor",
+    "animation.BipedEntityModelMixin",
+    "animation.PlayerEntityModelMixin",
+    "figura.AvatarManagerMixin",
+    "sodium.LevelSliceMixin",
+    "sodium.ChunkRenderContextMixin",
+    "sodium.ChunkBuilderMeshingTaskMixin",
+    "tooltip.TooltipComponentMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+    "PlayerEntityMixin"
+  ]
+}
