@@ -20,8 +20,8 @@ public class RetrieveSubtreeListTrick extends AbstractMetaTrick {
         var spell = expectInput(fragments, SpellPart.class, 0);
         var addressFragment = expectInput(fragments, ListFragment.class, 1);
 
-	return findNode(spell, addressFragment)
-	    .<Fragment>map(n -> new ListFragment(n.subParts))
-	    .orElse(VoidFragment.INSTANCE);
+    return findNode(spell, addressFragment)
+        .<Fragment>map(n -> new ListFragment(n.subParts))
+        .orElse(VoidFragment.INSTANCE);
     }
 }

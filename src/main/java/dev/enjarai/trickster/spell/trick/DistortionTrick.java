@@ -20,8 +20,8 @@ public abstract class DistortionTrick extends Trick {
     };
 
     public DistortionTrick(Pattern pattern) {
-		super(pattern);
-	}
+        super(pattern);
+    }
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {

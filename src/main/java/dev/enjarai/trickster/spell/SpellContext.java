@@ -31,12 +31,12 @@ public record SpellContext(SpellSource source, ExecutionState executionState) {
 
     // I am disappointed in myself for having written this.
     // Maybe I'll clean it up one day. -- Aurora D.
-    public ItemStack getStack(Trick trickSource, Optional<SlotFragment> optionalSlot, Function<Item, Boolean> validator) throws BlunderException {
+    public Optional<ItemStack> getStack(Trick trickSource, Optional<SlotFragment> optionalSlot, Function<Item, Boolean> validator) throws BlunderException {
         ItemStack result = null;
 
         if (optionalSlot.isPresent()) {
             if (!validator.apply(optionalSlot.get().getItem(trickSource, this))) throw new ItemInvalidBlunder(trickSource);
-            result = optionalSlot.get().move(trickSource, this);
+            result = optionalSlot.get().move(trickSource, this, 1);
         } else {
             var player = source.getPlayer().orElseThrow(() -> new NoPlayerBlunder(trickSource));
             var inventory = player.getInventory();
@@ -52,9 +52,6 @@ public record SpellContext(SpellSource source, ExecutionState executionState) {
             }
         }
 
-        if (result == null)
-            throw new MissingItemBlunder(trickSource);
-
-        return result;
+        return Optional.ofNullable(result);
     }
 }

@@ -7,6 +7,7 @@ import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.MissingItemBlunder;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.Item;
@@ -26,7 +27,7 @@ public abstract class AbstractProjectileTrick extends Trick {
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var pos = expectInput(fragments, FragmentType.VECTOR, 0).vector();
         var optionalSlot = supposeInput(fragments, FragmentType.SLOT, 1);
-        var stack = ctx.getStack(this, optionalSlot, this::isValidItem);
+        var stack = ctx.getStack(this, optionalSlot, this::isValidItem).orElseThrow(() -> new MissingItemBlunder(this));
         var world = ctx.source().getWorld();
 
         try {

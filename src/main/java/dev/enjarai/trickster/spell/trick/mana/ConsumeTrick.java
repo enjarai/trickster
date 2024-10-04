@@ -21,9 +21,16 @@ public class ConsumeTrick extends Trick {
     private Map<Item, Float> itemValues = new IdentityHashMap<>();
 
     public ConsumeTrick() {
-        super(Pattern.of(/*TODO*/));
+        super(Pattern.of(0, 4, 5, 8, 7, 6, 3, 4, 2));
 
-        itemValues.put(Items.COAL, (float) 10);
+        itemValues.put(Items.COAL, 4f);
+        itemValues.put(Items.AMETHYST_SHARD, 1f);
+
+        // Dynamic entries (careful that depended-on entries aren't removed without also removing relevant dynamic entries!)
+        // We can make this system better later, if it gets too big...
+        // -- Aurora Dawn
+        itemValues.put(Items.COAL_BLOCK, itemValues.get(Items.COAL) * 9);
+        itemValues.put(Items.AMETHYST_BLOCK, itemValues.get(Items.AMETHYST_SHARD) * 4);
     }
 
     @Override
@@ -46,13 +53,13 @@ public class ConsumeTrick extends Trick {
             }
         }
 
-        ctx.source().getManaPool().refill(mana); //TODO: give mana boost a use by having a rebate for excess mana?
-        return new NumberFragment(mana);
+        var leftover = ctx.source().getManaPool().refill(mana);
+        return new NumberFragment(mana - leftover);
     }
 
     private float manaFromSlot(SpellContext ctx, SlotFragment slot, float targetAmount) throws BlunderException {
         var stack = slot.reference(this, ctx);
-        float manaPerItem = Optional.ofNullable(itemValues.get(stack.getItem())).orElse((float) 0);
+        float manaPerItem = Optional.ofNullable(itemValues.get(stack.getItem())).orElse(0f);
         return manaPerItem == 0 ? 0 : slot.move(this, ctx, Math.min(stack.getCount(), Math.round(targetAmount / manaPerItem))).getCount() * manaPerItem;
     }
 }

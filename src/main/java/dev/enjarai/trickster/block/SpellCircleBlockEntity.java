@@ -166,38 +166,38 @@ public class SpellCircleBlockEntity extends BlockEntity implements SpellColoredB
         this.colors = colors;
     }
 
-	@Override
-	public void clear() {
+    @Override
+    public void clear() {
         markDirty();
         this.stack = Optional.empty();
-	}
+    }
 
-	@Override
-	public boolean canPlayerUse(PlayerEntity player) {
+    @Override
+    public boolean canPlayerUse(PlayerEntity player) {
         return true;
-	}
+    }
 
-	@Override
-	public ItemStack getStack(int slot) {
+    @Override
+    public ItemStack getStack(int slot) {
         markDirty();
         return stack.orElse(ItemStack.EMPTY);
-	}
+    }
 
-	@Override
-	public boolean isEmpty() {
-		return stack.isEmpty() || stack.get() == ItemStack.EMPTY;
-	}
+    @Override
+    public boolean isEmpty() {
+        return stack.isEmpty() || stack.get() == ItemStack.EMPTY;
+    }
 
-	@Override
-	public ItemStack removeStack(int slot) {
+    @Override
+    public ItemStack removeStack(int slot) {
         markDirty();
         var result = this.stack.orElse(ItemStack.EMPTY);
         this.stack = Optional.empty();
         return result;
-	}
+    }
 
-	@Override
-	public ItemStack removeStack(int slot, int amount) {
+    @Override
+    public ItemStack removeStack(int slot, int amount) {
         markDirty();
         return this.stack.map(s -> {
             if (s.getCount() > amount) {
@@ -207,16 +207,16 @@ public class SpellCircleBlockEntity extends BlockEntity implements SpellColoredB
                 return s;
             }
         }).orElse(ItemStack.EMPTY);
-	}
+    }
 
-	@Override
-	public void setStack(int slot, ItemStack stack) {
+    @Override
+    public void setStack(int slot, ItemStack stack) {
         markDirty();
         this.stack = stack == ItemStack.EMPTY ? Optional.empty() : Optional.of(stack);
-	}
+    }
 
-	@Override
-	public int size() {
+    @Override
+    public int size() {
         return 1;
-	}
+    }
 }

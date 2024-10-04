@@ -35,30 +35,30 @@ public class SharedManaComponent implements AutoSyncedComponent {
         INSTANCE = this;
     }
 
-	@Override
-	public void readFromNbt(NbtCompound tag, WrapperLookup registryLookup) {
+    @Override
+    public void readFromNbt(NbtCompound tag, WrapperLookup registryLookup) {
         pools.putAll(tag.get(POOLS_ENDEC));
-	}
+    }
 
-	@Override
-	public void writeToNbt(NbtCompound tag, WrapperLookup registryLookup) {
+    @Override
+    public void writeToNbt(NbtCompound tag, WrapperLookup registryLookup) {
         tag.put(POOLS_ENDEC, pools);
-	}
+    }
 
     @Override
     public boolean shouldSyncWith(ServerPlayerEntity player) {
         return subscribers.containsKey(player) && !subscribers.get(player).isEmpty();
     }
 
-    @Override
-    public void writeSyncPacket(PacketByteBuf buf, ServerPlayerEntity player) {
-        //TODO: hah lol
-    }
-
-    @Override
-    public void applySyncPacket(PacketByteBuf buf) {
-        //TODO: my sanity is decaying
-    }
+    //@Override
+    //public void writeSyncPacket(PacketByteBuf buf, ServerPlayerEntity player) {
+    //    //TODO: hah lol
+    //}
+    //
+    //@Override
+    //public void applySyncPacket(PacketByteBuf buf) {
+    //    //TODO: my sanity is decaying
+    //}
 
     public UUID allocate(SimpleManaPool pool) {
         //TODO: add ref counting :3

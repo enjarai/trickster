@@ -17,6 +17,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -107,6 +108,23 @@ public abstract class Trick {
             throw new MissingFragmentBlunder(this, index, Text.of("any"));
         }
         return fragments.get(index);
+    }
+
+    @SafeVarargs
+    protected final <T extends Fragment> List<T> expectVariadic(List<Fragment> fragments, int index, Class<T>... types) throws BlunderException {
+        var result = new ArrayList<T>();
+        int offset = 0;
+
+        for (var fragment : fragments.subList(index, fragments.size())) {
+            result.add(expectType(fragment, types[offset % types.length], index + offset));
+            offset++;
+        }
+
+        if (offset % types.length != 0) {
+            throw new MissingFragmentBlunder(this, offset, Text.of(types[offset % types.length].getSimpleName()));
+        }
+
+        return result;
     }
 
     protected void expectCanBuild(SpellContext ctx, BlockPos... positions) {

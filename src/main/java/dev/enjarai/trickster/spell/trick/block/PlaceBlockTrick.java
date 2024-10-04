@@ -6,9 +6,9 @@ import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.CannotPlaceBlockBlunder;
 import dev.enjarai.trickster.spell.blunder.ItemInvalidBlunder;
+import dev.enjarai.trickster.spell.blunder.MissingItemBlunder;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.SlotFragment;
-import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.BlockItem;
@@ -31,10 +31,10 @@ public class PlaceBlockTrick extends Trick {
         ItemStack stack;
 
         if (arg2 instanceof SlotFragment slot)
-            stack = ctx.getStack(this, Optional.of(slot), item -> item instanceof BlockItem);
+            stack = ctx.getStack(this, Optional.of(slot), item -> item instanceof BlockItem).orElseThrow(() -> new MissingItemBlunder(this));
         else {
             var block = expectInput(fragments, FragmentType.BLOCK_TYPE, 1).block();
-            stack = ctx.getStack(this, Optional.empty(), item -> item instanceof BlockItem blockItem && blockItem.getBlock() == block);
+            stack = ctx.getStack(this, Optional.empty(), item -> item instanceof BlockItem blockItem && blockItem.getBlock() == block).orElseThrow(() -> new MissingItemBlunder(this));
         }
 
         try {

@@ -20,13 +20,13 @@ public class InventoryBlockManaHandler implements ManaHandler {
         this.pos = pos;
     }
 
-	@Override
-	public ManaHandlerType<?> type() {
+    @Override
+    public ManaHandlerType<?> type() {
         return ManaHandlerType.INVENTORY_BLOCK;
-	}
+    }
 
-	@Override
-	public float handleRefill(ServerWorld world, float amount) {
+    @Override
+    public float handleRefill(ServerWorld world, float amount) {
         var blockEntity = world.getBlockEntity(pos);
 
         if (blockEntity instanceof Inventory inventory) {
@@ -34,5 +34,5 @@ public class InventoryBlockManaHandler implements ManaHandler {
         }
 
         return amount;
-	}
+    }
 }

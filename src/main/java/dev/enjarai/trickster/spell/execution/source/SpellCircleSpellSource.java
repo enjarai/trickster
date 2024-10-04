@@ -74,8 +74,8 @@ public class SpellCircleSpellSource implements SpellSource {
         blockEntity.markDirty();
     }
 
-	@Override
-	public ManaHandler getManaHandler() {
+    @Override
+    public ManaHandler getManaHandler() {
         return new InventoryBlockManaHandler(pos);
-	}
+    }
 }

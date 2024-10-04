@@ -25,13 +25,13 @@ public class PlayerManaHandler implements ManaHandler {
         this(player.getUuid());
     }
 
-	@Override
-	public ManaHandlerType<?> type() {
+    @Override
+    public ManaHandlerType<?> type() {
         return ManaHandlerType.PLAYER;
-	}
+    }
 
-	@Override
-	public float handleRefill(ServerWorld world, float amount) {
+    @Override
+    public float handleRefill(ServerWorld world, float amount) {
         var entity = world.getEntity(uuid);
 
         if (entity instanceof ServerPlayerEntity player) {
@@ -40,5 +40,5 @@ public class PlayerManaHandler implements ManaHandler {
         }
 
         return amount;
-	}
+    }
 }

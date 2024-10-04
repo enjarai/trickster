@@ -25,15 +25,15 @@ public class WorldlyManaHandlerComponent implements Component {
         this.world = world;
     }
 
-	@Override
-	public void readFromNbt(NbtCompound tag, WrapperLookup registryLookup) {
+    @Override
+    public void readFromNbt(NbtCompound tag, WrapperLookup registryLookup) {
         entries.addAll(tag.get(ENTRIES_ENDEC));
-	}
+    }
 
-	@Override
-	public void writeToNbt(NbtCompound tag, WrapperLookup registryLookup) {
+    @Override
+    public void writeToNbt(NbtCompound tag, WrapperLookup registryLookup) {
         tag.put(ENTRIES_ENDEC, entries);
-	}
+    }
 
     public boolean handleEvent(ManaEvent event) {
         var amount = event.getMana();

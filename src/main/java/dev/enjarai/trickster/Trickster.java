@@ -36,71 +36,71 @@ import nl.enjarai.cicada.api.util.ProperLogger;
 import org.slf4j.Logger;
 
 public class Trickster implements ModInitializer, CicadaEntrypoint {
-	// This logger is used to write text to the console and the log file.
-	// It is considered best practice to use your mod id as the logger's name.
-	// That way, it's clear which mod wrote info, warnings, and errors.
-	public static final String MOD_ID = "trickster";
-	public static final Logger LOGGER = ProperLogger.getLogger(MOD_ID);
+    // This logger is used to write text to the console and the log file.
+    // It is considered best practice to use your mod id as the logger's name.
+    // That way, it's clear which mod wrote info, warnings, and errors.
+    public static final String MOD_ID = "trickster";
+    public static final Logger LOGGER = ProperLogger.getLogger(MOD_ID);
 
-	public static final Identifier SPELL_CIRCLE_ATTRIBUTE = id("spell_circle");
-	public static final EntityAttributeModifier NEGATE_ATTRIBUTE = new EntityAttributeModifier(Trickster.SPELL_CIRCLE_ATTRIBUTE, -1d, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+    public static final Identifier SPELL_CIRCLE_ATTRIBUTE = id("spell_circle");
+    public static final EntityAttributeModifier NEGATE_ATTRIBUTE = new EntityAttributeModifier(Trickster.SPELL_CIRCLE_ATTRIBUTE, -1d, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
 
-	public static final TricksterConfig CONFIG = TricksterConfig.createAndLoad();
+    public static final TricksterConfig CONFIG = TricksterConfig.createAndLoad();
 
-	@Override
-	public void onInitialize() {
-		// This code runs as soon as Minecraft is in a mod-load-ready state.
-		// However, some things (like resources) may still be uninitialized.
-		// Proceed with mild caution.
+    @Override
+    public void onInitialize() {
+        // This code runs as soon as Minecraft is in a mod-load-ready state.
+        // However, some things (like resources) may still be uninitialized.
+        // Proceed with mild caution.
 
-		ModBlocks.register();
-		ModComponents.register();
-		ModItems.register();
-		ModEffects.register();
-		ModScreenHandlers.register();
-		ModNetworking.register();
-		ModParticles.register();
-		ModSounds.register();
-		ModAttachments.register();
-		ModRecipes.register();
-		ModDamageTypes.register();
-		Tricks.register();
-		ModCriteria.register();
-		FragmentType.register();
-		ManaPoolType.register();
+        ModBlocks.register();
+        ModComponents.register();
+        ModItems.register();
+        ModEffects.register();
+        ModScreenHandlers.register();
+        ModNetworking.register();
+        ModParticles.register();
+        ModSounds.register();
+        ModAttachments.register();
+        ModRecipes.register();
+        ModDamageTypes.register();
+        Tricks.register();
+        ModCriteria.register();
+        FragmentType.register();
+        ManaPoolType.register();
         ManaHandlerType.register();
         ManaEventType.register();
-		SpellExecutorType.register();
-		FleckType.register();
+        SpellExecutorType.register();
+        FleckType.register();
 
-		PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, blockEntity) -> {
-			if (player instanceof ServerPlayerEntity serverPlayer)
-				ItemTriggerHelper.triggerMainHand(serverPlayer, false, VectorFragment.of(pos));
-			else return true;
+        PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, blockEntity) -> {
+            if (player instanceof ServerPlayerEntity serverPlayer)
+                ItemTriggerHelper.triggerMainHand(serverPlayer, false, VectorFragment.of(pos));
+            else return true;
 
-			var newState = world.getBlockState(pos);
+            var newState = world.getBlockState(pos);
             return newState.getBlock() == state.getBlock() || newState.getHardness(world, pos) > 0;
         });
 
-		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
-			TricksterCommand.register(dispatcher);
-		});
+        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
+            TricksterCommand.register(dispatcher);
+        });
 
-		if (ModCompat.TRANSMOG_LOADED) {
-			TransmogCompat.init();
-		}
-	}
+        if (ModCompat.TRANSMOG_LOADED) {
+            TransmogCompat.init();
+        }
+    }
 
-	@Override
-	public void registerConversations(ConversationManager conversationManager) {
-		conversationManager.registerSource(
-				JsonSource.fromUrl("https://raw.githubusercontent.com/enjarai/trickster/master/src/main/resources/cicada/trickster/conversations.json")
-						.or(JsonSource.fromResource("cicada/trickster/conversations.json")),
-				LOGGER::info
-		);
-	}
+    @Override
+    public void registerConversations(ConversationManager conversationManager) {
+        conversationManager.registerSource(
+                JsonSource.fromUrl("https://raw.githubusercontent.com/enjarai/trickster/master/src/main/resources/cicada/trickster/conversations.json")
+                        .or(JsonSource.fromResource("cicada/trickster/conversations.json")),
+                LOGGER::info
+        );
+    }
 
-	public static Identifier id(String path) {
-		return Identifier.of(MOD_ID, path);
-	}
+    public static Identifier id(String path) {
+        return Identifier.of(MOD_ID, path);
+    }
 }

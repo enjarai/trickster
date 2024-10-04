@@ -133,8 +133,8 @@ public class PlayerSpellSource implements SpellSource {
         player.setAttached(ModAttachments.CROW_MIND, new CrowMind(fragment));
     }
 
-	@Override
-	public ManaHandler getManaHandler() {
+    @Override
+    public ManaHandler getManaHandler() {
         return new PlayerManaHandler(player);
-	}
+    }
 }
