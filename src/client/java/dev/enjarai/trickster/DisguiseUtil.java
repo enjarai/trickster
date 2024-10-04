@@ -8,14 +8,15 @@ import org.jetbrains.annotations.Nullable;
 public class DisguiseUtil {
     @Nullable
     public static GameProfile getGameProfile(DisguiseComponent component) {
-        if (component.getUuid() == null) {
-            return null;
-        }
-        var result = MinecraftClient.getInstance().getSessionService()
-                .fetchProfile(component.getUuid(), true);
-        if (result == null) {
-            return null;
-        }
-        return result.profile();
+//        if (component.getUuid() == null) {
+//            return null;
+//        }
+//        var result = MinecraftClient.getInstance().getSessionService()
+//                .fetchProfile(component.getUuid(), true);
+//        if (result == null) {
+//            return null;
+//        }
+//        return result.profile(); TODO
+        return null;
     }
 }

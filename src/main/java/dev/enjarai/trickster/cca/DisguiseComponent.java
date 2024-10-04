@@ -1,63 +1,100 @@
 package dev.enjarai.trickster.cca;
 
+import dev.enjarai.trickster.pond.LimbAnimatorDuck;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.passive.CatEntity;
+import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.Nullable;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
+import org.ladysnake.cca.api.v3.component.tick.ClientTickingComponent;
+import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
-import java.util.UUID;
-
-public class DisguiseComponent implements AutoSyncedComponent {
-    private final PlayerEntity player;
-    private UUID targetUuid = null;
-
-    public DisguiseComponent(PlayerEntity player) {
-        this.player = player;
-    }
-
+public class DisguiseComponent implements AutoSyncedComponent, CommonTickingComponent {
+    private final LivingEntity source;
     @Nullable
-    public UUID getUuid() {
-        return targetUuid;
+    private Entity entity = null;
+
+    public DisguiseComponent(LivingEntity source) {
+        this.source = source;
+        if (source instanceof PlayerEntity) {
+            entity = new CatEntity(EntityType.CAT, source.getWorld());
+//            source.calculateDimensions();
+        }
     }
 
-    public void setUuid(@Nullable UUID targetUuid) {
-        this.targetUuid = targetUuid;
-        ModEntityComponents.DISGUISE.sync(player);
+    // TODO:
+    // death sound
+    // fix hurt sound (what)
+    // disable interactions if not biped
+    // make leashing work >:3
+    // pass through use actions (milking and shearing)
+
+    public @Nullable Entity getEntityForRendering() {
+        if (entity != null) {
+            entity.setYaw(source.getYaw());
+            entity.prevYaw = source.prevYaw;
+            entity.setPitch(source.getPitch());
+            entity.prevPitch = source.prevPitch;
+
+//            entity.age = player.age;
+
+            if (entity instanceof LivingEntity livingEntity) {
+                livingEntity.setBodyYaw(source.bodyYaw);
+                livingEntity.prevBodyYaw = source.prevBodyYaw;
+                livingEntity.setHeadYaw(source.headYaw);
+                livingEntity.prevHeadYaw = source.prevHeadYaw;
+
+                livingEntity.hurtTime = source.hurtTime;
+
+                ((LimbAnimatorDuck) livingEntity.limbAnimator).trickster$copyFrom(source.limbAnimator);
+            }
+        }
+        return entity;
+    }
+
+    public @Nullable Entity getEntity() {
+        return entity;
+    }
+
+    public void setEntity(@Nullable Entity entity) {
+        this.entity = entity;
+        ModEntityComponents.DISGUISE.sync(source);
+        source.calculateDimensions();
     }
 
     @Override
     public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-        if (tag.contains("targetUuid")) {
-            targetUuid = tag.getUuid("targetUuid");
-        } else {
-            targetUuid = null;
-        }
+//        if (tag.contains("entity")) {
+//            entity = EntityType.getEntityFromNbt(tag.getCompound("entity"), player.getWorld()).orElse(null);
+//        } else {
+//            entity = null;
+//        }
     }
 
     @Override
     public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-        if (targetUuid != null) {
-            tag.putUuid("targetUuid", targetUuid);
-        }
+//        if (entity != null) {
+//            var compound = new NbtCompound();
+//            entity.saveSelfNbt(compound);
+//            tag.put("entity", compound);
+//        }
     }
 
     @Override
-    public void applySyncPacket(RegistryByteBuf buf) {
-        if (buf.readBoolean()) {
-            targetUuid = buf.readUuid();
-        } else {
-            targetUuid = null;
-        }
-    }
+    public void tick() {
+        if (entity != null) {
+            if (entity instanceof MobEntity mob) {
+                mob.setAiDisabled(true);
+            }
 
-    @Override
-    public void writeSyncPacket(RegistryByteBuf buf, ServerPlayerEntity recipient) {
-        buf.writeBoolean(targetUuid != null);
-        if (targetUuid != null) {
-            buf.writeUuid(targetUuid);
+            entity.setPos(source.getX(), source.getY(), source.getZ());
+            entity.tick();
         }
     }
 }

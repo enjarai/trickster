@@ -33,20 +33,20 @@ public abstract class AbstractClientPlayerEntityMixin extends PlayerEntityMixin 
 
     public PlayerListEntry trickster$getApplicableEntry() {
         var disguise = getComponent(ModEntityComponents.DISGUISE);
-        if (disguise.getUuid() != null) {
-            if (disguisePlayerListEntry == null || !disguisePlayerListEntry.getProfile().getId().equals(disguise.getUuid())) {
-                // Update the entry if its out of date
-                var profile = DisguiseUtil.getGameProfile(disguise);
-                if (profile == null) {
-                    profile = new GameProfile(disguise.getUuid(), "");
-                }
-
-                disguisePlayerListEntry = new PlayerListEntry(profile, false);
-            }
-        } else if (disguisePlayerListEntry != null) {
-            // Reset the entry if we're not disguised
-            disguisePlayerListEntry = null;
-        }
+//        if (disguise.getUuid() != null) {
+//            if (disguisePlayerListEntry == null || !disguisePlayerListEntry.getProfile().getId().equals(disguise.getUuid())) {
+//                // Update the entry if its out of date
+//                var profile = DisguiseUtil.getGameProfile(disguise);
+//                if (profile == null) {
+//                    profile = new GameProfile(disguise.getUuid(), "");
+//                }
+//
+//                disguisePlayerListEntry = new PlayerListEntry(profile, false);
+//            }
+//        } else if (disguisePlayerListEntry != null) {
+//            // Reset the entry if we're not disguised
+//            disguisePlayerListEntry = null;
+//        } TODO
         return disguisePlayerListEntry;
     }
 

@@ -14,7 +14,11 @@
     "chunk_pinning.ServerChunkLoadingManagerMixin",
     "chunk_pinning.ServerWorldMixin",
     "event.ServerPlayerEntityMixin",
-    "event.ServerPlayerInteractionManagerMixin"
+    "event.ServerPlayerInteractionManagerMixin",
+    "polymorph.EntityMixin",
+    "polymorph.LimbAnimatorMixin",
+    "polymorph.LivingEntityMixin",
+    "polymorph.MobEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

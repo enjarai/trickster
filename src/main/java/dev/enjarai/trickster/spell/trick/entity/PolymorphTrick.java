@@ -33,11 +33,12 @@ public class PolymorphTrick extends AbstractLivingEntityQueryTrick {
             var sourceCumponent = sourcePlayer.getComponent(ModEntityComponents.DISGUISE);
             var uuid = sourcePlayer.getUuid();
 
-            if (sourceCumponent.getUuid() != null) {
-                uuid = sourceCumponent.getUuid();
-            }
-
-            cumpoonent.setUuid(uuid);
+            // TODO
+//            if (sourceCumponent.getUuid() != null) {
+//                uuid = sourceCumponent.getUuid();
+//            }
+//
+//            cumpoonent.setUuid(uuid);
         } else {
             throw new UnknownEntityBlunder(this);
         }

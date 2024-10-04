@@ -18,9 +18,10 @@
     "animation.BipedEntityModelMixin",
     "animation.PlayerEntityModelMixin",
     "figura.AvatarManagerMixin",
-    "sodium.LevelSliceMixin",
-    "sodium.ChunkRenderContextMixin",
+    "polymorph.EntityRenderDispatcherMixin",
     "sodium.ChunkBuilderMeshingTaskMixin",
+    "sodium.ChunkRenderContextMixin",
+    "sodium.LevelSliceMixin",
     "tooltip.TooltipComponentMixin"
   ],
   "injectors": {

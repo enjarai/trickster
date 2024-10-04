@@ -27,10 +27,10 @@ public class AvatarManagerMixin {
         if (world != null) {
             var player = world.getPlayerByUuid(uuidRef.get());
             if (player != null) {
-                var disguise = ModEntityComponents.DISGUISE.get(player).getUuid();
-                if (disguise != null) {
-                    uuidRef.set(disguise);
-                }
+//                var disguise = ModEntityComponents.DISGUISE.get(player).getUuid();
+//                if (disguise != null) {
+//                    uuidRef.set(disguise);
+//                } TODO
             }
         }
     }
