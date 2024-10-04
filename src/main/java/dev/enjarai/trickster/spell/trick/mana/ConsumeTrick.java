@@ -18,7 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 
 public class ConsumeTrick extends Trick {
-    private Map<Item, Float> itemValues = new IdentityHashMap<>();
+    private final Map<Item, Float> itemValues = new IdentityHashMap<>();
 
     public ConsumeTrick() {
         super(Pattern.of(0, 4, 5, 8, 7, 6, 3, 4, 2));
@@ -39,17 +39,15 @@ public class ConsumeTrick extends Trick {
         var slots = expectVariadic(fragments, 1, SlotFragment.class);
         float mana = 0;
 
-        if (slots.size() > 0) {
+        if (!slots.isEmpty()) {
             for (var slot : slots) {
                 mana += manaFromSlot(ctx, slot, targetMana - mana);
             }
         } else {
             Optional<ItemStack> stack;
 
-            while (mana < targetMana && (stack = ctx.getStack(this, Optional.empty(), item -> itemValues.keySet().contains(item))).isPresent()) {
-                mana += Optional.ofNullable(itemValues.get(stack.get().getItem()))
-                    // This orElseThrow should never happen, but if it does, we don't want it hanging...
-                    .orElseThrow(() -> new IllegalStateException("Item to mana map failed to retrieve value from key, despite item supposedly being a valid key"));
+            while (mana < targetMana && (stack = ctx.getStack(this, Optional.empty(), item -> itemValues.containsKey(item))).isPresent()) {
+                mana += itemValues.get(stack.get().getItem());
             }
         }
 
