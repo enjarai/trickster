@@ -46,7 +46,7 @@ public class ConsumeTrick extends Trick {
         } else {
             Optional<ItemStack> stack;
 
-            while (mana < targetMana && (stack = ctx.getStack(this, Optional.empty(), itemValues::containsKey)).isPresent()) {
+            while (mana < targetMana && (stack = ctx.getStack(this, Optional.empty(), item -> itemValues.containsKey(item))).isPresent()) {
                 mana += itemValues.get(stack.get().getItem());
             }
         }
