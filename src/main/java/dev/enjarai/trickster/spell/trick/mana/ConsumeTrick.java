@@ -23,7 +23,7 @@ public class ConsumeTrick extends Trick {
     public ConsumeTrick() {
         super(Pattern.of(0, 4, 5, 8, 7, 6, 3, 4, 2));
 
-        itemValues.put(Items.COAL, 4f);
+        itemValues.put(Items.COAL, 6f);
         itemValues.put(Items.AMETHYST_SHARD, 1f);
 
         // Dynamic entries (careful that depended-on entries aren't removed without also removing relevant dynamic entries!)
