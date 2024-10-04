@@ -48,6 +48,11 @@ public record EntityFragment(UUID uuid, Text name) implements Fragment {
         return new ZalgoFragment();
     }
 
+    @Override
+    public int getWeight() {
+        return 32;
+    }
+
     public static EntityFragment from(Entity entity) {
         if (entity instanceof PlayerEntity) {
             return new EntityFragment(entity.getUuid(), entity.getName());

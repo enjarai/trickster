@@ -10,7 +10,7 @@ import net.minecraft.util.math.random.Random;
 
 import java.util.List;
 
-public record ZalgoFragment(String string) implements Fragment {
+public record ZalgoFragment(int index) implements Fragment {
     public static final StructEndec<ZalgoFragment> ENDEC = EndecTomfoolery.unit(ZalgoFragment::new);
     public static final Random RANDOM = new LocalRandom(0xABABABA);
     public static final List<String> SILLIES = List.of(
@@ -61,7 +61,7 @@ public record ZalgoFragment(String string) implements Fragment {
     );
 
     public ZalgoFragment() {
-        this(SILLIES.get(RANDOM.nextInt(SILLIES.size())));
+        this(RANDOM.nextInt(SILLIES.size()));
     }
 
     @Override
@@ -71,11 +71,16 @@ public record ZalgoFragment(String string) implements Fragment {
 
     @Override
     public Text asText() {
-        return Text.literal(string).fillStyle(Style.EMPTY.withObfuscated(true));
+        return Text.literal(SILLIES.get(index)).fillStyle(Style.EMPTY.withObfuscated(true));
     }
 
     @Override
     public BooleanFragment asBoolean() {
         return BooleanFragment.FALSE;
+    }
+
+    @Override
+    public int getWeight() {
+        return 4;
     }
 }

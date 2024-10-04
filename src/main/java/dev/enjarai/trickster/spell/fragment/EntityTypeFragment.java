@@ -28,4 +28,9 @@ public record EntityTypeFragment(EntityType<?> entityType) implements Fragment {
     public BooleanFragment asBoolean() {
         return BooleanFragment.TRUE;
     }
+
+    @Override
+    public int getWeight() {
+        return 16;
+    }
 }

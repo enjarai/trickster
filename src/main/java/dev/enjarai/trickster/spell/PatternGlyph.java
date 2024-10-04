@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.spell;
 
+import dev.enjarai.trickster.spell.blunder.OverweightFragmentBlunder;
 import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
@@ -45,7 +46,13 @@ public record PatternGlyph(Pattern pattern) implements Fragment {
         if (trick == null)
             throw new UnknownTrickBlunder();
 
-        return trick.activate(ctx, fragments);
+        var result = trick.activate(ctx, fragments);
+
+        if (result.getWeight() > Fragment.MAX_WEIGHT) {
+            throw new OverweightFragmentBlunder(trick, result);
+        }
+
+        return result;
     }
 
     @Override
@@ -80,5 +87,10 @@ public record PatternGlyph(Pattern pattern) implements Fragment {
     @Override
     public BooleanFragment asBoolean() {
         return BooleanFragment.TRUE;
+    }
+
+    @Override
+    public int getWeight() {
+        return 32;
     }
 }

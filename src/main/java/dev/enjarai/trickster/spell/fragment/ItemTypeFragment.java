@@ -28,4 +28,9 @@ public record ItemTypeFragment(Item item) implements Fragment {
     public BooleanFragment asBoolean() {
         return BooleanFragment.TRUE;
     }
+
+    @Override
+    public int getWeight() {
+        return 16;
+    }
 }

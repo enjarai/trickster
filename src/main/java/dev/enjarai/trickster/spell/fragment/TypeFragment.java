@@ -27,4 +27,9 @@ public record TypeFragment(FragmentType<?> typeType) implements Fragment {
     public BooleanFragment asBoolean() {
         return BooleanFragment.TRUE;
     }
+
+    @Override
+    public int getWeight() {
+        return 16;
+    }
 }

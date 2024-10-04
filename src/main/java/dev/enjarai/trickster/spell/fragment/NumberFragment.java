@@ -45,6 +45,11 @@ public final class NumberFragment implements AddableFragment, SubtractableFragme
     }
 
     @Override
+    public int getWeight() {
+        return 8;
+    }
+
+    @Override
     public AddableFragment add(Fragment other) throws BlunderException {
         if (other instanceof NumberFragment num) {
             return new NumberFragment(number + num.number);
