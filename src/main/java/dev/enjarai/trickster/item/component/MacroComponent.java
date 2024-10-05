@@ -32,8 +32,8 @@ public record MacroComponent(Hamt<Pattern, SpellPart> macros) {
     }
 
     public static Hamt<Pattern, SpellPart> getUserMergedMap(PlayerEntity user) {
-        var secondary = MacroComponent.getMap(SlotReference.of(user, "ring", 1).getStack());
-        return MacroComponent.getMap(SlotReference.of(user, "ring", 0).getStack())
+        var secondary = getMap(SlotReference.of(user, "ring", 1).getStack());
+        return getMap(SlotReference.of(user, "ring", 0).getStack())
             .map(first -> first.assocAll(secondary.orElseGet(Hamt::empty)))
             .orElseGet(() -> secondary.orElseGet(Hamt::empty));
     }

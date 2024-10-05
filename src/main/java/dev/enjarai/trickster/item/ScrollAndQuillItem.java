@@ -4,8 +4,6 @@ package dev.enjarai.trickster.item;
 import dev.enjarai.trickster.item.component.MacroComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.screen.ScrollAndQuillScreenHandler;
-import dev.enjarai.trickster.util.Hamt;
-import io.wispforest.accessories.api.slot.SlotReference;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
