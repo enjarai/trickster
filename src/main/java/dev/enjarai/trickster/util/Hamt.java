@@ -7,6 +7,8 @@ import java.util.*;
 import java.util.AbstractMap.SimpleImmutableEntry;
 
 public class Hamt<K, V> implements Iterable<Map.Entry<K, V>> {
+    private static Hamt<?, ?> EMPTY = new Hamt<>(null);
+    
     static <K> boolean equals(K left, K right) {
         return left.equals(right);
     }
@@ -342,8 +344,9 @@ public class Hamt<K, V> implements Iterable<Map.Entry<K, V>> {
         this.root = root;
     }
 
-    public static <K, V> Hamt<K, V> empty() {
-        return new Hamt<>(null);
+    @SuppressWarnings("unchecked")
+	public static <K, V> Hamt<K, V> empty() {
+        return (Hamt<K, V>) EMPTY;
     }
 
     public Hamt<K, V> assoc(K key, V value) {
