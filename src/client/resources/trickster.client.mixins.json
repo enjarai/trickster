@@ -19,6 +19,8 @@
     "animation.PlayerEntityModelMixin",
     "figura.AvatarManagerMixin",
     "polymorph.EntityRenderDispatcherMixin",
+    "polymorph.PlayerEntityRendererMixin",
+    "polymorph.QuadrupedEntityModelMixin",
     "sodium.ChunkBuilderMeshingTaskMixin",
     "sodium.ChunkRenderContextMixin",
     "sodium.LevelSliceMixin",

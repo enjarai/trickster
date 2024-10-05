@@ -10,6 +10,13 @@ import dev.enjarai.trickster.item.component.SpellComponent;
 import dev.enjarai.trickster.net.GrabClipboardSpellPacket;
 import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.spell.SpellPart;
+import net.minecraft.command.CommandRegistryAccess;
+import net.minecraft.command.argument.RegistryEntryReferenceArgumentType;
+import net.minecraft.command.suggestion.SuggestionProviders;
+import net.minecraft.entity.EntityType;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.*;
@@ -19,7 +26,7 @@ import net.minecraft.util.Hand;
 import static net.minecraft.server.command.CommandManager.literal;
 
 public class TricksterCommand {
-    public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
+    public static void register(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess) {
         dispatcher.register(literal("trickster")
                 .then(literal("exportSpell")
                         .requires(ServerCommandSource::isExecutedByPlayer)
@@ -33,6 +40,17 @@ public class TricksterCommand {
                 .then(literal("killSpells")
                         .requires(ServerCommandSource::isExecutedByPlayer)
                         .executes(TricksterCommand::killSpells)
+                )
+                .then(literal("disguise")
+                        .then(literal("set")
+                                .then(CommandManager.argument("entity", RegistryEntryReferenceArgumentType.registryEntry(registryAccess, RegistryKeys.ENTITY_TYPE))
+                                        .suggests(SuggestionProviders.SUMMONABLE_ENTITIES)
+                                        .executes(ctx -> disguise(ctx, RegistryEntryReferenceArgumentType.getSummonableEntityType(ctx, "entity"))))
+                        )
+                        .then(literal("clear")
+                                .executes(ctx -> disguise(ctx, null)))
+                        .requires(ServerCommandSource::isExecutedByPlayer)
+                        .requires(s -> s.hasPermissionLevel(2))
                 )
         );
     }
@@ -83,6 +101,16 @@ public class TricksterCommand {
     private static int killSpells(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
         context.getSource().getPlayerOrThrow().getComponent(ModEntityComponents.CASTER).killAll();
         context.getSource().sendFeedback(() -> Text.literal("Killed running spells."), true);
+        return 1;
+    }
+
+    private static int disguise(CommandContext<ServerCommandSource> context, RegistryEntry.Reference<EntityType<?>> entity) throws CommandSyntaxException {
+        var disguise = context.getSource().getPlayerOrThrow().getComponent(ModEntityComponents.DISGUISE);
+        if (entity == null) {
+            disguise.setEntity(null);
+        } else {
+            disguise.setEntity(entity.value().create(context.getSource().getWorld()));
+        }
         return 1;
     }
 }

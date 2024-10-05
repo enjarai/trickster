@@ -10,6 +10,7 @@ import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.util.Hand;
 import org.jetbrains.annotations.Nullable;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.ClientTickingComponent;
@@ -30,10 +31,10 @@ public class DisguiseComponent implements AutoSyncedComponent, CommonTickingComp
 
     // TODO:
     // death sound
-    // fix hurt sound (what)
     // disable interactions if not biped
     // make leashing work >:3
     // pass through use actions (milking and shearing)
+    // show proper hands
 
     public @Nullable Entity getEntityForRendering() {
         if (entity != null) {
@@ -51,6 +52,11 @@ public class DisguiseComponent implements AutoSyncedComponent, CommonTickingComp
                 livingEntity.prevHeadYaw = source.prevHeadYaw;
 
                 livingEntity.hurtTime = source.hurtTime;
+
+                livingEntity.handSwinging = source.handSwinging;
+                livingEntity.handSwingTicks = source.handSwingTicks;
+                livingEntity.handSwingProgress = source.handSwingProgress;
+                livingEntity.lastHandSwingProgress = source.lastHandSwingProgress;
 
                 ((LimbAnimatorDuck) livingEntity.limbAnimator).trickster$copyFrom(source.limbAnimator);
             }
@@ -70,20 +76,20 @@ public class DisguiseComponent implements AutoSyncedComponent, CommonTickingComp
 
     @Override
     public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-//        if (tag.contains("entity")) {
-//            entity = EntityType.getEntityFromNbt(tag.getCompound("entity"), player.getWorld()).orElse(null);
-//        } else {
-//            entity = null;
-//        }
+        if (tag.contains("entity")) {
+            setEntity(EntityType.getEntityFromNbt(tag.getCompound("entity"), source.getWorld()).orElse(null));
+        } else {
+            setEntity(null);
+        }
     }
 
     @Override
     public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-//        if (entity != null) {
-//            var compound = new NbtCompound();
-//            entity.saveSelfNbt(compound);
-//            tag.put("entity", compound);
-//        }
+        if (entity != null) {
+            var compound = new NbtCompound();
+            entity.saveSelfNbt(compound);
+            tag.put("entity", compound);
+        }
     }
 
     @Override
@@ -91,6 +97,14 @@ public class DisguiseComponent implements AutoSyncedComponent, CommonTickingComp
         if (entity != null) {
             if (entity instanceof MobEntity mob) {
                 mob.setAiDisabled(true);
+            }
+
+            if (entity instanceof LivingEntity living) {
+                living.preferredHand = source.preferredHand;
+
+                for (Hand hand : Hand.values()) {
+                    living.setStackInHand(hand, source.getStackInHand(hand));
+                }
             }
 
             entity.setPos(source.getX(), source.getY(), source.getZ());

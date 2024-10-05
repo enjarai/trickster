@@ -1,11 +1,11 @@
 package dev.enjarai.trickster.mixin.polymorph;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.pond.EntityDisguiseDuck;
-import net.minecraft.entity.EntityDimensions;
-import net.minecraft.entity.EntityPose;
-import net.minecraft.entity.LimbAnimator;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.sound.SoundEvent;
 import org.jetbrains.annotations.Nullable;
@@ -49,18 +49,39 @@ public abstract class LivingEntityMixin implements EntityDisguiseDuck {
         }
     }
 
-    @Inject(
-            method = "getHurtSound",
-            at = @At("HEAD"),
-            cancellable = true
+    @WrapOperation(
+            method = {"playHurtSound", "onDamaged"},
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/entity/LivingEntity;getHurtSound(Lnet/minecraft/entity/damage/DamageSource;)Lnet/minecraft/sound/SoundEvent;"
+            )
     )
-    private void morphHurtSound(DamageSource source, CallbackInfoReturnable<SoundEvent> cir) {
+    private SoundEvent morphHurtSound(LivingEntity instance, DamageSource source, Operation<SoundEvent> original) {
         var component = ModEntityComponents.DISGUISE.getNullable(this);
         if (component != null) {
             var disguise = component.getEntity();
             if (disguise instanceof EntityDisguiseDuck living) {
-                cir.setReturnValue(living.trickster$getHurtSound(source));
+                return living.trickster$getHurtSound(source);
             }
         }
+        return original.call(instance, source);
+    }
+
+    @ModifyExpressionValue(
+            method = {"computeFallDamage", "canBreatheInWater"},
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/entity/LivingEntity;getType()Lnet/minecraft/entity/EntityType;"
+            )
+    )
+    private EntityType<?> modifyEntityType(EntityType<?> original) {
+        var component = ModEntityComponents.DISGUISE.getNullable(this);
+        if (component != null) {
+            var disguise = component.getEntity();
+            if (disguise != null) {
+                return disguise.getType();
+            }
+        }
+        return original;
     }
 }

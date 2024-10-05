@@ -79,7 +79,7 @@ public class Trickster implements ModInitializer, CicadaEntrypoint {
         });
 
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
-			TricksterCommand.register(dispatcher);
+			TricksterCommand.register(dispatcher, registryAccess);
 		});
 
 		if (ModCompat.TRANSMOG_LOADED) {
