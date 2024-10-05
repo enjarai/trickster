@@ -5,8 +5,10 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.util.Hamt;
+import io.wispforest.accessories.api.slot.SlotReference;
 import io.wispforest.endec.Endec;
 import io.wispforest.owo.serialization.CodecUtils;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
 import java.util.Optional;
@@ -27,5 +29,12 @@ public record MacroComponent(Hamt<Pattern, SpellPart> macros) {
         stack.set(ModComponents.MACRO_MAP, new MacroComponent(macros));
 
         return true;
+    }
+
+    public static Hamt<Pattern, SpellPart> getUserMergedMap(PlayerEntity user) {
+        var secondary = MacroComponent.getMap(SlotReference.of(user, "ring", 1).getStack());
+        return MacroComponent.getMap(SlotReference.of(user, "ring", 0).getStack())
+            .map(first -> first.assocAll(secondary.orElseGet(Hamt::empty)))
+            .orElseGet(() -> secondary.orElseGet(Hamt::empty));
     }
 }

@@ -35,9 +35,7 @@ public class ScrollAndQuillItem extends Item {
         var stack = user.getStackInHand(hand);
         var otherStack = user.getStackInHand(hand == Hand.MAIN_HAND ? Hand.OFF_HAND : Hand.MAIN_HAND);
         var slot = hand == Hand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
-
-        ItemStack ring = SlotReference.of(user, "ring", 0).getStack();
-        var mapComponent = MacroComponent.getMap(ring);
+        var mergedMap = MacroComponent.getUserMergedMap(user);
 
         var spell = stack.get(ModComponents.SPELL);
         if (spell == null || spell.closed()) {
@@ -59,7 +57,7 @@ public class ScrollAndQuillItem extends Item {
                 public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
                     return new ScrollAndQuillScreenHandler(
                             syncId, playerInventory, stack, otherStack, slot,
-                            mapComponent.orElse(Hamt.empty()),
+                            mergedMap,
                             false, true
                     );
                 }
