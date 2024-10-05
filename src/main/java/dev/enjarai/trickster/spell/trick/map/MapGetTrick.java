@@ -16,6 +16,6 @@ public class MapGetTrick extends Trick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        return expectInput(fragments, MapFragment.class, 0).map().get(expectInput(fragments, 1)).orElse(VoidFragment.INSTANCE);
+        return expectInput(fragments, MapFragment.class, 0).downcast().get(expectInput(fragments, 1)).orElse(VoidFragment.INSTANCE);
     }
 }

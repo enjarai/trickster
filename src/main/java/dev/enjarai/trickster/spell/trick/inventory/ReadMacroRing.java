@@ -8,11 +8,15 @@ import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
-import io.wispforest.accessories.api.slot.SlotReference;
-import net.minecraft.item.ItemStack;
 
+import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class ReadMacroRing extends Trick {
     public ReadMacroRing() {
@@ -21,27 +25,16 @@ public class ReadMacroRing extends Trick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var player = ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this));
-
-        Fragment mapFragmemnt = VoidFragment.INSTANCE;
-
-        ItemStack ring = SlotReference.of(player, "ring", 0).getStack();
-        var mapComponent = MacroComponent.getMap(ring);
-
-        if (ring != null && mapComponent.isPresent()) {
-            mapFragmemnt = convertToMapFragment(mapComponent.get());
-        }
-
-        return mapFragmemnt;
+        return MacroComponent.getUserMergedMap(ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this)))
+            .map(ReadMacroRing::hamtAsMap)
+            .map(Hamt::fromMap)
+            .<Fragment>map(MapFragment::new)
+            .orElse(VoidFragment.INSTANCE);
     }
 
-    private MapFragment convertToMapFragment(Hamt<Pattern, SpellPart> map) {
-        var macros = new HashMap<Fragment, Fragment>();
-
-        map.iterator().forEachRemaining(entry ->
-                macros.put(new PatternGlyph(entry.getKey()), entry.getValue())
-        );
-
-        return new MapFragment(Hamt.fromMap(macros));
+    private static Map<PatternGlyph, SpellPart> hamtAsMap(Hamt<Pattern, SpellPart> hamt) {
+        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(hamt.iterator(), Spliterator.ORDERED), false)
+                    .map(entry -> new AbstractMap.SimpleEntry<PatternGlyph, SpellPart>(new PatternGlyph(entry.getKey()), entry.getValue()))
+                    .collect(Collectors.toMap(HashMap.Entry::getKey, HashMap.Entry::getValue));
     }
 }

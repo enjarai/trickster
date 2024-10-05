@@ -12,6 +12,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 public record MacroComponent(Hamt<Pattern, SpellPart> macros) {
     public static final Codec<MacroComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -31,10 +32,14 @@ public record MacroComponent(Hamt<Pattern, SpellPart> macros) {
         return true;
     }
 
-    public static Hamt<Pattern, SpellPart> getUserMergedMap(PlayerEntity user) {
+    public static Optional<Hamt<Pattern, SpellPart>> getUserMergedMap(PlayerEntity user) {
         var secondary = getMap(SlotReference.of(user, "ring", 1).getStack());
         return getMap(SlotReference.of(user, "ring", 0).getStack())
             .map(first -> first.assocAll(secondary.orElseGet(Hamt::empty)))
-            .orElseGet(() -> secondary.orElseGet(Hamt::empty));
+            .or(() -> secondary);
+    }
+
+    public static Hamt<Pattern, SpellPart> getUserMergedMap(PlayerEntity user, Supplier<Hamt<Pattern, SpellPart>> otherwise) {
+        return getUserMergedMap(user).orElseGet(otherwise);
     }
 }

@@ -8,10 +8,10 @@ import net.minecraft.text.MutableText;
 import dev.enjarai.trickster.util.Hamt;
 import net.minecraft.text.Text;
 
-public record MapFragment(Hamt<Fragment, Fragment> map) implements Fragment {
+public record MapFragment(Hamt<? extends Fragment, ? extends Fragment> map) implements Fragment {
     public static final StructEndec<MapFragment> ENDEC = StructEndecBuilder.of(
             Endec.map(Fragment.ENDEC, Fragment.ENDEC).xmap(Hamt::fromMap, Hamt::asMap)
-                    .fieldOf("macros", MapFragment::map),
+                    .fieldOf("macros", MapFragment::downcast),
             MapFragment::new
     );
 
@@ -53,4 +53,9 @@ public record MapFragment(Hamt<Fragment, Fragment> map) implements Fragment {
 
         return weight;
 	}
+
+    @SuppressWarnings("unchecked")
+	public Hamt<Fragment, Fragment> downcast() {
+        return (Hamt<Fragment, Fragment>) map;
+    }
 }

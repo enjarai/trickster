@@ -27,7 +27,7 @@ public class MapInsertTrick extends Trick {
         }
         var first = expectType(fragmentIterator.next(), FragmentType.MAP);
 
-        var map = ((MapFragment) first).map();
+        var map = ((MapFragment) first).downcast();
         int index = 1;
         while(fragmentIterator.hasNext()) {
             Fragment key = fragmentIterator.next();

@@ -4,6 +4,7 @@ package dev.enjarai.trickster.item;
 import dev.enjarai.trickster.item.component.MacroComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.screen.ScrollAndQuillScreenHandler;
+import dev.enjarai.trickster.util.Hamt;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -33,7 +34,7 @@ public class ScrollAndQuillItem extends Item {
         var stack = user.getStackInHand(hand);
         var otherStack = user.getStackInHand(hand == Hand.MAIN_HAND ? Hand.OFF_HAND : Hand.MAIN_HAND);
         var slot = hand == Hand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
-        var mergedMap = MacroComponent.getUserMergedMap(user);
+        var mergedMap = MacroComponent.getUserMergedMap(user, () -> Hamt.empty());
 
         var spell = stack.get(ModComponents.SPELL);
         if (spell == null || spell.closed()) {

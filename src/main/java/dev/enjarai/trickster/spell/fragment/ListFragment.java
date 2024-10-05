@@ -15,7 +15,7 @@ import java.util.List;
 
 public record ListFragment(List<? extends Fragment> fragments) implements Fragment {
     public static final StructEndec<ListFragment> ENDEC = StructEndecBuilder.of(
-            Fragment.ENDEC.listOf().fieldOf("fragments", ListFragment::contents),
+            Fragment.ENDEC.listOf().fieldOf("fragments", ListFragment::downcast),
             ListFragment::new
     );
 
@@ -58,8 +58,9 @@ public record ListFragment(List<? extends Fragment> fragments) implements Fragme
         return weight;
     }
 
-    public List<Fragment> contents() {
-        return fragments.stream().<Fragment>map(n -> n).toList();
+    @SuppressWarnings("unchecked")
+	public List<Fragment> downcast() {
+        return (List<Fragment>) fragments;
     }
 
     public ListFragment addRange(ListFragment other) throws BlunderException {

@@ -19,7 +19,7 @@ public class HighlightTrick extends Trick {
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var ret = expectInput(fragments, 0);
-        fragments = supposeInput(fragments, 0).flatMap(l -> supposeType(l, FragmentType.LIST)).map(ListFragment::contents).orElse(fragments);
+        fragments = supposeInput(fragments, 0).flatMap(l -> supposeType(l, FragmentType.LIST)).map(ListFragment::downcast).orElse(fragments);
 
         for (int i = 0; i < fragments.size(); i++) {
             var block = expectInput(fragments, FragmentType.VECTOR, i).toBlockPos().toCenterPos();

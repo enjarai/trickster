@@ -31,7 +31,7 @@ public class WriteMacroRing extends Trick {
         var mapComponent = MacroComponent.getMap(ring);
 
         if (ring != null && mapComponent.isPresent()) {
-            MacroComponent.setMap(ring, expectMacroMap(mapFragmemnt.map()));
+            MacroComponent.setMap(ring, expectMacroMap(mapFragmemnt.downcast()));
 
             return BooleanFragment.TRUE;
         } else {
