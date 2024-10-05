@@ -30,12 +30,12 @@ public class SimpleManaPool implements MutableManaPool {
 
     @Override
     public void set(float value) {
-        mana = Float.isNaN(mana) ? 0 : Math.max(Math.min(value, maxMana), 0);
+        mana = Math.clamp(value, 0, maxMana);
     }
 
     @Override
     public float get() {
-        return Float.isNaN(mana) ? 0 : mana;
+        return mana;
     }
 
     @Override

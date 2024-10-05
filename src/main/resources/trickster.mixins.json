@@ -10,6 +10,8 @@
     "ItemMixin",
     "LivingEntityMixin",
     "WorldChunkMixin",
+    "ServerPlayNetworkHandlerMixin",
+    "ChestBlockMixin",
     "chunk_pinning.MinecraftServerMixin",
     "chunk_pinning.ServerChunkLoadingManagerMixin",
     "chunk_pinning.ServerWorldMixin",

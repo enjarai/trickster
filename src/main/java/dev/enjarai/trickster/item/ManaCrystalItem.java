@@ -11,36 +11,30 @@ import net.minecraft.util.math.MathHelper;
 
 public class ManaCrystalItem extends Item {
     public ManaCrystalItem(Settings settings) {
-        super(settings);
+        super(settings.maxCount(1));
     }
 
     public static class Amethyst extends ManaCrystalItem {
         public Amethyst() {
-            super(new Settings()
-                    .maxCount(1)
-                    .component(ModComponents.MANA, new ManaComponent(SimpleManaPool.getSingleUse(500), false)));
+            super(new Settings().component(ModComponents.MANA, new ManaComponent(SimpleManaPool.getSingleUse(500), false)));
         }
     }
 
     public static class Emerald extends ManaCrystalItem {
         public Emerald() {
-            super(new Settings()
-                    .maxCount(1)
-                    .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(1000))));
+            super(new Settings().component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(1000))));
         }
     }
 
     public static class Diamond extends ManaCrystalItem {
         public Diamond() {
-            super(new Settings()
-                    .maxCount(1)
-                    .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(2500))));
+            super(new Settings().component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(2500))));
         }
     }
 
     public static class Echo extends ManaCrystalItem {
         public Echo() {
-            super(new Settings().maxCount(2));
+            super(new Settings());
         }
 
         public ItemStack makePair() {
@@ -55,7 +49,6 @@ public class ManaCrystalItem extends Item {
     // emerald: boring asf, mid capacity
     // diamond: also boring asf, tho high capacity
     // echo shard: splits when ibuesddded (Aurora's hopefully clarifying comment: rai meant that the crafting recipe for a echo shard mana crystal would produce a pair which share the same mana pool)
-
 
     @Override
     public boolean isItemBarVisible(ItemStack stack) {
@@ -74,7 +67,7 @@ public class ManaCrystalItem extends Item {
             return 0;
         }
 
-        return MathHelper.clamp(
-                Math.round(manaComponent.pool().get() * 13.0F / manaComponent.pool().getMax()), 0, 13);
+        float poolMax = manaComponent.pool().getMax();
+        return poolMax == 0 ? 0 : MathHelper.clamp(Math.round(manaComponent.pool().get() * 13.0F / poolMax), 0, 13);
     }
 }

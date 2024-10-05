@@ -7,17 +7,11 @@ import dev.enjarai.trickster.cca.SharedManaComponent;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 
-public class SharedManaPool implements MutableManaPool {
+public record SharedManaPool(UUID uuid) implements MutableManaPool {
     public static final StructEndec<SharedManaPool> ENDEC = StructEndecBuilder.of(
-            EndecTomfoolery.UUID.fieldOf("uuid", s -> s.uuid),
+            EndecTomfoolery.UUID.fieldOf("uuid", SharedManaPool::uuid),
             SharedManaPool::new
     );
-
-    private UUID uuid;
-
-    public SharedManaPool(UUID uuid) {
-        this.uuid = uuid;
-    }
 
     @Override
     public ManaPoolType<?> type() {
@@ -26,32 +20,32 @@ public class SharedManaPool implements MutableManaPool {
 
     @Override
     public float get() {
-        return SharedManaComponent.INSTANCE.get(uuid).get();
+        return SharedManaComponent.INSTANCE.get(uuid).map(ManaPool::get).orElse(0f);
     }
 
     @Override
     public float getMax() {
-        return SharedManaComponent.INSTANCE.get(uuid).getMax();
+        return SharedManaComponent.INSTANCE.get(uuid).map(ManaPool::getMax).orElse(0f);
     }
 
     @Override
     public void set(float value) {
-        SharedManaComponent.INSTANCE.get(uuid).set(value);
+        SharedManaComponent.INSTANCE.get(uuid).ifPresent(pool -> pool.set(value));
     }
 
     @Override
     public void setMax(float value) {
-        SharedManaComponent.INSTANCE.get(uuid).setMax(value);
+        SharedManaComponent.INSTANCE.get(uuid).ifPresent(pool -> pool.setMax(value));
     }
 
     @Override
     public float use(float amount) {
-        return SharedManaComponent.INSTANCE.get(uuid).use(amount);
+        return SharedManaComponent.INSTANCE.get(uuid).map(pool -> pool.use(amount)).orElse(amount);
     }
 
     @Override
     public float refill(float amount) {
-        return SharedManaComponent.INSTANCE.get(uuid).refill(amount);
+        return SharedManaComponent.INSTANCE.get(uuid).map(pool -> pool.refill(amount)).orElse(amount);
     }
 
     @Override

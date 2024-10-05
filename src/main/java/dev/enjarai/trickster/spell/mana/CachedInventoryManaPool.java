@@ -8,6 +8,7 @@ import dev.enjarai.trickster.item.component.ModComponents;
 import java.util.List;
 import java.util.ArrayList;
 
+//TODO: make this reference slots instead
 public class CachedInventoryManaPool implements MutableManaPool {
     private final List<ItemStack> stacks = new ArrayList<>();
 

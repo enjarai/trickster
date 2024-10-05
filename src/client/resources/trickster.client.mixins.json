@@ -10,6 +10,7 @@
     "InGameHudMixin",
     "InventoryScreenMixin",
     "MouseMixin",
+    "ClientPlayNetworkHandlerMixin",
     "PlayerRendererMixin",
     "RenderedChunkMixin",
     "SillyHairsFeatureRendererMixin",

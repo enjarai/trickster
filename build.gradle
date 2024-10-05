@@ -110,7 +110,7 @@ dependencies {
     include modApi("org.ladysnake.cardinal-components-api:cardinal-components-entity:${property('deps.cardinal-components-api')}")
 
     modCompileOnly modLocalRuntime("com.terraformersmc:modmenu:${property('deps.modmenu')}")
-    modClientCompileOnly modLocalRuntime("maven.modrinth:sodium:${property('deps.sodium')}")
+    modClientCompileOnly /*modLocalRuntime*/("maven.modrinth:sodium:${property('deps.sodium')}")
 
     modApi("io.wispforest:accessories-fabric:${property('deps.accessories')}")
 
