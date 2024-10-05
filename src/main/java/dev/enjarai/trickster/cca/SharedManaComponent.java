@@ -13,7 +13,6 @@ import org.jetbrains.annotations.Nullable;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 
 import dev.enjarai.trickster.EndecTomfoolery;
-import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.mana.SharedManaPool;
 import dev.enjarai.trickster.spell.mana.SimpleManaPool;
@@ -37,9 +36,11 @@ public class SharedManaComponent implements AutoSyncedComponent {
     private final Map<UUID, SimpleManaPool> pools = new HashMap<>();
     private final Map<UUID, List<UUID>> subscribers = new HashMap<>();
     private final Scoreboard provider;
+    private final Optional<MinecraftServer> server;
 
     public SharedManaComponent(Scoreboard provider, @Nullable MinecraftServer server) {
         this.provider = provider;
+        this.server = Optional.ofNullable(server);
         INSTANCE = this;
     }
 

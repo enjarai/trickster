@@ -102,6 +102,7 @@ import dev.enjarai.trickster.spell.trick.list.ListRemoveElementTrick;
 import dev.enjarai.trickster.spell.trick.list.ListRemoveTrick;
 import dev.enjarai.trickster.spell.trick.list.ListSizeTrick;
 import dev.enjarai.trickster.spell.trick.mana.ConsumeTrick;
+import dev.enjarai.trickster.spell.trick.mana.LinkToEchoTrick;
 import dev.enjarai.trickster.spell.trick.math.AddTrick;
 import dev.enjarai.trickster.spell.trick.math.CeilTrick;
 import dev.enjarai.trickster.spell.trick.math.CosTrick;
@@ -240,6 +241,7 @@ public class Tricks {
 
     // Mana
     public static final ConsumeTrick CONSUME = register("consume", new ConsumeTrick());
+    public static final LinkToEchoTrick LINK_TO_ECHO = register("link_to_echo", new LinkToEchoTrick());
 
     // Math
     public static final AddTrick ADD = register("add", new AddTrick());

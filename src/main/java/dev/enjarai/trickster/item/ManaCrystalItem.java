@@ -1,9 +1,7 @@
 package dev.enjarai.trickster.item;
 
-import dev.enjarai.trickster.cca.SharedManaComponent;
 import dev.enjarai.trickster.item.component.ManaComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
-import dev.enjarai.trickster.spell.mana.SharedManaPool;
 import dev.enjarai.trickster.spell.mana.SimpleManaPool;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -35,13 +33,6 @@ public class ManaCrystalItem extends Item {
     public static class Echo extends ManaCrystalItem {
         public Echo() {
             super(new Settings());
-        }
-
-        public ItemStack makePair() {
-            var stack = getDefaultStack();
-            stack.set(ModComponents.MANA, new ManaComponent(new SharedManaPool(SharedManaComponent.INSTANCE.allocate(new SimpleManaPool(4000)))));
-            stack.increment(1);
-            return stack;
         }
     }
 
