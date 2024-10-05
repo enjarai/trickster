@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.mixin.client.polymorph;
 
 import dev.enjarai.trickster.cca.ModEntityComponents;
+import dev.enjarai.trickster.pond.PlayerRendererDuck;
 import dev.enjarai.trickster.pond.QuadrupedDuck;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.model.ModelPart;
@@ -15,14 +16,22 @@ import net.minecraft.client.render.entity.model.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerEntityRenderer.class)
-public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>> {
+public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>> implements PlayerRendererDuck {
+    @Shadow protected abstract void setModelPose(AbstractClientPlayerEntity player);
+
     public PlayerEntityRendererMixin(EntityRendererFactory.Context ctx, PlayerEntityModel<AbstractClientPlayerEntity> model, float shadowRadius) {
         super(ctx, model, shadowRadius);
+    }
+
+    @Override
+    public void trickster$setModelPose(AbstractClientPlayerEntity player) {
+        setModelPose(player);
     }
 
     @SuppressWarnings("unchecked")
