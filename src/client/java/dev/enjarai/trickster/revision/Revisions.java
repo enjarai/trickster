@@ -4,7 +4,7 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.fragment.MapFragment;
-import dev.enjarai.trickster.spell.fragment.Map.Hamt;
+import dev.enjarai.trickster.util.Hamt;
 import dev.enjarai.trickster.spell.trick.Tricks;
 
 import java.util.*;

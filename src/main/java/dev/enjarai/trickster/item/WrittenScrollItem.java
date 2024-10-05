@@ -4,7 +4,7 @@ import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.screen.ScrollAndQuillScreenHandler;
 import dev.enjarai.trickster.spell.execution.SpellQueueResult;
-import dev.enjarai.trickster.spell.fragment.Map.Hamt;
+import dev.enjarai.trickster.util.Hamt;
 import dev.enjarai.trickster.spell.mana.SimpleManaPool;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;

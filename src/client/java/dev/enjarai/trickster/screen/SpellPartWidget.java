@@ -7,7 +7,7 @@ import dev.enjarai.trickster.revision.Revision;
 import dev.enjarai.trickster.revision.RevisionContext;
 import dev.enjarai.trickster.revision.Revisions;
 import dev.enjarai.trickster.spell.*;
-import dev.enjarai.trickster.spell.fragment.Map.Hamt;
+import dev.enjarai.trickster.util.Hamt;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;

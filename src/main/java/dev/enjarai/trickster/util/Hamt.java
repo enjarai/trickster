@@ -1,6 +1,6 @@
 //https://gist.github.com/Alwinfy/b96bec5ed5def163b2c0a3ea3af670d8
 
-package dev.enjarai.trickster.spell.fragment.Map;
+package dev.enjarai.trickster.util;
 
 
 import java.util.*;

@@ -2,7 +2,7 @@ package dev.enjarai.trickster.revision;
 
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellPart;
-import dev.enjarai.trickster.spell.fragment.Map.Hamt;
+import dev.enjarai.trickster.util.Hamt;
 
 public interface RevisionContext {
     void updateSpell(SpellPart sp);

@@ -5,7 +5,7 @@ import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import net.minecraft.text.MutableText;
-import dev.enjarai.trickster.spell.fragment.Map.Hamt;
+import dev.enjarai.trickster.util.Hamt;
 import net.minecraft.text.Text;
 
 public record MapFragment(Hamt<Fragment, Fragment> map) implements Fragment {

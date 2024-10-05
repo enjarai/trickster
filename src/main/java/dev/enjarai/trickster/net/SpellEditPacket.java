@@ -4,7 +4,7 @@ import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.screen.ScrollAndQuillScreenHandler;
 import io.wispforest.owo.network.ServerAccess;
 import net.minecraft.entity.EquipmentSlot;
-import dev.enjarai.trickster.spell.fragment.Map.Hamt;
+import dev.enjarai.trickster.util.Hamt;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.NamedScreenHandlerFactory;
