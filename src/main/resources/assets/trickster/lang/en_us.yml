@@ -146,7 +146,6 @@ trickster:
     retrieve_glyph: Retrieval Distortion
     set_glyph: Replacement Distortion
     retrieve_subtree: Felling Distortion
-    retrieve_subtree_list: Flock Distortion
     set_subtree: Grafting Distortion
     add_subtree: Branching Distortion
     remove_subtree: Pruning Distortion

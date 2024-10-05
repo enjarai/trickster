@@ -196,11 +196,10 @@ public class Tricks {
     public static final RetrieveGlyphTrick RETRIEVE_GLYPH = register("retrieve_glyph", new RetrieveGlyphTrick());
     public static final SetGlyphTrick SET_GLYPH = register("set_glyph", new SetGlyphTrick());
     public static final RetrieveSubtreeTrick RETRIEVE_SUBTREE = register("retrieve_subtree", new RetrieveSubtreeTrick());
-    public static final RetrieveSubtreeListTrick RETRIEVE_SUBTREE_LIST = register("retrieve_subtree_list", new RetrieveSubtreeListTrick());
     public static final SetSubtreeTrick SET_SUBTREE = register("set_subtree", new SetSubtreeTrick());
     public static final AddSubtreeTrick ADD_LEAF = register("add_subtree", new AddSubtreeTrick());
     public static final RemoveSubtreeTrick REMOVE_SUBTREE = register("remove_subtree", new RemoveSubtreeTrick());
-    public static final GetSubPartsTrick GET_SUB_PARTS = register("get_subparts", new GetSubPartsTrick());
+    public static final GetSubPartsTrick GET_SUBPARTS = register("get_subparts", new GetSubPartsTrick());
 
     // Events
     public static final CreateSpellCircleTrick CREATE_SPELL_CIRCLE = register("create_spell_circle", new CreateSpellCircleTrick());
