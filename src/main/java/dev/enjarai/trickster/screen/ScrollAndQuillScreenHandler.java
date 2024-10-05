@@ -38,11 +38,10 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
     public final SyncedProperty<SpellPart> otherHandSpell = createProperty(SpellPart.class, SpellPart.ENDEC, new SpellPart());
     public final SyncedProperty<Boolean> isMutable = createProperty(Boolean.class, true);
     @SuppressWarnings("unchecked") // I hate Java generics, sorry about the horrid cast -- Aurora
-	public final SyncedProperty<Hamt<Pattern, SpellPart>> macros = (SyncedProperty<Hamt<Pattern, SpellPart>>) (Object) createProperty(Hamt.class, Endec.map(Pattern.ENDEC, SpellPart.ENDEC).xmap(Hamt::fromMap, Hamt::asMap), Hamt.empty());
+    public final SyncedProperty<Hamt<Pattern, SpellPart>> macros = (SyncedProperty<Hamt<Pattern, SpellPart>>) (Object) createProperty(Hamt.class, Endec.map(Pattern.ENDEC, SpellPart.ENDEC).xmap(Hamt::fromMap, Hamt::asMap), Hamt.empty());
 
     public Consumer<Fragment> replacerCallback;
     public Consumer<Optional<SpellPart>> updateDrawingPartCallback;
-
 
     public final EquipmentSlot slot;
     public final boolean greedyEvaluation;
