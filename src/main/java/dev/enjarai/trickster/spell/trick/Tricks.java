@@ -90,11 +90,6 @@ public class Tricks {
     public static final ReadCrowMindTrick READ_CROW_MIND = register("read_crow_mind", new ReadCrowMindTrick());
     public static final WriteCrowMindTrick WRITE_CROW_MIND = register("write_crow_mind", new WriteCrowMindTrick());
 
-    // Macro Ring
-    public static final WriteMacroRing WRITE_MACRO_RING = register("write_macro_ring", new WriteMacroRing());
-    public static final ReadMacroRing READ_MACRO_RING = register("read_macro_ring", new ReadMacroRing());
-
-
     // Caster
     public static final ReflectionTrick REFLECTION = register("reflection", new ReflectionTrick());
     public static final CasterReflectionTrick CASTER_REFLECTION = register("caster_reflection", new CasterReflectionTrick());
@@ -103,6 +98,7 @@ public class Tricks {
     public static final MaxManaReflectionTrick MAX_MANA_REFLECTION = register("max_mana_reflection", new MaxManaReflectionTrick());
     public static final FacingReflectionTrick FACING_REFLECTION = register("facing_reflection", new FacingReflectionTrick());
     public static final HotbarReflectionTrick HOTBAR_REFLECTION = register("hotbar_reflection", new HotbarReflectionTrick());
+    public static final ReadMacroRing READ_MACRO_RING = register("read_macro_ring", new ReadMacroRing());
 
     // Entity
     public static final GetPositionTrick GET_POSITION = register("get_position", new GetPositionTrick());
@@ -150,7 +146,6 @@ public class Tricks {
     public static final CosTrick COS = register("cos", new CosTrick());
     public static final TanTrick TAN = register("tan", new TanTrick());
     public static final PowerTrick POWER = register("power", new PowerTrick());
-
 
     // Vector
     public static final ExtractXTrick EXTRACT_X = register("extract_x", new ExtractXTrick());
@@ -243,7 +238,7 @@ public class Tricks {
     // Dimension
     public static final GetDimensionTrick GET_DIMENSION = register("get_dimension", new GetDimensionTrick());
 
-    //Flecks
+    // Flecks
     public static final LineFleckTrick DRAW_LINE = register("draw_line", new LineFleckTrick());
     public static final SpellFleckTrick DRAW_SPELL = register("draw_spell", new SpellFleckTrick());
     public static final GetFlecksTrick GET_FLECKS = register("get_flecks", new GetFlecksTrick());

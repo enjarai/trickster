@@ -19,8 +19,6 @@ import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.text.Text;
 import org.w3c.dom.Element;
 
-import java.util.Map;
-
 public class SpellPreviewComponent extends BaseComponent {
     protected final SpellPart spell;
     protected final SpellPartWidget wrapped;
@@ -46,7 +44,7 @@ public class SpellPreviewComponent extends BaseComponent {
 
             @Override
             public SpellPart getOtherHandSpell() {
-                return null;
+                return new SpellPart();
             }
 
             @Override

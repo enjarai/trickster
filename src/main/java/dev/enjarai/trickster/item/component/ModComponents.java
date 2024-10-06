@@ -21,9 +21,9 @@ public class ModComponents {
             register("entity_storage", builder -> builder
                     .codec(EntityStorageComponent.CODEC)
                     .cache());
-    public static final ComponentType<MacroComponent> MACRO_MAP =
+    public static final ComponentType<MapComponent> MAP =
             register("macros", builder -> builder
-                    .codec(MacroComponent.CODEC)
+                    .codec(MapComponent.CODEC)
                     .cache());
 
     private static <T> ComponentType<T> register(String id, UnaryOperator<ComponentType.Builder<T>> builderOperator) {

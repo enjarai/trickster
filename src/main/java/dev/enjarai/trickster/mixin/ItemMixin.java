@@ -53,10 +53,10 @@ public abstract class ItemMixin {
             at = @At("HEAD")
     )
     private void addMapTooltip(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType type, CallbackInfo ci) {
-        var mapComponent = stack.get(ModComponents.MACRO_MAP);
+        var mapComponent = stack.get(ModComponents.MAP);
 
-        if (mapComponent != null && !(mapComponent.macros().size() == 0)) {
-            var map = mapComponent.macros();
+        if (mapComponent != null && !(mapComponent.map().size() == 0)) {
+            var map = mapComponent.map();
             map.iterator().forEachRemaining(entry -> tooltip.add(new PatternGlyph(entry
                     .getKey()).asFormattedText().copy()
                     .append(": ")

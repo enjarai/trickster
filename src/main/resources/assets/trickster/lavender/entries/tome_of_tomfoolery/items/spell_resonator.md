@@ -2,7 +2,7 @@
 {
   "title": "Spell Resonator",
   "icon": "trickster:spell_resonator",
-  "category": "trickster:basics"
+  "category": "trickster:items"
 }
 ```
 

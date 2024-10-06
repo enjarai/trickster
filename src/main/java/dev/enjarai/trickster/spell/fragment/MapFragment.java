@@ -54,6 +54,14 @@ public record MapFragment(Hamt<? extends Fragment, ? extends Fragment> map) impl
         return weight;
 	}
 
+    @Override
+    public MapFragment applyEphemeral() {
+        return new MapFragment(map.stream()
+                .reduce(Hamt.<Fragment, Fragment>empty(),
+                    (last, current) -> Hamt.<Fragment, Fragment>empty().assoc(current.getKey().applyEphemeral(), current.getValue().applyEphemeral()),
+                    Hamt::assocAll));
+    }
+
     @SuppressWarnings("unchecked")
 	public Hamt<Fragment, Fragment> downcast() {
         return (Hamt<Fragment, Fragment>) map;

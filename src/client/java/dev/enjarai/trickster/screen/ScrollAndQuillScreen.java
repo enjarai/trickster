@@ -8,7 +8,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 
 import java.util.ArrayList;
-import java.util.Stack;
 
 public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvider<ScrollAndQuillScreenHandler> {
     private static final ArrayList<PositionMemory> storedPositions = new ArrayList<>(5);

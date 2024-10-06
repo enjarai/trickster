@@ -1,6 +1,6 @@
 package dev.enjarai.trickster.spell.trick.inventory;
 
-import dev.enjarai.trickster.item.component.MacroComponent;
+import dev.enjarai.trickster.item.component.MapComponent;
 import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.util.Hamt;
 import dev.enjarai.trickster.spell.fragment.MapFragment;
@@ -13,10 +13,7 @@ import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Spliterator;
-import java.util.Spliterators;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 public class ReadMacroRing extends Trick {
     public ReadMacroRing() {
@@ -25,7 +22,7 @@ public class ReadMacroRing extends Trick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        return MacroComponent.getUserMergedMap(ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this)))
+        return MapComponent.getUserMergedMap(ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this)), "ring")
             .map(ReadMacroRing::hamtAsMap)
             .map(Hamt::fromMap)
             .<Fragment>map(MapFragment::new)
@@ -33,8 +30,8 @@ public class ReadMacroRing extends Trick {
     }
 
     private static Map<PatternGlyph, SpellPart> hamtAsMap(Hamt<Pattern, SpellPart> hamt) {
-        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(hamt.iterator(), Spliterator.ORDERED), false)
-                    .map(entry -> new AbstractMap.SimpleEntry<PatternGlyph, SpellPart>(new PatternGlyph(entry.getKey()), entry.getValue()))
-                    .collect(Collectors.toMap(HashMap.Entry::getKey, HashMap.Entry::getValue));
+        return hamt.stream()
+            .map(entry -> new AbstractMap.SimpleEntry<PatternGlyph, SpellPart>(new PatternGlyph(entry.getKey()), entry.getValue()))
+            .collect(Collectors.toMap(HashMap.Entry::getKey, HashMap.Entry::getValue));
     }
 }

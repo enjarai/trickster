@@ -1,6 +1,6 @@
 package dev.enjarai.trickster.item;
 
-import dev.enjarai.trickster.item.component.MacroComponent;
+import dev.enjarai.trickster.item.component.MapComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.SpellComponent;
 import dev.enjarai.trickster.screen.ScrollAndQuillScreenHandler;
@@ -27,7 +27,7 @@ public class EvaluationMirrorItem extends Item {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         var stack = user.getStackInHand(hand);
         var otherStack = user.getStackInHand(hand == Hand.MAIN_HAND ? Hand.OFF_HAND : Hand.MAIN_HAND);
-        var mergedMap = MacroComponent.getUserMergedMap(user, () -> Hamt.empty());
+        var macros = MapComponent.getUserMergedMap(user, "ring", () -> Hamt.empty());
 
         if (!user.isSneaking()) {
             user.openHandledScreen(new NamedScreenHandlerFactory() {
@@ -41,7 +41,7 @@ public class EvaluationMirrorItem extends Item {
                     return new ScrollAndQuillScreenHandler(
                             syncId, playerInventory, stack, otherStack,
                             hand == Hand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND,
-                            mergedMap,
+                            macros,
                             true, true
                     );
                 }

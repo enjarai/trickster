@@ -2,7 +2,6 @@ package dev.enjarai.trickster.screen;
 
 import dev.enjarai.trickster.ModSounds;
 import dev.enjarai.trickster.advancement.criterion.ModCriteria;
-import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.SpellComponent;
 import dev.enjarai.trickster.revision.RevisionContext;
@@ -37,8 +36,8 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
     public final SyncedProperty<SpellPart> spell = createProperty(SpellPart.class, SpellPart.ENDEC, new SpellPart());
     public final SyncedProperty<SpellPart> otherHandSpell = createProperty(SpellPart.class, SpellPart.ENDEC, new SpellPart());
     public final SyncedProperty<Boolean> isMutable = createProperty(Boolean.class, true);
-    @SuppressWarnings("unchecked") // I hate Java generics, sorry about the horrid cast -- Aurora
-    public final SyncedProperty<Hamt<Pattern, SpellPart>> macros = (SyncedProperty<Hamt<Pattern, SpellPart>>) (Object) createProperty(Hamt.class, Endec.map(Pattern.ENDEC, SpellPart.ENDEC).xmap(Hamt::fromMap, Hamt::asMap), Hamt.empty());
+    //TODO: Ask glisco why the null parameter isn't used in owo's source -- Aurora Dawn
+    public final SyncedProperty<Hamt<Pattern, SpellPart>> macros = createProperty(null, Hamt.endec(Pattern.ENDEC, SpellPart.ENDEC), Hamt.empty());
 
     public Consumer<Fragment> replacerCallback;
     public Consumer<Optional<SpellPart>> updateDrawingPartCallback;
@@ -59,7 +58,9 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
         this.slot = slot;
         this.greedyEvaluation = greedyEvaluation;
 
-        this.macros.set(macros);
+        if (macros != null) {
+            this.macros.set(macros);
+        }
 
         if (scrollStack != null) {
             SpellComponent.getSpellPart(scrollStack).ifPresent(this.spell::set);

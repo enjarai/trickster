@@ -428,10 +428,8 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
                 spellPart = result;
             }
         } else if (revisionContext.getMacros().get(compiled).isPresent()) {
-            var spell = revisionContext.getMacros().get(compiled).get();
-            var part = drawingPart;
             toBeReplaced = drawingPart;
-            revisionContext.updateSpellWithSpell(part, spell);
+            revisionContext.updateSpellWithSpell(drawingPart, revisionContext.getMacros().get(compiled).get());
         } else {
             if (patternSize >= 2) {
                 drawingPart.glyph = new PatternGlyph(compiled);

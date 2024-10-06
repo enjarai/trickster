@@ -5,6 +5,10 @@ package dev.enjarai.trickster.util;
 
 import java.util.*;
 import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
+import io.wispforest.endec.Endec;
 
 public class Hamt<K, V> implements Iterable<Map.Entry<K, V>> {
     private static Hamt<?, ?> EMPTY = new Hamt<>(null);
@@ -349,6 +353,10 @@ public class Hamt<K, V> implements Iterable<Map.Entry<K, V>> {
         return (Hamt<K, V>) EMPTY;
     }
 
+    public static <K, V> Endec<Hamt<K, V>> endec(Endec<K> key, Endec<V> value) {
+        return Endec.map(key, value).xmap(Hamt::<K, V>fromMap, Hamt::<K, V>asMap);
+    }
+
     public Hamt<K, V> assoc(K key, V value) {
         return new Hamt<>(root != null ? root.assoc(Hamt.hash(key), key, value) : new SingleNode<>(Hamt.hash(key), key, value));
     }
@@ -377,6 +385,10 @@ public class Hamt<K, V> implements Iterable<Map.Entry<K, V>> {
         var map = new HashMap<K, V>();
         this.iterator().forEachRemaining(entry -> map.put(entry.getKey(), entry.getValue()));
         return map;
+    }
+
+    public Stream<Map.Entry<K, V>> stream() {
+        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator(), Spliterator.ORDERED), false);
     }
 
     public static<K, V> Hamt<K, V> ofIterable(Iterable<? extends Map.Entry<? extends K, ? extends V>> values) {

@@ -2,7 +2,7 @@
 {
   "title": "Hats",
   "icon": "trickster:top_hat",
-  "category": "trickster:basics"
+  "category": "trickster:items"
 }
 ```
 
