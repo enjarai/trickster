@@ -39,12 +39,12 @@ public record MapFragment(Hamt<? extends Fragment, ? extends Fragment> map) impl
 
     @Override
     public boolean asBoolean() {
-        return map.size() > 0;
+        return !map.isEmpty();
     }
 
 	@Override
 	public int getWeight() {
-        int weight = 0;
+        int weight = 16;
 
         for (var kv : map) {
             weight += kv.getKey().getWeight();

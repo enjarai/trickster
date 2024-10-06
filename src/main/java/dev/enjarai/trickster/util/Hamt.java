@@ -354,7 +354,7 @@ public class Hamt<K, V> implements Iterable<Map.Entry<K, V>> {
     }
 
     public static <K, V> Endec<Hamt<K, V>> endec(Endec<K> key, Endec<V> value) {
-        return Endec.map(key, value).xmap(Hamt::<K, V>fromMap, Hamt::<K, V>asMap);
+        return Endec.map(key, value).xmap(Hamt::fromMap, Hamt::asMap);
     }
 
     public Hamt<K, V> assoc(K key, V value) {
@@ -371,6 +371,10 @@ public class Hamt<K, V> implements Iterable<Map.Entry<K, V>> {
 
     public int size() {
         return root == null ? 0 : root.size();
+    }
+
+    public boolean isEmpty() {
+        return !(size() > 0);
     }
 
     public Hamt<K, V> assocAll(Iterable<? extends Map.Entry<? extends K, ? extends V>> values) {

@@ -15,4 +15,5 @@ entity | vector, any[] ->
 
 ;;;;;
 
-//TODO: map stuff and stuff
+The ward used is retrieved from the combined maps of all charms worn by the target, where the key is the triggering glyph. 
+The triggered ward requires an empty spell slot to be run, but begins prior to the execution of the triggering glyph.

@@ -46,15 +46,17 @@ public record ListFragment(List<? extends Fragment> fragments) implements Fragme
 
     @Override
     public boolean asBoolean() {
-        return fragments.size() > 0;
+        return !fragments.isEmpty();
     }
 
     @Override
     public int getWeight() {
-        int weight = 0;
+        int weight = 16;
+
         for (Fragment fragment : fragments) {
             weight += fragment.getWeight();
         }
+
         return weight;
     }
 

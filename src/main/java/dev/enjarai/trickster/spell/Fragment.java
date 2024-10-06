@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 
 public non-sealed interface Fragment extends SpellInstruction {
-    int MAX_WEIGHT = 6400;
+    int MAX_WEIGHT = 640000;
     @SuppressWarnings("unchecked")
     StructEndec<Fragment> ENDEC = EndecTomfoolery.lazy(() -> (StructEndec<Fragment>) Endec.dispatchedStruct(
             FragmentType::endec,
