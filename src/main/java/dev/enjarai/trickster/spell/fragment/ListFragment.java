@@ -3,9 +3,13 @@ package dev.enjarai.trickster.spell.fragment;
 import com.google.common.collect.ImmutableList;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Fragment;
+import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.IncorrectFragmentBlunder;
+import dev.enjarai.trickster.spell.execution.executor.ListFoldingSpellExecutor;
+import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import net.minecraft.text.Text;
@@ -13,7 +17,7 @@ import net.minecraft.text.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-public record ListFragment(List<? extends Fragment> fragments) implements Fragment {
+public record ListFragment(List<? extends Fragment> fragments) implements FoldableFragment {
     public static final StructEndec<ListFragment> ENDEC = StructEndecBuilder.of(
             Fragment.ENDEC.listOf().fieldOf("fragments", ListFragment::downcast),
             ListFragment::new
@@ -86,4 +90,9 @@ public record ListFragment(List<? extends Fragment> fragments) implements Fragme
 
         return sanitizedAddress;
     }
+
+	@Override
+	public SpellExecutor fold(SpellContext ctx, SpellPart executable, Fragment identity) {
+        return new ListFoldingSpellExecutor(ctx, executable, this, identity);
+	}
 }
