@@ -115,7 +115,8 @@ public class ManaComponent extends SimpleManaPool implements CommonTickingCompon
         super.decrease(amount);
 
         if (f < 0) {
-            ((DirectlyDamageDuck) entity).trickster$damageDirectly(ModDamageTypes.of(entity.getWorld(), ModDamageTypes.MANA_OVERFLUX), ManaPool.healthFromMana(f * -1));
+//            ((DirectlyDamageDuck) entity).trickster$damageDirectly(ModDamageTypes.of(entity.getWorld(), ModDamageTypes.MANA_OVERFLUX), ManaPool.healthFromMana(f * -1));
+            entity.damage(ModDamageTypes.of(entity.getWorld(), ModDamageTypes.MANA_OVERFLUX), ManaPool.healthFromMana(f * -1));
             return entity.isAlive() && !((entity.getAttached(ModAttachments.WHY_IS_THERE_NO_WAY_TO_DETECT_THIS) instanceof Boolean b) && Boolean.TRUE.equals(b));
         }
 
