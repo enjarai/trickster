@@ -1,10 +1,13 @@
-- Added 16 colors of dyed spell scrolls. (@enjarai)
-- Added two extra hat types. (@enjarai)
-  - These function exactly the same as the Top Hat, just with a different aesthetic.
-- Added a third person animation when taking off and putting on a hat. (@enjarai)
-- Added a HUD element showing the currently selected scroll when holding a hat in your offhand. (@enjarai)
-- Generally polished hat interactions.
-- Updated multiple textures courtesy of @Crephan.
-- Fixed a bug letting players save ephemeral fragments within lists. (@enjarai)
-- Tweaked how bloodcasting damage is applied, making it less forgiving. (@enjarai)
-- Fixed a slight oddity in the spell editor, where one could interact with a fake root as if it is the real root. (@StellarWitch7)
+- Added Flecks, a way to display lines and other features in the world using spells. (@Vlue, @enjarai, @StellarWitch7)
+  - This system will be expanded upon in the future.
+- Added scroll shelves, a way to nicely display and store scrolls in your base. (@enjarai)
+- Implemented a weight system for fragments. (@enjarai)
+  - Overweight fragments may cause a spell to fail.
+  - Weight limits are set quite generously, and are subject to change based on feedback.
+- Modified a bunch of trick signatures to be chainable. (@StellarWitch7)
+- Fix being able to die from mana overuse in creative mode. (@enjarai)
+- Fix scrolling in the hat ui only working for offhand hats. (@enjarai)
+- Partially fixed compatibility with Sodium for shadow blocks. (@enjarai)
+  - Some behaviour is still inconsistent between vanilla and Sodium, but we plan to address this.
+- Implemented a temporary solution for Surveyor (used by Antique Atlas) compat. (@enjarai)
+- Added a keybind for modifying any spell on any item in creative mode. (@Awakened-Redstone)
