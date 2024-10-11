@@ -35,14 +35,15 @@ public class RangeFindEntityTrick extends Trick {
         }
 
         var squaredRange = range * range;
-
         var entities = new ArrayList<Entity>();
-        ctx.source().getWorld().collectEntitiesByType(
+        var world = ctx.source().getWorld();
+
+        world.collectEntitiesByType(
                 filter, new Box(
                         pos.x() - range, pos.y() - range, pos.z() - range,
                         pos.x() + range, pos.y() + range, pos.z() + range
                 ),
-                e -> e.getPos().squaredDistanceTo(pos.x(), pos.y(), pos.z()) <= squaredRange, entities
+                e -> e.getPos().squaredDistanceTo(pos.x(), pos.y(), pos.z()) <= squaredRange && world.getEntity(e.getUuid()) != null, entities
         );
 
         return new ListFragment(entities.stream()

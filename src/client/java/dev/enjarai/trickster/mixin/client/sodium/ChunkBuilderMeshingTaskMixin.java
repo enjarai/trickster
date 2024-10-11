@@ -46,16 +46,16 @@ public abstract class ChunkBuilderMeshingTaskMixin extends ChunkBuilderTask<Chun
         shadowMap.set(ModChunkComponents.SHADOW_DISGUISE_MAP.get(world.getChunk(render.getChunkX(), render.getChunkZ())));
     }
 
-    @WrapOperation(
-            method = "execute(Lnet/caffeinemc/mods/sodium/client/render/chunk/compile/ChunkBuildContext;Lnet/caffeinemc/mods/sodium/client/util/task/CancellationToken;)Lnet/caffeinemc/mods/sodium/client/render/chunk/compile/ChunkBuildOutput;",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/caffeinemc/mods/sodium/client/world/LevelSlice;getBlockState(III)Lnet/minecraft/block/BlockState;"
-            ),
-            remap = false
-    )
-    private BlockState modifyBlockState(LevelSlice instance, int blockX, int blockY, int blockZ, Operation<BlockState> original, @Share("shadow_map") LocalRef<ShadowDisguiseMapComponent> shadowMap) {
-        var customState = shadowMap.get().getFunnyState(blockX, blockY, blockZ);
-        return customState != null ? customState : original.call(instance, blockX, blockY, blockZ);
-    }
+//    @WrapOperation(
+//            method = "execute(Lnet/caffeinemc/mods/sodium/client/render/chunk/compile/ChunkBuildContext;Lnet/caffeinemc/mods/sodium/client/util/task/CancellationToken;)Lnet/caffeinemc/mods/sodium/client/render/chunk/compile/ChunkBuildOutput;",
+//            at = @At(
+//                    value = "INVOKE",
+//                    target = "Lnet/caffeinemc/mods/sodium/client/world/LevelSlice;getBlockState(III)Lnet/minecraft/block/BlockState;"
+//            ),
+//            remap = false
+//    )
+//    private BlockState modifyBlockState(LevelSlice instance, int blockX, int blockY, int blockZ, Operation<BlockState> original, @Share("shadow_map") LocalRef<ShadowDisguiseMapComponent> shadowMap) {
+//        var customState = shadowMap.get().getFunnyState(blockX, blockY, blockZ);
+//        return customState != null ? customState : original.call(instance, blockX, blockY, blockZ);
+//    }
 }
