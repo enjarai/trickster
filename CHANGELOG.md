@@ -1,13 +1,1 @@
-- Added Flecks, a way to display lines and other features in the world using spells. (@Vlue, @enjarai, @StellarWitch7)
-  - This system will be expanded upon in the future.
-- Added scroll shelves, a way to nicely display and store scrolls in your base. (@enjarai)
-- Implemented a weight system for fragments. (@enjarai)
-  - Overweight fragments may cause a spell to fail.
-  - Weight limits are set quite generously, and are subject to change based on feedback.
-- Modified a bunch of trick signatures to be chainable. (@StellarWitch7)
-- Fix being able to die from mana overuse in creative mode. (@enjarai)
-- Fix scrolling in the hat ui only working for offhand hats. (@enjarai)
-- Partially fixed compatibility with Sodium for shadow blocks. (@enjarai)
-  - Some behaviour is still inconsistent between vanilla and Sodium, but we plan to address this.
-- Implemented a temporary solution for Surveyor (used by Antique Atlas) compat. (@enjarai)
-- Added a keybind for modifying any spell on any item in creative mode. (@Awakened-Redstone)
+- Undid Sodium compat changes temporarily due to a crash on world load. (@enjarai)
