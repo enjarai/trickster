@@ -17,3 +17,13 @@ any -> type
 ---
 
 Returns the type of the given fragment. Can be used to validate inputs, among other things.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:hash_values,title=Decaying Distortion|>
+
+[any]... -> number
+
+---
+
+Combines all given inputs into a single number. The same inputs will always produce the same number.

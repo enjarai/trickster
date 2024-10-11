@@ -184,6 +184,7 @@ trickster:
     drop_stack_from_slot: Benevolent Ploy
 
     type_fragment: Argumentative Distortion
+    hash_values: Decaying Distortion
     delay_execution: Ploy of Suspension
     pin_chunk: Ploy of Celestial Pin
     get_dimension: Dimensional Delusion
