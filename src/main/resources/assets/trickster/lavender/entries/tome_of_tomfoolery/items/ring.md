@@ -8,4 +8,4 @@
 
 A plain gold ring used for containing [Macros](^trickster:macro).
 
-<recipe;trickster:macro>
+<recipe;trickster:macro_ring>

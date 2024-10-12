@@ -10,4 +10,4 @@ When drawing a pattern, the associated macro is fetched from the combined maps o
 ;;;;;
 
 Macros take in the part of the spell that the pattern was drawn in as the first argument. 
-The macro must then return a new spell. This spell replaces the spell the pattern was drawn in.
+The macro must then return a new spell. This spell replaces the circle the pattern was drawn in.
