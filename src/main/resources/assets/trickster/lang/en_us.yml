@@ -6,6 +6,10 @@ trickster:
     sign_scroll: Sign Scroll
     written_scroll: Written Scroll
 
+  text:
+    misc:
+      value_truncated: Value truncated
+
   widget:
     scroll_name: Scroll Name...
     enter_scroll_name: 'Enter Scroll Name:'

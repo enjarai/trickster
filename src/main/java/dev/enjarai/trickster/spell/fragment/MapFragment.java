@@ -11,7 +11,7 @@ import net.minecraft.text.Text;
 public record MapFragment(Hamt<? extends Fragment, ? extends Fragment> map) implements Fragment {
     public static final StructEndec<MapFragment> ENDEC = StructEndecBuilder.of(
             Endec.map(Fragment.ENDEC, Fragment.ENDEC).xmap(Hamt::fromMap, Hamt::asMap)
-                    .fieldOf("macros", MapFragment::downcast),
+                    .fieldOf("entries", MapFragment::downcast),
             MapFragment::new
     );
 

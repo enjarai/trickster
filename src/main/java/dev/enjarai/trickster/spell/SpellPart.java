@@ -78,11 +78,13 @@ public final class SpellPart implements Fragment {
 
     @Override
     public int getWeight() {
-        int weight = 0;
+        int weight = 8;
         weight += glyph.getWeight();
+
         for (SpellPart subPart : subParts) {
             weight += subPart.getWeight();
         }
+
         return weight;
     }
 
