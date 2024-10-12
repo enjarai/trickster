@@ -17,6 +17,6 @@ public class LesserThanTrick extends Trick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        return new BooleanFragment(expectInput(fragments, FragmentType.NUMBER, 0).number() < expectInput(fragments, FragmentType.NUMBER, 1).number());
+        return BooleanFragment.of(expectInput(fragments, FragmentType.NUMBER, 0).number() < expectInput(fragments, FragmentType.NUMBER, 1).number());
     }
 }

@@ -2,17 +2,17 @@
 {
   "title": "Scroll and Quill",
   "icon": "trickster:scroll_and_quill",
-  "category": "trickster:basics"
+  "category": "trickster:items"
 }
 ```
 
 The Scroll and Quill can be used to easily write and store complex and reusable spells.
 
 
-Right-clicking it opens the [Spell-Scribing](^trickster:basics/editing) interface, letting you directly modify the contained spell.
+Right-clicking it opens the [Spell-Scribing](^trickster:items/editing) interface, letting you directly modify the contained spell.
 
 
-Scrolls can be stored in a [Top Hat](^trickster:basics/top_hat) for easy access and safe-keeping.
+Scrolls can be stored in a [Top Hat](^trickster:items/top_hat) for easy access and safe-keeping.
 
 ;;;;;
 

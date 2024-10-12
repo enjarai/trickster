@@ -2,7 +2,7 @@
 {
   "title": "Wand",
   "icon": "trickster:wand",
-  "category": "trickster:basics"
+  "category": "trickster:items"
 }
 ```
 

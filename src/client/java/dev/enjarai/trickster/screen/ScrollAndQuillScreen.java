@@ -8,7 +8,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 
 import java.util.ArrayList;
-import java.util.Stack;
 
 public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvider<ScrollAndQuillScreenHandler> {
     private static final ArrayList<PositionMemory> storedPositions = new ArrayList<>(5);
@@ -25,9 +24,10 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
     @Override
     protected void init() {
         super.init();
-
         partWidget = new SpellPartWidget(handler.spell.get(), width / 2d, height / 2d, 64, handler);
         handler.replacerCallback = frag -> partWidget.replaceCallback(frag);
+        handler.updateDrawingPartCallback = spell -> partWidget.updateDrawingPartCallback(spell);
+
         addDrawableChild(partWidget);
 
         this.handler.spell.observe(spell -> {
