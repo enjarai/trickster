@@ -4,7 +4,6 @@ import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
-import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
@@ -79,11 +78,13 @@ public final class SpellPart implements Fragment {
 
     @Override
     public int getWeight() {
-        int weight = 0;
+        int weight = 8;
         weight += glyph.getWeight();
+
         for (SpellPart subPart : subParts) {
             weight += subPart.getWeight();
         }
+
         return weight;
     }
 
@@ -212,8 +213,8 @@ public final class SpellPart implements Fragment {
     }
 
     @Override
-    public BooleanFragment asBoolean() {
-        return new BooleanFragment(glyph.asBoolean().bool() || !subParts.isEmpty());
+    public boolean asBoolean() {
+        return glyph.asBoolean() || !subParts.isEmpty();
     }
 
     public SpellPart deepClone() {

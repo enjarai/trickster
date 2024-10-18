@@ -26,6 +26,6 @@ public class CanPlaceTrick extends Trick {
         result = blockType.map(blockTypeFragment -> blockTypeFragment.block().getDefaultState().canPlaceAt(world, blockPos))
                 .orElseGet(() -> world.getBlockState(blockPos).isAir());
 
-        return new BooleanFragment(result);
+        return BooleanFragment.of(result);
     }
 }

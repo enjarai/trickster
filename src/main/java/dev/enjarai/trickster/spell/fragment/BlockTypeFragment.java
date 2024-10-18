@@ -25,8 +25,8 @@ public record BlockTypeFragment(Block block) implements Fragment {
     }
 
     @Override
-    public BooleanFragment asBoolean() {
-        return BooleanFragment.TRUE;
+    public boolean asBoolean() {
+        return true;
     }
 
     @Override

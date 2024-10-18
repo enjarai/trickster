@@ -77,3 +77,13 @@ Returns the maximum amount of mana that *could be* available to the spell.
 ---
 
 Returns the selected hotbar slot of the caster, if available.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:read_macro_ring,title=Macro Delusion|>
+
+-> {spell: spell}
+
+---
+
+Retrieves a map containing the combined maps of all rings worn.

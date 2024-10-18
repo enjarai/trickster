@@ -1,7 +1,6 @@
 package dev.enjarai.trickster.spell.fragment;
 
 import com.mojang.serialization.Lifecycle;
-import com.mojang.serialization.MapCodec;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.PatternGlyph;
@@ -10,7 +9,6 @@ import io.wispforest.endec.StructEndec;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
-import net.fabricmc.fabric.api.event.registry.RegistryAttribute;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.SimpleRegistry;
@@ -57,6 +55,7 @@ public record FragmentType<T extends Fragment>(StructEndec<T> endec, OptionalInt
     public static final FragmentType<EntityTypeFragment> ENTITY_TYPE = register("entity_type", EntityTypeFragment.ENDEC, 0x8877bb);
     public static final FragmentType<DimensionFragment> DIMENSION = register("dimension", DimensionFragment.ENDEC, 0xdd55bb);
     public static final FragmentType<StringFragment> STRING = register("string", StringFragment.ENDEC, 0xaabb77);
+    public static final FragmentType<MapFragment> MAP = register("map", MapFragment.ENDEC);
 
     private static <T extends Fragment> FragmentType<T> register(String name, StructEndec<T> codec, int color) {
         return Registry.register(REGISTRY, Trickster.id(name), new FragmentType<>(codec, OptionalInt.of(color)));

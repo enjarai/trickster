@@ -26,3 +26,13 @@ Replaces the glyph with the number two.
 ---
 
 Replaces the glyph with an empty list.
+
+;;;;;
+
+<|pattern@trickster:templates|pattern=2\,5\,8\,6\,3\,0,title=Atlas Delusion|>
+
+{gray}(Scribing pattern){}
+
+---
+
+Replaces the glyph with an empty map.

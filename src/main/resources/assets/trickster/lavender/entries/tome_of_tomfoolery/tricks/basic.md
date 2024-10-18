@@ -33,7 +33,9 @@ If not, returns void.
 
 <|glyph@trickster:templates|trick-id=trickster:write_spell,title=Notulist's Ploy|>
 
-spell | void -> spell | void
+spell | {spell: spell} | void ->
+
+spell | {spell: spell} | void
 
 ---
 
@@ -42,9 +44,19 @@ Returns its input, after ephemeral decay.
 
 ;;;;;
 
+When given a map, the value will be stored separately from the spell. However, when clearing the spell on an item, the stored map is also cleared. 
+For usages of stored maps, see the following: 
+
+- [Macros](^trickster:macro)
+- [Wards](^trickster:ward)
+
+;;;;;
+
 <|glyph@trickster:templates|trick-id=trickster:write_closed_spell,title=Proprietary Notulist's Ploy|>
 
-spell | void -> spell | void
+spell | {spell: spell} | void ->
+
+spell | {spell: spell} | void
 
 ---
 

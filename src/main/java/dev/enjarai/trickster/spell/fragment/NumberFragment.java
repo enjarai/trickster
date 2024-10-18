@@ -40,8 +40,8 @@ public final class NumberFragment implements AddableFragment, SubtractableFragme
     }
 
     @Override
-    public BooleanFragment asBoolean() {
-        return new BooleanFragment(number != 0);
+    public boolean asBoolean() {
+        return number != 0;
     }
 
     @Override

@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Stack;
 
-public class FoldingSpellExecutor implements SpellExecutor {
-    public static final StructEndec<FoldingSpellExecutor> ENDEC = EndecTomfoolery.lazy(() -> StructEndecBuilder.of(
+public class ListFoldingSpellExecutor implements SpellExecutor {
+    public static final StructEndec<ListFoldingSpellExecutor> ENDEC = EndecTomfoolery.lazy(() -> StructEndecBuilder.of(
             ExecutionState.ENDEC.fieldOf("state", executor -> executor.state),
             SpellPart.ENDEC.fieldOf("executable", executor -> executor.executable),
             ListFragment.ENDEC.fieldOf("list", executor -> executor.list),
@@ -29,7 +29,7 @@ public class FoldingSpellExecutor implements SpellExecutor {
             }, ArrayList::new).fieldOf("elements", executor -> executor.elements),
             EndecTomfoolery.safeOptionalOf(SpellExecutor.ENDEC).optionalFieldOf("child", executor -> executor.child, Optional.empty()),
             Fragment.ENDEC.fieldOf("last", executor -> executor.last),
-            FoldingSpellExecutor::new
+            ListFoldingSpellExecutor::new
     ));
 
     protected final ExecutionState state;
@@ -40,7 +40,7 @@ public class FoldingSpellExecutor implements SpellExecutor {
     protected Fragment last;
     protected int lastRunExecutions;
 
-    protected FoldingSpellExecutor(ExecutionState state,
+    protected ListFoldingSpellExecutor(ExecutionState state,
                                    SpellPart executable,
                                    ListFragment list,
                                    Stack<Fragment> elements,
@@ -54,14 +54,14 @@ public class FoldingSpellExecutor implements SpellExecutor {
         this.last = last;
     }
 
-    public FoldingSpellExecutor(SpellContext ctx, SpellPart executable, ListFragment list, Fragment initial) {
+    public ListFoldingSpellExecutor(SpellContext ctx, SpellPart executable, ListFragment list, Fragment initial) {
         this(ctx.executionState(), executable, list, new Stack<>(), Optional.empty(), initial);
         this.elements.addAll(list.fragments().reversed());
     }
 
     @Override
     public SpellExecutorType<?> type() {
-        return SpellExecutorType.FOLDING;
+        return SpellExecutorType.LIST_FOLDING;
     }
 
     @Override

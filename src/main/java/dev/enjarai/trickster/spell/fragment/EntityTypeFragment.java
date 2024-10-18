@@ -25,8 +25,8 @@ public record EntityTypeFragment(EntityType<?> entityType) implements Fragment {
     }
 
     @Override
-    public BooleanFragment asBoolean() {
-        return BooleanFragment.TRUE;
+    public boolean asBoolean() {
+        return true;
     }
 
     @Override

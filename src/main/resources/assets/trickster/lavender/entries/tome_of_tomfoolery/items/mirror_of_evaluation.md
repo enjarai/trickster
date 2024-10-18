@@ -2,11 +2,11 @@
 {
   "title": "Mirror of Evaluation",
   "icon": "trickster:mirror_of_evaluation",
-  "category": "trickster:basics"
+  "category": "trickster:items"
 }
 ```
 
-A Mirror of Evaluation is a tool very similar to the ever-useful [Scroll and Quill](^trickster:basics/scroll_and_quill).
+A Mirror of Evaluation is a tool very similar to the ever-useful [Scroll and Quill](^trickster:items/scroll_and_quill).
 The main difference is that it greedily casts any part of the spell it can while it is being written.
 
 
