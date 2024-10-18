@@ -34,7 +34,7 @@ public class ScrollAndQuillItem extends Item {
         var stack = user.getStackInHand(hand);
         var otherStack = user.getStackInHand(hand == Hand.MAIN_HAND ? Hand.OFF_HAND : Hand.MAIN_HAND);
         var slot = hand == Hand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
-        var mergedMap = MapComponent.getUserMergedMap(user, "ring", () -> Hamt.empty());
+        var mergedMap = MapComponent.getUserMergedMap(user, "ring", Hamt::empty);
 
         var spell = stack.get(ModComponents.SPELL);
         if (spell == null || spell.closed()) {
