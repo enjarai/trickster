@@ -6,6 +6,7 @@ import com.mojang.datafixers.util.Function3;
 import com.mojang.serialization.Codec;
 import com.mojang.util.UndashedUuid;
 import io.wispforest.endec.*;
+import io.wispforest.endec.impl.StructEndecBuilder;
 import io.wispforest.owo.serialization.CodecUtils;
 import net.minecraft.util.math.BlockPos;
 import org.joml.Vector3d;
@@ -57,6 +58,13 @@ public class EndecTomfoolery {
                     }
                 }
         )).orElse(endec.optionalOf());
+    }
+
+    public static <T> StructEndec<T> funnyFieldOf(Endec<T> endec, String key) {
+        return StructEndecBuilder.of(
+                endec.fieldOf(key, Function.identity()),
+                Function.identity()
+        );
     }
 
     public static <T> Codec<T> toCodec(Endec<T> endec) {

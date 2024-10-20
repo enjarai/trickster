@@ -1,8 +1,10 @@
 package dev.enjarai.trickster.spell.fragment;
 
 import com.mojang.serialization.Lifecycle;
+import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Fragment;
+import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.PatternGlyph;
 import dev.enjarai.trickster.spell.SpellPart;
 import io.wispforest.endec.StructEndec;
@@ -46,6 +48,7 @@ public record FragmentType<T extends Fragment>(StructEndec<T> endec, OptionalInt
     public static final FragmentType<ListFragment> LIST = register("list", ListFragment.ENDEC);
     public static final FragmentType<VoidFragment> VOID = register("void", VoidFragment.ENDEC, 0x4400aa);
     public static final FragmentType<PatternGlyph> PATTERN = register("pattern", PatternGlyph.ENDEC, 0x6644aa);
+    public static final FragmentType<Pattern> PATTERN_LITERAL = register("pattern_literal", EndecTomfoolery.funnyFieldOf(Pattern.ENDEC, "pattern"), 0xbbbbaa);
     public static final FragmentType<SpellPart> SPELL_PART = register("spell_part", SpellPart.ENDEC, 0xaa44aa);
     public static final FragmentType<EntityFragment> ENTITY = register("entity", EntityFragment.ENDEC, 0x338888);
     public static final FragmentType<ZalgoFragment> ZALGO = register("zalgo", ZalgoFragment.ENDEC, 0x444444);

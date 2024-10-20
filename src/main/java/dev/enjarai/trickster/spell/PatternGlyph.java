@@ -86,11 +86,11 @@ public record PatternGlyph(Pattern pattern) implements Fragment {
 
     @Override
     public boolean asBoolean() {
-        return true;
+        return pattern.asBoolean();
     }
 
     @Override
     public int getWeight() {
-        return 32;
+        return pattern.getWeight();
     }
 }

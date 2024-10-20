@@ -27,7 +27,7 @@ public class EvaluationMirrorItem extends Item {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         var stack = user.getStackInHand(hand);
         var otherStack = user.getStackInHand(hand == Hand.MAIN_HAND ? Hand.OFF_HAND : Hand.MAIN_HAND);
-        var macros = MapComponent.getUserMergedMap(user, "ring", () -> Hamt.empty());
+        var macros = MapComponent.getUserMergedMap(user, "ring", Hamt::empty);
 
         if (!user.isSneaking()) {
             user.openHandledScreen(new NamedScreenHandlerFactory() {

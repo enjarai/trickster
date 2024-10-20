@@ -29,6 +29,7 @@ public class Revisions {
     public static final Revision EXECUTE_OFF_HAND = register(new ExecuteOffHandRevision());
     public static final Revision WRITE_ADDRESS_TO_OFF_HAND = register(new WriteAddressToOffHandRevision());
     public static final Revision WRITE_BRANCH_TO_OFF_HAND = register(new WriteBranchToOffHandRevision());
+    public static final Revision PATTERN_LITERAL = register(new PatternLiteralRevision());
 
     public static final Revision ONE_PONY_TRICK = register(new ConstantRevision(Tricks.TWO.getPattern(), new NumberFragment(2)));
     public static final Revision EMPTY_LIST = register(new ConstantRevision(Tricks.LIST_CREATE.getPattern(), new ListFragment(List.of())));

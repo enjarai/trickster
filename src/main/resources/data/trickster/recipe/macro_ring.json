@@ -3,13 +3,19 @@
   "category": "misc",
   "key": {
     "g": {
-      "item": "minecraft:gold_nugget"
+      "item": "minecraft:gold_ingot"
+    },
+    "e": {
+      "item": "minecraft:emerald"
+    },
+    "i": {
+      "item": "trickster:spell_ink"
     }
   },
   "pattern": [
-    "ggg",
-    "g g",
-    "ggg"
+    " ge",
+    "gig",
+    " g "
   ],
   "result": {
     "count": 1,

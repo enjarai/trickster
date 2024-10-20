@@ -143,7 +143,7 @@ public abstract class Trick {
             var sourceFragment = triggerCaster
                     .<Fragment>map(EntityFragment::from)
                     .orElse(new VectorFragment(triggerCtx.source().getPos()));
-            var charmMap = MapComponent.getUserMergedMap(player, "charm", () -> Hamt.empty());
+            var charmMap = MapComponent.getUserMergedMap(player, "charm", Hamt::empty);
             var spell = charmMap.get(getPattern());
             var caster = ModEntityComponents.CASTER.get(player);
             spell.ifPresent(s -> caster.queueSpellAndCast(s, List.of(sourceFragment, new ListFragment(fragments)), Optional.empty()));

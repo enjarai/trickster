@@ -5,7 +5,7 @@
 }
 ```
 Macros allow you to create your own Revisions to aid with spell scribing. 
-When drawing a pattern, the associated macro is fetched from the combined maps of all worn [Rings](^trickster:items/ring), and will be evaluated for up to 1/20th of a second.
+When drawing a pattern, maps inscribed into all worn [Rings](^trickster:items/ring) are checked for keys matching the drawn pattern
 
 ;;;;;
 
