@@ -2,7 +2,9 @@ package dev.enjarai.trickster.spell;
 
 import com.google.common.collect.ImmutableList;
 import dev.enjarai.trickster.EndecTomfoolery;
+import dev.enjarai.trickster.spell.fragment.FragmentType;
 import io.wispforest.endec.Endec;
+import net.minecraft.text.Text;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -10,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-public record Pattern(List<PatternEntry> entries) {
+public record Pattern(List<PatternEntry> entries) implements Fragment {
     public static final Endec<Pattern> ENDEC = Endec.ifAttr(EndecTomfoolery.UBER_COMPACT_ATTRIBUTE, Endec.INT.xmap(Pattern::from, Pattern::toInt))
             .orElse(PatternEntry.ENDEC.listOf().xmap(Pattern::new, Pattern::entries));
     public static final Pattern EMPTY = Pattern.of();
@@ -82,6 +84,26 @@ public record Pattern(List<PatternEntry> entries) {
             }
         }
         return result;
+    }
+
+    @Override
+    public FragmentType<?> type() {
+        return FragmentType.PATTERN_LITERAL;
+    }
+
+    @Override
+    public Text asText() {
+        return Text.of("TODO"); // TODO
+    }
+
+    @Override
+    public boolean asBoolean() {
+        return !isEmpty();
+    }
+
+    @Override
+    public int getWeight() {
+        return 32;
     }
 
     public record PatternEntry(byte p1, byte p2) implements Comparable<PatternEntry> {
