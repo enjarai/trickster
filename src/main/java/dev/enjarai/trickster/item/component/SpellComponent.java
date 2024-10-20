@@ -5,7 +5,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.spell.SpellPart;
-import io.wispforest.owo.serialization.CodecUtils;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ContainerComponent;
 import net.minecraft.item.ItemStack;
