@@ -14,19 +14,19 @@ public class ManaCrystalItem extends Item {
 
     public static class Amethyst extends ManaCrystalItem {
         public Amethyst() {
-            super(new Settings().component(ModComponents.MANA, new ManaComponent(SimpleManaPool.getSingleUse(500), false)));
+            super(new Settings().component(ModComponents.MANA, new ManaComponent(SimpleManaPool.getSingleUse(128), 0, false)));
         }
     }
 
     public static class Emerald extends ManaCrystalItem {
         public Emerald() {
-            super(new Settings().component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(1000))));
+            super(new Settings().component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(1024), 1 / 12f)));
         }
     }
 
     public static class Diamond extends ManaCrystalItem {
         public Diamond() {
-            super(new Settings().component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(2500))));
+            super(new Settings().component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(16384), 4 / 12f)));
         }
     }
 

@@ -74,6 +74,8 @@ public class ModItems {
     public static final TagKey<Item> SPELL_COST = TagKey.of(RegistryKeys.ITEM, Trickster.id("spell_cost"));
     public static final TagKey<Item> NO_SPELL_GLINT = TagKey.of(RegistryKeys.ITEM, Trickster.id("no_spell_glint"));
     public static final TagKey<Item> WEAPON_SPELL_TRIGGERS = TagKey.of(RegistryKeys.ITEM, Trickster.id("weapon_spell_triggers"));
+    public static final TagKey<Item> MANA_CRYSTALS = TagKey.of(RegistryKeys.ITEM, Trickster.id("mana_crystals"));
+    public static final TagKey<Item> CANT_DESPAWN = TagKey.of(RegistryKeys.ITEM, Trickster.id("cant_despawn"));
     public static final TagKey<Block> CONJURABLE_FLOWERS = TagKey.of(RegistryKeys.BLOCK, Trickster.id("conjurable_flowers"));
 
     public static final WrittenScrollItem[] COLORED_WRITTEN_SCROLLS = new WrittenScrollItem[DyeColor.values().length];
