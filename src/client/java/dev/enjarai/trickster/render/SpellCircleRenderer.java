@@ -274,11 +274,6 @@ public class SpellCircleRenderer {
         }
     }
 
-    public long getTime() {
-        var world = MinecraftClient.getInstance().world;
-        return world != null ? world.getTime() : 0;
-    }
-
     public static void drawGlyphLine(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Vector2f last, Vector2f now, float pixelSize, boolean isDrawing, float tone, float r, float g, float b, float opacity) {
         var parallelVec = new Vector2f(last.y - now.y, now.x - last.x).normalize().mul(pixelSize / 2);
         var directionVec = new Vector2f(last.x - now.x, last.y - now.y).normalize().mul(pixelSize * 3);

@@ -12,6 +12,7 @@ import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.particle.ProtectedBlockParticle;
 import dev.enjarai.trickster.particle.SpellParticle;
 import dev.enjarai.trickster.render.*;
+import dev.enjarai.trickster.render.fragment.FragmentRenderer;
 import dev.enjarai.trickster.screen.ModHandledScreens;
 import dev.enjarai.trickster.screen.ScrollAndQuillScreen;
 import dev.enjarai.trickster.screen.SignScrollScreen;
@@ -39,6 +40,7 @@ public class TricksterClient implements ClientModInitializer {
 		};
 
 		FleckRenderer.register();
+		FragmentRenderer.register();
 
 		ModHandledScreens.register();
 		ModKeyBindings.register();
