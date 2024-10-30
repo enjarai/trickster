@@ -25,9 +25,8 @@ public class MapInsertTrick extends Trick {
         if (!fragmentIterator.hasNext()) {
             throw new MissingFragmentBlunder(this, 0, FragmentType.MAP.getName());
         }
-        var first = expectType(fragmentIterator.next(), FragmentType.MAP);
+        var map = expectType(fragmentIterator.next(), FragmentType.MAP).map();
 
-        var map = ((MapFragment) first).downcast();
         int index = 1;
         while(fragmentIterator.hasNext()) {
             Fragment key = fragmentIterator.next();

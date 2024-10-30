@@ -38,10 +38,11 @@ public class ItemTriggerHelper {
     }
 
     public static void trigger(ServerPlayerEntity player, ItemStack stack, List<Fragment> arguments) {
-        var spellComponent = stack.get(ModComponents.SPELL);
+        var component = stack.get(ModComponents.FRAGMENT);
 
-        if (spellComponent != null) {
-            ModEntityComponents.CASTER.get(player).queueSpellAndCast(spellComponent.spell(), arguments, Optional.empty());
+        if (component != null) {
+            var spell = component.value() instanceof SpellPart part ? part : new SpellPart(component.value());
+            ModEntityComponents.CASTER.get(player).queueSpellAndCast(spell, arguments, Optional.empty());
         }
     }
 }

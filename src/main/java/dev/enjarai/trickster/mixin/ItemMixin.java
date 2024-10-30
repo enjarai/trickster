@@ -4,8 +4,7 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import dev.enjarai.trickster.SpellTooltipData;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
-import dev.enjarai.trickster.item.component.SpellComponent;
-import dev.enjarai.trickster.spell.PatternGlyph;
+import dev.enjarai.trickster.spell.SpellPart;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipData;
@@ -29,8 +28,7 @@ public abstract class ItemMixin {
     )
     private boolean spellGlint(boolean original, ItemStack stack) {
         return original
-                || (stack.get(ModComponents.SPELL) instanceof SpellComponent spellComponent)
-                && !spellComponent.spell().isEmpty()
+                || (stack.contains(ModComponents.FRAGMENT))
                 && !stack.isIn(ModItems.NO_SPELL_GLINT);
     }
 
@@ -39,7 +37,7 @@ public abstract class ItemMixin {
             at = @At("HEAD")
     )
     private void addGarble(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType type, CallbackInfo ci) {
-        var spellComponent = stack.get(ModComponents.SPELL);
+        var spellComponent = stack.get(ModComponents.FRAGMENT);
 
         if (spellComponent != null && /*!spellComponent.spell().isEmpty() &&*/ spellComponent.closed()) {
             tooltip.add(spellComponent.name()
@@ -49,32 +47,15 @@ public abstract class ItemMixin {
     }
 
     @Inject(
-            method = "appendTooltip",
-            at = @At("HEAD")
-    )
-    private void addMapTooltip(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType type, CallbackInfo ci) {
-        var mapComponent = stack.get(ModComponents.MAP);
-
-        if (mapComponent != null && !(mapComponent.map().size() == 0)) {
-            var map = mapComponent.map();
-            map.iterator().forEachRemaining(entry -> tooltip.add(new PatternGlyph(entry
-                    .getKey()).asFormattedText().copy()
-                    .append(": ")
-                    .append(entry.getValue().asFormattedText())
-            ));
-        }
-    }
-
-    @Inject(
             method = "getTooltipData",
             at = @At("HEAD"),
             cancellable = true
     )
     private void trickster$getSpellTooltipData(ItemStack stack, CallbackInfoReturnable<Optional<TooltipData>> cir) {
-        var spellComponent = stack.get(ModComponents.SPELL);
+        var comp = stack.get(ModComponents.FRAGMENT);
 
-        if (spellComponent != null && !spellComponent.spell().isEmpty() && !spellComponent.closed()) {
-            cir.setReturnValue(Optional.of(new SpellTooltipData(spellComponent.spell())));
+        if (comp != null && !comp.closed() && comp.value() instanceof SpellPart spell && !spell.isEmpty()) {
+            cir.setReturnValue(Optional.of(new SpellTooltipData(spell)));
         }
     }
 }

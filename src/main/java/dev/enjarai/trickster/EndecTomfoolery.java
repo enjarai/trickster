@@ -2,12 +2,14 @@ package dev.enjarai.trickster;
 
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
+import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Function3;
 import com.mojang.serialization.Codec;
 import com.mojang.util.UndashedUuid;
 import io.wispforest.endec.*;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import io.wispforest.owo.serialization.CodecUtils;
+import io.wispforest.owo.serialization.endec.EitherEndec;
 import net.minecraft.util.math.BlockPos;
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
@@ -36,6 +38,17 @@ public class EndecTomfoolery {
         }).xmap(
                 components -> constructor.apply(components.get(0), components.get(1), components.get(2)),
                 vector -> List.of(xGetter.apply(vector), yGetter.apply(vector), zGetter.apply(vector))
+        );
+    }
+    
+    public static <T, A extends T> Endec<T> withAlternative(Endec<T> primary, Endec<A> alternative) {
+        return new EitherEndec<T, A>(
+            primary,
+            alternative,
+            true
+        ).xmap(
+            Either::unwrap,
+            Either::left
         );
     }
 

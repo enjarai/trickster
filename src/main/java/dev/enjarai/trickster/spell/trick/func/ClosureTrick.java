@@ -25,7 +25,7 @@ public class ClosureTrick extends Trick {
 
         Map<Pattern, Fragment> replacements;
         if (fragments.size() >= 2 && fragments.get(1).type() == FragmentType.MAP) {
-            var map = expectInput(fragments, FragmentType.MAP, 1).downcast();
+            var map = expectInput(fragments, FragmentType.MAP, 1).map();
             replacements = expectPatternMap(map);
         } else {
             replacements = new HashMap<>();

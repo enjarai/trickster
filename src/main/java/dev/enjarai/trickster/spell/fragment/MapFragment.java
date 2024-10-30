@@ -1,6 +1,12 @@
 package dev.enjarai.trickster.spell.fragment;
 
+import java.util.HashMap;
+import java.util.Optional;
+
 import dev.enjarai.trickster.spell.Fragment;
+import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.PatternGlyph;
+import dev.enjarai.trickster.spell.SpellPart;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
@@ -8,10 +14,9 @@ import net.minecraft.text.MutableText;
 import dev.enjarai.trickster.util.Hamt;
 import net.minecraft.text.Text;
 
-public record MapFragment(Hamt<? extends Fragment, ? extends Fragment> map) implements Fragment {
+public record MapFragment(Hamt<Fragment, Fragment> map) implements Fragment {
     public static final StructEndec<MapFragment> ENDEC = StructEndecBuilder.of(
-            Endec.map(Fragment.ENDEC, Fragment.ENDEC).xmap(Hamt::fromMap, Hamt::asMap)
-                    .fieldOf("entries", MapFragment::downcast),
+            Endec.map(Fragment.ENDEC, Fragment.ENDEC).xmap(Hamt::fromMap, Hamt::asMap).fieldOf("entries", MapFragment::map),
             MapFragment::new
     );
 
@@ -62,8 +67,17 @@ public record MapFragment(Hamt<? extends Fragment, ? extends Fragment> map) impl
                     Hamt::assocAll));
     }
 
-    @SuppressWarnings("unchecked")
-	public Hamt<Fragment, Fragment> downcast() {
-        return (Hamt<Fragment, Fragment>) map;
+    public Optional<Hamt<Pattern, SpellPart>> getMacroMap() {
+        var macros = new HashMap<Pattern, SpellPart>();
+
+        for (var entry : map) {
+            if (entry.getKey() instanceof SpellPart spellKey && spellKey.glyph instanceof PatternGlyph pattern && entry.getValue() instanceof SpellPart spell) {
+                macros.put(pattern.pattern(), spell);
+            } else {
+                return Optional.empty();
+            }
+        }
+
+        return Optional.of(Hamt.fromMap(macros));
     }
 }

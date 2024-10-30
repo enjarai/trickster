@@ -2,7 +2,6 @@ package dev.enjarai.trickster.spell;
 
 import dev.enjarai.trickster.spell.blunder.OverweightFragmentBlunder;
 import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
-import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.Tricks;

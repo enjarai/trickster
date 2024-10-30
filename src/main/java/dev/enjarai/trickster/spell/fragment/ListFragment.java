@@ -17,9 +17,9 @@ import net.minecraft.text.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-public record ListFragment(List<? extends Fragment> fragments) implements FoldableFragment {
+public record ListFragment(List<Fragment> fragments) implements FoldableFragment {
     public static final StructEndec<ListFragment> ENDEC = StructEndecBuilder.of(
-            Fragment.ENDEC.listOf().fieldOf("fragments", ListFragment::downcast),
+            Fragment.ENDEC.listOf().fieldOf("fragments", ListFragment::fragments),
             ListFragment::new
     );
 
@@ -62,11 +62,6 @@ public record ListFragment(List<? extends Fragment> fragments) implements Foldab
         }
 
         return weight;
-    }
-
-    @SuppressWarnings("unchecked")
-	public List<Fragment> downcast() {
-        return (List<Fragment>) fragments;
     }
 
     public ListFragment addRange(ListFragment other) throws BlunderException {

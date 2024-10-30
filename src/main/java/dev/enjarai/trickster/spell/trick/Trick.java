@@ -2,7 +2,7 @@ package dev.enjarai.trickster.spell.trick;
 
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.cca.ModEntityComponents;
-import dev.enjarai.trickster.item.component.MapComponent;
+import dev.enjarai.trickster.item.component.FragmentComponent;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
@@ -143,7 +143,7 @@ public abstract class Trick {
             var sourceFragment = triggerCaster
                     .<Fragment>map(EntityFragment::from)
                     .orElse(new VectorFragment(triggerCtx.source().getPos()));
-            var charmMap = MapComponent.getUserMergedMap(player, "charm", Hamt::empty);
+            var charmMap = FragmentComponent.getUserMergedMap(player, "charm", Hamt::empty);
             var spell = charmMap.get(getPattern());
             var caster = ModEntityComponents.CASTER.get(player);
             spell.ifPresent(s -> caster.queueSpellAndCast(s, List.of(sourceFragment, new ListFragment(fragments)), Optional.empty()));

@@ -3,7 +3,7 @@ package dev.enjarai.trickster.screen;
 import dev.enjarai.trickster.ModSounds;
 import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.item.ModItems;
-import dev.enjarai.trickster.item.component.SpellComponent;
+import dev.enjarai.trickster.item.component.FragmentComponent;
 import dev.enjarai.trickster.revision.RevisionContext;
 import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.execution.ExecutionState;
@@ -63,11 +63,11 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
         }
 
         if (scrollStack != null) {
-            SpellComponent.getSpellPart(scrollStack).ifPresent(this.spell::set);
+            FragmentComponent.getSpellPart(scrollStack).ifPresent(this.spell::set);
         }
 
         if (otherHandStack != null) {
-            SpellComponent.getSpellPart(otherHandStack).ifPresent(this.otherHandSpell::set);
+            FragmentComponent.getSpellPart(otherHandStack).ifPresent(this.otherHandSpell::set);
         }
 
         this.isMutable.set(isMutable);
@@ -156,7 +156,7 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
                             this.spell.set(spell.applyEphemeral());
                         }
 
-                        SpellComponent.setSpellPart(scrollStack, spell, Optional.empty(), false);
+                        FragmentComponent.setValue(scrollStack, spell, Optional.empty(), false);
                     });
                 }
             } else {
@@ -174,7 +174,7 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
                     var server = player().getServer();
                     if (server != null) {
                         server.execute(() -> {
-                            SpellComponent.setSpellPart(otherHandStack, spell, Optional.empty(), false);
+                            FragmentComponent.setValue(otherHandStack, spell, Optional.empty(), false);
                             otherHandSpell.set(spell);
                         });
                     }

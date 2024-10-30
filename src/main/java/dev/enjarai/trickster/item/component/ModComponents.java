@@ -8,10 +8,14 @@ import net.minecraft.registry.Registry;
 import java.util.function.UnaryOperator;
 
 public class ModComponents {
-    public static final ComponentType<SpellComponent> SPELL =
-            register("spell", builder -> builder.codec(SpellComponent.CODEC).cache());
+    public static final ComponentType<FragmentComponent> FRAGMENT =
+            register("spell", builder -> builder
+                    .endec(FragmentComponent.ENDEC)
+                    .cache());
     public static final ComponentType<SelectedSlotComponent> SELECTED_SLOT =
-            register("selected_slot", builder -> builder.codec(SelectedSlotComponent.CODEC).cache());
+            register("selected_slot", builder -> builder
+                    .codec(SelectedSlotComponent.CODEC)
+                    .cache());
     public static final ComponentType<WrittenScrollMetaComponent> WRITTEN_SCROLL_META =
             register("written_scroll_meta", builder -> builder
                     .codec(WrittenScrollMetaComponent.CODEC)
@@ -20,10 +24,6 @@ public class ModComponents {
     public static final ComponentType<EntityStorageComponent> ENTITY_STORAGE =
             register("entity_storage", builder -> builder
                     .codec(EntityStorageComponent.CODEC)
-                    .cache());
-    public static final ComponentType<MapComponent> MAP =
-            register("macros", builder -> builder
-                    .codec(MapComponent.CODEC)
                     .cache());
 
     private static <T> ComponentType<T> register(String id, UnaryOperator<ComponentType.Builder<T>> builderOperator) {

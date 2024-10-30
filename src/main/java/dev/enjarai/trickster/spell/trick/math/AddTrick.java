@@ -21,7 +21,7 @@ public class AddTrick extends Trick {
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         fragments = supposeInput(fragments, 0)
            .flatMap(l -> supposeType(l, FragmentType.LIST))
-           .map(ListFragment::downcast)
+           .map(ListFragment::fragments)
            .orElse(fragments);
 
         AddableFragment result = null;

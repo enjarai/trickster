@@ -16,7 +16,7 @@ public class MapRemoveTrick extends Trick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var map = expectInput(fragments, MapFragment.class, 0).downcast();
+        var map = expectInput(fragments, MapFragment.class, 0).map();
         Fragment key = expectInput(fragments, 1);
         return new MapFragment(map.dissoc(key));
     }

@@ -29,15 +29,15 @@ public class ModItems {
             Trickster.id("tome_of_tomfoolery"), new Item.Settings().maxCount(1));
     public static final WrittenScrollItem WRITTEN_SCROLL = register("written_scroll",
             new WrittenScrollItem(new Item.Settings().maxCount(16)
-                    .component(ModComponents.SPELL, new SpellComponent(new SpellPart(), true))
+                    .component(ModComponents.FRAGMENT, new FragmentComponent(new SpellPart(), true))
                     .component(ModComponents.WRITTEN_SCROLL_META,
                             new WrittenScrollMetaComponent("Unknown", "Unknown", 0))));
     public static final ScrollAndQuillItem SCROLL_AND_QUILL = register("scroll_and_quill",
             new ScrollAndQuillItem(new Item.Settings().maxCount(16)
-                    .component(ModComponents.SPELL, new SpellComponent(new SpellPart())), WRITTEN_SCROLL));
+                    .component(ModComponents.FRAGMENT, new FragmentComponent(new SpellPart())), WRITTEN_SCROLL));
     public static final EvaluationMirrorItem MIRROR_OF_EVALUATION = register("mirror_of_evaluation",
             new EvaluationMirrorItem(new Item.Settings().maxCount(1)
-                    .component(ModComponents.SPELL, new SpellComponent(new SpellPart()))));
+                    .component(ModComponents.FRAGMENT, new FragmentComponent(new SpellPart()))));
     public static final TrickHatItem TOP_HAT = register("top_hat",
             new TrickHatItem(new Item.Settings()));
     public static final TrickHatItem WITCH_HAT = register("witch_hat",
@@ -46,13 +46,11 @@ public class ModItems {
             new TrickHatItem(new Item.Settings()));
     public static final WandItem WAND = register("wand",
             new WandItem(new Item.Settings().maxCount(1)
-                    .component(ModComponents.SPELL, new SpellComponent(new SpellPart()))));
+                    .component(ModComponents.FRAGMENT, new FragmentComponent(new SpellPart()))));
     public static final Item MACRO_RING = register("macro_ring",
-            new Item(new Item.Settings().maxCount(1)
-                    .component(ModComponents.MAP, new MapComponent(Hamt.empty()))));
+            new Item(new Item.Settings().maxCount(1)));
     public static final Item WARDING_CHARM = register("warding_charm",
-            new Item(new Item.Settings().maxCount(1)
-                    .component(ModComponents.MAP, new MapComponent(Hamt.empty()))));
+            new Item(new Item.Settings().maxCount(1)));
     public static final SpellInkItem SPELL_INK = register("spell_ink",
             new SpellInkItem(new Item.Settings().recipeRemainder(Items.GLASS_BOTTLE)
                     .food(new FoodComponent(0,
@@ -87,7 +85,7 @@ public class ModItems {
 
             var writtenScroll = register("written_scroll_" + color.getName(),
                     new WrittenScrollItem(new Item.Settings().maxCount(16)
-                            .component(ModComponents.SPELL, new SpellComponent(new SpellPart(), true))
+                            .component(ModComponents.FRAGMENT, new FragmentComponent(new SpellPart(), true))
                             .component(ModComponents.WRITTEN_SCROLL_META,
                                     new WrittenScrollMetaComponent("Unknown", "Unknown", 0))));
             list.add(new DyedVariant(WRITTEN_SCROLL, writtenScroll, color));
@@ -95,7 +93,7 @@ public class ModItems {
 
             var scrollAndQuill = register("scroll_and_quill_" + color.getName(),
                     new ScrollAndQuillItem(new Item.Settings().maxCount(16)
-                            .component(ModComponents.SPELL, new SpellComponent(new SpellPart())), writtenScroll));
+                            .component(ModComponents.FRAGMENT, new FragmentComponent(new SpellPart())), writtenScroll));
             list.add(new DyedVariant(SCROLL_AND_QUILL, scrollAndQuill, color));
             COLORED_SCROLLS_AND_QUILLS[i] = scrollAndQuill;
         }

@@ -1,7 +1,7 @@
 package dev.enjarai.trickster.item;
 
 
-import dev.enjarai.trickster.item.component.MapComponent;
+import dev.enjarai.trickster.item.component.FragmentComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.screen.ScrollAndQuillScreenHandler;
 import dev.enjarai.trickster.util.Hamt;
@@ -34,9 +34,9 @@ public class ScrollAndQuillItem extends Item {
         var stack = user.getStackInHand(hand);
         var otherStack = user.getStackInHand(hand == Hand.MAIN_HAND ? Hand.OFF_HAND : Hand.MAIN_HAND);
         var slot = hand == Hand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
-        var mergedMap = MapComponent.getUserMergedMap(user, "ring", Hamt::empty);
+        var mergedMap = FragmentComponent.getUserMergedMap(user, "ring", Hamt::empty);
 
-        var spell = stack.get(ModComponents.SPELL);
+        var spell = stack.get(ModComponents.FRAGMENT);
         if (spell == null || spell.closed()) {
             return TypedActionResult.fail(stack);
         }

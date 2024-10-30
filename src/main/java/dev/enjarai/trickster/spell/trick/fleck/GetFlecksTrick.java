@@ -26,7 +26,7 @@ public class GetFlecksTrick extends Trick {
                     .orElseGet(() -> ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this))))
                 .getRenderFlecks()
                 .stream()
-                .map(fleck -> new NumberFragment(fleck.id()))
+                .<Fragment>map(fleck -> new NumberFragment(fleck.id()))
                 .toList()
         );
     }

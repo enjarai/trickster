@@ -1,6 +1,6 @@
 package dev.enjarai.trickster.spell.trick.inventory;
 
-import dev.enjarai.trickster.item.component.MapComponent;
+import dev.enjarai.trickster.item.component.FragmentComponent;
 import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.util.Hamt;
 import dev.enjarai.trickster.spell.fragment.MapFragment;
@@ -22,9 +22,9 @@ public class ReadMacroRing extends Trick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        return MapComponent.getUserMergedMap(ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this)), "ring")
+        return FragmentComponent.getUserMergedMap(ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this)), "ring")
             .map(ReadMacroRing::hamtAsMap)
-            .map(Hamt::fromMap)
+            .<Hamt<Fragment, Fragment>>map(Hamt::fromMap)
             .<Fragment>map(MapFragment::new)
             .orElse(VoidFragment.INSTANCE);
     }

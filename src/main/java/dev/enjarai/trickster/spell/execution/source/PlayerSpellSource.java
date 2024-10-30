@@ -95,7 +95,7 @@ public class PlayerSpellSource extends SpellSource {
     }
 
     public static boolean isSpellStack(ItemStack stack) {
-        return stack.contains(ModComponents.SPELL) ||
+        return stack.contains(ModComponents.FRAGMENT) ||
                 (stack.contains(DataComponentTypes.CONTAINER) && stack.contains(ModComponents.SELECTED_SLOT));
     }
 
