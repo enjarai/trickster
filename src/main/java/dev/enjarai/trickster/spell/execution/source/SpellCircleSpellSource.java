@@ -7,6 +7,8 @@ import dev.enjarai.trickster.spell.mana.CachedInventoryManaPool;
 import dev.enjarai.trickster.spell.mana.MutableManaPool;
 import dev.enjarai.trickster.spell.mana.generation.InventoryBlockManaHandler;
 import dev.enjarai.trickster.spell.mana.generation.ManaHandler;
+import net.minecraft.entity.ItemEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import org.joml.Vector3d;
@@ -77,5 +79,11 @@ public class SpellCircleSpellSource implements SpellSource {
     @Override
     public ManaHandler getManaHandler() {
         return new InventoryBlockManaHandler(pos);
+    }
+
+    @Override
+    public void offerOrDropItem(ItemStack stack) {
+        var pos = getPos();
+        world.spawnEntity(new ItemEntity(world, pos.x, pos.y, pos.z, stack));
     }
 }

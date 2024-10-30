@@ -64,4 +64,6 @@ public interface SpellSource {
     Fragment getCrowMind();
 
     void setCrowMind(Fragment fragment);
+
+    void offerOrDropItem(ItemStack stack);
 }

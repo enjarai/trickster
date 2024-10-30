@@ -137,4 +137,9 @@ public class PlayerSpellSource implements SpellSource {
     public ManaHandler getManaHandler() {
         return new PlayerManaHandler(player);
     }
+
+    @Override
+    public void offerOrDropItem(ItemStack stack) {
+        player.getInventory().offerOrDrop(stack);
+    }
 }

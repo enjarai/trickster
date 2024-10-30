@@ -41,7 +41,6 @@ public record ManaComponent(ManaPool pool, float naturalRechargeMultiplier, bool
         }
 
         // Require nighttime skylight access
-        // TODO this shits itself on the client :mojank:
         if (world.getLightLevel(LightType.SKY, BlockPos.ofFloored(pos)) < 15 || world.isDay()) {
             return 0;
         }

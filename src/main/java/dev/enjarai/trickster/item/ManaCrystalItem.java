@@ -7,32 +7,46 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 
-public class ManaCrystalItem extends Item {
-    public ManaCrystalItem(Settings settings) {
+public abstract class ManaCrystalItem extends Item {
+    private final float creationCost;
+
+    public ManaCrystalItem(Settings settings, float creationCost) {
         super(settings.maxCount(1));
+        this.creationCost = creationCost;
     }
 
     public static class Amethyst extends ManaCrystalItem {
         public Amethyst() {
-            super(new Settings().component(ModComponents.MANA, new ManaComponent(SimpleManaPool.getSingleUse(128), 0, false)));
+            super(new Settings()
+                    .component(ModComponents.MANA, new ManaComponent(SimpleManaPool.getSingleUse(128), 0, false)),
+                    0);
         }
     }
 
     public static class Emerald extends ManaCrystalItem {
         public Emerald() {
-            super(new Settings().component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(1024), 1 / 12f)));
+            super(new Settings()
+                    .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(1024), 1 / 12f)),
+                    512);
         }
     }
 
     public static class Diamond extends ManaCrystalItem {
         public Diamond() {
-            super(new Settings().component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(16384), 4 / 12f)));
+            super(new Settings()
+                    .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(16384), 4 / 12f)),
+                    8192);
         }
     }
 
     public static class Echo extends ManaCrystalItem {
         public Echo() {
-            super(new Settings());
+            super(new Settings(), 65536);
+        }
+
+        @Override
+        public ItemStack createStack() {
+            throw new UnsupportedOperationException();
         }
     }
 
@@ -60,5 +74,13 @@ public class ManaCrystalItem extends Item {
 
         float poolMax = manaComponent.pool().getMax();
         return poolMax == 0 ? 0 : MathHelper.clamp(Math.round(manaComponent.pool().get() * 13.0F / poolMax), 0, 13);
+    }
+
+    public float getCreationCost() {
+        return creationCost;
+    }
+
+    public ItemStack createStack() {
+        return getDefaultStack();
     }
 }

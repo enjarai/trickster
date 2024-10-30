@@ -3,6 +3,7 @@ package dev.enjarai.trickster.spell.trick;
 import java.util.HashMap;
 import java.util.Map;
 
+import dev.enjarai.trickster.spell.trick.battery.BatteryCreationTrick;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
@@ -345,7 +346,7 @@ public class Tricks {
     // Dimension
     public static final GetDimensionTrick GET_DIMENSION = register("get_dimension", new GetDimensionTrick());
 
-    //Flecks
+    // Flecks
     public static final LineFleckTrick DRAW_LINE = register("draw_line", new LineFleckTrick());
     public static final SpellFleckTrick DRAW_SPELL = register("draw_spell", new SpellFleckTrick());
     public static final GetFlecksTrick GET_FLECKS = register("get_flecks", new GetFlecksTrick());
@@ -356,6 +357,9 @@ public class Tricks {
     public static final PinChunkTrick PIN_CHUNK = register("pin_chunk", new PinChunkTrick());
     public static final ShowBarTrick SHOW_BAR = register("show_bar", new ShowBarTrick());
     public static final ClearBarTrick CLEAR_BAR = register("clear_bar", new ClearBarTrick());
+
+    // Mana
+    public static final BatteryCreationTrick BATTERY_CREATION = register("battery_creation", new BatteryCreationTrick());
 
     @ApiStatus.Internal
     public static <T extends Trick> T register(String path, T trick) {
