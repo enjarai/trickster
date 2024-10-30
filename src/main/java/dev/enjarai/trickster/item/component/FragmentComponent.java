@@ -26,14 +26,14 @@ public record FragmentComponent(Fragment value, Optional<String> name, boolean i
             SpellPart.ENDEC.fieldOf("spell", comp -> {
                 throw new IllegalStateException("Serializing as a spell is no longer supported");
             }),
-            Endec.STRING.optionalOf().fieldOf("name", FragmentComponent::name),
+            Endec.STRING.optionalOf().optionalFieldOf("name", FragmentComponent::name, Optional.empty()),
             Endec.BOOLEAN.optionalFieldOf("immutable", FragmentComponent::immutable, false),
             Endec.BOOLEAN.optionalFieldOf("closed", FragmentComponent::closed, false),
             FragmentComponent::new
     );
     private static final Endec<FragmentComponent> NEW_ENDEC = StructEndecBuilder.of(
             Fragment.ENDEC.fieldOf("value", FragmentComponent::value),
-            Endec.STRING.optionalOf().fieldOf("name", FragmentComponent::name),
+            EndecTomfoolery.safeOptionalOf(Endec.STRING).fieldOf("name", FragmentComponent::name),
             Endec.BOOLEAN.optionalFieldOf("immutable", FragmentComponent::immutable, false),
             Endec.BOOLEAN.optionalFieldOf("closed", FragmentComponent::closed, false),
             FragmentComponent::new
