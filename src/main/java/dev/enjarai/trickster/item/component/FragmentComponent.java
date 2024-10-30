@@ -21,7 +21,6 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public record FragmentComponent(Fragment value, Optional<String> name, boolean immutable, boolean closed) {
-    //TODO: broken
     private static final Endec<FragmentComponent> OLD_ENDEC = StructEndecBuilder.of(
             SpellPart.ENDEC.fieldOf("spell", comp -> {
                 throw new IllegalStateException("Serializing as a spell is no longer supported");
