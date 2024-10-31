@@ -1,12 +1,12 @@
 package dev.enjarai.trickster.net;
 
-import java.util.Optional;
+import java.util.UUID;
 
 import dev.enjarai.trickster.cca.SharedManaComponent;
 import io.wispforest.owo.network.ServerAccess;
 
-public record SubscribeInventoryPacket() {
+public record SubscribeToPoolPacket(UUID uuid) {
     public void handleServer(ServerAccess access) {
-        SharedManaComponent.INSTANCE.subscribeInventory(access.player(), Optional.empty());
+        SharedManaComponent.INSTANCE.subscribe(access.player(), uuid);
     }
 }

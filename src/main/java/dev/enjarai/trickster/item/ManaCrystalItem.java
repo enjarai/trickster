@@ -1,7 +1,11 @@
 package dev.enjarai.trickster.item;
 
+import dev.enjarai.trickster.cca.SharedManaComponent;
 import dev.enjarai.trickster.item.component.ManaComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
+import dev.enjarai.trickster.net.ModNetworking;
+import dev.enjarai.trickster.net.SubscribeToPoolPacket;
+import dev.enjarai.trickster.spell.mana.SharedManaPool;
 import dev.enjarai.trickster.spell.mana.SimpleManaPool;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -46,7 +50,12 @@ public abstract class ManaCrystalItem extends Item {
 
         @Override
         public ItemStack createStack() {
-            throw new UnsupportedOperationException();
+            var stack = getDefaultStack();
+            var pool = new SimpleManaPool(32768);
+            var uuid = SharedManaComponent.INSTANCE.allocate(pool);
+            stack.set(ModComponents.MANA, new ManaComponent(new SharedManaPool(uuid), 1));
+            stack.increment(1);
+            return stack;
         }
     }
 
@@ -70,6 +79,11 @@ public abstract class ManaCrystalItem extends Item {
         var manaComponent = stack.get(ModComponents.MANA);
         if (manaComponent == null) {
             return 0;
+        }
+
+        // if ever run on the server, will fail -- consider putting a try-catch if it causes an issue with a mod?
+        if (manaComponent.pool() instanceof SharedManaPool sharedPool && SharedManaComponent.INSTANCE.get(sharedPool.uuid()).isEmpty()) {
+            ModNetworking.CHANNEL.clientHandle().send(new SubscribeToPoolPacket(sharedPool.uuid()));
         }
 
         float poolMax = manaComponent.pool().getMax();

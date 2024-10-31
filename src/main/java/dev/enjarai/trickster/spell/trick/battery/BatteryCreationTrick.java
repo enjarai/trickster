@@ -6,6 +6,7 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.ItemInvalidBlunder;
 import dev.enjarai.trickster.spell.blunder.MissingItemBlunder;
 import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
@@ -49,13 +50,18 @@ public class BatteryCreationTrick extends Trick {
                     throw new MissingItemBlunder(this);
                 });
         var sourceItem = sourceSlot.getItem(this, ctx);
-
         var type = types.get(sourceItem);
+
+        if (type == null) {
+            throw new ItemInvalidBlunder(this);
+        }
+
         ctx.useMana(this, type.getCreationCost());
 
         sourceSlot.move(this, ctx, 1);
         ctx.source().offerOrDropItem(type.createStack());
 
+        //TODO: smth else?
         return VoidFragment.INSTANCE;
     }
 }
