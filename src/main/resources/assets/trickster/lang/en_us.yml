@@ -197,6 +197,10 @@ trickster:
     remove_transmog: Ploy of Origin
     get_transmog: Ingress of Transmogrification
 
+    battery_creation: Ploy of the Moon Watcher
+    push_mana: Benevolent Conduit's Ploy
+    pull_mana: Malevolent Conduit's Ploy
+
   fragment.trickster:
     type: Type
     number: Number
@@ -266,10 +270,10 @@ item.trickster:
   fez: Fez
   wand: Wand
 
-  amethyst_mana_crystal: Amethyst BETTER NAME
-  emerald_mana_crystal: Emerald BETTER NAME
-  diamond_mana_crystal: Diamond BETTER NAME
-  echo_mana_crystal: Echo BETTER NAME
+  amethyst_mana_crystal: Amethyst Knot
+  emerald_mana_crystal: Emerald Knot
+  diamond_mana_crystal: Diamond Knot
+  echo_mana_crystal: Echo Knot
 
 block.trickster:
   spell_resonator: Spell Resonator

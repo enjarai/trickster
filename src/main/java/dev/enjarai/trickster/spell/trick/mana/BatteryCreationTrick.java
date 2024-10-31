@@ -1,4 +1,4 @@
-package dev.enjarai.trickster.spell.trick.battery;
+package dev.enjarai.trickster.spell.trick.mana;
 
 import dev.enjarai.trickster.item.ManaCrystalItem;
 import dev.enjarai.trickster.item.ModItems;

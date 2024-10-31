@@ -3,7 +3,6 @@ package dev.enjarai.trickster.spell.trick;
 import java.util.HashMap;
 import java.util.Map;
 
-import dev.enjarai.trickster.spell.trick.battery.BatteryCreationTrick;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
@@ -102,8 +101,9 @@ import dev.enjarai.trickster.spell.trick.list.ListInsertTrick;
 import dev.enjarai.trickster.spell.trick.list.ListRemoveElementTrick;
 import dev.enjarai.trickster.spell.trick.list.ListRemoveTrick;
 import dev.enjarai.trickster.spell.trick.list.ListSizeTrick;
-import dev.enjarai.trickster.spell.trick.mana.ConsumeTrick;
-import dev.enjarai.trickster.spell.trick.mana.LinkToEchoTrick;
+import dev.enjarai.trickster.spell.trick.mana.BatteryCreationTrick;
+import dev.enjarai.trickster.spell.trick.mana.PullManaTrick;
+import dev.enjarai.trickster.spell.trick.mana.PushManaTrick;
 import dev.enjarai.trickster.spell.trick.math.AddTrick;
 import dev.enjarai.trickster.spell.trick.math.CeilTrick;
 import dev.enjarai.trickster.spell.trick.math.CosTrick;
@@ -240,10 +240,6 @@ public class Tricks {
     public static final BlockFindEntityTrick BLOCK_FIND_ENTITY = register("block_find_entity", new BlockFindEntityTrick());
     public static final RangeFindEntityTrick RANGE_FIND_ENTITY = register("range_find_entity", new RangeFindEntityTrick());
 
-    // Mana
-    public static final ConsumeTrick CONSUME = register("consume", new ConsumeTrick());
-    public static final LinkToEchoTrick LINK_TO_ECHO = register("link_to_echo", new LinkToEchoTrick());
-
     // Math
     public static final AddTrick ADD = register("add", new AddTrick());
     public static final SubtractTrick SUBTRACT = register("subtract", new SubtractTrick());
@@ -360,6 +356,8 @@ public class Tricks {
 
     // Mana
     public static final BatteryCreationTrick BATTERY_CREATION = register("battery_creation", new BatteryCreationTrick());
+    public static final PushManaTrick PUSH_MANA = register("push_mana", new PushManaTrick());
+    public static final PullManaTrick PULL_MANA = register("pull_mana", new PullManaTrick());
 
     @ApiStatus.Internal
     public static <T extends Trick> T register(String path, T trick) {
