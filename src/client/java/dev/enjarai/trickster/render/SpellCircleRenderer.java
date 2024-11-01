@@ -2,10 +2,12 @@ package dev.enjarai.trickster.render;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.enjarai.trickster.Trickster;
+import dev.enjarai.trickster.render.fragment.FragmentRenderer;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.PatternGlyph;
 import dev.enjarai.trickster.spell.SpellPart;
+import dev.enjarai.trickster.spell.fragment.FragmentType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.*;
@@ -72,8 +74,24 @@ public class SpellCircleRenderer {
         this.b = b;
     }
 
+    public float getR() {
+        return r;
+    }
+
+    public float getG() {
+        return g;
+    }
+
+    public float getB() {
+        return b;
+    }
+
     public void setCircleTransparency(float circleTransparency) {
         this.circleTransparency = circleTransparency;
+    }
+
+    public float getCircleTransparency() {
+        return circleTransparency;
     }
 
     private float toLocalSpace(double value) {
@@ -157,19 +175,19 @@ public class SpellCircleRenderer {
             renderPart(matrices, vertexConsumers, part, x, y, size / 3, startingAngle, delta, alphaGetter, normal);
         } else {
             matrices.push();
-            drawSide(matrices, vertexConsumers, parent, toLocalSpace(x), toLocalSpace(y), toLocalSpace(size), alphaGetter, glyph);
+            drawSide(matrices, vertexConsumers, parent, toLocalSpace(x), toLocalSpace(y), toLocalSpace(size), alphaGetter, normal, glyph);
             matrices.pop();
 
             if (!inUI) {
                 matrices.push();
                 matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
-                drawSide(matrices, vertexConsumers, parent, toLocalSpace(-x), toLocalSpace(y), toLocalSpace(size), alphaGetter, glyph);
+                drawSide(matrices, vertexConsumers, parent, toLocalSpace(-x), toLocalSpace(y), toLocalSpace(size), alphaGetter, normal, glyph);
                 matrices.pop();
             }
         }
     }
 
-    private void drawSide(MatrixStack matrices, VertexConsumerProvider vertexConsumers, SpellPart parent, float x, float y, float size, Function<Float, Float> alphaGetter, Fragment glyph) {
+    private void drawSide(MatrixStack matrices, VertexConsumerProvider vertexConsumers, SpellPart parent, float x, float y, float size, Function<Float, Float> alphaGetter, Vec3d normal, Fragment glyph) {
         var alpha = alphaGetter.apply(size);
         var patternSize = size / PATTERN_TO_PART_RATIO;
         var pixelSize = patternSize / PART_PIXEL_RADIUS;
@@ -220,28 +238,36 @@ public class SpellCircleRenderer {
                 drawGlyphLine(matrices, vertexConsumers, last, now, pixelSize, true, 1, r, g, b, 0.7f * alpha);
             }
         } else {
-            var textRenderer = MinecraftClient.getInstance().textRenderer;
+            //noinspection rawtypes
+            FragmentRenderer renderer = FragmentRenderer.REGISTRY.get(FragmentType.REGISTRY.getId(glyph.type()));
+
+            if (renderer != null) {
+                //noinspection unchecked
+                renderer.render(glyph, matrices, vertexConsumers, x, y, size, alpha, normal, this);
+            } else {
+                var textRenderer = MinecraftClient.getInstance().textRenderer;
 
 //            var height = textRenderer.wrapLines(Text.literal(glyph.asString()), ) // TODO
-            var text = glyph.asFormattedText();
-            var height = 7;
-            var width = textRenderer.getWidth(text);
+                var text = glyph.asFormattedText();
+                var height = 7;
+                var width = textRenderer.getWidth(text);
 
-            matrices.push();
-            matrices.translate(x, y, 0);
-            matrices.scale(size / 1.3f / width, size / 1.3f / width, 1);
+                matrices.push();
+                matrices.translate(x, y, 0);
+                matrices.scale(size / 1.3f / width, size / 1.3f / width, 1);
 
-            var color = ColorHelper.Argb.withAlpha((int) (alpha * 0xff), 0xffffff);
+                var color = ColorHelper.Argb.withAlpha((int) (alpha * 0xff), 0xffffff);
 
-            textRenderer.draw(
-                    text,
-                    -width / 2f, -height / 2f, color, false,
-                    matrices.peek().getPositionMatrix(),
-                    vertexConsumers, TextRenderer.TextLayerType.NORMAL,
-                    0, 0xf000f0
-            );
+                textRenderer.draw(
+                        text,
+                        -width / 2f, -height / 2f, color, false,
+                        matrices.peek().getPositionMatrix(),
+                        vertexConsumers, TextRenderer.TextLayerType.NORMAL,
+                        0, 0xf000f0
+                );
 
-            matrices.pop();
+                matrices.pop();
+            }
 
             if (inEditor && inUI) {
                 for (int i = 0; i < 9; i++) {
@@ -307,7 +333,7 @@ public class SpellCircleRenderer {
                 mouseY >= pos.y - hitboxSize && mouseY <= pos.y + hitboxSize;
     }
 
-    protected void drawTexturedQuad(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Identifier texture, float x1, float x2, float y1, float y2, float z, float r, float g, float b, float alpha, Vec3d normal) {
+    public static void drawTexturedQuad(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Identifier texture, float x1, float x2, float y1, float y2, float z, float r, float g, float b, float alpha, Vec3d normal) {
 //        if (inUI) {
 //            RenderSystem.setShaderTexture(0, texture);
 //            RenderSystem.setShader(GameRenderer::getPositionTexProgram);
