@@ -144,7 +144,8 @@ public class MultiSpellCircleBlockEntity extends BlockEntity implements Inventor
                 
                 if (!stack.contains(ModComponents.SPELL_CORE)
                         || stack.get(ModComponents.SPELL_CORE) instanceof SpellCoreComponent comp
-                        && !spell.equals(comp.spell().orElse(null))) {
+                        && (!spell.equals(comp.spell().orElse(null))
+                        || comp.error().isPresent())) {
                     stack.set(ModComponents.SPELL_CORE, new SpellCoreComponent(spell));
                 }
             }
@@ -199,7 +200,7 @@ public class MultiSpellCircleBlockEntity extends BlockEntity implements Inventor
 	@Override
 	public boolean queue(SpellExecutor executor) {
         for (var stack : inventory) {
-            if (stack.isOf(ModItems.SPELL_CORE) && !stack.contains(ModComponents.SPELL_CORE)) {
+            if (stack.isOf(ModItems.SPELL_CORE) && !stack.contains(ModComponents.SPELL_CORE) || stack.get(ModComponents.SPELL_CORE).error().isPresent()) {
                 stack.set(ModComponents.SPELL_CORE, new SpellCoreComponent(executor, Optional.empty(), Optional.empty()));
                 return true;
             }

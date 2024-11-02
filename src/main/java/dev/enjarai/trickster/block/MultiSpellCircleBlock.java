@@ -95,11 +95,12 @@ public class MultiSpellCircleBlock extends BlockWithEntity {
             return slot.map(s -> {
                 var slotStack = blockEntity.getStack(s);
 
-                if (!slotStack.isEmpty() || s == 2 ? !stack.isIn(ModItems.MANA_CRYSTALS) : !stack.isOf(ModItems.SPELL_CORE))
-                    return ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+                if (slotStack.isEmpty() && (s == 2 ? stack.isIn(ModItems.MANA_CRYSTALS) : stack.isOf(ModItems.SPELL_CORE))) {
+                    tryAddBook(world, pos, player, blockEntity, stack, s);
+                    return ItemActionResult.success(world.isClient);
+                }
 
-                tryAddBook(world, pos, player, blockEntity, stack, s);
-                return ItemActionResult.success(world.isClient);
+                return ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
             }).orElse(ItemActionResult.SKIP_DEFAULT_BLOCK_INTERACTION);
         } else {
             return ItemActionResult.SKIP_DEFAULT_BLOCK_INTERACTION;

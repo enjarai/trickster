@@ -54,7 +54,8 @@ public class BlockSpellSource<T extends BlockEntity & Inventory & CrowMind> impl
 
     @Override
     public Vector3d getPos() {
-        return new Vector3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+        var pos = this.pos.toCenterPos();
+        return new Vector3d(pos.x, pos.y, pos.z);
     }
 
     @Override
