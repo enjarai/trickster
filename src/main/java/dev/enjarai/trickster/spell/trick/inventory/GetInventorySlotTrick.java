@@ -4,8 +4,10 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.SlotFragment;
+import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 
 import java.util.List;
@@ -20,8 +22,8 @@ public class GetInventorySlotTrick extends Trick {
         var slot = expectInput(fragments, FragmentType.NUMBER, 0).number();
         var source = supposeEitherInput(fragments, FragmentType.VECTOR, FragmentType.ENTITY, 1)
             .map(either -> either
-                    .mapLeft(v -> v.toBlockPos())
-                    .mapRight(e -> e.uuid()));
+                    .mapLeft(VectorFragment::toBlockPos)
+                    .mapRight(EntityFragment::uuid));
 
         return new SlotFragment((int) Math.round(slot), source);
     }
