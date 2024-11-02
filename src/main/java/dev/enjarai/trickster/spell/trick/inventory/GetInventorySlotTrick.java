@@ -3,16 +3,12 @@ package dev.enjarai.trickster.spell.trick.inventory;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlockInvalidBlunder;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.SlotFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.util.math.BlockPos;
 
 import java.util.List;
-import java.util.Optional;
 
 public class GetInventorySlotTrick extends Trick {
     public GetInventorySlotTrick() {
@@ -22,17 +18,11 @@ public class GetInventorySlotTrick extends Trick {
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var slot = expectInput(fragments, FragmentType.NUMBER, 0).number();
-        var pos = supposeInput(fragments, FragmentType.VECTOR, 1);
-        Optional<BlockPos> maybePosition = Optional.empty();
+        var source = supposeEitherInput(fragments, FragmentType.VECTOR, FragmentType.ENTITY, 1)
+            .map(either -> either
+                    .mapLeft(v -> v.toBlockPos())
+                    .mapRight(e -> e.uuid()));
 
-        if (pos.isPresent()) {
-            var target = ctx.source().getWorld().getBlockEntity(pos.get().toBlockPos());
-
-            if (target instanceof Inventory) {
-                maybePosition = Optional.of(target.getPos());
-            } else throw new BlockInvalidBlunder(this);
-        }
-
-        return new SlotFragment((int) Math.round(slot), maybePosition);
+        return new SlotFragment((int) Math.round(slot), source);
     }
 }

@@ -3,8 +3,8 @@ package dev.enjarai.trickster.mixin;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ManaComponent;
-import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.particle.SpellParticleOptions;
+import dev.enjarai.trickster.pond.SlotHolderDuck;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ItemEntity.class)
-public abstract class ItemEntityMixin extends Entity {
+public abstract class ItemEntityMixin extends Entity implements SlotHolderDuck {
     public ItemEntityMixin(EntityType<?> type, World world) {
         super(type, world);
     }
@@ -57,5 +57,22 @@ public abstract class ItemEntityMixin extends Entity {
     )
     private boolean cancelDespawn(ItemEntity instance) {
         return !getStack().isIn(ModItems.CANT_DESPAWN);
+    }
+
+    @Override
+    public int trickster$slot_holder$size() {
+        return 1;
+    }
+
+    @Override
+    public ItemStack trickster$slot_holder$getStack(int slot) {
+        return getStack();
+    }
+
+    @Override
+    public ItemStack trickster$slot_holder$takeFromSlot(int slot, int amount) {
+        var stack = getStack().copyWithCount(amount);
+        getStack().decrement(amount);
+        return stack;
     }
 }

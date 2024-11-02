@@ -8,6 +8,7 @@
     "AnvilScreenHandlerMixin",
     "EntityMixin",
     "ItemEntityMixin",
+    "ItemFrameEntityMixin",
     "ItemMixin",
     "LivingEntityMixin",
     "WorldChunkMixin",

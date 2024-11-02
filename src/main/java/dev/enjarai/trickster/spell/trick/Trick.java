@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.mojang.datafixers.util.Either;
+
 public abstract class Trick {
     public static final Identifier TRICK_RANDOM = Trickster.id("trick");
 
@@ -36,70 +38,107 @@ public abstract class Trick {
 
     public abstract Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException;
 
-    protected <T extends Fragment> T expectInput(List<Fragment> fragments, FragmentType<T> type, int index) throws BlunderException {
+    @SuppressWarnings("unchecked")
+	protected <T extends Fragment> T expectInput(List<Fragment> fragments, FragmentType<T> type, int index) throws BlunderException {
         if (fragments.size() <= index) {
             throw new MissingFragmentBlunder(this, index, type.getName());
         }
+
         var fragment = fragments.get(index);
+
         if (fragment.type() != type) {
             throw new IncorrectFragmentBlunder(this, index, type.getName(), fragment);
         }
-        //noinspection unchecked
+
         return (T) fragment;
     }
 
-    protected <T extends Fragment> T expectType(Fragment fragment, FragmentType<T> type) throws BlunderException {
+    @SuppressWarnings("unchecked")
+	protected <T extends Fragment> T expectType(Fragment fragment, FragmentType<T> type) throws BlunderException {
         if (fragment.type() != type) {
             throw new IncorrectFragmentBlunder(this, -1, type.getName(), fragment);
         }
-        //noinspection unchecked
+
         return (T) fragment;
     }
 
-    protected <T extends Fragment> Optional<T> supposeInput(List<Fragment> fragments, FragmentType<T> type, int index) throws BlunderException {
+    @SuppressWarnings("unchecked")
+	protected <T extends Fragment> Optional<T> supposeInput(List<Fragment> fragments, FragmentType<T> type, int index) throws BlunderException {
         if (fragments.size() <= index) {
             return Optional.empty();
         }
+
         var fragment = fragments.get(index);
+
         if (fragment.type() != type) {
             throw new IncorrectFragmentBlunder(this, index, type.getName(), fragment);
         }
-        //noinspection unchecked
+
         return Optional.of((T) fragment);
     }
 
-    protected Optional<Fragment> supposeInput(List<Fragment> fragments, int index) throws BlunderException {
+    protected Optional<Fragment> supposeInput(List<Fragment> fragments, int index) {
         if (fragments.size() <= index) {
             return Optional.empty();
         }
+
         return Optional.of(fragments.get(index));
     }
 
-    protected <T extends Fragment> Optional<T> supposeType(Fragment fragment, FragmentType<T> type) throws BlunderException {
+    protected <T1 extends Fragment, T2 extends Fragment> Optional<Either<T1, T2>> supposeEitherInput(List<Fragment> fragments, FragmentType<T1> primary, FragmentType<T2> alternative, int index) {
+        var input = supposeInput(fragments, index);
+        var r1 = input.flatMap(fragment -> supposeType(fragment, primary));
+
+        if (r1.isPresent())
+            return Optional.of(Either.left(r1.get()));
+
+        var r2 = input.flatMap(fragment -> supposeType(fragment, alternative));
+
+        if (r2.isPresent())
+            return Optional.of(Either.right(r2.get()));
+
+        return Optional.empty();
+    }
+
+    protected <T1 extends Fragment, T2 extends Fragment> Either<T1, T2> expectEitherInput(List<Fragment> fragments, FragmentType<T1> primary, FragmentType<T2> alternative, int index) throws BlunderException {
+        var input = supposeInput(fragments, index);
+        var expected = Text.literal("Either of ").append(primary.getName()).append(" or ").append(alternative.getName());
+        return supposeEitherInput(fragments, primary, alternative, index)
+            .orElseThrow(() -> input.
+                    <BlunderException>map(fragment -> new IncorrectFragmentBlunder(this, index, expected, fragment))
+                    .orElse(new MissingFragmentBlunder(this, index, expected)));
+    }
+
+    @SuppressWarnings("unchecked")
+	protected <T extends Fragment> Optional<T> supposeType(Fragment fragment, FragmentType<T> type) {
         if (fragment.type() != type) {
             return Optional.empty();
         }
-        //noinspection unchecked
+
         return Optional.of((T) fragment);
     }
 
-    protected <T extends Fragment> T expectInput(List<Fragment> fragments, Class<T> type, int index) throws BlunderException {
+    @SuppressWarnings("unchecked")
+	protected <T extends Fragment> T expectInput(List<Fragment> fragments, Class<T> type, int index) throws BlunderException {
         if (fragments.size() <= index) {
             throw new MissingFragmentBlunder(this, index, Text.of(type.getSimpleName()));
         }
+
         var fragment = fragments.get(index);
+
         if (!type.isInstance(fragment)) {
             throw new IncorrectFragmentBlunder(this, index, Text.literal(type.getSimpleName()), fragment);
         }
-        //noinspection unchecked
+
         return (T) fragment;
     }
 
-    protected <T extends Fragment> T expectType(Fragment fragment, Class<T> type, int index) throws BlunderException {
+    @SuppressWarnings("unchecked")
+	protected <T extends Fragment> T expectType(Fragment fragment, Class<T> type, int index) throws BlunderException {
         if (!type.isInstance(fragment)) {
             throw new IncorrectFragmentBlunder(this, index, Text.literal(type.getSimpleName()), fragment);
         }
-        //noinspection unchecked
+
         return (T) fragment;
     }
 
@@ -107,6 +146,7 @@ public abstract class Trick {
         if (fragments.size() <= index) {
             throw new MissingFragmentBlunder(this, index, Text.of("any"));
         }
+
         return fragments.get(index);
     }
 
@@ -153,9 +193,11 @@ public abstract class Trick {
 
     public MutableText getName() {
         var id = Tricks.REGISTRY.getId(this);
+
         if (id == null) {
             return Text.literal("Unregistered");
         }
+
         return Text.literal("").append(
                 Text.translatable(Trickster.MOD_ID + ".trick." + id.getNamespace() + "." + id.getPath())
                         .withColor(FragmentType.PATTERN.color().getAsInt()));
