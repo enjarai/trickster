@@ -19,8 +19,6 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
-
 public class ScrollShelfBlockEntity extends BlockEntity implements Inventory {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(ScrollShelfBlock.GRID_WIDTH * ScrollShelfBlock.GRID_HEIGHT, ItemStack.EMPTY);
 
@@ -54,46 +52,49 @@ public class ScrollShelfBlockEntity extends BlockEntity implements Inventory {
 
     @Override
     public void clear() {
-        this.inventory.clear();
+        inventory.clear();
         markDirty();
     }
 
     @Override
     public int size() {
-        return this.inventory.size();
+        return inventory.size();
     }
 
     @Override
     public boolean isEmpty() {
-        return this.inventory.stream().allMatch(ItemStack::isEmpty);
+        return inventory.stream().allMatch(ItemStack::isEmpty);
     }
 
     @Override
     public ItemStack getStack(int slot) {
-        return this.inventory.get(slot);
+        return inventory.get(slot);
     }
 
     @Override
     public ItemStack removeStack(int slot, int amount) {
-        ItemStack itemStack = Objects.requireNonNullElse(this.inventory.get(slot), ItemStack.EMPTY);
-        this.inventory.set(slot, ItemStack.EMPTY);
-        markDirty();
+        if (slot < inventory.size()) {
+            ItemStack itemStack = inventory.get(slot);
+            inventory.set(slot, ItemStack.EMPTY);
+            markDirty();
+            return itemStack;
+        }
 
-        return itemStack;
+        return ItemStack.EMPTY;
     }
 
     @Override
     public ItemStack removeStack(int slot) {
-        return this.removeStack(slot, 1);
+        return removeStack(slot, 1);
     }
 
     @Override
     public void setStack(int slot, ItemStack stack) {
         if (stack.isIn(ModItems.SCROLLS)) {
-            this.inventory.set(slot, stack);
+            inventory.set(slot, stack);
             markDirty();
         } else if (stack.isEmpty()) {
-            this.removeStack(slot, 1);
+            removeStack(slot, 1);
         }
     }
 
@@ -112,7 +113,7 @@ public class ScrollShelfBlockEntity extends BlockEntity implements Inventory {
 
     @Override
     public boolean isValid(int slot, ItemStack stack) {
-        return stack.isIn(ModItems.SCROLLS) && this.getStack(slot).isEmpty();
+        return stack.isIn(ModItems.SCROLLS) && getStack(slot).isEmpty();
     }
 
     @Override

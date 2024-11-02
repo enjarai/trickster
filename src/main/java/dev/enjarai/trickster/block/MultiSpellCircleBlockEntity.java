@@ -1,6 +1,5 @@
 package dev.enjarai.trickster.block;
 
-import java.util.Objects;
 import java.util.Optional;
 
 import org.jetbrains.annotations.Nullable;
@@ -55,7 +54,8 @@ public class MultiSpellCircleBlockEntity extends BlockEntity implements Inventor
         Inventories.writeNbt(nbt, this.inventory, true, registryLookup);
     }
 
-    public void tick() {
+    @SuppressWarnings("resource")
+	public void tick() {
         if (getWorld().isClient)
             return;
 
@@ -83,9 +83,10 @@ public class MultiSpellCircleBlockEntity extends BlockEntity implements Inventor
                 }
 
                 error.ifPresent(e -> stack.set(ModComponents.SPELL_CORE, slot.fail(e)));
-                markDirty();
             }
         }
+
+        markDirty();
     }
 
     @Nullable
@@ -101,37 +102,40 @@ public class MultiSpellCircleBlockEntity extends BlockEntity implements Inventor
 
     @Override
     public void clear() {
-        this.inventory.clear();
+        inventory.clear();
         markDirty();
     }
 
     @Override
     public int size() {
-        return this.inventory.size();
+        return inventory.size();
     }
 
     @Override
     public boolean isEmpty() {
-        return this.inventory.stream().allMatch(ItemStack::isEmpty);
+        return inventory.stream().allMatch(ItemStack::isEmpty);
     }
 
     @Override
     public ItemStack getStack(int slot) {
-        return this.inventory.get(slot);
+        return inventory.get(slot);
     }
 
     @Override
     public ItemStack removeStack(int slot, int amount) {
-        ItemStack itemStack = Objects.requireNonNullElse(this.inventory.get(slot), ItemStack.EMPTY);
-        this.inventory.set(slot, ItemStack.EMPTY);
-        markDirty();
+        if (slot < inventory.size()) {
+            ItemStack itemStack = inventory.get(slot);
+            inventory.set(slot, ItemStack.EMPTY);
+            markDirty();
+            return itemStack;
+        }
 
-        return itemStack;
+        return ItemStack.EMPTY;
     }
 
     @Override
     public ItemStack removeStack(int slot) {
-        return this.removeStack(slot, 1);
+        return removeStack(slot, 1);
     }
 
     @Override
@@ -139,21 +143,22 @@ public class MultiSpellCircleBlockEntity extends BlockEntity implements Inventor
         if (slot == 2
                 ? stack.isIn(ModItems.MANA_CRYSTALS)
                 : stack.isOf(ModItems.SPELL_CORE)) {
-            if (stack.contains(ModComponents.SPELL)) { //TODO: when merging the macro PR, THIS MUST BE FIXED
+            if (stack.isOf(ModItems.SPELL_CORE)
+                    && stack.contains(ModComponents.SPELL)) { //TODO: when merging the macro PR, THIS MUST BE FIXED
                 var spell = stack.get(ModComponents.SPELL).spell();
                 
                 if (!stack.contains(ModComponents.SPELL_CORE)
                         || stack.get(ModComponents.SPELL_CORE) instanceof SpellCoreComponent comp
                         && (!spell.equals(comp.spell().orElse(null))
-                        || comp.error().isPresent())) {
+                            || comp.error().isPresent())) {
                     stack.set(ModComponents.SPELL_CORE, new SpellCoreComponent(spell));
                 }
             }
 
-            this.inventory.set(slot, stack);
+            inventory.set(slot, stack);
             markDirty();
         } else if (stack.isEmpty()) {
-            this.removeStack(slot, 1);
+            removeStack(slot, 1);
         }
     }
 
@@ -172,7 +177,7 @@ public class MultiSpellCircleBlockEntity extends BlockEntity implements Inventor
 
     @Override
     public boolean isValid(int slot, ItemStack stack) {
-        return (slot == 2 ? stack.isIn(ModItems.MANA_CRYSTALS) : stack.isOf(ModItems.SPELL_CORE)) && this.getStack(slot).isEmpty();
+        return (slot == 2 ? stack.isIn(ModItems.MANA_CRYSTALS) : stack.isOf(ModItems.SPELL_CORE)) && getStack(slot).isEmpty();
     }
 
     @Override
@@ -200,7 +205,9 @@ public class MultiSpellCircleBlockEntity extends BlockEntity implements Inventor
 	@Override
 	public boolean queue(SpellExecutor executor) {
         for (var stack : inventory) {
-            if (stack.isOf(ModItems.SPELL_CORE) && !stack.contains(ModComponents.SPELL_CORE) || stack.get(ModComponents.SPELL_CORE).error().isPresent()) {
+            if (stack.isOf(ModItems.SPELL_CORE)
+                    && (!stack.contains(ModComponents.SPELL_CORE)
+                        || stack.get(ModComponents.SPELL_CORE).error().isPresent())) {
                 stack.set(ModComponents.SPELL_CORE, new SpellCoreComponent(executor, Optional.empty(), Optional.empty()));
                 return true;
             }
