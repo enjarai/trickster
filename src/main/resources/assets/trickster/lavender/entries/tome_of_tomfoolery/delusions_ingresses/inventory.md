@@ -48,11 +48,11 @@ Returns a slot reference of the caster's other hand.
 
 <|glyph@trickster:templates|trick-id=trickster:get_inventory_slot,title=Intrusive Ingress|>
 
-number, [vector] -> slot
+number, [vector | entity] -> slot
 
 ---
 
-Returns the item slot at the given index in either the inventory of the caster, or the block at the given position.
+Constructs a slot from an index and an inventory source, using the caster by default.
 
 ;;;;;
 

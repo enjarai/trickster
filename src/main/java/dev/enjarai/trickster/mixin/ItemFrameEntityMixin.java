@@ -19,10 +19,11 @@ public abstract class ItemFrameEntityMixin extends AbstractDecorationEntity impl
     @Shadow
     public abstract ItemStack getHeldItemStack();
 
-    @Shadow //TODO: this may fail
-    protected abstract void removeFromFrame(ItemStack stack);
+    @Shadow
+    public abstract void setHeldItemStack(ItemStack stack);
 
-    @Shadow public abstract void setHeldItemStack(ItemStack stack);
+    @Shadow
+    protected abstract void removeFromFrame(ItemStack stack);
 
     @Override
     public int trickster$slot_holder$size() {

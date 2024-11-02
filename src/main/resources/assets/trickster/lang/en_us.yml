@@ -172,7 +172,7 @@ trickster:
     other_hand_slot: Catch Delusion
     get_item_in_slot: Fence's Ingress
     get_inventory_slot: Intrusive Ingress
-    drop_stack_from_slot: Benevolent Ploy
+    drop_stack_from_slot: Ploy of Offering
 
     type_fragment: Argumentative Distortion
     delay_execution: Ploy of Suspension

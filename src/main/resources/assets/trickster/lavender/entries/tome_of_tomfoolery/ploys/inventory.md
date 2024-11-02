@@ -10,7 +10,7 @@ Listed here are ploys that interact with inventory slots or other inventory feat
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:drop_stack_from_slot,title=Benevolent Ploy|>
+<|glyph@trickster:templates|trick-id=trickster:drop_stack_from_slot,title=Ploy of Offering|>
 
 slot, vector, [number] -> entity
 
