@@ -3,29 +3,27 @@ package dev.enjarai.trickster.block;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.block.cauldron.EraseSpellCauldronBehavior;
 import dev.enjarai.trickster.item.ModItems;
-import dev.enjarai.trickster.item.ScrollAndQuillItem;
-import dev.enjarai.trickster.item.WrittenScrollItem;
 import net.fabricmc.fabric.api.object.builder.v1.world.poi.PointOfInterestHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.cauldron.CauldronBehavior;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.world.poi.PointOfInterestType;
-
-import java.util.Map;
 
 public class ModBlocks {
     public static final SpellResonatorBlock SPELL_RESONATOR = register("spell_resonator", new SpellResonatorBlock());
     public static final SpellCircleBlock SPELL_CIRCLE = register("spell_circle", new SpellCircleBlock());
     public static final LightBlock LIGHT = register("light", new LightBlock());
+    public static final MultiSpellCircleBlock MULTI_SPELL_CIRCLE = register("multi_spell_circle", new MultiSpellCircleBlock());
     public static final ScrollShelfBlock SCROLL_SHELF = register("scroll_shelf", new ScrollShelfBlock());
 
     public static final BlockEntityType<SpellCircleBlockEntity> SPELL_CIRCLE_ENTITY =
             BlockEntityType.Builder.create(SpellCircleBlockEntity::new, SPELL_CIRCLE).build(null);
     public static final BlockEntityType<LightBlockEntity> LIGHT_ENTITY =
             BlockEntityType.Builder.create(LightBlockEntity::new, LIGHT).build(null);
+    public static final BlockEntityType<MultiSpellCircleBlockEntity> MULTI_SPELL_CIRCLE_BLOCK_ENTITY =
+            BlockEntityType.Builder.create(MultiSpellCircleBlockEntity::new, MULTI_SPELL_CIRCLE).build(null);
     public static final BlockEntityType<ScrollShelfBlockEntity> SCROLL_SHELF_ENTITY =
             BlockEntityType.Builder.create(ScrollShelfBlockEntity::new, SCROLL_SHELF).build(null);
 
@@ -39,6 +37,7 @@ public class ModBlocks {
     public static void register() {
         Registry.register(Registries.BLOCK_ENTITY_TYPE, Trickster.id("spell_circle"), SPELL_CIRCLE_ENTITY);
         Registry.register(Registries.BLOCK_ENTITY_TYPE, Trickster.id("light"), LIGHT_ENTITY);
+        Registry.register(Registries.BLOCK_ENTITY_TYPE, Trickster.id("multi_spell_circle"), MULTI_SPELL_CIRCLE_BLOCK_ENTITY);
         Registry.register(Registries.BLOCK_ENTITY_TYPE, Trickster.id("scroll_shelf"), SCROLL_SHELF_ENTITY);
 
         var cauldronMap = CauldronBehavior.WATER_CAULDRON_BEHAVIOR.map();

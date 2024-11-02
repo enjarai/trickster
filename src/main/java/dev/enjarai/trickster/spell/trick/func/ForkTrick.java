@@ -20,9 +20,10 @@ public class ForkTrick extends Trick {
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var spell = expectInput(fragments, FragmentType.SPELL_PART, 0);
         var arguments = fragments.subList(1, fragments.size());
-
         var queued = ctx.source().getExecutionManager()
-                .orElseThrow(() -> new NoFreeSpellSlotBlunder(this)).queue(spell, arguments);
+                .orElseThrow(() -> new NoFreeSpellSlotBlunder(this))
+                .queue(spell, arguments);
+
         if (!queued) {
             throw new NoFreeSpellSlotBlunder(this);
         }

@@ -4,8 +4,7 @@ import dev.enjarai.trickster.ModSounds;
 import dev.enjarai.trickster.particle.SpellParticleOptions;
 import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
-import dev.enjarai.trickster.spell.execution.source.SpellCircleSpellSource;
-import dev.enjarai.trickster.spell.execution.source.SpellSource;
+import dev.enjarai.trickster.spell.execution.source.BlockSpellSource;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import io.wispforest.endec.impl.KeyedEndec;
@@ -32,9 +31,11 @@ import java.util.Optional;
 
 import org.jetbrains.annotations.Nullable;
 
-public class SpellCircleBlockEntity extends BlockEntity implements SpellColoredBlockEntity, Inventory {
+public class SpellCircleBlockEntity extends BlockEntity implements SpellColoredBlockEntity, Inventory, CrowMind {
     public static final KeyedEndec<SpellPart> PART_ENDEC =
             SpellPart.ENDEC.keyed("spell", () -> null);
+    public static final KeyedEndec<Fragment> CROW_MIND_ENDEC =
+            Fragment.ENDEC.keyed("crow_mind", () -> VoidFragment.INSTANCE);
     public static final KeyedEndec<SpellExecutor> EXECUTOR_ENDEC =
             SpellExecutor.ENDEC.keyed("executor", () -> null);
     public static final KeyedEndec<Text> ERROR_ENDEC =
@@ -48,10 +49,8 @@ public class SpellCircleBlockEntity extends BlockEntity implements SpellColoredB
     public Text lastError;
     public int age;
     public int lastPower;
-    public CrowMind crowMind = new CrowMind(VoidFragment.INSTANCE);
+    public Fragment crowMind = VoidFragment.INSTANCE;
     public int[] colors = new int[]{0xffffff};
-
-    public transient SpellSource spellSource;
 
     private Optional<ItemStack> stack = Optional.empty();
 
@@ -68,6 +67,7 @@ public class SpellCircleBlockEntity extends BlockEntity implements SpellColoredB
         lastError = nbt.get(ERROR_ENDEC);
 
         stack = ItemStack.fromNbt(registryLookup, nbt.get("stack"));//.flatMap(s -> s == ItemStack.EMPTY ? Optional.empty() : Optional.of(s));
+        crowMind = nbt.get(CROW_MIND_ENDEC);
         lastPower = nbt.getInt("last_power");
         colors = nbt.getIntArray("colors");
 
@@ -79,7 +79,6 @@ public class SpellCircleBlockEntity extends BlockEntity implements SpellColoredB
     @Override
     protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         super.writeNbt(nbt, registryLookup);
-
 
         if (spell != null) {
             nbt.put(PART_ENDEC, spell);
@@ -94,15 +93,14 @@ public class SpellCircleBlockEntity extends BlockEntity implements SpellColoredB
         }
 
         stack.ifPresent(s -> nbt.put("stack", s.encode(registryLookup, new NbtCompound())));
+        nbt.put(CROW_MIND_ENDEC, crowMind);
         nbt.putInt("last_power", lastPower);
         nbt.putIntArray("colors", colors);
     }
 
     public void tick() {
         if (!getWorld().isClient() && executor != null && lastError == null) {
-            if (spellSource == null) {
-                spellSource = new SpellCircleSpellSource((ServerWorld) getWorld(), getPos(), this);
-            }
+            var spellSource = new BlockSpellSource<>((ServerWorld) getWorld(), getPos(), this);
 
             try {
                 if (executor.run(spellSource).isPresent()) {
@@ -219,4 +217,14 @@ public class SpellCircleBlockEntity extends BlockEntity implements SpellColoredB
     public int size() {
         return 1;
     }
+
+	@Override
+	public void setCrowMind(Fragment fragment) {
+        crowMind = fragment;
+	}
+
+	@Override
+	public Fragment getCrowMind() {
+        return crowMind;
+	}
 }

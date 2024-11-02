@@ -3,7 +3,7 @@ package dev.enjarai.trickster.spell.execution.source;
 import dev.enjarai.trickster.ModAttachments;
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.component.ModComponents;
-import dev.enjarai.trickster.spell.CrowMind;
+import dev.enjarai.trickster.spell.CrowMindAttachment;
 import net.minecraft.util.math.BlockPos;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.execution.SpellExecutionManager;
@@ -130,7 +130,7 @@ public class PlayerSpellSource implements SpellSource {
 
     @Override
     public void setCrowMind(Fragment fragment) {
-        player.setAttached(ModAttachments.CROW_MIND, new CrowMind(fragment));
+        player.setAttached(ModAttachments.CROW_MIND, new CrowMindAttachment(fragment));
     }
 
     @Override

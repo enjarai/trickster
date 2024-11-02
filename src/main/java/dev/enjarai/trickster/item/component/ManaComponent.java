@@ -1,9 +1,9 @@
 package dev.enjarai.trickster.item.component;
 
+import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.spell.mana.ManaPool;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.wispforest.owo.serialization.CodecUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 
 public record ManaComponent(ManaPool pool, float naturalRechargeMultiplier, boolean rechargeable) {
     public static final Codec<ManaComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            CodecUtils.toCodec(ManaPool.ENDEC).fieldOf("pool").forGetter(ManaComponent::pool),
+            EndecTomfoolery.toCodec(ManaPool.ENDEC).fieldOf("pool").forGetter(ManaComponent::pool),
             Codec.FLOAT.fieldOf("natural_recharge_multiplier").forGetter(ManaComponent::naturalRechargeMultiplier),
             Codec.BOOL.fieldOf("rechargable").forGetter(ManaComponent::rechargeable)
     ).apply(instance, ManaComponent::new));

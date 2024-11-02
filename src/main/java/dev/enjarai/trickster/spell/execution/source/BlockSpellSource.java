@@ -1,13 +1,15 @@
 package dev.enjarai.trickster.spell.execution.source;
 
-import dev.enjarai.trickster.block.SpellCircleBlockEntity;
 import dev.enjarai.trickster.spell.CrowMind;
 import dev.enjarai.trickster.spell.Fragment;
+import dev.enjarai.trickster.spell.execution.SpellExecutionManager;
 import dev.enjarai.trickster.spell.mana.CachedInventoryManaPool;
 import dev.enjarai.trickster.spell.mana.MutableManaPool;
 import dev.enjarai.trickster.spell.mana.generation.InventoryBlockManaHandler;
 import dev.enjarai.trickster.spell.mana.generation.ManaHandler;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.ItemEntity;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -17,13 +19,13 @@ import org.ladysnake.cca.api.v3.component.ComponentKey;
 
 import java.util.Optional;
 
-public class SpellCircleSpellSource implements SpellSource {
+public class BlockSpellSource<T extends BlockEntity & Inventory & CrowMind> implements SpellSource {
     public final ServerWorld world;
     public final BlockPos pos;
-    public final SpellCircleBlockEntity blockEntity;
+    public final T blockEntity;
     public final CachedInventoryManaPool pool;
 
-    public SpellCircleSpellSource(ServerWorld world, BlockPos pos, SpellCircleBlockEntity blockEntity) {
+    public BlockSpellSource(ServerWorld world, BlockPos pos, T blockEntity) {
         this.world = world;
         this.pos = pos;
         this.blockEntity = blockEntity;
@@ -31,7 +33,7 @@ public class SpellCircleSpellSource implements SpellSource {
     }
 
     @Override
-    public <T extends Component> Optional<T> getComponent(ComponentKey<T> key) {
+    public <C extends Component> Optional<C> getComponent(ComponentKey<C> key) {
         return key.maybeGet(blockEntity);
     }
 
@@ -67,13 +69,20 @@ public class SpellCircleSpellSource implements SpellSource {
 
     @Override
     public Fragment getCrowMind() {
-        return blockEntity.crowMind.fragment();
+        return blockEntity.getCrowMind();
     }
 
     @Override
     public void setCrowMind(Fragment fragment) {
-        blockEntity.crowMind = new CrowMind(fragment);
-        blockEntity.markDirty();
+        blockEntity.setCrowMind(fragment);
+    }
+
+    @Override
+    public Optional<SpellExecutionManager> getExecutionManager() {
+        if (blockEntity instanceof SpellExecutionManager manager)
+            return Optional.of(manager);
+
+        return Optional.empty();
     }
 
     @Override
