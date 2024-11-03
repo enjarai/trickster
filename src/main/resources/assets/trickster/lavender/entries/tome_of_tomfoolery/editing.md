@@ -228,6 +228,16 @@ Copies the circle it is drawn in to the user's offhand.
 
 ;;;;;
 
+<|pattern@trickster:templates|pattern=1\,8\,6\,1,title=Interpretation Revision|>
+
+{gray}(Scribing pattern){}
+
+---
+
+Creates a pattern literal of the pattern contained within the circle it is drawn in.
+
+;;;;;
+
 <|pattern@trickster:templates|pattern=1\,0\,4\,8\,7\,6\,4\,2\,1\,4,title=Address Revision|>
 
 {gray}(Scribing pattern){}

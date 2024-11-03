@@ -4,21 +4,14 @@ import dev.enjarai.trickster.Trickster;
 
 
 import dev.enjarai.trickster.render.SpellCircleRenderer;
-import dev.enjarai.trickster.render.fleck.LineFleckRenderer;
-import dev.enjarai.trickster.render.fleck.SpellFleckRenderer;
-import dev.enjarai.trickster.render.fleck.TextFleckRenderer;
 import dev.enjarai.trickster.spell.Fragment;
-import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
-import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.math.Vec3d;
-import org.jetbrains.annotations.Nullable;
 
 public interface FragmentRenderer<T extends Fragment> {
     RegistryKey<Registry<FragmentRenderer<?>>> REGISTRY_KEY = RegistryKey.ofRegistry(Trickster.id("fragment_renderer"));
@@ -34,4 +27,8 @@ public interface FragmentRenderer<T extends Fragment> {
     static void register() {}
 
     void render(T fragment, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float size, float alpha, Vec3d normal, SpellCircleRenderer delegator);
+
+    default boolean renderRedrawDots() {
+        return true;
+    }
 }

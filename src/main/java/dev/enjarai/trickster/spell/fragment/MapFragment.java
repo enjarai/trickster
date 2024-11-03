@@ -71,7 +71,7 @@ public record MapFragment(Hamt<Fragment, Fragment> map) implements Fragment {
         var macros = new HashMap<Pattern, SpellPart>();
 
         for (var entry : map) {
-            if (entry.getKey() instanceof SpellPart spellKey && spellKey.glyph instanceof PatternGlyph pattern && entry.getValue() instanceof SpellPart spell) {
+            if (entry.getKey() instanceof PatternGlyph pattern && entry.getValue() instanceof SpellPart spell) {
                 macros.put(pattern.pattern(), spell);
             } else {
                 return Optional.empty();

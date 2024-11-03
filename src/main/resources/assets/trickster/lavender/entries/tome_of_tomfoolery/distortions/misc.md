@@ -27,3 +27,13 @@ Returns the type of the given fragment. Can be used to validate inputs, among ot
 ---
 
 Combines all given inputs into a single number. The same inputs will always produce the same number.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:escape_pattern,title=Interpretation Distortion|>
+
+pattern -> pattern_literal
+
+---
+
+Converts a pattern into a literal representation of itself, to be used when constructing spells.

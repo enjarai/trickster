@@ -2,6 +2,7 @@ package dev.enjarai.trickster.spell;
 
 import com.google.common.collect.ImmutableList;
 import dev.enjarai.trickster.EndecTomfoolery;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import io.wispforest.endec.Endec;
 import net.minecraft.text.Text;
@@ -87,13 +88,18 @@ public record Pattern(List<PatternEntry> entries) implements Fragment {
     }
 
     @Override
+    public Fragment activateAsGlyph(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+        return new PatternGlyph(this);
+    }
+
+    @Override
     public FragmentType<?> type() {
         return FragmentType.PATTERN_LITERAL;
     }
 
     @Override
     public Text asText() {
-        return Text.of("TODO"); // TODO
+        return Text.literal("<").append(new PatternGlyph(this).asText()).append(">");
     }
 
     @Override

@@ -1,7 +1,8 @@
 ```json
 {
   "title": "Long Spells",
-  "icon": "minecraft:clock"
+  "icon": "minecraft:clock",
+  "category": "trickster:concepts"
 }
 ```
 

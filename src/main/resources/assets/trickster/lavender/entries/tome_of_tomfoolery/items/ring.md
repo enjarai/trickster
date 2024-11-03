@@ -6,6 +6,6 @@
 }
 ```
 
-A plain gold ring used for containing [Macros](^trickster:macro).
+A plain gold ring used for containing [Macros](^trickster:concepts/macro).
 
 <recipe;trickster:macro_ring>

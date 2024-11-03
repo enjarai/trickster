@@ -16,7 +16,7 @@ These scrolls can then be selected by shift-scrolling while holding the hat.
 
 ;;;;;
 
-Now, when a running spell tries to access the spell in your other hand via [Notulist's Delusion](^trickster:ploys/basic#3),
+Now, when a running spell tries to access the spell in your other hand via [Notulist's Delusion](^trickster:tricks/basic#3),
 it will read the spell from the selected scroll in the held hat instead.
 
 

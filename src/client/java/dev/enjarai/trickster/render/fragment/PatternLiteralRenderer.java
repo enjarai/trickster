@@ -23,4 +23,9 @@ public class PatternLiteralRenderer implements FragmentRenderer<Pattern> {
                 delegator.getR(), delegator.getG(), delegator.getB(), alpha * delegator.getCircleTransparency(), normal
         );
     }
+
+    @Override
+    public boolean renderRedrawDots() {
+        return false;
+    }
 }

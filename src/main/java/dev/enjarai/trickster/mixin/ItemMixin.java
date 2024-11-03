@@ -39,10 +39,14 @@ public abstract class ItemMixin {
     private void addGarble(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType type, CallbackInfo ci) {
         var spellComponent = stack.get(ModComponents.FRAGMENT);
 
-        if (spellComponent != null && /*!spellComponent.spell().isEmpty() &&*/ spellComponent.closed()) {
-            tooltip.add(spellComponent.name()
-                    .flatMap(str -> Optional.of(Text.literal(str)))
-                    .orElse(Text.literal("Mortal eyes upon my carvings").setStyle(Style.EMPTY.withObfuscated(true))));
+        if (spellComponent != null) {
+            if (spellComponent.closed()) {
+                tooltip.add(spellComponent.name()
+                        .flatMap(str -> Optional.of(Text.literal(str)))
+                        .orElse(Text.literal("Mortal eyes upon my carvings").setStyle(Style.EMPTY.withObfuscated(true))));
+            } else {
+                tooltip.add(spellComponent.value().asFormattedText());
+            }
         }
     }
 

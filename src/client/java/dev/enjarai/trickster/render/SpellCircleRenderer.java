@@ -19,15 +19,12 @@ import net.minecraft.util.math.Vec3d;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static dev.enjarai.trickster.screen.SpellPartWidget.PRECISION_OFFSET;
 import static dev.enjarai.trickster.screen.SpellPartWidget.isCircleClickable;
 
 public class SpellCircleRenderer {
@@ -84,6 +81,18 @@ public class SpellCircleRenderer {
 
     public float getB() {
         return b;
+    }
+
+    public boolean isInEditor() {
+        return inEditor;
+    }
+
+    public double getMouseX() {
+        return mouseX;
+    }
+
+    public double getMouseY() {
+        return mouseY;
     }
 
     public void setCircleTransparency(float circleTransparency) {
@@ -241,9 +250,12 @@ public class SpellCircleRenderer {
             //noinspection rawtypes
             FragmentRenderer renderer = FragmentRenderer.REGISTRY.get(FragmentType.REGISTRY.getId(glyph.type()));
 
+            var renderDots = true;
+
             if (renderer != null) {
                 //noinspection unchecked
                 renderer.render(glyph, matrices, vertexConsumers, x, y, size, alpha, normal, this);
+                renderDots = renderer.renderRedrawDots();
             } else {
                 var textRenderer = MinecraftClient.getInstance().textRenderer;
 
@@ -269,7 +281,7 @@ public class SpellCircleRenderer {
                 matrices.pop();
             }
 
-            if (inEditor && inUI) {
+            if (inEditor && inUI && renderDots) {
                 for (int i = 0; i < 9; i++) {
                     var pos = getPatternDotPosition(x, y, i, patternSize);
 

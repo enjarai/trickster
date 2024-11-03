@@ -24,14 +24,23 @@ public class PatternRenderer implements FragmentRenderer<PatternGlyph> {
         var g = delegator.getG();
         var b = delegator.getB();
 
+        // Duplicate code :brombeere:
         for (int i = 0; i < 9; i++) {
             var pos = getPatternDotPosition(x, y, i, size);
 
             var isLinked = pattern.contains(i);
             float dotScale = 1;
 
-            if (!isLinked) {
-                continue;
+            if (delegator.isInEditor() && isInsideHitbox(pos, pixelSize, delegator.getMouseX(), delegator.getMouseY()) && isCircleClickable(size)) {
+                dotScale = 1.6f;
+            } else if (!isLinked) {
+                if (delegator.isInEditor() && isCircleClickable(size)) {
+                    var mouseDistance = new Vector2f((float) (delegator.getMouseX() - pos.x), (float) (delegator.getMouseY() - pos.y)).length();
+                    dotScale = Math.clamp(size / mouseDistance - 0.2f, 0, 1);
+                } else {
+                    // Skip the dot if its too small to click
+                    continue;
+                }
             }
 
             var dotSize = pixelSize * dotScale;
@@ -71,5 +80,10 @@ public class PatternRenderer implements FragmentRenderer<PatternGlyph> {
 //            var last = getPatternDotPosition(x, y, line.p2(), size);
 //            drawGlyphLine(matrices, vertexConsumers, last, now, 1, false, 0, 1f, 1f, 1f, alpha);
 //        }
+    }
+
+    @Override
+    public boolean renderRedrawDots() {
+        return false;
     }
 }

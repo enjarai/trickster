@@ -1,7 +1,8 @@
 ```json
 {
   "title": "Stack Traces",
-  "icon": "minecraft:tripwire_hook"
+  "icon": "minecraft:tripwire_hook",
+  "category": "trickster:concepts"
 }
 ```
 

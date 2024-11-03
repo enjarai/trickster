@@ -6,6 +6,6 @@
 }
 ```
 
-A basic magical trinket capable of holding spells to be used for [Warding](^trickster:ward).
+A basic magical trinket capable of holding spells to be used for [Warding](^trickster:concepts/ward).
 
 <recipe;trickster:warding_charm>
