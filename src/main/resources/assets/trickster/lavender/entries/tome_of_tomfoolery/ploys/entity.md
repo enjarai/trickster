@@ -14,7 +14,7 @@ Various tricks related to manipulating entities.
 
 entity, vector -> entity
 
-<|cost-rule@trickster:templates|formula=3kG + length^2 * 2kG|>
+<|cost-rule@trickster:templates|formula=3kG + length^3 * 2kG|>
 
 Applies the given vector as velocity to the given entity.
 

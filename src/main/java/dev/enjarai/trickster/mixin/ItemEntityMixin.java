@@ -60,7 +60,7 @@ public abstract class ItemEntityMixin extends Entity implements SlotHolderDuck {
         if (getStack().isIn(ModItems.CANT_DESPAWN))
             return false;
 
-        if (getStack().get(ModComponents.MANA) instanceof ManaComponent mana && mana.naturalRechargeMultiplier() == 0)
+        if (getStack().get(ModComponents.MANA) instanceof ManaComponent mana && mana.naturalRechargeMultiplier() != 0)
             return false;
 
         return true;

@@ -33,7 +33,7 @@ public class AddVelocityTrick extends Trick {
 
         var map = COMPOUND_LEN.set(ctx.data(), COMPOUND_LEN.get(ctx.data()).orElse(new HashMap<>()));
         var length = (float) vector.length() + map.getOrDefault(target, 0f);
-        ctx.useMana(this, 3 + (float) Math.pow(length, 2) * 2);
+        ctx.useMana(this, 3 + (float) Math.pow(length, 3) * 2);
         map.put(target, length);
 
         if (entity instanceof PlayerEntity && ModEntityComponents.GRACE.get(entity).isInGrace("gravity")) {
