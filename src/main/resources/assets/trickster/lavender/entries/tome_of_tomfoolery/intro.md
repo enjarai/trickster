@@ -6,7 +6,7 @@
 }
 ```
 
-Welcome to the **Tome of Tomfoolery**! Your guide to magic, trickery, and geometric algebra.
+Welcome to the **Tome of Tomfoolery**! Your guide to magic, trickery, and applied mathematics.
 
 
 This book consists of many chapters spread out over a few categories. 

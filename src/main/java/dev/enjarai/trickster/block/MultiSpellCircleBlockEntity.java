@@ -9,6 +9,7 @@ import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.SpellCoreComponent;
 import dev.enjarai.trickster.spell.CrowMind;
 import dev.enjarai.trickster.spell.Fragment;
+import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.execution.SpellExecutionManager;
 import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
@@ -144,14 +145,16 @@ public class MultiSpellCircleBlockEntity extends BlockEntity implements Inventor
                 ? stack.isIn(ModItems.MANA_CRYSTALS)
                 : stack.isOf(ModItems.SPELL_CORE)) {
             if (stack.isOf(ModItems.SPELL_CORE)
-                    && stack.contains(ModComponents.SPELL)) { //TODO: when merging the macro PR, THIS MUST BE FIXED
-                var spell = stack.get(ModComponents.SPELL).spell();
+                    && stack.contains(ModComponents.FRAGMENT)) {
+                var fragment = stack.get(ModComponents.FRAGMENT).value();
                 
-                if (!stack.contains(ModComponents.SPELL_CORE)
-                        || stack.get(ModComponents.SPELL_CORE) instanceof SpellCoreComponent comp
-                        && (!spell.equals(comp.spell().orElse(null))
-                            || comp.error().isPresent())) {
-                    stack.set(ModComponents.SPELL_CORE, new SpellCoreComponent(spell));
+                if (fragment instanceof SpellPart spell) {
+                    if (!stack.contains(ModComponents.SPELL_CORE)
+                            || stack.get(ModComponents.SPELL_CORE) instanceof SpellCoreComponent comp
+                            && (!spell.equals(comp.spell().orElse(null))
+                                || comp.error().isPresent())) {
+                        stack.set(ModComponents.SPELL_CORE, new SpellCoreComponent(spell));
+                    }
                 }
             }
 

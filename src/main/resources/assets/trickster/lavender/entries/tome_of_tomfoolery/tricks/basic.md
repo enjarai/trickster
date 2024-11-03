@@ -11,44 +11,44 @@ Any aspiring magician is recommended to learn these.
 
 ;;;;;
 
-<|page-title@lavender:book_components|title=Note: Inscribed Spells|>A spell can be inscribed onto any item that a player can hold in their inventory.
-If inscribed on a block, the spell will be removed if the block is placed.
+<|page-title@lavender:book_components|title=Note: Inscribed Fragments|>A fragment can be inscribed onto any item that a player can hold in their inventory.
+If inscribed on a block, the fragment will be removed if the block is placed.
 
 
-Some items may have additional interactions with inscribed spells, 
-[Wands](^trickster:basics/wand) for example will cast the spell automatically when right-clicked.
+Some items may have additional interactions when inscribed with fragments, 
+[Wands](^trickster:basics/wand) for example will cast a spell fragment when right-clicked.
 
 ;;;;;
 
 <|glyph@trickster:templates|trick-id=trickster:read_spell,title=Notulist's Delusion|>
 
--> spell | void
+-> any | void
 
 ---
 
-If the item in the caster's other hand contains an inscribed spell, returns the spell.
+If the item in the caster's other hand contains an inscribed fragment, returns the fragment.
 If not, returns void.
 
 ;;;;;
 
 <|glyph@trickster:templates|trick-id=trickster:write_spell,title=Notulist's Ploy|>
 
-spell | void -> spell | void
+any | void -> any | void
 
 ---
 
-Inscribes a spell onto the item held in the caster's other hand.
+Inscribes a fragment onto the item held in the caster's other hand.
 Returns its input, after ephemeral decay.
 
 ;;;;;
 
 <|glyph@trickster:templates|trick-id=trickster:write_closed_spell,title=Proprietary Notulist's Ploy|>
 
-spell | void -> spell | void
+any | void -> any | void
 
 ---
 
-Same as Notulist's Ploy, but the spell cannot be read.
+Same as Notulist's Ploy, but the fragment cannot be read by conventional means.
 
 ;;;;;
 

@@ -25,7 +25,7 @@ whenever a pattern for a trick is shown.
 
 
 If you're having trouble understanding the format used for signatures,
-check out [the entry explaining them in more detail](^trickster:signatures)!
+check out [the entry explaining them in more detail](^trickster:concepts/signatures)!
 
 
 **But how do we know which circle comes first?**

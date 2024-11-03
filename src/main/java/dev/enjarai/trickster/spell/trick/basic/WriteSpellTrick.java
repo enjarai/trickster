@@ -1,13 +1,12 @@
 package dev.enjarai.trickster.spell.trick.basic;
 
 import com.mojang.datafixers.util.Pair;
+
 import dev.enjarai.trickster.item.component.ModComponents;
-import dev.enjarai.trickster.item.component.SpellComponent;
+import dev.enjarai.trickster.item.component.FragmentComponent;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.SpellPart;
-import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
@@ -34,35 +33,32 @@ public class WriteSpellTrick extends Trick {
 
     public Fragment activate(SpellContext ctx, List<Fragment> fragments, boolean closed) throws BlunderException {
         var player = ctx.source().getPlayer();
-        var spell = supposeInput(fragments, 0)
-                .flatMap(s -> {
-                    if (supposeType(s, FragmentType.VOID).isPresent()) {
-                        return Optional.empty();
-                    } else {
-                        return Optional.of(expectType(s, FragmentType.SPELL_PART));
-                    }
-                }).map(SpellPart::applyEphemeral);
+        var input = supposeInput(fragments, 0).map(Fragment::applyEphemeral).flatMap(fragment -> {
+            if (supposeType(fragment, FragmentType.VOID).isPresent()) {
+                return Optional.empty();
+            } else {
+                return Optional.of(fragment);
+            }
+        });
 
         return player.map(serverPlayerEntity -> Pair.of(serverPlayerEntity, serverPlayerEntity.getOffHandStack())).map(pair -> {
             var serverPlayer = pair.getFirst();
             var stack = pair.getSecond();
 
-            spell.ifPresentOrElse(s -> {
+            input.ifPresentOrElse(v -> {
                 var stack2 = stack;
 
-                if (stack2.isOf(Items.BOOK)
-                        && !s.isEmpty()) {
+                if (stack2.isOf(Items.BOOK)) {
                     serverPlayer.equipStack(EquipmentSlot.OFFHAND, stack2.withItem(Items.ENCHANTED_BOOK));
                     stack2 = serverPlayer.getOffHandStack();
                 } else if (stack2.isOf(Items.ENCHANTED_BOOK)
-                        && s.isEmpty()
                         && (stack.get(DataComponentTypes.STORED_ENCHANTMENTS) instanceof ItemEnchantmentsComponent enchants)
                         && enchants.isEmpty()) {
                     serverPlayer.equipStack(EquipmentSlot.OFFHAND, stack2.withItem(Items.BOOK));
                     stack2 = serverPlayer.getOffHandStack();
                 }
 
-                if (!SpellComponent.setSpellPart(stack2, s, supposeInput(fragments, FragmentType.STRING, 1).flatMap(str -> Optional.of(str.value())), closed)) {
+                if (!FragmentComponent.setValue(stack2, v, supposeInput(fragments, FragmentType.STRING, 1).flatMap(str -> Optional.of(str.value())), closed)) {
                     throw new ImmutableItemBlunder(this);
                 }
             }, () -> {
@@ -75,18 +71,26 @@ public class WriteSpellTrick extends Trick {
                     stack2 = serverPlayer.getOffHandStack();
                 }
 
-                if (!SpellComponent.modifyReferencedStack(stack2, s -> {
-                    var spellComponent = s.get(ModComponents.SPELL);
+                if (!FragmentComponent.modifyReferencedStack(stack2, s -> {
+                    var spellComponent = s.get(ModComponents.FRAGMENT);
 
                     if (spellComponent == null || spellComponent.immutable())
                         return false;
 
-                    var itemDefault = s.getItem().getDefaultStack().get(ModComponents.SPELL);
+                    var itemDefault = s.getItem().getDefaultStack();
+                    var itemDefaultSpell = itemDefault.get(ModComponents.FRAGMENT);
+                    var itemDefaultMap = itemDefault.get(ModComponents.FRAGMENT);
 
-                    if (itemDefault != null) {
-                        s.set(ModComponents.SPELL, itemDefault);
+                    if (itemDefaultSpell != null) {
+                        s.set(ModComponents.FRAGMENT, itemDefaultSpell);
                     } else {
-                        s.remove(ModComponents.SPELL);
+                        s.remove(ModComponents.FRAGMENT);
+                    }
+
+                    if (itemDefaultMap != null) {
+                        s.set(ModComponents.FRAGMENT, itemDefaultMap);
+                    } else {
+                        s.remove(ModComponents.FRAGMENT);
                     }
 
                     return true;
@@ -95,7 +99,7 @@ public class WriteSpellTrick extends Trick {
                 }
             });
 
-            return spell.<Fragment>map(n -> n).orElse(VoidFragment.INSTANCE);
+            return input.orElse(VoidFragment.INSTANCE);
         }).orElseThrow(() -> new NoPlayerBlunder(this));
     }
 }

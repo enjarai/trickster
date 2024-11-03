@@ -4,11 +4,13 @@ import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.ItemInvalidBlunder;
 import dev.enjarai.trickster.spell.blunder.MissingItemBlunder;
 import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
 import dev.enjarai.trickster.spell.trick.func.ForkingTrick;
@@ -22,7 +24,7 @@ public class ImportTrick extends Trick implements ForkingTrick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        return null;
+        return makeFork(ctx, fragments).singleTickRun(ctx);
     }
 
     @Override
@@ -36,10 +38,14 @@ public class ImportTrick extends Trick implements ForkingTrick {
             var stack = inventory.getStack(i);
 
             if (stack.isOf(itemType.item())) {
-                var component = stack.get(ModComponents.SPELL);
+                var component = stack.get(ModComponents.FRAGMENT);
 
-                if (component != null)
-                    return new DefaultSpellExecutor(component.spell(), ctx.state().recurseOrThrow(fragments.subList(1, fragments.size())));
+                if (component == null) {
+                    throw new ItemInvalidBlunder(this);
+                }
+
+                var spell = component.value() instanceof SpellPart part ? part : new SpellPart(component.value());
+                return new DefaultSpellExecutor(spell, ctx.state().recurseOrThrow(fragments.subList(1, fragments.size())));
             }
         }
 

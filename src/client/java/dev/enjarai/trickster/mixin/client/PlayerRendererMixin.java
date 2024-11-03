@@ -4,6 +4,7 @@ import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.render.SpellCircleRenderer;
+import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellPart;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
@@ -54,14 +55,14 @@ public abstract class PlayerRendererMixin {
         var mainHandStack = entity.getMainHandStack();
         var offHandStack = entity.getOffHandStack();
 
-        var mainHandSpell = mainHandStack.get(ModComponents.SPELL);
-        var offHandSpell = offHandStack.get(ModComponents.SPELL);
+        var mainHandSpell = mainHandStack.get(ModComponents.FRAGMENT);
+        var offHandSpell = offHandStack.get(ModComponents.FRAGMENT);
 
         if (entity.getComponent(ModEntityComponents.IS_EDITING_SCROLL).isEditing()) {
-            if (mainHandStack.isIn(ModItems.SCROLLS) && mainHandStack.get(ModComponents.SPELL) != null && mainHandSpell != null) {
-                return Optional.of(mainHandSpell.spell());
-            } else if (offHandStack.isIn(ModItems.SCROLLS) && offHandStack.get(ModComponents.SPELL) != null && offHandSpell != null) {
-                return Optional.of(offHandSpell.spell());
+            if (mainHandStack.isIn(ModItems.SCROLLS) && mainHandStack.get(ModComponents.FRAGMENT) != null && mainHandSpell != null) {
+                return Optional.of(mainHandSpell.value()).filter(v -> v instanceof SpellPart).map(n -> (SpellPart) n);
+            } else if (offHandStack.isIn(ModItems.SCROLLS) && offHandStack.get(ModComponents.FRAGMENT) != null && offHandSpell != null) {
+                return Optional.of(offHandSpell.value()).filter(v -> v instanceof SpellPart).map(n -> (SpellPart) n);
             }
         }
 

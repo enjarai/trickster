@@ -3,6 +3,8 @@ package dev.enjarai.trickster.revision;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
+import dev.enjarai.trickster.spell.fragment.MapFragment;
+import dev.enjarai.trickster.util.Hamt;
 import dev.enjarai.trickster.spell.trick.Tricks;
 
 import java.util.*;
@@ -27,9 +29,11 @@ public class Revisions {
     public static final Revision EXECUTE_OFF_HAND = register(new ExecuteOffHandRevision());
     public static final Revision WRITE_ADDRESS_TO_OFF_HAND = register(new WriteAddressToOffHandRevision());
     public static final Revision WRITE_BRANCH_TO_OFF_HAND = register(new WriteBranchToOffHandRevision());
+    public static final Revision PATTERN_LITERAL = register(new PatternLiteralRevision());
 
     public static final Revision ONE_PONY_TRICK = register(new ConstantRevision(Tricks.TWO.getPattern(), new NumberFragment(2)));
     public static final Revision EMPTY_LIST = register(new ConstantRevision(Tricks.LIST_CREATE.getPattern(), new ListFragment(List.of())));
+    public static final Revision EMPTY_MAP = register(new ConstantRevision(Pattern.of(2, 5, 8, 6, 3, 0), new MapFragment(Hamt.empty())));
 
     public static Optional<Revision> lookup(Pattern pattern) {
         return Optional.ofNullable(REGISTRY.get(pattern));

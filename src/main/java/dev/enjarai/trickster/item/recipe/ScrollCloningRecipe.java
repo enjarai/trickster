@@ -3,7 +3,7 @@ package dev.enjarai.trickster.item.recipe;
 import dev.enjarai.trickster.item.ScrollAndQuillItem;
 import dev.enjarai.trickster.item.WrittenScrollItem;
 import dev.enjarai.trickster.item.component.ModComponents;
-import dev.enjarai.trickster.item.component.SpellComponent;
+import dev.enjarai.trickster.item.component.FragmentComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
@@ -25,7 +25,7 @@ public class ScrollCloningRecipe extends SpecialCraftingRecipe {
         for(int j = 0; j < craftingRecipeInput.getSize(); ++j) {
             ItemStack itemStack2 = craftingRecipeInput.getStackInSlot(j);
             if (!itemStack2.isEmpty()) {
-                if (itemStack2.getItem() instanceof WrittenScrollItem && itemStack2.get(ModComponents.SPELL) instanceof SpellComponent spell && !spell.closed()) {
+                if (itemStack2.getItem() instanceof WrittenScrollItem && itemStack2.get(ModComponents.FRAGMENT) instanceof FragmentComponent spell && !spell.closed()) {
                     if (!itemStack.isEmpty()) {
                         return false;
                     }
@@ -68,7 +68,7 @@ public class ScrollCloningRecipe extends SpecialCraftingRecipe {
         }
 
         var meta = itemStack.get(ModComponents.WRITTEN_SCROLL_META);
-        var spell = itemStack.get(ModComponents.SPELL);
+        var spell = itemStack.get(ModComponents.FRAGMENT);
         if (!itemStack.isEmpty() && i >= 1 && meta != null && spell != null) {
             var newMeta = meta.copy();
             if (newMeta == null) {
@@ -76,7 +76,7 @@ public class ScrollCloningRecipe extends SpecialCraftingRecipe {
             } else {
                 ItemStack itemStack3 = itemStack.copyWithCount(i);
                 itemStack3.set(ModComponents.WRITTEN_SCROLL_META, newMeta);
-                itemStack3.set(ModComponents.SPELL, spell);
+                itemStack3.set(ModComponents.FRAGMENT, spell);
                 return itemStack3;
             }
         } else {

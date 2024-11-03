@@ -16,6 +16,6 @@ public class AnyTrick extends DistortionTrick {
 
     @Override
     public Fragment distort(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        return new BooleanFragment(fragments.stream().anyMatch(f -> f.asBoolean().bool()));
+        return BooleanFragment.of(fragments.stream().anyMatch(Fragment::asBoolean));
     }
 }

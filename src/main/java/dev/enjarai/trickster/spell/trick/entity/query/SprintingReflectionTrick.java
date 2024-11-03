@@ -15,6 +15,6 @@ public class SprintingReflectionTrick extends AbstractLivingEntityQueryTrick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        return new BooleanFragment(getLivingEntity(ctx, fragments, 0).isSprinting());
+        return BooleanFragment.of(getLivingEntity(ctx, fragments, 0).isSprinting());
     }
 }

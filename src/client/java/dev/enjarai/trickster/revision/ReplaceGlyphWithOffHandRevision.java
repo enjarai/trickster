@@ -11,6 +11,7 @@ public class ReplaceGlyphWithOffHandRevision implements Revision {
 
     @Override
     public SpellPart apply(RevisionContext ctx, SpellPart root, SpellPart drawingPart) {
+        //TODO: get other hand fragment!
         drawingPart.glyph = ctx.getOtherHandSpell().deepClone();
         return root;
     }

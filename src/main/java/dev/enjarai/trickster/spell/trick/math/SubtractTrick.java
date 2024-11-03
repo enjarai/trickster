@@ -21,7 +21,7 @@ public class SubtractTrick extends DistortionTrick {
     public Fragment distort(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         fragments = supposeInput(fragments, 0)
            .flatMap(l -> supposeType(l, FragmentType.LIST))
-           .map(ListFragment::contents)
+           .map(ListFragment::fragments)
            .orElse(fragments);
 
         SubtractableFragment result = null;

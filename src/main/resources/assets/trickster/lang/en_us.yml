@@ -6,6 +6,10 @@ trickster:
     sign_scroll: Sign Scroll
     written_scroll: Written Scroll
 
+  text:
+    misc:
+      value_truncated: Value truncated
+
   widget:
     scroll_name: Scroll Name...
     enter_scroll_name: 'Enter Scroll Name:'
@@ -35,6 +39,7 @@ trickster:
     multiply: Domination Stratagem
     divide: Submission Stratagem
     modulo: Distortion of Wholes
+    power: Exponential Distortion
     max: Noble Stratagem
     min: Insignificance Stratagem
     ceil: Distortion of Grandeur
@@ -66,6 +71,8 @@ trickster:
     read_spell: Notulist's Delusion
     write_spell: Notulist's Ploy
     write_closed_spell: Proprietary Notulist's Ploy
+    write_macro_ring: Macro Ploy
+    read_macro_ring: Macro Delusion
     reveal: Showcase Stratagem
     read_crow_mind: Crow Mind Delusion
     write_crow_mind: Crow Mind Ploy
@@ -141,10 +148,15 @@ trickster:
     retrieve_glyph: Retrieval Distortion
     set_glyph: Replacement Distortion
     retrieve_subtree: Felling Distortion
-    retrieve_subtree_list: Flock Distortion
     set_subtree: Grafting Distortion
     add_subtree: Branching Distortion
     remove_subtree: Pruning Distortion
+    get_subparts: Bundle Distortion
+    escape_pattern: Interpretation Distortion
+
+    map_get: Navigator's Distortion
+    map_insert: Charting Stratagem
+    map_remove: Erasing Distortion
 
     break_block: Ploy of Destruction
     place_block: Ploy of Creation
@@ -175,6 +187,7 @@ trickster:
     drop_stack_from_slot: Ploy of Offering
 
     type_fragment: Argumentative Distortion
+    hash_values: Decaying Distortion
     delay_execution: Ploy of Suspension
     pin_chunk: Ploy of Celestial Pin
     get_dimension: Dimensional Delusion
@@ -205,8 +218,10 @@ trickster:
     boolean: Boolean
     vector: Vector
     list: List
+    map: Map
     void: Void
     pattern: Pattern
+    pattern_literal: Pattern Literal
     spell_part: Spell
     entity: Entity
     slot: Slot
@@ -267,6 +282,7 @@ item.trickster:
   witch_hat: Witch Hat
   fez: Fez
   wand: Wand
+  macro_ring: Macro Ring
 
   amethyst_mana_crystal: Amethyst Knot
   emerald_mana_crystal: Emerald Knot

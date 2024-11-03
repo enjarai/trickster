@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import dev.enjarai.trickster.SpellTooltipData;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
-import dev.enjarai.trickster.item.component.SpellComponent;
+import dev.enjarai.trickster.spell.SpellPart;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipData;
@@ -28,8 +28,7 @@ public abstract class ItemMixin {
     )
     private boolean spellGlint(boolean original, ItemStack stack) {
         return original
-                || (stack.get(ModComponents.SPELL) instanceof SpellComponent spellComponent)
-                && !spellComponent.spell().isEmpty()
+                || (stack.contains(ModComponents.FRAGMENT))
                 && !stack.isIn(ModItems.NO_SPELL_GLINT);
     }
 
@@ -38,12 +37,16 @@ public abstract class ItemMixin {
             at = @At("HEAD")
     )
     private void addGarble(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType type, CallbackInfo ci) {
-        var spellComponent = stack.get(ModComponents.SPELL);
+        var spellComponent = stack.get(ModComponents.FRAGMENT);
 
-        if (spellComponent != null && /*!spellComponent.spell().isEmpty() &&*/ spellComponent.closed()) {
-            tooltip.add(spellComponent.name()
-                    .flatMap(str -> Optional.of(Text.literal(str)))
-                    .orElse(Text.literal("Mortal eyes upon my carvings").setStyle(Style.EMPTY.withObfuscated(true))));
+        if (spellComponent != null) {
+            if (spellComponent.closed()) {
+                tooltip.add(spellComponent.name()
+                        .flatMap(str -> Optional.of(Text.literal(str)))
+                        .orElse(Text.literal("Mortal eyes upon my carvings").setStyle(Style.EMPTY.withObfuscated(true))));
+            } else if (!(spellComponent.value() instanceof SpellPart)) {
+                tooltip.add(spellComponent.value().asFormattedText());
+            }
         }
     }
 
@@ -53,10 +56,10 @@ public abstract class ItemMixin {
             cancellable = true
     )
     private void trickster$getSpellTooltipData(ItemStack stack, CallbackInfoReturnable<Optional<TooltipData>> cir) {
-        var spellComponent = stack.get(ModComponents.SPELL);
+        var comp = stack.get(ModComponents.FRAGMENT);
 
-        if (spellComponent != null && !spellComponent.spell().isEmpty() && !spellComponent.closed()) {
-            cir.setReturnValue(Optional.of(new SpellTooltipData(spellComponent.spell())));
+        if (comp != null && !comp.closed() && comp.value() instanceof SpellPart spell && !spell.isEmpty()) {
+            cir.setReturnValue(Optional.of(new SpellTooltipData(spell)));
         }
     }
 }

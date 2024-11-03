@@ -21,7 +21,7 @@ public class MergeVectorTrick extends DistortionTrick {
     public Fragment distort(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         fragments = supposeInput(fragments, 0)
             .flatMap(l -> supposeType(l, FragmentType.LIST))
-            .map(ListFragment::contents)
+            .map(ListFragment::fragments)
             .orElse(fragments);
 
         var x = expectInput(fragments, FragmentType.NUMBER, 0);

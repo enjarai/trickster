@@ -91,6 +91,7 @@ import dev.enjarai.trickster.spell.trick.inventory.ImportHatTrick;
 import dev.enjarai.trickster.spell.trick.inventory.ImportTrick;
 import dev.enjarai.trickster.spell.trick.inventory.OtherHandSlotTrick;
 import dev.enjarai.trickster.spell.trick.inventory.OtherHandTrick;
+import dev.enjarai.trickster.spell.trick.inventory.ReadMacroRing;
 import dev.enjarai.trickster.spell.trick.inventory.SetHatTrick;
 import dev.enjarai.trickster.spell.trick.list.ListAddRangeTrick;
 import dev.enjarai.trickster.spell.trick.list.ListAddTrick;
@@ -104,6 +105,9 @@ import dev.enjarai.trickster.spell.trick.list.ListSizeTrick;
 import dev.enjarai.trickster.spell.trick.mana.BatteryCreationTrick;
 import dev.enjarai.trickster.spell.trick.mana.PullManaTrick;
 import dev.enjarai.trickster.spell.trick.mana.PushManaTrick;
+import dev.enjarai.trickster.spell.trick.map.MapGetTrick;
+import dev.enjarai.trickster.spell.trick.map.MapInsertTrick;
+import dev.enjarai.trickster.spell.trick.map.MapRemoveTrick;
 import dev.enjarai.trickster.spell.trick.math.AddTrick;
 import dev.enjarai.trickster.spell.trick.math.CeilTrick;
 import dev.enjarai.trickster.spell.trick.math.CosTrick;
@@ -113,6 +117,7 @@ import dev.enjarai.trickster.spell.trick.math.MaxTrick;
 import dev.enjarai.trickster.spell.trick.math.MinTrick;
 import dev.enjarai.trickster.spell.trick.math.ModuloTrick;
 import dev.enjarai.trickster.spell.trick.math.MultiplyTrick;
+import dev.enjarai.trickster.spell.trick.math.PowerTrick;
 import dev.enjarai.trickster.spell.trick.math.RoundTrick;
 import dev.enjarai.trickster.spell.trick.math.SinTrick;
 import dev.enjarai.trickster.spell.trick.math.SqrtTrick;
@@ -120,6 +125,7 @@ import dev.enjarai.trickster.spell.trick.math.SubtractTrick;
 import dev.enjarai.trickster.spell.trick.math.TanTrick;
 import dev.enjarai.trickster.spell.trick.misc.ClearBarTrick;
 import dev.enjarai.trickster.spell.trick.misc.DelayExecutionTrick;
+import dev.enjarai.trickster.spell.trick.misc.HashValuesTrick;
 import dev.enjarai.trickster.spell.trick.misc.PinChunkTrick;
 import dev.enjarai.trickster.spell.trick.misc.ShowBarTrick;
 import dev.enjarai.trickster.spell.trick.misc.TypeFragmentTrick;
@@ -132,11 +138,12 @@ import dev.enjarai.trickster.spell.trick.raycast.RaycastBlockPosTrick;
 import dev.enjarai.trickster.spell.trick.raycast.RaycastBlockSideTrick;
 import dev.enjarai.trickster.spell.trick.raycast.RaycastEntityTrick;
 import dev.enjarai.trickster.spell.trick.tree.AddSubtreeTrick;
+import dev.enjarai.trickster.spell.trick.tree.EscapePatternTrick;
+import dev.enjarai.trickster.spell.trick.tree.GetSubPartsTrick;
 import dev.enjarai.trickster.spell.trick.tree.LocateGlyphTrick;
 import dev.enjarai.trickster.spell.trick.tree.LocateGlyphsTrick;
 import dev.enjarai.trickster.spell.trick.tree.RemoveSubtreeTrick;
 import dev.enjarai.trickster.spell.trick.tree.RetrieveGlyphTrick;
-import dev.enjarai.trickster.spell.trick.tree.RetrieveSubtreeListTrick;
 import dev.enjarai.trickster.spell.trick.tree.RetrieveSubtreeTrick;
 import dev.enjarai.trickster.spell.trick.tree.SetGlyphTrick;
 import dev.enjarai.trickster.spell.trick.tree.SetSubtreeTrick;
@@ -211,6 +218,7 @@ public class Tricks {
     public static final MaxManaReflectionTrick MAX_MANA_REFLECTION = register("max_mana_reflection", new MaxManaReflectionTrick());
     public static final FacingReflectionTrick FACING_REFLECTION = register("facing_reflection", new FacingReflectionTrick());
     public static final HotbarReflectionTrick HOTBAR_REFLECTION = register("hotbar_reflection", new HotbarReflectionTrick());
+    public static final ReadMacroRing READ_MACRO_RING = register("read_macro_ring", new ReadMacroRing());
 
     // Entity
     public static final GetPositionTrick GET_POSITION = register("get_position", new GetPositionTrick());
@@ -255,6 +263,7 @@ public class Tricks {
     public static final SinTrick SIN = register("sin", new SinTrick());
     public static final CosTrick COS = register("cos", new CosTrick());
     public static final TanTrick TAN = register("tan", new TanTrick());
+    public static final PowerTrick POWER = register("power", new PowerTrick());
 
     // Vector
     public static final ExtractXTrick EXTRACT_X = register("extract_x", new ExtractXTrick());
@@ -289,16 +298,22 @@ public class Tricks {
     public static final ListRemoveTrick LIST_REMOVE = register("list_remove", new ListRemoveTrick());
     public static final ListSizeTrick LIST_SIZE = register("list_size", new ListSizeTrick());
 
+    // Map
+    public static final MapGetTrick MAP_GET = register("map_get", new MapGetTrick());
+    public static final MapInsertTrick MAP_INSERT = register("map_insert", new MapInsertTrick());
+    public static final MapRemoveTrick MAP_REMOVE = register("map_remove", new MapRemoveTrick());
+
     // Tree
     public static final LocateGlyphTrick LOCATE_GLYPH = register("locate_glyph", new LocateGlyphTrick());
     public static final LocateGlyphsTrick LOCATE_GLYPHS = register("locate_glyphs", new LocateGlyphsTrick());
     public static final RetrieveGlyphTrick RETRIEVE_GLYPH = register("retrieve_glyph", new RetrieveGlyphTrick());
     public static final SetGlyphTrick SET_GLYPH = register("set_glyph", new SetGlyphTrick());
     public static final RetrieveSubtreeTrick RETRIEVE_SUBTREE = register("retrieve_subtree", new RetrieveSubtreeTrick());
-    public static final RetrieveSubtreeListTrick RETRIEVE_SUBTREE_LIST = register("retrieve_subtree_list", new RetrieveSubtreeListTrick());
     public static final SetSubtreeTrick SET_SUBTREE = register("set_subtree", new SetSubtreeTrick());
     public static final AddSubtreeTrick ADD_LEAF = register("add_subtree", new AddSubtreeTrick());
     public static final RemoveSubtreeTrick REMOVE_SUBTREE = register("remove_subtree", new RemoveSubtreeTrick());
+    public static final GetSubPartsTrick GET_SUBPARTS = register("get_subparts", new GetSubPartsTrick());
+    public static final EscapePatternTrick ESCAPE_PATTERN = register("escape_pattern", new EscapePatternTrick());
 
     // Events
     public static final CreateSpellCircleTrick CREATE_SPELL_CIRCLE = register("create_spell_circle", new CreateSpellCircleTrick());
@@ -349,6 +364,7 @@ public class Tricks {
 
     // Misc
     public static final TypeFragmentTrick TYPE_FRAGMENT = register("type_fragment", new TypeFragmentTrick());
+    public static final HashValuesTrick HASH_VALUES = register("hash_values", new HashValuesTrick());
     public static final DelayExecutionTrick DELAY_EXECUTION = register("delay_execution", new DelayExecutionTrick());
     public static final PinChunkTrick PIN_CHUNK = register("pin_chunk", new PinChunkTrick());
     public static final ShowBarTrick SHOW_BAR = register("show_bar", new ShowBarTrick());
