@@ -5,6 +5,7 @@
   "category": "trickster:concepts"
 }
 ```
+
 Macros allow you to create your own revisions to aid with spell scribing. 
 
 
@@ -26,4 +27,4 @@ This effectively lets anyone create their own set of revisions.
 ;;;;;
 
 Note: Macro spells are not capable of [long casting](^trickster:concepts/multi_tick). 
-This means they do not take a spell slot, but also can't run for longer than about 64 patterns.
+This means they do not take a spell slot, but also can't run more than about 64 circles.
