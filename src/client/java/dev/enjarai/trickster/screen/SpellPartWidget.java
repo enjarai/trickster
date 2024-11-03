@@ -3,9 +3,11 @@ package dev.enjarai.trickster.screen;
 import dev.enjarai.trickster.ModSounds;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.render.SpellCircleRenderer;
+import dev.enjarai.trickster.revision.Revision;
 import dev.enjarai.trickster.revision.RevisionContext;
 import dev.enjarai.trickster.revision.Revisions;
 import dev.enjarai.trickster.spell.*;
+import dev.enjarai.trickster.util.Hamt;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
@@ -16,6 +18,7 @@ import org.joml.Vector2d;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Stack;
 
 import static dev.enjarai.trickster.render.SpellCircleRenderer.*;
@@ -424,6 +427,9 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
                 spellPart = result;
             }
+        } else if (revisionContext.getMacros().get(compiled).isPresent()) {
+            toBeReplaced = drawingPart;
+            revisionContext.updateSpellWithSpell(drawingPart, revisionContext.getMacros().get(compiled).get());
         } else {
             if (patternSize >= 2) {
                 drawingPart.glyph = new PatternGlyph(compiled);
@@ -434,7 +440,6 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
         drawingPart = null;
         drawingPattern = null;
-
         revisionContext.updateSpell(rootSpellPart);
 
         MinecraftClient.getInstance().player.playSoundToPlayer(
@@ -446,6 +451,18 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     public void replaceCallback(Fragment fragment) {
         if (toBeReplaced != null) {
             toBeReplaced.glyph = fragment;
+            toBeReplaced = null;
+            revisionContext.updateSpell(rootSpellPart);
+        }
+    }
+
+    public void updateDrawingPartCallback(Optional<SpellPart> spell) {
+        if (toBeReplaced != null) {
+            if (spell.isPresent()) {
+                toBeReplaced.glyph = spell.get().glyph;
+                toBeReplaced.subParts = spell.get().subParts;
+            }
+
             toBeReplaced = null;
             revisionContext.updateSpell(rootSpellPart);
         }

@@ -3,9 +3,13 @@ package dev.enjarai.trickster.spell.fragment;
 import com.google.common.collect.ImmutableList;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Fragment;
+import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.IncorrectFragmentBlunder;
+import dev.enjarai.trickster.spell.execution.executor.ListFoldingSpellExecutor;
+import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import net.minecraft.text.Text;
@@ -13,9 +17,9 @@ import net.minecraft.text.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-public record ListFragment(List<? extends Fragment> fragments) implements Fragment {
+public record ListFragment(List<Fragment> fragments) implements FoldableFragment {
     public static final StructEndec<ListFragment> ENDEC = StructEndecBuilder.of(
-            Fragment.ENDEC.listOf().fieldOf("fragments", ListFragment::contents),
+            Fragment.ENDEC.listOf().fieldOf("fragments", ListFragment::fragments),
             ListFragment::new
     );
 
@@ -45,21 +49,19 @@ public record ListFragment(List<? extends Fragment> fragments) implements Fragme
     }
 
     @Override
-    public BooleanFragment asBoolean() {
-        return new BooleanFragment(!fragments.isEmpty());
+    public boolean asBoolean() {
+        return !fragments.isEmpty();
     }
 
     @Override
     public int getWeight() {
-        int weight = 0;
+        int weight = 16;
+
         for (Fragment fragment : fragments) {
             weight += fragment.getWeight();
         }
-        return weight;
-    }
 
-    public List<Fragment> contents() {
-        return fragments.stream().<Fragment>map(n -> n).toList();
+        return weight;
     }
 
     public ListFragment addRange(ListFragment other) throws BlunderException {
@@ -83,4 +85,9 @@ public record ListFragment(List<? extends Fragment> fragments) implements Fragme
 
         return sanitizedAddress;
     }
+
+	@Override
+	public SpellExecutor fold(SpellContext ctx, SpellPart executable, Fragment identity) {
+        return new ListFoldingSpellExecutor(ctx, executable, this, identity);
+	}
 }

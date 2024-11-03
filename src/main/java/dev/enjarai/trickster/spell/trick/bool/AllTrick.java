@@ -16,6 +16,6 @@ public class AllTrick extends Trick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        return new BooleanFragment(fragments.stream().allMatch(f -> f.asBoolean().bool()));
+        return BooleanFragment.of(fragments.stream().allMatch(Fragment::asBoolean));
     }
 }

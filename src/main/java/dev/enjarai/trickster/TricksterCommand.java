@@ -6,7 +6,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
-import dev.enjarai.trickster.item.component.SpellComponent;
+import dev.enjarai.trickster.item.component.FragmentComponent;
 import dev.enjarai.trickster.net.GrabClipboardSpellPacket;
 import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.spell.SpellPart;
@@ -41,7 +41,7 @@ public class TricksterCommand {
         var player = context.getSource().getPlayerOrThrow();
         for (var hand : Hand.values()) {
             var stack = player.getStackInHand(hand);
-            var spell = SpellComponent.getSpellPart(stack);
+            var spell = FragmentComponent.getSpellPart(stack);
             if (spell.isPresent()) {
                 var string = spell.get().toBase64();
                 context.getSource().sendFeedback(() -> Text.literal("Base64 spell string: ")
@@ -72,7 +72,7 @@ public class TricksterCommand {
     public static void importCallback(ServerPlayerEntity player, SpellPart spell) {
         if (player.hasPermissionLevel(2)) {
             var stack = ModItems.SCROLL_AND_QUILL.getDefaultStack();
-            stack.set(ModComponents.SPELL, new SpellComponent(spell));
+            stack.set(ModComponents.FRAGMENT, new FragmentComponent(spell));
             if (!player.giveItemStack(stack)) {
                 player.dropItem(stack, false);
             }

@@ -1,8 +1,10 @@
 package dev.enjarai.trickster.item;
 
 
+import dev.enjarai.trickster.item.component.FragmentComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.screen.ScrollAndQuillScreenHandler;
+import dev.enjarai.trickster.util.Hamt;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -32,8 +34,9 @@ public class ScrollAndQuillItem extends Item {
         var stack = user.getStackInHand(hand);
         var otherStack = user.getStackInHand(hand == Hand.MAIN_HAND ? Hand.OFF_HAND : Hand.MAIN_HAND);
         var slot = hand == Hand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
+        var mergedMap = FragmentComponent.getUserMergedMap(user, "ring", Hamt::empty);
 
-        var spell = stack.get(ModComponents.SPELL);
+        var spell = stack.get(ModComponents.FRAGMENT);
         if (spell == null || spell.closed()) {
             return TypedActionResult.fail(stack);
         }
@@ -53,6 +56,7 @@ public class ScrollAndQuillItem extends Item {
                 public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
                     return new ScrollAndQuillScreenHandler(
                             syncId, playerInventory, stack, otherStack, slot,
+                            mergedMap,
                             false, true
                     );
                 }

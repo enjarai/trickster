@@ -1,7 +1,8 @@
 ```json
 {
   "title": "Trigger Items",
-  "icon": "minecraft:diamond_sword"
+  "icon": "minecraft:diamond_sword",
+  "category": "trickster:concepts"
 }
 ```
 

@@ -1,7 +1,8 @@
 ```json
 {
   "title": "Trick Signatures",
-  "icon": "minecraft:writable_book"
+  "icon": "minecraft:writable_book",
+  "category": "trickster:concepts"
 }
 ```
 

@@ -2,10 +2,12 @@ package dev.enjarai.trickster.render;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.enjarai.trickster.Trickster;
+import dev.enjarai.trickster.render.fragment.FragmentRenderer;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.PatternGlyph;
 import dev.enjarai.trickster.spell.SpellPart;
+import dev.enjarai.trickster.spell.fragment.FragmentType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.*;
@@ -17,15 +19,12 @@ import net.minecraft.util.math.Vec3d;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static dev.enjarai.trickster.screen.SpellPartWidget.PRECISION_OFFSET;
 import static dev.enjarai.trickster.screen.SpellPartWidget.isCircleClickable;
 
 public class SpellCircleRenderer {
@@ -72,8 +71,36 @@ public class SpellCircleRenderer {
         this.b = b;
     }
 
+    public float getR() {
+        return r;
+    }
+
+    public float getG() {
+        return g;
+    }
+
+    public float getB() {
+        return b;
+    }
+
+    public boolean isInEditor() {
+        return inEditor;
+    }
+
+    public double getMouseX() {
+        return mouseX;
+    }
+
+    public double getMouseY() {
+        return mouseY;
+    }
+
     public void setCircleTransparency(float circleTransparency) {
         this.circleTransparency = circleTransparency;
+    }
+
+    public float getCircleTransparency() {
+        return circleTransparency;
     }
 
     private float toLocalSpace(double value) {
@@ -157,19 +184,19 @@ public class SpellCircleRenderer {
             renderPart(matrices, vertexConsumers, part, x, y, size / 3, startingAngle, delta, alphaGetter, normal);
         } else {
             matrices.push();
-            drawSide(matrices, vertexConsumers, parent, toLocalSpace(x), toLocalSpace(y), toLocalSpace(size), alphaGetter, glyph);
+            drawSide(matrices, vertexConsumers, parent, toLocalSpace(x), toLocalSpace(y), toLocalSpace(size), alphaGetter, normal, glyph);
             matrices.pop();
 
             if (!inUI) {
                 matrices.push();
                 matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
-                drawSide(matrices, vertexConsumers, parent, toLocalSpace(-x), toLocalSpace(y), toLocalSpace(size), alphaGetter, glyph);
+                drawSide(matrices, vertexConsumers, parent, toLocalSpace(-x), toLocalSpace(y), toLocalSpace(size), alphaGetter, normal, glyph);
                 matrices.pop();
             }
         }
     }
 
-    private void drawSide(MatrixStack matrices, VertexConsumerProvider vertexConsumers, SpellPart parent, float x, float y, float size, Function<Float, Float> alphaGetter, Fragment glyph) {
+    private void drawSide(MatrixStack matrices, VertexConsumerProvider vertexConsumers, SpellPart parent, float x, float y, float size, Function<Float, Float> alphaGetter, Vec3d normal, Fragment glyph) {
         var alpha = alphaGetter.apply(size);
         var patternSize = size / PATTERN_TO_PART_RATIO;
         var pixelSize = patternSize / PART_PIXEL_RADIUS;
@@ -220,30 +247,41 @@ public class SpellCircleRenderer {
                 drawGlyphLine(matrices, vertexConsumers, last, now, pixelSize, true, 1, r, g, b, 0.7f * alpha);
             }
         } else {
-            var textRenderer = MinecraftClient.getInstance().textRenderer;
+            //noinspection rawtypes
+            FragmentRenderer renderer = FragmentRenderer.REGISTRY.get(FragmentType.REGISTRY.getId(glyph.type()));
+
+            var renderDots = true;
+
+            if (renderer != null) {
+                //noinspection unchecked
+                renderer.render(glyph, matrices, vertexConsumers, x, y, size, alpha, normal, this);
+                renderDots = renderer.renderRedrawDots();
+            } else {
+                var textRenderer = MinecraftClient.getInstance().textRenderer;
 
 //            var height = textRenderer.wrapLines(Text.literal(glyph.asString()), ) // TODO
-            var text = glyph.asFormattedText();
-            var height = 7;
-            var width = textRenderer.getWidth(text);
+                var text = glyph.asFormattedText();
+                var height = 7;
+                var width = textRenderer.getWidth(text);
 
-            matrices.push();
-            matrices.translate(x, y, 0);
-            matrices.scale(size / 1.3f / width, size / 1.3f / width, 1);
+                matrices.push();
+                matrices.translate(x, y, 0);
+                matrices.scale(size / 1.3f / width, size / 1.3f / width, 1);
 
-            var color = ColorHelper.Argb.withAlpha((int) (alpha * 0xff), 0xffffff);
+                var color = ColorHelper.Argb.withAlpha((int) (alpha * 0xff), 0xffffff);
 
-            textRenderer.draw(
-                    text,
-                    -width / 2f, -height / 2f, color, false,
-                    matrices.peek().getPositionMatrix(),
-                    vertexConsumers, TextRenderer.TextLayerType.NORMAL,
-                    0, 0xf000f0
-            );
+                textRenderer.draw(
+                        text,
+                        -width / 2f, -height / 2f, color, false,
+                        matrices.peek().getPositionMatrix(),
+                        vertexConsumers, TextRenderer.TextLayerType.NORMAL,
+                        0, 0xf000f0
+                );
 
-            matrices.pop();
+                matrices.pop();
+            }
 
-            if (inEditor && inUI) {
+            if (inEditor && inUI && renderDots) {
                 for (int i = 0; i < 9; i++) {
                     var pos = getPatternDotPosition(x, y, i, patternSize);
 
@@ -272,11 +310,6 @@ public class SpellCircleRenderer {
                 }
             }
         }
-    }
-
-    public long getTime() {
-        var world = MinecraftClient.getInstance().world;
-        return world != null ? world.getTime() : 0;
     }
 
     public static void drawGlyphLine(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Vector2f last, Vector2f now, float pixelSize, boolean isDrawing, float tone, float r, float g, float b, float opacity) {
@@ -312,7 +345,7 @@ public class SpellCircleRenderer {
                 mouseY >= pos.y - hitboxSize && mouseY <= pos.y + hitboxSize;
     }
 
-    protected void drawTexturedQuad(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Identifier texture, float x1, float x2, float y1, float y2, float z, float r, float g, float b, float alpha, Vec3d normal) {
+    public static void drawTexturedQuad(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Identifier texture, float x1, float x2, float y1, float y2, float z, float r, float g, float b, float alpha, Vec3d normal) {
 //        if (inUI) {
 //            RenderSystem.setShaderTexture(0, texture);
 //            RenderSystem.setShader(GameRenderer::getPositionTexProgram);

@@ -35,8 +35,8 @@ public record SlotFragment(int slot, Optional<BlockPos> source) implements Fragm
     }
 
     @Override
-    public BooleanFragment asBoolean() {
-        return BooleanFragment.TRUE;
+    public boolean asBoolean() {
+        return true;
     }
 
     @Override

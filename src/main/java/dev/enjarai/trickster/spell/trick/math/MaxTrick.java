@@ -21,7 +21,7 @@ public class MaxTrick extends Trick {
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         fragments = supposeInput(fragments, 0)
            .flatMap(l -> supposeType(l, FragmentType.LIST))
-           .map(ListFragment::contents)
+           .map(ListFragment::fragments)
            .orElse(fragments);
 
         return new NumberFragment(fragments.stream()

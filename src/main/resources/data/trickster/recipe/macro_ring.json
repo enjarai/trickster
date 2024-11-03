@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "g": {
+      "item": "minecraft:gold_ingot"
+    },
+    "e": {
+      "item": "minecraft:emerald"
+    },
+    "i": {
+      "item": "trickster:spell_ink"
+    }
+  },
+  "pattern": [
+    " ge",
+    "gig",
+    " g "
+  ],
+  "result": {
+    "count": 1,
+    "id": "trickster:macro_ring"
+  }
+}

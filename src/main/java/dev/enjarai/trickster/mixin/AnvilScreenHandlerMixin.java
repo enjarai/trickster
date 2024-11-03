@@ -32,7 +32,7 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
         var left = this.input.getStack(0);
         var middle = this.input.getStack(1);
 
-        if (middle.contains(ModComponents.SPELL) && left.getCount() <= 1 && !left.isOf(Items.BOOK)) {
+        if (middle.contains(ModComponents.FRAGMENT) && left.getCount() <= 1 && !left.isOf(Items.BOOK)) {
             i.set(i.get() + 1);
             bl2.set(true);
         }
@@ -44,10 +44,10 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
             index = 1
     )
     private ItemStack applySpell(ItemStack stack) {
-        var spellComponent = this.input.getStack(1).get(ModComponents.SPELL);
+        var spellComponent = this.input.getStack(1).get(ModComponents.FRAGMENT);
 
         if (spellComponent != null) {
-            stack.set(ModComponents.SPELL, spellComponent);
+            stack.set(ModComponents.FRAGMENT, spellComponent);
         }
 
         return stack;

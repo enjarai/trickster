@@ -49,7 +49,7 @@ and show the inscribed spell in its tooltip.
 
 
 When you use your new Wand, 
-a [Spell Slot](^trickster:multi_tick) is consumed while the spell runs,
+a [Spell Slot](^trickster:concepts/multi_tick) is consumed while the spell runs,
 allowing the spell to run for as long as needed to complete.
 
 

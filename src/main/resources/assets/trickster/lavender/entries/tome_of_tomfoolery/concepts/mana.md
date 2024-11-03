@@ -1,7 +1,8 @@
 ```json
 {
   "title": "Mana",
-  "icon": "minecraft:glow_ink_sac"
+  "icon": "minecraft:glow_ink_sac",
+  "category": "trickster:concepts"
 }
 ```
 

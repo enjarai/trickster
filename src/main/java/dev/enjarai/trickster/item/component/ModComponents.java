@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.item.component;
 
+import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.Trickster;
 import net.minecraft.component.ComponentType;
 import net.minecraft.registry.Registries;
@@ -8,10 +9,14 @@ import net.minecraft.registry.Registry;
 import java.util.function.UnaryOperator;
 
 public class ModComponents {
-    public static final ComponentType<SpellComponent> SPELL =
-            register("spell", builder -> builder.codec(SpellComponent.CODEC).cache());
+    public static final ComponentType<FragmentComponent> FRAGMENT =
+            register("spell", builder -> builder
+                    .codec(EndecTomfoolery.toCodec(FragmentComponent.ENDEC))
+                    .cache());
     public static final ComponentType<SelectedSlotComponent> SELECTED_SLOT =
-            register("selected_slot", builder -> builder.codec(SelectedSlotComponent.CODEC).cache());
+            register("selected_slot", builder -> builder
+                    .codec(SelectedSlotComponent.CODEC)
+                    .cache());
     public static final ComponentType<WrittenScrollMetaComponent> WRITTEN_SCROLL_META =
             register("written_scroll_meta", builder -> builder
                     .codec(WrittenScrollMetaComponent.CODEC)
