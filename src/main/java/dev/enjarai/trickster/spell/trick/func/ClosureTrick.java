@@ -32,7 +32,7 @@ public class ClosureTrick extends DistortionTrick {
 
             int i = 1;
             while (i < fragments.size()) {
-                var patternSpell = expectInput(fragments, FragmentType.SPELL_PART, i);
+                var pattern = expectInput(fragments, FragmentType.PATTERN, i);
 
                 i++;
                 if (i >= fragments.size()) {
@@ -41,11 +41,7 @@ public class ClosureTrick extends DistortionTrick {
                 var fragment = expectInput(fragments, i);
 
                 i++;
-                if (patternSpell.glyph instanceof PatternGlyph patternGlyph) {
-                    replacements.put(patternGlyph.pattern(), fragment);
-                } else {
-                    throw new IncorrectFragmentBlunder(this, i - 1, FragmentType.PATTERN.getName(), patternSpell.glyph);
-                }
+                replacements.put(pattern.pattern(), fragment);
             }
         }
 
@@ -59,7 +55,7 @@ public class ClosureTrick extends DistortionTrick {
         var replacements = new HashMap<Pattern, Fragment>();
 
         map.iterator().forEachRemaining(entry -> {
-            if (entry.getKey() instanceof SpellPart spellKey && spellKey.glyph instanceof PatternGlyph pattern) {
+            if (entry.getKey() instanceof PatternGlyph pattern) {
                 replacements.put(pattern.pattern(), entry.getValue());
             } else {
                 throw new IncorrectFragmentBlunder(this, 1,
