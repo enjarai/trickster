@@ -5,7 +5,7 @@
   "category": "trickster:concepts"
 }
 ```
-Macros allow you to create your own Revisions to aid with spell scribing. 
+Macros allow you to create your own revisions to aid with spell scribing. 
 
 
 A [map](^trickster:distortions/map) that links a set of patterns to a set of spells is used to define macros.
