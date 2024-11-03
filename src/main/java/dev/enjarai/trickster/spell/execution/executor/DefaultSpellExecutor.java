@@ -2,6 +2,7 @@ package dev.enjarai.trickster.spell.execution.executor;
 
 import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.spell.*;
+import dev.enjarai.trickster.spell.execution.TickData;
 import dev.enjarai.trickster.spell.execution.ExecutionState;
 import dev.enjarai.trickster.spell.execution.SerializedSpellInstruction;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
@@ -68,15 +69,15 @@ public class DefaultSpellExecutor implements SpellExecutor {
     }
 
     @Override
-    public Optional<Fragment> run(SpellSource source, ExecutionCounter executions) throws BlunderException {
-        return run(new SpellContext(source, state), executions);
+    public Optional<Fragment> run(SpellSource source, TickData data) throws BlunderException {
+        return run(new SpellContext(state, source, data));
     }
 
-    public Optional<Fragment> run(SpellContext ctx, ExecutionCounter executions) throws BlunderException {
+    public Optional<Fragment> run(SpellContext ctx) throws BlunderException {
         lastRunExecutions = 0;
 
         if (child.isPresent()) {
-            var result = runChild(ctx, executions);
+            var result = runChild(ctx);
 
             if (result.isEmpty())
                 return result;
@@ -88,7 +89,7 @@ public class DefaultSpellExecutor implements SpellExecutor {
                 return Optional.empty();
             }
 
-            if (executions.isLimitReached()) {
+            if (ctx.data().isExecutionLimitReached()) {
                 return Optional.empty();
             }
 
@@ -155,10 +156,10 @@ public class DefaultSpellExecutor implements SpellExecutor {
                         // The new state will already have incremented recursion count, but since this isn't
                         // *technically* a recursion, we can just decrement it again.
                         state.decrementRecursions();
-                        ctx = new SpellContext(ctx.source(), state);
+                        ctx = new SpellContext(state, ctx.source(), ctx.data());
                     } else {
                         this.child = Optional.of(child);
-                        var result = runChild(ctx, executions);
+                        var result = runChild(ctx);
 
                         if (result.isEmpty())
                             return result;
@@ -167,14 +168,14 @@ public class DefaultSpellExecutor implements SpellExecutor {
                     inputs.push(inst.getActivator().orElseThrow(UnsupportedOperationException::new).apply(ctx, args));
                 }
 
-                executions.increment();
-                lastRunExecutions = executions.getExecutions();
+                ctx.data().incrementExecutions();
+                lastRunExecutions = ctx.data().getExecutions();
             }
         }
     }
 
-    protected Optional<Fragment> runChild(SpellContext ctx, ExecutionCounter executions) {
-        var result = child.flatMap(c -> c.run(ctx.source(), executions));
+    protected Optional<Fragment> runChild(SpellContext ctx) {
+        var result = child.flatMap(c -> c.run(ctx.source(), ctx.data()));
 
         if (result.isPresent()) {
             inputs.push(result.get());

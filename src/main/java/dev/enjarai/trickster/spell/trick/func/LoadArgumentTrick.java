@@ -20,10 +20,10 @@ public class LoadArgumentTrick extends Trick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        if (ctx.executionState().getArguments().size() <= index) {
+        if (ctx.state().getArguments().size() <= index) {
             throw new MissingFragmentBlunder(this, index, Text.of("any"));
         }
 
-        return ctx.executionState().getArguments().get(index);
+        return ctx.state().getArguments().get(index);
     }
 }

@@ -3,6 +3,7 @@ package dev.enjarai.trickster.mixin;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ManaComponent;
+import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.particle.SpellParticleOptions;
 import dev.enjarai.trickster.pond.SlotHolderDuck;
 import net.minecraft.entity.Entity;
@@ -56,7 +57,13 @@ public abstract class ItemEntityMixin extends Entity implements SlotHolderDuck {
             )
     )
     private boolean cancelDespawn(ItemEntity instance) {
-        return !getStack().isIn(ModItems.CANT_DESPAWN);
+        if (getStack().isIn(ModItems.CANT_DESPAWN))
+            return false;
+
+        if (getStack().get(ModComponents.MANA) instanceof ManaComponent mana && mana.naturalRechargeMultiplier() == 0)
+            return false;
+
+        return true;
     }
 
     @Override

@@ -39,7 +39,7 @@ public class ImportTrick extends Trick implements ForkingTrick {
                 var component = stack.get(ModComponents.SPELL);
 
                 if (component != null)
-                    return new DefaultSpellExecutor(component.spell(), ctx.executionState().recurseOrThrow(fragments.subList(1, fragments.size())));
+                    return new DefaultSpellExecutor(component.spell(), ctx.state().recurseOrThrow(fragments.subList(1, fragments.size())));
             }
         }
 

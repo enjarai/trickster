@@ -3,6 +3,7 @@ package dev.enjarai.trickster.spell.execution.executor;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.SpellPart;
+import dev.enjarai.trickster.spell.execution.TickData;
 import dev.enjarai.trickster.spell.execution.ExecutionState;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
@@ -33,8 +34,8 @@ public class TryCatchSpellExecutor implements SpellExecutor {
     }
 
     public TryCatchSpellExecutor(SpellContext ctx, SpellPart trySpell, SpellPart catchSpell, List<Fragment> arguments) {
-        this.trySpell = new DefaultSpellExecutor(trySpell, ctx.executionState().recurseOrThrow(arguments));
-        this.catchSpell = new DefaultSpellExecutor(catchSpell, ctx.executionState().recurseOrThrow(arguments));
+        this.trySpell = new DefaultSpellExecutor(trySpell, ctx.state().recurseOrThrow(arguments));
+        this.catchSpell = new DefaultSpellExecutor(catchSpell, ctx.state().recurseOrThrow(arguments));
     }
 
     @Override
@@ -43,7 +44,7 @@ public class TryCatchSpellExecutor implements SpellExecutor {
     }
 
     @Override
-    public Optional<Fragment> run(SpellSource source, ExecutionCounter executions) throws BlunderException {
+    public Optional<Fragment> run(SpellSource source, TickData data) throws BlunderException {
         lastRunExecutions = 0;
 
         if (catching)
@@ -58,8 +59,8 @@ public class TryCatchSpellExecutor implements SpellExecutor {
     }
 
     @Override
-    public Optional<Fragment> run(SpellContext ctx, ExecutionCounter executions) {
-        return run(ctx.source(), executions);
+    public Optional<Fragment> run(SpellContext ctx) {
+        return run(ctx.source(), ctx.data());
     }
 
     @Override

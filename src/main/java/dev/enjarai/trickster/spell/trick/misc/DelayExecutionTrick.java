@@ -18,7 +18,7 @@ public class DelayExecutionTrick extends Trick {
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var amount = supposeInput(fragments, FragmentType.NUMBER, 0).map(n -> Math.round(n.asInt())).orElse(1);
-        ctx.executionState().addDelay(amount);
+        ctx.state().addDelay(amount);
         return new NumberFragment(amount);
     }
 }

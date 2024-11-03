@@ -65,7 +65,7 @@ public final class SpellPart implements Fragment {
 
     @Override
     public SpellExecutor makeFork(SpellContext ctx, List<Fragment> args) throws BlunderException {
-        return new DefaultSpellExecutor(this, ctx.executionState().recurseOrThrow(args));
+        return new DefaultSpellExecutor(this, ctx.state().recurseOrThrow(args));
     }
 
     /**

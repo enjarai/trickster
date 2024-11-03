@@ -3,6 +3,7 @@ package dev.enjarai.trickster.spell;
 import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.spell.blunder.*;
 import dev.enjarai.trickster.spell.execution.ExecutionState;
+import dev.enjarai.trickster.spell.execution.TickData;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.SlotFragment;
 import dev.enjarai.trickster.spell.mana.MutableManaPool;
@@ -13,10 +14,10 @@ import net.minecraft.item.ItemStack;
 import java.util.Optional;
 import java.util.function.Function;
 
-public record SpellContext(SpellSource source, ExecutionState executionState) {
+public record SpellContext(ExecutionState state, SpellSource source, TickData data) {
     public void useMana(Trick trickSource, float amount) throws BlunderException {
         try {
-            executionState.useMana(trickSource, this, amount);
+            state.useMana(trickSource, this, amount);
         } catch (NotEnoughManaBlunder blunder) {
             source.getPlayer().ifPresent(ModCriteria.MANA_OVERFLUX::trigger);
             throw blunder;
@@ -26,7 +27,7 @@ public record SpellContext(SpellSource source, ExecutionState executionState) {
     }
 
     public MutableManaPool getManaPool() {
-        return executionState().tryOverridePool(source.getManaPool());
+        return state().tryOverridePool(source.getManaPool());
     }
 
     // I am disappointed in myself for having written this.

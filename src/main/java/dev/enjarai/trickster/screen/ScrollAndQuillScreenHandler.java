@@ -8,6 +8,7 @@ import dev.enjarai.trickster.revision.RevisionContext;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.execution.ExecutionState;
+import dev.enjarai.trickster.spell.execution.TickData;
 import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
 import dev.enjarai.trickster.spell.SpellPart;
@@ -85,7 +86,7 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
                         if (greedyEvaluation) {
                             var executionState = new ExecutionState(List.of());
                             try {
-                                spell.destructiveRun(new SpellContext(new PlayerSpellSource((ServerPlayerEntity) player()), executionState));
+                                spell.destructiveRun(new SpellContext(executionState, new PlayerSpellSource((ServerPlayerEntity) player()), new TickData()));
                                 this.spell.set(spell);
                             } catch (BlunderException e) {
                                 if (e instanceof NaNBlunder)

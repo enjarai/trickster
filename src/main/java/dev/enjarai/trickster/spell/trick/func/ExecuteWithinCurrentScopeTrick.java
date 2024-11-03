@@ -24,6 +24,6 @@ public class ExecuteWithinCurrentScopeTrick extends Trick implements ForkingTric
     @Override
     public SpellExecutor makeFork(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var executable = expectInput(fragments, FragmentType.SPELL_PART, 0);
-        return new DefaultSpellExecutor(executable, ctx.executionState().recurseOrThrow(ctx.executionState().getArguments()));
+        return new DefaultSpellExecutor(executable, ctx.state().recurseOrThrow(ctx.state().getArguments()));
     }
 }
