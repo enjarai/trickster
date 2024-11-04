@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.spell.mana;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import dev.enjarai.trickster.EndecTomfoolery;
@@ -7,11 +8,27 @@ import dev.enjarai.trickster.cca.SharedManaComponent;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 
-public record SharedManaPool(UUID uuid) implements MutableManaPool {
+public class SharedManaPool implements MutableManaPool {
     public static final StructEndec<SharedManaPool> ENDEC = StructEndecBuilder.of(
             EndecTomfoolery.UUID.fieldOf("uuid", SharedManaPool::uuid),
             SharedManaPool::new
     );
+
+    private final UUID uuid;
+    private Optional<SimpleManaPool> self = Optional.empty();
+
+    public SharedManaPool(UUID uuid) {
+        this.uuid = uuid;
+    }
+
+    private SharedManaPool(UUID uuid, Optional<SimpleManaPool> self) {
+        this(uuid);
+        this.self = self;
+    }
+
+    public UUID uuid() {
+        return uuid;
+    }
 
     @Override
     public ManaPoolType<?> type() {
@@ -20,36 +37,40 @@ public record SharedManaPool(UUID uuid) implements MutableManaPool {
 
     @Override
     public float get() {
-        return SharedManaComponent.INSTANCE.get(uuid).map(ManaPool::get).orElse(0f);
+        return getSelf().map(SimpleManaPool::get).orElse(0f);
     }
 
     @Override
     public float getMax() {
-        return SharedManaComponent.INSTANCE.get(uuid).map(ManaPool::getMax).orElse(0f);
+        return getSelf().map(SimpleManaPool::get).orElse(0f);
     }
 
     @Override
     public void set(float value) {
-        SharedManaComponent.INSTANCE.get(uuid).ifPresent(pool -> pool.set(value));
+        getSelf().ifPresent(pool -> pool.set(value));
     }
 
     @Override
     public void setMax(float value) {
-        SharedManaComponent.INSTANCE.get(uuid).ifPresent(pool -> pool.setMax(value));
+        getSelf().ifPresent(pool -> pool.setMax(value));
     }
 
     @Override
     public float use(float amount) {
-        return SharedManaComponent.INSTANCE.get(uuid).map(pool -> pool.use(amount)).orElse(amount);
+        return getSelf().map(pool -> pool.use(amount)).orElse(amount);
     }
 
     @Override
     public float refill(float amount) {
-        return SharedManaComponent.INSTANCE.get(uuid).map(pool -> pool.refill(amount)).orElse(amount);
+        return getSelf().map(pool -> pool.refill(amount)).orElse(amount);
     }
 
     @Override
     public MutableManaPool makeClone() {
-        return new SharedManaPool(uuid);
+        return new SharedManaPool(uuid, self);
+    }
+
+    private Optional<SimpleManaPool> getSelf() {
+        return self = self.or(() -> SharedManaComponent.INSTANCE.get(uuid));
     }
 }
