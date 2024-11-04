@@ -105,12 +105,12 @@ Creates a new spell fragment which returns the previously provided fragment when
 
 <|glyph@trickster:templates|trick-id=trickster:closure,title=Closure Stratagem|>
 
-spell, [spell, any]... -> spell
-spell, {spell: any} -> spell
+spell, [pattern, any]... -> spell
+spell, {pattern: any} -> spell
 
 ---
 
-Replaces any occurrence of any of the latter spell's patterns inside the first spell
+Replaces any occurrence of any of the patterns inside the first spell
 with the fragment immediately following them.
 
 ;;;;;
