@@ -7,6 +7,7 @@ import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.FragmentComponent;
+import dev.enjarai.trickster.item.component.ManaComponent;
 import dev.enjarai.trickster.net.GrabClipboardSpellPacket;
 import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.spell.SpellPart;
@@ -21,6 +22,10 @@ import static net.minecraft.server.command.CommandManager.literal;
 public class TricksterCommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
         dispatcher.register(literal("trickster")
+                .then(literal("killSpells")
+                        .requires(ServerCommandSource::isExecutedByPlayer)
+                        .executes(TricksterCommand::killSpells)
+                )
                 .then(literal("exportSpell")
                         .requires(ServerCommandSource::isExecutedByPlayer)
                         .executes(TricksterCommand::exportSpell)
@@ -30,9 +35,10 @@ public class TricksterCommand {
                         .requires(s -> s.hasPermissionLevel(2))
                         .executes(TricksterCommand::importSpell)
                 )
-                .then(literal("killSpells")
+                .then(literal("fillKnot")
                         .requires(ServerCommandSource::isExecutedByPlayer)
-                        .executes(TricksterCommand::killSpells)
+                        .requires(s -> s.hasPermissionLevel(2))
+                        .executes(TricksterCommand::fillKnot)
                 )
         );
     }
@@ -59,7 +65,6 @@ public class TricksterCommand {
         }
 
         context.getSource().sendError(Text.literal("Must be holding an item with an inscribed spell."));
-
         return 0;
     }
 
@@ -73,9 +78,11 @@ public class TricksterCommand {
         if (player.hasPermissionLevel(2)) {
             var stack = ModItems.SCROLL_AND_QUILL.getDefaultStack();
             stack.set(ModComponents.FRAGMENT, new FragmentComponent(spell));
+
             if (!player.giveItemStack(stack)) {
                 player.dropItem(stack, false);
             }
+
             player.sendMessage(Text.literal("Gave 1 scroll"));
         }
     }
@@ -84,5 +91,24 @@ public class TricksterCommand {
         context.getSource().getPlayerOrThrow().getComponent(ModEntityComponents.CASTER).killAll();
         context.getSource().sendFeedback(() -> Text.literal("Killed running spells."), true);
         return 1;
+    }
+
+    private static int fillKnot(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+        var player = context.getSource().getPlayerOrThrow();
+        for (var hand : Hand.values()) {
+            var stack = player.getStackInHand(hand);
+            var comp = stack.get(ModComponents.MANA);
+
+            if (comp != null) {
+                var pool = comp.pool().makeClone();
+                pool.refill(pool.getMax());
+                stack.set(ModComponents.MANA, new ManaComponent(pool));
+                player.sendMessage(Text.literal("Mana refilled"));
+                return 0;
+            }
+        }
+
+        context.getSource().sendError(Text.literal("Must be holding an item capable of storing mana."));
+        return 0;
     }
 }

@@ -14,6 +14,8 @@ public class SharedManaPool implements MutableManaPool {
             SharedManaPool::new
     );
 
+    private static final SimpleManaPool THE_SKILL_ISSUE = new SimpleManaPool(0);
+
     private final UUID uuid;
     private Optional<SimpleManaPool> self = Optional.empty();
 
@@ -37,32 +39,32 @@ public class SharedManaPool implements MutableManaPool {
 
     @Override
     public float get() {
-        return getSelf().map(SimpleManaPool::get).orElse(0f);
+        return getSelf().get();
     }
 
     @Override
     public float getMax() {
-        return getSelf().map(SimpleManaPool::get).orElse(0f);
+        return getSelf().getMax();
     }
 
     @Override
     public void set(float value) {
-        getSelf().ifPresent(pool -> pool.set(value));
+        getSelf().set(value);
     }
 
     @Override
     public void setMax(float value) {
-        getSelf().ifPresent(pool -> pool.setMax(value));
+        getSelf().setMax(value);
     }
 
     @Override
     public float use(float amount) {
-        return getSelf().map(pool -> pool.use(amount)).orElse(amount);
+        return getSelf().use(amount);
     }
 
     @Override
     public float refill(float amount) {
-        return getSelf().map(pool -> pool.refill(amount)).orElse(amount);
+        return getSelf().refill(amount);
     }
 
     @Override
@@ -70,7 +72,7 @@ public class SharedManaPool implements MutableManaPool {
         return new SharedManaPool(uuid, self);
     }
 
-    private Optional<SimpleManaPool> getSelf() {
-        return self = self.or(() -> SharedManaComponent.INSTANCE.get(uuid));
+    private SimpleManaPool getSelf() {
+        return (self = self.or(() -> SharedManaComponent.INSTANCE.get(uuid))).orElse(THE_SKILL_ISSUE);
     }
 }
