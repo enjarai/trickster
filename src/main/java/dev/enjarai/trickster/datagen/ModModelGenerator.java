@@ -35,6 +35,25 @@ public class ModModelGenerator extends FabricModelProvider {
                 )
         );
         blockStateModelGenerator.registerNorthDefaultHorizontalRotated(ModBlocks.SCROLL_SHELF, TexturedModel.ORIENTABLE_WITH_BOTTOM);
+        blockStateModelGenerator.blockStateCollector.accept(VariantsBlockStateSupplier.create(ModBlocks.MULTI_SPELL_CIRCLE)
+                .coordinate(BlockStateVariantMap.create(SpellResonatorBlock.FACING)
+                        .register(direction ->
+                                BlockStateVariant.create()
+                                        .put(VariantSettings.MODEL, Trickster.id("block/multi_spell_circle"))
+                                        .put(VariantSettings.Y, switch (direction) {
+                                            case UP, DOWN, NORTH -> VariantSettings.Rotation.R0;
+                                            case SOUTH -> VariantSettings.Rotation.R180;
+                                            case EAST -> VariantSettings.Rotation.R90;
+                                            case WEST -> VariantSettings.Rotation.R270;
+                                        })
+                                        .put(VariantSettings.X, switch (direction) {
+                                            case UP -> VariantSettings.Rotation.R0;
+                                            case DOWN -> VariantSettings.Rotation.R180;
+                                            case NORTH, EAST, WEST, SOUTH -> VariantSettings.Rotation.R90;
+                                        })
+                        )
+                )
+        );
     }
 
     @Override

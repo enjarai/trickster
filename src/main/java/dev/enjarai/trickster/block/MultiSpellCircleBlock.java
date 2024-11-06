@@ -24,6 +24,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
@@ -35,6 +38,39 @@ public class MultiSpellCircleBlock extends BlockWithEntity {
     public static final int GRID_HEIGHT = 3;
 
     public static final DirectionProperty FACING = Properties.FACING;
+
+    public static final VoxelShape[] SHAPES = new VoxelShape[] {
+            VoxelShapes.union(
+                    createCuboidShape(0, 6, 0, 16, 8, 16),
+                    createCuboidShape(1, 8, 1, 15, 14, 15),
+                    createCuboidShape(0, 14, 0, 16, 16, 16)
+            ),
+            VoxelShapes.union(
+                    createCuboidShape(0, 0, 0, 16, 2, 16),
+                    createCuboidShape(1, 2, 1, 15, 8, 15),
+                    createCuboidShape(0, 8, 0, 16, 10, 16)
+            ),
+            VoxelShapes.union(
+                    createCuboidShape(0, 0, 6, 16, 16, 8),
+                    createCuboidShape(1, 1, 8, 15, 15, 14),
+                    createCuboidShape(0, 0, 14, 16, 16, 16)
+            ),
+            VoxelShapes.union(
+                    createCuboidShape(0, 0, 0, 16, 16, 2),
+                    createCuboidShape(1, 1, 2, 15, 15, 8),
+                    createCuboidShape(0, 0, 8, 16, 16, 10)
+            ),
+            VoxelShapes.union(
+                    createCuboidShape(6, 0, 0, 8, 16, 16),
+                    createCuboidShape(8, 1, 1, 14, 15, 15),
+                    createCuboidShape(14, 0, 0, 16, 16, 16)
+            ),
+            VoxelShapes.union(
+                    createCuboidShape(0, 0, 0, 2, 16, 16),
+                    createCuboidShape(2, 1, 1, 8, 15, 15),
+                    createCuboidShape(8, 0, 0, 10, 16, 16)
+            )
+    };
 
     protected MultiSpellCircleBlock() {
         super(AbstractBlock.Settings.create()
@@ -129,20 +165,30 @@ public class MultiSpellCircleBlock extends BlockWithEntity {
         if (!world.isClient) {
             player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
             blockEntity.setStack(slot, stack.split(stack.getCount()));
-            world.playSound(null, pos, SoundEvents.BLOCK_CHISELED_BOOKSHELF_INSERT_ENCHANTED, SoundCategory.BLOCKS, 1.0F, 1.0F);
+            world.playSound(null, pos, SoundEvents.ITEM_BOOK_PUT, SoundCategory.BLOCKS, 1.0F, 1.0F);
         }
     }
 
     private static void tryRemoveBook(World world, BlockPos pos, PlayerEntity player, MultiSpellCircleBlockEntity blockEntity, int slot) {
         if (!world.isClient) {
             ItemStack itemStack = blockEntity.removeStack(slot, 1);
-            world.playSound(null, pos, SoundEvents.BLOCK_CHISELED_BOOKSHELF_INSERT_ENCHANTED, SoundCategory.BLOCKS, 1.0F, 1.0F);
+            world.playSound(null, pos, SoundEvents.ITEM_BOOK_PUT, SoundCategory.BLOCKS, 1.0F, 0.8F);
             if (!player.getInventory().insertStack(itemStack)) {
                 player.dropItem(itemStack, false);
             }
 
             world.emitGameEvent(player, GameEvent.BLOCK_CHANGE, pos);
         }
+    }
+
+    @Override
+    protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+        return SHAPES[state.get(FACING).ordinal()];
+    }
+
+    @Override
+    protected boolean hasSidedTransparency(BlockState state) {
+        return true;
     }
 
     @Override
@@ -178,7 +224,7 @@ public class MultiSpellCircleBlock extends BlockWithEntity {
 
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return this.getDefaultState().with(FACING, ctx.getPlayerLookDirection().getOpposite());
+        return this.getDefaultState().with(FACING, ctx.getSide());
     }
 
     @Override
