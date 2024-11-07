@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.item;
 
+import dev.enjarai.trickster.Trickster;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
