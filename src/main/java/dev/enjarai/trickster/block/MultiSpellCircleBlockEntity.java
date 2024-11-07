@@ -37,6 +37,7 @@ import net.minecraft.util.math.BlockPos;
 public class MultiSpellCircleBlockEntity extends BlockEntity implements Inventory, CrowMind, SpellExecutionManager {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(5, ItemStack.EMPTY);
     private Fragment crowMind = VoidFragment.INSTANCE;
+    public int age;
 
     public MultiSpellCircleBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlocks.MULTI_SPELL_CIRCLE_BLOCK_ENTITY, pos, state);
@@ -55,8 +56,9 @@ public class MultiSpellCircleBlockEntity extends BlockEntity implements Inventor
         Inventories.writeNbt(nbt, this.inventory, true, registryLookup);
     }
 
-    @SuppressWarnings("resource")
 	public void tick() {
+        age++;
+
         if (getWorld().isClient)
             return;
 

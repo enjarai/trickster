@@ -132,7 +132,7 @@ public class MultiSpellCircleBlock extends BlockWithEntity {
                 var slotStack = blockEntity.getStack(s);
 
                 if (slotStack.isEmpty() && (s == 2 ? stack.isIn(ModItems.MANA_CRYSTALS) : stack.isOf(ModItems.SPELL_CORE))) {
-                    tryAddBook(world, pos, player, blockEntity, stack, s);
+                    tryAddCore(world, pos, player, blockEntity, stack, s);
                     return ItemActionResult.success(world.isClient);
                 }
 
@@ -153,7 +153,7 @@ public class MultiSpellCircleBlock extends BlockWithEntity {
                 if (slotStack.isEmpty())
                     return ActionResult.CONSUME;
 
-                tryRemoveBook(world, pos, player, blockEntity, s);
+                tryRemoveCore(world, pos, player, blockEntity, s);
                 return ActionResult.success(world.isClient);
             }).orElse(ActionResult.PASS);
         } else {
@@ -161,7 +161,7 @@ public class MultiSpellCircleBlock extends BlockWithEntity {
         }
     }
 
-    private static void tryAddBook(World world, BlockPos pos, PlayerEntity player, MultiSpellCircleBlockEntity blockEntity, ItemStack stack, int slot) {
+    private static void tryAddCore(World world, BlockPos pos, PlayerEntity player, MultiSpellCircleBlockEntity blockEntity, ItemStack stack, int slot) {
         if (!world.isClient) {
             player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
             blockEntity.setStack(slot, stack.split(stack.getCount()));
@@ -169,7 +169,7 @@ public class MultiSpellCircleBlock extends BlockWithEntity {
         }
     }
 
-    private static void tryRemoveBook(World world, BlockPos pos, PlayerEntity player, MultiSpellCircleBlockEntity blockEntity, int slot) {
+    private static void tryRemoveCore(World world, BlockPos pos, PlayerEntity player, MultiSpellCircleBlockEntity blockEntity, int slot) {
         if (!world.isClient) {
             ItemStack itemStack = blockEntity.removeStack(slot, 1);
             world.playSound(null, pos, SoundEvents.ITEM_BOOK_PUT, SoundCategory.BLOCKS, 1.0F, 0.8F);
