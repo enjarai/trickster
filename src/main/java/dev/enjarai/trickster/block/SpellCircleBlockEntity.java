@@ -44,7 +44,7 @@ public class SpellCircleBlockEntity extends BlockEntity implements SpellColoredB
     public Fragment crowMind = VoidFragment.INSTANCE;
     public int[] colors = new int[]{0xffffff};
 
-    private Optional<ItemStack> stack = Optional.empty();
+    private ItemStack stack = ItemStack.EMPTY;
 
     public SpellCircleBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlocks.SPELL_CIRCLE_ENTITY, pos, state);
@@ -54,7 +54,12 @@ public class SpellCircleBlockEntity extends BlockEntity implements SpellColoredB
     protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         super.readNbt(nbt, registryLookup);
 
-        stack = ItemStack.fromNbt(registryLookup, nbt.get("stack"));//.flatMap(s -> s == ItemStack.EMPTY ? Optional.empty() : Optional.of(s));
+        if (nbt.contains("stack")) {
+            stack = ItemStack.fromNbt(registryLookup, nbt.get("stack")).orElseThrow();
+        } else {
+            stack = ItemStack.EMPTY;
+        }
+
         crowMind = nbt.get(CROW_MIND_ENDEC);
         colors = nbt.getIntArray("colors");
 
@@ -67,7 +72,10 @@ public class SpellCircleBlockEntity extends BlockEntity implements SpellColoredB
     protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         super.writeNbt(nbt, registryLookup);
 
-        stack.ifPresent(s -> nbt.put("stack", s.encode(registryLookup, new NbtCompound())));
+        if (!stack.isEmpty()) {
+            nbt.put("stack", stack.encode(registryLookup, new NbtCompound()));
+        }
+
         nbt.put(CROW_MIND_ENDEC, crowMind);
         nbt.putIntArray("colors", colors);
     }
@@ -144,12 +152,13 @@ public class SpellCircleBlockEntity extends BlockEntity implements SpellColoredB
     @Override
     public void setColors(int[] colors) {
         this.colors = colors;
+        markDirty();
     }
 
     @Override
     public void clear() {
+        this.stack = ItemStack.EMPTY;
         markDirty();
-        this.stack = Optional.empty();
     }
 
     @Override
@@ -159,40 +168,32 @@ public class SpellCircleBlockEntity extends BlockEntity implements SpellColoredB
 
     @Override
     public ItemStack getStack(int slot) {
-        markDirty();
-        return stack.orElse(ItemStack.EMPTY);
+        return stack;
     }
 
     @Override
     public boolean isEmpty() {
-        return stack.isEmpty() || stack.get() == ItemStack.EMPTY;
+        return stack.isEmpty();
     }
 
     @Override
     public ItemStack removeStack(int slot) {
+        var result = this.stack.copyAndEmpty();
         markDirty();
-        var result = this.stack.orElse(ItemStack.EMPTY);
-        this.stack = Optional.empty();
         return result;
     }
 
     @Override
     public ItemStack removeStack(int slot, int amount) {
+        var result = stack.split(amount);
         markDirty();
-        return this.stack.map(s -> {
-            if (s.getCount() > amount) {
-                return s.split(amount);
-            } else {
-                this.stack = Optional.empty();
-                return s;
-            }
-        }).orElse(ItemStack.EMPTY);
+        return result;
     }
 
     @Override
     public void setStack(int slot, ItemStack stack) {
+        this.stack = stack;
         markDirty();
-        this.stack = stack == ItemStack.EMPTY ? Optional.empty() : Optional.of(stack);
     }
 
     @Override
@@ -203,10 +204,19 @@ public class SpellCircleBlockEntity extends BlockEntity implements SpellColoredB
 	@Override
 	public void setCrowMind(Fragment fragment) {
         crowMind = fragment;
-	}
+        markDirty();
+    }
 
 	@Override
 	public Fragment getCrowMind() {
         return crowMind;
 	}
+
+    @Override
+    public void markDirty() {
+        super.markDirty();
+        if (world != null) {
+            world.updateListeners(pos, getCachedState(), getCachedState(), 0);
+        }
+    }
 }

@@ -201,7 +201,8 @@ public class MultiSpellCircleBlockEntity extends BlockEntity implements Inventor
 	@Override
 	public void setCrowMind(Fragment fragment) {
         crowMind = fragment;
-	}
+        markDirty();
+    }
 
 	@Override
 	public Fragment getCrowMind() {

@@ -165,14 +165,14 @@ public class MultiSpellCircleBlock extends BlockWithEntity {
     private static void tryAddCore(World world, BlockPos pos, PlayerEntity player, MultiSpellCircleBlockEntity blockEntity, ItemStack stack, int slot) {
         if (!world.isClient) {
             player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
-            blockEntity.setStack(slot, stack.split(stack.getCount()));
+            blockEntity.setStack(slot, stack.copyAndEmpty());
             world.playSound(null, pos, SoundEvents.ITEM_BOOK_PUT, SoundCategory.BLOCKS, 1.0F, 1.0F);
         }
     }
 
     private static void tryRemoveCore(World world, BlockPos pos, PlayerEntity player, MultiSpellCircleBlockEntity blockEntity, int slot) {
         if (!world.isClient) {
-            ItemStack itemStack = blockEntity.removeStack(slot, 1);
+            ItemStack itemStack = blockEntity.removeStack(slot).copyAndEmpty();
             world.playSound(null, pos, SoundEvents.ITEM_BOOK_PUT, SoundCategory.BLOCKS, 1.0F, 0.8F);
             if (!player.getInventory().insertStack(itemStack)) {
                 player.dropItem(itemStack, false);
