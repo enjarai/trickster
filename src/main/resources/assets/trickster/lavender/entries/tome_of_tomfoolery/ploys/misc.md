@@ -34,8 +34,8 @@ Fully loads the chunk containing the given position for exactly 4 seconds.
 <|page-title@lavender:book_components|title=Note: Bars|>Spells can display arbitrary values on the caster's screen as bars.
 
 
-Bars are identified by an id number and can be overwritten at any time by using the same id again.
-Bars are randomly colored based on their id. The same id will always display as the same color.
+Bars are identified by a number and can be overwritten at any time by using the same number again.
+Bars are randomly colored based on their identifier. The same identifier will always display as the same color.
 
 ;;;;;
 
