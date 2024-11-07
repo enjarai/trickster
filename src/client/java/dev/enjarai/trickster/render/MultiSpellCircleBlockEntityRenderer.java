@@ -33,7 +33,7 @@ public class MultiSpellCircleBlockEntityRenderer implements BlockEntityRenderer<
             var z = i / 2;
             modelPartData.addChild("core_" + i, ModelPartBuilder.create()
                             .uv(0, 0)
-                            .cuboid(16f / 2 * x + 1.5f, 10f, 16f / 2 * z + 1.5f, 3f, 1f, 3f),
+                            .cuboid(18f / 2 * x + 2f, 10f, 18f / 2 * z + 2f, 3f, 1f, 3f),
                     ModelTransform.NONE);
         }
         return TexturedModelData.of(modelData, 16, 16);

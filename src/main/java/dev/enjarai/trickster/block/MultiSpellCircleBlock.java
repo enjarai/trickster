@@ -108,12 +108,12 @@ public class MultiSpellCircleBlock extends BlockWithEntity {
             double y = vec3d.getY();
             double z = vec3d.getZ();
 
-            return switch (direction) { //TODO: the UP and DOWN might need tweaking once we have graphics
-                case NORTH -> Optional.of(new Vec2f((float) (1.0 - x), (float) y));
-                case SOUTH -> Optional.of(new Vec2f((float) x, (float) y));
-                case WEST -> Optional.of(new Vec2f((float) z, (float) y));
-                case EAST -> Optional.of(new Vec2f((float) (1.0 - z), (float) y));
-                case DOWN -> Optional.of(new Vec2f((float) x, (float) z));
+            return switch (direction) {
+                case NORTH -> Optional.of(new Vec2f((float) (1.0 - x), (float) (1.0 - y)));
+                case SOUTH -> Optional.of(new Vec2f((float) x, (float) (1.0 - y)));
+                case WEST -> Optional.of(new Vec2f((float) z, (float) (1.0 - y)));
+                case EAST -> Optional.of(new Vec2f((float) (1.0 - z), (float) (1.0 - y)));
+                case DOWN -> Optional.of(new Vec2f((float) x, (float) (1.0 - z)));
                 case UP -> Optional.of(new Vec2f((float) x, (float) z));
             };
         }
