@@ -12,6 +12,7 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.execution.SpellExecutionManager;
+import dev.enjarai.trickster.spell.execution.executor.ErroredSpellExecutor;
 import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.BlockSpellSource;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
@@ -56,7 +57,8 @@ public class MultiSpellCircleBlockEntity extends BlockEntity implements Inventor
         Inventories.writeNbt(nbt, this.inventory, true, registryLookup);
     }
 
-	public void tick() {
+	@SuppressWarnings("resource")
+    public void tick() {
         age++;
 
         if (getWorld().isClient)
@@ -70,7 +72,7 @@ public class MultiSpellCircleBlockEntity extends BlockEntity implements Inventor
                 var executor = slot.executor();
                 var error = Optional.<Text>empty();
 
-                if (slot.error().isPresent())
+                if (slot.executor() instanceof ErroredSpellExecutor)
                     continue;
 
                 try {
@@ -153,8 +155,8 @@ public class MultiSpellCircleBlockEntity extends BlockEntity implements Inventor
                 if (fragment instanceof SpellPart spell) {
                     if (!stack.contains(ModComponents.SPELL_CORE)
                             || stack.get(ModComponents.SPELL_CORE) instanceof SpellCoreComponent comp
-                            && (!spell.equals(comp.spell().orElse(null))
-                                || comp.error().isPresent())) {
+                            && (!spell.equals(comp.executor().spell())
+                                || comp.executor() instanceof ErroredSpellExecutor)) {
                         stack.set(ModComponents.SPELL_CORE, new SpellCoreComponent(spell));
                     }
                 }
@@ -212,8 +214,8 @@ public class MultiSpellCircleBlockEntity extends BlockEntity implements Inventor
         for (var stack : inventory) {
             if (stack.isOf(ModItems.SPELL_CORE)
                     && (!stack.contains(ModComponents.SPELL_CORE)
-                        || stack.get(ModComponents.SPELL_CORE).error().isPresent())) {
-                stack.set(ModComponents.SPELL_CORE, new SpellCoreComponent(executor, Optional.empty(), Optional.empty()));
+                        || stack.get(ModComponents.SPELL_CORE).executor() instanceof ErroredSpellExecutor)) {
+                stack.set(ModComponents.SPELL_CORE, new SpellCoreComponent(executor));
                 return true;
             }
         }

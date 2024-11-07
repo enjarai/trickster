@@ -101,33 +101,33 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
      * @return whether the spell has finished running or not. Blunders and normal completion return true, otherwise returns false.
      */
     private boolean tryRun(SpellSource source, Int2ObjectMap.Entry<SpellExecutor> entry, ExecutorCallback tickCallback, ExecutorCallback completeCallback, ExecutorCallback errorCallback) {
-        var spell = entry.getValue();
+        var executor = entry.getValue();
 
         try {
-            if (spell.run(source).isEmpty()) {
-                tickCallback.callTheBack(entry.getIntKey(), spell);
+            if (executor.run(source).isEmpty()) {
+                tickCallback.callTheBack(entry.getIntKey(), executor);
                 return false;
             } else {
-                completeCallback.callTheBack(entry.getIntKey(), spell);
+                completeCallback.callTheBack(entry.getIntKey(), executor);
                 return true;
             }
         } catch (BlunderException blunder) {
             var message = blunder.createMessage()
-                    .append(" (").append(spell.getCurrentState().formatStackTrace()).append(")");
+                    .append(" (").append(executor.getCurrentState().formatStackTrace()).append(")");
 
             if (blunder instanceof NaNBlunder)
                 source.getPlayer().ifPresent(ModCriteria.NAN_NUMBER::trigger);
 
-            entry.setValue(new ErroredSpellExecutor(message));
+            entry.setValue(new ErroredSpellExecutor(executor.spell(), message));
             source.getPlayer().ifPresent(player -> player.sendMessage(message));
-            errorCallback.callTheBack(entry.getIntKey(), spell);
+            errorCallback.callTheBack(entry.getIntKey(), executor);
         } catch (Exception e) {
             var message = Text.literal("Uncaught exception in spell: " + e.getMessage())
-                    .append(" (").append(spell.getCurrentState().formatStackTrace()).append(")");
+                    .append(" (").append(executor.getCurrentState().formatStackTrace()).append(")");
 
-            entry.setValue(new ErroredSpellExecutor(message));
+            entry.setValue(new ErroredSpellExecutor(executor.spell(), message));
             source.getPlayer().ifPresent(player -> player.sendMessage(message));
-            errorCallback.callTheBack(entry.getIntKey(), spell);
+            errorCallback.callTheBack(entry.getIntKey(), executor);
         }
 
         return true;

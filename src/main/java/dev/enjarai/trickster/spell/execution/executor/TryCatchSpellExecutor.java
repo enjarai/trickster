@@ -44,6 +44,11 @@ public class TryCatchSpellExecutor implements SpellExecutor {
     }
 
     @Override
+    public SpellPart spell() {
+        return catching ? catchSpell.spell() : trySpell.spell();
+    }
+
+    @Override
     public Optional<Fragment> run(SpellSource source, TickData data) throws BlunderException {
         lastRunExecutions = 0;
 

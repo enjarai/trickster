@@ -19,6 +19,7 @@ import java.util.Stack;
 
 public class DefaultSpellExecutor implements SpellExecutor {
     public static final StructEndec<DefaultSpellExecutor> ENDEC = StructEndecBuilder.of(
+            SpellPart.ENDEC.fieldOf("root", DefaultSpellExecutor::spell),
             SerializedSpellInstruction.ENDEC.listOf().xmap((l) -> {
                 var s = new Stack<SpellInstruction>();
                 s.addAll(l.stream().map(SerializedSpellInstruction::toDeserialized).toList());
@@ -32,6 +33,7 @@ public class DefaultSpellExecutor implements SpellExecutor {
             DefaultSpellExecutor::new
     );
 
+    protected final SpellPart root;
     protected final Stack<SpellInstruction> instructions;
     protected final Stack<Fragment> inputs = new Stack<>();
     protected final Stack<Integer> scope = new Stack<>();
@@ -40,12 +42,14 @@ public class DefaultSpellExecutor implements SpellExecutor {
     protected Optional<Fragment> overrideReturnValue = Optional.empty();
     protected int lastRunExecutions;
 
-    protected DefaultSpellExecutor(Stack<SpellInstruction> instructions,
+    protected DefaultSpellExecutor(SpellPart root,
+                                   Stack<SpellInstruction> instructions,
                                    List<Fragment> inputs,
                                    List<Integer> scope,
                                    ExecutionState state,
                                    Optional<SpellExecutor> child,
                                    Optional<Fragment> overrideReturnValue) {
+        this.root = root;
         this.instructions = instructions;
         this.inputs.addAll(inputs);
         this.scope.addAll(scope);
@@ -55,6 +59,7 @@ public class DefaultSpellExecutor implements SpellExecutor {
     }
 
     public DefaultSpellExecutor(SpellPart root, ExecutionState executionState) {
+        this.root = root;
         this.state = executionState;
         this.instructions = flattenNode(root);
     }
@@ -66,6 +71,11 @@ public class DefaultSpellExecutor implements SpellExecutor {
     @Override
     public SpellExecutorType<?> type() {
         return SpellExecutorType.DEFAULT;
+    }
+
+    @Override
+    public SpellPart spell() {
+        return root;
     }
 
     @Override

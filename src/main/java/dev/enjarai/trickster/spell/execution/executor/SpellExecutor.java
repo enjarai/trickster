@@ -21,6 +21,8 @@ public interface SpellExecutor {
 
     SpellExecutorType<?> type();
 
+    SpellPart spell();
+
     /**
      * Attempts to execute the spell within a single tick, throws ExecutionLimitReachedBlunder if single-tick execution is not feasible.
      * <p>

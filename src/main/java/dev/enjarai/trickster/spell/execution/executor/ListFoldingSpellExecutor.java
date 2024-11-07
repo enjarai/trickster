@@ -66,6 +66,11 @@ public class ListFoldingSpellExecutor implements SpellExecutor {
     }
 
     @Override
+    public SpellPart spell() {
+        return executable;
+    }
+
+    @Override
     public Optional<Fragment> run(SpellSource source, TickData data) throws BlunderException {
         return run(new SpellContext(state, source, data));
     }
