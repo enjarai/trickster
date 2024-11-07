@@ -70,8 +70,6 @@ import dev.enjarai.trickster.spell.trick.entity.query.GetVelocityTrick;
 import dev.enjarai.trickster.spell.trick.entity.query.HeightReflectionTrick;
 import dev.enjarai.trickster.spell.trick.entity.query.SneakingReflectionTrick;
 import dev.enjarai.trickster.spell.trick.entity.query.SprintingReflectionTrick;
-import dev.enjarai.trickster.spell.trick.event.CreateSpellCircleTrick;
-import dev.enjarai.trickster.spell.trick.event.DeleteSpellCircleTrick;
 import dev.enjarai.trickster.spell.trick.fleck.GetFlecksTrick;
 import dev.enjarai.trickster.spell.trick.fleck.LineFleckTrick;
 import dev.enjarai.trickster.spell.trick.fleck.SpellFleckTrick;
@@ -314,10 +312,6 @@ public class Tricks {
     public static final RemoveSubtreeTrick REMOVE_SUBTREE = register("remove_subtree", new RemoveSubtreeTrick());
     public static final GetSubPartsTrick GET_SUBPARTS = register("get_subparts", new GetSubPartsTrick());
     public static final EscapePatternTrick ESCAPE_PATTERN = register("escape_pattern", new EscapePatternTrick());
-
-    // Events
-    public static final CreateSpellCircleTrick CREATE_SPELL_CIRCLE = register("create_spell_circle", new CreateSpellCircleTrick());
-    public static final DeleteSpellCircleTrick DELETE_SPELL_CIRCLE = register("delete_spell_circle", new DeleteSpellCircleTrick());
 
     // Blocks
     public static final BreakBlockTrick BREAK_BLOCK = register("break_block", new BreakBlockTrick());

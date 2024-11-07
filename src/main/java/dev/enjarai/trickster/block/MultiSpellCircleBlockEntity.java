@@ -148,18 +148,9 @@ public class MultiSpellCircleBlockEntity extends BlockEntity implements Inventor
         if (slot == 2
                 ? stack.isIn(ModItems.MANA_CRYSTALS)
                 : stack.isOf(ModItems.SPELL_CORE)) {
-            if (stack.isOf(ModItems.SPELL_CORE)
-                    && stack.contains(ModComponents.FRAGMENT)) {
-                var fragment = stack.get(ModComponents.FRAGMENT).value();
-                
-                if (fragment instanceof SpellPart spell) {
-                    if (!stack.contains(ModComponents.SPELL_CORE)
-                            || stack.get(ModComponents.SPELL_CORE) instanceof SpellCoreComponent comp
-                            && (!spell.equals(comp.executor().spell())
-                                || comp.executor() instanceof ErroredSpellExecutor)) {
-                        stack.set(ModComponents.SPELL_CORE, new SpellCoreComponent(spell));
-                    }
-                }
+            if (stack.isOf(ModItems.SPELL_CORE)) {
+                SpellCoreComponent.refresh(stack.getComponents(),
+                        component -> stack.set(ModComponents.SPELL_CORE, component));
             }
 
             inventory.set(slot, stack);
