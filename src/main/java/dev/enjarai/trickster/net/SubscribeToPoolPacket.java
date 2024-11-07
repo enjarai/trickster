@@ -7,6 +7,6 @@ import io.wispforest.owo.network.ServerAccess;
 
 public record SubscribeToPoolPacket(UUID uuid) {
     public void handleServer(ServerAccess access) {
-        SharedManaComponent.INSTANCE.subscribe(access.player(), uuid);
+        SharedManaComponent.getInstance().subscribe(access.player(), uuid);
     }
 }

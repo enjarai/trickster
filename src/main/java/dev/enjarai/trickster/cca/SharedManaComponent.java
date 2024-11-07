@@ -24,7 +24,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 
 public class SharedManaComponent implements AutoSyncedComponent {
     // this is absolutely cursed
-    public static SharedManaComponent INSTANCE = null;
+    private static SharedManaComponent INSTANCE = null;
 
     private static final KeyedEndec<Map<UUID, SimpleManaPool>> POOLS_ENDEC = new KeyedEndec<>("pools", Endec.map(EndecTomfoolery.UUID, SimpleManaPool.ENDEC), new HashMap<>());
 
@@ -99,5 +99,10 @@ public class SharedManaComponent implements AutoSyncedComponent {
             subscribers.put(playerUuid, subscriptions);
             ModGlobalComponents.SHARED_MANA.sync(provider);
         });
+    }
+
+    @Nullable
+    public static SharedManaComponent getInstance() {
+        return INSTANCE;
     }
 }

@@ -14,7 +14,17 @@ public class SharedManaPool implements MutableManaPool {
             SharedManaPool::new
     );
 
-    private static final SimpleManaPool THE_SKILL_ISSUE = new SimpleManaPool(0);
+    private static final SimpleManaPool THE_SKILL_ISSUE = new SimpleManaPool(0) {
+        @Override
+        public void set(float value) {
+            mana = 0;
+        }
+
+        @Override
+        public void setMax(float value) {
+            maxMana = 0;
+        }
+    };
 
     private final UUID uuid;
     private Optional<SimpleManaPool> self = Optional.empty();
@@ -73,6 +83,6 @@ public class SharedManaPool implements MutableManaPool {
     }
 
     private SimpleManaPool getSelf() {
-        return (self = self.or(() -> SharedManaComponent.INSTANCE.get(uuid))).orElse(THE_SKILL_ISSUE);
+        return (self = self.or(() -> SharedManaComponent.getInstance().get(uuid))).orElse(THE_SKILL_ISSUE);
     }
 }

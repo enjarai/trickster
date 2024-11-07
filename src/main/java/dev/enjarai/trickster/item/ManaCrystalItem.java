@@ -52,7 +52,7 @@ public abstract class ManaCrystalItem extends Item {
         public ItemStack createStack() {
             var stack = getDefaultStack();
             var pool = new SimpleManaPool(32768);
-            var uuid = SharedManaComponent.INSTANCE.allocate(pool);
+            var uuid = SharedManaComponent.getInstance().allocate(pool);
             stack.set(ModComponents.MANA, new ManaComponent(new SharedManaPool(uuid), 1));
             stack.increment(1);
             return stack;
@@ -82,7 +82,7 @@ public abstract class ManaCrystalItem extends Item {
         }
 
         // if ever run on the server, will fail -- consider putting a try-catch if it causes an issue with a mod?
-        if (manaComponent.pool() instanceof SharedManaPool sharedPool && SharedManaComponent.INSTANCE.get(sharedPool.uuid()).isEmpty()) {
+        if (manaComponent.pool() instanceof SharedManaPool sharedPool && SharedManaComponent.getInstance().get(sharedPool.uuid()).isEmpty()) {
             ModNetworking.CHANNEL.clientHandle().send(new SubscribeToPoolPacket(sharedPool.uuid()));
         }
 
