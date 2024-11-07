@@ -3,6 +3,8 @@ package dev.enjarai.trickster.block;
 import com.mojang.serialization.MapCodec;
 
 import dev.enjarai.trickster.item.ManaCrystalItem;
+import dev.enjarai.trickster.item.ModItems;
+import dev.enjarai.trickster.item.SpellCoreItem;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.SpellCoreComponent;
 import dev.enjarai.trickster.particle.SpellParticleOptions;
@@ -17,10 +19,15 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.stat.Stats;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -30,6 +37,7 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
 public class SpellCircleBlock extends BlockWithEntity {
@@ -99,19 +107,54 @@ public class SpellCircleBlock extends BlockWithEntity {
 //    }
 
     @Override
-    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+    protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (world.getBlockEntity(pos) instanceof SpellCircleBlockEntity blockEntity) {
-            var playerStack = player.getMainHandStack();
-            
-            if (playerStack == ItemStack.EMPTY || playerStack.getItem() instanceof ManaCrystalItem) {
-                player.equipStack(EquipmentSlot.MAINHAND, blockEntity.removeStack(0));
-                blockEntity.setStack(0, playerStack);
+            var slotStack = blockEntity.getStack(0);
+
+            if (slotStack.isEmpty() && stack.isIn(ModItems.MANA_CRYSTALS)) {
+                tryAddCore(world, pos, player, blockEntity, stack, 0);
+                return ItemActionResult.success(world.isClient);
             }
 
-            return ActionResult.SUCCESS;
+            return ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        } else {
+            return ItemActionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
         }
+    }
 
-        return super.onUse(state, world, pos, player, hit);
+    @Override
+    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+        if (world.getBlockEntity(pos) instanceof SpellCircleBlockEntity blockEntity) {
+            var slotStack = blockEntity.getStack(0);
+
+            if (slotStack.isEmpty())
+                return ActionResult.CONSUME;
+
+            tryRemoveCore(world, pos, player, blockEntity, 0);
+            return ActionResult.success(world.isClient);
+        } else {
+            return ActionResult.PASS;
+        }
+    }
+
+    private static void tryAddCore(World world, BlockPos pos, PlayerEntity player, SpellCircleBlockEntity blockEntity, ItemStack stack, int slot) {
+        if (!world.isClient) {
+            player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
+            blockEntity.setStack(slot, stack.copyAndEmpty());
+            world.playSound(null, pos, SoundEvents.ITEM_BOOK_PUT, SoundCategory.BLOCKS, 1.0F, 1.0F);
+        }
+    }
+
+    private static void tryRemoveCore(World world, BlockPos pos, PlayerEntity player, SpellCircleBlockEntity blockEntity, int slot) {
+        if (!world.isClient) {
+            ItemStack itemStack = blockEntity.removeStack(slot).copyAndEmpty();
+            world.playSound(null, pos, SoundEvents.ITEM_BOOK_PUT, SoundCategory.BLOCKS, 1.0F, 0.8F);
+            if (!player.getInventory().insertStack(itemStack)) {
+                player.dropItem(itemStack, false);
+            }
+
+            world.emitGameEvent(player, GameEvent.BLOCK_CHANGE, pos);
+        }
     }
 
     @Override

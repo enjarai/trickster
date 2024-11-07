@@ -73,7 +73,7 @@ public class SpellCircleBlockEntityRenderer implements BlockEntityRenderer<Spell
                 (float) Math.sin(age * 0.14f) * 0.02f
         );
 
-        var normal = new Vec3d(new Vector3f(0, 0, -1).rotate(facing.getRotationQuaternion().conjugate()));
+        var normal = new Vec3d(new Vector3f(0, 0, -1));
 
         var component = entity.getComponents().get(ModComponents.SPELL_CORE);
         if (component != null) {
