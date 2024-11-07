@@ -4,20 +4,15 @@ import dev.enjarai.trickster.block.MultiSpellCircleBlock;
 import dev.enjarai.trickster.block.SpellCircleBlock;
 import dev.enjarai.trickster.block.SpellCircleBlockEntity;
 import dev.enjarai.trickster.item.component.ModComponents;
-import dev.enjarai.trickster.item.component.SpellCoreComponent;
-import dev.enjarai.trickster.spell.SpellPart;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
 import org.joml.Vector3f;
-
-import java.util.Optional;
 
 public class SpellCircleBlockEntityRenderer implements BlockEntityRenderer<SpellCircleBlockEntity> {
     private final SpellCircleRenderer renderer;
