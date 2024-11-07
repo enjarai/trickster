@@ -7,6 +7,10 @@ import dev.enjarai.trickster.item.ModItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.data.client.*;
+import net.minecraft.registry.Registries;
+import net.minecraft.state.property.Properties;
+
+import java.util.List;
 
 public class ModModelGenerator extends FabricModelProvider {
     public ModModelGenerator(FabricDataOutput output) {
@@ -35,25 +39,27 @@ public class ModModelGenerator extends FabricModelProvider {
                 )
         );
         blockStateModelGenerator.registerNorthDefaultHorizontalRotated(ModBlocks.SCROLL_SHELF, TexturedModel.ORIENTABLE_WITH_BOTTOM);
-        blockStateModelGenerator.blockStateCollector.accept(VariantsBlockStateSupplier.create(ModBlocks.MULTI_SPELL_CIRCLE)
-                .coordinate(BlockStateVariantMap.create(SpellResonatorBlock.FACING)
-                        .register(direction ->
-                                BlockStateVariant.create()
-                                        .put(VariantSettings.MODEL, Trickster.id("block/multi_spell_circle"))
-                                        .put(VariantSettings.Y, switch (direction) {
-                                            case UP, DOWN, NORTH -> VariantSettings.Rotation.R0;
-                                            case SOUTH -> VariantSettings.Rotation.R180;
-                                            case EAST -> VariantSettings.Rotation.R90;
-                                            case WEST -> VariantSettings.Rotation.R270;
-                                        })
-                                        .put(VariantSettings.X, switch (direction) {
-                                            case UP -> VariantSettings.Rotation.R0;
-                                            case DOWN -> VariantSettings.Rotation.R180;
-                                            case NORTH, EAST, WEST, SOUTH -> VariantSettings.Rotation.R90;
-                                        })
-                        )
-                )
-        );
+        for (var block : List.of(ModBlocks.MULTI_SPELL_CIRCLE, ModBlocks.SPELL_CIRCLE)) {
+            blockStateModelGenerator.blockStateCollector.accept(VariantsBlockStateSupplier.create(block)
+                    .coordinate(BlockStateVariantMap.create(Properties.FACING)
+                            .register(direction ->
+                                    BlockStateVariant.create()
+                                            .put(VariantSettings.MODEL, Registries.BLOCK.getId(block).withPrefixedPath("block/"))
+                                            .put(VariantSettings.Y, switch (direction) {
+                                                case UP, DOWN, NORTH -> VariantSettings.Rotation.R0;
+                                                case SOUTH -> VariantSettings.Rotation.R180;
+                                                case EAST -> VariantSettings.Rotation.R90;
+                                                case WEST -> VariantSettings.Rotation.R270;
+                                            })
+                                            .put(VariantSettings.X, switch (direction) {
+                                                case UP -> VariantSettings.Rotation.R0;
+                                                case DOWN -> VariantSettings.Rotation.R180;
+                                                case NORTH, EAST, WEST, SOUTH -> VariantSettings.Rotation.R90;
+                                            })
+                            )
+                    )
+            );
+        }
     }
 
     @Override

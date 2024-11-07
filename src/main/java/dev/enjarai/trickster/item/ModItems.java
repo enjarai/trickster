@@ -64,6 +64,7 @@ public class ModItems {
     public static final SpellCoreItem SPELL_CORE = register("spell_core", new SpellCoreItem());
     public static final UnstableSpellCoreItem UNSTABLE_SPELL_CORE = register("unstable_spell_core", new UnstableSpellCoreItem());
     public static final BlockItem SPELL_RESONATOR_BLOCK_ITEM = register("spell_resonator", new BlockItem(ModBlocks.SPELL_RESONATOR, new Item.Settings()));
+    public static final BlockItem SPELL_CIRCLE_BLOCK_ITEM = register("spell_circle", new BlockItem(ModBlocks.SPELL_CIRCLE, new Item.Settings()));
     public static final BlockItem MULTI_SPELL_CIRCLE_BLOCK_ITEM = register("multi_spell_circle", new BlockItem(ModBlocks.MULTI_SPELL_CIRCLE, new Item.Settings()));
     public static final BlockItem SCROLL_SHELF_BLOCK_ITEM = register("scroll_shelf", new BlockItem(ModBlocks.SCROLL_SHELF, new Item.Settings()));
     public static final ManaCrystalItem.Amethyst AMETHYST_MANA_CRYSTAL = register("amethyst_mana_crystal", new ManaCrystalItem.Amethyst());
@@ -125,13 +126,14 @@ public class ModItems {
                 entries.add(SPELL_INK);
                 entries.add(SPELL_RESONATOR_BLOCK_ITEM);
                 entries.add(SCROLL_SHELF_BLOCK_ITEM);
+                entries.add(SPELL_CIRCLE_BLOCK_ITEM);
                 entries.add(MULTI_SPELL_CIRCLE_BLOCK_ITEM);
+                entries.add(SPELL_CORE);
+                entries.add(UNSTABLE_SPELL_CORE);
                 entries.add(AMETHYST_MANA_CRYSTAL);
                 entries.add(EMERALD_MANA_CRYSTAL);
                 entries.add(DIAMOND_MANA_CRYSTAL);
                 entries.add(ECHO_MANA_CRYSTAL);
-                entries.add(SPELL_CORE);
-                entries.add(UNSTABLE_SPELL_CORE);
             })
             .build();
 

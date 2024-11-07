@@ -1,6 +1,8 @@
 {
   "replace": false,
   "values": [
-    "trickster:spell_resonator"
+    "trickster:spell_resonator",
+    "trickster:spell_circle",
+    "trickster:multi_spell_circle"
   ]
 }

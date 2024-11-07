@@ -289,9 +289,12 @@ item.trickster:
   diamond_mana_crystal: Diamond Knot
   echo_mana_crystal: Echo Knot
 
+  spell_core: Spell Core
+
 block.trickster:
   spell_resonator: Spell Resonator
-  spell_circle: Spell Circle
+  spell_circle: Spell Construct
+  multi_spell_circle: Modular Spell Construct
   light: Light
   scroll_shelf: Scroll Shelf
 

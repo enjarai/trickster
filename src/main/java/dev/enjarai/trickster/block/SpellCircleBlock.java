@@ -3,13 +3,18 @@ package dev.enjarai.trickster.block;
 import com.mojang.serialization.MapCodec;
 
 import dev.enjarai.trickster.item.ManaCrystalItem;
+import dev.enjarai.trickster.item.component.ModComponents;
+import dev.enjarai.trickster.item.component.SpellCoreComponent;
 import dev.enjarai.trickster.particle.SpellParticleOptions;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.component.ComponentMap;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.StateManager;
@@ -40,8 +45,8 @@ public class SpellCircleBlock extends BlockWithEntity {
 
     protected SpellCircleBlock() {
         super(AbstractBlock.Settings.create()
-                .strength(0.5f).noCollision()
-                .sounds(BlockSoundGroup.AMETHYST_BLOCK).noBlockBreakParticles());
+                .strength(1.5F)
+                .sounds(BlockSoundGroup.STONE));
         setDefaultState(stateManager.getDefaultState().with(FACING, Direction.UP));
     }
 
@@ -67,36 +72,35 @@ public class SpellCircleBlock extends BlockWithEntity {
     }
 
     @Override
-    public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
-        var blockEntity = world.getBlockEntity(pos);
-        if (blockEntity instanceof SpellColoredBlockEntity coloredBlockEntity) {
-            var particlePos = Vec3d.of(pos);
-            var max = random.nextInt(3);
-            var shape = SHAPES[state.get(FACING).getId()].getBoundingBox();
-            var colors = coloredBlockEntity.getColors();
-            for (int i = 0; i < max; i++) {
-                world.addParticle(
-                        new SpellParticleOptions(colors[random.nextInt(colors.length)]),
-                        particlePos.x + shape.minX + random.nextFloat() * shape.getLengthX(),
-                        particlePos.y + shape.minY + random.nextFloat() * shape.getLengthY(),
-                        particlePos.z + shape.minZ + random.nextFloat() * shape.getLengthZ(),
-                        random.nextFloat() * 0.005f - 0.0025f,
-                        random.nextFloat() * 0.02f + 0.01f,
-                        random.nextFloat() * 0.005f - 0.0025f
-                );
-            }
-        }
+    protected BlockRenderType getRenderType(BlockState state) {
+        return BlockRenderType.MODEL;
     }
+
+//    @Override
+//    public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
+//        var blockEntity = world.getBlockEntity(pos);
+//        if (blockEntity instanceof SpellColoredBlockEntity coloredBlockEntity) {
+//            var particlePos = Vec3d.of(pos);
+//            var max = random.nextInt(3);
+//            var shape = SHAPES[state.get(FACING).getId()].getBoundingBox();
+//            var colors = coloredBlockEntity.getColors();
+//            for (int i = 0; i < max; i++) {
+//                world.addParticle(
+//                        new SpellParticleOptions(colors[random.nextInt(colors.length)]),
+//                        particlePos.x + shape.minX + random.nextFloat() * shape.getLengthX(),
+//                        particlePos.y + shape.minY + random.nextFloat() * shape.getLengthY(),
+//                        particlePos.z + shape.minZ + random.nextFloat() * shape.getLengthZ(),
+//                        random.nextFloat() * 0.005f - 0.0025f,
+//                        random.nextFloat() * 0.02f + 0.01f,
+//                        random.nextFloat() * 0.005f - 0.0025f
+//                );
+//            }
+//        }
+//    }
 
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if (world.getBlockEntity(pos) instanceof SpellCircleBlockEntity blockEntity) {
-            if (blockEntity.lastError != null) {
-                if (world.isClient()) {
-                    player.sendMessage(blockEntity.lastError);
-                }
-            }
-
             var playerStack = player.getMainHandStack();
             
             if (playerStack == ItemStack.EMPTY || playerStack.getItem() instanceof ManaCrystalItem) {
@@ -111,11 +115,24 @@ public class SpellCircleBlock extends BlockWithEntity {
     }
 
     @Override
+    public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
+        var blockEntity = world.getBlockEntity(pos);
+        if (blockEntity instanceof SpellCircleBlockEntity circle) {
+            SpellCoreComponent.refresh(circle.getComponents(), component -> circle.setComponents(ComponentMap.builder()
+                    .addAll(circle.getComponents()).add(ModComponents.SPELL_CORE, component).build()));
+            circle.markDirty();
+        }
+
+        super.onPlaced(world, pos, state, placer, itemStack);
+    }
+
+    @Override
     protected void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
         if (!state.isOf(newState.getBlock())) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof SpellCircleBlockEntity spellCircle && !spellCircle.isEmpty()) {
                 //TODO: unneeded for loop, please clean it up eventually
+                // Eh, i think we can keep it just in case, lest we forgert
                 for (int i = 0; i < spellCircle.size(); ++i) {
                     ItemStack itemStack = spellCircle.getStack(i);
                     if (!itemStack.isEmpty()) {
@@ -128,6 +145,11 @@ public class SpellCircleBlock extends BlockWithEntity {
 
             super.onStateReplaced(state, world, pos, newState, moved);
         }
+    }
+
+    @Override
+    public BlockState getPlacementState(ItemPlacementContext ctx) {
+        return this.getDefaultState().with(FACING, ctx.getSide());
     }
 
     @Nullable
