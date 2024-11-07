@@ -12,6 +12,14 @@ import net.minecraft.util.Identifier;
 public class TickData {
     private Map<Key<?>, Object> map = new HashMap<>();
     private int executions;
+    
+    public TickData(int bonusExecutions) {
+        this.executions = -bonusExecutions;
+    }
+
+    public TickData() {
+        this(0);
+    }
 
     public void incrementExecutions() {
         executions++;

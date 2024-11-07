@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
 
 import dev.enjarai.trickster.item.ModItems;
+import dev.enjarai.trickster.item.SpellCoreItem;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.SpellCoreComponent;
 import dev.enjarai.trickster.spell.CrowMind;
@@ -12,6 +13,7 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.execution.SpellExecutionManager;
+import dev.enjarai.trickster.spell.execution.TickData;
 import dev.enjarai.trickster.spell.execution.executor.ErroredSpellExecutor;
 import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.BlockSpellSource;
@@ -67,7 +69,7 @@ public class MultiSpellCircleBlockEntity extends BlockEntity implements Inventor
         var source = new BlockSpellSource<>((ServerWorld) getWorld(), getPos(), this);
 
         for (var stack : inventory) {
-            if (stack.isOf(ModItems.SPELL_CORE) && stack.contains(ModComponents.SPELL_CORE)) {
+            if (stack.getItem() instanceof SpellCoreItem item && stack.contains(ModComponents.SPELL_CORE)) {
                 var slot = stack.get(ModComponents.SPELL_CORE);
                 var executor = slot.executor();
                 var error = Optional.<Text>empty();
@@ -76,7 +78,7 @@ public class MultiSpellCircleBlockEntity extends BlockEntity implements Inventor
                     continue;
 
                 try {
-                    if (executor.run(source).isPresent()) {
+                    if (executor.run(source, new TickData(item.getExecutionBonus())).isPresent()) {
                         stack.remove(ModComponents.SPELL_CORE);
                     }
                 } catch (BlunderException blunder) {
@@ -132,6 +134,13 @@ public class MultiSpellCircleBlockEntity extends BlockEntity implements Inventor
             ItemStack itemStack = inventory.get(slot);
             inventory.set(slot, ItemStack.EMPTY);
             markDirty();
+
+            if (world instanceof ServerWorld world && itemStack.getItem() instanceof SpellCoreItem item) {
+                if (item.onRemoved(world, getPos(), itemStack)) {
+                    return ItemStack.EMPTY;
+                }
+            }
+
             return itemStack;
         }
 
@@ -147,8 +156,8 @@ public class MultiSpellCircleBlockEntity extends BlockEntity implements Inventor
     public void setStack(int slot, ItemStack stack) {
         if (slot == 2
                 ? stack.isIn(ModItems.MANA_CRYSTALS)
-                : stack.isOf(ModItems.SPELL_CORE)) {
-            if (stack.isOf(ModItems.SPELL_CORE)
+                : stack.getItem() instanceof SpellCoreItem) {
+            if (stack.getItem() instanceof SpellCoreItem
                     && stack.contains(ModComponents.FRAGMENT)) {
                 var fragment = stack.get(ModComponents.FRAGMENT).value();
                 
@@ -184,7 +193,7 @@ public class MultiSpellCircleBlockEntity extends BlockEntity implements Inventor
 
     @Override
     public boolean isValid(int slot, ItemStack stack) {
-        return (slot == 2 ? stack.isIn(ModItems.MANA_CRYSTALS) : stack.isOf(ModItems.SPELL_CORE)) && getStack(slot).isEmpty();
+        return (slot == 2 ? stack.isIn(ModItems.MANA_CRYSTALS) : stack.getItem() instanceof SpellCoreItem) && getStack(slot).isEmpty();
     }
 
     @Override
@@ -212,7 +221,7 @@ public class MultiSpellCircleBlockEntity extends BlockEntity implements Inventor
 	@Override
 	public boolean queue(SpellExecutor executor) {
         for (var stack : inventory) {
-            if (stack.isOf(ModItems.SPELL_CORE)
+            if (stack.getItem() instanceof SpellCoreItem
                     && (!stack.contains(ModComponents.SPELL_CORE)
                         || stack.get(ModComponents.SPELL_CORE).executor() instanceof ErroredSpellExecutor)) {
                 stack.set(ModComponents.SPELL_CORE, new SpellCoreComponent(executor));

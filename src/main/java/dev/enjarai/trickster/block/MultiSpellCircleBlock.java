@@ -3,6 +3,7 @@ package dev.enjarai.trickster.block;
 import com.mojang.serialization.MapCodec;
 
 import dev.enjarai.trickster.item.ModItems;
+import dev.enjarai.trickster.item.SpellCoreItem;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -131,7 +132,7 @@ public class MultiSpellCircleBlock extends BlockWithEntity {
             return slot.map(s -> {
                 var slotStack = blockEntity.getStack(s);
 
-                if (slotStack.isEmpty() && (s == 2 ? stack.isIn(ModItems.MANA_CRYSTALS) : stack.isOf(ModItems.SPELL_CORE))) {
+                if (slotStack.isEmpty() && (s == 2 ? stack.isIn(ModItems.MANA_CRYSTALS) : stack.getItem() instanceof SpellCoreItem)) {
                     tryAddCore(world, pos, player, blockEntity, stack, s);
                     return ItemActionResult.success(world.isClient);
                 }

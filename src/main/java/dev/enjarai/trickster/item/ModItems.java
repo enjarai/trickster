@@ -5,7 +5,6 @@ import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.block.ModBlocks;
 import dev.enjarai.trickster.item.component.*;
 import dev.enjarai.trickster.spell.SpellPart;
-import dev.enjarai.trickster.util.Hamt;
 import io.wispforest.lavender.book.LavenderBookItem;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.block.Block;
@@ -62,7 +61,8 @@ public class ModItems {
                                     new FoodComponent.StatusEffectEntry(new StatusEffectInstance(StatusEffects.POISON, 60 * 20), 1),
                                     new FoodComponent.StatusEffectEntry(new StatusEffectInstance(StatusEffects.GLOWING, 60 * 20), 1),
                                     new FoodComponent.StatusEffectEntry(new StatusEffectInstance(StatusEffects.BLINDNESS, 60 * 20), 1))))));
-    public static final Item SPELL_CORE = register("spell_core", new Item(new Item.Settings().maxCount(1)));
+    public static final SpellCoreItem SPELL_CORE = register("spell_core", new SpellCoreItem());
+    public static final UnstableSpellCoreItem UNSTABLE_SPELL_CORE = register("unstable_spell_core", new UnstableSpellCoreItem());
     public static final BlockItem SPELL_RESONATOR_BLOCK_ITEM = register("spell_resonator", new BlockItem(ModBlocks.SPELL_RESONATOR, new Item.Settings()));
     public static final BlockItem MULTI_SPELL_CIRCLE_BLOCK_ITEM = register("multi_spell_circle", new BlockItem(ModBlocks.MULTI_SPELL_CIRCLE, new Item.Settings()));
     public static final BlockItem SCROLL_SHELF_BLOCK_ITEM = register("scroll_shelf", new BlockItem(ModBlocks.SCROLL_SHELF, new Item.Settings()));
@@ -131,6 +131,7 @@ public class ModItems {
                 entries.add(DIAMOND_MANA_CRYSTAL);
                 entries.add(ECHO_MANA_CRYSTAL);
                 entries.add(SPELL_CORE);
+                entries.add(UNSTABLE_SPELL_CORE);
             })
             .build();
 
