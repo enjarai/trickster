@@ -1,6 +1,7 @@
 package dev.enjarai.trickster;
 
 import dev.enjarai.trickster.block.ModBlocks;
+import dev.enjarai.trickster.item.ManaCrystalItem;
 import dev.enjarai.trickster.render.fleck.FleckRenderer;
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.ModItems;
@@ -33,6 +34,8 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 
 public class TricksterClient implements ClientModInitializer {
+    public static final MerlinKeeperTracker merlinKeeperTracker = new MerlinKeeperTracker(5);
+
     @Override
     public void onInitializeClient() {
         ScrollAndQuillItem.screenOpener = (text, hand) -> {
@@ -74,6 +77,9 @@ public class TricksterClient implements ClientModInitializer {
                 }
             }
         });
+        ClientTickEvents.END_CLIENT_TICK.register(merlinKeeperTracker::tick);
+
+        ManaCrystalItem.merlinTooltipAppender = merlinKeeperTracker::appendKnotTooltip;
 
         WorldRenderEvents.AFTER_ENTITIES.register(FlecksRenderer::render);
 
