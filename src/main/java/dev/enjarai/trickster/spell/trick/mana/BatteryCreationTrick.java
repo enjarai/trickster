@@ -49,6 +49,11 @@ public class BatteryCreationTrick extends Trick {
 
                     throw new MissingItemBlunder(this);
                 });
+        var glass = ctx.getStack(
+                this,
+                supposeInput(fragments, FragmentType.SLOT, 1),
+                (item) -> item.equals(Items.GLASS)
+            ).orElseThrow(() -> new MissingItemBlunder(this));
         var sourceItem = sourceSlot.getItem(this, ctx);
         var type = types.get(sourceItem);
 
@@ -56,12 +61,20 @@ public class BatteryCreationTrick extends Trick {
             throw new ItemInvalidBlunder(this);
         }
 
-        ctx.useMana(this, type.getCreationCost());
+        try {
+            var input = sourceSlot.move(this, ctx, 1);
 
-        sourceSlot.move(this, ctx, 1);
-        ctx.source().offerOrDropItem(type.createStack());
-
-        //TODO: smth else?
-        return VoidFragment.INSTANCE;
+            try {
+                ctx.useMana(this, type.getCreationCost());
+                ctx.source().offerOrDropItem(type.createStack());
+                return VoidFragment.INSTANCE;
+            } catch (Exception e) {
+                ctx.source().offerOrDropItem(input);
+                throw e;
+            }
+        } catch (Exception e) {
+            ctx.source().offerOrDropItem(glass);
+            throw e;
+        }
     }
 }
