@@ -1,6 +1,5 @@
 package dev.enjarai.trickster.spell.mana;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.inventory.Inventory;
 import org.jetbrains.annotations.Nullable;
 import dev.enjarai.trickster.item.component.ModComponents;
@@ -8,18 +7,18 @@ import dev.enjarai.trickster.item.component.ModComponents;
 import java.util.List;
 import java.util.ArrayList;
 
-//TODO: make this reference slots instead
 public class CachedInventoryManaPool implements MutableManaPool {
-    private final List<ItemStack> stacks = new ArrayList<>();
+    private final Inventory inventory;
+    private final List<Integer> slots = new ArrayList<>();
 
-    public CachedInventoryManaPool(Inventory inv) {
-        inv.containsAny(stack -> {
-            if (stack.contains(ModComponents.MANA)) {
-                stacks.add(stack);
+    public CachedInventoryManaPool(Inventory inventory) {
+        this.inventory = inventory;
+
+        for (int i = 0; i < inventory.size(); i++) {
+            if (inventory.getStack(i).contains(ModComponents.MANA)) {
+                slots.add(i);
             }
-
-            return false;
-        });
+        }
     }
 
     @Override
@@ -30,16 +29,26 @@ public class CachedInventoryManaPool implements MutableManaPool {
 
     @Override
     public float get() {
-        return stacks.stream()
-            .map(stack -> stack.get(ModComponents.MANA).pool().get())
-            .reduce((float) 0, (f1, f2) -> f1 + f2);
+        float result = 0;
+
+        for (var i : slots) {
+            var comp = inventory.getStack(i).get(ModComponents.MANA);
+            result += comp != null ? comp.pool().get() : 0;
+        }
+
+        return result;
     }
 
     @Override
     public float getMax() {
-        return stacks.stream()
-            .map(stack -> stack.get(ModComponents.MANA).pool().getMax())
-            .reduce((float) 0, (f1, f2) -> f1 + f2);
+        float result = 0;
+
+        for (var i : slots) {
+            var comp = inventory.getStack(i).get(ModComponents.MANA);
+            result += comp != null ? comp.pool().getMax() : 0;
+        }
+
+        return result;
     }
 
     @Override
@@ -54,37 +63,36 @@ public class CachedInventoryManaPool implements MutableManaPool {
 
     @Override
     public float use(float amount) {
-        return stacks.stream()
-            .reduce(amount, (prev, stack) -> {
-                if (prev > 0) {
-                    var component = stack.get(ModComponents.MANA);
-                    var pool = component.pool().makeClone();
-                    var result = pool.use(prev);
-                    stack.set(ModComponents.MANA, component.with(pool));
-                    return result;
-                }
+        for (var i : slots) {
+            var stack = inventory.getStack(i);
+            var comp = stack.get(ModComponents.MANA);
 
-                return prev;
-            }, (f1, f2) -> f2);
+            if (comp == null)
+                continue;
+            
+            var pool = comp.pool().makeClone();
+            amount = pool.use(amount);
+            stack.set(ModComponents.MANA, comp.with(pool));
+        }
+
+        return amount;
     }
 
     @Override
     public float refill(float amount) {
-        return stacks.stream()
-            .reduce(amount, (prev, stack) -> {
-                if (prev > 0) {
-                    var component = stack.get(ModComponents.MANA);
+        for (var i : slots) {
+            var stack = inventory.getStack(i);
+            var comp = stack.get(ModComponents.MANA);
 
-                    if (component.rechargeable()) {
-                        var pool = component.pool().makeClone();
-                        var result = pool.refill(prev);
-                        stack.set(ModComponents.MANA, component.with(pool));
-                        return result;
-                    }
-                }
+            if (comp == null)
+                continue;
+            
+            var pool = comp.pool().makeClone();
+            amount = pool.refill(amount);
+            stack.set(ModComponents.MANA, comp.with(pool));
+        }
 
-                return prev;
-            }, (f1, f2) -> f2);
+        return amount;
     }
 
     @Override
