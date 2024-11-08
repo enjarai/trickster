@@ -290,7 +290,7 @@ item.trickster:
   echo_mana_crystal: Echo Knot
 
   spell_core: Spell Core
-  unstable_spell_core: Unstable Spell Core
+  rusted_spell_core: Rusted Spell Core
 
 block.trickster:
   spell_resonator: Spell Resonator
