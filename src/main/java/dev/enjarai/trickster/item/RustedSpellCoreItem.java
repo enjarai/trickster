@@ -33,6 +33,6 @@ public class RustedSpellCoreItem extends SpellCoreItem {
 
     @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
-        tooltip.add(Text.literal("CAUTION: DO NOT DISCONNECT WHILE RUNNING").setStyle(Style.EMPTY.withItalic(true).withColor(Formatting.RED)));
+        tooltip.add(Text.literal("DISCONNECT WITH CAUTION").setStyle(Style.EMPTY.withItalic(true).withColor(Formatting.RED)));
     }
 }

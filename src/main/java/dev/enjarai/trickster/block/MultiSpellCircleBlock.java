@@ -209,13 +209,12 @@ public class MultiSpellCircleBlock extends BlockWithEntity {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof MultiSpellCircleBlockEntity circleEntity && !circleEntity.isEmpty()) {
                 for (int i = 0; i < circleEntity.size(); ++i) {
-                    ItemStack itemStack = circleEntity.getStack(i);
+                    ItemStack itemStack = circleEntity.removeStack(i);
                     if (!itemStack.isEmpty()) {
                         ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), itemStack);
                     }
                 }
 
-                circleEntity.clear();
                 world.updateComparators(pos, this);
             }
 
