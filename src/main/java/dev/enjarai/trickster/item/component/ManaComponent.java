@@ -1,14 +1,15 @@
 package dev.enjarai.trickster.item.component;
 
 import dev.enjarai.trickster.EndecTomfoolery;
+import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.spell.mana.ManaPool;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.LightType;
-import net.minecraft.world.World;
 
 public record ManaComponent(ManaPool pool, float naturalRechargeMultiplier, boolean rechargeable) {
     public static final Codec<ManaComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -29,7 +30,7 @@ public record ManaComponent(ManaPool pool, float naturalRechargeMultiplier, bool
         return new ManaComponent(pool, naturalRechargeMultiplier(), rechargeable());
     }
 
-    public static float tryRecharge(World world, Vec3d pos, ItemStack stack) {
+    public static float tryRecharge(ServerWorld world, Vec3d pos, ItemStack stack) {
         var component = stack.get(ModComponents.MANA);
         if (component == null || component.naturalRechargeMultiplier() <= 0) {
             return 0;
@@ -53,6 +54,19 @@ public record ManaComponent(ManaPool pool, float naturalRechargeMultiplier, bool
         var newPool = pool.makeClone();
         newPool.refill(chargeMultiplier);
         stack.set(ModComponents.MANA, component.with(newPool));
+
+        var recharged = chargeMultiplier - world.random.nextFloat();
+        while (recharged > 0) {
+            world.spawnParticles(
+                    ModParticles.SPELL_WHITE,
+                    pos.getX(), pos.getY(), pos.getZ(), 0,
+                    world.random.nextFloat() * 0.005f - 0.0025f,
+                    world.random.nextFloat() * 0.02f + 0.01f,
+                    world.random.nextFloat() * 0.005f - 0.0025f,
+                    1
+            );
+            recharged -= world.random.nextFloat();
+        }
 
         return chargeMultiplier;
     }

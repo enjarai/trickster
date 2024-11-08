@@ -12,6 +12,8 @@ public class ModParticles {
     public static final ParticleType<SpellParticleOptions> SPELL =
             FabricParticleTypes.complex(SpellParticleOptions.CODEC, SpellParticleOptions.PACKET_CODEC);
 
+    public static final SpellParticleOptions SPELL_WHITE = new SpellParticleOptions(0xffffff);
+
     public static void register() {
         Registry.register(Registries.PARTICLE_TYPE, Trickster.id("protected_block"), PROTECTED_BLOCK);
         Registry.register(Registries.PARTICLE_TYPE, Trickster.id("spell"), SPELL);

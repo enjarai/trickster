@@ -4,12 +4,12 @@ import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ManaComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
-import dev.enjarai.trickster.particle.SpellParticleOptions;
 import dev.enjarai.trickster.pond.SlotHolderDuck;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -34,18 +34,8 @@ public abstract class ItemEntityMixin extends Entity implements SlotHolderDuck {
             )
     )
     private void chargeCrystal(CallbackInfo ci) {
-        var recharged = ManaComponent.tryRecharge(getWorld(), getPos(), getStack());
-        recharged -= random.nextFloat();
-        while (recharged > 0) {
-            getWorld().addParticle(
-                    new SpellParticleOptions(0xffffff),
-                    getX(), getY(), getZ(),
-                    random.nextFloat() * 0.005f - 0.0025f,
-                    random.nextFloat() * 0.02f + 0.01f,
-                    random.nextFloat() * 0.005f - 0.0025f
-            );
-            recharged -= random.nextFloat();
-        }
+        if (getWorld() instanceof ServerWorld world)
+            ManaComponent.tryRecharge(world, getPos(), getStack());
     }
 
     @WrapWithCondition(

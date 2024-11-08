@@ -3,9 +3,11 @@ package dev.enjarai.trickster.block;
 import java.util.Optional;
 
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.SpellCoreItem;
+import dev.enjarai.trickster.item.component.ManaComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.SpellCoreComponent;
 import dev.enjarai.trickster.spell.CrowMind;
@@ -35,6 +37,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 
 public class MultiSpellCircleBlockEntity extends BlockEntity implements Inventory, CrowMind, SpellExecutionManager {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(5, ItemStack.EMPTY);
@@ -58,41 +61,52 @@ public class MultiSpellCircleBlockEntity extends BlockEntity implements Inventor
         Inventories.writeNbt(nbt, this.inventory, true, registryLookup);
     }
 
-	@SuppressWarnings("resource")
     public void tick() {
         age++;
 
-        if (getWorld().isClient)
-            return;
+        if (getWorld() instanceof ServerWorld serverWorld) {
+            var source = new BlockSpellSource<>(serverWorld, getPos(), this);
 
-        var source = new BlockSpellSource<>((ServerWorld) getWorld(), getPos(), this);
+            for (var stack : inventory) {
+                if (stack.getItem() instanceof SpellCoreItem item && stack.contains(ModComponents.SPELL_CORE)) {
+                    var slot = stack.get(ModComponents.SPELL_CORE);
+                    var executor = slot.executor();
+                    var error = Optional.<Text>empty();
 
-        for (var stack : inventory) {
-            if (stack.getItem() instanceof SpellCoreItem item && stack.contains(ModComponents.SPELL_CORE)) {
-                var slot = stack.get(ModComponents.SPELL_CORE);
-                var executor = slot.executor();
-                var error = Optional.<Text>empty();
+                    if (slot.executor() instanceof ErroredSpellExecutor)
+                        continue;
 
-                if (slot.executor() instanceof ErroredSpellExecutor)
-                    continue;
-
-                try {
-                    if (executor.run(source, new TickData(item.getExecutionBonus())).isPresent()) {
-                        stack.remove(ModComponents.SPELL_CORE);
+                    try {
+                        if (executor.run(source, new TickData(item.getExecutionBonus())).isPresent()) {
+                            stack.remove(ModComponents.SPELL_CORE);
+                        }
+                    } catch (BlunderException blunder) {
+                        error = Optional.of(blunder.createMessage()
+                                .append(" (").append(executor.getCurrentState().formatStackTrace()).append(")"));
+                    } catch (Exception e) {
+                        error = Optional.of(Text.literal("Uncaught exception in spell: " + e.getMessage())
+                                .append(" (").append(executor.getCurrentState().formatStackTrace()).append(")"));
                     }
-                } catch (BlunderException blunder) {
-                    error = Optional.of(blunder.createMessage()
-                            .append(" (").append(executor.getCurrentState().formatStackTrace()).append(")"));
-                } catch (Exception e) {
-                    error = Optional.of(Text.literal("Uncaught exception in spell: " + e.getMessage())
-                            .append(" (").append(executor.getCurrentState().formatStackTrace()).append(")"));
+
+                    error.ifPresent(e -> stack.set(ModComponents.SPELL_CORE, slot.fail(e)));
                 }
 
-                error.ifPresent(e -> stack.set(ModComponents.SPELL_CORE, slot.fail(e)));
+                ManaComponent.tryRecharge(
+                        serverWorld,
+                        getPos()
+                            .toCenterPos()
+                            .add(
+                                new Vec3d(getCachedState()
+                                    .get(MultiSpellCircleBlock.FACING)
+                                    .getUnitVector()
+                                    .mul(0.3f, new Vector3f()))
+                            ),
+                        stack
+                );
             }
-        }
 
-        markDirty();
+            markDirty();
+        }
     }
 
     @Nullable
