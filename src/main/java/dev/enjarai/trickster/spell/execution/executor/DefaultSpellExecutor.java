@@ -23,22 +23,22 @@ public class DefaultSpellExecutor implements SpellExecutor {
             SpellInstruction.STACK_ENDEC.fieldOf("instructions", e -> e.instructions),
             Fragment.ENDEC.listOf().fieldOf("inputs", e -> e.inputs),
             Endec.INT.listOf().fieldOf("scope", e -> e.scope),
-            ExecutionState.ENDEC.fieldOf("state", e -> e.state),
+            ExecutionState.ENDEC.fieldOf("state", DefaultSpellExecutor::getCurrentState),
             EndecTomfoolery.safeOptionalOf(SpellExecutor.ENDEC).optionalFieldOf("child", e -> e.child, Optional.empty()),
             EndecTomfoolery.safeOptionalOf(Fragment.ENDEC).optionalFieldOf("override_return_value", e -> e.overrideReturnValue, Optional.empty()),
             DefaultSpellExecutor::new
     );
 
-    protected final SpellPart root;
-    protected final Stack<SpellInstruction> instructions;
-    protected final Stack<Fragment> inputs = new Stack<>();
-    protected final Stack<Integer> scope = new Stack<>();
-    protected ExecutionState state;
-    protected Optional<SpellExecutor> child = Optional.empty();
-    protected Optional<Fragment> overrideReturnValue = Optional.empty();
-    protected int lastRunExecutions;
+    private final SpellPart root;
+    private final Stack<SpellInstruction> instructions;
+    private final Stack<Fragment> inputs = new Stack<>();
+    private final Stack<Integer> scope = new Stack<>();
+    private ExecutionState state;
+    private Optional<SpellExecutor> child = Optional.empty();
+    private Optional<Fragment> overrideReturnValue = Optional.empty();
+    private int lastRunExecutions;
 
-    protected DefaultSpellExecutor(SpellPart root,
+    private DefaultSpellExecutor(SpellPart root,
                                    Stack<SpellInstruction> instructions,
                                    List<Fragment> inputs,
                                    List<Integer> scope,

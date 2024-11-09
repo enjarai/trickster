@@ -89,7 +89,17 @@ spell, spell, any... -> any
 
 ---
 
-Attempts to execute the first spell. If it blunders, the second spell is run and the blunder is silenced. Excess values are arguments to both. 
+Attempts to execute the first spell. If it blunders, the second spell is run and the blunder is silenced. Excess values are arguments to both.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:atomic,title=Stratagem of Singularity|>
+
+spell, any... -> any
+
+---
+
+Executes the given spell in a single tick, blundering if it's not possible due to spell size or illegal operations.
 
 ;;;;;
 

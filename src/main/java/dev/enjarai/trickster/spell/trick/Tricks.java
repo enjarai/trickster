@@ -73,6 +73,7 @@ import dev.enjarai.trickster.spell.trick.entity.query.SprintingReflectionTrick;
 import dev.enjarai.trickster.spell.trick.fleck.GetFlecksTrick;
 import dev.enjarai.trickster.spell.trick.fleck.LineFleckTrick;
 import dev.enjarai.trickster.spell.trick.fleck.SpellFleckTrick;
+import dev.enjarai.trickster.spell.trick.func.AtomicTrick;
 import dev.enjarai.trickster.spell.trick.func.ClosureTrick;
 import dev.enjarai.trickster.spell.trick.func.ExecuteTrick;
 import dev.enjarai.trickster.spell.trick.func.ExecuteWithinCurrentScopeTrick;
@@ -189,6 +190,7 @@ public class Tricks {
     public static final ForkTrick FORK = register("fork", new ForkTrick());
     public static final FoldTrick FOLD = register("fold", new FoldTrick());
     public static final TryCatchTrick TRY_CATCH = register("try_catch", new TryCatchTrick());
+    public static final AtomicTrick ATOMIC = register("atomic", new AtomicTrick());
     public static final ClosureTrick CLOSURE = register("closure", new ClosureTrick());
     public static final SupplierTrick SUPPLIER = register("supplier", new SupplierTrick());
     public static final KillThreadTrick KILL_THREAD = register("kill_thread", new KillThreadTrick());
