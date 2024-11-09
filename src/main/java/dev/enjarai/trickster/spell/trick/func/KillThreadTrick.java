@@ -6,7 +6,6 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
-import dev.enjarai.trickster.spell.execution.SpellExecutionManager;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
@@ -20,12 +19,17 @@ public class KillThreadTrick extends Trick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        return BooleanFragment.of(OptionalUtils.lift2(SpellExecutionManager::kill,
+        return BooleanFragment.of(OptionalUtils.lift2(
+                    (manager, index) -> {
+                        if (index == ctx.data().getSlot())
+                            ctx.data().withBonusExecutions(Integer.MIN_VALUE);
+
+                        return manager.kill(index);
+                    },
                     ctx.source().getExecutionManager(),
                     supposeInput(fragments, FragmentType.NUMBER, 0)
-                        .map(NumberFragment::asInt)
-                        .or(() -> OptionalUtils.conditional(i -> i >= 0, ctx.data().getSlot()))
-        ).orElse(false));
+                        .map(NumberFragment::asInt).filter(i -> i >= 0)
+                        .or(() -> OptionalUtils.conditional(i -> i >= 0, ctx.data().getSlot())))
+                .orElse(false));
     }
-    
 }
