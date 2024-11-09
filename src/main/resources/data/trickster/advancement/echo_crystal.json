@@ -1,0 +1,29 @@
+{
+  "display": {
+    "icon": {
+      "id": "trickster:echo_mana_crystal"
+    },
+    "title": {
+      "text": "Interdimensional Intentionality"
+    },
+    "description": {
+      "text": "Create an Echo Knot"
+    },
+    "frame": "challenge",
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "trickster:cast_spell",
+  "criteria": {
+    "pickup_echo_knot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "trickster:echo_mana_crystal"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -15,6 +15,7 @@ import org.joml.Vector3d;
 import org.joml.Vector3dc;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
@@ -26,6 +27,7 @@ public class EndecTomfoolery {
             vectorEndec(Endec.INT, BlockPos::new, BlockPos::getX, BlockPos::getY, BlockPos::getZ);
     public static final Endec<UUID> UUID = Endec.STRING.xmap(UndashedUuid::fromStringLenient, java.util.UUID::toString);
     public static final SerializationAttribute.Marker UBER_COMPACT_ATTRIBUTE = SerializationAttribute.marker("uber_compact");
+    public static final SerializationAttribute.WithValue<Byte> PROTOCOL_VERSION_ATTRIBUTE = SerializationAttribute.withValue("protocol_version");
     public static Endec<Vector3dc> VECTOR_3D_ENDEC = EndecTomfoolery.<Double, Vector3dc>vectorEndec(Endec.DOUBLE, Vector3d::new, Vector3dc::x, Vector3dc::y, Vector3dc::z);
     public static Endec<Vector3fc> VECTOR_3F_ENDEC = EndecTomfoolery.<Float, Vector3fc>vectorEndec(Endec.FLOAT, Vector3f::new, Vector3fc::x, Vector3fc::y, Vector3fc::z);
     public static final SerializationAttribute.Marker CODEC_SAFE = SerializationAttribute.marker("codec_safe");
@@ -116,6 +118,42 @@ public class EndecTomfoolery {
             @Override
             public T decodeStruct(SerializationContext ctx, Deserializer<?> deserializer, Deserializer.Struct struct) {
                 return value.get();
+            }
+        };
+    }
+
+    public static <T> Endec<T> protocolVersionAlternatives(Map<Byte, Endec<T>> protocols, Endec<T> defaultProtocol) {
+        return new Endec<>() {
+            @Override
+            public void encode(SerializationContext ctx, Serializer<?> serializer, T value) {
+                var protocolVersion = ctx.getAttributeValue(PROTOCOL_VERSION_ATTRIBUTE);
+                if (protocolVersion == null) {
+                    defaultProtocol.encode(ctx, serializer, value);
+                    return;
+                }
+
+                var protocol = protocols.get(protocolVersion);
+                if (protocol == null) {
+                    defaultProtocol.encode(ctx, serializer, value);
+                    return;
+                }
+
+                protocol.encode(ctx, serializer, value);
+            }
+
+            @Override
+            public T decode(SerializationContext ctx, Deserializer<?> deserializer) {
+                var protocolVersion = ctx.getAttributeValue(PROTOCOL_VERSION_ATTRIBUTE);
+                if (protocolVersion == null) {
+                    return defaultProtocol.decode(ctx, deserializer);
+                }
+
+                var protocol = protocols.get(protocolVersion);
+                if (protocol == null) {
+                    return defaultProtocol.decode(ctx, deserializer);
+                }
+
+                return protocol.decode(ctx, deserializer);
             }
         };
     }

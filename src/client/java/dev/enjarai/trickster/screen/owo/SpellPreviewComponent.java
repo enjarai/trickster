@@ -144,7 +144,7 @@ public class SpellPreviewComponent extends BaseComponent {
         try {
             spell = SpellPart.fromBase64(spellString);
         } catch (Exception e) {
-            throw new UIModelParsingException("Not a valid spell: " + spellString);
+            throw new UIModelParsingException("Not a valid spell: " + spellString, e);
         }
 
         return new SpellPreviewComponent(spell);

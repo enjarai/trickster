@@ -15,7 +15,6 @@ import io.wispforest.endec.format.bytebuf.ByteBufSerializer;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import net.minecraft.text.Text;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.NotImplementedException;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -29,10 +28,15 @@ import java.util.zip.GZIPOutputStream;
 public final class SpellPart implements Fragment {
     public static final StructEndec<SpellPart> ENDEC = EndecTomfoolery.recursive(self -> StructEndecBuilder.of(
             Fragment.ENDEC.fieldOf("glyph", SpellPart::getGlyph),
-            EndecTomfoolery.withAlternative(SpellInstruction.STACK_ENDEC.xmap(
-                instructions -> SpellUtils.decodeInstructions(instructions, new Stack<>(), new Stack<>(), Optional.empty()),
-                SpellUtils::flattenNode
-            ), self).listOf().fieldOf("sub_parts", SpellPart::getSubParts),
+            EndecTomfoolery.protocolVersionAlternatives(
+                    Map.of(
+                            (byte) 1, self.listOf()
+                    ),
+                    EndecTomfoolery.withAlternative(SpellInstruction.STACK_ENDEC.xmap(
+                            instructions -> SpellUtils.decodeInstructions(instructions, new Stack<>(), new Stack<>(), Optional.empty()),
+                            SpellUtils::flattenNode
+                    ), self).listOf()
+            ).fieldOf("sub_parts", SpellPart::getSubParts),
             SpellPart::new
     ));
 
@@ -277,16 +281,13 @@ public final class SpellPart implements Fragment {
         var protocolVersion = buf.readByte();
         SpellPart result;
         try {
-            if (protocolVersion == 2) {
-                result = ENDEC.decode(
-                    SerializationContext.empty().withAttributes(EndecTomfoolery.UBER_COMPACT_ATTRIBUTE),
+            result = ENDEC.decode(
+                    SerializationContext.empty().withAttributes(
+                            EndecTomfoolery.UBER_COMPACT_ATTRIBUTE,
+                            EndecTomfoolery.PROTOCOL_VERSION_ATTRIBUTE.instance(protocolVersion)
+                    ),
                     ByteBufDeserializer.of(buf)
-                );
-            } else if (protocolVersion == 1) {
-                throw new NotImplementedException("Protocol version 1 needs backwards compat implemented for it");
-            } else {
-                throw new RuntimeException("Cannot import spell with unknown protocol version: " + protocolVersion);
-            }
+            );
         } catch (Throwable e) {
             buf.release();
             throw e;

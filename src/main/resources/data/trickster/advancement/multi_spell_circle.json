@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "id": "trickster:multi_spell_circle"
+    },
+    "title": {
+      "text": "Multithreading"
+    },
+    "description": {
+      "text": "Craft a Modular Spell Construct"
+    },
+    "frame": "task",
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "trickster:cast_spell",
+  "criteria": {
+    "craft_spell_circle": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "trickster:multi_spell_circle"
+      }
+    }
+  }
+}

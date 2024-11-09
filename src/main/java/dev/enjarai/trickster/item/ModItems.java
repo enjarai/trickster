@@ -73,6 +73,9 @@ public class ModItems {
     public static final ManaCrystalItem.Diamond DIAMOND_MANA_CRYSTAL = register("diamond_mana_crystal", new ManaCrystalItem.Diamond());
     public static final ManaCrystalItem.Echo ECHO_MANA_CRYSTAL = register("echo_mana_crystal", new ManaCrystalItem.Echo());
 
+    // Advancement icons
+    public static final Item NAN = register("nan", new Item(new Item.Settings()));
+
     public static final TagKey<Item> CAN_EVALUATE_DYNAMICALLY = TagKey.of(RegistryKeys.ITEM, Trickster.id("can_evaluate_dynamically"));
     public static final TagKey<Item> HOLDABLE_HAT = TagKey.of(RegistryKeys.ITEM, Trickster.id("holdable_hat"));
     public static final TagKey<Item> SCROLLS = TagKey.of(RegistryKeys.ITEM, Trickster.id("scrolls"));

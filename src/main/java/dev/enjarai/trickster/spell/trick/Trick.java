@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.spell.trick;
 
 import dev.enjarai.trickster.Trickster;
+import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.component.FragmentComponent;
 import dev.enjarai.trickster.spell.Fragment;
@@ -15,6 +16,7 @@ import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.util.Hamt;
+import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.MutableText;
@@ -197,6 +199,8 @@ public abstract class Trick {
             if (triggerCaster.map(c -> c.equals(player)).orElse(false)) {
                 return;
             }
+
+            ModCriteria.TRIGGER_WARD.trigger(player);
 
             var sourceFragment = triggerCaster
                     .<Fragment>map(EntityFragment::from)
