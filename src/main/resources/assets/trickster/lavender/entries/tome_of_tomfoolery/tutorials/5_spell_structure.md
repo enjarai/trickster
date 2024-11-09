@@ -1,8 +1,8 @@
 ```json
 {
-  "title": "4. Spell Structure",
+  "title": "5. Spell Structure",
   "icon": "minecraft:paper",
-  "ordinal": 3,
+  "ordinal": 4,
   "category": "trickster:tutorials"
 }
 ```

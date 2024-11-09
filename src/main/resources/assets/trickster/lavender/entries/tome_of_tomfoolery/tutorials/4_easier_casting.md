@@ -1,8 +1,8 @@
 ```json
 {
-  "title": "3. Easier Casting",
+  "title": "4. Easier Casting",
   "icon": "minecraft:paper",
-  "ordinal": 2,
+  "ordinal": 3,
   "category": "trickster:tutorials"
 }
 ```

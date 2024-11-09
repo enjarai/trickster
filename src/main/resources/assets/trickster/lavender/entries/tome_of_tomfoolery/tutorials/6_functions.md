@@ -1,6 +1,6 @@
 ```json
 {
-  "title": "7. Placed Spells",
+  "title": "7. Spell Fragments",
   "icon": "minecraft:paper",
   "ordinal": 6,
   "category": "trickster:tutorials"
