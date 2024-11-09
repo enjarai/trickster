@@ -4,9 +4,9 @@ import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.execution.TickData;
 import dev.enjarai.trickster.spell.execution.ExecutionState;
-import dev.enjarai.trickster.spell.execution.SerializedSpellInstruction;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
+import dev.enjarai.trickster.util.MiscUtils;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
@@ -20,11 +20,7 @@ import java.util.Stack;
 public class DefaultSpellExecutor implements SpellExecutor {
     public static final StructEndec<DefaultSpellExecutor> ENDEC = StructEndecBuilder.of(
             SpellPart.ENDEC.fieldOf("root", DefaultSpellExecutor::spell),
-            SerializedSpellInstruction.ENDEC.listOf().xmap((l) -> {
-                var s = new Stack<SpellInstruction>();
-                s.addAll(l.stream().map(SerializedSpellInstruction::toDeserialized).toList());
-                return s;
-            }, (s) -> s.stream().map(SpellInstruction::asSerialized).toList()).fieldOf("instructions", e -> e.instructions),
+            SpellInstruction.STACK_ENDEC.fieldOf("instructions", e -> e.instructions),
             Fragment.ENDEC.listOf().fieldOf("inputs", e -> e.inputs),
             Endec.INT.listOf().fieldOf("scope", e -> e.scope),
             ExecutionState.ENDEC.fieldOf("state", e -> e.state),
@@ -61,7 +57,7 @@ public class DefaultSpellExecutor implements SpellExecutor {
     public DefaultSpellExecutor(SpellPart root, ExecutionState executionState) {
         this.root = root;
         this.state = executionState;
-        this.instructions = flattenNode(root);
+        this.instructions = MiscUtils.flattenNode(root);
     }
 
     public DefaultSpellExecutor(SpellPart root, List<Fragment> arguments) {
@@ -148,7 +144,7 @@ public class DefaultSpellExecutor implements SpellExecutor {
                         }
                     }
 
-                    isTail = isTail && type().equals(child.type()); //TODO: is this extra check needed?
+                    isTail = isTail && type().equals(child.type());
 
                     if (isTail && child instanceof DefaultSpellExecutor castChild) {
                         instructions.clear();
@@ -208,4 +204,6 @@ public class DefaultSpellExecutor implements SpellExecutor {
     public ExecutionState getCurrentState() {
         return child.map(SpellExecutor::getCurrentState).orElse(state);
     }
+
+    //TODO: add way to turn this and all children into a SpellPart using MiscUtils
 }

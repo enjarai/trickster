@@ -12,7 +12,6 @@ import io.wispforest.endec.StructEndec;
 import io.wispforest.owo.serialization.endec.MinecraftEndecs;
 
 import java.util.Optional;
-import java.util.Stack;
 
 public interface SpellExecutor {
     @SuppressWarnings("unchecked")
@@ -74,37 +73,4 @@ public interface SpellExecutor {
     int getLastRunExecutions();
 
     ExecutionState getCurrentState();
-
-    // made non-recursive by @ArkoSammy12
-    default Stack<SpellInstruction> flattenNode(SpellPart head) {
-        Stack<SpellInstruction> instructions = new Stack<>();
-        Stack<SpellPart> headStack = new Stack<>();
-        Stack<Integer> indexStack = new Stack<>();
-
-        headStack.push(head);
-        indexStack.push(-1);
-
-        while (!headStack.isEmpty()) {
-            SpellPart currentNode = headStack.peek();
-            int currentIndex = indexStack.pop();
-
-            if (currentIndex == -1) {
-                instructions.push(new ExitScopeInstruction());
-                instructions.push(currentNode.glyph);
-            }
-
-            currentIndex++;
-
-            if (currentIndex < currentNode.subParts.size()) {
-                headStack.push(currentNode.subParts.reversed().get(currentIndex));
-                indexStack.push(currentIndex);
-                indexStack.push(-1);
-            } else {
-                headStack.pop();
-                instructions.push(new EnterScopeInstruction());
-            }
-        }
-
-        return instructions;
-    }
 }

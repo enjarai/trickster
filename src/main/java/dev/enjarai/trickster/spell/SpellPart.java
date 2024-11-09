@@ -6,6 +6,7 @@ import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
+import dev.enjarai.trickster.util.MiscUtils;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import io.netty.buffer.Unpooled;
 import io.wispforest.endec.SerializationContext;
@@ -28,7 +29,10 @@ import java.util.zip.GZIPOutputStream;
 public final class SpellPart implements Fragment {
     public static final StructEndec<SpellPart> ENDEC = EndecTomfoolery.recursive(self -> StructEndecBuilder.of(
             Fragment.ENDEC.fieldOf("glyph", SpellPart::getGlyph),
-            self.listOf().fieldOf("sub_parts", SpellPart::getSubParts),
+            EndecTomfoolery.withAlternative(SpellInstruction.STACK_ENDEC.xmap(
+                instructions -> MiscUtils.decodeInstructions(instructions, new Stack<>(), new Stack<>(), Optional.empty()),
+                MiscUtils::flattenNode
+            ), self).listOf().fieldOf("sub_parts", SpellPart::getSubParts),
             SpellPart::new
     ));
 

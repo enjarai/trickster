@@ -2,18 +2,14 @@ package dev.enjarai.trickster.block;
 
 import com.mojang.serialization.MapCodec;
 
-import dev.enjarai.trickster.item.ManaCrystalItem;
 import dev.enjarai.trickster.item.ModItems;
-import dev.enjarai.trickster.item.SpellCoreItem;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.SpellCoreComponent;
-import dev.enjarai.trickster.particle.SpellParticleOptions;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.component.ComponentMap;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
@@ -32,8 +28,6 @@ import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
@@ -84,27 +78,10 @@ public class SpellCircleBlock extends BlockWithEntity {
         return BlockRenderType.MODEL;
     }
 
-//    @Override
-//    public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
-//        var blockEntity = world.getBlockEntity(pos);
-//        if (blockEntity instanceof SpellColoredBlockEntity coloredBlockEntity) {
-//            var particlePos = Vec3d.of(pos);
-//            var max = random.nextInt(3);
-//            var shape = SHAPES[state.get(FACING).getId()].getBoundingBox();
-//            var colors = coloredBlockEntity.getColors();
-//            for (int i = 0; i < max; i++) {
-//                world.addParticle(
-//                        new SpellParticleOptions(colors[random.nextInt(colors.length)]),
-//                        particlePos.x + shape.minX + random.nextFloat() * shape.getLengthX(),
-//                        particlePos.y + shape.minY + random.nextFloat() * shape.getLengthY(),
-//                        particlePos.z + shape.minZ + random.nextFloat() * shape.getLengthZ(),
-//                        random.nextFloat() * 0.005f - 0.0025f,
-//                        random.nextFloat() * 0.02f + 0.01f,
-//                        random.nextFloat() * 0.005f - 0.0025f
-//                );
-//            }
-//        }
-//    }
+    @Override
+    protected boolean hasSidedTransparency(BlockState state) {
+        return true;
+    }
 
     @Override
     protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {

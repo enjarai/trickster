@@ -89,7 +89,7 @@ public class EndecTomfoolery {
     }
 
     public static <T> StructEndec<T> lazy(Supplier<StructEndec<T>> supplier) {
-        return new RecursiveStructEndec<>(e -> supplier.get());
+        return recursive(e -> supplier.get());
     }
 
     public static <T> StructEndec<T> unit(T value) {

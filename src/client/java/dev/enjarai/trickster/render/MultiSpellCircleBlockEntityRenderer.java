@@ -5,6 +5,7 @@ import dev.enjarai.trickster.block.MultiSpellCircleBlock;
 import dev.enjarai.trickster.block.MultiSpellCircleBlockEntity;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.SpellCoreComponent;
+import dev.enjarai.trickster.spell.execution.executor.ErroredSpellExecutor;
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -17,10 +18,8 @@ import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
-import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 public class MultiSpellCircleBlockEntityRenderer implements BlockEntityRenderer<MultiSpellCircleBlockEntity> {
@@ -115,12 +114,19 @@ public class MultiSpellCircleBlockEntityRenderer implements BlockEntityRenderer<
                 continue;
             }
 
-            float age = entity.age + tickDelta + (entity.getPos().getX() + entity.getPos().getY() + entity.getPos().getZ() + i) * 999;
-
+            var coreStack = entity.getStack(i);
             matrices.push();
 
-            var coreStack = entity.getStack(i);
-            if (!coreStack.isEmpty() && coreStack.get(ModComponents.SPELL_CORE) instanceof SpellCoreComponent component) {
+            if (!coreStack.isEmpty()
+                    && coreStack.get(ModComponents.SPELL_CORE) instanceof SpellCoreComponent component
+                    && !(component.executor() instanceof ErroredSpellExecutor)) {
+                float age = entity.age
+                    + tickDelta
+                    + (entity.getPos().getX()
+                            + entity.getPos().getY()
+                            + entity.getPos().getZ()
+                            + i)
+                    * 999;
                 var x = j % 2;
                 var z = j / 2;
                 matrices.translate((18f / 2 * x + 3.5f) / 16f, (18f / 2 * z + 3.5f) / 16f,

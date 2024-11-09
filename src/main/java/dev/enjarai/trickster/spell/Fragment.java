@@ -20,7 +20,7 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 
 public non-sealed interface Fragment extends SpellInstruction {
-    final int MAX_WEIGHT = 640000;
+    final int MAX_WEIGHT = 64000;
     final Text TRUNCATED_VALUE_TEXT = Text.literal(" [...]")
         .setStyle(Style.EMPTY
                 .withColor(Formatting.RED)
