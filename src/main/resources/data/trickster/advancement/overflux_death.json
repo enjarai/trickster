@@ -4,10 +4,10 @@
       "id": "trickster:top_hat"
     },
     "title": {
-      "text": "Final Act"
+      "text": "Overambition"
     },
     "description": {
-      "text": "Failure is not the end"
+      "text": "Fail to cast a spell due to lack of mana"
     },
     "frame": "task",
     "announce_to_chat": true,

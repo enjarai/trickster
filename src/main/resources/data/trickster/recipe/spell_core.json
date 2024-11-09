@@ -2,12 +2,12 @@
     "type": "minecraft:crafting_shaped",
     "pattern": [
         "iDi",
-        "iEi",
+        "SES",
         "SAS"
     ],
     "key": {
         "i": {
-            "item": "minecraft:iron_ingot"
+            "item": "minecraft:leather"
         },
         "D": {
             "item": "minecraft:diamond"
@@ -16,7 +16,7 @@
             "item": "minecraft:ender_pearl"
         },
         "S": {
-            "item": "minecraft:stone"
+            "item": "minecraft:tuff"
         },
         "A": {
             "item": "minecraft:amethyst_shard"

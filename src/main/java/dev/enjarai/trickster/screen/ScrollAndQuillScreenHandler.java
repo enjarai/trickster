@@ -113,6 +113,8 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
 
                         if (result instanceof SpellPart spellResult) {
                             sendMessage(new UpdateDrawingPartMessage(Optional.of(spellResult)));
+
+                            ModCriteria.USE_MACRO.trigger((ServerPlayerEntity) player());
                         } else if (result == null) {
                             sendMessage(new UpdateDrawingPartMessage(Optional.empty()));
                         } else {

@@ -1,0 +1,22 @@
+{
+  "display": {
+    "icon": {
+      "id": "trickster:spell_resonator"
+    },
+    "title": {
+      "text": "Resonance Cascade"
+    },
+    "description": {
+      "text": "Trigger a Spell Resonator"
+    },
+    "frame": "task",
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "trickster:cast_spell",
+  "criteria": {
+    "trigger_resonator": {
+      "trigger": "trickster:trigger_resonator"
+    }
+  }
+}

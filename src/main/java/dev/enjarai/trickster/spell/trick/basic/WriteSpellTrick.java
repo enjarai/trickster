@@ -2,6 +2,7 @@ package dev.enjarai.trickster.spell.trick.basic;
 
 import com.mojang.datafixers.util.Pair;
 
+import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.FragmentComponent;
 import dev.enjarai.trickster.spell.Fragment;
@@ -57,6 +58,8 @@ public class WriteSpellTrick extends Trick {
                     serverPlayer.equipStack(EquipmentSlot.OFFHAND, stack2.withItem(Items.BOOK));
                     stack2 = serverPlayer.getOffHandStack();
                 }
+
+                ModCriteria.INSCRIBE_SPELL.trigger(serverPlayer);
 
                 if (!FragmentComponent.setValue(stack2, v, supposeInput(fragments, FragmentType.STRING, 1).flatMap(str -> Optional.of(str.value())), closed)) {
                     throw new ImmutableItemBlunder(this);

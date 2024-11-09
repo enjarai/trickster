@@ -2,22 +2,21 @@
     "type": "minecraft:crafting_shaped",
     "pattern": [
         " # ",
-        "ASA",
-        "SSS"
+        "SCS"
     ],
     "key": {
         "#": {
             "item": "minecraft:blaze_powder"
         },
-        "A": {
-            "item": "minecraft:amethyst_shard"
+        "C": {
+            "item": "trickster:spell_core"
         },
         "S": {
             "item": "minecraft:tuff"
         }
     },
     "result": {
-        "id": "trickster:multi_spell_circle",
+        "id": "trickster:spell_circle",
         "count": 1
     }
 }

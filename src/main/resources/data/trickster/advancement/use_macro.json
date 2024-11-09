@@ -1,0 +1,22 @@
+{
+  "display": {
+    "icon": {
+      "id": "trickster:macro_ring"
+    },
+    "title": {
+      "text": "Casting²"
+    },
+    "description": {
+      "text": "Successfully trigger a custom Macro"
+    },
+    "frame": "task",
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "trickster:inscribe_spell",
+  "criteria": {
+    "use_macro": {
+      "trigger": "trickster:use_macro"
+    }
+  }
+}

@@ -7,7 +7,7 @@
       "text": "Great Magician"
     },
     "description": {
-      "text": "Expend 4000kG in a single trick, and survive"
+      "text": "Expend 8000kG in a single trick"
     },
     "frame": "challenge",
     "announce_to_chat": true,
@@ -18,7 +18,7 @@
     "use_mana": {
       "trigger": "trickster:mana_used",
       "conditions": {
-        "min": 4000
+        "min": 8000
       }
     }
   }
