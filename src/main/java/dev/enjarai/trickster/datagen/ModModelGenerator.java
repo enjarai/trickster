@@ -71,6 +71,7 @@ public class ModModelGenerator extends FabricModelProvider {
         itemModelGenerator.register(ModItems.ECHO_MANA_CRYSTAL, Models.GENERATED);
         itemModelGenerator.register(ModItems.SPELL_CORE, Models.GENERATED);
         itemModelGenerator.register(ModItems.RUSTED_SPELL_CORE, Models.GENERATED);
+        itemModelGenerator.register(ModItems.OMINOUS_SPELL_CORE, Models.GENERATED);
 
         ModItems.DYED_VARIANTS.forEach(v -> {
             itemModelGenerator.register(v.variant(), Models.GENERATED);
