@@ -9,9 +9,16 @@ import dev.enjarai.trickster.spell.mana.SharedManaPool;
 import dev.enjarai.trickster.spell.mana.SimpleManaPool;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.tooltip.TooltipType;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 
+import java.util.List;
+import java.util.function.BiConsumer;
+
 public abstract class ManaCrystalItem extends Item {
+    public static BiConsumer<ItemStack, List<Text>> merlinTooltipAppender;
+
     private final float creationCost;
 
     public ManaCrystalItem(Settings settings, float creationCost) {
@@ -92,6 +99,14 @@ public abstract class ManaCrystalItem extends Item {
 
     public float getCreationCost() {
         return creationCost;
+    }
+
+    @Override
+    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
+        if (merlinTooltipAppender != null) {
+            merlinTooltipAppender.accept(stack, tooltip);
+        }
+        super.appendTooltip(stack, context, tooltip, type);
     }
 
     public ItemStack createStack() {
