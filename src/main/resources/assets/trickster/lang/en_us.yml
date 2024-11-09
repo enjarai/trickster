@@ -293,6 +293,7 @@ item.trickster:
 
   spell_core: Spell Core
   rusted_spell_core: Rusted Spell Core
+  ominous_spell_core: Ominous Spell Core
 
 block.trickster:
   spell_resonator: Spell Resonator
