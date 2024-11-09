@@ -53,7 +53,7 @@ public class MerlinKeeperTracker {
     public void appendKnotTooltip(ItemStack stack, List<Text> tooltip) {
         var usage = getUsage(stack);
 
-        tooltip.add(Text.literal("Current draw: %.2f M".formatted(usage)).styled(s -> s.withColor(0xaaaabb)));
+        tooltip.add(Text.literal("Current draw: %.2f kM".formatted(usage)).styled(s -> s.withColor(0xaaaabb)));
         if (usage != 0 && stack.get(ModComponents.MANA) instanceof ManaComponent component) {
             long timeUntilDrained = (long) (component.pool().get() / usage * 50);
             tooltip.add(Text.literal("Time until drained: %s".formatted(

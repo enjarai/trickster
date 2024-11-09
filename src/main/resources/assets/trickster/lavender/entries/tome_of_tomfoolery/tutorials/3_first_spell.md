@@ -1,8 +1,8 @@
 ```json
 {
-  "title": "2. Your First Spell",
+  "title": "3. Your First Spell",
   "icon": "minecraft:paper",
-  "ordinal": 1,
+  "ordinal": 2,
   "category": "trickster:tutorials"
 }
 ```

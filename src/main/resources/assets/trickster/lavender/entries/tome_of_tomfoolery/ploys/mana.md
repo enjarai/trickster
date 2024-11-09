@@ -12,11 +12,11 @@
 
 <|glyph@trickster:templates|trick-id=trickster:battery_creation,title=Ploy of the Moon Watcher|>
 
-[slot] ->
+[slot], [slot] ->
 
 ---
 
-Creates a Knot of the type of the given item, using amethyst if no slot is provided.
+Creates a Knot of the type of the given item using a Glass Block. Uses amethyst if no slot is provided.
 
 ;;;;;
 
