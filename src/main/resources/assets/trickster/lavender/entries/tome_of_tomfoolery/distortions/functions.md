@@ -47,12 +47,12 @@ Executes the given spell with the current spell's arguments.
 
 <|glyph@trickster:templates|trick-id=trickster:fork,title=Utensil Stratagem|>
 
-spell, any... ->
+spell, any... -> number
 
 ---
 
-An alternative to Grand Stratagem, this dispatches the given spell to a new spell slot, 
-letting it run concurrently with this spell.
+Dispatches the given spell to a free spell slot, 
+letting it run concurrently with this spell. The used spell slot is returned, or a negative if it failed.
 
 ;;;;;
 

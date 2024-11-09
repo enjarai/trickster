@@ -8,11 +8,11 @@ import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 
 public interface SpellExecutionManager {
-    default boolean queue(SpellPart spell, List<Fragment> arguments) {
+    default int queue(SpellPart spell, List<Fragment> arguments) {
         return queue(new DefaultSpellExecutor(spell, arguments));
     }
 
-    boolean queue(SpellExecutor executor);
+    int queue(SpellExecutor executor);
+    boolean kill(int index);
     void killAll();
-    void kill(int index);
 }

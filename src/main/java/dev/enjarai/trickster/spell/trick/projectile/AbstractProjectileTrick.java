@@ -9,7 +9,6 @@ import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.MissingItemBlunder;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
@@ -48,7 +47,7 @@ public abstract class AbstractProjectileTrick extends Trick {
     protected abstract boolean isValidItem(Item item);
 
     protected void onFail(SpellContext ctx, ServerWorld world, Vector3d spellPos, Vector3dc targetPos, ItemStack stack) {
-        world.spawnEntity(new ItemEntity(world, spellPos.x, spellPos.y, spellPos.z, stack));
+        ctx.source().offerOrDropItem(stack);
     }
 
     protected float cost(double dist) {

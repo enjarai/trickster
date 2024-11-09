@@ -6,7 +6,7 @@ import dev.enjarai.trickster.spell.execution.TickData;
 import dev.enjarai.trickster.spell.execution.ExecutionState;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
-import dev.enjarai.trickster.util.MiscUtils;
+import dev.enjarai.trickster.util.SpellUtils;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
@@ -57,7 +57,7 @@ public class DefaultSpellExecutor implements SpellExecutor {
     public DefaultSpellExecutor(SpellPart root, ExecutionState executionState) {
         this.root = root;
         this.state = executionState;
-        this.instructions = MiscUtils.flattenNode(root);
+        this.instructions = SpellUtils.flattenNode(root);
     }
 
     public DefaultSpellExecutor(SpellPart root, List<Fragment> arguments) {

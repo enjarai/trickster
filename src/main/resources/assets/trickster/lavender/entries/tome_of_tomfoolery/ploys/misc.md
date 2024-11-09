@@ -64,3 +64,13 @@ number -> number
 ---
 
 Immediately clears a bar from the caster's screen identified by the given number.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:kill_thread,title=Executioner's Ploy|>
+
+[number] -> boolean
+
+---
+
+Terminates the spell running at the given spell slot, or the current spell if no slot is provided. Returns a boolean based on success.

@@ -67,7 +67,9 @@ public class MultiSpellCircleBlockEntity extends BlockEntity implements Inventor
         if (getWorld() instanceof ServerWorld serverWorld) {
             var source = new BlockSpellSource<>(serverWorld, getPos(), this);
 
-            for (var stack : inventory) {
+            for (int i = 0; i < inventory.size(); i++) {
+                var stack = inventory.get(i);
+
                 if (stack.getItem() instanceof SpellCoreItem item && stack.contains(ModComponents.SPELL_CORE)) {
                     var slot = stack.get(ModComponents.SPELL_CORE);
                     var executor = slot.executor();
@@ -77,7 +79,7 @@ public class MultiSpellCircleBlockEntity extends BlockEntity implements Inventor
                         continue;
 
                     try {
-                        if (executor.run(source, new TickData(item.getExecutionBonus())).isPresent()) {
+                        if (executor.run(source, new TickData().withSlot(i).withBonusExecutions(item.getExecutionBonus())).isPresent()) {
                             stack.remove(ModComponents.SPELL_CORE);
                         }
                     } catch (BlunderException blunder) {
@@ -224,17 +226,19 @@ public class MultiSpellCircleBlockEntity extends BlockEntity implements Inventor
 	}
 
 	@Override
-	public boolean queue(SpellExecutor executor) {
-        for (var stack : inventory) {
+	public int queue(SpellExecutor executor) {
+        for (int i = 0; i < inventory.size(); i++) {
+            var stack = inventory.get(i);
+
             if (stack.getItem() instanceof SpellCoreItem
                     && (!stack.contains(ModComponents.SPELL_CORE)
                         || stack.get(ModComponents.SPELL_CORE).executor() instanceof ErroredSpellExecutor)) {
                 stack.set(ModComponents.SPELL_CORE, new SpellCoreComponent(executor));
-                return true;
+                return i;
             }
         }
 
-        return false;
+        return -1;
 	}
 
 	@Override
@@ -246,11 +250,15 @@ public class MultiSpellCircleBlockEntity extends BlockEntity implements Inventor
 	}
 
 	@Override
-	public void kill(int index) {
+	public boolean kill(int index) {
         var slot = index > 1 ? index + 1 : index; // accounting for the battery slot
         var stack = getStack(slot);
 
-        if (stack.contains(ModComponents.SPELL_CORE))
+        if (stack.contains(ModComponents.SPELL_CORE)) {
             stack.remove(ModComponents.SPELL_CORE);
+            return true;
+        }
+
+        return false;
 	}
 }

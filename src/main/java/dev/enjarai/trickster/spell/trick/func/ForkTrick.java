@@ -4,10 +4,9 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.fragment.VoidFragment;
+import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
-import dev.enjarai.trickster.spell.blunder.NoFreeSpellSlotBlunder;
 
 import java.util.List;
 
@@ -20,14 +19,10 @@ public class ForkTrick extends Trick {
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var spell = expectInput(fragments, FragmentType.SPELL_PART, 0);
         var arguments = fragments.subList(1, fragments.size());
-        var queued = ctx.source().getExecutionManager()
-                .orElseThrow(() -> new NoFreeSpellSlotBlunder(this))
-                .queue(spell, arguments);
-
-        if (!queued) {
-            throw new NoFreeSpellSlotBlunder(this);
-        }
-
-        return VoidFragment.INSTANCE;
+        var queued = ctx.source()
+            .getExecutionManager()
+            .map(manager -> manager.queue(spell, arguments))
+            .orElse(-1);
+        return new NumberFragment(queued);
     }
 }

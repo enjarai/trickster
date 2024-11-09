@@ -43,9 +43,9 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
 
     public SpellQueueResult queueAndCast(SpellSource source, SpellPart spell, List<Fragment> arguments, Optional<MutableManaPool> poolOverride) {
         var executor = new DefaultSpellExecutor(spell, poolOverride.flatMap(pool -> Optional.of(new ExecutionState(arguments, pool))).orElse(new ExecutionState(arguments)));
-        boolean queued = queue(executor);
+        int queued = queue(executor);
 
-        if (queued) {
+        if (queued >= 0) {
             for (var iterator = spells.int2ObjectEntrySet().iterator(); iterator.hasNext();) {
                 var entry = iterator.next();
 
@@ -66,19 +66,21 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
     }
 
     @Override
-    public boolean queue(SpellExecutor executor) {
+    public int queue(SpellExecutor executor) {
         for (int i = 0; i < capacity; i++) {
             if (spells.putIfAbsent(i, executor) == null) {
-                return true;
+                return i;
             }
         }
+
         for (int i = 0; i < capacity; i++) {
             if (spells.get(i) instanceof ErroredSpellExecutor) {
                 spells.put(i, executor);
-                return true;
+                return i;
             }
         }
-        return false;
+
+        return -1;
     }
 
     public void tick(SpellSource source, ExecutorCallback tickCallback, ExecutorCallback completeCallback, ExecutorCallback errorCallback) {
@@ -104,7 +106,7 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
         var executor = entry.getValue();
 
         try {
-            if (executor.run(source).isEmpty()) {
+            if (executor.run(source, new TickData().withSlot(entry.getIntKey())).isEmpty()) {
                 tickCallback.callTheBack(entry.getIntKey(), executor);
                 return false;
             } else {
@@ -139,8 +141,13 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
     }
 
     @Override
-    public void kill(int index) {
-        spells.remove(index);
+    public boolean kill(int index) {
+        if (spells.containsKey(index)) {
+            spells.remove(index);
+            return true;
+        }
+
+        return false;
     }
 
     public interface ExecutorCallback {

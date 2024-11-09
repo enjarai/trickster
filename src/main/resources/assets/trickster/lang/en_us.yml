@@ -125,6 +125,8 @@ trickster:
     try_catch: Cautious Stratagem
     closure: Closure Stratagem
     supplier: Supply Distortion
+    kill_thread: Executioner's Ploy
+    current_thread: Delusion of Order
     load_argument_1: Primary Delusion
     load_argument_2: Secondary Delusion
     load_argument_3: Tertiary Delusion

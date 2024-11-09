@@ -1,12 +1,11 @@
 package dev.enjarai.trickster.spell;
 
 import dev.enjarai.trickster.EndecTomfoolery;
-import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
-import dev.enjarai.trickster.util.MiscUtils;
+import dev.enjarai.trickster.util.SpellUtils;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import io.netty.buffer.Unpooled;
 import io.wispforest.endec.SerializationContext;
@@ -16,6 +15,7 @@ import io.wispforest.endec.format.bytebuf.ByteBufSerializer;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import net.minecraft.text.Text;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.NotImplementedException;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -30,8 +30,8 @@ public final class SpellPart implements Fragment {
     public static final StructEndec<SpellPart> ENDEC = EndecTomfoolery.recursive(self -> StructEndecBuilder.of(
             Fragment.ENDEC.fieldOf("glyph", SpellPart::getGlyph),
             EndecTomfoolery.withAlternative(SpellInstruction.STACK_ENDEC.xmap(
-                instructions -> MiscUtils.decodeInstructions(instructions, new Stack<>(), new Stack<>(), Optional.empty()),
-                MiscUtils::flattenNode
+                instructions -> SpellUtils.decodeInstructions(instructions, new Stack<>(), new Stack<>(), Optional.empty()),
+                SpellUtils::flattenNode
             ), self).listOf().fieldOf("sub_parts", SpellPart::getSubParts),
             SpellPart::new
     ));
@@ -232,7 +232,7 @@ public final class SpellPart implements Fragment {
 
     public String toBase64() {
         var buf = Unpooled.buffer();
-        buf.writeByte(1);
+        buf.writeByte(2); // Protocol version
         ENDEC.encode(
                 SerializationContext.empty().withAttributes(EndecTomfoolery.UBER_COMPACT_ATTRIBUTE),
                 ByteBufSerializer.of(buf), this
@@ -244,12 +244,19 @@ public final class SpellPart implements Fragment {
                 buf.readBytes(zipStream, buf.writerIndex());
             }
         } catch (IOException e) {
+            buf.release();
             throw new RuntimeException("Spell encoding broke. what.");
         }
 
         var bytes = byteStream.toByteArray();
+        String result;
+        try {
+            result = Base64.getEncoder().encodeToString(Arrays.copyOfRange(bytes, 10, bytes.length));
+        } catch (Throwable e) {
+            buf.release();
+            throw e;
+        }
 
-        var result = Base64.getEncoder().encodeToString(Arrays.copyOfRange(bytes, 10, bytes.length));
         buf.release();
         return result;
     }
@@ -263,18 +270,28 @@ public final class SpellPart implements Fragment {
                 buf.writeBytes(zipStream.readAllBytes());
             }
         } catch (IOException e) {
+            buf.release();
             throw new RuntimeException("Spell decoding broke. what.");
         }
 
         var protocolVersion = buf.readByte();
-        if (protocolVersion != 1) {
-            Trickster.LOGGER.warn("Attempting to import spell with unknown protocol version: " + protocolVersion);
+        SpellPart result;
+        try {
+            if (protocolVersion == 2) {
+                result = ENDEC.decode(
+                    SerializationContext.empty().withAttributes(EndecTomfoolery.UBER_COMPACT_ATTRIBUTE),
+                    ByteBufDeserializer.of(buf)
+                );
+            } else if (protocolVersion == 1) {
+                throw new NotImplementedException("Protocol version 1 needs backwards compat implemented for it");
+            } else {
+                throw new RuntimeException("Cannot import spell with unknown protocol version: " + protocolVersion);
+            }
+        } catch (Throwable e) {
+            buf.release();
+            throw e;
         }
 
-        var result = ENDEC.decode(
-                SerializationContext.empty().withAttributes(EndecTomfoolery.UBER_COMPACT_ATTRIBUTE),
-                ByteBufDeserializer.of(buf)
-        );
         buf.release();
         return result;
     }

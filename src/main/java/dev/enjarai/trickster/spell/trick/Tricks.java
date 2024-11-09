@@ -78,6 +78,8 @@ import dev.enjarai.trickster.spell.trick.func.ExecuteTrick;
 import dev.enjarai.trickster.spell.trick.func.ExecuteWithinCurrentScopeTrick;
 import dev.enjarai.trickster.spell.trick.func.FoldTrick;
 import dev.enjarai.trickster.spell.trick.func.ForkTrick;
+import dev.enjarai.trickster.spell.trick.func.GetCurrentThreadTrick;
+import dev.enjarai.trickster.spell.trick.func.KillThreadTrick;
 import dev.enjarai.trickster.spell.trick.func.LoadArgumentTrick;
 import dev.enjarai.trickster.spell.trick.func.SupplierTrick;
 import dev.enjarai.trickster.spell.trick.func.TryCatchTrick;
@@ -189,6 +191,8 @@ public class Tricks {
     public static final TryCatchTrick TRY_CATCH = register("try_catch", new TryCatchTrick());
     public static final ClosureTrick CLOSURE = register("closure", new ClosureTrick());
     public static final SupplierTrick SUPPLIER = register("supplier", new SupplierTrick());
+    public static final KillThreadTrick KILL_THREAD = register("kill_thread", new KillThreadTrick());
+    public static final GetCurrentThreadTrick CURRENT_THREAD = register("current_thread", new GetCurrentThreadTrick());
     public static final LoadArgumentTrick LOAD_ARGUMENT_1 = register("load_argument_1", new LoadArgumentTrick(Pattern.of(4, 1), 0));
     public static final LoadArgumentTrick LOAD_ARGUMENT_2 = register("load_argument_2", new LoadArgumentTrick(Pattern.of(4, 2), 1));
     public static final LoadArgumentTrick LOAD_ARGUMENT_3 = register("load_argument_3", new LoadArgumentTrick(Pattern.of(4, 5), 2));

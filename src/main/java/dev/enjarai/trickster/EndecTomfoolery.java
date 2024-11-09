@@ -45,7 +45,7 @@ public class EndecTomfoolery {
         return new EitherEndec<T, A>(
             primary,
             alternative,
-            true
+            false
         ).xmap(
             Either::unwrap,
             Either::left
