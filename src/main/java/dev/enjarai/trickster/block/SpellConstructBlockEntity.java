@@ -143,6 +143,9 @@ public class SpellConstructBlockEntity extends BlockEntity implements SpellColor
 
     @Override
     public ItemStack getStack(int slot) {
+        if (slot != 0)
+            return ItemStack.EMPTY;
+
         return stack;
     }
 
@@ -153,13 +156,19 @@ public class SpellConstructBlockEntity extends BlockEntity implements SpellColor
 
     @Override
     public ItemStack removeStack(int slot) {
-        var result = this.stack.copyAndEmpty();
+        if (slot != 0)
+            return ItemStack.EMPTY;
+
+        var result = stack.copyAndEmpty();
         markDirty();
         return result;
     }
 
     @Override
     public ItemStack removeStack(int slot, int amount) {
+        if (slot != 0)
+            return ItemStack.EMPTY;
+
         var result = stack.split(amount);
         markDirty();
         return result;
@@ -167,6 +176,9 @@ public class SpellConstructBlockEntity extends BlockEntity implements SpellColor
 
     @Override
     public void setStack(int slot, ItemStack stack) {
+        if (slot != 0)
+            return;
+
         this.stack = stack;
         markDirty();
     }

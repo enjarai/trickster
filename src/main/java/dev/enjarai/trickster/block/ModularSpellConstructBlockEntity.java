@@ -169,7 +169,7 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
 
     @Override
     public void setStack(int slot, ItemStack stack) {
-        if (slot == 2
+        if (slot == 0
                 ? stack.isIn(ModItems.MANA_KNOTS)
                 : stack.getItem() instanceof SpellCoreItem) {
             if (stack.getItem() instanceof SpellCoreItem) {
@@ -199,7 +199,7 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
 
     @Override
     public boolean isValid(int slot, ItemStack stack) {
-        return (slot == 2 ? stack.isIn(ModItems.MANA_KNOTS) : stack.getItem() instanceof SpellCoreItem) && getStack(slot).isEmpty();
+        return (slot == 0 ? stack.isIn(ModItems.MANA_KNOTS) : stack.getItem() instanceof SpellCoreItem) && getStack(slot).isEmpty();
     }
 
     @Override
@@ -251,8 +251,7 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
 
     @Override
     public boolean kill(int index) {
-        var slot = index > 1 ? index + 1 : index; // accounting for the battery slot
-        var stack = getStack(slot);
+        var stack = getStack(index + 1);
 
         if (stack.contains(ModComponents.SPELL_CORE)) {
             stack.remove(ModComponents.SPELL_CORE);

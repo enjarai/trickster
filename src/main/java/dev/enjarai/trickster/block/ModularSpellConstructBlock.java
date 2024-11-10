@@ -94,7 +94,15 @@ public class ModularSpellConstructBlock extends BlockWithEntity {
             if (slot % 2 != 0)
                 return Optional.empty();
 
-            return Optional.of(slot / 2);
+            slot = slot / 2;
+
+            if (slot == 2) {
+                slot = 0;
+            } else if (slot < 2) {
+                slot++;
+            }
+
+            return Optional.of(slot);
         });
     }
 
@@ -132,7 +140,7 @@ public class ModularSpellConstructBlock extends BlockWithEntity {
             return slot.map(s -> {
                 var slotStack = blockEntity.getStack(s);
 
-                if (slotStack.isEmpty() && (s == 2 ? stack.isIn(ModItems.MANA_KNOTS) : stack.getItem() instanceof SpellCoreItem)) {
+                if (slotStack.isEmpty() && (s == 0 ? stack.isIn(ModItems.MANA_KNOTS) : stack.getItem() instanceof SpellCoreItem)) {
                     tryAddCore(world, pos, player, blockEntity, stack, s);
                     return ItemActionResult.success(world.isClient);
                 }
@@ -242,6 +250,7 @@ public class ModularSpellConstructBlock extends BlockWithEntity {
         return true;
     }
 
+    //TODO: return mana / max mana * max redstone signal
     @Override
     protected int getComparatorOutput(BlockState state, World world, BlockPos pos) {
         if (world.isClient()) {

@@ -64,7 +64,7 @@ public class ModularSpellConstructBlockEntityRenderer implements BlockEntityRend
         matrices.multiply(facing.getRotationQuaternion());
         matrices.translate(-0.5f, -0.5f, -0.5f);
 
-        var knotStack = entity.getStack(2);
+        var knotStack = entity.getStack(0);
 
         if (!knotStack.isEmpty()) {
             matrices.push();
@@ -82,21 +82,14 @@ public class ModularSpellConstructBlockEntityRenderer implements BlockEntityRend
             matrices.pop();
         }
 
-        for (int i = 0, j = 0; i < entity.size(); i++) {
-            if (i == 2) {
-                // Skip auri's silly stupid silly but dumb knot position in the list
-                continue;
-            }
-
+        for (int i = 1; i < entity.size(); i++) {
             var coreStack = entity.getStack(i);
             if (!coreStack.isEmpty()) {
                 var textureId = Registries.ITEM.getId(coreStack.getItem()).withPrefixedPath("entity/modular_spell_construct/");
                 var spriteId = new SpriteIdentifier(ATLAS_ID, textureId);
                 var vertexConsumer = spriteId.getVertexConsumer(vertexConsumers, RenderLayer::getEntityCutout);
-                coreModels[j].render(matrices, vertexConsumer, light, overlay);
+                coreModels[i - 1].render(matrices, vertexConsumer, light, overlay);
             }
-
-            j++;
         }
 
         matrices.translate(0.5f, 0.5f, 0.5f);
@@ -108,12 +101,7 @@ public class ModularSpellConstructBlockEntityRenderer implements BlockEntityRend
         // matrices.peek().getNormalMatrix().getNormalizedRotation(new Quaternionf())
         // TODO WTF glisco help!
 
-        for (int i = 0, j = 0; i < entity.size(); i++) {
-            if (i == 2) {
-                // Skip auri's silly stupid silly but dumb knot position in the list
-                continue;
-            }
-
+        for (int i = 1; i < entity.size(); i++) {
             var coreStack = entity.getStack(i);
             matrices.push();
 
@@ -127,8 +115,8 @@ public class ModularSpellConstructBlockEntityRenderer implements BlockEntityRend
                             + entity.getPos().getZ()
                             + i)
                     * 999;
-                var x = j % 2;
-                var z = j / 2;
+                var x = i % 2;
+                var z = i / 2;
                 matrices.translate((18f / 2 * x + 3.5f) / 16f, (18f / 2 * z + 3.5f) / 16f,
                         0.2f + (float) Math.sin(age * 0.14f) * 0.02f);
                 matrices.multiply(RotationAxis.POSITIVE_Z.rotation(age / 10));
@@ -141,7 +129,6 @@ public class ModularSpellConstructBlockEntityRenderer implements BlockEntityRend
             }
 
             matrices.pop();
-            j++;
         }
 
         matrices.pop();
