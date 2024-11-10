@@ -84,7 +84,7 @@ public class TricksterClient implements ClientModInitializer {
         WorldRenderEvents.AFTER_ENTITIES.register(FlecksRenderer::render);
 
         HudRenderCallback.EVENT.register(BarsRenderer::render);
-        HudRenderCallback.EVENT.register(CircleErrorRenderer::render);
+        HudRenderCallback.EVENT.register(SpellConstructErrorRenderer::render);
 
         EntityModelLayerRegistry.registerModelLayer(ScrollShelfBlockEntityRenderer.MODEL_LAYER, ScrollShelfBlockEntityRenderer::getTexturedModelData);
         EntityModelLayerRegistry.registerModelLayer(ModularSpellConstructBlockEntityRenderer.MODEL_LAYER, ModularSpellConstructBlockEntityRenderer::getTexturedModelData);

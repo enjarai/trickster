@@ -66,7 +66,6 @@ public abstract class KnotItem extends Item {
         }
     }
 
-    //TODO: make this have a maximum merlin?
     public static class CrackedEcho extends KnotItem {
         public CrackedEcho() {
             super(new Settings()
