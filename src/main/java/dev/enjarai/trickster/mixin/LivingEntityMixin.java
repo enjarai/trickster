@@ -131,7 +131,7 @@ public abstract class LivingEntityMixin extends Entity implements DirectlyDamage
             inShadowBlock = inShadowBlock(getWorld(), BlockPos.ofFloored(this.getEyePos()));
         }
 
-        setAttached(ModAttachments.WHY_IS_THERE_NO_WAY_TO_DETECT_THIS, null);
+        removeAttached(ModAttachments.WHY_IS_THERE_NO_WAY_TO_DETECT_THIS);
 
         if (!ModEntityComponents.GRACE.get(this).isInGrace("scale")) {
             // Handle slow scaling reset

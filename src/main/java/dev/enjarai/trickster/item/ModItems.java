@@ -22,7 +22,6 @@ import net.minecraft.util.DyeColor;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 public class ModItems {
     public static final LavenderBookItem TOME_OF_TOMFOOLERY = LavenderBookItem.registerForBook(
@@ -53,15 +52,16 @@ public class ModItems {
             new Item(new Item.Settings().maxCount(1)));
     public static final SpellInkItem SPELL_INK = register("spell_ink",
             new SpellInkItem(new Item.Settings().recipeRemainder(Items.GLASS_BOTTLE)
-                    .food(new FoodComponent(0,
-                            0,
-                            true,
-                            1,
-                            Optional.of(Items.GLASS_BOTTLE.getDefaultStack()),
-                            List.of(new FoodComponent.StatusEffectEntry(new StatusEffectInstance(StatusEffects.NAUSEA, 60 * 20), 1),
-                                    new FoodComponent.StatusEffectEntry(new StatusEffectInstance(StatusEffects.POISON, 60 * 20), 1),
-                                    new FoodComponent.StatusEffectEntry(new StatusEffectInstance(StatusEffects.GLOWING, 60 * 20), 1),
-                                    new FoodComponent.StatusEffectEntry(new StatusEffectInstance(StatusEffects.BLINDNESS, 60 * 20), 1))))));
+                    .food(new FoodComponent.Builder()
+                            .nutrition(0)
+                            .saturationModifier(0)
+                            .alwaysEdible()
+                            .usingConvertsTo(Items.GLASS_BOTTLE)
+                            .statusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 60 * 20), 1)
+                            .statusEffect(new StatusEffectInstance(StatusEffects.POISON, 60 * 20), 1)
+                            .statusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 60 * 20), 1)
+                            .statusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 60 * 20), 1)
+                            .build())));
     public static final BlockItem SPELL_RESONATOR_BLOCK_ITEM = register("spell_resonator", new BlockItem(ModBlocks.SPELL_RESONATOR, new Item.Settings()));
     public static final BlockItem SCROLL_SHELF_BLOCK_ITEM = register("scroll_shelf", new BlockItem(ModBlocks.SCROLL_SHELF, new Item.Settings()));
 
