@@ -52,7 +52,7 @@ Merlins are defined as Gandalfs per Tick,
 Ticks being the smallest unit of meaningful time, at 1/20th of a second.
 
 
-As such, a spell drawing 50 M would consume 1 kiloGandalf per second.
+For example, a spell drawing 50 M would consume 1 kiloGandalf per second.
 <|item-spotlight@lavender:book_components|item=trickster:diamond_knot|>
 
 ;;;;;
