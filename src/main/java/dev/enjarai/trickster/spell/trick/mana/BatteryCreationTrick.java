@@ -62,16 +62,17 @@ public class BatteryCreationTrick extends Trick {
             throw new ItemInvalidBlunder(this);
         }
 
-        if (type == ModItems.ECHO_KNOT) {
-            ctx.source().getPlayer().ifPresent(player -> ModCriteria.CREATE_ECHO_KNOT.trigger(player));
-        }
-
         try {
             var input = sourceSlot.move(this, ctx, 1);
 
             try {
                 ctx.useMana(this, type.getCreationCost());
                 ctx.source().offerOrDropItem(type.createStack());
+
+                if (type == ModItems.ECHO_KNOT) {
+                    ctx.source().getPlayer().ifPresent(ModCriteria.CREATE_ECHO_KNOT::trigger);
+                }
+
                 return VoidFragment.INSTANCE;
             } catch (Exception e) {
                 ctx.source().offerOrDropItem(input);

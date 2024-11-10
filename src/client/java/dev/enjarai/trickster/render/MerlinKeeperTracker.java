@@ -56,7 +56,11 @@ public class MerlinKeeperTracker {
         tooltip.add(Text.literal("Current draw: %.2f kM".formatted(usage)).styled(s -> s.withColor(0xaaaabb)));
         if (usage != 0 && stack.get(ModComponents.MANA) instanceof ManaComponent component) {
             long timeUntilDrained = (long) (component.pool().get() / usage * 50);
-            tooltip.add(Text.literal("Time until drained: %s".formatted(
+            var str = timeUntilDrained >= 0 ? "Time until drained: %s" : "Time until charged: %s";
+            if (timeUntilDrained < 0) {
+                timeUntilDrained = (long) ((component.pool().get() - component.pool().getMax()) / usage) * 50;
+            }
+            tooltip.add(Text.literal(str.formatted(
                     ImGoingToStabWhoeverInventedTime.howLongIsThisQuestionMark(timeUntilDrained)))
                     .styled(s -> s.withColor(0xaaaabb)));
         }
