@@ -70,6 +70,7 @@ public class ModModelGenerator extends FabricModelProvider {
         itemModelGenerator.register(ModItems.EMERALD_KNOT, Models.GENERATED);
         itemModelGenerator.register(ModItems.DIAMOND_KNOT, Models.GENERATED);
         itemModelGenerator.register(ModItems.ECHO_KNOT, Models.GENERATED);
+        itemModelGenerator.register(ModItems.CRACKED_ECHO_KNOT, Models.GENERATED);
 
         itemModelGenerator.register(ModItems.SPELL_CORE, Models.GENERATED);
         itemModelGenerator.register(ModItems.RUSTED_SPELL_CORE, Models.GENERATED);

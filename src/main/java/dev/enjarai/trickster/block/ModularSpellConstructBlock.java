@@ -132,7 +132,7 @@ public class ModularSpellConstructBlock extends BlockWithEntity {
             return slot.map(s -> {
                 var slotStack = blockEntity.getStack(s);
 
-                if (slotStack.isEmpty() && (s == 2 ? stack.isIn(ModItems.MANA_CRYSTALS) : stack.getItem() instanceof SpellCoreItem)) {
+                if (slotStack.isEmpty() && (s == 2 ? stack.isIn(ModItems.MANA_KNOTS) : stack.getItem() instanceof SpellCoreItem)) {
                     tryAddCore(world, pos, player, blockEntity, stack, s);
                     return ItemActionResult.success(world.isClient);
                 }

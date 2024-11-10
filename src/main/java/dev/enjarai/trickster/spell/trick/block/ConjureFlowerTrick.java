@@ -1,13 +1,12 @@
 package dev.enjarai.trickster.spell.trick.block;
 
-import dev.enjarai.trickster.item.ModItems;
+import dev.enjarai.trickster.block.ModBlocks;
 import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
-import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlockOccupiedBlunder;
 import dev.enjarai.trickster.spell.blunder.BlockUnoccupiedBlunder;
@@ -36,7 +35,7 @@ public class ConjureFlowerTrick extends Trick {
             throw new BlockUnoccupiedBlunder(this, VectorFragment.of(blockPos.down()));
         }
 
-        var flowerType = Registries.BLOCK.getRandomEntry(ModItems.CONJURABLE_FLOWERS, world.getOrCreateRandom(TRICK_RANDOM));
+        var flowerType = Registries.BLOCK.getRandomEntry(ModBlocks.CONJURABLE_FLOWERS, world.getOrCreateRandom(TRICK_RANDOM));
         ctx.useMana(this, 5);
         flowerType.ifPresent(flower -> {
             world.setBlockState(blockPos, flower.value().getDefaultState());

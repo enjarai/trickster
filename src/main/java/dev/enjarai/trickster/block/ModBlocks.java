@@ -9,6 +9,8 @@ import net.minecraft.block.cauldron.CauldronBehavior;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.world.poi.PointOfInterestType;
 
 public class ModBlocks {
@@ -29,6 +31,8 @@ public class ModBlocks {
 
     public static final PointOfInterestType SPELL_CIRCLE_POI =
             PointOfInterestHelper.register(Trickster.id("spell_circle"), 0, 2, SPELL_CONSTRUCT);
+
+    public static final TagKey<Block> CONJURABLE_FLOWERS = TagKey.of(RegistryKeys.BLOCK, Trickster.id("conjurable_flowers"));
 
     private static <T extends Block> T register(String name, T block) {
         return Registry.register(Registries.BLOCK, Trickster.id(name), block);

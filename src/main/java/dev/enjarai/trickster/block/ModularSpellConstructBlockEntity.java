@@ -170,7 +170,7 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
     @Override
     public void setStack(int slot, ItemStack stack) {
         if (slot == 2
-                ? stack.isIn(ModItems.MANA_CRYSTALS)
+                ? stack.isIn(ModItems.MANA_KNOTS)
                 : stack.getItem() instanceof SpellCoreItem) {
             if (stack.getItem() instanceof SpellCoreItem) {
                 SpellCoreComponent.refresh(stack.getComponents(),
@@ -199,7 +199,7 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
 
     @Override
     public boolean isValid(int slot, ItemStack stack) {
-        return (slot == 2 ? stack.isIn(ModItems.MANA_CRYSTALS) : stack.getItem() instanceof SpellCoreItem) && getStack(slot).isEmpty();
+        return (slot == 2 ? stack.isIn(ModItems.MANA_KNOTS) : stack.getItem() instanceof SpellCoreItem) && getStack(slot).isEmpty();
     }
 
     @Override

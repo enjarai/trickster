@@ -88,7 +88,7 @@ public class SpellConstructBlock extends BlockWithEntity {
         if (world.getBlockEntity(pos) instanceof SpellConstructBlockEntity blockEntity) {
             var slotStack = blockEntity.getStack(0);
 
-            if (slotStack.isEmpty() && stack.isIn(ModItems.MANA_CRYSTALS)) {
+            if (slotStack.isEmpty() && stack.isIn(ModItems.MANA_KNOTS)) {
                 tryAddCore(world, pos, player, blockEntity, stack, 0);
                 return ItemActionResult.success(world.isClient);
             }
