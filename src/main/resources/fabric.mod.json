@@ -74,6 +74,6 @@
 		"cicada": ">=0.8.2"
 	},
 	"breaks": {
-		"optifabric": "*",
+		"optifabric": "*"
 	}
 }
