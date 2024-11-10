@@ -9,7 +9,7 @@
     "description": {
       "text": "Find a Cracked Echo Knot"
     },
-    "frame": "challenge",
+    "frame": "task",
     "announce_to_chat": true,
     "hidden": true
   },

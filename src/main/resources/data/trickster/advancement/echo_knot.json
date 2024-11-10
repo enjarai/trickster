@@ -7,23 +7,16 @@
       "text": "Interdimensional Intentionality"
     },
     "description": {
-      "text": "Acquire an Echo Knot"
+      "text": "Construct a pair of Echo Knots in pristine condition"
     },
     "frame": "challenge",
     "announce_to_chat": true,
-    "hidden": false
+    "hidden": true
   },
   "parent": "trickster:cast_spell",
   "criteria": {
-    "pickup_echo_knot": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": "trickster:echo_knot"
-          }
-        ]
-      }
+    "create_echo_knot": {
+      "trigger": "trickster:create_echo_knot"
     }
   }
 }

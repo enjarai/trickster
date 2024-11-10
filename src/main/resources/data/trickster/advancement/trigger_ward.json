@@ -7,7 +7,7 @@
       "text": "Offense is the Best Defense"
     },
     "description": {
-      "text": "Have your personal ward triggered"
+      "text": "Have your personal Ward triggered by a direct Ploy"
     },
     "frame": "task",
     "announce_to_chat": true,

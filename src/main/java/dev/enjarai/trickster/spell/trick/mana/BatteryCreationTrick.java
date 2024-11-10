@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.spell.trick.mana;
 
+import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.item.KnotItem;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.spell.Fragment;
@@ -59,6 +60,10 @@ public class BatteryCreationTrick extends Trick {
 
         if (type == null) {
             throw new ItemInvalidBlunder(this);
+        }
+
+        if (type == ModItems.ECHO_KNOT) {
+            ctx.source().getPlayer().ifPresent(player -> ModCriteria.CREATE_ECHO_KNOT.trigger(player));
         }
 
         try {

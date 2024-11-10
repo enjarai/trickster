@@ -22,13 +22,14 @@ public abstract class KnotItem extends Item {
     private final float creationCost;
 
     public KnotItem(Settings settings, float creationCost) {
-        super(settings.maxCount(1));
+        super(settings);
         this.creationCost = creationCost;
     }
 
     public static class Amethyst extends KnotItem {
         public Amethyst() {
             super(new Settings()
+                    .maxCount(1)
                     .component(ModComponents.MANA, new ManaComponent(SimpleManaPool.getSingleUse(128), 0, false)),
                     0);
         }
@@ -37,6 +38,7 @@ public abstract class KnotItem extends Item {
     public static class Emerald extends KnotItem {
         public Emerald() {
             super(new Settings()
+                    .maxCount(1)
                     .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(1024), 1 / 12f)),
                     512);
         }
@@ -45,6 +47,7 @@ public abstract class KnotItem extends Item {
     public static class Diamond extends KnotItem {
         public Diamond() {
             super(new Settings()
+                    .maxCount(1)
                     .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(16384), 4 / 12f)),
                     8192);
         }
@@ -52,7 +55,9 @@ public abstract class KnotItem extends Item {
 
     public static class Echo extends KnotItem {
         public Echo() {
-            super(new Settings(), 65536);
+            super(new Settings()
+                    .maxCount(2),
+                    65536);
         }
 
         @Override
@@ -69,7 +74,7 @@ public abstract class KnotItem extends Item {
     public static class CrackedEcho extends KnotItem {
         public CrackedEcho() {
             super(new Settings()
-                    .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(32768), 1)),
+                    .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(32768), 2 / 12f)),
                     Float.MAX_VALUE);
         }
     }
