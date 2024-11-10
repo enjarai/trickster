@@ -12,6 +12,9 @@ The Spell Cores draw mana from the [Knot](^trickster:items/knots) placed in the 
 
 ;;;;;
 
-//TODO
+
+
+
+
 
 <recipe;trickster:modular_spell_construct>
