@@ -32,8 +32,6 @@ import dev.enjarai.trickster.spell.trick.block.ConjureFlowerTrick;
 import dev.enjarai.trickster.spell.trick.block.ConjureLightTrick;
 import dev.enjarai.trickster.spell.trick.block.ConjureWaterTrick;
 import dev.enjarai.trickster.spell.trick.block.DestabilizeBlockTrick;
-import dev.enjarai.trickster.spell.trick.block.DisguiseBlockTrick;
-import dev.enjarai.trickster.spell.trick.block.DispelBlockDisguiseTrick;
 import dev.enjarai.trickster.spell.trick.block.DrainFluidTrick;
 import dev.enjarai.trickster.spell.trick.block.GetBlockHardnessTrick;
 import dev.enjarai.trickster.spell.trick.block.GetRedstonePowerTrick;
@@ -319,7 +317,7 @@ public class Tricks {
     public static final GetSubPartsTrick GET_SUBPARTS = register("get_subparts", new GetSubPartsTrick());
     public static final EscapePatternTrick ESCAPE_PATTERN = register("escape_pattern", new EscapePatternTrick());
 
-    // Blocks
+    // Block
     public static final BreakBlockTrick BREAK_BLOCK = register("break_block", new BreakBlockTrick());
     public static final PlaceBlockTrick PLACE_BLOCK = register("place_block", new PlaceBlockTrick());
     public static final SwapBlockTrick SWAP_BLOCK = register("swap_block", new SwapBlockTrick());
@@ -331,8 +329,6 @@ public class Tricks {
     public static final CanPlaceTrick CAN_PLACE_BLOCK = register("can_place_block", new CanPlaceTrick());
     public static final GetBlockHardnessTrick GET_BLOCK_HARDNESS = register("get_block_hardness", new GetBlockHardnessTrick());
     public static final DestabilizeBlockTrick DESTABILIZE_BLOCK = register("destabilize_block", new DestabilizeBlockTrick());
-    public static final DisguiseBlockTrick DISGUISE_BLOCK = register("disguise_block", new DisguiseBlockTrick());
-    public static final DispelBlockDisguiseTrick DISPEL_BLOCK_DISGUISE = register("dispel_block_disguise", new DispelBlockDisguiseTrick());
     public static final PowerResonatorTrick POWER_RESONATOR = register("power_resonator", new PowerResonatorTrick());
     public static final CheckResonatorTrick CHECK_RESONATOR = register("check_resonator", new CheckResonatorTrick());
     public static final GetRedstonePowerTrick GET_REDSTONE_POWER = register("get_redstone_power", new GetRedstonePowerTrick());

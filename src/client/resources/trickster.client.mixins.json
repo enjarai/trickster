@@ -12,16 +12,12 @@
     "InventoryScreenMixin",
     "MouseMixin",
     "PlayerRendererMixin",
-    "RenderedChunkMixin",
     "SillyHairsFeatureRendererMixin",
     "SubtitlesHudMixin",
     "WorldRendererAccessor",
     "animation.BipedEntityModelMixin",
     "animation.PlayerEntityModelMixin",
     "figura.AvatarManagerMixin",
-    "sodium.ChunkBuilderMeshingTaskMixin",
-    "sodium.ChunkRenderContextMixin",
-    "sodium.LevelSliceMixin",
     "tooltip.TooltipComponentMixin"
   ],
   "injectors": {

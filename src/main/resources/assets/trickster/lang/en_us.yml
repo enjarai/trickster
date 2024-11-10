@@ -168,8 +168,6 @@ trickster:
     conjure_light: Illumination Ploy
     drain_fluid: Drought Ploy
     destabilize_block: Earthquake Ploy
-    disguise_block: Shadow Ploy
-    dispel_block_disguise: Revelation Ploy
     power_resonator: Resonance Ploy
 
     get_block_hardness: Ingress of Hardness

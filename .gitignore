@@ -45,7 +45,9 @@ replay_*.log
 .direnv/
 
 # wiki
+
 wiki/
 
 # idk something
+
 .factorypath

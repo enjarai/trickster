@@ -43,7 +43,6 @@
 	},
 	"custom": {
 		"cardinal-components": [
-			"trickster:shadow_disguise_map",
 			"trickster:caster",
 			"trickster:bars",
 			"trickster:flecks",
@@ -75,8 +74,6 @@
 		"cicada": ">=0.8.2"
 	},
 	"breaks": {
-		"sodium": "<0.6.0-",
 		"optifabric": "*",
-		"embeddium": "*"
 	}
 }
