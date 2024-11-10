@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.cca;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,15 +16,18 @@ import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.spell.mana.SimpleManaPool;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.impl.KeyedEndec;
+import net.minecraft.datafixer.DataFixTypes;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.RegistryWrapper.WrapperLookup;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.world.PersistentState;
 
 public class SharedManaComponent implements AutoSyncedComponent {
-    // this is absolutely cursed
+    // This is absolutely cursed
     private static SharedManaComponent INSTANCE = null;
 
     private static final KeyedEndec<Map<UUID, SimpleManaPool>> POOLS_ENDEC = new KeyedEndec<>("pools", Endec.map(EndecTomfoolery.UUID, SimpleManaPool.ENDEC), new HashMap<>());
@@ -37,19 +41,19 @@ public class SharedManaComponent implements AutoSyncedComponent {
         this.provider = provider;
         this.server = Optional.ofNullable(server);
         
-        // this check is very important to ensure integrated servers have the corrent object
+        // This check is very important to ensure integrated servers have the current object
         if (server != null || INSTANCE == null)
             INSTANCE = this;
     }
 
     @Override
     public void readFromNbt(NbtCompound tag, WrapperLookup registryLookup) {
-        server.ifPresent(server -> pools.putAll(tag.get(POOLS_ENDEC)));
+        // We use persistent state
     }
 
     @Override
     public void writeToNbt(NbtCompound tag, WrapperLookup registryLookup) {
-        server.ifPresent(server -> tag.put(POOLS_ENDEC, pools));
+        // We use persistent state
     }
 
     @Override
@@ -74,8 +78,16 @@ public class SharedManaComponent implements AutoSyncedComponent {
     public UUID allocate(SimpleManaPool pool) {
         var uuid = UUID.randomUUID();
 
-        while (pools.containsKey(uuid)) {
-            uuid = UUID.randomUUID();
+        if (server.isPresent()) {
+            final var finalPool = pool;
+            pool = server.get().getOverworld().getPersistentStateManager().getOrCreate(
+                    new PersistentState.Type<PoolState>(
+                        () -> new PoolState(finalPool),
+                        PoolState::readNbt,
+                        DataFixTypes.LEVEL
+                    ),
+                    "trickster/shared_mana_pool/" + uuid
+            ).getPool();
         }
 
         pools.put(uuid, pool);
@@ -83,7 +95,24 @@ public class SharedManaComponent implements AutoSyncedComponent {
     }
 
     public Optional<SimpleManaPool> get(UUID uuid) {
-        server.ifPresent(server -> ModGlobalComponents.SHARED_MANA.sync(provider));
+        server.ifPresent(server -> {
+            if (!pools.containsKey(uuid)) {
+                var data = server.getOverworld().getPersistentStateManager().get(
+                        new PersistentState.Type<PoolState>(
+                            () -> new PoolState(SimpleManaPool.getSingleUse(0)),
+                            PoolState::readNbt,
+                            DataFixTypes.LEVEL
+                        ),
+                        "trickster/shared_mana_pool/" + uuid
+                );
+
+                if (data != null)
+                    pools.put(uuid, data.getPool());
+            }
+
+            ModGlobalComponents.SHARED_MANA.sync(provider);
+        });
+
         return Optional.ofNullable(pools.get(uuid));
     }
 
@@ -104,5 +133,35 @@ public class SharedManaComponent implements AutoSyncedComponent {
     @Nullable
     public static SharedManaComponent getInstance() {
         return INSTANCE;
+    }
+
+    private static class PoolState extends PersistentState {
+        private static final KeyedEndec<SimpleManaPool> ENDEC = new KeyedEndec<>("pool", SimpleManaPool.ENDEC, SimpleManaPool.getSingleUse(0));
+
+        private final SimpleManaPool pool;
+
+        private PoolState(SimpleManaPool pool) {
+            this.pool = pool;
+        }
+
+        @Override
+        public NbtCompound writeNbt(NbtCompound nbt, WrapperLookup registryLookup) {
+            nbt.put(ENDEC, pool);
+            return nbt;
+        }
+
+        public void save(File file, RegistryWrapper.WrapperLookup registryLookup) {
+            file.getParentFile().mkdirs();
+            setDirty(true);
+            super.save(file, registryLookup);
+        }
+
+        public SimpleManaPool getPool() {
+            return pool;
+        }
+
+        public static PoolState readNbt(NbtCompound nbt, WrapperLookup registryLookup) {
+            return new PoolState(nbt.get(ENDEC));
+        }
     }
 }

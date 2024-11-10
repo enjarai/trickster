@@ -56,7 +56,8 @@ public abstract class KnotItem extends Item {
     public static class Echo extends KnotItem {
         public Echo() {
             super(new Settings()
-                    .maxCount(2),
+                    .maxCount(2)
+                    .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(32768), 1)),
                     65536);
         }
 
@@ -74,6 +75,7 @@ public abstract class KnotItem extends Item {
     public static class CrackedEcho extends KnotItem {
         public CrackedEcho() {
             super(new Settings()
+                    .maxCount(1)
                     .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(32768), 2 / 12f)),
                     Float.MAX_VALUE);
         }

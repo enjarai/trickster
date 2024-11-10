@@ -6,7 +6,7 @@
 }
 ```
 
-//TODO: something pretty and ominous, maybe reverent? talk about knots?
+Ploys for creatings and moving mana between [Knots](^trickster:items/knots).
 
 ;;;;;
 
