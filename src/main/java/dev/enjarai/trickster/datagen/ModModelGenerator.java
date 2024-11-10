@@ -39,7 +39,7 @@ public class ModModelGenerator extends FabricModelProvider {
                 )
         );
         blockStateModelGenerator.registerNorthDefaultHorizontalRotated(ModBlocks.SCROLL_SHELF, TexturedModel.ORIENTABLE_WITH_BOTTOM);
-        for (var block : List.of(ModBlocks.MULTI_SPELL_CIRCLE, ModBlocks.SPELL_CIRCLE)) {
+        for (var block : List.of(ModBlocks.MODULAR_SPELL_CONSTRUCT, ModBlocks.SPELL_CONSTRUCT)) {
             blockStateModelGenerator.blockStateCollector.accept(VariantsBlockStateSupplier.create(block)
                     .coordinate(BlockStateVariantMap.create(Properties.FACING)
                             .register(direction ->
@@ -64,7 +64,7 @@ public class ModModelGenerator extends FabricModelProvider {
 
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
-        itemModelGenerator.register(ModItems.SPELL_RESONATOR_BLOCK_ITEM, Models.GENERATED);
+        itemModelGenerator.register(ModItems.SPELL_RESONATOR_ITEM, Models.GENERATED);
         itemModelGenerator.register(ModItems.AMETHYST_MANA_CRYSTAL, Models.GENERATED);
         itemModelGenerator.register(ModItems.EMERALD_MANA_CRYSTAL, Models.GENERATED);
         itemModelGenerator.register(ModItems.DIAMOND_MANA_CRYSTAL, Models.GENERATED);

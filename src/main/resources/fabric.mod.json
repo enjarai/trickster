@@ -1,79 +1,79 @@
 {
-	"schemaVersion": 1,
-	"id": "trickster",
-	"version": "${version}",
-	"name": "Trickster",
-	"description": "A mod about magic, creativity, and trickery.",
-	"authors": [
-		"enjarai"
-	],
-	"contact": {
-		"homepage": "https://enjarai.dev/",
-		"sources": "https://github.com/enjarai/trickster",
-		"issues": "https://github.com/enjarai/trickster/issues"
-	},
-	"license": "MIT",
-	"icon": "assets/trickster/icon.png",
-	"environment": "*",
-	"entrypoints": {
-		"main": [
-			"dev.enjarai.trickster.Trickster"
-		],
-		"client": [
-			"dev.enjarai.trickster.TricksterClient"
-		],
-		"fabric-datagen": [
-			"dev.enjarai.trickster.datagen.ModDataStuff"
-		],
-		"cardinal-components-chunk": [
-			"dev.enjarai.trickster.cca.ModChunkComponents"
-		],
+    "schemaVersion": 1,
+    "id": "trickster",
+    "version": "${version}",
+    "name": "Trickster",
+    "description": "A mod about magic, creativity, and trickery.",
+    "authors": [
+        "enjarai"
+    ],
+    "contact": {
+        "homepage": "https://enjarai.dev/",
+        "sources": "https://github.com/enjarai/trickster",
+        "issues": "https://github.com/enjarai/trickster/issues"
+    },
+    "license": "MIT",
+    "icon": "assets/trickster/icon.png",
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+            "dev.enjarai.trickster.Trickster"
+        ],
+        "client": [
+            "dev.enjarai.trickster.TricksterClient"
+        ],
+        "fabric-datagen": [
+            "dev.enjarai.trickster.datagen.ModDataStuff"
+        ],
+        "cardinal-components-chunk": [
+            "dev.enjarai.trickster.cca.ModChunkComponents"
+        ],
         "cardinal-components-scoreboard": [
             "dev.enjarai.trickster.cca.ModGlobalComponents"
         ],
-		"cardinal-components-world": [
-			"dev.enjarai.trickster.cca.ModWorldComponents"
-		],
-		"cardinal-components-entity": [
+        "cardinal-components-world": [
+            "dev.enjarai.trickster.cca.ModWorldComponents"
+        ],
+        "cardinal-components-entity": [
           "dev.enjarai.trickster.cca.ModEntityComponents"
-		],
-		"cicada": [
-			"dev.enjarai.trickster.Trickster"
-		]
-	},
-	"custom": {
-		"cardinal-components": [
-			"trickster:caster",
-			"trickster:bars",
-			"trickster:flecks",
-			"trickster:ward",
+        ],
+        "cicada": [
+            "dev.enjarai.trickster.Trickster"
+        ]
+    },
+    "custom": {
+        "cardinal-components": [
+            "trickster:caster",
+            "trickster:bars",
+            "trickster:flecks",
+            "trickster:ward",
             "trickster:shared_mana",
-			"trickster:disguise",
-			"trickster:is_editing_scroll",
-			"trickster:pinned_chunks",
-			"trickster:grace",
+            "trickster:disguise",
+            "trickster:is_editing_scroll",
+            "trickster:pinned_chunks",
+            "trickster:grace",
             "trickster:mana_handler",
-			"trickster:player_animation"
-		]
-	},
-	"mixins": [
-		"trickster.mixins.json",
-		{
-			"config": "trickster.client.mixins.json",
-			"environment": "client"
-		}
-	],
-	"depends": {
-		"fabricloader": ">=0.15.0",
-		"minecraft": ">=1.21",
-		"java": ">=21",
-		"fabric-api": "*",
-		"owo": "*",
-		"lavender": "*",
-		"accessories": ">=1.0.0-beta.11",
-		"cicada": ">=0.8.2"
-	},
-	"breaks": {
-		"optifabric": "*"
-	}
+            "trickster:player_animation"
+        ]
+    },
+    "mixins": [
+        "trickster.mixins.json",
+        {
+            "config": "trickster.client.mixins.json",
+            "environment": "client"
+        }
+    ],
+    "depends": {
+        "fabricloader": ">=0.15.0",
+        "minecraft": ">=1.21",
+        "java": ">=21",
+        "fabric-api": "*",
+        "owo": "*",
+        "lavender": "*",
+        "accessories": ">=1.0.0-beta.11",
+        "cicada": ">=0.8.2"
+    },
+    "breaks": {
+        "optifabric": "*"
+    }
 }

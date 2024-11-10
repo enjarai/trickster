@@ -1,8 +1,7 @@
 package dev.enjarai.trickster.render;
 
-import dev.enjarai.trickster.block.MultiSpellCircleBlock;
-import dev.enjarai.trickster.block.SpellCircleBlock;
-import dev.enjarai.trickster.block.SpellCircleBlockEntity;
+import dev.enjarai.trickster.block.SpellConstructBlock;
+import dev.enjarai.trickster.block.SpellConstructBlockEntity;
 import dev.enjarai.trickster.item.component.ModComponents;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
@@ -14,21 +13,21 @@ import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
 import org.joml.Vector3f;
 
-public class SpellCircleBlockEntityRenderer implements BlockEntityRenderer<SpellCircleBlockEntity> {
+public class SpellConstructBlockEntityRenderer implements BlockEntityRenderer<SpellConstructBlockEntity> {
     private final SpellCircleRenderer renderer;
     private final ItemRenderer itemRenderer;
 
-    public SpellCircleBlockEntityRenderer(BlockEntityRendererFactory.Context ctx) {
+    public SpellConstructBlockEntityRenderer(BlockEntityRendererFactory.Context ctx) {
         this.renderer = new SpellCircleRenderer(false, 1);
         this.itemRenderer = ctx.getItemRenderer();
     }
 
     @Override
-    public void render(SpellCircleBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+    public void render(SpellConstructBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         matrices.push();
 
         matrices.translate(0.5f, 0.5f, 0.5f);
-        matrices.multiply(entity.getCachedState().get(MultiSpellCircleBlock.FACING).getRotationQuaternion());
+        matrices.multiply(entity.getCachedState().get(SpellConstructBlock.FACING).getRotationQuaternion());
         matrices.translate(-0.5f, -0.5f, -0.5f);
 
         var knotStack = entity.getStack(0);
@@ -53,7 +52,7 @@ public class SpellCircleBlockEntityRenderer implements BlockEntityRenderer<Spell
 
         matrices.push();
 
-        var facing = entity.getCachedState().get(SpellCircleBlock.FACING);
+        var facing = entity.getCachedState().get(SpellConstructBlock.FACING);
         var offset = 1.0 / 16.0 * 5.0;
         matrices.translate(facing.getOffsetX() * -offset, facing.getOffsetY() * -offset, facing.getOffsetZ() * -offset);
 

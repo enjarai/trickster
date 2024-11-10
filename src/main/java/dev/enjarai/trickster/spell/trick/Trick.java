@@ -46,7 +46,7 @@ public abstract class Trick {
     public abstract Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException;
 
     @SuppressWarnings("unchecked")
-	protected <T extends Fragment> T expectInput(List<Fragment> fragments, FragmentType<T> type, int index) throws BlunderException {
+    protected <T extends Fragment> T expectInput(List<Fragment> fragments, FragmentType<T> type, int index) throws BlunderException {
         if (fragments.size() <= index) {
             throw new MissingFragmentBlunder(this, index, type.getName());
         }
@@ -61,7 +61,7 @@ public abstract class Trick {
     }
 
     @SuppressWarnings("unchecked")
-	protected <T extends Fragment> T expectType(Fragment fragment, FragmentType<T> type) throws BlunderException {
+    protected <T extends Fragment> T expectType(Fragment fragment, FragmentType<T> type) throws BlunderException {
         if (fragment.type() != type) {
             throw new IncorrectFragmentBlunder(this, -1, type.getName(), fragment);
         }
@@ -70,7 +70,7 @@ public abstract class Trick {
     }
 
     @SuppressWarnings("unchecked")
-	protected <T extends Fragment> Optional<T> supposeInput(List<Fragment> fragments, FragmentType<T> type, int index) throws BlunderException {
+    protected <T extends Fragment> Optional<T> supposeInput(List<Fragment> fragments, FragmentType<T> type, int index) throws BlunderException {
         if (fragments.size() <= index) {
             return Optional.empty();
         }
@@ -117,7 +117,7 @@ public abstract class Trick {
     }
 
     @SuppressWarnings("unchecked")
-	protected <T extends Fragment> Optional<T> supposeType(Fragment fragment, FragmentType<T> type) {
+    protected <T extends Fragment> Optional<T> supposeType(Fragment fragment, FragmentType<T> type) {
         if (fragment.type() != type) {
             return Optional.empty();
         }
@@ -126,7 +126,7 @@ public abstract class Trick {
     }
 
     @SuppressWarnings("unchecked")
-	protected <T extends Fragment> T expectInput(List<Fragment> fragments, Class<T> type, int index) throws BlunderException {
+    protected <T extends Fragment> T expectInput(List<Fragment> fragments, Class<T> type, int index) throws BlunderException {
         if (fragments.size() <= index) {
             throw new MissingFragmentBlunder(this, index, Text.of(type.getSimpleName()));
         }
@@ -141,7 +141,7 @@ public abstract class Trick {
     }
 
     @SuppressWarnings("unchecked")
-	protected <T extends Fragment> T expectType(Fragment fragment, Class<T> type, int index) throws BlunderException {
+    protected <T extends Fragment> T expectType(Fragment fragment, Class<T> type, int index) throws BlunderException {
         if (!type.isInstance(fragment)) {
             throw new IncorrectFragmentBlunder(this, index, Text.literal(type.getSimpleName()), fragment);
         }

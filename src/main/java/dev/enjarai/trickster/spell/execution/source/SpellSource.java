@@ -47,6 +47,10 @@ public interface SpellSource {
         return new BlockPos((int) pos.x, (int) pos.y, (int) pos.z);
     }
 
+    default Optional<Vector3d> getFacing() {
+        return Optional.empty();
+    }
+
     <T extends Component> Optional<T> getComponent(ComponentKey<T> key);
 
     float getHealth();

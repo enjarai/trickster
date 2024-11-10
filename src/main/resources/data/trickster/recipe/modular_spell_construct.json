@@ -1,23 +1,23 @@
 {
     "type": "minecraft:crafting_shaped",
     "pattern": [
-        " # ",
-        "ASA",
-        "SSS"
+        " B ",
+        "ATA",
+        "TTT"
     ],
     "key": {
-        "#": {
+        "B": {
             "item": "minecraft:blaze_powder"
         },
         "A": {
             "item": "minecraft:amethyst_shard"
         },
-        "S": {
+        "T": {
             "item": "minecraft:tuff"
         }
     },
     "result": {
-        "id": "trickster:multi_spell_circle",
+        "id": "trickster:modular_spell_construct",
         "count": 1
     }
 }

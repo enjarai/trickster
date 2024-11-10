@@ -42,7 +42,7 @@ public class TickData {
 
     public record Key<T>(Identifier id, @Nullable Class<T> clazz) {
         @SuppressWarnings("unchecked")
-		public Optional<T> get(TickData data) {
+        public Optional<T> get(TickData data) {
             return Optional.ofNullable(data.map.get(this)).map(n -> (T) n);
         }
 

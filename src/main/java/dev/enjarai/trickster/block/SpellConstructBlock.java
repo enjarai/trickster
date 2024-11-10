@@ -34,7 +34,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
-public class SpellCircleBlock extends BlockWithEntity {
+public class SpellConstructBlock extends BlockWithEntity {
     public static final DirectionProperty FACING = Properties.FACING;
     public static final VoxelShape[] SHAPES = new VoxelShape[]{
             createCuboidShape(0, 14, 0, 16, 16, 16),
@@ -45,7 +45,7 @@ public class SpellCircleBlock extends BlockWithEntity {
             createCuboidShape(0, 0, 0, 2, 16, 16)
     };
 
-    protected SpellCircleBlock() {
+    protected SpellConstructBlock() {
         super(AbstractBlock.Settings.create()
                 .strength(1.5F)
                 .sounds(BlockSoundGroup.STONE));
@@ -59,13 +59,13 @@ public class SpellCircleBlock extends BlockWithEntity {
 
     @Override
     protected MapCodec<? extends BlockWithEntity> getCodec() {
-        return MapCodec.unit(ModBlocks.SPELL_CIRCLE);
+        return MapCodec.unit(ModBlocks.SPELL_CONSTRUCT);
     }
 
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new SpellCircleBlockEntity(pos, state);
+        return new SpellConstructBlockEntity(pos, state);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class SpellCircleBlock extends BlockWithEntity {
 
     @Override
     protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (world.getBlockEntity(pos) instanceof SpellCircleBlockEntity blockEntity) {
+        if (world.getBlockEntity(pos) instanceof SpellConstructBlockEntity blockEntity) {
             var slotStack = blockEntity.getStack(0);
 
             if (slotStack.isEmpty() && stack.isIn(ModItems.MANA_CRYSTALS)) {
@@ -101,7 +101,7 @@ public class SpellCircleBlock extends BlockWithEntity {
 
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-        if (world.getBlockEntity(pos) instanceof SpellCircleBlockEntity blockEntity) {
+        if (world.getBlockEntity(pos) instanceof SpellConstructBlockEntity blockEntity) {
             var slotStack = blockEntity.getStack(0);
 
             if (slotStack.isEmpty())
@@ -114,7 +114,7 @@ public class SpellCircleBlock extends BlockWithEntity {
         }
     }
 
-    private static void tryAddCore(World world, BlockPos pos, PlayerEntity player, SpellCircleBlockEntity blockEntity, ItemStack stack, int slot) {
+    private static void tryAddCore(World world, BlockPos pos, PlayerEntity player, SpellConstructBlockEntity blockEntity, ItemStack stack, int slot) {
         if (!world.isClient) {
             player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
             blockEntity.setStack(slot, stack.copyAndEmpty());
@@ -122,7 +122,7 @@ public class SpellCircleBlock extends BlockWithEntity {
         }
     }
 
-    private static void tryRemoveCore(World world, BlockPos pos, PlayerEntity player, SpellCircleBlockEntity blockEntity, int slot) {
+    private static void tryRemoveCore(World world, BlockPos pos, PlayerEntity player, SpellConstructBlockEntity blockEntity, int slot) {
         if (!world.isClient) {
             ItemStack itemStack = blockEntity.removeStack(slot).copyAndEmpty();
             world.playSound(null, pos, SoundEvents.ITEM_BOOK_PUT, SoundCategory.BLOCKS, 1.0F, 0.8F);
@@ -137,7 +137,7 @@ public class SpellCircleBlock extends BlockWithEntity {
     @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
         var blockEntity = world.getBlockEntity(pos);
-        if (blockEntity instanceof SpellCircleBlockEntity circle) {
+        if (blockEntity instanceof SpellConstructBlockEntity circle) {
             SpellCoreComponent.refresh(circle.getComponents(), component -> circle.setComponents(ComponentMap.builder()
                     .addAll(circle.getComponents()).add(ModComponents.SPELL_CORE, component).build()));
             circle.markDirty();
@@ -150,7 +150,7 @@ public class SpellCircleBlock extends BlockWithEntity {
     protected void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
         if (!state.isOf(newState.getBlock())) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof SpellCircleBlockEntity spellCircle && !spellCircle.isEmpty()) {
+            if (blockEntity instanceof SpellConstructBlockEntity spellCircle && !spellCircle.isEmpty()) {
                 //TODO: unneeded for loop, please clean it up eventually
                 // Eh, i think we can keep it just in case, lest we forgert
                 for (int i = 0; i < spellCircle.size(); ++i) {
@@ -175,6 +175,6 @@ public class SpellCircleBlock extends BlockWithEntity {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return validateTicker(type, ModBlocks.SPELL_CIRCLE_ENTITY, (world1, pos, state1, blockEntity) -> blockEntity.tick());
+        return validateTicker(type, ModBlocks.SPELL_CONSTRUCT_ENTITY, (world1, pos, state1, blockEntity) -> blockEntity.tick());
     }
 }

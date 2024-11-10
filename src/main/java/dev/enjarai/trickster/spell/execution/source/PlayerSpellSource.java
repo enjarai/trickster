@@ -115,6 +115,11 @@ public class PlayerSpellSource implements SpellSource {
     }
 
     @Override
+    public Optional<Vector3d> getFacing() {
+        return Optional.of(player.getRotationVector().toVector3d());
+    }
+
+    @Override
     public ServerWorld getWorld() {
         return player.getServerWorld();
     }

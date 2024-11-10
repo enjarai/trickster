@@ -115,9 +115,6 @@ trickster:
     block_find_entity: Embracing Ingress
     range_find_entity: Ingress of Shared Fate
 
-    create_spell_circle: Sisyphus Ploy
-    delete_spell_circle: Ploy of the Bigger Boulder
-
     execute: Grand Stratagem
     execute_same_scope: Quiet Distortion
     fork: Utensil Stratagem
@@ -295,8 +292,8 @@ item.trickster:
 
 block.trickster:
   spell_resonator: Spell Resonator
-  spell_circle: Spell Construct
-  multi_spell_circle: Modular Spell Construct
+  spell_construct: Spell Construct
+  modular_spell_construct: Modular Spell Construct
   light: Light
   scroll_shelf: Scroll Shelf
 

@@ -13,12 +13,12 @@ import dev.enjarai.trickster.spell.trick.Trick;
 import net.minecraft.item.ItemStack;
 
 public abstract class AbstractConduitTrick extends Trick {
-	public AbstractConduitTrick(Pattern pattern) {
-		super(pattern);
-	}
+    public AbstractConduitTrick(Pattern pattern) {
+        super(pattern);
+    }
 
-	@Override
-	public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    @Override
+    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var limit = expectInput(fragments, FragmentType.NUMBER, 0).number();
         float result = 0;
 
@@ -28,7 +28,7 @@ public abstract class AbstractConduitTrick extends Trick {
         }
 
         return new NumberFragment(result);
-	}
+    }
 
     /**
      * @return the amount of mana fulfilled by the item.

@@ -42,16 +42,16 @@ public class TricksterClient implements ClientModInitializer {
             MinecraftClient.getInstance().setScreen(new SignScrollScreen(text, hand));
         };
 
-		FleckRenderer.register();
-		FragmentRenderer.register();
+        FleckRenderer.register();
+        FragmentRenderer.register();
 
         ModHandledScreens.register();
         ModKeyBindings.register();
         ModClientNetworking.register();
 
-        BlockEntityRendererFactories.register(ModBlocks.SPELL_CIRCLE_ENTITY, SpellCircleBlockEntityRenderer::new);
+        BlockEntityRendererFactories.register(ModBlocks.SPELL_CONSTRUCT_ENTITY, SpellConstructBlockEntityRenderer::new);
+        BlockEntityRendererFactories.register(ModBlocks.MODULAR_SPELL_CONSTRUCT_ENTITY, ModularSpellConstructBlockEntityRenderer::new);
         BlockEntityRendererFactories.register(ModBlocks.SCROLL_SHELF_ENTITY, ScrollShelfBlockEntityRenderer::new);
-        BlockEntityRendererFactories.register(ModBlocks.MULTI_SPELL_CIRCLE_BLOCK_ENTITY, MultiSpellCircleBlockEntityRenderer::new);
 
         UIParsing.registerFactory(Trickster.id("glyph"), GlyphComponent::parseTrick);
         UIParsing.registerFactory(Trickster.id("pattern"), GlyphComponent::parseList);
@@ -61,10 +61,10 @@ public class TricksterClient implements ClientModInitializer {
         ParticleFactoryRegistry.getInstance().register(ModParticles.PROTECTED_BLOCK, ProtectedBlockParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(ModParticles.SPELL, SpellParticle.Factory::new);
 
-		AccessoriesRendererRegistry.registerRenderer(ModItems.TOP_HAT, HoldableHatRenderer::new);
-		AccessoriesRendererRegistry.registerRenderer(ModItems.WITCH_HAT, HoldableHatRenderer::new);
-		AccessoriesRendererRegistry.registerRenderer(ModItems.FEZ, HoldableHatRenderer::new);
-		AccessoriesRendererRegistry.registerNoRenderer(ModItems.MACRO_RING);
+        AccessoriesRendererRegistry.registerRenderer(ModItems.TOP_HAT, HoldableHatRenderer::new);
+        AccessoriesRendererRegistry.registerRenderer(ModItems.WITCH_HAT, HoldableHatRenderer::new);
+        AccessoriesRendererRegistry.registerRenderer(ModItems.FEZ, HoldableHatRenderer::new);
+        AccessoriesRendererRegistry.registerNoRenderer(ModItems.MACRO_RING);
 
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.SPELL_RESONATOR, RenderLayer.getCutout());
 
@@ -87,6 +87,6 @@ public class TricksterClient implements ClientModInitializer {
         HudRenderCallback.EVENT.register(CircleErrorRenderer::render);
 
         EntityModelLayerRegistry.registerModelLayer(ScrollShelfBlockEntityRenderer.MODEL_LAYER, ScrollShelfBlockEntityRenderer::getTexturedModelData);
-        EntityModelLayerRegistry.registerModelLayer(MultiSpellCircleBlockEntityRenderer.MODEL_LAYER, MultiSpellCircleBlockEntityRenderer::getTexturedModelData);
+        EntityModelLayerRegistry.registerModelLayer(ModularSpellConstructBlockEntityRenderer.MODEL_LAYER, ModularSpellConstructBlockEntityRenderer::getTexturedModelData);
     }
 }

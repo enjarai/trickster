@@ -27,7 +27,7 @@ import java.util.Optional;
 
 import org.jetbrains.annotations.Nullable;
 
-public class SpellCircleBlockEntity extends BlockEntity implements SpellColoredBlockEntity, Inventory, CrowMind {
+public class SpellConstructBlockEntity extends BlockEntity implements SpellColoredBlockEntity, Inventory, CrowMind {
     public static final KeyedEndec<Fragment> CROW_MIND_ENDEC =
             Fragment.ENDEC.keyed("crow_mind", () -> VoidFragment.INSTANCE);
 
@@ -37,8 +37,8 @@ public class SpellCircleBlockEntity extends BlockEntity implements SpellColoredB
 
     private ItemStack stack = ItemStack.EMPTY;
 
-    public SpellCircleBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlocks.SPELL_CIRCLE_ENTITY, pos, state);
+    public SpellConstructBlockEntity(BlockPos pos, BlockState state) {
+        super(ModBlocks.SPELL_CONSTRUCT_ENTITY, pos, state);
     }
 
     @Override
@@ -176,16 +176,16 @@ public class SpellCircleBlockEntity extends BlockEntity implements SpellColoredB
         return 1;
     }
 
-	@Override
-	public void setCrowMind(Fragment fragment) {
+    @Override
+    public void setCrowMind(Fragment fragment) {
         crowMind = fragment;
         markDirty();
     }
 
-	@Override
-	public Fragment getCrowMind() {
+    @Override
+    public Fragment getCrowMind() {
         return crowMind;
-	}
+    }
 
     @Override
     public void markDirty() {

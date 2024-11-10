@@ -39,13 +39,13 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
-public class MultiSpellCircleBlockEntity extends BlockEntity implements Inventory, CrowMind, SpellExecutionManager {
+public class ModularSpellConstructBlockEntity extends BlockEntity implements Inventory, CrowMind, SpellExecutionManager {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(5, ItemStack.EMPTY);
     private Fragment crowMind = VoidFragment.INSTANCE;
     public int age;
 
-    public MultiSpellCircleBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlocks.MULTI_SPELL_CIRCLE_BLOCK_ENTITY, pos, state);
+    public ModularSpellConstructBlockEntity(BlockPos pos, BlockState state) {
+        super(ModBlocks.MODULAR_SPELL_CONSTRUCT_ENTITY, pos, state);
     }
     
     @Override
@@ -99,7 +99,7 @@ public class MultiSpellCircleBlockEntity extends BlockEntity implements Inventor
                             .toCenterPos()
                             .add(
                                 new Vec3d(getCachedState()
-                                    .get(MultiSpellCircleBlock.FACING)
+                                    .get(ModularSpellConstructBlock.FACING)
                                     .getUnitVector()
                                     .mul(0.3f, new Vector3f()))
                             ),
@@ -214,19 +214,19 @@ public class MultiSpellCircleBlockEntity extends BlockEntity implements Inventor
         componentMapBuilder.add(DataComponentTypes.CONTAINER, ContainerComponent.fromStacks(this.inventory));
     }
 
-	@Override
-	public void setCrowMind(Fragment fragment) {
+    @Override
+    public void setCrowMind(Fragment fragment) {
         crowMind = fragment;
         markDirty();
     }
 
-	@Override
-	public Fragment getCrowMind() {
+    @Override
+    public Fragment getCrowMind() {
         return crowMind;
-	}
+    }
 
-	@Override
-	public int queue(SpellExecutor executor) {
+    @Override
+    public int queue(SpellExecutor executor) {
         for (int i = 0; i < inventory.size(); i++) {
             var stack = inventory.get(i);
 
@@ -239,18 +239,18 @@ public class MultiSpellCircleBlockEntity extends BlockEntity implements Inventor
         }
 
         return -1;
-	}
+    }
 
-	@Override
-	public void killAll() {
+    @Override
+    public void killAll() {
         for (var stack : inventory) {
             if (stack.contains(ModComponents.SPELL_CORE))
                 stack.remove(ModComponents.SPELL_CORE);
         }
-	}
+    }
 
-	@Override
-	public boolean kill(int index) {
+    @Override
+    public boolean kill(int index) {
         var slot = index > 1 ? index + 1 : index; // accounting for the battery slot
         var stack = getStack(slot);
 
@@ -260,5 +260,5 @@ public class MultiSpellCircleBlockEntity extends BlockEntity implements Inventor
         }
 
         return false;
-	}
+    }
 }

@@ -1,8 +1,8 @@
 package dev.enjarai.trickster.render;
 
 import dev.enjarai.trickster.Trickster;
-import dev.enjarai.trickster.block.MultiSpellCircleBlock;
-import dev.enjarai.trickster.block.MultiSpellCircleBlockEntity;
+import dev.enjarai.trickster.block.ModularSpellConstructBlock;
+import dev.enjarai.trickster.block.ModularSpellConstructBlockEntity;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.SpellCoreComponent;
 import dev.enjarai.trickster.spell.execution.executor.ErroredSpellExecutor;
@@ -22,9 +22,9 @@ import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
 import org.joml.Vector3f;
 
-public class MultiSpellCircleBlockEntityRenderer implements BlockEntityRenderer<MultiSpellCircleBlockEntity> {
-    public static final EntityModelLayer MODEL_LAYER = new EntityModelLayer(Trickster.id("spell_core"), "spell_core");
-    public static final Identifier ATLAS_ID = Trickster.id("textures/atlas/spell_core.png");
+public class ModularSpellConstructBlockEntityRenderer implements BlockEntityRenderer<ModularSpellConstructBlockEntity> {
+    public static final EntityModelLayer MODEL_LAYER = new EntityModelLayer(Trickster.id("modular_spell_construct"), "modular_spell_construct");
+    public static final Identifier ATLAS_ID = Trickster.id("textures/atlas/modular_spell_construct.png");
 
     private final ModelPart[] coreModels = new ModelPart[4];
 
@@ -45,7 +45,7 @@ public class MultiSpellCircleBlockEntityRenderer implements BlockEntityRenderer<
         return TexturedModelData.of(modelData, 16, 16);
     }
 
-    public MultiSpellCircleBlockEntityRenderer(BlockEntityRendererFactory.Context ctx) {
+    public ModularSpellConstructBlockEntityRenderer(BlockEntityRendererFactory.Context ctx) {
         renderer = new SpellCircleRenderer(false, 1);
         itemRenderer = ctx.getItemRenderer();
         var model = ctx.getLayerModelPart(MODEL_LAYER);
@@ -55,8 +55,8 @@ public class MultiSpellCircleBlockEntityRenderer implements BlockEntityRenderer<
     }
 
     @Override
-    public void render(MultiSpellCircleBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-        var facing = entity.getCachedState().get(MultiSpellCircleBlock.FACING);
+    public void render(ModularSpellConstructBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+        var facing = entity.getCachedState().get(ModularSpellConstructBlock.FACING);
 
         matrices.push();
 
@@ -90,7 +90,7 @@ public class MultiSpellCircleBlockEntityRenderer implements BlockEntityRenderer<
 
             var coreStack = entity.getStack(i);
             if (!coreStack.isEmpty()) {
-                var textureId = Registries.ITEM.getId(coreStack.getItem()).withPrefixedPath("entity/spell_core/");
+                var textureId = Registries.ITEM.getId(coreStack.getItem()).withPrefixedPath("entity/modular_spell_construct/");
                 var spriteId = new SpriteIdentifier(ATLAS_ID, textureId);
                 var vertexConsumer = spriteId.getVertexConsumer(vertexConsumers, RenderLayer::getEntityCutout);
                 coreModels[j].render(matrices, vertexConsumer, light, overlay);

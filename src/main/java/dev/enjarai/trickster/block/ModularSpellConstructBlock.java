@@ -34,7 +34,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public class MultiSpellCircleBlock extends BlockWithEntity {
+public class ModularSpellConstructBlock extends BlockWithEntity {
     public static final int GRID_WIDTH = 3;
     public static final int GRID_HEIGHT = 3;
 
@@ -73,7 +73,7 @@ public class MultiSpellCircleBlock extends BlockWithEntity {
             )
     };
 
-    protected MultiSpellCircleBlock() {
+    protected ModularSpellConstructBlock() {
         super(AbstractBlock.Settings.create()
                 .strength(1.5F)
                 .sounds(BlockSoundGroup.STONE));
@@ -127,7 +127,7 @@ public class MultiSpellCircleBlock extends BlockWithEntity {
 
     @Override
     protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (world.getBlockEntity(pos) instanceof MultiSpellCircleBlockEntity blockEntity) {
+        if (world.getBlockEntity(pos) instanceof ModularSpellConstructBlockEntity blockEntity) {
             var slot = getSlotForHitPos(hit, state);
             return slot.map(s -> {
                 var slotStack = blockEntity.getStack(s);
@@ -146,7 +146,7 @@ public class MultiSpellCircleBlock extends BlockWithEntity {
 
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-        if (world.getBlockEntity(pos) instanceof MultiSpellCircleBlockEntity blockEntity) {
+        if (world.getBlockEntity(pos) instanceof ModularSpellConstructBlockEntity blockEntity) {
             var slot = getSlotForHitPos(hit, state);
             return slot.map(s -> {
                 var slotStack = blockEntity.getStack(s);
@@ -162,7 +162,7 @@ public class MultiSpellCircleBlock extends BlockWithEntity {
         }
     }
 
-    private static void tryAddCore(World world, BlockPos pos, PlayerEntity player, MultiSpellCircleBlockEntity blockEntity, ItemStack stack, int slot) {
+    private static void tryAddCore(World world, BlockPos pos, PlayerEntity player, ModularSpellConstructBlockEntity blockEntity, ItemStack stack, int slot) {
         if (!world.isClient) {
             player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
             blockEntity.setStack(slot, stack.copyAndEmpty());
@@ -170,7 +170,7 @@ public class MultiSpellCircleBlock extends BlockWithEntity {
         }
     }
 
-    private static void tryRemoveCore(World world, BlockPos pos, PlayerEntity player, MultiSpellCircleBlockEntity blockEntity, int slot) {
+    private static void tryRemoveCore(World world, BlockPos pos, PlayerEntity player, ModularSpellConstructBlockEntity blockEntity, int slot) {
         if (!world.isClient) {
             ItemStack itemStack = blockEntity.removeStack(slot).copyAndEmpty();
             world.playSound(null, pos, SoundEvents.ITEM_BOOK_PUT, SoundCategory.BLOCKS, 1.0F, 0.8F);
@@ -194,20 +194,20 @@ public class MultiSpellCircleBlock extends BlockWithEntity {
 
     @Override
     protected MapCodec<? extends BlockWithEntity> getCodec() {
-        return MapCodec.unit(ModBlocks.MULTI_SPELL_CIRCLE);
+        return MapCodec.unit(ModBlocks.MODULAR_SPELL_CONSTRUCT);
     }
 
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new MultiSpellCircleBlockEntity(pos, state);
+        return new ModularSpellConstructBlockEntity(pos, state);
     }
 
     @Override
     protected void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
         if (!state.isOf(newState.getBlock())) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof MultiSpellCircleBlockEntity circleEntity && !circleEntity.isEmpty()) {
+            if (blockEntity instanceof ModularSpellConstructBlockEntity circleEntity && !circleEntity.isEmpty()) {
                 for (int i = 0; i < circleEntity.size(); ++i) {
                     ItemStack itemStack = circleEntity.removeStack(i);
                     if (!itemStack.isEmpty()) {
@@ -254,6 +254,6 @@ public class MultiSpellCircleBlock extends BlockWithEntity {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return validateTicker(type, ModBlocks.MULTI_SPELL_CIRCLE_BLOCK_ENTITY, (world1, pos, state1, blockEntity) -> blockEntity.tick());
+        return validateTicker(type, ModBlocks.MODULAR_SPELL_CONSTRUCT_ENTITY, (world1, pos, state1, blockEntity) -> blockEntity.tick());
     }
 }

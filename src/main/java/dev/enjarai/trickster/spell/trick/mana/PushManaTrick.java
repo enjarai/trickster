@@ -6,13 +6,13 @@ import dev.enjarai.trickster.spell.SpellContext;
 import net.minecraft.item.ItemStack;
 
 public class PushManaTrick extends AbstractConduitTrick {
-	public PushManaTrick() {
-		super(Pattern.of(7, 8, 4, 6, 7, 5, 4, 3, 7, 2, 1, 0, 7, 4, 1));
-	}
+    public PushManaTrick() {
+        super(Pattern.of(7, 8, 4, 6, 7, 5, 4, 3, 7, 2, 1, 0, 7, 4, 1));
+    }
 
     @Override
-	protected float affect(SpellContext ctx, ItemStack stack, float limit) {
-		var comp = stack.get(ModComponents.MANA);
+    protected float affect(SpellContext ctx, ItemStack stack, float limit) {
+        var comp = stack.get(ModComponents.MANA);
 
         if (comp == null || !comp.rechargeable())
             return 0;
@@ -24,5 +24,5 @@ public class PushManaTrick extends AbstractConduitTrick {
         stack.set(ModComponents.MANA, comp.with(target));
         self.refill(leftover);
         return result - leftover;
-	}
+    }
 }

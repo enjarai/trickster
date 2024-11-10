@@ -1,6 +1,6 @@
 package dev.enjarai.trickster.render;
 
-import dev.enjarai.trickster.block.SpellCircleBlockEntity;
+import dev.enjarai.trickster.block.SpellConstructBlockEntity;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.SpellCoreComponent;
 import dev.enjarai.trickster.spell.execution.executor.ErroredSpellExecutor;
@@ -13,8 +13,9 @@ public class CircleErrorRenderer {
     public static void render(DrawContext context, RenderTickCounter tickCounter) {
         var client = MinecraftClient.getInstance();
 
+        //TODO: support modular spell constructs
         if (client.crosshairTarget instanceof BlockHitResult hitResult &&
-                client.world.getBlockEntity(hitResult.getBlockPos()) instanceof SpellCircleBlockEntity blockEntity &&
+                client.world.getBlockEntity(hitResult.getBlockPos()) instanceof SpellConstructBlockEntity blockEntity &&
                 blockEntity.getComponents().get(ModComponents.SPELL_CORE) instanceof SpellCoreComponent component &&
                 component.executor() instanceof ErroredSpellExecutor executor) {
             context.drawText(

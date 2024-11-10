@@ -1,22 +1,22 @@
 {
     "type": "minecraft:crafting_shaped",
     "pattern": [
-        " # ",
-        "SCS"
+        " B ",
+        "TST"
     ],
     "key": {
-        "#": {
+        "B": {
             "item": "minecraft:blaze_powder"
         },
-        "C": {
+        "S": {
             "item": "trickster:spell_core"
         },
-        "S": {
+        "T": {
             "item": "minecraft:tuff"
         }
     },
     "result": {
-        "id": "trickster:spell_circle",
+        "id": "trickster:spell_construct",
         "count": 1
     }
 }

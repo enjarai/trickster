@@ -1,32 +1,32 @@
 {
   "variants": {
     "facing=down": {
-      "model": "trickster:block/multi_spell_circle",
+      "model": "trickster:block/modular_spell_construct",
       "x": 180,
       "y": 0
     },
     "facing=east": {
-      "model": "trickster:block/multi_spell_circle",
+      "model": "trickster:block/modular_spell_construct",
       "x": 90,
       "y": 90
     },
     "facing=north": {
-      "model": "trickster:block/multi_spell_circle",
+      "model": "trickster:block/modular_spell_construct",
       "x": 90,
       "y": 0
     },
     "facing=south": {
-      "model": "trickster:block/multi_spell_circle",
+      "model": "trickster:block/modular_spell_construct",
       "x": 90,
       "y": 180
     },
     "facing=up": {
-      "model": "trickster:block/multi_spell_circle",
+      "model": "trickster:block/modular_spell_construct",
       "x": 0,
       "y": 0
     },
     "facing=west": {
-      "model": "trickster:block/multi_spell_circle",
+      "model": "trickster:block/modular_spell_construct",
       "x": 90,
       "y": 270
     }

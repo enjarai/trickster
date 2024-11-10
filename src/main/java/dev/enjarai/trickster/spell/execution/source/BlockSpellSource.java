@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.spell.execution.source;
 
+import dev.enjarai.trickster.block.SpellConstructBlock;
 import dev.enjarai.trickster.spell.CrowMind;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.execution.SpellExecutionManager;
@@ -12,7 +13,10 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+
 import org.joml.Vector3d;
 import org.ladysnake.cca.api.v3.component.Component;
 import org.ladysnake.cca.api.v3.component.ComponentKey;
@@ -61,6 +65,11 @@ public class BlockSpellSource<T extends BlockEntity & Inventory & CrowMind> impl
     @Override
     public BlockPos getBlockPos() {
         return pos;
+    }
+
+    @Override
+    public Optional<Vector3d> getFacing() {
+        return blockEntity.getCachedState().getOrEmpty(Properties.FACING).map(Direction::getUnitVector).map(v -> v.get(new Vector3d()));
     }
 
     @Override

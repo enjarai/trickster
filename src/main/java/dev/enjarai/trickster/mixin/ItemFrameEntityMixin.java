@@ -12,9 +12,9 @@ import net.minecraft.world.World;
 
 @Mixin(ItemFrameEntity.class)
 public abstract class ItemFrameEntityMixin extends AbstractDecorationEntity implements SlotHolderDuck {
-	public ItemFrameEntityMixin(EntityType<? extends AbstractDecorationEntity> entityType, World world) {
-		super(entityType, world);
-	}
+    public ItemFrameEntityMixin(EntityType<? extends AbstractDecorationEntity> entityType, World world) {
+        super(entityType, world);
+    }
 
     @Shadow
     public abstract ItemStack getHeldItemStack();

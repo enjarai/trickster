@@ -1,10 +1,10 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "trickster:block/multi_spell_circle_side",
-		"1": "trickster:block/multi_spell_circle_bottom",
-		"2": "trickster:block/multi_spell_circle_top",
-		"particle": "trickster:block/multi_spell_circle_side"
+		"0": "trickster:block/modular_spell_construct_side",
+		"1": "trickster:block/modular_spell_construct_bottom",
+		"2": "trickster:block/modular_spell_construct_top",
+		"particle": "trickster:block/modular_spell_construct_side"
 	},
 	"elements": [
 		{

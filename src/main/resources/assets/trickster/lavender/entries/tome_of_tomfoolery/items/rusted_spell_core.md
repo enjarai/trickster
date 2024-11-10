@@ -10,8 +10,5 @@
 }
 ```
 
-WIP
-
-;;;;;
-
-<recipe;trickster:spell_resonator>
+Old and worn, these [Spell Cores](^trickster:items/spell_core) are found in abandoned chests throughout the Overworld. 
+Unlike others, they are forged of metal and have begun to rust. It is highly inadvisable to utilize them without great caution.

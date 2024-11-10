@@ -86,8 +86,8 @@ public record ListFragment(List<Fragment> fragments) implements FoldableFragment
         return sanitizedAddress;
     }
 
-	@Override
-	public SpellExecutor fold(SpellContext ctx, SpellPart executable, Fragment identity) {
+    @Override
+    public SpellExecutor fold(SpellContext ctx, SpellPart executable, Fragment identity) {
         return new ListFoldingSpellExecutor(ctx, executable, this, identity);
-	}
+    }
 }
