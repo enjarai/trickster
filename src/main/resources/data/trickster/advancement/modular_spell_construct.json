@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "id": "trickster:multi_spell_circle"
+      "id": "trickster:modular_spell_construct"
     },
     "title": {
       "text": "Multithreading"
@@ -18,7 +18,7 @@
     "craft_spell_circle": {
       "trigger": "minecraft:recipe_crafted",
       "conditions": {
-        "recipe_id": "trickster:multi_spell_circle"
+        "recipe_id": "trickster:modular_spell_construct"
       }
     }
   }
