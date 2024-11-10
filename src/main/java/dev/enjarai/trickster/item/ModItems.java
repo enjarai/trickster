@@ -56,7 +56,6 @@ public class ModItems {
                             .nutrition(0)
                             .saturationModifier(0)
                             .alwaysEdible()
-                            .snack() // 0.8F instead of 1.0F
                             .usingConvertsTo(Items.GLASS_BOTTLE)
                             .statusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 60 * 20), 1)
                             .statusEffect(new StatusEffectInstance(StatusEffects.POISON, 60 * 20), 1)
