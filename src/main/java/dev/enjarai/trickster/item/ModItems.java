@@ -5,6 +5,7 @@ import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.block.ModBlocks;
 import dev.enjarai.trickster.item.component.*;
 import dev.enjarai.trickster.spell.SpellPart;
+import dev.enjarai.trickster.effects.ModEffects;
 import io.wispforest.lavender.book.LavenderBookItem;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.block.Block;
@@ -21,7 +22,6 @@ import net.minecraft.util.DyeColor;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 public class ModItems {
     public static final LavenderBookItem TOME_OF_TOMFOOLERY = LavenderBookItem.registerForBook(
@@ -52,15 +52,17 @@ public class ModItems {
             new Item(new Item.Settings().maxCount(1)));
     public static final SpellInkItem SPELL_INK = register("spell_ink",
             new SpellInkItem(new Item.Settings().recipeRemainder(Items.GLASS_BOTTLE)
-                    .food(new FoodComponent(0,
-                            0,
-                            true,
-                            1,
-                            Optional.of(Items.GLASS_BOTTLE.getDefaultStack()),
-                            List.of(new FoodComponent.StatusEffectEntry(new StatusEffectInstance(StatusEffects.NAUSEA, 60 * 20), 1),
-                                    new FoodComponent.StatusEffectEntry(new StatusEffectInstance(StatusEffects.POISON, 60 * 20), 1),
-                                    new FoodComponent.StatusEffectEntry(new StatusEffectInstance(StatusEffects.GLOWING, 60 * 20), 1),
-                                    new FoodComponent.StatusEffectEntry(new StatusEffectInstance(StatusEffects.BLINDNESS, 60 * 20), 1))))));
+                    .food(new FoodComponent.Builder()
+                            .nutrition(0)
+                            .saturationModifier(0)
+                            .alwaysEdible()
+                            .usingConvertsTo(Items.GLASS_BOTTLE)
+                            .statusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 60 * 20), 1)
+                            .statusEffect(new StatusEffectInstance(StatusEffects.POISON, 60 * 20), 1)
+                            .statusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 60 * 20), 1)
+                            .statusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 60 * 20), 1)
+                            .statusEffect(new StatusEffectInstance(ModEffects.MANA_BOOST, 60 * 20), 1)
+                            .build())));
     public static final SpellCoreItem SPELL_CORE = register("spell_core", new SpellCoreItem());
     public static final RustedSpellCoreItem RUSTED_SPELL_CORE = register("rusted_spell_core", new RustedSpellCoreItem());
     public static final OminousSpellCoreItem OMINOUS_SPELL_CORE = register("ominous_spell_core", new OminousSpellCoreItem());
