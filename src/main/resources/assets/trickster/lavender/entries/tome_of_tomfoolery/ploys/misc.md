@@ -25,7 +25,7 @@ Returns the delay.
 
 vector -> vector
 
-<|cost-rule@trickster:templates|formula=32kG|>
+<|cost-rule@trickster:templates|formula=4kG|>
 
 Fully loads the chunk containing the given position for exactly 4 seconds.
 
