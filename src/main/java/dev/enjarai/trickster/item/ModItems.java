@@ -68,12 +68,13 @@ public class ModItems {
     public static final BlockItem SPELL_CONSTRUCT_ITEM = register("spell_construct", new BlockItem(ModBlocks.SPELL_CONSTRUCT, new Item.Settings()));
     public static final BlockItem MODULAR_SPELL_CONSTRUCT_ITEM = register("modular_spell_construct", new BlockItem(ModBlocks.MODULAR_SPELL_CONSTRUCT, new Item.Settings()));
     public static final BlockItem SCROLL_SHELF_BLOCK_ITEM = register("scroll_shelf", new BlockItem(ModBlocks.SCROLL_SHELF, new Item.Settings()));
-    public static final ManaCrystalItem.Amethyst AMETHYST_MANA_CRYSTAL = register("amethyst_mana_crystal", new ManaCrystalItem.Amethyst());
-    public static final ManaCrystalItem.Emerald EMERALD_MANA_CRYSTAL = register("emerald_mana_crystal", new ManaCrystalItem.Emerald());
-    public static final ManaCrystalItem.Diamond DIAMOND_MANA_CRYSTAL = register("diamond_mana_crystal", new ManaCrystalItem.Diamond());
-    public static final ManaCrystalItem.Echo ECHO_MANA_CRYSTAL = register("echo_mana_crystal", new ManaCrystalItem.Echo());
+    public static final KnotItem.Amethyst AMETHYST_KNOT = register("amethyst_knot", new KnotItem.Amethyst());
+    public static final KnotItem.Emerald EMERALD_KNOT = register("emerald_knot", new KnotItem.Emerald());
+    public static final KnotItem.Diamond DIAMOND_KNOT = register("diamond_knot", new KnotItem.Diamond());
+    public static final KnotItem.Echo ECHO_KNOT = register("echo_knot", new KnotItem.Echo());
+    public static final KnotItem.CrackedEcho CRACKED_ECHO_KNOT = register("cracked_echo_knot", new KnotItem.CrackedEcho());
 
-    // Advancement icons
+    // Advancement icon
     public static final Item NAN = register("nan", new Item(new Item.Settings()));
 
     public static final TagKey<Item> CAN_EVALUATE_DYNAMICALLY = TagKey.of(RegistryKeys.ITEM, Trickster.id("can_evaluate_dynamically"));
@@ -135,10 +136,10 @@ public class ModItems {
                 entries.add(SPELL_CORE);
                 entries.add(RUSTED_SPELL_CORE);
                 entries.add(OMINOUS_SPELL_CORE);
-                entries.add(AMETHYST_MANA_CRYSTAL);
-                entries.add(EMERALD_MANA_CRYSTAL);
-                entries.add(DIAMOND_MANA_CRYSTAL);
-                entries.add(ECHO_MANA_CRYSTAL);
+                entries.add(AMETHYST_KNOT);
+                entries.add(EMERALD_KNOT);
+                entries.add(DIAMOND_KNOT);
+                entries.add(ECHO_KNOT);
             })
             .build();
 

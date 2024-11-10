@@ -64,15 +64,27 @@ public class ModModelGenerator extends FabricModelProvider {
 
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
-        itemModelGenerator.register(ModItems.SPELL_RESONATOR_ITEM, Models.GENERATED);
-        itemModelGenerator.register(ModItems.AMETHYST_MANA_CRYSTAL, Models.GENERATED);
-        itemModelGenerator.register(ModItems.EMERALD_MANA_CRYSTAL, Models.GENERATED);
-        itemModelGenerator.register(ModItems.DIAMOND_MANA_CRYSTAL, Models.GENERATED);
-        itemModelGenerator.register(ModItems.ECHO_MANA_CRYSTAL, Models.GENERATED);
+        itemModelGenerator.register(ModItems.WAND, Models.HANDHELD);
+
+        itemModelGenerator.register(ModItems.AMETHYST_KNOT, Models.GENERATED);
+        itemModelGenerator.register(ModItems.EMERALD_KNOT, Models.GENERATED);
+        itemModelGenerator.register(ModItems.DIAMOND_KNOT, Models.GENERATED);
+        itemModelGenerator.register(ModItems.ECHO_KNOT, Models.GENERATED);
+
         itemModelGenerator.register(ModItems.SPELL_CORE, Models.GENERATED);
         itemModelGenerator.register(ModItems.RUSTED_SPELL_CORE, Models.GENERATED);
         itemModelGenerator.register(ModItems.OMINOUS_SPELL_CORE, Models.GENERATED);
 
+        itemModelGenerator.register(ModItems.SCROLL_AND_QUILL, Models.GENERATED);
+        itemModelGenerator.register(ModItems.WRITTEN_SCROLL, Models.GENERATED);
+
+        itemModelGenerator.register(ModItems.TOME_OF_TOMFOOLERY, Models.GENERATED);
+        itemModelGenerator.register(ModItems.WARDING_CHARM, Models.GENERATED);
+        itemModelGenerator.register(ModItems.MACRO_RING, Models.GENERATED);
+        itemModelGenerator.register(ModItems.SPELL_INK, Models.GENERATED);
+        itemModelGenerator.register(ModItems.SPELL_RESONATOR_ITEM, Models.GENERATED);
+
+        // For the NaN advancement
         itemModelGenerator.register(ModItems.NAN, Models.GENERATED);
 
         ModItems.DYED_VARIANTS.forEach(v -> {

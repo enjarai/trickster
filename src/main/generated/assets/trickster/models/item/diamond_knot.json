@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "trickster:item/amethyst_mana_crystal"
+    "layer0": "trickster:item/diamond_knot"
   }
 }

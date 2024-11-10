@@ -22,7 +22,7 @@ since one Gandalf by itself is a very small amount.
 
 
 Mana can be persistently stored in Knots, like the one below:
-<|item-spotlight@lavender:book_components|item=trickster:amethyst_mana_crystal|>
+<|item-spotlight@lavender:book_components|item=trickster:amethyst_knot|>
 
 ;;;;;
 
@@ -38,7 +38,7 @@ or when in a pinch.
 
 ;;;;;
 
-<|item-spotlight@lavender:book_components|item=trickster:emerald_mana_crystal|>Most Knots, though, can be refilled by simply exposing them to the night sky.
+<|item-spotlight@lavender:book_components|item=trickster:emerald_knot|>Most Knots, though, can be refilled by simply exposing them to the night sky.
 They will charge most quickly at or near full or new moons, but not at all on some days in between.
 
 
@@ -53,7 +53,7 @@ Ticks being the smallest unit of meaningful time, at 1/20th of a second.
 
 
 As such, a spell drawing 50 M would consume 1 kiloGandalf per second.
-<|item-spotlight@lavender:book_components|item=trickster:diamond_mana_crystal|>
+<|item-spotlight@lavender:book_components|item=trickster:diamond_knot|>
 
 ;;;;;
 

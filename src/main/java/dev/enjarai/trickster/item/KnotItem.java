@@ -16,17 +16,17 @@ import net.minecraft.util.math.MathHelper;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-public abstract class ManaCrystalItem extends Item {
+public abstract class KnotItem extends Item {
     public static BiConsumer<ItemStack, List<Text>> merlinTooltipAppender;
 
     private final float creationCost;
 
-    public ManaCrystalItem(Settings settings, float creationCost) {
+    public KnotItem(Settings settings, float creationCost) {
         super(settings.maxCount(1));
         this.creationCost = creationCost;
     }
 
-    public static class Amethyst extends ManaCrystalItem {
+    public static class Amethyst extends KnotItem {
         public Amethyst() {
             super(new Settings()
                     .component(ModComponents.MANA, new ManaComponent(SimpleManaPool.getSingleUse(128), 0, false)),
@@ -34,7 +34,7 @@ public abstract class ManaCrystalItem extends Item {
         }
     }
 
-    public static class Emerald extends ManaCrystalItem {
+    public static class Emerald extends KnotItem {
         public Emerald() {
             super(new Settings()
                     .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(1024), 1 / 12f)),
@@ -42,7 +42,7 @@ public abstract class ManaCrystalItem extends Item {
         }
     }
 
-    public static class Diamond extends ManaCrystalItem {
+    public static class Diamond extends KnotItem {
         public Diamond() {
             super(new Settings()
                     .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(16384), 4 / 12f)),
@@ -50,7 +50,7 @@ public abstract class ManaCrystalItem extends Item {
         }
     }
 
-    public static class Echo extends ManaCrystalItem {
+    public static class Echo extends KnotItem {
         public Echo() {
             super(new Settings(), 65536);
         }
@@ -66,10 +66,14 @@ public abstract class ManaCrystalItem extends Item {
         }
     }
 
-    // amethyst: one-time charge, no recharge
-    // emerald: boring asf, mid capacity
-    // diamond: also boring asf, tho high capacity
-    // echo shard: splits when ibuesddded (Aurora's hopefully clarifying comment: rai meant that the crafting recipe for a echo shard mana crystal would produce a pair which share the same mana pool)
+    //TODO: make this have a maximum merlin?
+    public static class CrackedEcho extends KnotItem {
+        public CrackedEcho() {
+            super(new Settings()
+                    .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(32768), 1)),
+                    Float.MAX_VALUE);
+        }
+    }
 
     @Override
     public boolean isItemBarVisible(ItemStack stack) {

@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "trickster:multi_spell_circle"
+          "name": "trickster:modular_spell_construct"
         }
       ],
       "conditions": [

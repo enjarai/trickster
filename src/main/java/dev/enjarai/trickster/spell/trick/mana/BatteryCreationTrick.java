@@ -1,6 +1,6 @@
 package dev.enjarai.trickster.spell.trick.mana;
 
-import dev.enjarai.trickster.item.ManaCrystalItem;
+import dev.enjarai.trickster.item.KnotItem;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
@@ -21,11 +21,11 @@ import java.util.Map;
 import java.util.Optional;
 
 public class BatteryCreationTrick extends Trick {
-    private final Map<Item, ManaCrystalItem> types = Map.of(
-            Items.AMETHYST_SHARD, ModItems.AMETHYST_MANA_CRYSTAL,
-            Items.EMERALD, ModItems.EMERALD_MANA_CRYSTAL,
-            Items.DIAMOND, ModItems.DIAMOND_MANA_CRYSTAL,
-            Items.ECHO_SHARD, ModItems.ECHO_MANA_CRYSTAL
+    private final Map<Item, KnotItem> types = Map.of(
+            Items.AMETHYST_SHARD, ModItems.AMETHYST_KNOT,
+            Items.EMERALD, ModItems.EMERALD_KNOT,
+            Items.DIAMOND, ModItems.DIAMOND_KNOT,
+            Items.ECHO_SHARD, ModItems.ECHO_KNOT
     );
 
     public BatteryCreationTrick() {

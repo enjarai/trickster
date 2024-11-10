@@ -1,7 +1,7 @@
 package dev.enjarai.trickster;
 
 import dev.enjarai.trickster.block.ModBlocks;
-import dev.enjarai.trickster.item.ManaCrystalItem;
+import dev.enjarai.trickster.item.KnotItem;
 import dev.enjarai.trickster.render.fleck.FleckRenderer;
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.ModItems;
@@ -79,7 +79,7 @@ public class TricksterClient implements ClientModInitializer {
         });
         ClientTickEvents.END_CLIENT_TICK.register(merlinKeeperTracker::tick);
 
-        ManaCrystalItem.merlinTooltipAppender = merlinKeeperTracker::appendKnotTooltip;
+        KnotItem.merlinTooltipAppender = merlinKeeperTracker::appendKnotTooltip;
 
         WorldRenderEvents.AFTER_ENTITIES.register(FlecksRenderer::render);
 

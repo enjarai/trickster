@@ -281,10 +281,10 @@ item.trickster:
   wand: Wand
   macro_ring: Macro Ring
 
-  amethyst_mana_crystal: Amethyst Knot
-  emerald_mana_crystal: Emerald Knot
-  diamond_mana_crystal: Diamond Knot
-  echo_mana_crystal: Echo Knot
+  amethyst_knot: Amethyst Knot
+  emerald_knot: Emerald Knot
+  diamond_knot: Diamond Knot
+  echo_knot: Echo Knot
 
   spell_core: Spell Core
   rusted_spell_core: Rusted Spell Core

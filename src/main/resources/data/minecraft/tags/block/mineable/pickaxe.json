@@ -2,7 +2,7 @@
   "replace": false,
   "values": [
     "trickster:spell_resonator",
-    "trickster:spell_circle",
-    "trickster:multi_spell_circle"
+    "trickster:spell_construct",
+    "trickster:modular_spell_construct"
   ]
 }

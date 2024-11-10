@@ -21,7 +21,6 @@ public class ModLoot {
     private static final Set<RegistryKey<LootTable>> OMINOUS_SPELL_CORE_LOOT_TABLES = Set.of(
             LootTables.TRIAL_CHAMBERS_REWARD_OMINOUS_RARE_CHEST
     );
-    //TODO: this would be silly with merlin limit
     private static final Set<RegistryKey<LootTable>> CRACKED_ECHO_KNOT_LOOT_TABLES = Set.of(
             LootTables.ANCIENT_CITY_CHEST
     );
@@ -32,14 +31,25 @@ public class ModLoot {
                 tableBuilder.pool(LootPool.builder()
                         .with(ItemEntry.builder(ModItems.RUSTED_SPELL_CORE)
                             .conditionally(RandomChanceLootCondition.builder(0.25f)))
-                        .rolls(UniformLootNumberProvider.create(0, 2))).build();
+                        .rolls(UniformLootNumberProvider.create(0, 2)))
+                    .build();
             }
 
             if (OMINOUS_SPELL_CORE_LOOT_TABLES.contains(key)) {
                 tableBuilder.pool(LootPool.builder()
                         .with(ItemEntry.builder(ModItems.OMINOUS_SPELL_CORE)
                             .conditionally(RandomChanceLootCondition.builder(0.4f)))
-                        .rolls(UniformLootNumberProvider.create(0, 1))).build();
+                        .rolls(UniformLootNumberProvider.create(0, 1)))
+                    .build();
+            }
+
+            //TODO: add randomized starting mana if possible?
+            if (CRACKED_ECHO_KNOT_LOOT_TABLES.contains(key)) {
+                tableBuilder.pool(LootPool.builder()
+                        .with(ItemEntry.builder(ModItems.CRACKED_ECHO_KNOT)
+                            .conditionally(RandomChanceLootCondition.builder(0.35f)))
+                        .rolls(UniformLootNumberProvider.create(0, 1)))
+                    .build();
             }
         });
     }

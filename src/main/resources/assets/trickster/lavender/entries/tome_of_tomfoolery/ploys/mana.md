@@ -1,7 +1,7 @@
 ```json
 {
   "title": "A Shimmer in the Night",
-  "icon": "trickster:echo_mana_crystal",
+  "icon": "trickster:echo_knot",
   "category": "trickster:ploys"
 }
 ```
