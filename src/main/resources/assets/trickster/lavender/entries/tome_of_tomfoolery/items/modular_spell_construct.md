@@ -12,9 +12,7 @@ The Spell Cores draw mana from the [Knot](^trickster:items/knots) placed in the 
 
 ;;;;;
 
-
-
-
-
-
+The multiple cores in this Construct type can access and delegate tasks to one 
+another using the same tricks as the ones used for player spell slot manipulation.
+This lets advanced spell casters design persistent multithreaded spells.
 <recipe;trickster:modular_spell_construct>

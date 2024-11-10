@@ -102,12 +102,19 @@ public class SpellConstructBlock extends BlockWithEntity {
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if (world.getBlockEntity(pos) instanceof SpellConstructBlockEntity blockEntity) {
-            var slotStack = blockEntity.getStack(0);
+            if (player.isSneaking()) {
+                SpellCoreComponent.refresh(blockEntity.getComponents(), component -> blockEntity.setComponents(ComponentMap.builder()
+                        .addAll(blockEntity.getComponents()).add(ModComponents.SPELL_CORE, component).build()));
+                blockEntity.markDirty();
+            } else {
+                var slotStack = blockEntity.getStack(0);
 
-            if (slotStack.isEmpty())
-                return ActionResult.CONSUME;
+                if (slotStack.isEmpty())
+                    return ActionResult.CONSUME;
 
-            tryRemoveCore(world, pos, player, blockEntity, 0);
+                tryRemoveCore(world, pos, player, blockEntity, 0);
+            }
+
             return ActionResult.success(world.isClient);
         } else {
             return ActionResult.PASS;
