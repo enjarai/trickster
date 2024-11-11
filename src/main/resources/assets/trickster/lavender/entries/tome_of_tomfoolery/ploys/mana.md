@@ -6,7 +6,7 @@
 }
 ```
 
-Ploys for creatings and moving mana between [Knots](^trickster:items/knots).
+Ploys for creating [Knots](^trickster:items/knots) and moving mana between them.
 
 ;;;;;
 
