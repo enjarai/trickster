@@ -31,4 +31,10 @@
   - A few changes were made to support this.
     - Any fragment can now be inscribed onto an item, not just spells.
     - Map fragments were added.
+      - Multiple existing tricks have been tweaked to make use of this, including wards and closures.
     - Pattern literals were added.
+- Removed shadow blocks. (@StellarWitch7)
+  - This feature has been moved to a separate addon mod due to Sodium incompatibilities.
+- Added internal caching for pure tricks. (@StellarWitch7)
+- Significantly increased viable spell depth, making it effectively™ infinite. (@StellarWitch7)
+- Impulse cost scaling now accounts for multiple casts within the same tick. (@StellarWitch7)
