@@ -221,6 +221,41 @@ publishMods {
         }
     }
 
+    if (providers.gradleProperty('enjaraiCurseforgeToken').present) {
+        curseforge {
+            projectId = property('mod_curseforge')
+            accessToken = providers.gradleProperty('enjaraiCurseforgeToken').get()
+
+            if (min == max) {
+                minecraftVersions.add(min)
+            } else {
+                minecraftVersionRange {
+                    start = min
+                    end = max
+                }
+            }
+
+            requires {
+                slug = "fabric-api"
+            }
+            requires {
+                slug = "cicada"
+            }
+            requires {
+                slug = "owo-lib"
+            }
+            requires {
+                slug = "lavender"
+            }
+            requires {
+                slug = "accessories"
+            }
+            embeds {
+                slug = "cardinal-components-api"
+            }
+        }
+    }
+
     if (providers.gradleProperty('enjaraiGithubToken').present) {
         github {
             repository = property('mod_github')
