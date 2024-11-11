@@ -1,10 +1,11 @@
 package dev.enjarai.trickster.item.component;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+
 import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.spell.mana.ManaPool;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;

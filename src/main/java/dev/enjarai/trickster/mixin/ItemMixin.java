@@ -2,15 +2,21 @@ package dev.enjarai.trickster.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import dev.enjarai.trickster.SpellTooltipData;
+import dev.enjarai.trickster.cca.SharedManaComponent;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
+import dev.enjarai.trickster.net.ModNetworking;
+import dev.enjarai.trickster.net.SubscribeToPoolPacket;
 import dev.enjarai.trickster.spell.SpellPart;
+import dev.enjarai.trickster.spell.mana.SharedManaPool;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipData;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -47,6 +53,31 @@ public abstract class ItemMixin {
             } else if (!(spellComponent.value() instanceof SpellPart)) {
                 tooltip.add(spellComponent.value().asFormattedText());
             }
+        }
+
+        var manaComponent = stack.get(ModComponents.MANA);
+
+        if (manaComponent != null) {
+            var pool = manaComponent.pool();
+            
+            if (type.isAdvanced()) {
+                tooltip.add(Text.literal("Stored: ")
+                        .append(pool.get() + "kG")
+                        .append(" / ")
+                        .append(pool.getMax() + "kG")
+                        .styled(s -> s.withColor(0xaaaabb)));
+
+                if (pool instanceof SharedManaPool shared) {
+                    // if ever run on the server, will fail -- consider putting a try-catch if it causes an issue with a mod?
+                    if (SharedManaComponent.getInstance().get(shared.uuid()).isEmpty()) {
+                        ModNetworking.CHANNEL.clientHandle().send(new SubscribeToPoolPacket(shared.uuid()));
+                    }
+
+                    tooltip.add(Text
+                            .literal(shared.uuid().toString())
+                            .setStyle(Style.EMPTY.withFormatting(Formatting.LIGHT_PURPLE)));
+                }
+            } 
         }
     }
 
