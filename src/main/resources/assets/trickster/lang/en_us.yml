@@ -164,7 +164,6 @@ trickster:
     conjure_water: Aquatic Ploy
     conjure_light: Illumination Ploy
     drain_fluid: Drought Ploy
-    destabilize_block: Earthquake Ploy
     power_resonator: Resonance Ploy
 
     get_block_hardness: Ingress of Hardness

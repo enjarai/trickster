@@ -46,7 +46,7 @@ public class PlaceBlockTrick extends Trick {
             }
 
             var dist = ctx.source().getPos().distance(pos.vector());
-            ctx.useMana(this, (float) (20 + Math.max((dist - 5) * 1.5, 0)));
+            ctx.useMana(this, Math.max((float) dist, 8f));
             world.setBlockState(blockPos, state);
 
             return pos;

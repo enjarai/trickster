@@ -26,7 +26,7 @@ vector, slot |
 
 vector, block -> vector
 
-<|cost-rule@trickster:templates|formula=20kG + max((distance - 5kG) * 1.5\, 0kG)|>
+<|cost-rule@trickster:templates|formula=max(distance * 1kG\, 8kG)|>
 
 Places the given block at the given position. Will consume its respective item. 
 
@@ -80,17 +80,6 @@ vector -> vector
 <|cost-rule@trickster:templates|formula=15kG|>
 
 Drains any fluid at the given position.
-
-;;;;;
-
-<|glyph@trickster:templates|trick-id=trickster:destabilize_block,title=Earthquake Ploy|>
-
-vector -> entity
-
-<|cost-rule@trickster:templates|formula=10kG|>
-
-Makes the target block temporarily affected by gravity as if it were sand. 
-Returns the resulting falling block.
 
 ;;;;;
 

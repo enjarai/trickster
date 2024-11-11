@@ -51,6 +51,6 @@ public abstract class AbstractProjectileTrick extends Trick {
     }
 
     protected float cost(double dist) {
-        return (float) (20 + Math.pow(dist, (dist / 5)));
+        return (float) (20 + Math.pow(dist, (dist / 3)));
     }
 }
