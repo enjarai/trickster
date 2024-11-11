@@ -11,8 +11,10 @@ import net.minecraft.util.Identifier;
 
 public class TickData {
     private Map<Key<?>, Object> map = new HashMap<>();
+    private int executionLimit = Trickster.CONFIG.maxExecutionsPerSpellPerTick();
     private int executions = 0;
     private int slot = -1;
+    private boolean killed = false;
     
     public void incrementExecutions() {
         executions++;
@@ -22,12 +24,16 @@ public class TickData {
         return executions;
     }
 
+    public int getExecutionLimit() {
+        return executionLimit;
+    }
+
     public int getSlot() {
         return slot;
     }
 
     public boolean isExecutionLimitReached() {
-        return executions >= Trickster.CONFIG.maxExecutionsPerSpellPerTick();
+        return killed || executions >= executionLimit;
     }
 
     public TickData withSlot(int slot) {
@@ -36,8 +42,12 @@ public class TickData {
     }
 
     public TickData withBonusExecutions(int executions) {
-        this.executions = -executions;
+        executionLimit += executions;
         return this;
+    }
+
+    public void kill() {
+        this.killed = true;
     }
 
     public record Key<T>(Identifier id, @Nullable Class<T> clazz) {

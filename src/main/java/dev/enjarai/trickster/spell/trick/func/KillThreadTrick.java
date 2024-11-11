@@ -22,7 +22,7 @@ public class KillThreadTrick extends Trick {
         return BooleanFragment.of(OptionalUtils.lift2(
                     (manager, index) -> {
                         if (index == ctx.data().getSlot())
-                            ctx.data().withBonusExecutions(Integer.MIN_VALUE);
+                            ctx.data().kill();
 
                         return manager.kill(index);
                     },

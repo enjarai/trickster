@@ -52,12 +52,12 @@ public class AtomicSpellExecutor implements SpellExecutor {
         this.requiredExecutions = requiredExecutions;
     }
 
-    private AtomicSpellExecutor(Trick trickSource, SpellPart root, Stack<SpellInstruction> instructions, ExecutionState state) throws BlunderException {
-        this(root, instructions, List.of(), List.of(), state, calculateExecutionCost(trickSource, instructions));
+    private AtomicSpellExecutor(Trick trickSource, TickData data, SpellPart root, Stack<SpellInstruction> instructions, ExecutionState state) throws BlunderException {
+        this(root, instructions, List.of(), List.of(), state, calculateExecutionCost(trickSource, data, instructions));
     }
     
-    public AtomicSpellExecutor(Trick trickSource, SpellPart root, ExecutionState state) throws BlunderException {
-        this(trickSource, root, SpellUtils.flattenNode(root), state);
+    public AtomicSpellExecutor(Trick trickSource, TickData data, SpellPart root, ExecutionState state) throws BlunderException {
+        this(trickSource, data, root, SpellUtils.flattenNode(root), state);
     }
 
     @Override
@@ -135,7 +135,7 @@ public class AtomicSpellExecutor implements SpellExecutor {
         return state;
     }
 
-    private static int calculateExecutionCost(Trick trickSource, Stack<SpellInstruction> instructions) throws BlunderException {
+    private static int calculateExecutionCost(Trick trickSource, TickData data, Stack<SpellInstruction> instructions) throws BlunderException {
         int cost = 0;
         
         for (var inst : instructions) {
@@ -145,7 +145,7 @@ public class AtomicSpellExecutor implements SpellExecutor {
             cost++;
         }
 
-        if (cost > Trickster.CONFIG.maxExecutionsPerSpellPerTick()) //TODO: account for cores having different limits
+        if (cost > data.getExecutionLimit())
             throw new AtomicChunkTooLargeBlunder(trickSource);
 
         return cost;
