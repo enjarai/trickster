@@ -16,6 +16,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.LocalRandom;
+import net.minecraft.util.math.random.Random;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 
@@ -37,6 +39,7 @@ public class SpellCircleRenderer {
     private final boolean inUI;
     private final boolean inEditor;
     private final double precisionOffset;
+    public final boolean animated;
 
     private Supplier<SpellPart> drawingPartGetter;
     private Supplier<List<Byte>> drawingPatternGetter;
@@ -50,11 +53,13 @@ public class SpellCircleRenderer {
         this.inUI = inUI;
         this.inEditor = false;
         this.precisionOffset = precisionOffset;
+        this.animated = true;
     }
 
-    public SpellCircleRenderer(Supplier<SpellPart> drawingPartGetter, Supplier<List<Byte>> drawingPatternGetter, double precisionOffset) {
+    public SpellCircleRenderer(Supplier<SpellPart> drawingPartGetter, Supplier<List<Byte>> drawingPatternGetter, double precisionOffset, boolean animated) {
         this.drawingPartGetter = drawingPartGetter;
         this.drawingPatternGetter = drawingPatternGetter;
+        this.animated = animated;
         this.inUI = true;
         this.inEditor = true;
         this.precisionOffset = precisionOffset;
@@ -232,19 +237,19 @@ public class SpellCircleRenderer {
                     c.accept(pos.x - dotSize, pos.y + dotSize);
                     c.accept(pos.x + dotSize, pos.y + dotSize);
                     c.accept(pos.x + dotSize, pos.y - dotSize);
-                }, 0, (isDrawing && isLinked ? 0.5f : 1) * r, (isDrawing && isLinked ? 0.5f : 1) * g, 1 * b, 0.7f * alpha);
+                }, 0, (isDrawing && isLinked ? 0.8f : 1) * r, (isDrawing && isLinked ? 0.5f : 1) * g, 1 * b, 0.7f * alpha);
             }
 
             for (var line : patternList.entries()) {
                 var first = getPatternDotPosition(x, y, line.p1(), patternSize);
                 var second = getPatternDotPosition(x, y, line.p2(), patternSize);
-                drawGlyphLine(matrices, vertexConsumers, first, second, pixelSize, isDrawing, 1, r, g, b, 0.7f * alpha);
+                drawGlyphLine(matrices, vertexConsumers, first, second, pixelSize, isDrawing, 1, r, g, b, 0.7f * alpha, animated);
             }
 
             if (inEditor && isDrawing) {
                 var last = getPatternDotPosition(x, y, drawingPattern.getLast(), patternSize);
                 var now = new Vector2f((float) mouseX, (float) mouseY);
-                drawGlyphLine(matrices, vertexConsumers, last, now, pixelSize, true, 1, r, g, b, 0.7f * alpha);
+                drawGlyphLine(matrices, vertexConsumers, last, now, pixelSize, true, 1, r, g, b, 0.7f * alpha, animated);
             }
         } else {
             //noinspection rawtypes
@@ -312,16 +317,47 @@ public class SpellCircleRenderer {
         }
     }
 
-    public static void drawGlyphLine(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Vector2f last, Vector2f now, float pixelSize, boolean isDrawing, float tone, float r, float g, float b, float opacity) {
+    private static final Random glyphRandom = new LocalRandom(0);
+
+    public static void drawGlyphLine(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Vector2f last, Vector2f now, float pixelSize, boolean isDrawing, float tone, float r, float g, float b, float opacity, boolean animated) {
         var parallelVec = new Vector2f(last.y - now.y, now.x - last.x).normalize().mul(pixelSize / 2);
         var directionVec = new Vector2f(last.x - now.x, last.y - now.y).normalize().mul(pixelSize * 3);
 
-        drawFlatPolygon(matrices, vertexConsumers, c -> {
-            c.accept(last.x - parallelVec.x - directionVec.x, last.y - parallelVec.y - directionVec.y);
-            c.accept(last.x + parallelVec.x - directionVec.x, last.y + parallelVec.y - directionVec.y);
-            c.accept(now.x + parallelVec.x + directionVec.x, now.y + parallelVec.y + directionVec.y);
-            c.accept(now.x - parallelVec.x + directionVec.x, now.y - parallelVec.y + directionVec.y);
-        }, 0, (isDrawing ? 0.5f : tone) * r, (isDrawing ? 0.5f : tone) * g, tone * b, opacity);
+        if (animated) {
+            var lineStart = new Vector2f(last.x - directionVec.x, last.y - directionVec.y);
+            var lineEnd = new Vector2f(now.x + directionVec.x, now.y + directionVec.y);
+
+            var parallel1 = parallelVec.mul(1 + glyphRandom.nextFloat() - 0.5f, new Vector2f());
+            var parallel2 = new Vector2f();
+
+            float steps = last.distance(now) / pixelSize / 4;
+            for (int i = 0; i < steps; i++) {
+                var lineLength = Math.min(1, steps - i);
+
+                var pos1 = lineStart.lerp(lineEnd, i / steps, new Vector2f());
+                var pos2 = lineStart.lerp(lineEnd, (i + lineLength) / steps, new Vector2f());
+
+                parallel2 = parallelVec.mul(1 + (glyphRandom.nextFloat() - 0.5f) * lineLength, parallel2);
+
+                Vector2f finalParallel1 = parallel1;
+                Vector2f finalParallel2 = parallel2;
+                drawFlatPolygon(matrices, vertexConsumers, c -> {
+                    c.accept(pos1.x - finalParallel1.x, pos1.y - finalParallel1.y);
+                    c.accept(pos1.x + finalParallel1.x, pos1.y + finalParallel1.y);
+                    c.accept(pos2.x + finalParallel2.x, pos2.y + finalParallel2.y);
+                    c.accept(pos2.x - finalParallel2.x, pos2.y - finalParallel2.y);
+                }, 0, (isDrawing ? 0.8f : tone) * r, (isDrawing ? 0.5f : tone) * g, 1 * b, opacity);
+
+                parallel1 = parallel1.set(parallel2);
+            }
+        } else {
+            drawFlatPolygon(matrices, vertexConsumers, c -> {
+                c.accept(last.x - parallelVec.x - directionVec.x, last.y - parallelVec.y - directionVec.y);
+                c.accept(last.x + parallelVec.x - directionVec.x, last.y + parallelVec.y - directionVec.y);
+                c.accept(now.x + parallelVec.x + directionVec.x, now.y + parallelVec.y + directionVec.y);
+                c.accept(now.x - parallelVec.x + directionVec.x, now.y - parallelVec.y + directionVec.y);
+            }, 0, (isDrawing ? 0.5f : tone) * r, (isDrawing ? 0.5f : tone) * g, tone * b, opacity);
+        }
     }
 
     public static Vector2f getPatternDotPosition(float x, float y, int i, float size) {

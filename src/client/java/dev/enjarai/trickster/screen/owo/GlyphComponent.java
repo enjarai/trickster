@@ -58,7 +58,7 @@ public class GlyphComponent extends BaseComponent {
         for (var line : pattern.entries()) {
             var now = getPatternDotPosition(x + patternSize + 4, y + patternSize + 4, line.p1(), patternSize);
             var last = getPatternDotPosition(x + patternSize + 4, y + patternSize + 4, line.p2(), patternSize);
-            drawGlyphLine(context.getMatrices(), context.getVertexConsumers(), last, now, 1, false, 0, 1f, 1f, 1f, 0.9f);
+            drawGlyphLine(context.getMatrices(), context.getVertexConsumers(), last, now, 1, false, 0, 1f, 1f, 1f, 0.9f, false);
         }
     }
 
