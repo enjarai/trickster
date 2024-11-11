@@ -116,7 +116,7 @@ public final class SpellPart implements Fragment {
         return value;
     }
 
-    public void buildClosure(Map<Pattern, Fragment> replacements) {
+    public void buildClosure(Map<Fragment, Fragment> replacements) {
         subParts.forEach(part -> part.buildClosure(replacements));
 
         if (glyph instanceof SpellPart spellPart) {
@@ -126,6 +126,8 @@ public final class SpellPart implements Fragment {
             if (replacement != null) {
                 glyph = replacement;
             }
+        } else if (replacements.containsKey(glyph)) {
+            glyph = replacements.get(glyph);
         }
     }
 

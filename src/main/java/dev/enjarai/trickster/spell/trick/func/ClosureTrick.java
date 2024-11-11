@@ -23,30 +23,10 @@ public class ClosureTrick extends DistortionTrick {
     public Fragment distort(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var executable = expectInput(fragments, FragmentType.SPELL_PART, 0);
 
-        Map<Pattern, Fragment> replacements;
-        if (fragments.size() >= 2 && fragments.get(1).type() == FragmentType.MAP) {
-            var map = expectInput(fragments, FragmentType.MAP, 1).map();
-            replacements = expectPatternMap(map);
-        } else {
-            replacements = new HashMap<>();
-
-            int i = 1;
-            while (i < fragments.size()) {
-                var pattern = expectInput(fragments, FragmentType.PATTERN, i);
-
-                i++;
-                if (i >= fragments.size()) {
-                    throw new MissingFragmentBlunder(this, i, Text.of("any"));
-                }
-                var fragment = expectInput(fragments, i);
-
-                i++;
-                replacements.put(pattern.pattern(), fragment);
-            }
-        }
+        var map = expectInput(fragments, FragmentType.MAP, 1).map();
 
         var result = executable.deepClone();
-        result.buildClosure(replacements);
+        result.buildClosure(map.asMap());
 
         return result;
     }
