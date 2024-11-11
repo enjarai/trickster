@@ -20,7 +20,8 @@ public class PatternLiteralRenderer implements FragmentRenderer<Pattern> {
                 matrices, vertexConsumers, OVERLAY_TEXTURE,
                 x - size, x + size, y - size, y + size,
                 0,
-                delegator.getR(), delegator.getG(), delegator.getB(), alpha * delegator.getCircleTransparency(), normal
+                delegator.getR(), delegator.getG(), delegator.getB(),
+                alpha * delegator.getCircleTransparency(), delegator.inUI
         );
     }
 

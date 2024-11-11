@@ -36,7 +36,7 @@ public class SpellCircleRenderer {
     public static final int PART_PIXEL_RADIUS = 24;
     public static final int CLICK_HITBOX_SIZE = 6;
 
-    private final boolean inUI;
+    public final boolean inUI;
     private final boolean inEditor;
     private final double precisionOffset;
     public final boolean animated;
@@ -119,7 +119,7 @@ public class SpellCircleRenderer {
                 matrices, vertexConsumers, CIRCLE_TEXTURE,
                 toLocalSpace(x - size), toLocalSpace(x + size), toLocalSpace(y - size), toLocalSpace(y + size),
                 0,
-                r, g, b, alpha * circleTransparency, normal
+                r, g, b, alpha * circleTransparency, inUI
         );
         drawGlyph(
                 matrices, vertexConsumers, entry,
@@ -145,7 +145,7 @@ public class SpellCircleRenderer {
             var angle = startingAngle + (2 * Math.PI) / partCount * i - (Math.PI / 2);
 
             var nextX = x + (size * Math.cos(angle));
-            var nextY = y + (size * Math.sin(angle) );
+            var nextY = y + (size * Math.sin(angle));
 
             var nextSize = Math.min(size / 2, size / (double) ((partCount + 1) / 2));
 
@@ -381,7 +381,7 @@ public class SpellCircleRenderer {
                 mouseY >= pos.y - hitboxSize && mouseY <= pos.y + hitboxSize;
     }
 
-    public static void drawTexturedQuad(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Identifier texture, float x1, float x2, float y1, float y2, float z, float r, float g, float b, float alpha, Vec3d normal) {
+    public static void drawTexturedQuad(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Identifier texture, float x1, float x2, float y1, float y2, float z, float r, float g, float b, float alpha, boolean inGui) {
 //        if (inUI) {
 //            RenderSystem.setShaderTexture(0, texture);
 //            RenderSystem.setShader(GameRenderer::getPositionTexProgram);
@@ -397,20 +397,31 @@ public class SpellCircleRenderer {
 //            BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
 //            RenderSystem.setShaderColor(1, 1, 1, 1);
 //        } else {
-            RenderSystem.enableBlend();
-            RenderSystem.enableDepthTest();
-            var matrixEntry = matrices.peek();
-            var position = matrixEntry.getPositionMatrix();
-            var vertexConsumer = vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(texture));
+        RenderSystem.enableBlend();
+        RenderSystem.enableDepthTest();
+        var matrixEntry = matrices.peek();
+        var position = matrixEntry.getPositionMatrix();
+        var vertexConsumer = vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(texture));
+
+        if (!inGui) {
             vertexConsumer.vertex(position, x1, y1, z).texture(0, 0).overlay(OverlayTexture.DEFAULT_UV)
-                    .light(LightmapTextureManager.MAX_LIGHT_COORDINATE).color(r, g, b, alpha).normal(matrixEntry, (float) normal.x, (float) normal.y, (float) normal.z);
+                    .light(LightmapTextureManager.MAX_LIGHT_COORDINATE).color(r, g, b, alpha).normal(0, 1, 0);
             vertexConsumer.vertex(position, x1, y2, z).texture(0, 1).overlay(OverlayTexture.DEFAULT_UV)
-                    .light(LightmapTextureManager.MAX_LIGHT_COORDINATE).color(r, g, b, alpha).normal(matrixEntry, (float) normal.x, (float) normal.y, (float) normal.z);
+                    .light(LightmapTextureManager.MAX_LIGHT_COORDINATE).color(r, g, b, alpha).normal(0, 1, 0);
             vertexConsumer.vertex(position, x2, y2, z).texture(1, 1).overlay(OverlayTexture.DEFAULT_UV)
-                    .light(LightmapTextureManager.MAX_LIGHT_COORDINATE).color(r, g, b, alpha).normal(matrixEntry, (float) normal.x, (float) normal.y, (float) normal.z);
+                    .light(LightmapTextureManager.MAX_LIGHT_COORDINATE).color(r, g, b, alpha).normal(0, 1, 0);
             vertexConsumer.vertex(position, x2, y1, z).texture(1, 0).overlay(OverlayTexture.DEFAULT_UV)
-                    .light(LightmapTextureManager.MAX_LIGHT_COORDINATE).color(r, g, b, alpha).normal(matrixEntry, (float) normal.x, (float) normal.y, (float) normal.z);
-//        }
+                    .light(LightmapTextureManager.MAX_LIGHT_COORDINATE).color(r, g, b, alpha).normal(0, 1, 0);
+        } else {
+            vertexConsumer.vertex(position, x1, y1, z).texture(0, 0).overlay(OverlayTexture.DEFAULT_UV)
+                    .light(LightmapTextureManager.MAX_LIGHT_COORDINATE).color(r, g, b, alpha).normal(-1, 0, 0);
+            vertexConsumer.vertex(position, x1, y2, z).texture(0, 1).overlay(OverlayTexture.DEFAULT_UV)
+                    .light(LightmapTextureManager.MAX_LIGHT_COORDINATE).color(r, g, b, alpha).normal(-1, 0, 0);
+            vertexConsumer.vertex(position, x2, y2, z).texture(1, 1).overlay(OverlayTexture.DEFAULT_UV)
+                    .light(LightmapTextureManager.MAX_LIGHT_COORDINATE).color(r, g, b, alpha).normal(-1, 0, 0);
+            vertexConsumer.vertex(position, x2, y1, z).texture(1, 0).overlay(OverlayTexture.DEFAULT_UV)
+                    .light(LightmapTextureManager.MAX_LIGHT_COORDINATE).color(r, g, b, alpha).normal(-1, 0, 0);
+        }
     }
 
     public static void drawFlatPolygon(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Consumer<BiConsumer<Float, Float>> vertexProvider, float z, float r, float g, float b, float alpha) {

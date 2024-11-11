@@ -121,11 +121,6 @@ public final class SpellPart implements Fragment {
 
         if (glyph instanceof SpellPart spellPart) {
             spellPart.buildClosure(replacements);
-        } else if (glyph instanceof PatternGlyph patternGlyph) {
-            var replacement = replacements.get(patternGlyph.pattern());
-            if (replacement != null) {
-                glyph = replacement;
-            }
         } else if (replacements.containsKey(glyph)) {
             glyph = replacements.get(glyph);
         }
