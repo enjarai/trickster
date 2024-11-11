@@ -119,10 +119,11 @@ public record VectorFragment(Vector3dc vector) implements AddableFragment, Subtr
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof VectorFragment v) {
+    public boolean fuzzyEquals(Fragment other) {
+        if (other instanceof VectorFragment v) {
             return v.vector.equals(vector, 1 / 16d);
         }
+
         return false;
     }
 

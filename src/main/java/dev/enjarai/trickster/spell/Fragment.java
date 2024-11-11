@@ -51,6 +51,10 @@ public non-sealed interface Fragment extends SpellInstruction {
 
     boolean asBoolean();
 
+    default boolean fuzzyEquals(Fragment other) {
+        return equals(other);
+    }
+
     default Fragment activateAsGlyph(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         return this;
     }

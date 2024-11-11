@@ -41,7 +41,7 @@ loom {
     mods {
         "trickster" {
             sourceSet sourceSets.main
-	    sourceSet sourceSets.client
+            sourceSet sourceSets.client
         }
     }
 
@@ -98,7 +98,7 @@ dependencies {
     include "io.wispforest:owo-sentinel:${property('deps.owo-lib')}"
 
     modApi "io.wispforest:lavender:${property('deps.lavender')}"
-//	implementation "io.wispforest:endec:0.1.0-pre.8"
+//    implementation "io.wispforest:endec:0.1.0-pre.8"
     include modLocalRuntime("io.wispforest.lavender-md:owo-ui:0.1.2+1.21")
 
     modApi("nl.enjarai:cicada-lib:${property('deps.cicada')}")
@@ -180,7 +180,7 @@ publishMods {
     displayName = "${property('mod_version')} for ${property('deps.minecraft')}"
     version = project.version
     changelog = getRootProject().file("CHANGELOG.md").text
-    type = ALPHA
+    type = BETA
     modLoaders.add("fabric")
 
     def min = property('publish_target_min')

@@ -21,6 +21,7 @@ public record DimensionFragment(RegistryKey<World> world) implements Fragment {
         return FragmentType.DIMENSION;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public Text asText() {
         return Text.literal(WordUtils.capitalize(world.getValue().getPath().replace('_', ' ')));

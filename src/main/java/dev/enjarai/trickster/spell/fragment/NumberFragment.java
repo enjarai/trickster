@@ -122,11 +122,12 @@ public final class NumberFragment implements AddableFragment, SubtractableFragme
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof NumberFragment n) {
+    public boolean fuzzyEquals(Fragment other) {
+        if (other instanceof NumberFragment n) {
             var precision = 1 / 16d;
             return n.number > number - precision && n.number < number + precision;
         }
+
         return false;
     }
 

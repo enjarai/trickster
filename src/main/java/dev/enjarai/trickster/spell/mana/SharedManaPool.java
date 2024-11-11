@@ -82,6 +82,16 @@ public class SharedManaPool implements MutableManaPool {
         return new SharedManaPool(uuid, self);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof SharedManaPool pool && uuid.equals(pool.uuid());
+    }
+
+    @Override
+    public int hashCode() {
+        return uuid.hashCode();
+    }
+
     private SimpleManaPool getSelf() {
         return (self = self.or(() -> SharedManaComponent.getInstance().get(uuid))).orElse(THE_SKILL_ISSUE);
     }

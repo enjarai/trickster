@@ -20,7 +20,7 @@ public class NotEqualsTrick extends DistortionTrick {
             for (int j = 0; j < fragments.size(); j++) {
                 if (i == j) continue;
 
-                if (fragments.get(i).equals(fragments.get(j))) {
+                if (fragments.get(i).fuzzyEquals(fragments.get(j))) {
                     return BooleanFragment.FALSE;
                 }
             }

@@ -18,7 +18,7 @@ public class EqualsTrick extends DistortionTrick {
     public Fragment distort(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         Fragment last = null;
         for (Fragment fragment : fragments) {
-            if (last != null && !fragment.equals(last)) {
+            if (last != null && !fragment.fuzzyEquals(last)) {
                 return BooleanFragment.FALSE;
             }
             last = fragment;
