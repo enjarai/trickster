@@ -1,6 +1,7 @@
 package dev.enjarai.trickster;
 
 import dev.enjarai.trickster.block.ModBlocks;
+import dev.enjarai.trickster.cca.DisguiseComponent;
 import dev.enjarai.trickster.render.fleck.FleckRenderer;
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.ModItems;
@@ -30,6 +31,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
+import net.minecraft.client.world.ClientWorld;
 
 public class TricksterClient implements ClientModInitializer {
 	@Override
@@ -77,5 +79,7 @@ public class TricksterClient implements ClientModInitializer {
 		HudRenderCallback.EVENT.register(CircleErrorRenderer::render);
 
 		EntityModelLayerRegistry.registerModelLayer(ScrollShelfBlockEntityRenderer.MODEL_LAYER, ScrollShelfBlockEntityRenderer::getTexturedModelData);
+
+		DisguiseComponent.entityAdder = (world, entity) -> ((ClientWorld) world).addEntity(entity);
 	}
 }

@@ -11,12 +11,17 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.Hand;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.ClientTickingComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
+import java.util.function.BiConsumer;
+
 public class DisguiseComponent implements AutoSyncedComponent, CommonTickingComponent {
+    public static BiConsumer<World, Entity> entityAdder;
+
     private final LivingEntity source;
     @Nullable
     private Entity entity = null;
@@ -26,6 +31,9 @@ public class DisguiseComponent implements AutoSyncedComponent, CommonTickingComp
         if (source instanceof PlayerEntity) {
             entity = new CatEntity(EntityType.CAT, source.getWorld());
 //            source.calculateDimensions();
+            if (source.getWorld().isClient) {
+                entityAdder.accept(source.getWorld(), entity);
+            }
         }
     }
 
@@ -42,6 +50,11 @@ public class DisguiseComponent implements AutoSyncedComponent, CommonTickingComp
             entity.prevYaw = source.prevYaw;
             entity.setPitch(source.getPitch());
             entity.prevPitch = source.prevPitch;
+
+            entity.setPos(source.getX(), source.getY(), source.getZ());
+            entity.prevX = source.prevX;
+            entity.prevY = source.prevY;
+            entity.prevZ = source.prevZ;
 
 //            entity.age = player.age;
 
@@ -70,6 +83,9 @@ public class DisguiseComponent implements AutoSyncedComponent, CommonTickingComp
 
     public void setEntity(@Nullable Entity entity) {
         this.entity = entity;
+        if (source.getWorld().isClient && entity != null) {
+            entityAdder.accept(source.getWorld(), entity);
+        }
         ModEntityComponents.DISGUISE.sync(source);
         source.calculateDimensions();
     }
@@ -107,8 +123,8 @@ public class DisguiseComponent implements AutoSyncedComponent, CommonTickingComp
                 }
             }
 
-            entity.setPos(source.getX(), source.getY(), source.getZ());
-            entity.tick();
+//            entity.setPos(source.getX(), source.getY(), source.getZ());
+//            entity.tick();
         }
     }
 }
