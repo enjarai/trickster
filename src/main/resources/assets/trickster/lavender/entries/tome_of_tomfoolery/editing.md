@@ -51,7 +51,7 @@ This can be used for meta-programming, recursion, and permanent storage of dynam
 ;;;;;
 
 When the circle *does* have connected subcircles, 
-it executes the inner circle directly as if it was called by a [Grand Stratagem](^trickster:distortions/functions),
+it executes the inner circle directly as if it was called by a [Grand Stratagem](^trickster:distortions/functions#3),
 using the results from the subcircles connected to the outer circle as parameters.
 
 

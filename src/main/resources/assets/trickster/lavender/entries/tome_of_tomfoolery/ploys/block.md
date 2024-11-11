@@ -100,4 +100,4 @@ vector, number -> boolean
 
 <|cost-rule@trickster:templates|formula=distance / 2kG|>
 
-Powers the [Spell Resonator](^trickster:basics/spell_resonator) at the given position with the given power level, between 0 and 15.
+Powers the [Spell Resonator](^trickster:items/spell_resonator) at the given position with the given power level, between 0 and 15.

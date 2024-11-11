@@ -10,14 +10,14 @@ A Mirror of Evaluation is a tool very similar to the ever-useful [Scroll and Qui
 The main difference is that it greedily casts any part of the spell it can while it is being written.
 
 
-Say for example you write a subcircle with two more subcircles, each containing a [Foundational Delusion](^trickster:distortions/arithmetic#1).
+Say for example you write a subcircle with two more subcircles, each containing a [Foundational Delusion](^trickster:constants#1).
 
 ;;;;;
 
 When drawn, the glyphs of these subcircles will become literals for the number 2.
 
 
-Then, you can draw say, an [Annexation Stratagem](^trickster:distortions/arithmetic#3) in the parent circle of the two twos.
+Then, you can draw say, an [Annexation Stratagem](^trickster:distortions/arithmetic#2) in the parent circle of the two twos.
 This will immediately consume the two subcircles and evaluate to a literal 4 as a glyph in the parent circle.
 
 ;;;;;

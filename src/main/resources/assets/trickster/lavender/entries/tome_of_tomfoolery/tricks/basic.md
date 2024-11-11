@@ -16,13 +16,13 @@ If inscribed on a block, the fragment will be removed if the block is placed.
 
 
 Some items may have additional interactions when inscribed with fragments, 
-[Wands](^trickster:basics/wand) for example will cast a spell fragment when right-clicked.
+[Wands](^trickster:items/wand) for example will cast a spell fragment when right-clicked.
 
 ;;;;;
 
 <|glyph@trickster:templates|trick-id=trickster:read_spell,title=Notulist's Delusion|>
 
--> any | void
+-> any
 
 ---
 
@@ -33,7 +33,7 @@ If not, returns void.
 
 <|glyph@trickster:templates|trick-id=trickster:write_spell,title=Notulist's Ploy|>
 
-any | void -> any | void
+[any] -> any
 
 ---
 
@@ -44,7 +44,7 @@ Returns its input, after ephemeral decay.
 
 <|glyph@trickster:templates|trick-id=trickster:write_closed_spell,title=Proprietary Notulist's Ploy|>
 
-any | void -> any | void
+[any] -> any
 
 ---
 

@@ -62,4 +62,4 @@ Constructs a slot from an index and an inventory source, using the caster by def
 
 ---
 
-Returns the selected slot in the caster's [Top Hat](^trickster:basics/top_hat).
+Returns the selected slot in the caster's [Top Hat](^trickster:items/top_hat).

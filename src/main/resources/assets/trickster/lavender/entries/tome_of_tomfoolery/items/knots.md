@@ -21,7 +21,7 @@ Most gems or crystals can be made into Knots using
 
 
 This ploy optionally takes two arguments, 
-one [slot](^trickster:delusions_ingresses/inventory) containing a gem, another holding a Glass Block.
+one [slot](^trickster:delusions_ingresses/inventory#4) containing a gem, another holding a Glass Block.
 If the latter isn't provided, the first available Glass Block will be used.
 If the former isn't provided, an Amethyst Shard will be used in the same manner. 
 As such, it is not possible to create non-amethyst Knots without providing a slot reference.

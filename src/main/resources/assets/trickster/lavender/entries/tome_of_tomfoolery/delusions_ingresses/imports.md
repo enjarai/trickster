@@ -32,4 +32,4 @@ number, any... -> any
 
 ---
 
-Grabs the spell from the specified slot in the caster's [Top Hat](^trickster:basics/top_hat), casts it with the provided arguments, and returns the result.
+Grabs the spell from the specified slot in the caster's [Top Hat](^trickster:items/top_hat), casts it with the provided arguments, and returns the result.

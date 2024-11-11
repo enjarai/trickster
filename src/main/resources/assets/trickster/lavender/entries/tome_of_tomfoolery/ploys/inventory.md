@@ -26,4 +26,4 @@ number -> boolean
 
 ---
 
-Sets the selected slot in the caster's [Top Hat](^trickster:basics/top_hat), returning a boolean based on success.
+Sets the selected slot in the caster's [Top Hat](^trickster:items/top_hat), returning a boolean based on success.
