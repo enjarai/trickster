@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.render;
 
+import dev.enjarai.trickster.Trickster.MerlinTooltipAppender;
 import dev.enjarai.trickster.cca.SharedManaComponent;
 import dev.enjarai.trickster.item.component.ManaComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
@@ -20,7 +21,7 @@ import net.minecraft.util.math.MathHelper;
 
 import java.util.List;
 
-public class MerlinKeeperTracker {
+public class MerlinKeeperTracker implements MerlinTooltipAppender {
     private final Int2ObjectMap<MerlinUsage> stackMap = new Int2ObjectOpenHashMap<>();
     private final int tickSpan;
 
@@ -58,7 +59,7 @@ public class MerlinKeeperTracker {
         return 0;
     }
 
-    public void appendKnotTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
+    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         var usage = getUsage(stack);
 
         tooltip.add(Text.literal("Current draw: %.2f kM".formatted(usage)).styled(s -> s.withColor(0xaaaabb)));

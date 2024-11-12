@@ -7,6 +7,7 @@ import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.net.SubscribeToPoolPacket;
 import dev.enjarai.trickster.spell.mana.SharedManaPool;
 import dev.enjarai.trickster.spell.mana.SimpleManaPool;
+import dev.enjarai.trickster.util.ClientUtils;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
@@ -16,8 +17,6 @@ import net.minecraft.util.math.MathHelper;
 import java.util.List;
 
 public abstract class KnotItem extends Item {
-    public static MerlinTooltipAppender merlinTooltipAppender;
-
     private final float creationCost;
 
     public KnotItem(Settings settings, float creationCost) {
@@ -97,10 +96,7 @@ public abstract class KnotItem extends Item {
             return 0;
         }
 
-        // if ever run on the server, will fail -- consider putting a try-catch if it causes an issue with a mod?
-        if (manaComponent.pool() instanceof SharedManaPool sharedPool && SharedManaComponent.getInstance().get(sharedPool.uuid()).isEmpty()) {
-            ModNetworking.CHANNEL.clientHandle().send(new SubscribeToPoolPacket(sharedPool.uuid()));
-        }
+        ClientUtils.trySubscribe(manaComponent);
 
         float poolMax = manaComponent.pool().getMax();
         return poolMax == 0 ? 0 : MathHelper.clamp(Math.round(manaComponent.pool().get() * 13.0F / poolMax), 0, 13);
@@ -110,21 +106,7 @@ public abstract class KnotItem extends Item {
         return creationCost;
     }
 
-    //TODO: Maybe this should work for all items with the `ManaComponent`
-    @Override
-    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
-        if (merlinTooltipAppender != null) {
-            merlinTooltipAppender.accept(stack, context, tooltip, type);
-        }
-
-        super.appendTooltip(stack, context, tooltip, type);
-    }
-
     public ItemStack createStack() {
         return getDefaultStack();
-    }
-
-    public static interface MerlinTooltipAppender {
-        void accept(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type);
     }
 }

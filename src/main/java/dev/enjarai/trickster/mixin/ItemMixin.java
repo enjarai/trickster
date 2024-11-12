@@ -2,9 +2,11 @@ package dev.enjarai.trickster.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import dev.enjarai.trickster.SpellTooltipData;
+import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.SpellPart;
+import dev.enjarai.trickster.util.ClientUtils;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipData;
@@ -39,6 +41,7 @@ public abstract class ItemMixin {
     )
     private void addGarble(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType type, CallbackInfo ci) {
         var spellComponent = stack.get(ModComponents.FRAGMENT);
+        var manaComponent = stack.get(ModComponents.MANA);
 
         if (spellComponent != null) {
             if (spellComponent.closed()) {
@@ -47,6 +50,14 @@ public abstract class ItemMixin {
                         .orElse(Text.literal("Mortal eyes upon my carvings").setStyle(Style.EMPTY.withObfuscated(true))));
             } else if (!(spellComponent.value() instanceof SpellPart)) {
                 tooltip.add(spellComponent.value().asFormattedText());
+            }
+        }
+
+        if (manaComponent != null) {
+            ClientUtils.trySubscribe(manaComponent);
+
+            if (Trickster.merlinTooltipAppender != null) {
+                Trickster.merlinTooltipAppender.appendTooltip(stack, context, tooltip, type);
             }
         }
     }

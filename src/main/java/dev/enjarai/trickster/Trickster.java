@@ -30,13 +30,19 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.item.Item.TooltipContext;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.PersistentStateManager;
 import nl.enjarai.cicada.api.conversation.ConversationManager;
 import nl.enjarai.cicada.api.util.CicadaEntrypoint;
 import nl.enjarai.cicada.api.util.JsonSource;
 import nl.enjarai.cicada.api.util.ProperLogger;
+
+import java.util.List;
 
 import org.slf4j.Logger;
 
@@ -51,6 +57,8 @@ public class Trickster implements ModInitializer, CicadaEntrypoint {
     public static final EntityAttributeModifier NEGATE_ATTRIBUTE = new EntityAttributeModifier(Trickster.SPELL_CIRCLE_ATTRIBUTE, -1d, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
 
     public static final TricksterConfig CONFIG = TricksterConfig.createAndLoad();
+
+    public static MerlinTooltipAppender merlinTooltipAppender;
 
     @Override
     public void onInitialize() {
@@ -108,5 +116,9 @@ public class Trickster implements ModInitializer, CicadaEntrypoint {
 
     public static Identifier id(String path) {
         return Identifier.of(MOD_ID, path);
+    }
+
+    public static interface MerlinTooltipAppender {
+        void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type);
     }
 }
