@@ -33,52 +33,59 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 
 public class TricksterClient implements ClientModInitializer {
-	@Override
-	public void onInitializeClient() {
-		ScrollAndQuillItem.screenOpener = (text, hand) -> {
-			MinecraftClient.getInstance().setScreen(new SignScrollScreen(text, hand));
-		};
+    public static final MerlinKeeperTracker merlinKeeperTracker = new MerlinKeeperTracker(5);
 
-		FleckRenderer.register();
-		FragmentRenderer.register();
+    @Override
+    public void onInitializeClient() {
+        ScrollAndQuillItem.screenOpener = (text, hand) -> {
+            MinecraftClient.getInstance().setScreen(new SignScrollScreen(text, hand));
+        };
 
-		ModHandledScreens.register();
-		ModKeyBindings.register();
-		ModClientNetworking.register();
+        FleckRenderer.register();
+        FragmentRenderer.register();
 
-		BlockEntityRendererFactories.register(ModBlocks.SPELL_CIRCLE_ENTITY, SpellCircleBlockEntityRenderer::new);
-		BlockEntityRendererFactories.register(ModBlocks.SCROLL_SHELF_ENTITY, ScrollShelfBlockEntityRenderer::new);
+        ModHandledScreens.register();
+        ModKeyBindings.register();
+        ModClientNetworking.register();
 
-		UIParsing.registerFactory(Trickster.id("glyph"), GlyphComponent::parseTrick);
-		UIParsing.registerFactory(Trickster.id("pattern"), GlyphComponent::parseList);
-		UIParsing.registerFactory(Trickster.id("spell-preview"), SpellPreviewComponent::parse);
-		UIParsing.registerFactory(Trickster.id("item-tag"), ItemTagComponent::parse);
+        BlockEntityRendererFactories.register(ModBlocks.SPELL_CONSTRUCT_ENTITY, SpellConstructBlockEntityRenderer::new);
+        BlockEntityRendererFactories.register(ModBlocks.MODULAR_SPELL_CONSTRUCT_ENTITY, ModularSpellConstructBlockEntityRenderer::new);
+        BlockEntityRendererFactories.register(ModBlocks.SCROLL_SHELF_ENTITY, ScrollShelfBlockEntityRenderer::new);
 
-		ParticleFactoryRegistry.getInstance().register(ModParticles.PROTECTED_BLOCK, ProtectedBlockParticle.Factory::new);
-		ParticleFactoryRegistry.getInstance().register(ModParticles.SPELL, SpellParticle.Factory::new);
+        UIParsing.registerFactory(Trickster.id("glyph"), GlyphComponent::parseTrick);
+        UIParsing.registerFactory(Trickster.id("pattern"), GlyphComponent::parseList);
+        UIParsing.registerFactory(Trickster.id("spell-preview"), SpellPreviewComponent::parse);
+        UIParsing.registerFactory(Trickster.id("item-tag"), ItemTagComponent::parse);
 
-		AccessoriesRendererRegistry.registerRenderer(ModItems.TOP_HAT, HoldableHatRenderer::new);
-		AccessoriesRendererRegistry.registerRenderer(ModItems.WITCH_HAT, HoldableHatRenderer::new);
-		AccessoriesRendererRegistry.registerRenderer(ModItems.FEZ, HoldableHatRenderer::new);
-		AccessoriesRendererRegistry.registerNoRenderer(ModItems.MACRO_RING);
+        ParticleFactoryRegistry.getInstance().register(ModParticles.PROTECTED_BLOCK, ProtectedBlockParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(ModParticles.SPELL, SpellParticle.Factory::new);
 
-		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.SPELL_RESONATOR, RenderLayer.getCutout());
+        AccessoriesRendererRegistry.registerRenderer(ModItems.TOP_HAT, HoldableHatRenderer::new);
+        AccessoriesRendererRegistry.registerRenderer(ModItems.WITCH_HAT, HoldableHatRenderer::new);
+        AccessoriesRendererRegistry.registerRenderer(ModItems.FEZ, HoldableHatRenderer::new);
+        AccessoriesRendererRegistry.registerNoRenderer(ModItems.MACRO_RING);
 
-		ClientTickEvents.END_CLIENT_TICK.register(client -> {
-			if (client.player != null) {
-				var editing = client.currentScreen instanceof ScrollAndQuillScreen;
-				var serverEditing = ModEntityComponents.IS_EDITING_SCROLL.get(client.player).isEditing();
-				if (editing != serverEditing) {
-					ModNetworking.CHANNEL.clientHandle().send(new IsEditingScrollPacket(editing));
-				}
-			}
-		});
+        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.SPELL_RESONATOR, RenderLayer.getCutout());
 
-		WorldRenderEvents.AFTER_ENTITIES.register(FlecksRenderer::render);
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            if (client.player != null) {
+                var editing = client.currentScreen instanceof ScrollAndQuillScreen;
+                var serverEditing = ModEntityComponents.IS_EDITING_SCROLL.get(client.player).isEditing();
+                if (editing != serverEditing) {
+                    ModNetworking.CHANNEL.clientHandle().send(new IsEditingScrollPacket(editing));
+                }
+            }
+        });
+        ClientTickEvents.END_CLIENT_TICK.register(merlinKeeperTracker::tick);
 
-		HudRenderCallback.EVENT.register(BarsRenderer::render);
-		HudRenderCallback.EVENT.register(CircleErrorRenderer::render);
+        Trickster.merlinTooltipAppender = merlinKeeperTracker::appendTooltip;
 
-		EntityModelLayerRegistry.registerModelLayer(ScrollShelfBlockEntityRenderer.MODEL_LAYER, ScrollShelfBlockEntityRenderer::getTexturedModelData);
-	}
+        WorldRenderEvents.AFTER_ENTITIES.register(FlecksRenderer::render);
+
+        HudRenderCallback.EVENT.register(BarsRenderer::render);
+        HudRenderCallback.EVENT.register(SpellConstructErrorRenderer::render);
+
+        EntityModelLayerRegistry.registerModelLayer(ScrollShelfBlockEntityRenderer.MODEL_LAYER, ScrollShelfBlockEntityRenderer::getTexturedModelData);
+        EntityModelLayerRegistry.registerModelLayer(ModularSpellConstructBlockEntityRenderer.MODEL_LAYER, ModularSpellConstructBlockEntityRenderer::getTexturedModelData);
+    }
 }

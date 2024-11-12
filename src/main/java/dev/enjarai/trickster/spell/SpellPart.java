@@ -1,11 +1,11 @@
 package dev.enjarai.trickster.spell;
 
 import dev.enjarai.trickster.EndecTomfoolery;
-import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
+import dev.enjarai.trickster.util.SpellUtils;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import io.netty.buffer.Unpooled;
 import io.wispforest.endec.SerializationContext;
@@ -28,7 +28,15 @@ import java.util.zip.GZIPOutputStream;
 public final class SpellPart implements Fragment {
     public static final StructEndec<SpellPart> ENDEC = EndecTomfoolery.recursive(self -> StructEndecBuilder.of(
             Fragment.ENDEC.fieldOf("glyph", SpellPart::getGlyph),
-            self.listOf().fieldOf("sub_parts", SpellPart::getSubParts),
+            EndecTomfoolery.protocolVersionAlternatives(
+                    Map.of(
+                            (byte) 1, self.listOf()
+                    ),
+                    EndecTomfoolery.withAlternative(SpellInstruction.STACK_ENDEC.xmap(
+                            instructions -> SpellUtils.decodeInstructions(instructions, new Stack<>(), new Stack<>(), Optional.empty()),
+                            SpellUtils::flattenNode
+                    ), self).listOf()
+            ).fieldOf("sub_parts", SpellPart::getSubParts),
             SpellPart::new
     ));
 
@@ -64,7 +72,7 @@ public final class SpellPart implements Fragment {
 
     @Override
     public SpellExecutor makeFork(SpellContext ctx, List<Fragment> args) throws BlunderException {
-        return new DefaultSpellExecutor(this, ctx.executionState().recurseOrThrow(args));
+        return new DefaultSpellExecutor(this, ctx.state().recurseOrThrow(args));
     }
 
     /**
@@ -108,16 +116,13 @@ public final class SpellPart implements Fragment {
         return value;
     }
 
-    public void buildClosure(Map<Pattern, Fragment> replacements) {
+    public void buildClosure(Map<Fragment, Fragment> replacements) {
         subParts.forEach(part -> part.buildClosure(replacements));
 
         if (glyph instanceof SpellPart spellPart) {
             spellPart.buildClosure(replacements);
-        } else if (glyph instanceof PatternGlyph patternGlyph) {
-            var replacement = replacements.get(patternGlyph.pattern());
-            if (replacement != null) {
-                glyph = replacement;
-            }
+        } else if (replacements.containsKey(glyph)) {
+            glyph = replacements.get(glyph);
         }
     }
 
@@ -228,7 +233,7 @@ public final class SpellPart implements Fragment {
 
     public String toBase64() {
         var buf = Unpooled.buffer();
-        buf.writeByte(1);
+        buf.writeByte(2); // Protocol version
         ENDEC.encode(
                 SerializationContext.empty().withAttributes(EndecTomfoolery.UBER_COMPACT_ATTRIBUTE),
                 ByteBufSerializer.of(buf), this
@@ -240,12 +245,19 @@ public final class SpellPart implements Fragment {
                 buf.readBytes(zipStream, buf.writerIndex());
             }
         } catch (IOException e) {
+            buf.release();
             throw new RuntimeException("Spell encoding broke. what.");
         }
 
         var bytes = byteStream.toByteArray();
+        String result;
+        try {
+            result = Base64.getEncoder().encodeToString(Arrays.copyOfRange(bytes, 10, bytes.length));
+        } catch (Throwable e) {
+            buf.release();
+            throw e;
+        }
 
-        var result = Base64.getEncoder().encodeToString(Arrays.copyOfRange(bytes, 10, bytes.length));
         buf.release();
         return result;
     }
@@ -259,18 +271,25 @@ public final class SpellPart implements Fragment {
                 buf.writeBytes(zipStream.readAllBytes());
             }
         } catch (IOException e) {
+            buf.release();
             throw new RuntimeException("Spell decoding broke. what.");
         }
 
         var protocolVersion = buf.readByte();
-        if (protocolVersion != 1) {
-            Trickster.LOGGER.warn("Attempting to import spell with unknown protocol version: " + protocolVersion);
+        SpellPart result;
+        try {
+            result = ENDEC.decode(
+                    SerializationContext.empty().withAttributes(
+                            EndecTomfoolery.UBER_COMPACT_ATTRIBUTE,
+                            EndecTomfoolery.PROTOCOL_VERSION_ATTRIBUTE.instance(protocolVersion)
+                    ),
+                    ByteBufDeserializer.of(buf)
+            );
+        } catch (Throwable e) {
+            buf.release();
+            throw e;
         }
 
-        var result = ENDEC.decode(
-                SerializationContext.empty().withAttributes(EndecTomfoolery.UBER_COMPACT_ATTRIBUTE),
-                ByteBufDeserializer.of(buf)
-        );
         buf.release();
         return result;
     }

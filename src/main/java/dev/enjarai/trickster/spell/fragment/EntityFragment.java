@@ -62,6 +62,7 @@ public record EntityFragment(UUID uuid, Text name) implements Fragment {
         return new EntityFragment(entity.getUuid(), name);
     }
 
+    @SuppressWarnings("resource")
     public static boolean isValidEntity(Entity entity) {
         if (entity.getWorld() instanceof ServerWorld serverWorld) {
             return serverWorld.getChunkManager().chunkLoadingManager.getTicketManager()

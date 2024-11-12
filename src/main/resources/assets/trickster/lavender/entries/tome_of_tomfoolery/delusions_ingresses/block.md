@@ -56,4 +56,4 @@ vector -> number
 
 ---
 
-Returns the power level of the [Spell Resonator](^trickster:basics/spell_resonator) at the given position.
+Returns the power level of the [Spell Resonator](^trickster:items/spell_resonator) at the given position.

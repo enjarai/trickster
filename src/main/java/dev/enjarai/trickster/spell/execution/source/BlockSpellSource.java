@@ -1,59 +1,75 @@
 package dev.enjarai.trickster.spell.execution.source;
 
-import dev.enjarai.trickster.block.SpellCircleBlockEntity;
+import dev.enjarai.trickster.block.SpellConstructBlock;
 import dev.enjarai.trickster.spell.CrowMind;
 import dev.enjarai.trickster.spell.Fragment;
-import dev.enjarai.trickster.spell.mana.ManaLink;
-import dev.enjarai.trickster.spell.mana.ManaPool;
+import dev.enjarai.trickster.spell.execution.SpellExecutionManager;
+import dev.enjarai.trickster.spell.mana.CachedInventoryManaPool;
+import dev.enjarai.trickster.spell.mana.MutableManaPool;
+import dev.enjarai.trickster.spell.mana.generation.InventoryBlockManaHandler;
+import dev.enjarai.trickster.spell.mana.generation.ManaHandler;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.ItemEntity;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+
 import org.joml.Vector3d;
 import org.ladysnake.cca.api.v3.component.Component;
 import org.ladysnake.cca.api.v3.component.ComponentKey;
 
-import java.util.List;
 import java.util.Optional;
 
-public class BlockSpellSource extends SpellSource {
+public class BlockSpellSource<T extends BlockEntity & Inventory & CrowMind> implements SpellSource {
     public final ServerWorld world;
     public final BlockPos pos;
-    public final SpellCircleBlockEntity blockEntity;
+    public final T blockEntity;
+    public final CachedInventoryManaPool pool;
 
-    private BlockSpellSource(List<List<Fragment>> partGlyphStack, boolean destructive, boolean hasAffectedWorld, List<Integer> stacktrace, ManaPool manaPool, List<ManaLink> manaLinks, ServerWorld world, BlockPos pos) {
-        this.world = world;
-        this.pos = pos;
-        this.blockEntity = (SpellCircleBlockEntity) world.getBlockEntity(pos);
-    }
-
-    public BlockSpellSource(ServerWorld world, BlockPos pos, SpellCircleBlockEntity blockEntity) {
+    public BlockSpellSource(ServerWorld world, BlockPos pos, T blockEntity) {
         this.world = world;
         this.pos = pos;
         this.blockEntity = blockEntity;
+        this.pool = new CachedInventoryManaPool(blockEntity);
     }
 
     @Override
-    public ManaPool getManaPool() {
-        return blockEntity.manaPool;
-    }
-
-    @Override
-    public <T extends Component> Optional<T> getComponent(ComponentKey<T> key) {
+    public <C extends Component> Optional<C> getComponent(ComponentKey<C> key) {
         return key.maybeGet(blockEntity);
     }
 
     @Override
     public float getHealth() {
-        return 25;
+        return -1;
     }
 
     @Override
     public float getMaxHealth() {
-        return 25;
+        return -1;
+    }
+
+    @Override
+    public MutableManaPool getManaPool() {
+        return pool;
     }
 
     @Override
     public Vector3d getPos() {
-        return new Vector3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+        var pos = this.pos.toCenterPos();
+        return new Vector3d(pos.x, pos.y, pos.z);
+    }
+
+    @Override
+    public BlockPos getBlockPos() {
+        return pos;
+    }
+
+    @Override
+    public Optional<Vector3d> getFacing() {
+        return blockEntity.getCachedState().getOrEmpty(Properties.FACING).map(Direction::getUnitVector).map(v -> v.get(new Vector3d()));
     }
 
     @Override
@@ -63,12 +79,30 @@ public class BlockSpellSource extends SpellSource {
 
     @Override
     public Fragment getCrowMind() {
-        return blockEntity.crowMind.fragment();
+        return blockEntity.getCrowMind();
     }
 
     @Override
     public void setCrowMind(Fragment fragment) {
-        blockEntity.crowMind = new CrowMind(fragment);
-        blockEntity.markDirty();
+        blockEntity.setCrowMind(fragment);
+    }
+
+    @Override
+    public Optional<SpellExecutionManager> getExecutionManager() {
+        if (blockEntity instanceof SpellExecutionManager manager)
+            return Optional.of(manager);
+
+        return Optional.empty();
+    }
+
+    @Override
+    public ManaHandler getManaHandler() {
+        return new InventoryBlockManaHandler(pos);
+    }
+
+    @Override
+    public void offerOrDropItem(ItemStack stack) {
+        var pos = getPos();
+        world.spawnEntity(new ItemEntity(world, pos.x, pos.y, pos.z, stack));
     }
 }

@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " B ",
+        "ATA",
+        "TTT"
+    ],
+    "key": {
+        "B": {
+            "item": "minecraft:blaze_powder"
+        },
+        "A": {
+            "item": "minecraft:amethyst_shard"
+        },
+        "T": {
+            "item": "minecraft:tuff"
+        }
+    },
+    "result": {
+        "id": "trickster:modular_spell_construct",
+        "count": 1
+    }
+}

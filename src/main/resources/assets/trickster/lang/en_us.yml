@@ -99,9 +99,7 @@ trickster:
     get_max_health: Vigor Ingress
     get_health: Fettle Ingress
     get_armour: Bulwark Ingress
-    get_mana: Ingress of Authority
     get_velocity: Movement Ingress
-    leech_mana: Conduit's Ploy
     add_velocity: Impulse Ploy
     store_entity: Containment Ploy
     release_entity: Extrication Ploy
@@ -117,9 +115,6 @@ trickster:
     block_find_entity: Embracing Ingress
     range_find_entity: Ingress of Shared Fate
 
-    create_spell_circle: Sisyphus Ploy
-    delete_spell_circle: Ploy of the Bigger Boulder
-
     execute: Grand Stratagem
     execute_same_scope: Quiet Distortion
     fork: Utensil Stratagem
@@ -127,6 +122,8 @@ trickster:
     try_catch: Cautious Stratagem
     closure: Closure Stratagem
     supplier: Supply Distortion
+    kill_thread: Executioner's Ploy
+    current_thread: Delusion of Order
     load_argument_1: Primary Delusion
     load_argument_2: Secondary Delusion
     load_argument_3: Tertiary Delusion
@@ -167,9 +164,6 @@ trickster:
     conjure_water: Aquatic Ploy
     conjure_light: Illumination Ploy
     drain_fluid: Drought Ploy
-    destabilize_block: Earthquake Ploy
-    disguise_block: Shadow Ploy
-    dispel_block_disguise: Revelation Ploy
     power_resonator: Resonance Ploy
 
     get_block_hardness: Ingress of Hardness
@@ -186,7 +180,7 @@ trickster:
     other_hand_slot: Catch Delusion
     get_item_in_slot: Fence's Ingress
     get_inventory_slot: Intrusive Ingress
-    drop_stack_from_slot: Benevolent Ploy
+    drop_stack_from_slot: Ploy of Offering
 
     type_fragment: Argumentative Distortion
     hash_values: Decaying Distortion
@@ -209,6 +203,10 @@ trickster:
     hidden_transmog: Ploy of Subterfuge
     remove_transmog: Ploy of Origin
     get_transmog: Ingress of Transmogrification
+
+    battery_creation: Ploy of the Moon Watcher
+    push_mana: Benevolent Conduit's Ploy
+    pull_mana: Malevolent Conduit's Ploy
 
   fragment.trickster:
     type: Type
@@ -282,9 +280,20 @@ item.trickster:
   wand: Wand
   macro_ring: Macro Ring
 
+  amethyst_knot: Amethyst Knot
+  emerald_knot: Emerald Knot
+  diamond_knot: Diamond Knot
+  echo_knot: Echo Knot
+  cracked_echo_knot: Cracked Echo Knot
+
+  spell_core: Spell Core
+  rusted_spell_core: Rusted Spell Core
+  ominous_spell_core: Ominous Spell Core
+
 block.trickster:
   spell_resonator: Spell Resonator
-  spell_circle: Spell Circle
+  spell_construct: Spell Construct
+  modular_spell_construct: Modular Spell Construct
   light: Light
   scroll_shelf: Scroll Shelf
 

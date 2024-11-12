@@ -56,7 +56,7 @@ public class SpellPreviewComponent extends BaseComponent {
             public Hamt<Pattern, SpellPart> getMacros() {
                 return Hamt.empty();
             }
-        });
+        }, false);
         this.wrapped.setMutable(false);
         this.wrapped.renderer.setColor(0.2f, 0.2f, 0.2f);
         this.wrapped.renderer.setCircleTransparency(0.6f);
@@ -144,7 +144,7 @@ public class SpellPreviewComponent extends BaseComponent {
         try {
             spell = SpellPart.fromBase64(spellString);
         } catch (Exception e) {
-            throw new UIModelParsingException("Not a valid spell: " + spellString);
+            throw new UIModelParsingException("Not a valid spell: " + spellString, e);
         }
 
         return new SpellPreviewComponent(spell);

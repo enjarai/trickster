@@ -11,13 +11,13 @@ import oshi.util.tuples.Pair;
 
 import java.util.*;
 
-public class LocateGlyphsTrick extends MetaTrick {
+public class LocateGlyphsTrick extends AbstractMetaTrick {
     public LocateGlyphsTrick() {
         super(Pattern.of(6, 7, 8, 2, 1, 0, 4, 8, 5, 2));
     }
 
     @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment distort(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var spell = expectInput(fragments, SpellPart.class, 0);
         var glyph = expectInput(fragments, Fragment.class, 1);
 

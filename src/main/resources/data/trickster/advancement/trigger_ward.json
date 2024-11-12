@@ -1,0 +1,22 @@
+{
+  "display": {
+    "icon": {
+      "id": "trickster:warding_charm"
+    },
+    "title": {
+      "text": "Offense is the Best Defense"
+    },
+    "description": {
+      "text": "Have your personal Ward triggered by a direct Ploy"
+    },
+    "frame": "task",
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "trickster:inscribe_spell",
+  "criteria": {
+    "trigger_ward": {
+      "trigger": "trickster:trigger_ward"
+    }
+  }
+}

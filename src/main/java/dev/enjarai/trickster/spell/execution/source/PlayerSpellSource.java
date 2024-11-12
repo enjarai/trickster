@@ -3,18 +3,22 @@ package dev.enjarai.trickster.spell.execution.source;
 import dev.enjarai.trickster.ModAttachments;
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.component.ModComponents;
-import dev.enjarai.trickster.spell.CrowMind;
+import dev.enjarai.trickster.spell.CrowMindAttachment;
+import net.minecraft.util.math.BlockPos;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.execution.SpellExecutionManager;
 import dev.enjarai.trickster.spell.fragment.SlotFragment;
-import dev.enjarai.trickster.spell.mana.ManaPool;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
+import dev.enjarai.trickster.spell.mana.MutableManaPool;
+import dev.enjarai.trickster.spell.mana.generation.ManaHandler;
+import dev.enjarai.trickster.spell.mana.generation.PlayerManaHandler;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
+import dev.enjarai.trickster.spell.mana.CachedInventoryManaPool;
 import net.minecraft.server.world.ServerWorld;
 import org.joml.Vector3d;
 import org.ladysnake.cca.api.v3.component.Component;
@@ -24,18 +28,14 @@ import java.util.*;
 import java.util.function.Predicate;
 
 @SuppressWarnings("UnstableApiUsage")
-public class PlayerSpellSource extends SpellSource {
+public class PlayerSpellSource implements SpellSource {
     private final ServerPlayerEntity player;
+    private final CachedInventoryManaPool pool;
     private final EquipmentSlot slot = EquipmentSlot.MAINHAND;
 
     public PlayerSpellSource(ServerPlayerEntity player) {
-        super();
         this.player = player;
-    }
-
-    @Override
-    public ManaPool getManaPool() {
-        return player.getComponent(ModEntityComponents.MANA);
+        this.pool = new CachedInventoryManaPool(player.getInventory());
     }
 
     @Override
@@ -94,6 +94,11 @@ public class PlayerSpellSource extends SpellSource {
         return player.getMaxHealth();
     }
 
+    @Override
+    public MutableManaPool getManaPool() {
+        return pool;
+    }
+
     public static boolean isSpellStack(ItemStack stack) {
         return stack.contains(ModComponents.FRAGMENT) ||
                 (stack.contains(DataComponentTypes.CONTAINER) && stack.contains(ModComponents.SELECTED_SLOT));
@@ -102,6 +107,16 @@ public class PlayerSpellSource extends SpellSource {
     @Override
     public Vector3d getPos() {
         return new Vector3d(player.getX(), player.getY(), player.getZ());
+    }
+
+    @Override
+    public BlockPos getBlockPos() {
+        return player.getBlockPos();
+    }
+
+    @Override
+    public Optional<Vector3d> getFacing() {
+        return Optional.of(player.getRotationVector().toVector3d());
     }
 
     @Override
@@ -120,6 +135,16 @@ public class PlayerSpellSource extends SpellSource {
 
     @Override
     public void setCrowMind(Fragment fragment) {
-        player.setAttached(ModAttachments.CROW_MIND, new CrowMind(fragment));
+        player.setAttached(ModAttachments.CROW_MIND, new CrowMindAttachment(fragment));
+    }
+
+    @Override
+    public ManaHandler getManaHandler() {
+        return new PlayerManaHandler(player);
+    }
+
+    @Override
+    public void offerOrDropItem(ItemStack stack) {
+        player.getInventory().offerOrDrop(stack);
     }
 }

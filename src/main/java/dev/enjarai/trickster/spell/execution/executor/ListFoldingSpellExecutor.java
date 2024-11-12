@@ -4,6 +4,7 @@ import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.SpellPart;
+import dev.enjarai.trickster.spell.execution.TickData;
 import dev.enjarai.trickster.spell.execution.ExecutionState;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
@@ -55,7 +56,7 @@ public class ListFoldingSpellExecutor implements SpellExecutor {
     }
 
     public ListFoldingSpellExecutor(SpellContext ctx, SpellPart executable, ListFragment list, Fragment initial) {
-        this(ctx.executionState(), executable, list, new Stack<>(), Optional.empty(), initial);
+        this(ctx.state(), executable, list, new Stack<>(), Optional.empty(), initial);
         this.elements.addAll(list.fragments().reversed());
     }
 
@@ -65,16 +66,21 @@ public class ListFoldingSpellExecutor implements SpellExecutor {
     }
 
     @Override
-    public Optional<Fragment> run(SpellSource source, ExecutionCounter executions) throws BlunderException {
-        return run(new SpellContext(source, state), executions);
+    public SpellPart spell() {
+        return executable;
     }
 
     @Override
-    public Optional<Fragment> run(SpellContext ctx, ExecutionCounter executions) throws BlunderException {
+    public Optional<Fragment> run(SpellSource source, TickData data) throws BlunderException {
+        return run(new SpellContext(state, source, data));
+    }
+
+    @Override
+    public Optional<Fragment> run(SpellContext ctx) throws BlunderException {
         lastRunExecutions = 0;
 
         if (child.isPresent()) {
-            var result = runChild(ctx, executions);
+            var result = runChild(ctx);
 
             if (result.isEmpty())
                 return result;
@@ -83,7 +89,7 @@ public class ListFoldingSpellExecutor implements SpellExecutor {
         int size = elements.size();
 
         for (int i = 0; i < size; i++) {
-            if (executions.isLimitReached()) {
+            if (ctx.data().isExecutionLimitReached()) {
                 return Optional.empty();
             }
 
@@ -99,24 +105,23 @@ public class ListFoldingSpellExecutor implements SpellExecutor {
                     )
             );
 
-            var result = runChild(ctx, executions);
+            var result = runChild(ctx);
 
             if (result.isEmpty())
                 return result;
 
-            executions.increment();
-            lastRunExecutions = executions.getExecutions();
+            ctx.data().incrementExecutions();
+            lastRunExecutions = ctx.data().getExecutions();
         }
 
         return Optional.of(last);
     }
 
-    protected Optional<Fragment> runChild(SpellContext ctx, ExecutionCounter executions) {
-        var result = child.flatMap(c -> c.run(ctx.source(), executions));
+    protected Optional<Fragment> runChild(SpellContext ctx) {
+        var result = child.flatMap(c -> c.run(ctx.source(), ctx.data()));
 
         if (result.isPresent()) {
             last = result.get();
-            state.syncLinksFrom(child.get().getCurrentState());
             child = Optional.empty();
         }
 

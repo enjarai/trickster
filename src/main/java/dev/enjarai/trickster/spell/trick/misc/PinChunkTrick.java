@@ -21,7 +21,7 @@ public class PinChunkTrick extends Trick {
         var pos = expectInput(fragments, FragmentType.VECTOR, 0);
         var chunkPos = new ChunkPos(pos.toBlockPos());
 
-        ctx.useMana(this, 32);
+        ctx.useMana(this, 4);
         ModWorldComponents.PINNED_CHUNKS.get(ctx.source().getWorld()).pinChunk(chunkPos);
 
         return pos;

@@ -10,7 +10,7 @@ Listed here are ploys that interact with inventory slots or other inventory feat
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:drop_stack_from_slot,title=Benevolent Ploy|>
+<|glyph@trickster:templates|trick-id=trickster:drop_stack_from_slot,title=Ploy of Offering|>
 
 slot, vector, [number] -> entity
 
@@ -26,4 +26,4 @@ number -> boolean
 
 ---
 
-Sets the selected slot in the caster's [Top Hat](^trickster:basics/top_hat), returning a boolean based on success.
+Sets the selected slot in the caster's [Top Hat](^trickster:items/top_hat), returning a boolean based on success.

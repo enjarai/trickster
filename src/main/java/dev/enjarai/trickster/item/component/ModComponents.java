@@ -26,6 +26,14 @@ public class ModComponents {
             register("entity_storage", builder -> builder
                     .codec(EntityStorageComponent.CODEC)
                     .cache());
+    public static final ComponentType<ManaComponent> MANA =
+            register("mana", builder -> builder
+                    .codec(ManaComponent.CODEC)
+                    .cache());
+    public static final ComponentType<SpellCoreComponent> SPELL_CORE =
+            register("spell_core", builder -> builder
+                    .codec(SpellCoreComponent.CODEC)
+                    .cache());
 
     private static <T> ComponentType<T> register(String id, UnaryOperator<ComponentType.Builder<T>> builderOperator) {
         return Registry.register(Registries.DATA_COMPONENT_TYPE, Trickster.id(id), (builderOperator.apply(ComponentType.builder())).build());

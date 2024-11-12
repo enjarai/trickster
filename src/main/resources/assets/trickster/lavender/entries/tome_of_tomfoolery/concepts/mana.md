@@ -6,19 +6,25 @@
 }
 ```
 
-Mana is what fuels your ploys. It's the cost of manipulating the world.
+Mana is what fuels ploys. It is the cost of manipulating the world.
 
 
-As is tradition, amounts of mana are measured in gandalfs, or G. 
-Any amount of mana that is lesser than one kilogandalf (kG) is generally considered negligible. 
-Most players have a maximum mana reserve of 240 kilogandalfs.
+As is tradition, amounts of Mana are measured in Gandalfs, or G, named after a certain famous wizard.
+One Gandalf being defined as the amount of magical energy required to light a candle.
 
 ;;;;;
 
-Keep in mind that once you run out of mana, any deficit will be drawn from your very life. 
-Using mana in this way will consume your health, and is referred to as bloodcasting.
-The average player has 40 kilogandalfs of mana in their blood.
+Any amount of Mana that is lesser than one kiloGandalf, or kG is generally considered negligible.
 
 
-Concretely, mana regenerates over time at 0.5%/s. Maximum mana is always equivalent to maximum health times twelve. 
-Current blood mana is always equivalent to current health times two.
+Draw rate, or any change in Mana, is measured in Merlins, or M.
+Merlins are defined as Gandalfs per Tick,
+Ticks being the smallest unit of meaningful time, at 1/20th of a second.
+
+
+For example, a spell drawing 50 M would consume 1 kiloGandalf per second.
+
+;;;;;
+
+Mana can be persistently stored and acquired via Knots.
+See [this entry](^trickster:items/knots) for more information on those.

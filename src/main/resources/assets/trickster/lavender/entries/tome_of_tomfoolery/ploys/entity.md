@@ -14,7 +14,7 @@ Various tricks related to manipulating entities.
 
 entity, vector -> entity
 
-<|cost-rule@trickster:templates|formula=3kG + length^2 * 2kG|>
+<|cost-rule@trickster:templates|formula=3kG + length^3 * 2kG|>
 
 Applies the given vector as velocity to the given entity.
 
@@ -24,7 +24,7 @@ Applies the given vector as velocity to the given entity.
 
 entity, entity ->
 
-<|cost-rule@trickster:templates|formula=480kG|>
+<|cost-rule@trickster:templates|formula=8000kG|>
 
 Polymorphs the first entity to appear to be the second in every way. Only works with players.
 
@@ -34,7 +34,7 @@ Polymorphs the first entity to appear to be the second in every way. Only works 
 
 entity -> entity
 
-<|cost-rule@trickster:templates|formula=70kG|>
+<|cost-rule@trickster:templates|formula=1000kG|>
 
 Dispels any polymorph on the given entity.
 
@@ -44,7 +44,7 @@ Dispels any polymorph on the given entity.
 
 entity ->
 
-<|cost-rule@trickster:templates|formula=60kG + distance ^ (distance / 5kG)|>
+<|cost-rule@trickster:templates|formula=2000kG + distance ^ (distance / 5kG)|>
 
 Stores the given entity in the caster's offhand item. 
 The item must support entity storage, and the entity must not be a player.
@@ -55,7 +55,7 @@ The item must support entity storage, and the entity must not be a player.
 
 vector -> entity | void
 
-<|cost-rule@trickster:templates|formula=60kG + distance ^ (distance / 5kG)|>
+<|cost-rule@trickster:templates|formula=2000kG + distance ^ (distance / 5kG)|>
 
 Releases the entity stored in the caster's offhand item to the given position, returning it. 
 Returns void if there is no entity.
@@ -66,6 +66,6 @@ Returns void if there is no entity.
 
 entity, number -> entity
 
-<|cost-rule@trickster:templates|formula=abs(currentScale - newScale)^2 * 10kG + newScale * 50kG|>
+<|cost-rule@trickster:templates|formula=abs(currentScale - newScale)^2 * 100kG + newScale * 50kG|>
 
 Changes the scale of the given entity. Entities cannot be scaled below 0.0625 or above 8 times their usual size.

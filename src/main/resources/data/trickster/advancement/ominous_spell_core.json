@@ -1,0 +1,29 @@
+{
+  "display": {
+    "icon": {
+      "id": "trickster:ominous_spell_core"
+    },
+    "title": {
+      "text": "Best of Both Worlds"
+    },
+    "description": {
+      "text": "Acquire an Ominous Spell Core"
+    },
+    "frame": "task",
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "trickster:modular_spell_construct",
+  "criteria": {
+    "pickup_rusted_core": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "trickster:ominous_spell_core"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -15,6 +15,7 @@ public class ModNetworking {
         CHANNEL.registerServerbound(ClipBoardSpellResponsePacket.class, ClipBoardSpellResponsePacket.ENDEC, ClipBoardSpellResponsePacket::handleServer);
         CHANNEL.registerServerbound(LoadExampleSpellPacket.class, LoadExampleSpellPacket.ENDEC, LoadExampleSpellPacket::handleServer);
         CHANNEL.registerServerbound(SpellEditPacket.class, SpellEditPacket::handleServer);
+        CHANNEL.registerServerbound(SubscribeToPoolPacket.class, SubscribeToPoolPacket::handleServer);
 
         CHANNEL.registerClientboundDeferred(RebuildChunkPacket.class);
         CHANNEL.registerClientboundDeferred(GrabClipboardSpellPacket.class);

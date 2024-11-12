@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.spell.fragment;
 
 import dev.enjarai.trickster.EndecTomfoolery;
+import dev.enjarai.trickster.pond.SlotHolderDuck;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.*;
@@ -8,6 +9,8 @@ import dev.enjarai.trickster.spell.trick.Trick;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
+import io.wispforest.owo.serialization.endec.EitherEndec;
+import net.minecraft.entity.Entity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -15,11 +18,14 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.Optional;
+import java.util.UUID;
 
-public record SlotFragment(int slot, Optional<BlockPos> source) implements Fragment {
+import com.mojang.datafixers.util.Either;
+
+public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) implements Fragment {
     public static final StructEndec<SlotFragment> ENDEC = StructEndecBuilder.of(
             Endec.INT.fieldOf("slot", SlotFragment::slot),
-            EndecTomfoolery.safeOptionalOf(EndecTomfoolery.ALWAYS_READABLE_BLOCK_POS).fieldOf("source", SlotFragment::source),
+            EndecTomfoolery.safeOptionalOf(new EitherEndec<>(EndecTomfoolery.ALWAYS_READABLE_BLOCK_POS, EndecTomfoolery.UUID, true)).fieldOf("source", SlotFragment::source),
             SlotFragment::new
     );
 
@@ -31,7 +37,12 @@ public record SlotFragment(int slot, Optional<BlockPos> source) implements Fragm
     @Override
     public Text asText() {
         return Text.literal("slot %d at %s".formatted(slot,
-                source.map(blockPos -> "(%d, %d, %d)".formatted(blockPos.getX(), blockPos.getY(), blockPos.getZ())).orElse("caster")));
+                source.map(either -> {
+                    var mapped = either
+                        .mapLeft(blockPos -> "(%d, %d, %d)".formatted(blockPos.getX(), blockPos.getY(), blockPos.getZ()))
+                        .mapRight(uuid -> uuid.toString());
+                    return mapped.right().orElseGet(() -> mapped.left().get());
+                }).orElse("caster")));
     }
 
     @Override
@@ -41,7 +52,7 @@ public record SlotFragment(int slot, Optional<BlockPos> source) implements Fragm
 
     @Override
     public int getWeight() {
-        return 48;
+        return 64;
     }
 
     public ItemStack move(Trick trickSource, SpellContext ctx) throws BlunderException {
@@ -58,10 +69,8 @@ public record SlotFragment(int slot, Optional<BlockPos> source) implements Fragm
         if (stack.getCount() < amount)
             throw new MissingItemBlunder(trickSource);
 
-        var result = stack.copyWithCount(amount);
-        source.ifPresent(sourcePos -> ctx.useMana(trickSource, (float) (amount * (32 + (pos.toCenterPos().distanceTo(sourcePos.toCenterPos()) * 0.8)))));
-        stack.decrement(amount);
-        return result;
+        ctx.useMana(trickSource, getMoveCost(trickSource, ctx, pos, amount));
+        return takeFromSlot(trickSource, ctx, amount);
     }
 
     /**
@@ -81,21 +90,77 @@ public record SlotFragment(int slot, Optional<BlockPos> source) implements Fragm
     }
 
     private ItemStack getStack(Trick trickSource, SpellContext ctx) throws BlunderException {
-        Inventory inventory;
-        if (source.isPresent()) {
-            if (ctx.source().getWorld().getBlockEntity(source.get()) instanceof Inventory entity)
-                inventory = entity;
-            else throw new BlockInvalidBlunder(trickSource);
-        } else {
-            if (ctx.source().getPlayer().isPresent())
-                inventory = ctx.source().getPlayer().get().getInventory();
-            else throw new NoPlayerBlunder(trickSource);
-        }
+        SlotHolderDuck inventory = getInventory(trickSource, ctx);
 
-
-        if (slot > inventory.size())
+        if (slot < 0 || slot >= inventory.trickster$slot_holder$size())
             throw new NoSuchSlotBlunder(trickSource);
 
-        return inventory.getStack(slot);
+        return inventory.trickster$slot_holder$getStack(slot);
+    }
+
+    private ItemStack takeFromSlot(Trick trickSource, SpellContext ctx, int amount) throws BlunderException {
+        SlotHolderDuck inventory = getInventory(trickSource, ctx);
+
+        if (slot < 0 || slot >= inventory.trickster$slot_holder$size())
+            throw new NoSuchSlotBlunder(trickSource);
+
+        return inventory.trickster$slot_holder$takeFromSlot(slot, amount);
+    }
+
+    private SlotHolderDuck getInventory(Trick trickSource, SpellContext ctx) throws BlunderException {
+        return source.map(s -> {
+            if (s.left().isPresent()) {
+                var e = ctx.source().getWorld().getBlockEntity(s.left().get());
+                if (e instanceof SlotHolderDuck holder)
+                    return holder;
+                else if (e instanceof Inventory inv)
+                    return new BridgedSlotHolder(inv);
+                else throw new BlockInvalidBlunder(trickSource);
+            } else {
+                var e = ctx.source().getWorld().getEntity(s.right().get());
+                if (e instanceof SlotHolderDuck holder)
+                    return holder;
+                else if (e instanceof Inventory inv)
+                    return new BridgedSlotHolder(inv);
+                else throw new EntityInvalidBlunder(trickSource);
+            }
+        }).orElseGet(() -> ctx.source().getPlayer()
+            .map(player -> new BridgedSlotHolder(player.getInventory()))
+            .orElseThrow(() -> new NoPlayerBlunder(trickSource)));
+    }
+
+    private float getMoveCost(Trick trickSource, SpellContext ctx, BlockPos pos, int amount) throws BlunderException {
+        return source.map(s -> {
+            if (s.left().isPresent()) {
+                return s.left().get().toCenterPos();
+            } else {
+                if (ctx.source().getWorld().getEntity(s.right().get()) instanceof Entity entity)
+                    return entity.getPos();
+                else throw new EntityInvalidBlunder(trickSource);
+            }
+        }).map(blockPos -> 8 + (float) (pos.toCenterPos().distanceTo(blockPos) * amount * 0.5)).orElse(0f);
+    }
+
+    private class BridgedSlotHolder implements SlotHolderDuck {
+        private Inventory inv;
+
+        public BridgedSlotHolder(Inventory inv) {
+            this.inv = inv;
+        }
+
+        public int trickster$slot_holder$size() {
+            return inv.size();
+        }
+
+        public ItemStack trickster$slot_holder$getStack(int slot) {
+            return inv.getStack(slot);
+        }
+
+        public ItemStack trickster$slot_holder$takeFromSlot(int slot, int amount) {
+            var stack = inv.getStack(slot);
+            var result = stack.copyWithCount(amount);
+            stack.decrement(amount);
+            return result;
+        }
     }
 }

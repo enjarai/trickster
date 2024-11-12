@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.spell.trick.block;
 
+import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.block.SpellControlledRedstoneBlock;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
@@ -43,6 +44,7 @@ public class PowerResonatorTrick extends Trick {
                         null, blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5,
                         SoundEvents.BLOCK_BELL_USE, SoundCategory.BLOCKS, 1, 1.6f + 0.1f / 3 * intPower, 0
                 );
+                ctx.source().getPlayer().ifPresent(ModCriteria.TRIGGER_RESONATOR::trigger);
 
                 return BooleanFragment.TRUE;
             }

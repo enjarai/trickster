@@ -1,0 +1,29 @@
+{
+  "display": {
+    "icon": {
+      "id": "trickster:cracked_echo_knot"
+    },
+    "title": {
+      "text": "Broken and Alone"
+    },
+    "description": {
+      "text": "Find a Cracked Echo Knot"
+    },
+    "frame": "task",
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "trickster:cast_spell",
+  "criteria": {
+    "pickup_echo_knot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "trickster:cracked_echo_knot"
+          }
+        ]
+      }
+    }
+  }
+}

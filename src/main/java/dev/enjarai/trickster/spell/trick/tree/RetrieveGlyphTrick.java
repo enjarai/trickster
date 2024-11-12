@@ -10,13 +10,13 @@ import dev.enjarai.trickster.spell.blunder.BlunderException;
 
 import java.util.*;
 
-public class RetrieveGlyphTrick extends MetaTrick {
+public class RetrieveGlyphTrick extends AbstractMetaTrick {
     public RetrieveGlyphTrick() {
         super(Pattern.of(2, 1, 0, 4, 6, 7, 8));
     }
 
     @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment distort(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var spell = expectInput(fragments, SpellPart.class, 0);
         var addressFragment = expectInput(fragments, ListFragment.class, 1);
 

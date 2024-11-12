@@ -1,0 +1,9 @@
+{
+    "sources": [
+        {
+            "type": "directory",
+            "source": "entity/modular_spell_construct",
+            "prefix": "entity/modular_spell_construct/"
+        }
+    ]
+}

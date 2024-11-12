@@ -49,7 +49,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
     public final SpellCircleRenderer renderer;
 
-    public SpellPartWidget(SpellPart spellPart, double x, double y, double size, RevisionContext revisionContext) {
+    public SpellPartWidget(SpellPart spellPart, double x, double y, double size, RevisionContext revisionContext, boolean animated) {
         this.rootSpellPart = spellPart;
         this.spellPart = spellPart;
         this.originalPosition = new Vector2d(toScaledSpace(x), toScaledSpace(y));
@@ -57,7 +57,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         this.y = toScaledSpace(y);
         this.size = toScaledSpace(size);
         this.revisionContext = revisionContext;
-        this.renderer = new SpellCircleRenderer(() -> this.drawingPart, () -> this.drawingPattern, PRECISION_OFFSET);
+        this.renderer = new SpellCircleRenderer(() -> this.drawingPart, () -> this.drawingPattern, PRECISION_OFFSET, animated);
         this.angleOffsets.push(0d);
     }
 

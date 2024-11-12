@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "id": "trickster:spell_construct"
+    },
+    "title": {
+      "text": "Don't Do it Yourself"
+    },
+    "description": {
+      "text": "Craft a Spell Construct"
+    },
+    "frame": "task",
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "trickster:cast_spell",
+  "criteria": {
+    "craft_spell_circle": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "trickster:spell_construct"
+      }
+    }
+  }
+}

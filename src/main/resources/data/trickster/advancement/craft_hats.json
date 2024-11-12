@@ -1,0 +1,49 @@
+{
+  "display": {
+    "icon": {
+      "id": "trickster:fez"
+    },
+    "title": {
+      "text": "Mad Hatter"
+    },
+    "description": {
+      "text": "Have one of each type of hat"
+    },
+    "frame": "challenge",
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "trickster:root",
+  "criteria": {
+    "top_hat": {
+      "conditions": {
+        "items": [
+          {
+            "items": "trickster:top_hat"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "witch_hat": {
+      "conditions": {
+        "items": [
+          {
+            "items": "trickster:witch_hat"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "fez": {
+      "conditions": {
+        "items": [
+          {
+            "items": "trickster:fez"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  }
+}

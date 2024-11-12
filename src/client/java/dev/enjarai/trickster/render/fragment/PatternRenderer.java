@@ -56,7 +56,7 @@ public class PatternRenderer implements FragmentRenderer<PatternGlyph> {
         for (var line : pattern.entries()) {
             var first = getPatternDotPosition(x, y, line.p1(), size);
             var second = getPatternDotPosition(x, y, line.p2(), size);
-            drawGlyphLine(matrices, vertexConsumers, first, second, pixelSize, false, 1, r, g, b, 0.7f * alpha);
+            drawGlyphLine(matrices, vertexConsumers, first, second, pixelSize, false, 1, r, g, b, 0.7f * alpha, delegator.animated);
         }
 
         //        var pixelSize = size / PART_PIXEL_RADIUS;

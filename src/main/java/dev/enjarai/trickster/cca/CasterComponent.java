@@ -8,8 +8,8 @@ import dev.enjarai.trickster.spell.execution.SpellQueueResult;
 import dev.enjarai.trickster.spell.execution.executor.ErroredSpellExecutor;
 import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
-import dev.enjarai.trickster.spell.execution.SpellExecutionManager;
-import dev.enjarai.trickster.spell.mana.ManaPool;
+import dev.enjarai.trickster.spell.execution.PlayerSpellExecutionManager;
+import dev.enjarai.trickster.spell.mana.MutableManaPool;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.impl.KeyedEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
@@ -33,7 +33,7 @@ import java.util.Optional;
 
 public class CasterComponent implements ServerTickingComponent, AutoSyncedComponent {
     private final PlayerEntity player;
-    private SpellExecutionManager executionManager;
+    private PlayerSpellExecutionManager executionManager;
     private Int2ObjectMap<RunningSpellData> runningSpellData = new Int2ObjectOpenHashMap<>();
     private int lastSentSpellDataHash;
     private int wait;
@@ -45,17 +45,13 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
                     EndecTomfoolery.safeOptionalOf(MinecraftEndecs.TEXT).optionalFieldOf("message", RunningSpellData::message, Optional.empty()),
                     RunningSpellData::new
             ));
-    public static final KeyedEndec<SpellExecutionManager> EXECUTION_MANAGER_ENDEC =
-            SpellExecutionManager.ENDEC.keyed("manager", () -> new SpellExecutionManager(5));
+    public static final KeyedEndec<PlayerSpellExecutionManager> EXECUTION_MANAGER_ENDEC =
+            PlayerSpellExecutionManager.ENDEC.keyed("manager", () -> new PlayerSpellExecutionManager(5));
 
     public CasterComponent(PlayerEntity player) {
         this.player = player;
         // TODO: make capacity of execution manager an attribute
-        this.executionManager = new SpellExecutionManager(5);
-
-        if (!player.getWorld().isClient()) {
-            this.executionManager.setSource(new PlayerSpellSource((ServerPlayerEntity) player));
-        }
+        this.executionManager = new PlayerSpellExecutionManager(5);
     }
 
     @Override
@@ -66,7 +62,7 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
         }
 
         runningSpellData.clear();
-        executionManager.tick(this::afterExecutorTick, this::completeExecutor, this::executorError);
+        executionManager.tick(new PlayerSpellSource((ServerPlayerEntity) player), this::afterExecutorTick, this::completeExecutor, this::executorError);
         ModEntityComponents.CASTER.sync(player);
     }
 
@@ -99,7 +95,6 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
     @Override
     public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
         executionManager = tag.get(EXECUTION_MANAGER_ENDEC);
-        executionManager.setSource(new PlayerSpellSource((ServerPlayerEntity) player));
         waitTicks(20);
     }
 
@@ -131,14 +126,14 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
         buf.write(SPELL_DATA_ENDEC, runningSpellData);
     }
 
-    public boolean queueSpell(SpellPart spell, List<Fragment> arguments) {
+    public int queueSpell(SpellPart spell, List<Fragment> arguments) {
         playCastSound(0.8f, 0.1f);
         return executionManager.queue(spell, arguments);
     }
 
-    public SpellQueueResult queueSpellAndCast(SpellPart spell, List<Fragment> arguments, Optional<ManaPool> poolOverride) {
+    public SpellQueueResult queueSpellAndCast(SpellPart spell, List<Fragment> arguments, Optional<MutableManaPool> poolOverride) {
         playCastSound(0.8f, 0.1f);
-        return executionManager.queueAndCast(spell, arguments, poolOverride);
+        return executionManager.queueAndCast(new PlayerSpellSource((ServerPlayerEntity) player), spell, arguments, poolOverride);
     }
 
     public void killAll() {
@@ -150,7 +145,7 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
 //        playCastSound(0.6f, 0.1f);
     }
 
-    public SpellExecutionManager getExecutionManager() {
+    public PlayerSpellExecutionManager getExecutionManager() {
         return executionManager;
     }
 

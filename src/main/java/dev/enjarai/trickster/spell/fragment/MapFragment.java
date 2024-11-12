@@ -47,8 +47,8 @@ public record MapFragment(Hamt<Fragment, Fragment> map) implements Fragment {
         return !map.isEmpty();
     }
 
-	@Override
-	public int getWeight() {
+    @Override
+    public int getWeight() {
         int weight = 16;
 
         for (var kv : map) {
@@ -57,7 +57,7 @@ public record MapFragment(Hamt<Fragment, Fragment> map) implements Fragment {
         }
 
         return weight;
-	}
+    }
 
     @Override
     public MapFragment applyEphemeral() {

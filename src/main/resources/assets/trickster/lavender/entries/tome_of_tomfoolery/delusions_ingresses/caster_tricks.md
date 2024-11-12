@@ -70,6 +70,16 @@ Returns the maximum amount of mana that *could be* available to the spell.
 
 ;;;;;
 
+<|glyph@trickster:templates|trick-id=trickster:current_thread,title=Delusion of Order|>
+
+-> number
+
+---
+
+Returns the slot running this spell, or -1 if slots are not supported.
+
+;;;;;
+
 <|glyph@trickster:templates|trick-id=trickster:hotbar_reflection,title=Framed Delusion|>
 
 -> number

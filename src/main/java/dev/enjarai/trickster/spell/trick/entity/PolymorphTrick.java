@@ -27,7 +27,7 @@ public class PolymorphTrick extends AbstractLivingEntityQueryTrick {
             return VoidFragment.INSTANCE;
 
         if (realTarget instanceof ServerPlayerEntity targetPlayer && realSource instanceof ServerPlayerEntity sourcePlayer) {
-            ctx.useMana(this, 480);
+            ctx.useMana(this, 8000);
 
             var cumpoonent = targetPlayer.getComponent(ModEntityComponents.DISGUISE);
             var sourceCumponent = sourcePlayer.getComponent(ModEntityComponents.DISGUISE);

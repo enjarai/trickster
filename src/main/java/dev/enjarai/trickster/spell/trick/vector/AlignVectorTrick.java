@@ -5,19 +5,19 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
-import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.trick.DistortionTrick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import org.joml.Vector3d;
 
 import java.util.List;
 
-public class AlignVectorTrick extends Trick {
+public class AlignVectorTrick extends DistortionTrick {
     public AlignVectorTrick() {
         super(Pattern.of(6, 4, 1, 2, 4, 5));
     }
 
     @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment distort(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var vec = expectInput(fragments, FragmentType.VECTOR, 0);
 
         var vector = vec.vector();

@@ -6,21 +6,18 @@
   "client": [
     "AbstractClientPlayerEntityMixin",
     "BakedModelManagerMixin",
+    "ClientWorldMixin",
     "HeldItemRendererMixin",
     "InGameHudMixin",
     "InventoryScreenMixin",
     "MouseMixin",
     "PlayerRendererMixin",
-    "RenderedChunkMixin",
     "SillyHairsFeatureRendererMixin",
     "SubtitlesHudMixin",
     "WorldRendererAccessor",
     "animation.BipedEntityModelMixin",
     "animation.PlayerEntityModelMixin",
     "figura.AvatarManagerMixin",
-    "sodium.LevelSliceMixin",
-    "sodium.ChunkRenderContextMixin",
-    "sodium.ChunkBuilderMeshingTaskMixin",
     "tooltip.TooltipComponentMixin"
   ],
   "injectors": {

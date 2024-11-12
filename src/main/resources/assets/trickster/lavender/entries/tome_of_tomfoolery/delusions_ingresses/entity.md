@@ -120,16 +120,6 @@ Given an entity, returns its current health.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:get_mana,title=Ingress of Authority|>
-
-entity | vector -> number
-
----
-
-Given an entity or mana holding block position, returns its current mana.
-
-;;;;;
-
 <|glyph@trickster:templates|trick-id=trickster:get_armour,title=Bulwark Ingress|>
 
 entity -> number

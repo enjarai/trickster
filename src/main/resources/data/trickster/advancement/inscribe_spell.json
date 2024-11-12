@@ -1,0 +1,22 @@
+{
+  "display": {
+    "icon": {
+      "id": "trickster:scroll_and_quill"
+    },
+    "title": {
+      "text": "I'm a Writer!"
+    },
+    "description": {
+      "text": "Inscribe a fragment onto an item"
+    },
+    "frame": "task",
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "trickster:cast_spell",
+  "criteria": {
+    "inscribe_spell": {
+      "trigger": "trickster:inscribe_spell"
+    }
+  }
+}

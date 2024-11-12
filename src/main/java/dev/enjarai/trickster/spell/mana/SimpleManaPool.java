@@ -4,10 +4,10 @@ import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 
-public class SimpleManaPool implements ManaPool {
+public class SimpleManaPool implements MutableManaPool {
     public static final StructEndec<SimpleManaPool> ENDEC = StructEndecBuilder.of(
-            Endec.FLOAT.fieldOf("mana", ManaPool::get),
-            Endec.FLOAT.fieldOf("max_mana", ManaPool::getMax),
+            Endec.FLOAT.fieldOf("mana", MutableManaPool::get),
+            Endec.FLOAT.fieldOf("max_mana", MutableManaPool::getMax),
             SimpleManaPool::new
     );
 
@@ -30,12 +30,17 @@ public class SimpleManaPool implements ManaPool {
 
     @Override
     public void set(float value) {
-        mana = Float.isNaN(mana) ? 0 : Math.max(Math.min(value, maxMana), 0);
+        mana = Math.clamp(value, 0, maxMana);
     }
 
     @Override
     public float get() {
-        return Float.isNaN(mana) ? 0 : mana;
+        return mana;
+    }
+
+    @Override
+    public void setMax(float value) {
+        maxMana = value;
     }
 
     @Override
@@ -43,12 +48,9 @@ public class SimpleManaPool implements ManaPool {
         return maxMana;
     }
 
-    public void stdIncrease() {
-        stdIncrease(1);
-    }
-
-    public void stdIncrease(float multiplier) {
-        increase((maxMana / 4000) * multiplier);
+    @Override
+    public MutableManaPool makeClone() {
+        return new SimpleManaPool(mana, maxMana);
     }
 
     public static SimpleManaPool getSingleUse(float mana) {

@@ -9,9 +9,6 @@ import org.ladysnake.cca.api.v3.entity.EntityComponentInitializer;
 import org.ladysnake.cca.api.v3.entity.RespawnCopyStrategy;
 
 public class ModEntityComponents implements EntityComponentInitializer {
-    public static final ComponentKey<ManaComponent> MANA =
-            ComponentRegistry.getOrCreate(Trickster.id("mana"), ManaComponent.class);
-
     public static final ComponentKey<CasterComponent> CASTER =
             ComponentRegistry.getOrCreate(Trickster.id("caster"), CasterComponent.class);
 
@@ -34,7 +31,6 @@ public class ModEntityComponents implements EntityComponentInitializer {
 
     @Override
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
-        registry.registerFor(LivingEntity.class, MANA, ManaComponent::new);
         registry.registerForPlayers(CASTER, CasterComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
         registry.registerForPlayers(BARS, BarsComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
         registry.registerForPlayers(FLECKS, FlecksComponent::new, RespawnCopyStrategy.NEVER_COPY);

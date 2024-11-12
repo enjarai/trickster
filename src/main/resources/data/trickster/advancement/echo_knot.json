@@ -1,0 +1,22 @@
+{
+  "display": {
+    "icon": {
+      "id": "trickster:echo_knot"
+    },
+    "title": {
+      "text": "Interdimensional Intentionality"
+    },
+    "description": {
+      "text": "Construct a pair of Echo Knots in pristine condition"
+    },
+    "frame": "challenge",
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "trickster:cast_spell",
+  "criteria": {
+    "create_echo_knot": {
+      "trigger": "trickster:create_echo_knot"
+    }
+  }
+}

@@ -1,1 +1,44 @@
-- Undid Sodium compat changes temporarily due to a crash on world load. (@enjarai)
+- Redesigned the mana system significantly, making mana a semi-limited resource. (@enjarai and @StellarWitch7)
+  - Players and entities no longer have mana pools.
+  - Bloodcasting is no longer possible.
+  - Instead, mana is contained in items called Knots.
+    - These gemstones encased in glass orbs hold a certain amount of mana based on their rarity.
+    - Some Knot types may have unique properties that manipulate mana in special ways.
+    - Most Knots can be passively recharged under moonlight.
+      - Knots charge most strongly under a new or full moon, but may not charge at all on some phases inbetween.
+  - Mana over time is now measured in Merlins.
+    - `Merlins = Gandalfs / Tick`
+  - Many trick costs have been rebalanced to accommodate these changes.
+  - Multiple tricks have also been added to automatically move mana around between knots.
+- Introduced Spell Constructs. (@enjarai and @StellarWitch7)
+  - These artificial spellcasting devices directly replace in-world spell circles, which have been removed.
+  - Spell Constructs do not have an up-front mana cost, but must be crafted instead.
+    - Once crafted, a spell can be inscribed onto the Construct.
+    - When placed in the world, this spell will be cast persistently until completion.
+    - If a mana source is required, a Knot may be inserted into the Construct.
+- Also introduced Modular Spell Constructs. (@enjarai and @StellarWitch7)
+  - These variations of the normal Construct contain four slots for Spell Cores.
+    - Instead of casting a spell directly, Cores must be inserted containing the spells to be cast.
+    - All inserted spells will be cast and run concurrently.
+    - All cores share the same crowmind and mana pool from the provided knot.
+    - Multiple tricks have been added to delegate to and manipulate other cores on the same Construct.
+    - This allows for practical and persistent multithreaded spell design.
+- Added Macros. (@Master-Bw3, @enjarai, and @StellarWitch7)
+  - A list of Macros may be defined by inscribing a map of patterns to spells onto a common ring.
+  - When wearing this ring, any pattern defined in the map can be drawn while spell-scribing to invoke the corresponding spell.
+    - The given spell will be cast and given the circle the pattern was drawn in as an argument.
+    - The spell may then construct a new circle using meta-programming to replace the given one.
+  - A few changes were made to support this.
+    - Any fragment can now be inscribed onto an item, not just spells.
+    - Map fragments were added.
+      - Wards and the Closure Stratagem have been tweaked to make use of this.
+    - Pattern literals were added.
+- Removed shadow blocks. (@StellarWitch7)
+  - This feature has been moved to a separate addon mod due to Sodium incompatibilities.
+- Added internal caching for pure tricks. (@StellarWitch7)
+- Significantly increased viable spell depth, making it effectively™ infinite. (@StellarWitch7)
+- Impulse cost scaling now accounts for multiple casts within the same tick. (@StellarWitch7)
+  - As a consequence, tricks may now internally attach arbitrary data to a spell which persists for the remaining executions in the current tick.
+- Added a trick to guarantee a spell's full execution within a single tick. (@StellarWitch7)
+- Fixed a couple things which appeared to cause incompatibility with Connector. (@unilock)
+  - Might not be everything, given #64 changed a lot.

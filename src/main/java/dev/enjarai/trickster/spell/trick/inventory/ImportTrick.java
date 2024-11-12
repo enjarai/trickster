@@ -45,7 +45,7 @@ public class ImportTrick extends Trick implements ForkingTrick {
                 }
 
                 var spell = component.value() instanceof SpellPart part ? part : new SpellPart(component.value());
-                return new DefaultSpellExecutor(spell, ctx.executionState().recurseOrThrow(fragments.subList(1, fragments.size())));
+                return new DefaultSpellExecutor(spell, ctx.state().recurseOrThrow(fragments.subList(1, fragments.size())));
             }
         }
 

@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.mixin.client;
 
 import dev.enjarai.trickster.Trickster;
+import dev.enjarai.trickster.render.ModularSpellConstructBlockEntityRenderer;
 import dev.enjarai.trickster.render.ScrollShelfBlockEntityRenderer;
 import net.minecraft.client.render.model.BakedModelManager;
 import net.minecraft.util.Identifier;
@@ -28,5 +29,6 @@ public class BakedModelManagerMixin {
     private static void appendToAtlases(CallbackInfo ci) {
         LAYERS_TO_LOADERS = new HashMap<>(LAYERS_TO_LOADERS);
         LAYERS_TO_LOADERS.put(ScrollShelfBlockEntityRenderer.ATLAS_ID, Trickster.id("scroll_shelf"));
+        LAYERS_TO_LOADERS.put(ModularSpellConstructBlockEntityRenderer.ATLAS_ID, Trickster.id("modular_spell_construct"));
     }
 }

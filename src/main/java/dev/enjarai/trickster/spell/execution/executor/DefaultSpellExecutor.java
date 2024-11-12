@@ -2,10 +2,11 @@ package dev.enjarai.trickster.spell.execution.executor;
 
 import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.spell.*;
+import dev.enjarai.trickster.spell.execution.TickData;
 import dev.enjarai.trickster.spell.execution.ExecutionState;
-import dev.enjarai.trickster.spell.execution.SerializedSpellInstruction;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
+import dev.enjarai.trickster.util.SpellUtils;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
@@ -18,33 +19,33 @@ import java.util.Stack;
 
 public class DefaultSpellExecutor implements SpellExecutor {
     public static final StructEndec<DefaultSpellExecutor> ENDEC = StructEndecBuilder.of(
-            SerializedSpellInstruction.ENDEC.listOf().xmap((l) -> {
-                var s = new Stack<SpellInstruction>();
-                s.addAll(l.stream().map(SerializedSpellInstruction::toDeserialized).toList());
-                return s;
-            }, (s) -> s.stream().map(SpellInstruction::asSerialized).toList()).fieldOf("instructions", e -> e.instructions),
+            SpellPart.ENDEC.fieldOf("root", DefaultSpellExecutor::spell),
+            SpellInstruction.STACK_ENDEC.fieldOf("instructions", e -> e.instructions),
             Fragment.ENDEC.listOf().fieldOf("inputs", e -> e.inputs),
             Endec.INT.listOf().fieldOf("scope", e -> e.scope),
-            ExecutionState.ENDEC.fieldOf("state", e -> e.state),
+            ExecutionState.ENDEC.fieldOf("state", DefaultSpellExecutor::getCurrentState),
             EndecTomfoolery.safeOptionalOf(SpellExecutor.ENDEC).optionalFieldOf("child", e -> e.child, Optional.empty()),
             EndecTomfoolery.safeOptionalOf(Fragment.ENDEC).optionalFieldOf("override_return_value", e -> e.overrideReturnValue, Optional.empty()),
             DefaultSpellExecutor::new
     );
 
-    protected final Stack<SpellInstruction> instructions;
-    protected final Stack<Fragment> inputs = new Stack<>();
-    protected final Stack<Integer> scope = new Stack<>();
-    protected ExecutionState state;
-    protected Optional<SpellExecutor> child = Optional.empty();
-    protected Optional<Fragment> overrideReturnValue = Optional.empty();
-    protected int lastRunExecutions;
+    private final SpellPart root;
+    private final Stack<SpellInstruction> instructions;
+    private final Stack<Fragment> inputs = new Stack<>();
+    private final Stack<Integer> scope = new Stack<>();
+    private ExecutionState state;
+    private Optional<SpellExecutor> child = Optional.empty();
+    private Optional<Fragment> overrideReturnValue = Optional.empty();
+    private int lastRunExecutions;
 
-    protected DefaultSpellExecutor(Stack<SpellInstruction> instructions,
+    private DefaultSpellExecutor(SpellPart root,
+                                   Stack<SpellInstruction> instructions,
                                    List<Fragment> inputs,
                                    List<Integer> scope,
                                    ExecutionState state,
                                    Optional<SpellExecutor> child,
                                    Optional<Fragment> overrideReturnValue) {
+        this.root = root;
         this.instructions = instructions;
         this.inputs.addAll(inputs);
         this.scope.addAll(scope);
@@ -54,8 +55,9 @@ public class DefaultSpellExecutor implements SpellExecutor {
     }
 
     public DefaultSpellExecutor(SpellPart root, ExecutionState executionState) {
+        this.root = root;
         this.state = executionState;
-        this.instructions = flattenNode(root);
+        this.instructions = SpellUtils.flattenNode(root);
     }
 
     public DefaultSpellExecutor(SpellPart root, List<Fragment> arguments) {
@@ -68,15 +70,20 @@ public class DefaultSpellExecutor implements SpellExecutor {
     }
 
     @Override
-    public Optional<Fragment> run(SpellSource source, ExecutionCounter executions) throws BlunderException {
-        return run(new SpellContext(source, state), executions);
+    public SpellPart spell() {
+        return root;
     }
 
-    public Optional<Fragment> run(SpellContext ctx, ExecutionCounter executions) throws BlunderException {
+    @Override
+    public Optional<Fragment> run(SpellSource source, TickData data) throws BlunderException {
+        return run(new SpellContext(state, source, data));
+    }
+
+    public Optional<Fragment> run(SpellContext ctx) throws BlunderException {
         lastRunExecutions = 0;
 
         if (child.isPresent()) {
-            var result = runChild(ctx, executions);
+            var result = runChild(ctx);
 
             if (result.isEmpty())
                 return result;
@@ -88,7 +95,7 @@ public class DefaultSpellExecutor implements SpellExecutor {
                 return Optional.empty();
             }
 
-            if (executions.isLimitReached()) {
+            if (ctx.data().isExecutionLimitReached()) {
                 return Optional.empty();
             }
 
@@ -137,7 +144,7 @@ public class DefaultSpellExecutor implements SpellExecutor {
                         }
                     }
 
-                    isTail = isTail && type().equals(child.type()); //TODO: is this extra check needed?
+                    isTail = isTail && type().equals(child.type());
 
                     if (isTail && child instanceof DefaultSpellExecutor castChild) {
                         instructions.clear();
@@ -155,10 +162,10 @@ public class DefaultSpellExecutor implements SpellExecutor {
                         // The new state will already have incremented recursion count, but since this isn't
                         // *technically* a recursion, we can just decrement it again.
                         state.decrementRecursions();
-                        ctx = new SpellContext(ctx.source(), state);
+                        ctx = new SpellContext(state, ctx.source(), ctx.data());
                     } else {
                         this.child = Optional.of(child);
-                        var result = runChild(ctx, executions);
+                        var result = runChild(ctx);
 
                         if (result.isEmpty())
                             return result;
@@ -167,18 +174,17 @@ public class DefaultSpellExecutor implements SpellExecutor {
                     inputs.push(inst.getActivator().orElseThrow(UnsupportedOperationException::new).apply(ctx, args));
                 }
 
-                executions.increment();
-                lastRunExecutions = executions.getExecutions();
+                ctx.data().incrementExecutions();
+                lastRunExecutions = ctx.data().getExecutions();
             }
         }
     }
 
-    protected Optional<Fragment> runChild(SpellContext ctx, ExecutionCounter executions) {
-        var result = child.flatMap(c -> c.run(ctx.source(), executions));
+    protected Optional<Fragment> runChild(SpellContext ctx) {
+        var result = child.flatMap(c -> c.run(ctx.source(), ctx.data()));
 
         if (result.isPresent()) {
             inputs.push(result.get());
-            state.syncLinksFrom(child.get().getCurrentState());
             child = Optional.empty();
         }
 
@@ -198,4 +204,6 @@ public class DefaultSpellExecutor implements SpellExecutor {
     public ExecutionState getCurrentState() {
         return child.map(SpellExecutor::getCurrentState).orElse(state);
     }
+
+    //TODO: add way to turn this and all children into a SpellPart using MiscUtils
 }

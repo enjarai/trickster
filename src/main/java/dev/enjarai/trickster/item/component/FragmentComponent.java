@@ -105,7 +105,7 @@ public record FragmentComponent(Fragment value, Optional<String> name, boolean i
     }
 
     @SuppressWarnings("unchecked")
-	public static <T extends Fragment> Optional<T> getValue(ItemStack stack, Class<T> clazz) {
+    public static <T extends Fragment> Optional<T> getValue(ItemStack stack, Class<T> clazz) {
         return Optional.ofNullable(stack)
                 .filter(stack2 -> stack2.contains(ModComponents.FRAGMENT))
                 .map(stack2 -> stack2.get(ModComponents.FRAGMENT))

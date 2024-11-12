@@ -47,12 +47,12 @@ Executes the given spell with the current spell's arguments.
 
 <|glyph@trickster:templates|trick-id=trickster:fork,title=Utensil Stratagem|>
 
-spell, any... ->
+spell, any... -> number
 
 ---
 
-An alternative to Grand Stratagem, this dispatches the given spell to a new spell slot, 
-letting it run concurrently with this spell.
+Dispatches the given spell to a free spell slot, 
+letting it run concurrently with this spell. The used spell slot is returned, or a negative if it failed.
 
 ;;;;;
 
@@ -89,7 +89,17 @@ spell, spell, any... -> any
 
 ---
 
-Attempts to execute the first spell. If it blunders, the second spell is run and the blunder is silenced. Excess values are arguments to both. 
+Attempts to execute the first spell. If it blunders, the second spell is run and the blunder is silenced. Excess values are arguments to both.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:atomic,title=Stratagem of Singularity|>
+
+spell, any... -> any
+
+---
+
+Executes the given spell in a single tick, blundering if it's not possible due to spell size or illegal operations.
 
 ;;;;;
 
@@ -105,13 +115,11 @@ Creates a new spell fragment which returns the previously provided fragment when
 
 <|glyph@trickster:templates|trick-id=trickster:closure,title=Closure Stratagem|>
 
-spell, [spell, any]... -> spell
-spell, {spell: any} -> spell
+spell, {any: any} -> spell
 
 ---
 
-Replaces any occurrence of any of the latter spell's patterns inside the first spell
-with the fragment immediately following them.
+Replaces the keys of the map that are in the given spell with the value they map to.
 
 ;;;;;
 

@@ -16,6 +16,8 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
 
     public SpellPartWidget partWidget;
 
+    private boolean hasLoaded = false;
+
     public ScrollAndQuillScreen(ScrollAndQuillScreenHandler handler, PlayerInventory playerInventory, Text title) {
         super(title);
         this.handler = handler;
@@ -24,7 +26,7 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
     @Override
     protected void init() {
         super.init();
-        partWidget = new SpellPartWidget(handler.spell.get(), width / 2d, height / 2d, 64, handler);
+        partWidget = new SpellPartWidget(handler.spell.get(), width / 2d, height / 2d, 64, handler, true);
         handler.replacerCallback = frag -> partWidget.replaceCallback(frag);
         handler.updateDrawingPartCallback = spell -> partWidget.updateDrawingPartCallback(spell);
 
@@ -33,14 +35,16 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
         this.handler.spell.observe(spell -> {
             var spellHash = spell.hashCode();
 
-            for (var position : storedPositions) {
-                if (position.spellHash == spellHash) {
-                    partWidget.load(position);
-                    break;
+            if (!hasLoaded)
+                for (var position : storedPositions) {
+                    if (position.spellHash == spellHash) {
+                        partWidget.load(position);
+                        break;
+                    }
                 }
-            }
 
             partWidget.setSpell(spell);
+            hasLoaded = true;
         });
         this.handler.isMutable.observe(mutable -> partWidget.setMutable(mutable));
     }

@@ -32,7 +32,7 @@ Returns the type of item in the caster's other hand.
 
 <|page-title@lavender:book_components|title=Note: Slot References|>Item slots may be referenced by spells.
 Creating such a reference comes at no cost. However, using the reference in a way that moves the items within the slot, will incur a move cost.
-This cost is equivalent to 32 + (distance * 0.8), per moved item. Slot references will always point to a block position, or use the *current caster at the time of move*.
+This cost is equivalent to 8kG + (distance * amount * 0.5kG). Slot references will always point to a block position, or use the *current caster at the time of move*.
 
 ;;;;;
 
@@ -48,11 +48,11 @@ Returns a slot reference of the caster's other hand.
 
 <|glyph@trickster:templates|trick-id=trickster:get_inventory_slot,title=Intrusive Ingress|>
 
-number, [vector] -> slot
+number, [vector | entity] -> slot
 
 ---
 
-Returns the item slot at the given index in either the inventory of the caster, or the block at the given position.
+Constructs a slot from an index and an inventory source, using the caster by default.
 
 ;;;;;
 
@@ -62,4 +62,4 @@ Returns the item slot at the given index in either the inventory of the caster, 
 
 ---
 
-Returns the selected slot in the caster's [Top Hat](^trickster:basics/top_hat).
+Returns the selected slot in the caster's [Top Hat](^trickster:items/top_hat).

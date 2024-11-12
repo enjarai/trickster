@@ -6,19 +6,19 @@ import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
 import dev.enjarai.trickster.spell.fragment.MultiplicableFragment;
-import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.trick.DistortionTrick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.MissingInputsBlunder;
 
 import java.util.List;
 
-public class MultiplyTrick extends Trick {
+public class MultiplyTrick extends DistortionTrick {
     public MultiplyTrick() {
         super(Pattern.of(2, 1, 0, 4, 8, 7, 6));
     }
 
     @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment distort(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         fragments = supposeInput(fragments, 0)
            .flatMap(l -> supposeType(l, FragmentType.LIST))
            .map(ListFragment::fragments)

@@ -1,7 +1,7 @@
 ```json
 {
   "title": "Items",
-  "icon": "trickster:top_hat",
+  "icon": "trickster:macro_ring",
   "ordinal": 0
 }
 ```

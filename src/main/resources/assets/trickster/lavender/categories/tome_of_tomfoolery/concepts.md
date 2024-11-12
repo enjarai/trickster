@@ -1,7 +1,7 @@
 ```json
 {
   "title": "Concepts",
-  "icon": "trickster:scroll_and_quill_orange",
+  "icon": "trickster:top_hat",
   "ordinal": -1
 }
 ```

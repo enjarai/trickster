@@ -25,6 +25,8 @@ Spells can do literally anything you can imagine*!
 <sub>*Assumes your imagination is limited by the scope of available glyphs.
 Library inc. takes no responsibility for overactive imagination or other forms of undue creativity.</sub>
 
+![A persistent multi-core spell construct](https://i.enjarai.dev/u/pRQrnj.png)
+
 ## That's a pretty bold statement isnt it?
 
 Yes it is, but we don't think its unfounded.
@@ -32,29 +34,26 @@ Yes it is, but we don't think its unfounded.
 For one, spells will not stop casting until they are complete, which can, in fact, be never!
 Spells run concurrently with the rest of the game and can be saved to and loaded from disk at any moment, just like everything else in Minecraft. This means you can leave a spell running, log out, come back two days later, and have it continue where you left off.
 
-Secondly, spells can be infinitely* big and complex. While there *is* a limit to the speed spells execute at (to avoid straining the server) the spell itself can be as convoluted or as simple as you want!
+Secondly, spells can be infinitely big and complex. While there *is* a limit to the speed spells execute at (to avoid straining the server) the spell itself can be as convoluted or as simple as you want!
 
 And last but not least, while mana is a resource required by all world-altering effects, it is possible to theoretically infinitely scale the amount of mana available to you. Mana is intended more as a balancing measure than a limiter on your potential.
-
-<sub>*Spell circles can't quite be infinitely nested yet due to recursion limitations at extreme depth, we plan to resolve this issue in the near future.</sub>
 
 ## So how do I begin?
 
 Well, we've made that part pretty easy.
 
 All glyphs, tricks, and ways of spell-scribing are neatly documented in the Tome of Tomfoolery™,
-the go-to guide for being up to no good. Making use of the excellent [Lavender](https://modrinth.com/mod/lavender),
+the go-to guide for being up to no good. 
+Making use of the excellent [Lavender](https://modrinth.com/mod/lavender) and fully custom interactive widgets,
 the Tome™ provides a state-of-the-art guidebook experience for all of your magical needs.
 
-![Documentation](https://i.enjarai.dev/u/Edmujx.png)
+![Documentation](https://i.enjarai.dev/u/OmfF44.png)
 
 ## What else can I expect?
 
-As any good magic mod should, we provide a handful of tools and trinkets to facilitate spellcasting.
+As any good magic mod should, we provide a solid selection of tools and trinkets to facilitate spellcasting.
 
-For example, the Top Hat can hold a bunch of spell scrolls and easily select any of them for quick access:
-
-![Spellcasting from a hat](https://i.enjarai.dev/u/MBojDM.png)
+![A few of the available toys](https://i.enjarai.dev/u/UghuSY.png)
 
 ## Functional as in Functional Programming
 
@@ -70,6 +69,9 @@ This combines with other functional paradigms to create a very clean, but powerf
 
 ## Credits
 
-Many of the item textures are courtesy of @midnightcartridge on Discord.
+Some of the item textures are courtesy of @midnightcartridge on Discord.
 
-Thanks to @crephan as well for help with the Top Hat model.
+Thanks to @crephan as well for help with a bunch of item textures and models.
+
+This mod was originally made for [Modfest: Carnival](https://modfest.net/carnival), 
+but has since been further developed far beyond its original scope.

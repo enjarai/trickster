@@ -9,7 +9,7 @@
     "description": {
       "text": "Execute a world-altering trick"
     },
-    "frame": "goal",
+    "frame": "task",
     "announce_to_chat": true,
     "hidden": false
   },

@@ -6,19 +6,19 @@ import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
-import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.trick.DistortionTrick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.MissingInputsBlunder;
 
 import java.util.List;
 
-public class MaxTrick extends Trick {
+public class MaxTrick extends DistortionTrick {
     public MaxTrick() {
         super(Pattern.of(3, 1, 5));
     }
 
     @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment distort(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         fragments = supposeInput(fragments, 0)
            .flatMap(l -> supposeType(l, FragmentType.LIST))
            .map(ListFragment::fragments)

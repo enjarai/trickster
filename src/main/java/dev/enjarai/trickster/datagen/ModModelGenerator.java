@@ -7,6 +7,10 @@ import dev.enjarai.trickster.item.ModItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.data.client.*;
+import net.minecraft.registry.Registries;
+import net.minecraft.state.property.Properties;
+
+import java.util.List;
 
 public class ModModelGenerator extends FabricModelProvider {
     public ModModelGenerator(FabricDataOutput output) {
@@ -35,11 +39,55 @@ public class ModModelGenerator extends FabricModelProvider {
                 )
         );
         blockStateModelGenerator.registerNorthDefaultHorizontalRotated(ModBlocks.SCROLL_SHELF, TexturedModel.ORIENTABLE_WITH_BOTTOM);
+        for (var block : List.of(ModBlocks.MODULAR_SPELL_CONSTRUCT, ModBlocks.SPELL_CONSTRUCT)) {
+            blockStateModelGenerator.blockStateCollector.accept(VariantsBlockStateSupplier.create(block)
+                    .coordinate(BlockStateVariantMap.create(Properties.FACING)
+                            .register(direction ->
+                                    BlockStateVariant.create()
+                                            .put(VariantSettings.MODEL, Registries.BLOCK.getId(block).withPrefixedPath("block/"))
+                                            .put(VariantSettings.Y, switch (direction) {
+                                                case UP, DOWN, NORTH -> VariantSettings.Rotation.R0;
+                                                case SOUTH -> VariantSettings.Rotation.R180;
+                                                case EAST -> VariantSettings.Rotation.R90;
+                                                case WEST -> VariantSettings.Rotation.R270;
+                                            })
+                                            .put(VariantSettings.X, switch (direction) {
+                                                case UP -> VariantSettings.Rotation.R0;
+                                                case DOWN -> VariantSettings.Rotation.R180;
+                                                case NORTH, EAST, WEST, SOUTH -> VariantSettings.Rotation.R90;
+                                            })
+                            )
+                    )
+            );
+        }
     }
 
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
-        itemModelGenerator.register(ModItems.SPELL_RESONATOR_BLOCK_ITEM, Models.GENERATED);
+        itemModelGenerator.register(ModItems.WAND, Models.HANDHELD);
+
+        itemModelGenerator.register(ModItems.AMETHYST_KNOT, Models.GENERATED);
+        itemModelGenerator.register(ModItems.EMERALD_KNOT, Models.GENERATED);
+        itemModelGenerator.register(ModItems.DIAMOND_KNOT, Models.GENERATED);
+        itemModelGenerator.register(ModItems.ECHO_KNOT, Models.GENERATED);
+        itemModelGenerator.register(ModItems.CRACKED_ECHO_KNOT, Models.GENERATED);
+
+        itemModelGenerator.register(ModItems.SPELL_CORE, Models.GENERATED);
+        itemModelGenerator.register(ModItems.RUSTED_SPELL_CORE, Models.GENERATED);
+        itemModelGenerator.register(ModItems.OMINOUS_SPELL_CORE, Models.GENERATED);
+
+        itemModelGenerator.register(ModItems.SCROLL_AND_QUILL, Models.GENERATED);
+        itemModelGenerator.register(ModItems.WRITTEN_SCROLL, Models.GENERATED);
+
+        itemModelGenerator.register(ModItems.TOME_OF_TOMFOOLERY, Models.GENERATED);
+        itemModelGenerator.register(ModItems.WARDING_CHARM, Models.GENERATED);
+        itemModelGenerator.register(ModItems.MACRO_RING, Models.GENERATED);
+        itemModelGenerator.register(ModItems.SPELL_INK, Models.GENERATED);
+        itemModelGenerator.register(ModItems.SPELL_RESONATOR_ITEM, Models.GENERATED);
+
+        // For the NaN advancement
+        itemModelGenerator.register(ModItems.NAN, Models.GENERATED);
+
         ModItems.DYED_VARIANTS.forEach(v -> {
             itemModelGenerator.register(v.variant(), Models.GENERATED);
         });

@@ -1,0 +1,29 @@
+{
+  "display": {
+    "icon": {
+      "id": "trickster:rusted_spell_core"
+    },
+    "title": {
+      "text": "This Doesn't Look Safe..."
+    },
+    "description": {
+      "text": "Find a Rusted Spell Core"
+    },
+    "frame": "task",
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "trickster:modular_spell_construct",
+  "criteria": {
+    "pickup_rusted_core": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "trickster:rusted_spell_core"
+          }
+        ]
+      }
+    }
+  }
+}

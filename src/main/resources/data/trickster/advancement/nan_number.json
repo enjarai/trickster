@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "id": "trickster:warding_charm"
+      "id": "trickster:nan"
     },
     "title": {
       "text": "Not an Advancement"
@@ -9,7 +9,7 @@
     "description": {
       "text": "Create NaN"
     },
-    "frame": "task",
+    "frame": "challenge",
     "announce_to_chat": true,
     "hidden": true
   },

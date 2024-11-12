@@ -18,39 +18,12 @@ public interface ManaPool {
         return type;
     }, MinecraftEndecs.ofRegistry(ManaPoolType.REGISTRY)));
 
-    static float healthFromMana(float mana) {
-        return mana / 2;
-    }
-
-    static float manaFromHealth(float health) {
-        return health * 12;
-    }
-
     @Nullable
     ManaPoolType<?> type();
-
-    void set(float value);
 
     float get();
 
     float getMax();
 
-    default void increase(float amount) {
-        if (Float.isNaN(get()))
-            set(0);
-
-        set(get() + amount);
-    }
-
-    /**
-     * Returns whether the pool still has mana.
-     */
-    default boolean decrease(float amount) {
-        if (Float.isNaN(get()))
-            set(0);
-
-        float f = get() - amount;
-        set(f);
-        return !(f < 0);
-    }
+    MutableManaPool makeClone() throws UnsupportedOperationException;
 }

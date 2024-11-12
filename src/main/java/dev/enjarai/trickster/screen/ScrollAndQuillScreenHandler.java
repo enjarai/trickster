@@ -7,6 +7,7 @@ import dev.enjarai.trickster.item.component.FragmentComponent;
 import dev.enjarai.trickster.revision.RevisionContext;
 import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.execution.ExecutionState;
+import dev.enjarai.trickster.spell.execution.TickData;
 import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
@@ -112,6 +113,8 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
 
                         if (result instanceof SpellPart spellResult) {
                             sendMessage(new UpdateDrawingPartMessage(Optional.of(spellResult)));
+
+                            ModCriteria.USE_MACRO.trigger((ServerPlayerEntity) player());
                         } else if (result == null) {
                             sendMessage(new UpdateDrawingPartMessage(Optional.empty()));
                         } else {
@@ -138,7 +141,7 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
                         if (greedyEvaluation) {
                             var executionState = new ExecutionState(List.of());
                             try {
-                                spell.destructiveRun(new SpellContext(new PlayerSpellSource((ServerPlayerEntity) player()), executionState));
+                                spell.destructiveRun(new SpellContext(executionState, new PlayerSpellSource((ServerPlayerEntity) player()), new TickData()));
                                 this.spell.set(spell);
                             } catch (BlunderException e) {
                                 if (e instanceof NaNBlunder)

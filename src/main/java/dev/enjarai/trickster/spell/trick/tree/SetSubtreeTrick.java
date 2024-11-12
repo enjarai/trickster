@@ -10,13 +10,13 @@ import dev.enjarai.trickster.spell.blunder.BlunderException;
 
 import java.util.List;
 
-public class SetSubtreeTrick extends MetaTrick {
+public class SetSubtreeTrick extends AbstractMetaTrick {
     public SetSubtreeTrick() {
         super(Pattern.of(0, 1, 2, 4, 6, 7, 8, 4, 0, 3, 6));
     }
 
     @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment distort(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var spell = expectInput(fragments, SpellPart.class, 0);
         var addressFragment = expectInput(fragments, ListFragment.class, 1);
         var subTree = expectInput(fragments, SpellPart.class, 2);

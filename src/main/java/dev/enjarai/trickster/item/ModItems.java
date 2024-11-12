@@ -5,7 +5,7 @@ import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.block.ModBlocks;
 import dev.enjarai.trickster.item.component.*;
 import dev.enjarai.trickster.spell.SpellPart;
-import dev.enjarai.trickster.util.Hamt;
+import dev.enjarai.trickster.effects.ModEffects;
 import io.wispforest.lavender.book.LavenderBookItem;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.block.Block;
@@ -61,18 +61,32 @@ public class ModItems {
                             .statusEffect(new StatusEffectInstance(StatusEffects.POISON, 60 * 20), 1)
                             .statusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 60 * 20), 1)
                             .statusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 60 * 20), 1)
+                            .statusEffect(new StatusEffectInstance(ModEffects.MANA_BOOST, 60 * 20), 1)
                             .build())));
-    public static final BlockItem SPELL_RESONATOR_BLOCK_ITEM = register("spell_resonator", new BlockItem(ModBlocks.SPELL_RESONATOR, new Item.Settings()));
+    public static final SpellCoreItem SPELL_CORE = register("spell_core", new SpellCoreItem());
+    public static final RustedSpellCoreItem RUSTED_SPELL_CORE = register("rusted_spell_core", new RustedSpellCoreItem());
+    public static final OminousSpellCoreItem OMINOUS_SPELL_CORE = register("ominous_spell_core", new OminousSpellCoreItem());
+    public static final BlockItem SPELL_RESONATOR_ITEM = register("spell_resonator", new BlockItem(ModBlocks.SPELL_RESONATOR, new Item.Settings()));
+    public static final BlockItem SPELL_CONSTRUCT_ITEM = register("spell_construct", new BlockItem(ModBlocks.SPELL_CONSTRUCT, new Item.Settings()));
+    public static final BlockItem MODULAR_SPELL_CONSTRUCT_ITEM = register("modular_spell_construct", new BlockItem(ModBlocks.MODULAR_SPELL_CONSTRUCT, new Item.Settings()));
     public static final BlockItem SCROLL_SHELF_BLOCK_ITEM = register("scroll_shelf", new BlockItem(ModBlocks.SCROLL_SHELF, new Item.Settings()));
+    public static final KnotItem.Amethyst AMETHYST_KNOT = register("amethyst_knot", new KnotItem.Amethyst());
+    public static final KnotItem.Emerald EMERALD_KNOT = register("emerald_knot", new KnotItem.Emerald());
+    public static final KnotItem.Diamond DIAMOND_KNOT = register("diamond_knot", new KnotItem.Diamond());
+    public static final KnotItem.Echo ECHO_KNOT = register("echo_knot", new KnotItem.Echo());
+    public static final KnotItem.CrackedEcho CRACKED_ECHO_KNOT = register("cracked_echo_knot", new KnotItem.CrackedEcho());
+
+    // Advancement icon
+    public static final Item NAN = register("nan", new Item(new Item.Settings()));
 
     public static final TagKey<Item> CAN_EVALUATE_DYNAMICALLY = TagKey.of(RegistryKeys.ITEM, Trickster.id("can_evaluate_dynamically"));
     public static final TagKey<Item> HOLDABLE_HAT = TagKey.of(RegistryKeys.ITEM, Trickster.id("holdable_hat"));
     public static final TagKey<Item> SCROLLS = TagKey.of(RegistryKeys.ITEM, Trickster.id("scrolls"));
-    //    public static final TagKey<Item> IMMUTABLE_SPELL_HOLDERS = TagKey.of(RegistryKeys.ITEM, Trickster.id("immutable_spell_holders"));
     public static final TagKey<Item> SPELL_COST = TagKey.of(RegistryKeys.ITEM, Trickster.id("spell_cost"));
     public static final TagKey<Item> NO_SPELL_GLINT = TagKey.of(RegistryKeys.ITEM, Trickster.id("no_spell_glint"));
     public static final TagKey<Item> WEAPON_SPELL_TRIGGERS = TagKey.of(RegistryKeys.ITEM, Trickster.id("weapon_spell_triggers"));
-    public static final TagKey<Block> CONJURABLE_FLOWERS = TagKey.of(RegistryKeys.BLOCK, Trickster.id("conjurable_flowers"));
+    public static final TagKey<Item> MANA_KNOTS = TagKey.of(RegistryKeys.ITEM, Trickster.id("mana_knots"));
+    public static final TagKey<Item> CANT_DESPAWN = TagKey.of(RegistryKeys.ITEM, Trickster.id("cant_despawn"));
 
     public static final WrittenScrollItem[] COLORED_WRITTEN_SCROLLS = new WrittenScrollItem[DyeColor.values().length];
     public static final ScrollAndQuillItem[] COLORED_SCROLLS_AND_QUILLS = new ScrollAndQuillItem[DyeColor.values().length];
@@ -115,8 +129,18 @@ public class ModItems {
                 entries.add(WARDING_CHARM);
                 entries.add(MACRO_RING);
                 entries.add(SPELL_INK);
-                entries.add(SPELL_RESONATOR_BLOCK_ITEM);
+                entries.add(SPELL_RESONATOR_ITEM);
                 entries.add(SCROLL_SHELF_BLOCK_ITEM);
+                entries.add(SPELL_CONSTRUCT_ITEM);
+                entries.add(MODULAR_SPELL_CONSTRUCT_ITEM);
+                entries.add(SPELL_CORE);
+                entries.add(RUSTED_SPELL_CORE);
+                entries.add(OMINOUS_SPELL_CORE);
+                entries.add(AMETHYST_KNOT);
+                entries.add(EMERALD_KNOT);
+                entries.add(DIAMOND_KNOT);
+                entries.add(ECHO_KNOT);
+                entries.add(CRACKED_ECHO_KNOT);
             })
             .build();
 
