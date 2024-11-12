@@ -1,16 +1,23 @@
 package dev.enjarai.trickster.render;
 
+import dev.enjarai.trickster.cca.SharedManaComponent;
 import dev.enjarai.trickster.item.component.ManaComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
+import dev.enjarai.trickster.net.ModNetworking;
+import dev.enjarai.trickster.net.SubscribeToPoolPacket;
+import dev.enjarai.trickster.spell.mana.SharedManaPool;
 import dev.enjarai.trickster.util.ImGoingToStabWhoeverInventedTime;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.item.Item.TooltipContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.tooltip.TooltipType;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class MerlinKeeperTracker {
@@ -37,6 +44,7 @@ public class MerlinKeeperTracker {
         }
     }
 
+    @SuppressWarnings("resource")
     public float getUsage(ItemStack stack) {
         if (MinecraftClient.getInstance().player != null) {
             var inventory = MinecraftClient.getInstance().player.getInventory();
@@ -50,19 +58,44 @@ public class MerlinKeeperTracker {
         return 0;
     }
 
-    public void appendKnotTooltip(ItemStack stack, List<Text> tooltip) {
+    public void appendKnotTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         var usage = getUsage(stack);
 
         tooltip.add(Text.literal("Current draw: %.2f kM".formatted(usage)).styled(s -> s.withColor(0xaaaabb)));
-        if (usage != 0 && stack.get(ModComponents.MANA) instanceof ManaComponent component) {
-            long timeUntilDrained = (long) (component.pool().get() / usage * 50);
-            var str = timeUntilDrained >= 0 ? "Time until drained: %s" : "Time until charged: %s";
-            if (timeUntilDrained < 0) {
-                timeUntilDrained = (long) ((component.pool().get() - component.pool().getMax()) / usage) * 50;
+        if (stack.get(ModComponents.MANA) instanceof ManaComponent component) {
+            var pool = component.pool();
+
+            if (usage != 0) {
+                long timeUntilDrained = (long) (pool.get() / usage * 50);
+                var str = timeUntilDrained >= 0 ? "Time until drained: %s" : "Time until charged: %s";
+
+                if (timeUntilDrained < 0) {
+                    timeUntilDrained = (long) ((pool.get() - pool.getMax()) / usage) * 50;
+                }
+
+                tooltip.add(Text.literal(str.formatted(
+                        ImGoingToStabWhoeverInventedTime.howLongIsThisQuestionMark(timeUntilDrained)))
+                        .styled(s -> s.withColor(0xaaaabb)));
             }
-            tooltip.add(Text.literal(str.formatted(
-                    ImGoingToStabWhoeverInventedTime.howLongIsThisQuestionMark(timeUntilDrained)))
-                    .styled(s -> s.withColor(0xaaaabb)));
+
+            if (type.isAdvanced()) {
+                tooltip.add(Text.literal("Stored: ")
+                        .append(pool.get() + "kG")
+                        .append(" / ")
+                        .append(pool.getMax() + "kG")
+                        .styled(s -> s.withColor(0xaaaabb)));
+
+                if (pool instanceof SharedManaPool shared) {
+                        // if ever run on the server, will fail -- consider putting a try-catch if it causes an issue with a mod?
+                        if (SharedManaComponent.getInstance().get(shared.uuid()).isEmpty()) {
+                            ModNetworking.CHANNEL.clientHandle().send(new SubscribeToPoolPacket(shared.uuid()));
+                        }
+
+                        tooltip.add(Text
+                                .literal(shared.uuid().toString())
+                                .setStyle(Style.EMPTY.withFormatting(Formatting.LIGHT_PURPLE)));
+                }
+            }
         }
     }
 
@@ -83,6 +116,7 @@ public class MerlinKeeperTracker {
             latestMerlins = newMerlins;
         }
 
+        @SuppressWarnings("resource")
         public float getUsage() {
             if (MinecraftClient.getInstance().player == null) {
                 return 0;

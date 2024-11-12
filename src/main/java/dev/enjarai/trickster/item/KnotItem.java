@@ -14,10 +14,9 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 
 import java.util.List;
-import java.util.function.BiConsumer;
 
 public abstract class KnotItem extends Item {
-    public static BiConsumer<ItemStack, List<Text>> merlinTooltipAppender;
+    public static MerlinTooltipAppender merlinTooltipAppender;
 
     private final float creationCost;
 
@@ -111,15 +110,21 @@ public abstract class KnotItem extends Item {
         return creationCost;
     }
 
+    //TODO: Maybe this should work for all items with the `ManaComponent`
     @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         if (merlinTooltipAppender != null) {
-            merlinTooltipAppender.accept(stack, tooltip);
+            merlinTooltipAppender.accept(stack, context, tooltip, type);
         }
+
         super.appendTooltip(stack, context, tooltip, type);
     }
 
     public ItemStack createStack() {
         return getDefaultStack();
+    }
+
+    public static interface MerlinTooltipAppender {
+        void accept(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type);
     }
 }
