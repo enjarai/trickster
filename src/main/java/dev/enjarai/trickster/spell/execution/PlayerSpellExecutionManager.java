@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.spell.execution;
 
+import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
@@ -126,6 +127,8 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
         } catch (Exception e) {
             var message = Text.literal("Uncaught exception in spell: " + e.getMessage())
                     .append(" (").append(executor.getCurrentState().formatStackTrace()).append(")");
+
+            Trickster.LOGGER.warn("Uncaught error in spell:", e);
 
             entry.setValue(new ErroredSpellExecutor(executor.spell(), message));
             source.getPlayer().ifPresent(player -> player.sendMessage(message));

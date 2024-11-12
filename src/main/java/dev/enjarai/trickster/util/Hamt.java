@@ -411,8 +411,8 @@ public class Hamt<K, V> implements Iterable<Map.Entry<K, V>> {
         return new Iterator<Map.Entry<K, V>>() {
             private int depth = 0;
             @SuppressWarnings("unchecked")
-            private HamtNode<K, V>[] nodeStack = (HamtNode<K, V>[])new HamtNode<?, ?>[7];
-            private int[] progressStack = new int[7];
+            private HamtNode<K, V>[] nodeStack = (HamtNode<K, V>[])new HamtNode<?, ?>[15];
+            private int[] progressStack = new int[15];
             private LeafNode<K, V> leafNode;
             private int leafProgress;
 
