@@ -40,3 +40,4 @@
 - Impulse cost scaling now accounts for multiple casts within the same tick. (@StellarWitch7)
   - As a consequence, tricks may now internally attach arbitrary data to a spell which persists for the remaining executions in the current tick.
 - Added a trick to guarantee a spell's full execution within a single tick. (@StellarWitch7)
+- Fixed a couple things which appeared to cause incompatibility with Connector. (@unilock)
