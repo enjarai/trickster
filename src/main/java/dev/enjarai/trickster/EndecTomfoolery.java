@@ -14,9 +14,11 @@ import net.minecraft.util.math.BlockPos;
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Stack;
 import java.util.UUID;
 import java.util.function.Function;
 import org.joml.Vector3f;
@@ -73,6 +75,14 @@ public class EndecTomfoolery {
                     }
                 }
         )).orElse(endec.optionalOf());
+    }
+
+    public static <T> Endec<Stack<T>> stackOf(Endec<T> endec) {
+        return endec.listOf().xmap(l -> {
+            var stack = new Stack<T>();
+            stack.addAll(l);
+            return stack;
+        }, ArrayList::new);
     }
 
     public static <T> StructEndec<T> funnyFieldOf(Endec<T> endec, String key) {
