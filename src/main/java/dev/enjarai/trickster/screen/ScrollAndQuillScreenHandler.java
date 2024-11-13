@@ -213,10 +213,10 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
                             ModCriteria.NAN_NUMBER.trigger((ServerPlayerEntity) player());
 
                         player().sendMessage(blunder.createMessage()
-                                .append(" (").append(spell.getCurrentState().formatStackTrace()).append(")"));
+                                .append(" (").append(spell.getDeepestState().formatStackTrace()).append(")"));
                     } catch (Exception e) {
                         player().sendMessage(Text.literal("Uncaught exception in spell: " + e.getMessage())
-                                .append(" (").append(spell.getCurrentState().formatStackTrace()).append(")"));
+                                .append(" (").append(spell.getDeepestState().formatStackTrace()).append(")"));
                     }
 
                     sendMessage(new Replace(result));

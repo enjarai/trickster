@@ -84,10 +84,10 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
                         }
                     } catch (BlunderException blunder) {
                         error = Optional.of(blunder.createMessage()
-                                .append(" (").append(executor.getCurrentState().formatStackTrace()).append(")"));
+                                .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")"));
                     } catch (Exception e) {
                         error = Optional.of(Text.literal("Uncaught exception in spell: " + e.getMessage())
-                                .append(" (").append(executor.getCurrentState().formatStackTrace()).append(")"));
+                                .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")"));
                     }
 
                     error.ifPresent(e -> stack.set(ModComponents.SPELL_CORE, slot.fail(e)));

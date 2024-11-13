@@ -44,7 +44,7 @@ public record ErroredSpellExecutor(SpellPart spell, Text errorMessage) implement
     }
 
     @Override
-    public ExecutionState getCurrentState() {
+    public ExecutionState getDeepestState() {
         return new ExecutionState(List.of());
     }
 }

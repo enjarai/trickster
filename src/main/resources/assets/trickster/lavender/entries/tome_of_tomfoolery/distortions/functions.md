@@ -56,13 +56,19 @@ letting it run concurrently with this spell. The used spell slot is returned, or
 
 ;;;;;
 
+<|page-title@lavender:book_components|title=Note: Collections|>Collections are fragments which contain other fragments and may be accessed using a specific key. 
+Lists are collections where the key is a whole number between zero and the size of the list, exclusive. 
+Maps are also collections, though their keys may be any value and aren't automatically determined by order of insertion.
+
+;;;;;
+
 <|glyph@trickster:templates|trick-id=trickster:fold,title=Folding Distortion|>
 
-spell, any[], any -> any[]
+spell, collection, any -> any
 
 ---
 
-For each item in the given list, execute the given spell, passing the given fragment to the first iteration.
+For each entry in the collection, execute the given spell, with the given fragment as the first result.
 
 ;;;;;
 
@@ -70,12 +76,12 @@ Each iteration receives four arguments:
 
 ---
 
-any, any, number, any[]
+any, any, any, collection
 
 ---
 
-Where the first argument is the result of the last iteration, the second is the current item, the third is its index in the given list, 
-and the fourth is the given list.
+Where the first argument is the result of the last iteration, the second is the current value, the third is its key, 
+and the fourth is the given collection.
 
 ;;;;;
 

@@ -20,16 +20,16 @@ import io.wispforest.endec.impl.StructEndecBuilder;
 
 public class FoldingSpellExecutor implements SpellExecutor {
     public static final StructEndec<FoldingSpellExecutor> ENDEC = new BackwardCompatibleStructEndec<>(StructEndecBuilder.of(
-            ExecutionState.ENDEC.fieldOf("state", FoldingSpellExecutor::getCurrentState),
-            SpellPart.ENDEC.fieldOf("executable", FoldingSpellExecutor::spell),
+            ExecutionState.ENDEC.fieldOf("state", e -> e.state),
+            SpellPart.ENDEC.fieldOf("executable", e -> e.executable),
             Fragment.ENDEC.fieldOf("last_result", e -> e.lastResult),
             EndecTomfoolery.stackOf(Fragment.ENDEC).fieldOf("values", e -> e.values),
             EndecTomfoolery.stackOf(Fragment.ENDEC).fieldOf("keys", e -> e.keys),
             Fragment.ENDEC.fieldOf("previous", e -> e.previous),
             EndecTomfoolery.safeOptionalOf(SpellExecutor.ENDEC).fieldOf("child", e -> e.child),
             FoldingSpellExecutor::new
-    ), StructEndecBuilder.of( // 2.0.0-beta.1 compat
-            ExecutionState.ENDEC.fieldOf("state", FoldingSpellExecutor::getCurrentState),
+    ), StructEndecBuilder.of( // <=2.0.0-beta.1 compat
+            ExecutionState.ENDEC.fieldOf("state", FoldingSpellExecutor::getDeepestState),
             SpellPart.ENDEC.fieldOf("executable", FoldingSpellExecutor::spell),
             ListFragment.ENDEC.fieldOf("list", e -> (ListFragment) e.previous),
             EndecTomfoolery.stackOf(Fragment.ENDEC).fieldOf("elements", executor -> executor.values),
@@ -65,7 +65,7 @@ public class FoldingSpellExecutor implements SpellExecutor {
     }
 
     public FoldingSpellExecutor(SpellContext ctx, SpellPart executable, Fragment result, Stack<Fragment> values, Stack<Fragment> keys, Fragment previous) {
-        this(ctx.state(), executable, result, values, keys, previous, Optional.empty());
+        this(ctx.state().recurseOrThrow(List.of()), executable, result, values, keys, previous, Optional.empty());
 
         if (values.size() != keys.size())
             throw new IllegalStateException("FoldingSpellExecutor requires that the `values` and `keys` stack be of equal length!");
@@ -145,7 +145,7 @@ public class FoldingSpellExecutor implements SpellExecutor {
     }
 
     @Override
-    public ExecutionState getCurrentState() {
-        return child.map(SpellExecutor::getCurrentState).orElse(state);
+    public ExecutionState getDeepestState() {
+        return child.map(SpellExecutor::getDeepestState).orElse(state);
     }
 }

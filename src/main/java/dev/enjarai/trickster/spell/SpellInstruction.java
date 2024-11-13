@@ -12,7 +12,7 @@ import java.util.Stack;
 import java.util.function.BiFunction;
 
 public sealed interface SpellInstruction permits Fragment, EnterScopeInstruction, ExitScopeInstruction {
-    public static final Endec<Stack<SpellInstruction>> STACK_ENDEC = SerializedSpellInstruction.ENDEC.listOf().xmap((l) -> {
+    public static final Endec<Stack<SpellInstruction>> STACK_ENDEC = SerializedSpellInstruction.ENDEC.listOf().xmap(l -> {
         var s = new Stack<SpellInstruction>();
         s.addAll(l.stream().map(SerializedSpellInstruction::toDeserialized).toList());
         return s;
