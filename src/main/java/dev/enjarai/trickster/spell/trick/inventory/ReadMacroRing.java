@@ -2,18 +2,15 @@ package dev.enjarai.trickster.spell.trick.inventory;
 
 import dev.enjarai.trickster.item.component.FragmentComponent;
 import dev.enjarai.trickster.spell.*;
-import dev.enjarai.trickster.util.Hamt;
 import dev.enjarai.trickster.spell.fragment.MapFragment;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
+import io.vavr.Tuple2;
+import io.vavr.collection.HashMap;
 
-import java.util.AbstractMap;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ReadMacroRing extends Trick {
     public ReadMacroRing() {
@@ -23,15 +20,12 @@ public class ReadMacroRing extends Trick {
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         return FragmentComponent.getUserMergedMap(ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this)), "ring")
-            .map(ReadMacroRing::hamtAsMap)
-            .<Hamt<Fragment, Fragment>>map(Hamt::fromMap)
+            .map(ReadMacroRing::collectMap)
             .<Fragment>map(MapFragment::new)
             .orElse(VoidFragment.INSTANCE);
     }
 
-    private static Map<PatternGlyph, SpellPart> hamtAsMap(Hamt<Pattern, SpellPart> hamt) {
-        return hamt.stream()
-            .map(entry -> new AbstractMap.SimpleEntry<PatternGlyph, SpellPart>(new PatternGlyph(entry.getKey()), entry.getValue()))
-            .collect(Collectors.toMap(HashMap.Entry::getKey, HashMap.Entry::getValue));
+    private static HashMap<Fragment, Fragment> collectMap(HashMap<Pattern, SpellPart> hamt) {
+        return hamt.map((k, v) -> new Tuple2<>(new PatternGlyph(k), v));
     }
 }

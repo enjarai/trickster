@@ -116,13 +116,13 @@ public final class SpellPart implements Fragment {
         return value;
     }
 
-    public void buildClosure(Map<Fragment, Fragment> replacements) {
+    public void buildClosure(io.vavr.collection.Map<Fragment, Fragment> replacements) {
         subParts.forEach(part -> part.buildClosure(replacements));
 
         if (glyph instanceof SpellPart spellPart) {
             spellPart.buildClosure(replacements);
         } else if (replacements.containsKey(glyph)) {
-            glyph = replacements.get(glyph);
+            glyph = replacements.get(glyph).get();
         }
     }
 

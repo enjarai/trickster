@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.screen;
 
+import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.ModSounds;
 import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.item.ModItems;
@@ -11,10 +12,10 @@ import dev.enjarai.trickster.spell.execution.TickData;
 import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.util.Hamt;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.NaNBlunder;
+import io.vavr.collection.HashMap;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import io.wispforest.owo.client.screens.SyncedProperty;
@@ -27,7 +28,8 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 public class ScrollAndQuillScreenHandler extends ScreenHandler implements RevisionContext {
@@ -38,7 +40,7 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
     public final SyncedProperty<SpellPart> otherHandSpell = createProperty(SpellPart.class, SpellPart.ENDEC, new SpellPart());
     public final SyncedProperty<Boolean> isMutable = createProperty(Boolean.class, true);
     //TODO: Ask glisco why the null parameter isn't used in owo's source -- Aurora Dawn
-    public final SyncedProperty<Hamt<Pattern, SpellPart>> macros = createProperty(null, Hamt.endec(Pattern.ENDEC, SpellPart.ENDEC), Hamt.empty());
+    public final SyncedProperty<HashMap<Pattern, SpellPart>> macros = createProperty(null, EndecTomfoolery.hamt(Pattern.ENDEC, SpellPart.ENDEC), HashMap.empty());
 
     public Consumer<Fragment> replacerCallback;
     public Consumer<Optional<SpellPart>> updateDrawingPartCallback;
@@ -50,7 +52,7 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
         this(syncId, playerInventory, null, null, null, null, false, true);
     }
 
-    public ScrollAndQuillScreenHandler(int syncId, PlayerInventory playerInventory, ItemStack scrollStack, ItemStack otherHandStack, EquipmentSlot slot, Hamt<Pattern, SpellPart> macros, boolean greedyEvaluation, boolean isMutable) {
+    public ScrollAndQuillScreenHandler(int syncId, PlayerInventory playerInventory, ItemStack scrollStack, ItemStack otherHandStack, EquipmentSlot slot, HashMap<Pattern, SpellPart> macros, boolean greedyEvaluation, boolean isMutable) {
         super(ModScreenHandlers.SCROLL_AND_QUILL, syncId);
 
         this.scrollStack = scrollStack;
@@ -194,7 +196,7 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
     }
 
     @Override
-    public Hamt<Pattern, SpellPart> getMacros() {
+    public HashMap<Pattern, SpellPart> getMacros() {
         return macros.get();
     }
 

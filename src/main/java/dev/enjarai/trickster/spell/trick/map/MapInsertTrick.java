@@ -32,7 +32,7 @@ public class MapInsertTrick extends Trick {
             Fragment key = fragmentIterator.next();
             if (fragmentIterator.hasNext()) {
                 Fragment value = fragmentIterator.next();
-                map = map.assoc(key, value);
+                map = map.put(key, value);
             } else {
                 throw new MissingFragmentBlunder(this, index, Text.of("any"));
             }

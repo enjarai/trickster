@@ -6,6 +6,7 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Function3;
 import com.mojang.serialization.Codec;
 import com.mojang.util.UndashedUuid;
+import io.vavr.collection.HashMap;
 import io.wispforest.endec.*;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import io.wispforest.owo.serialization.CodecUtils;
@@ -184,5 +185,9 @@ public class EndecTomfoolery {
         public T decodeStruct(SerializationContext ctx, Deserializer<?> deserializer, Deserializer.Struct struct) {
             return wrapped.get().decodeStruct(ctx, deserializer, struct);
         }
+    }
+
+    public static <K, V> Endec<HashMap<K, V>> hamt(Endec<K> key, Endec<V> value) {
+        return Endec.map(key, value).xmap(HashMap::ofAll, HashMap::toJavaMap);
     }
 }

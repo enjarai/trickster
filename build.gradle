@@ -101,6 +101,8 @@ dependencies {
 //    implementation "io.wispforest:endec:0.1.0-pre.8"
     include modLocalRuntime("io.wispforest.lavender-md:owo-ui:0.1.2+1.21")
 
+    include clientImplementation(implementation("io.vavr:vavr:0.10.5"))
+
     modApi("nl.enjarai:cicada-lib:${property('deps.cicada')}")
 
     include modApi("org.ladysnake.cardinal-components-api:cardinal-components-base:${property('deps.cardinal-components-api')}")

@@ -2,7 +2,7 @@ package dev.enjarai.trickster.revision;
 
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellPart;
-import dev.enjarai.trickster.util.Hamt;
+import io.vavr.collection.HashMap;
 
 public interface RevisionContext {
     void updateSpell(SpellPart sp);
@@ -10,5 +10,5 @@ public interface RevisionContext {
     void updateOtherHandSpell(SpellPart sp);
     SpellPart getOtherHandSpell();
     void executeOffhand();
-    Hamt<Pattern, SpellPart> getMacros();
+    HashMap<Pattern, SpellPart> getMacros();
 }

@@ -5,7 +5,7 @@ import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.revision.RevisionContext;
 import dev.enjarai.trickster.screen.SpellPartWidget;
 import dev.enjarai.trickster.spell.SpellPart;
-import dev.enjarai.trickster.util.Hamt;
+import io.vavr.collection.HashMap;
 import io.wispforest.owo.ui.base.BaseComponent;
 import io.wispforest.owo.ui.component.ButtonComponent;
 import io.wispforest.owo.ui.core.OwoUIDrawContext;
@@ -53,8 +53,8 @@ public class SpellPreviewComponent extends BaseComponent {
             }
 
             @Override
-            public Hamt<Pattern, SpellPart> getMacros() {
-                return Hamt.empty();
+            public HashMap<Pattern, SpellPart> getMacros() {
+                return HashMap.empty();
             }
         }, false);
         this.wrapped.setMutable(false);
