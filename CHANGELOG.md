@@ -1,5 +1,1 @@
-- Fixed an error in the serialization of running spells which has surfaced for the second time due to poor documentation. (@StellarWitch7)
-  - The offending function has been renamed and documentation clarifying its purpose has been added.
-- Made the Folding Distortion support iteration over map fragments. (@StellarWitch7)
-- Added a Creative-only variant of Knot which has infinite mana. Possible texture improvements pending. (@StellarWitch7)
-- Fixed an issue where two registries with the same identifier were being loaded, causing issues on Neoforge. (@StellarWitch7)
+- Fixed (hopefully) all remaining issues with map fragments by using a more reliable third party HAMT implementation.
