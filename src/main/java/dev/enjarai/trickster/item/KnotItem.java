@@ -3,31 +3,27 @@ package dev.enjarai.trickster.item;
 import dev.enjarai.trickster.cca.SharedManaComponent;
 import dev.enjarai.trickster.item.component.ManaComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
-import dev.enjarai.trickster.net.ModNetworking;
-import dev.enjarai.trickster.net.SubscribeToPoolPacket;
+import dev.enjarai.trickster.spell.mana.InfiniteManaPool;
 import dev.enjarai.trickster.spell.mana.SharedManaPool;
 import dev.enjarai.trickster.spell.mana.SimpleManaPool;
 import dev.enjarai.trickster.util.ClientUtils;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 
-import java.util.List;
 
 public abstract class KnotItem extends Item {
     private final float creationCost;
 
     public KnotItem(Settings settings, float creationCost) {
-        super(settings);
+        super(settings.maxCount(1));
         this.creationCost = creationCost;
     }
 
     public static class Amethyst extends KnotItem {
         public Amethyst() {
             super(new Settings()
-                    .maxCount(1)
                     .component(ModComponents.MANA, new ManaComponent(SimpleManaPool.getSingleUse(128), 0, false)),
                     0);
         }
@@ -36,7 +32,6 @@ public abstract class KnotItem extends Item {
     public static class Emerald extends KnotItem {
         public Emerald() {
             super(new Settings()
-                    .maxCount(1)
                     .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(1024), 1 / 12f)),
                     512);
         }
@@ -45,7 +40,6 @@ public abstract class KnotItem extends Item {
     public static class Diamond extends KnotItem {
         public Diamond() {
             super(new Settings()
-                    .maxCount(1)
                     .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(16384), 4 / 12f)),
                     8192);
         }
@@ -54,7 +48,6 @@ public abstract class KnotItem extends Item {
     public static class Echo extends KnotItem {
         public Echo() {
             super(new Settings()
-                    .maxCount(2)
                     .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(32768), 1)),
                     65536);
         }
@@ -65,6 +58,7 @@ public abstract class KnotItem extends Item {
             var pool = new SimpleManaPool(32768);
             var uuid = SharedManaComponent.getInstance().allocate(pool);
             stack.set(ModComponents.MANA, new ManaComponent(new SharedManaPool(uuid), 1));
+            stack.set(DataComponentTypes.MAX_STACK_SIZE, 2);
             stack.increment(1);
             return stack;
         }
@@ -73,8 +67,15 @@ public abstract class KnotItem extends Item {
     public static class CrackedEcho extends KnotItem {
         public CrackedEcho() {
             super(new Settings()
-                    .maxCount(1)
                     .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(32768), 2 / 12f)),
+                    Float.MAX_VALUE);
+        }
+    }
+
+    public static class Command extends KnotItem {
+        public Command() {
+            super(new Settings()
+                    .component(ModComponents.MANA, new ManaComponent(InfiniteManaPool.INSTANCE, 0)),
                     Float.MAX_VALUE);
         }
     }

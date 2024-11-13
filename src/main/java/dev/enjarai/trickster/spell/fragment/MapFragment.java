@@ -2,11 +2,14 @@ package dev.enjarai.trickster.spell.fragment;
 
 import java.util.HashMap;
 import java.util.Optional;
+import java.util.Stack;
 
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.PatternGlyph;
+import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.SpellPart;
+import dev.enjarai.trickster.spell.execution.executor.FoldingSpellExecutor;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
@@ -14,7 +17,7 @@ import net.minecraft.text.MutableText;
 import dev.enjarai.trickster.util.Hamt;
 import net.minecraft.text.Text;
 
-public record MapFragment(Hamt<Fragment, Fragment> map) implements Fragment {
+public record MapFragment(Hamt<Fragment, Fragment> map) implements FoldableFragment {
     public static final StructEndec<MapFragment> ENDEC = StructEndecBuilder.of(
             Endec.map(Fragment.ENDEC, Fragment.ENDEC).xmap(Hamt::fromMap, Hamt::asMap).fieldOf("entries", MapFragment::map),
             MapFragment::new
@@ -79,5 +82,18 @@ public record MapFragment(Hamt<Fragment, Fragment> map) implements Fragment {
         }
 
         return Optional.of(Hamt.fromMap(macros));
+    }
+
+    @Override
+    public FoldingSpellExecutor fold(SpellContext ctx, SpellPart executable, Fragment identity) {
+        var keys = new Stack<Fragment>();
+        var values = new Stack<Fragment>();
+
+        for (var kv : map) {
+            keys.addFirst(kv.getKey());
+            values.addFirst(kv.getValue());
+        }
+
+        return new FoldingSpellExecutor(ctx, executable, identity, values, keys, this);
     }
 }
