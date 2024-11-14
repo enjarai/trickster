@@ -23,7 +23,7 @@ public class DefaultSpellExecutor implements SpellExecutor {
             SpellInstruction.STACK_ENDEC.fieldOf("instructions", e -> e.instructions),
             Fragment.ENDEC.listOf().fieldOf("inputs", e -> e.inputs),
             Endec.INT.listOf().fieldOf("scope", e -> e.scope),
-            ExecutionState.ENDEC.fieldOf("state", DefaultSpellExecutor::getDeepestState),
+            ExecutionState.ENDEC.fieldOf("state", e -> e.state),
             EndecTomfoolery.safeOptionalOf(SpellExecutor.ENDEC).optionalFieldOf("child", e -> e.child, Optional.empty()),
             EndecTomfoolery.safeOptionalOf(Fragment.ENDEC).optionalFieldOf("override_return_value", e -> e.overrideReturnValue, Optional.empty()),
             DefaultSpellExecutor::new
