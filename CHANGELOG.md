@@ -1,1 +1,1 @@
-- Fixed (hopefully) all remaining issues with map fragments by using a more reliable third party HAMT implementation.
+- It appears that the serialization fixes from 2.0.0-beta.2 *weren't actually saved to git*. This has been rectified. The issue is most certainly resolved now. (@StellarWitch7)
