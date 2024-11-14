@@ -58,7 +58,7 @@ Constructs a slot from an index and an inventory source, using the caster by def
 
 <|glyph@trickster:templates|trick-id=trickster:check_hat,title=Cranium Delusion|>
 
--> number
+-> number | void
 
 ---
 

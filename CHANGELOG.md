@@ -1,1 +1,2 @@
-- It appears that the serialization fixes from 2.0.0-beta.2 *weren't actually saved to git*. This has been rectified. The issue is most certainly resolved now. (@StellarWitch7)
+- Fixed spell slots in the player's inventory having a clickable hitbox when inactive.
+- Fixed an incorrect spell signature.
