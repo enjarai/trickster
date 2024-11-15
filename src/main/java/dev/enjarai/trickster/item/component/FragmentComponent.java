@@ -52,17 +52,21 @@ public record FragmentComponent(Fragment value, Optional<String> name, boolean i
     }
 
     public static Optional<SpellPart> getSpellPart(ItemStack stack) {
-        return getReferencedStack(stack)
-                .filter(stack2 -> stack2.contains(ModComponents.FRAGMENT))
-                .map(stack2 -> stack2.get(ModComponents.FRAGMENT))
-                .filter(component -> !component.closed())
-                .map(FragmentComponent::value)
+        return getFragment(stack)
                 .flatMap(value -> {
                     if (value instanceof SpellPart spell)
                         return Optional.of(spell);
                     
                     return Optional.empty();
                 });
+    }
+
+    public static Optional<Fragment> getFragment(ItemStack stack) {
+        return getReferencedStack(stack)
+                .filter(stack2 -> stack2.contains(ModComponents.FRAGMENT))
+                .map(stack2 -> stack2.get(ModComponents.FRAGMENT))
+                .filter(component -> !component.closed())
+                .map(FragmentComponent::value);
     }
 
     public static boolean setValue(ItemStack stack, Fragment value, Optional<String> name, boolean closed) {
