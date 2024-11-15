@@ -20,7 +20,7 @@ public class GetMaxManaInSlotTrick extends Trick {
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         float result = 0;
 
-        for (var slot : expectVariadic(fragments, 1, SlotFragment.class)) {
+        for (var slot : expectVariadic(fragments, 0, SlotFragment.class)) {
             var stack = slot.reference(this, ctx);
             var comp = stack.get(ModComponents.MANA);
 

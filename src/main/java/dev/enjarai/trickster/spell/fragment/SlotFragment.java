@@ -108,15 +108,11 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
     }
 
     /**
-     * Instead of taking items from the slot, directly reference the stored stack to modify it.
+     * Instead of taking items from the slot, directly reference the stored stack to modify it. 
+     * This may return an empty ItemStack if applicable.
      */
     public ItemStack reference(Trick trickSource, SpellContext ctx) {
-        var stack = getStack(trickSource, ctx);
-
-        if (stack.isEmpty())
-            throw new MissingItemBlunder(trickSource);
-
-        return stack;
+        return getStack(trickSource, ctx);
     }
 
     public Item getItem(Trick trickSource, SpellContext ctx) throws BlunderException {
