@@ -204,10 +204,10 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
 
         @Override
         public void trickster$slot_holder$setStack(int slot, ItemStack stack) throws BlunderException {
-            if (inv.isValid(slot, stack))
-                inv.setStack(slot, stack);
+            if (!inv.isValid(slot, stack))
+                throw new ItemInvalidBlunder(Tricks.SWAP_SLOT); //TODO: this is a temporary trick until I feel like doing more work
 
-            throw new ItemInvalidBlunder(Tricks.SWAP_SLOT); //TODO: this is a temporary trick until I feel like doing more work
+            inv.setStack(slot, stack);
         }
 
         @Override
