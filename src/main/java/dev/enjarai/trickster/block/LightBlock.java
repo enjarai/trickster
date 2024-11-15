@@ -33,6 +33,12 @@ public class LightBlock extends BlockWithEntity implements Waterloggable {
         setDefaultState(getStateManager().getDefaultState().with(WATERLOGGED, false));
     }
 
+    // TODO decide if we can make this work?
+//    @Override
+//    protected BlockRenderType getRenderType(BlockState state) {
+//        return BlockRenderType.MODEL;
+//    }
+
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(WATERLOGGED);

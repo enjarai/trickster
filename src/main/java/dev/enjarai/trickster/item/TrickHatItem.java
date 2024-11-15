@@ -40,6 +40,10 @@ public class TrickHatItem extends Item implements Equipment {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        if (hand == Hand.OFF_HAND) {
+            return super.use(world, user, hand);
+        }
+
         var stack = user.getStackInHand(hand);
 
         user.openHandledScreen(new NamedScreenHandlerFactory() {

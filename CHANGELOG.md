@@ -1,2 +1,4 @@
-- Fixed spell slots in the player's inventory having a clickable hitbox when inactive.
-- Fixed an incorrect spell signature.
+- Fixed spells being able to read from hats. (@enjarai)
+- Tweaked the base Spell Construct recipe to be significantly cheaper. (@enjarai)
+- Tweaked hats to not open their ui when right-clicked in the player's offhand. (@enjarai)
+- Fixed graphics-card dependent z-fighting on the Witch Hat. (@enjarai)

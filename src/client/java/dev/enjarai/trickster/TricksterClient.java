@@ -66,6 +66,7 @@ public class TricksterClient implements ClientModInitializer {
         AccessoriesRendererRegistry.registerNoRenderer(ModItems.MACRO_RING);
 
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.SPELL_RESONATOR, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.LIGHT, RenderLayer.getTranslucent());
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (client.player != null) {

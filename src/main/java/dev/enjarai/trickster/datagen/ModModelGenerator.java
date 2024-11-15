@@ -60,6 +60,7 @@ public class ModModelGenerator extends FabricModelProvider {
                     )
             );
         }
+        blockStateModelGenerator.registerSimpleState(ModBlocks.LIGHT);
     }
 
     @Override
