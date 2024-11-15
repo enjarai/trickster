@@ -1,4 +1,4 @@
-- Fixed spells being able to read from hats. (@enjarai)
-- Tweaked the base Spell Construct recipe to be significantly cheaper. (@enjarai)
-- Tweaked hats to not open their ui when right-clicked in the player's offhand. (@enjarai)
-- Fixed graphics-card dependent z-fighting on the Witch Hat. (@enjarai)
+- Added new inventory tricks. (@StellarWitch7)
+  - It is now possible to query the current and max mana within a given slot.
+  - Swapping slot contents is now supported.
+- Made the Conduit ploys have a more sensible signature. (@StellarWitch7)
