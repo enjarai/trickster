@@ -20,6 +20,16 @@ Drops items from the given slot at a position, returning their entity. Optionall
 
 ;;;;;
 
+<|glyph@trickster:templates|trick-id=trickster:swap_slot,title=Swindler's Ploy|>
+
+slot, slot ->
+
+---
+
+Swaps the item stacks within the given slots.
+
+;;;;;
+
 <|glyph@trickster:templates|trick-id=trickster:set_hat,title=Cranial Shift Ploy|>
 
 number -> boolean

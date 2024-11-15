@@ -1,40 +1,35 @@
-package dev.enjarai.trickster.spell.trick.mana;
+package dev.enjarai.trickster.spell.trick.inventory;
 
 import java.util.List;
 
+import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
-import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.fragment.SlotFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
-import net.minecraft.item.ItemStack;
 
-public abstract class AbstractConduitTrick extends Trick {
-    public AbstractConduitTrick(Pattern pattern) {
-        super(pattern);
+public class GetMaxManaInSlotTrick extends Trick {
+    public GetMaxManaInSlotTrick() {
+        super(Pattern.of(0, 2, 3, 0, 4, 3, 6, 8, 5, 4, 2, 1, 5, 2));
     }
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var limit = expectInput(fragments, FragmentType.NUMBER, 0).number();
         float result = 0;
 
         for (var slot : expectVariadic(fragments, 1, SlotFragment.class)) {
-            if (result >= limit)
-                break;
-            
             var stack = slot.reference(this, ctx);
-            result += affect(ctx, stack, (float) limit - result);
+            var comp = stack.get(ModComponents.MANA);
+
+            if (comp == null)
+                continue;
+
+            result += comp.pool().getMax();
         }
 
         return new NumberFragment(result);
     }
-
-    /**
-     * @return the amount of mana fulfilled by the item.
-     */
-    protected abstract float affect(SpellContext ctx, ItemStack stack, float limit);
 }

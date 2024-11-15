@@ -63,3 +63,23 @@ Constructs a slot from an index and an inventory source, using the caster by def
 ---
 
 Returns the selected slot in the caster's [Top Hat](^trickster:items/top_hat).
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:get_mana_in_slot,title=Ingress of Authority|>
+
+slot... -> number
+
+---
+
+Returns the amount of mana in the given slots.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:get_max_mana_in_slot,title=Crowning Ingress|>
+
+slot... -> number
+
+---
+
+Returns the maximum amount of mana which may be stored in the given slots.

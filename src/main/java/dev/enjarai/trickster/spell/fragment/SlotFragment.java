@@ -6,6 +6,7 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.*;
 import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.trick.Tricks;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
@@ -55,6 +56,39 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
         return 64;
     }
 
+    public void swapWith(Trick trickSource, SpellContext ctx, SlotFragment other) throws BlunderException {
+        var otherInv = other.getInventory(trickSource, ctx);
+        var inv = getInventory(trickSource, ctx);
+
+        var otherStack = other.getStack(trickSource, ctx);
+        var stack = getStack(trickSource, ctx);
+
+        var movedOtherStack = other.move(trickSource, ctx, otherStack.getCount(), getSourcePos(trickSource, ctx));
+        ItemStack movedStack;
+
+        try {
+            movedStack = move(trickSource, ctx, stack.getCount(), other.getSourcePos(trickSource, ctx));
+        } catch (Exception e) {
+            ctx.source().offerOrDropItem(movedOtherStack);
+            throw e;
+        }
+
+        try {
+            inv.trickster$slot_holder$setStack(slot, movedOtherStack);
+        } catch (Exception e) {
+            ctx.source().offerOrDropItem(movedOtherStack);
+            ctx.source().offerOrDropItem(movedStack);
+            throw e;
+        }
+
+        try {
+            otherInv.trickster$slot_holder$setStack(other.slot(), movedStack);
+        } catch (Exception e) {
+            ctx.source().offerOrDropItem(movedStack);
+            throw e;
+        }
+    }
+
     public ItemStack move(Trick trickSource, SpellContext ctx) throws BlunderException {
         return move(trickSource, ctx, 1);
     }
@@ -87,6 +121,20 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
 
     public Item getItem(Trick trickSource, SpellContext ctx) throws BlunderException {
         return getStack(trickSource, ctx).getItem();
+    }
+
+    public BlockPos getSourcePos(Trick trickSource, SpellContext ctx) {
+        return source
+            .map(either -> Either.unwrap(either
+                        .mapRight(uuid -> new EntityFragment(uuid, Text.literal(""))
+                            .getEntity(ctx)
+                            .orElseThrow(() -> new UnknownEntityBlunder(trickSource))
+                            .getBlockPos())))
+            .orElseGet(() -> ctx
+                    .source()
+                    .getPlayer()
+                    .orElseThrow(() -> new NoPlayerBlunder(trickSource))
+                    .getBlockPos());
     }
 
     private ItemStack getStack(Trick trickSource, SpellContext ctx) throws BlunderException {
@@ -135,7 +183,7 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
                 return s.left().get().toCenterPos();
             } else {
                 if (ctx.source().getWorld().getEntity(s.right().get()) instanceof Entity entity)
-                    return entity.getPos();
+                    return entity.getBlockPos().toCenterPos();
                 else throw new EntityInvalidBlunder(trickSource);
             }
         }).map(blockPos -> 8 + (float) (pos.toCenterPos().distanceTo(blockPos) * amount * 0.5)).orElse(0f);
@@ -148,14 +196,25 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
             this.inv = inv;
         }
 
+        @Override
         public int trickster$slot_holder$size() {
             return inv.size();
         }
 
+        @Override
         public ItemStack trickster$slot_holder$getStack(int slot) {
             return inv.getStack(slot);
         }
 
+        @Override
+        public void trickster$slot_holder$setStack(int slot, ItemStack stack) throws BlunderException {
+            if (inv.isValid(slot, stack))
+                inv.setStack(slot, stack);
+
+            throw new ItemInvalidBlunder(Tricks.SWAP_SLOT); //TODO: this is a temporary trick until I feel like doing more work
+        }
+
+        @Override
         public ItemStack trickster$slot_holder$takeFromSlot(int slot, int amount) {
             var stack = inv.getStack(slot);
             var result = stack.copyWithCount(amount);

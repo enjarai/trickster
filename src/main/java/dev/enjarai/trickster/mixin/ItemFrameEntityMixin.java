@@ -4,6 +4,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 import dev.enjarai.trickster.pond.SlotHolderDuck;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.decoration.AbstractDecorationEntity;
 import net.minecraft.entity.decoration.ItemFrameEntity;
@@ -33,6 +34,13 @@ public abstract class ItemFrameEntityMixin extends AbstractDecorationEntity impl
     @Override
     public ItemStack trickster$slot_holder$getStack(int slot) {
         return getHeldItemStack();
+    }
+
+    @Override
+    public void trickster$slot_holder$setStack(int slot, ItemStack stack) throws BlunderException {
+        var currentStack = getHeldItemStack();
+        setHeldItemStack(stack);
+        removeFromFrame(currentStack);
     }
 
     @Override
