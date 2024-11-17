@@ -12,7 +12,7 @@ amount of [Mana](^trickster:concepts/mana) based on the rarity of the gem they'r
 
 Some gems have unique properties when made into a Knot, such as Amethyst,
 which, unlike other gems, already contains Mana when converted,
-but cannot be refilled by any known means.
+but cannot be recharged naturally.
 
 ;;;;;
 

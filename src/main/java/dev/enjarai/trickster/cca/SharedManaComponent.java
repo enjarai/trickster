@@ -27,9 +27,6 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.PersistentState;
 
 public class SharedManaComponent implements AutoSyncedComponent {
-    // This is absolutely cursed
-    private static SharedManaComponent INSTANCE = null;
-
     private static final KeyedEndec<Map<UUID, SimpleManaPool>> POOLS_ENDEC = new KeyedEndec<>("pools", Endec.map(EndecTomfoolery.UUID, SimpleManaPool.ENDEC), new HashMap<>());
 
     private final Map<UUID, SimpleManaPool> pools = new HashMap<>();
@@ -40,10 +37,6 @@ public class SharedManaComponent implements AutoSyncedComponent {
     public SharedManaComponent(Scoreboard provider, @Nullable MinecraftServer server) {
         this.provider = provider;
         this.server = Optional.ofNullable(server);
-        
-        // This check is very important to ensure integrated servers have the current object
-        if (server != null || INSTANCE == null)
-            INSTANCE = this;
     }
 
     @Override
@@ -98,19 +91,13 @@ public class SharedManaComponent implements AutoSyncedComponent {
         server.ifPresent(server -> {
             if (!pools.containsKey(uuid)) {
                 var data = server.getOverworld().getPersistentStateManager().get(
-                        new PersistentState.Type<PoolState>(
-                            () -> new PoolState(SimpleManaPool.getSingleUse(0)),
-                            PoolState::readNbt,
-                            DataFixTypes.LEVEL
-                        ),
+                        PoolState.TYPE,
                         "trickster/shared_mana_pool/" + uuid
                 );
 
                 if (data != null)
                     pools.put(uuid, data.getPool());
             }
-
-            ModGlobalComponents.SHARED_MANA.sync(provider);
         });
 
         return Optional.ofNullable(pools.get(uuid));
@@ -130,13 +117,13 @@ public class SharedManaComponent implements AutoSyncedComponent {
         });
     }
 
-    @Nullable
-    public static SharedManaComponent getInstance() {
-        return INSTANCE;
-    }
-
     private static class PoolState extends PersistentState {
         private static final KeyedEndec<SimpleManaPool> ENDEC = new KeyedEndec<>("pool", SimpleManaPool.ENDEC, SimpleManaPool.getSingleUse(0));
+        public static final Type<PoolState> TYPE = new PersistentState.Type<>(
+                () -> new PoolState(SimpleManaPool.getSingleUse(0)),
+                PoolState::readNbt,
+                DataFixTypes.LEVEL
+        );
 
         private final SimpleManaPool pool;
 

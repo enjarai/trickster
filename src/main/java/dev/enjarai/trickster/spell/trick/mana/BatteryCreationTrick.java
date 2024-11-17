@@ -67,7 +67,7 @@ public class BatteryCreationTrick extends Trick {
 
             try {
                 ctx.useMana(this, type.getCreationCost());
-                ctx.source().offerOrDropItem(type.createStack());
+                ctx.source().offerOrDropItem(type.createStack(ctx.source().getWorld()));
 
                 if (type == ModItems.ECHO_KNOT) {
                     ctx.source().getPlayer().ifPresent(ModCriteria.CREATE_ECHO_KNOT::trigger);

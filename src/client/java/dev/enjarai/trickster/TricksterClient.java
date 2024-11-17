@@ -1,6 +1,8 @@
 package dev.enjarai.trickster;
 
 import dev.enjarai.trickster.block.ModBlocks;
+import dev.enjarai.trickster.item.KnotItem;
+import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.render.fleck.FleckRenderer;
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.ModItems;
@@ -31,6 +33,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
+import net.minecraft.util.math.MathHelper;
 
 public class TricksterClient implements ClientModInitializer {
     public static final MerlinKeeperTracker merlinKeeperTracker = new MerlinKeeperTracker(5);
@@ -79,7 +82,19 @@ public class TricksterClient implements ClientModInitializer {
         });
         ClientTickEvents.END_CLIENT_TICK.register(merlinKeeperTracker::tick);
 
-        Trickster.merlinTooltipAppender = merlinKeeperTracker::appendTooltip;
+        Trickster.merlinTooltipAppender = merlinKeeperTracker;
+
+        KnotItem.barStepFunction = stack -> {
+            var manaComponent = stack.get(ModComponents.MANA);
+            if (manaComponent == null || MinecraftClient.getInstance().world == null) {
+                return 0;
+            }
+
+            ClientUtils.trySubscribe(manaComponent);
+
+            float poolMax = manaComponent.pool().getMax(MinecraftClient.getInstance().world);
+            return poolMax == 0 ? 0 : MathHelper.clamp(Math.round(manaComponent.pool().get(MinecraftClient.getInstance().world) * 13.0F / poolMax), 0, 13);
+        };
 
         WorldRenderEvents.AFTER_ENTITIES.register(FlecksRenderer::render);
 

@@ -27,7 +27,7 @@ public class GetMaxManaInSlotTrick extends Trick {
             if (comp == null)
                 continue;
 
-            result += comp.pool().getMax();
+            result += comp.pool().getMax(ctx.source().getWorld());
         }
 
         return new NumberFragment(result);

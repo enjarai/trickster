@@ -3,6 +3,7 @@ package dev.enjarai.trickster.spell.trick;
 import java.util.HashMap;
 import java.util.Map;
 
+import dev.enjarai.trickster.spell.trick.block.*;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,19 +25,6 @@ import dev.enjarai.trickster.spell.trick.basic.RevealTrick;
 import dev.enjarai.trickster.spell.trick.basic.WriteClosedSpellTrick;
 import dev.enjarai.trickster.spell.trick.basic.WriteCrowMindTrick;
 import dev.enjarai.trickster.spell.trick.basic.WriteSpellTrick;
-import dev.enjarai.trickster.spell.trick.block.BreakBlockTrick;
-import dev.enjarai.trickster.spell.trick.block.CanPlaceTrick;
-import dev.enjarai.trickster.spell.trick.block.CheckBlockTrick;
-import dev.enjarai.trickster.spell.trick.block.CheckResonatorTrick;
-import dev.enjarai.trickster.spell.trick.block.ConjureFlowerTrick;
-import dev.enjarai.trickster.spell.trick.block.ConjureLightTrick;
-import dev.enjarai.trickster.spell.trick.block.ConjureWaterTrick;
-import dev.enjarai.trickster.spell.trick.block.DrainFluidTrick;
-import dev.enjarai.trickster.spell.trick.block.GetBlockHardnessTrick;
-import dev.enjarai.trickster.spell.trick.block.GetRedstonePowerTrick;
-import dev.enjarai.trickster.spell.trick.block.PlaceBlockTrick;
-import dev.enjarai.trickster.spell.trick.block.PowerResonatorTrick;
-import dev.enjarai.trickster.spell.trick.block.SwapBlockTrick;
 import dev.enjarai.trickster.spell.trick.bool.AllTrick;
 import dev.enjarai.trickster.spell.trick.bool.AnyTrick;
 import dev.enjarai.trickster.spell.trick.bool.EqualsTrick;
@@ -326,13 +314,14 @@ public class Tricks {
     public static final ConjureFlowerTrick CONJURE_FLOWER = register("conjure_flower", new ConjureFlowerTrick());
     public static final ConjureWaterTrick CONJURE_WATER = register("conjure_water", new ConjureWaterTrick());
     public static final ConjureLightTrick CONJURE_LIGHT = register("conjure_light", new ConjureLightTrick());
-    public static final DrainFluidTrick DRAIN_FLUID = register("drain_fluid", new DrainFluidTrick());
     public static final CheckBlockTrick CHECK_BLOCK = register("check_block", new CheckBlockTrick());
     public static final CanPlaceTrick CAN_PLACE_BLOCK = register("can_place_block", new CanPlaceTrick());
     public static final GetBlockHardnessTrick GET_BLOCK_HARDNESS = register("get_block_hardness", new GetBlockHardnessTrick());
     public static final PowerResonatorTrick POWER_RESONATOR = register("power_resonator", new PowerResonatorTrick());
     public static final CheckResonatorTrick CHECK_RESONATOR = register("check_resonator", new CheckResonatorTrick());
     public static final GetRedstonePowerTrick GET_REDSTONE_POWER = register("get_redstone_power", new GetRedstonePowerTrick());
+    public static final HeatTrick HEAT = register("heat", new HeatTrick());
+    public static final CoolTrick COOL = register("cool", new CoolTrick());
 
     // Inventory
     public static final ImportTrick IMPORT = register("import", new ImportTrick());

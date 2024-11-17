@@ -14,5 +14,6 @@ public class ModDataStuff implements DataGeneratorEntrypoint {
         pack.addProvider(ModModelGenerator::new);
         pack.addProvider(ModRecipeGenerator::new);
         pack.addProvider(ModItemTagGenerator::new);
+        pack.addProvider(ModBlockTagGenerator::new);
     }
 }

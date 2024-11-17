@@ -28,9 +28,9 @@ public record RandomManaLootFunction(float fractionalMinimum, float fractionalMa
 
     @Override
     public ItemStack apply(ItemStack stack, LootContext lootContext) {
-        var pool = stack.get(ModComponents.MANA).pool().makeClone();
+        var pool = stack.get(ModComponents.MANA).pool().makeClone(lootContext.getWorld());
 
-        pool.set(pool.getMax() * (random.nextFloat() * (fractionalMaximum - fractionalMinimum) + fractionalMinimum));
+        pool.set(pool.getMax(lootContext.getWorld()) * (random.nextFloat() * (fractionalMaximum - fractionalMinimum) + fractionalMinimum), lootContext.getWorld());
         stack.set(ModComponents.MANA, new ManaComponent(pool));
 
         return stack;

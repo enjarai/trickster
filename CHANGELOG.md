@@ -1,4 +1,5 @@
-- Added new inventory tricks. (@StellarWitch7)
-  - It is now possible to query the current and max mana within a given slot.
-  - Swapping slot contents is now supported.
-- Made the Conduit ploys have a more sensible signature. (@StellarWitch7)
+- Added Ploy of Investiture and Ploy of Divestiture. (@enjarai)
+- Changed Command Knot texture. (@enjarai)
+- Fixed Echo Knots not syncing their mana contents to clients on dedicated servers. (@enjarai)
+- Pushing mana into amethyst knots is now intended behaviour. (@enjarai)
+- Fixed a bug causing Spell Constructs to lose their spell when broken. (@enjarai)

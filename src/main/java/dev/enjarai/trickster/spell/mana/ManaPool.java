@@ -4,6 +4,7 @@ import dev.enjarai.trickster.EndecTomfoolery;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.owo.serialization.endec.MinecraftEndecs;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 public interface ManaPool {
@@ -21,9 +22,9 @@ public interface ManaPool {
     @Nullable
     ManaPoolType<?> type();
 
-    float get();
+    float get(World world);
 
-    float getMax();
+    float getMax(World world);
 
-    MutableManaPool makeClone() throws UnsupportedOperationException;
+    MutableManaPool makeClone(World world) throws UnsupportedOperationException;
 }

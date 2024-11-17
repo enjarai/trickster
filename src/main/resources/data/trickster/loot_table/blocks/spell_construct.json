@@ -6,6 +6,16 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_components",
+              "include": [
+                "minecraft:custom_name",
+                "trickster:spell"
+              ],
+              "source": "block_entity"
+            }
+          ],
           "name": "trickster:spell_construct"
         }
       ],

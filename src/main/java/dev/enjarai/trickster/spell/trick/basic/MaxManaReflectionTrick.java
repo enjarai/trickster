@@ -16,6 +16,6 @@ public class MaxManaReflectionTrick extends Trick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        return new NumberFragment(ctx.getManaPool().getMax());
+        return new NumberFragment(ctx.getManaPool().getMax(ctx.source().getWorld()));
     }
 }
