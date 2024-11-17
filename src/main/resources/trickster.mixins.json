@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_21",
   "plugin": "dev.enjarai.trickster.ConditionalMixins",
   "mixins": [
+    "AbstractFurnaceBlockEntityMixin",
     "AnvilScreenHandlerMixin",
     "EntityMixin",
     "ItemEntityMixin",

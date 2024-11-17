@@ -14,7 +14,7 @@ public class PushManaTrick extends AbstractConduitTrick {
     protected float affect(SpellContext ctx, ItemStack stack, float limit) {
         var comp = stack.get(ModComponents.MANA);
 
-        if (comp == null || !comp.rechargeable())
+        if (comp == null)
             return 0;
 
         var self = ctx.source().getManaPool();

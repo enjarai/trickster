@@ -165,6 +165,8 @@ trickster:
     conjure_light: Illumination Ploy
     drain_fluid: Drought Ploy
     power_resonator: Resonance Ploy
+    heat: Ploy of Investiture
+    cool: Ploy of Divestiture
 
     get_block_hardness: Ingress of Hardness
     check_block: Ingress of Validation
