@@ -2,11 +2,8 @@ package dev.enjarai.trickster.render;
 
 import dev.enjarai.trickster.ClientUtils;
 import dev.enjarai.trickster.Trickster.MerlinTooltipAppender;
-import dev.enjarai.trickster.cca.ModGlobalComponents;
 import dev.enjarai.trickster.item.component.ManaComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
-import dev.enjarai.trickster.net.ModNetworking;
-import dev.enjarai.trickster.net.SubscribeToPoolPacket;
 import dev.enjarai.trickster.spell.mana.SharedManaPool;
 import dev.enjarai.trickster.util.ImGoingToStabWhoeverInventedTime;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -60,6 +57,7 @@ public class MerlinKeeperTracker implements MerlinTooltipAppender {
         return 0;
     }
 
+    @SuppressWarnings("resource")
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         var usage = getUsage(stack);
         var world = MinecraftClient.getInstance().world;
@@ -67,6 +65,8 @@ public class MerlinKeeperTracker implements MerlinTooltipAppender {
         tooltip.add(Text.literal("Current draw: %.2f kM".formatted(usage)).styled(s -> s.withColor(0xaaaabb)));
         if (stack.get(ModComponents.MANA) instanceof ManaComponent component && world != null) {
             var pool = component.pool();
+
+            ClientUtils.trySubscribe(component);
 
             if (usage != 0) {
                 long timeUntilDrained = (long) (pool.get(world) / usage * 50);
@@ -87,14 +87,9 @@ public class MerlinKeeperTracker implements MerlinTooltipAppender {
                         .styled(s -> s.withColor(0xaaaabb)));
 
                 if (pool instanceof SharedManaPool shared && MinecraftClient.getInstance().world != null) {
-                        // if ever run on the server, will fail -- consider putting a try-catch if it causes an issue with a mod?
-                        if (ModGlobalComponents.SHARED_MANA.get(MinecraftClient.getInstance().world.getScoreboard()).get(shared.uuid()).isEmpty()) {
-                            ModNetworking.CHANNEL.clientHandle().send(new SubscribeToPoolPacket(shared.uuid()));
-                        }
-
-                        tooltip.add(Text
-                                .literal(shared.uuid().toString())
-                                .setStyle(Style.EMPTY.withFormatting(Formatting.LIGHT_PURPLE)));
+                    tooltip.add(Text
+                            .literal(shared.uuid().toString())
+                            .setStyle(Style.EMPTY.withFormatting(Formatting.LIGHT_PURPLE)));
                 }
             }
         }

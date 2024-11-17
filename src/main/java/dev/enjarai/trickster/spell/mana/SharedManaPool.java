@@ -8,7 +8,7 @@ import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import net.minecraft.world.World;
 
-public class SharedManaPool implements MutableManaPool {
+public record SharedManaPool(UUID uuid) implements MutableManaPool {
     public static final StructEndec<SharedManaPool> ENDEC = StructEndecBuilder.of(
             EndecTomfoolery.UUID.fieldOf("uuid", SharedManaPool::uuid),
             SharedManaPool::new
@@ -25,16 +25,6 @@ public class SharedManaPool implements MutableManaPool {
             maxMana = 0;
         }
     };
-
-    private final UUID uuid;
-
-    public SharedManaPool(UUID uuid) {
-        this.uuid = uuid;
-    }
-
-    public UUID uuid() {
-        return uuid;
-    }
 
     @Override
     public ManaPoolType<?> type() {
