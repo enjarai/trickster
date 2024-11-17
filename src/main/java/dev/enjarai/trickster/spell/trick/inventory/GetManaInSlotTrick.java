@@ -27,7 +27,7 @@ public class GetManaInSlotTrick extends Trick {
             if (comp == null)
                 continue;
 
-            result += comp.pool().get();
+            result += comp.pool().get(ctx.source().getWorld());
         }
 
         return new NumberFragment(result);

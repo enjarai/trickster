@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.spell.mana;
 
+import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import dev.enjarai.trickster.EndecTomfoolery;
@@ -19,25 +20,25 @@ public class InfiniteManaPool implements MutableManaPool {
     }
 
     @Override
-    public float get() {
+    public float get(World world) {
         return Float.MAX_VALUE;
     }
 
     @Override
-    public float getMax() {
+    public float getMax(World world) {
         return Float.MAX_VALUE;
     }
 
     @Override
-    public void set(float current) {
+    public void set(float current, World world) {
     }
 
     @Override
-    public void setMax(float max) {
+    public void setMax(float max, World world) {
     }
 
     @Override
-    public MutableManaPool makeClone() throws UnsupportedOperationException {
+    public MutableManaPool makeClone(World world) throws UnsupportedOperationException {
         return this;
     }
 }

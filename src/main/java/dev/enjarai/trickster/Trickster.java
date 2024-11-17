@@ -2,6 +2,7 @@ package dev.enjarai.trickster;
 
 import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.block.ModBlocks;
+import dev.enjarai.trickster.cca.SharedManaComponent;
 import dev.enjarai.trickster.compat.ModCompat;
 import dev.enjarai.trickster.compat.transmog.TransmogCompat;
 import dev.enjarai.trickster.config.TricksterConfig;
@@ -27,7 +28,6 @@ import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.item.Item.TooltipContext;
@@ -36,7 +36,6 @@ import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.world.PersistentStateManager;
 import nl.enjarai.cicada.api.conversation.ConversationManager;
 import nl.enjarai.cicada.api.util.CicadaEntrypoint;
 import nl.enjarai.cicada.api.util.JsonSource;
@@ -118,7 +117,7 @@ public class Trickster implements ModInitializer, CicadaEntrypoint {
         return Identifier.of(MOD_ID, path);
     }
 
-    public static interface MerlinTooltipAppender {
+    public interface MerlinTooltipAppender {
         void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type);
     }
 }

@@ -1,19 +1,22 @@
 package dev.enjarai.trickster.item;
 
-import dev.enjarai.trickster.cca.SharedManaComponent;
+import dev.enjarai.trickster.cca.ModGlobalComponents;
 import dev.enjarai.trickster.item.component.ManaComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.mana.InfiniteManaPool;
 import dev.enjarai.trickster.spell.mana.SharedManaPool;
 import dev.enjarai.trickster.spell.mana.SimpleManaPool;
-import dev.enjarai.trickster.util.ClientUtils;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
+
+import java.util.function.ToIntFunction;
 
 
 public abstract class KnotItem extends Item {
+    public static ToIntFunction<ItemStack> barStepFunction = i -> 0;
+
     private final float creationCost;
 
     public KnotItem(Settings settings, float creationCost) {
@@ -53,10 +56,10 @@ public abstract class KnotItem extends Item {
         }
 
         @Override
-        public ItemStack createStack() {
+        public ItemStack createStack(World world) {
             var stack = getDefaultStack();
             var pool = new SimpleManaPool(32768);
-            var uuid = SharedManaComponent.getInstance().allocate(pool);
+            var uuid = ModGlobalComponents.SHARED_MANA.get(world.getScoreboard()).allocate(pool);
             stack.set(ModComponents.MANA, new ManaComponent(new SharedManaPool(uuid), 1));
             stack.set(DataComponentTypes.MAX_STACK_SIZE, 2);
             stack.increment(1);
@@ -92,22 +95,14 @@ public abstract class KnotItem extends Item {
 
     @Override
     public int getItemBarStep(ItemStack stack) {
-        var manaComponent = stack.get(ModComponents.MANA);
-        if (manaComponent == null) {
-            return 0;
-        }
-
-        ClientUtils.trySubscribe(manaComponent);
-
-        float poolMax = manaComponent.pool().getMax();
-        return poolMax == 0 ? 0 : MathHelper.clamp(Math.round(manaComponent.pool().get() * 13.0F / poolMax), 0, 13);
+        return barStepFunction.applyAsInt(stack);
     }
 
     public float getCreationCost() {
         return creationCost;
     }
 
-    public ItemStack createStack() {
+    public ItemStack createStack(World world) {
         return getDefaultStack();
     }
 }

@@ -30,7 +30,7 @@ public class InventoryBlockManaHandler implements ManaHandler {
         var blockEntity = world.getBlockEntity(pos);
 
         if (blockEntity instanceof Inventory inventory) {
-            return new CachedInventoryManaPool(inventory).refill(amount);
+            return new CachedInventoryManaPool(inventory).refill(amount, world);
         }
 
         return amount;

@@ -158,7 +158,7 @@ public class ExecutionState {
     public void useMana(Trick trickSource, SpellContext ctx, float amount) throws NotEnoughManaBlunder {
         hasUsedMana = true;
 
-        if (ctx.getManaPool().use(amount) > 0)
+        if (ctx.getManaPool().use(amount, ctx.source().getWorld()) > 0)
             throw new NotEnoughManaBlunder(trickSource, amount);
     }
 }

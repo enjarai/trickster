@@ -16,6 +16,6 @@ public class ManaReflectionTrick extends Trick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        return new NumberFragment(ctx.getManaPool().get());
+        return new NumberFragment(ctx.getManaPool().get(ctx.source().getWorld()));
     }
 }

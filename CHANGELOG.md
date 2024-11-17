@@ -1,4 +1,5 @@
 - Added Ploy of Investiture and Ploy of Divestiture. (@enjarai)
 - Changed Command Knot texture. (@enjarai)
+- Fixed Echo Knots not syncing their mana contents to clients on dedicated servers. (@enjarai)
 - Pushing mana into amethyst knots is now intended behaviour. (@enjarai)
 - Fixed a bug causing Spell Constructs to lose their spell when broken. (@enjarai)
