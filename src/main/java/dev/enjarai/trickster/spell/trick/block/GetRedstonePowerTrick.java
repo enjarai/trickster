@@ -12,7 +12,7 @@ import java.util.List;
 
 public class GetRedstonePowerTrick extends Trick {
     public GetRedstonePowerTrick() {
-        super(Pattern.of(1, 7, 2, 0, 7));
+        super(Pattern.of(1, 4, 7, 2, 0, 7));
     }
 
     @Override
