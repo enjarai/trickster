@@ -36,26 +36,26 @@ public class RaycastEntityTrick extends AbstractRaycastTrick<Void> {
 
         for (Entity entityToBeMaybeFound : world.getOtherEntities(entity.orElse(null), box, e -> true)) {
             Box box2 = entityToBeMaybeFound.getBoundingBox().expand(entityToBeMaybeFound.getTargetingMargin());
-            Optional<Vec3d> optional = box2.raycast(min, max);
+            Optional<Vec3d> perhapsRaycastEntityPos = box2.raycast(min, max);
             if (box2.contains(min)) {
                 if (distance >= 0.0) {
                     foundEntity = entityToBeMaybeFound;
-                    pos = optional.orElse(min);
+                    pos = perhapsRaycastEntityPos.orElse(min);
                     distance = 0.0;
                 }
-            } else if (optional.isPresent()) {
-                Vec3d vec3d2 = optional.get();
-                double e = min.squaredDistanceTo(vec3d2);
-                if (e < distance || distance == 0.0) {
+            } else if (perhapsRaycastEntityPos.isPresent()) {
+                Vec3d raycastEntityPos = perhapsRaycastEntityPos.get();
+                double squareDistance = min.squaredDistanceTo(raycastEntityPos);
+                if (squareDistance < distance || distance == 0.0) {
                     if (entity.isPresent() && entityToBeMaybeFound.getRootVehicle() == entity.get().getRootVehicle()) {
                         if (distance == 0.0) {
                             foundEntity = entityToBeMaybeFound;
-                            pos = vec3d2;
+                            pos = raycastEntityPos;
                         }
                     } else {
                         foundEntity = entityToBeMaybeFound;
-                        pos = vec3d2;
-                        distance = e;
+                        pos = raycastEntityPos;
+                        distance = squareDistance;
                     }
                 }
             }
