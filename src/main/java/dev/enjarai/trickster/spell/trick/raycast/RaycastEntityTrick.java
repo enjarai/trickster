@@ -13,15 +13,16 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Optional;
 
-public class RaycastEntityTrick extends AbstractRaycastTrick<Void> {
+public class RaycastEntityTrick extends AbstractRaycastTrick {
     public RaycastEntityTrick() {
         super(Pattern.of(3, 4, 5, 8, 4));
     }
 
     @Override
-    public Fragment activate(SpellContext ctx, Optional<Entity> entity, Vec3d position, Vec3d direction, Void ignore) throws BlunderException {
+    public Fragment activate(List<Fragment> fragments, SpellContext ctx, Optional<Entity> entity, Vec3d position, Vec3d direction) throws BlunderException {
         var multipliedDirection = position.add(direction.multiply(64d));
         var hit = raycast(ctx.source().getWorld(), entity, position, multipliedDirection, new Box(position, multipliedDirection), 64 * 64);
         return hit == null ? VoidFragment.INSTANCE : EntityFragment.from(hit.getEntity());

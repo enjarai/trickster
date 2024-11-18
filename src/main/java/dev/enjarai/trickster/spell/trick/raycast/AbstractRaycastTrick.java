@@ -13,7 +13,7 @@ import net.minecraft.util.math.Vec3d;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class AbstractRaycastTrick<T> extends AbstractLivingEntityQueryTrick {
+public abstract class AbstractRaycastTrick extends AbstractLivingEntityQueryTrick {
     public AbstractRaycastTrick(Pattern pattern) {
         super(pattern);
     }
@@ -36,12 +36,8 @@ public abstract class AbstractRaycastTrick<T> extends AbstractLivingEntityQueryT
             direction = new Vec3d(vec2.x(), vec2.y(), vec2.z()).normalize();
         }
 
-        return extraContext(fragments, ctx, perhapsEntity, position, direction);
+        return activate(fragments, ctx, perhapsEntity, position, direction);
     }
 
-    protected Fragment extraContext(List<Fragment> fragments, SpellContext ctx, Optional<Entity> entity, Vec3d position, Vec3d direction) {
-        return activate(ctx, entity, position, direction, null);
-    }
-
-    public abstract Fragment activate(SpellContext ctx, Optional<Entity> entity, Vec3d position, Vec3d direction, T extraContext) throws BlunderException;
+    public abstract Fragment activate(List<Fragment> fragments, SpellContext ctx, Optional<Entity> entity, Vec3d position, Vec3d direction) throws BlunderException;
 }
