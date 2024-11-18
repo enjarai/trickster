@@ -73,6 +73,6 @@ public class HeatTrick extends Trick {
             throw new BlockInvalidBlunder(this);
         }
 
-        return VoidFragment.INSTANCE;
+        return pos;
     }
 }

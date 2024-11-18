@@ -62,6 +62,6 @@ public class CoolTrick extends Trick {
             throw new BlockInvalidBlunder(this);
         }
 
-        return VoidFragment.INSTANCE;
+        return pos;
     }
 }

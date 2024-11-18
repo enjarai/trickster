@@ -52,7 +52,7 @@ though some collateral effects on surrounding blocks should be expected.
 
 <|glyph@trickster:templates|trick-id=trickster:heat,title=Ploy of Investiture|>
 
-vector ->
+vector -> vector
 
 <|cost-rule@trickster:templates|formula=80kG|>
 
@@ -65,11 +65,21 @@ Heating a furnace like this would be quite effective.
 
 <|glyph@trickster:templates|trick-id=trickster:cool,title=Ploy of Divestiture|>
 
-vector ->
+vector -> vector
 
 <|cost-rule@trickster:templates|formula=80kG|>
 
 Instantly cools off the given block significantly.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:bone_meal,title=Ploy of Botany|>
+
+vector -> vector
+
+<|cost-rule@trickster:templates|formula=28kG|>
+
+Applies a fertilizing effect to the given block position.
 
 ;;;;;
 

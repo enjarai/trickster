@@ -179,8 +179,10 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
                     var server = player().getServer();
                     if (server != null) {
                         server.execute(() -> {
-                            FragmentComponent.setValue(otherHandStack, spell, Optional.empty(), false);
-                            otherHandSpell.set(spell);
+                            if (player().getInventory().contains(ModItems.CAN_EVALUATE_DYNAMICALLY)) {
+                                FragmentComponent.setValue(otherHandStack, spell, Optional.empty(), false);
+                                otherHandSpell.set(spell);
+                            }
                         });
                     }
                 }

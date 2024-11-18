@@ -5,6 +5,8 @@ import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.SelectedSlotComponent;
 import dev.enjarai.trickster.screen.ScrollAndQuillScreenHandler;
 import dev.enjarai.trickster.screen.ScrollContainerScreenHandler;
+import io.wispforest.accessories.api.AccessoryItem;
+import io.wispforest.accessories.api.slot.SlotReference;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ContainerComponent;
 import net.minecraft.entity.EquipmentSlot;
@@ -23,7 +25,7 @@ import net.minecraft.world.World;
 
 import java.util.Optional;
 
-public class TrickHatItem extends Item implements Equipment {
+public class TrickHatItem extends AccessoryItem implements Equipment {
     public TrickHatItem(Settings settings) {
         super(settings
                 .maxCount(1)
@@ -86,5 +88,10 @@ public class TrickHatItem extends Item implements Equipment {
             return container.stream().skip(selected).findFirst().orElse(ItemStack.EMPTY);
         }
         return ItemStack.EMPTY;
+    }
+
+    @Override
+    public boolean canEquipFromUse(ItemStack stack, SlotReference reference) {
+        return false;
     }
 }
