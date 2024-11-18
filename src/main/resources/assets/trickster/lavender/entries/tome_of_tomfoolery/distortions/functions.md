@@ -51,8 +51,7 @@ spell, any... -> number
 
 ---
 
-Dispatches the given spell to a free spell slot, 
-letting it run concurrently with this spell. The used spell slot is returned, or a negative if it failed.
+Dispatches the given spell to a free spell slot. The used spell slot is returned, or a negative if it failed.
 
 ;;;;;
 
