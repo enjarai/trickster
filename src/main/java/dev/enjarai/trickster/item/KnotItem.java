@@ -61,7 +61,6 @@ public abstract class KnotItem extends Item {
             var pool = new SimpleManaPool(32768);
             var uuid = ModGlobalComponents.SHARED_MANA.get(world.getScoreboard()).allocate(pool);
             stack.set(ModComponents.MANA, new ManaComponent(new SharedManaPool(uuid), 1));
-            stack.set(DataComponentTypes.MAX_STACK_SIZE, 2);
             stack.increment(1);
             return stack;
         }
