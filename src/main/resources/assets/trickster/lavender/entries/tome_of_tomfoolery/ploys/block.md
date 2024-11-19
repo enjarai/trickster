@@ -73,16 +73,6 @@ Instantly cools off the given block significantly.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:bone_meal,title=Ploy of Botany|>
-
-vector -> vector
-
-<|cost-rule@trickster:templates|formula=28kG|>
-
-Applies a fertilizing effect to the given block position.
-
-;;;;;
-
 <|glyph@trickster:templates|trick-id=trickster:conjure_flower,title=Floral Ploy|>
 
 vector -> vector

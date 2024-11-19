@@ -39,7 +39,6 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
     public final SyncedProperty<SpellPart> spell = createProperty(SpellPart.class, SpellPart.ENDEC, new SpellPart());
     public final SyncedProperty<SpellPart> otherHandSpell = createProperty(SpellPart.class, SpellPart.ENDEC, new SpellPart());
     public final SyncedProperty<Boolean> isMutable = createProperty(Boolean.class, true);
-    //TODO: Ask glisco why the null parameter isn't used in owo's source -- Aurora Dawn
     public final SyncedProperty<HashMap<Pattern, SpellPart>> macros = createProperty(null, EndecTomfoolery.hamt(Pattern.ENDEC, SpellPart.ENDEC), HashMap.empty());
 
     public Consumer<Fragment> replacerCallback;
@@ -132,8 +131,6 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
         }
     }
 
-
-
     public void updateSpell(SpellPart spell) {
         if (isMutable.get()) {
             if (scrollStack != null) {
@@ -179,10 +176,8 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
                     var server = player().getServer();
                     if (server != null) {
                         server.execute(() -> {
-                            if (player().getInventory().contains(ModItems.CAN_EVALUATE_DYNAMICALLY)) {
-                                FragmentComponent.setValue(otherHandStack, spell, Optional.empty(), false);
-                                otherHandSpell.set(spell);
-                            }
+                            FragmentComponent.setValue(otherHandStack, spell, Optional.empty(), false);
+                            otherHandSpell.set(spell);
                         });
                     }
                 }

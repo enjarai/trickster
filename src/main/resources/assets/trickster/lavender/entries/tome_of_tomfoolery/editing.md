@@ -213,8 +213,8 @@ Reads a spell from the user's offhand and places it as a glyph in the center of 
 
 ---
 
-Reads a spell from the user's offhand, casts it, 
-and puts the result as a glyph in the center of the circle it is drawn in.
+Replaces the glyph of the circle it is drawn in with the result of executing the user's offhand spell. 
+Requires possession of a [Mirror](^trickster:items/mirror_of_evaluation).
 
 ;;;;;
 

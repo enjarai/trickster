@@ -168,7 +168,6 @@ trickster:
     power_resonator: Resonance Ploy
     heat: Ploy of Investiture
     cool: Ploy of Divestiture
-    bone_meal: Ploy of Botany
 
     get_block_hardness: Ingress of Hardness
     check_block: Ingress of Validation
