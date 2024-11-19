@@ -71,8 +71,9 @@ public abstract class ItemEntityMixin extends Entity implements SlotHolderDuck {
     }
 
     @Override
-    public void trickster$slot_holder$setStack(int slot, ItemStack stack) throws BlunderException {
+    public boolean trickster$slot_holder$setStack(int slot, ItemStack stack) {
         setStack(stack);
+        return true;
     }
 
     @Override

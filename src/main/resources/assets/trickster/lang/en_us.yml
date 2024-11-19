@@ -155,7 +155,8 @@ trickster:
 
     map_get: Navigator's Distortion
     map_insert: Charting Stratagem
-    map_remove: Erasing Distortion
+    map_merge: Admiral's Stratagem
+    map_remove: Stratagem of Annulment
 
     break_block: Ploy of Destruction
     place_block: Ploy of Creation

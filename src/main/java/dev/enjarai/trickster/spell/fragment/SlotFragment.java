@@ -1,12 +1,23 @@
 package dev.enjarai.trickster.spell.fragment;
 
+import java.util.Optional;
+import java.util.UUID;
+
+import com.mojang.datafixers.util.Either;
+
 import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.pond.SlotHolderDuck;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.*;
+import dev.enjarai.trickster.spell.blunder.BlockInvalidBlunder;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.EntityInvalidBlunder;
+import dev.enjarai.trickster.spell.blunder.ItemInvalidBlunder;
+import dev.enjarai.trickster.spell.blunder.MissingItemBlunder;
+import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
+import dev.enjarai.trickster.spell.blunder.NoSuchSlotBlunder;
+import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
 import dev.enjarai.trickster.spell.trick.Trick;
-import dev.enjarai.trickster.spell.trick.Tricks;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
@@ -17,11 +28,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
-
-import java.util.Optional;
-import java.util.UUID;
-
-import com.mojang.datafixers.util.Either;
 
 public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) implements Fragment {
     public static final StructEndec<SlotFragment> ENDEC = StructEndecBuilder.of(
@@ -60,32 +66,41 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
         var otherInv = other.getInventory(trickSource, ctx);
         var inv = getInventory(trickSource, ctx);
 
-        var otherStack = other.getStack(trickSource, ctx);
-        var stack = getStack(trickSource, ctx);
+        if (equals(other)) {
+            var stack = inv.trickster$slot_holder$takeFromSlot(slot, getStack(trickSource, ctx).getCount());
+            inv.trickster$slot_holder$setStack(slot, stack);
+        } else {
+            var otherStack = other.getStack(trickSource, ctx);
+            var stack = getStack(trickSource, ctx);
 
-        var movedOtherStack = other.move(trickSource, ctx, otherStack.getCount(), getSourcePos(trickSource, ctx));
-        ItemStack movedStack;
+            var movedOtherStack = other.move(trickSource, ctx, otherStack.getCount(), getSourcePos(trickSource, ctx));
+            ItemStack movedStack;
 
-        try {
-            movedStack = move(trickSource, ctx, stack.getCount(), other.getSourcePos(trickSource, ctx));
-        } catch (Exception e) {
-            ctx.source().offerOrDropItem(movedOtherStack);
-            throw e;
-        }
+            try {
+                movedStack = move(trickSource, ctx, stack.getCount(), other.getSourcePos(trickSource, ctx));
+            } catch (Exception e) {
+                ctx.source().offerOrDropItem(movedOtherStack);
+                throw e;
+            }
 
-        try {
-            inv.trickster$slot_holder$setStack(slot, movedOtherStack);
-        } catch (Exception e) {
-            ctx.source().offerOrDropItem(movedOtherStack);
-            ctx.source().offerOrDropItem(movedStack);
-            throw e;
-        }
+            try {
+                if (!inv.trickster$slot_holder$setStack(slot, movedOtherStack))
+                    throw new ItemInvalidBlunder(trickSource);
+            } catch (Exception e) {
+                ctx.source().offerOrDropItem(movedOtherStack);
+                ctx.source().offerOrDropItem(movedStack);
+                throw e;
+            }
 
-        try {
-            otherInv.trickster$slot_holder$setStack(other.slot(), movedStack);
-        } catch (Exception e) {
-            ctx.source().offerOrDropItem(movedStack);
-            throw e;
+            try {
+                if(!otherInv.trickster$slot_holder$setStack(other.slot(), movedStack))
+                    throw new ItemInvalidBlunder(trickSource);
+            } catch (UnsupportedOperationException e) {
+                throw new ItemInvalidBlunder(trickSource);
+            } catch (Exception e) {
+                ctx.source().offerOrDropItem(movedStack);
+                throw e;
+            }
         }
     }
 
@@ -203,11 +218,12 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
         }
 
         @Override
-        public void trickster$slot_holder$setStack(int slot, ItemStack stack) throws BlunderException {
+        public boolean trickster$slot_holder$setStack(int slot, ItemStack stack) {
             if (!inv.isValid(slot, stack))
-                throw new ItemInvalidBlunder(Tricks.SWAP_SLOT); //TODO: this is a temporary trick until I feel like doing more work
+                return false;
 
             inv.setStack(slot, stack);
+            return true;
         }
 
         @Override

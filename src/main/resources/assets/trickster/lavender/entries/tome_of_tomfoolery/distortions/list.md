@@ -35,7 +35,7 @@ Appends one or many elements to the end of the given list.
 
 <|glyph@trickster:templates|trick-id=trickster:list_add_range,title=Collection Stratagem|>
 
-any[]... -> any[]
+any[], any[]... -> any[]
 
 ---
 

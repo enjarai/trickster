@@ -84,4 +84,8 @@ public record MapFragment(HashMap<Fragment, Fragment> map) implements FoldableFr
 
         return new FoldingSpellExecutor(ctx, executable, identity, values, keys, this);
     }
+
+    public MapFragment mergeWith(MapFragment other) {
+        return new MapFragment(map.merge(other.map));
+    }
 }

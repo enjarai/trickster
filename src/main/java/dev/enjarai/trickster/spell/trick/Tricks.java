@@ -96,6 +96,7 @@ import dev.enjarai.trickster.spell.trick.mana.PullManaTrick;
 import dev.enjarai.trickster.spell.trick.mana.PushManaTrick;
 import dev.enjarai.trickster.spell.trick.map.MapGetTrick;
 import dev.enjarai.trickster.spell.trick.map.MapInsertTrick;
+import dev.enjarai.trickster.spell.trick.map.MapMergeTrick;
 import dev.enjarai.trickster.spell.trick.map.MapRemoveTrick;
 import dev.enjarai.trickster.spell.trick.math.AddTrick;
 import dev.enjarai.trickster.spell.trick.math.CeilTrick;
@@ -293,6 +294,7 @@ public class Tricks {
     // Map
     public static final MapGetTrick MAP_GET = register("map_get", new MapGetTrick());
     public static final MapInsertTrick MAP_INSERT = register("map_insert", new MapInsertTrick());
+    public static final MapMergeTrick MAP_MERGE = register("map_merge", new MapMergeTrick());
     public static final MapRemoveTrick MAP_REMOVE = register("map_remove", new MapRemoveTrick());
 
     // Tree

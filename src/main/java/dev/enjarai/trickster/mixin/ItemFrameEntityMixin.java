@@ -37,10 +37,11 @@ public abstract class ItemFrameEntityMixin extends AbstractDecorationEntity impl
     }
 
     @Override
-    public void trickster$slot_holder$setStack(int slot, ItemStack stack) throws BlunderException {
+    public boolean trickster$slot_holder$setStack(int slot, ItemStack stack) {
         var currentStack = getHeldItemStack();
         setHeldItemStack(stack);
         removeFromFrame(currentStack);
+        return true;
     }
 
     @Override
