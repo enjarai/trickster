@@ -50,6 +50,10 @@ public class WrittenScrollItem extends Item {
                 }
             }
         } else {
+            if (hand == Hand.OFF_HAND) {
+                return TypedActionResult.pass(stack);
+            }
+
             user.openHandledScreen(new NamedScreenHandlerFactory() {
                 @Override
                 public Text getDisplayName() {
