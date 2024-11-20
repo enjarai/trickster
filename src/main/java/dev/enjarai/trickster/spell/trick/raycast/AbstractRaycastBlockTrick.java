@@ -22,7 +22,7 @@ public abstract class AbstractRaycastBlockTrick extends AbstractRaycastTrick {
 
     @Override
     public Fragment activate(List<Fragment> fragments, SpellContext ctx, Optional<Entity> entity, Vec3d position, Vec3d direction) throws BlunderException {
-        boolean includeFluids = supposeInput(fragments, FragmentType.BOOLEAN, entity.isPresent() ? 1 : 2).orElse(BooleanFragment.FALSE).asBoolean();
+        boolean includeFluids = supposeInput(fragments, entity.isPresent() ? 1 : 2).orElse(BooleanFragment.FALSE).asBoolean();
 
         return activate(ctx.source().getWorld().raycast(new RaycastContext(position,
                 position.add(direction.multiply(64d)),
