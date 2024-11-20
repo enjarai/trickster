@@ -20,7 +20,8 @@ vector, vector, [boolean] -> vector
 ---
 
 Returns the block that is hit.
-If boolean is true, fluids are included in the raycast
+
+Pass true as the last argument to include fluids.
 
 ;;;;;
 
@@ -32,8 +33,11 @@ vector, vector, [boolean] -> vector
 
 ---
 
-Returns a vector representing the side of the block that is hit.
-If boolean is true, fluids are included in the raycast
+Returns a vector representing the side of the block that is hit.  
+
+;;;;;
+
+Pass true as the last argument to include fluids. 
 
 ;;;;;
 
