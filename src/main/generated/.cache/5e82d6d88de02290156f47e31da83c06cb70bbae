@@ -1,4 +1,4 @@
-// 1.21	2024-11-20T21:04:56.679058436	Trickster/Tags for minecraft:block
+// 1.21	2024-11-20T22:07:39.522034109	Trickster/Tags for minecraft:block
 58352c2ad8e4b253798ce88dadb822d4fc4be908 data/minecraft/tags/block/trickster/conversion/weather/cut_copper_stairs.json
 5bbb6a2b0b6cfb56d868fa2cd84763e229f0eee8 data/minecraft/tags/block/trickster/conversion/heat/mycelium.json
 8b4c3815092bb5f9bcdac17200587220bfc6386f data/minecraft/tags/block/trickster/conversion/heat/cobblestone.json
@@ -6,8 +6,8 @@
 82aeade700265a023adf13ac5e3866b479208176 data/minecraft/tags/block/trickster/conversion/weather/sandstone.json
 7c4ae29309282cfb8bf0b7e2f0841f952ffa309f data/minecraft/tags/block/trickster/conversion/weather/stone_bricks.json
 a9d9ea4becab53f2ae18b53a28175f1dae5fcaf4 data/minecraft/tags/block/trickster/conversion/heat/andesite.json
-f7bfe3eb9c409d8c615865f7a45e6c324c86abaf data/minecraft/tags/block/trickster/conversion/heat/emerald_ore.json
 f1d525c5508d8ee2c1749a528fc3301b1230187c data/minecraft/tags/block/trickster/conversion/heat/copper_ore.json
+f7bfe3eb9c409d8c615865f7a45e6c324c86abaf data/minecraft/tags/block/trickster/conversion/heat/emerald_ore.json
 b6d096aa64c62e6f207e09a01a6caacdfb84d658 data/minecraft/tags/block/trickster/conversion/heat/redstone_ore.json
 07541ec134ec55c6bf1d02b9604a2d9a8822aee0 data/minecraft/tags/block/trickster/conversion/weather/exposed_copper_grate.json
 d9704de3d99a1d2fab9f80fb7ee1bf18ff4cd54f data/minecraft/tags/block/trickster/conversion/heat/wet_sponge.json
@@ -21,6 +21,9 @@ abde44052102d3d16ed26fcc7cf98cebdc4c893d data/minecraft/tags/block/trickster/con
 8a7d524e10005d0b5c1f7694731ff7e572398bc8 data/minecraft/tags/block/trickster/conversion/weather/exposed_copper_door.json
 8a3b6c43de5696d22edea798ffefe18769ecd1fb data/minecraft/tags/block/trickster/conversion/heat/cobweb.json
 5bbb6a2b0b6cfb56d868fa2cd84763e229f0eee8 data/minecraft/tags/block/trickster/conversion/heat/podzol.json
+c541a5fdb4ea2a5bac6317ab8b943f91dc00dd8e data/minecraft/tags/block/trickster/conversion/cool/infested_cracked_stone_bricks.json
+4299a3aeb550dac5d1182404571c32a720c12c01 data/minecraft/tags/block/trickster/conversion/cool/infested_cobblestone.json
+f92c41ce4c3dd51d875dafefe81e048bf6b8f9ed data/minecraft/tags/block/trickster/conversion/cool/infested_stone.json
 73a9189c77b1bf661a7fdedbcb9d4b517a712ab6 data/minecraft/tags/block/trickster/conversion/cool/azalea.json
 98a4ba37009d94811c7d545a36557a2185623315 data/minecraft/tags/block/trickster/conversion/heat/sand.json
 73a9189c77b1bf661a7fdedbcb9d4b517a712ab6 data/minecraft/tags/block/trickster/conversion/cool/spruce_sapling.json
@@ -31,18 +34,23 @@ cf3608bd187922aeb48c566c19e8482b0dca34c7 data/minecraft/tags/block/trickster/con
 66892374bcde619e44b6e85fe6ae0ccb9600730f data/minecraft/tags/block/trickster/conversion/heat/water_cauldron.json
 a9d9ea4becab53f2ae18b53a28175f1dae5fcaf4 data/minecraft/tags/block/trickster/conversion/heat/granite.json
 73a9189c77b1bf661a7fdedbcb9d4b517a712ab6 data/minecraft/tags/block/trickster/conversion/heat/dark_oak_sapling.json
-619667c1b7332d180fa0737d335fc257a9549000 data/minecraft/tags/block/trickster/conversion/cool/water.json
 26d89c4e3cfa827f5d2a7ef1ef43ec4c8c63cd6e data/minecraft/tags/block/trickster/conversion/cool/lava.json
+619667c1b7332d180fa0737d335fc257a9549000 data/minecraft/tags/block/trickster/conversion/cool/water.json
 965b6a5353209b6388e04a00dcbd69ab309d1ab9 data/minecraft/tags/block/trickster/conversion/heat/stone.json
+f7f722fe4d6e1a13df4a9adcde9d5572578748fb data/minecraft/tags/block/trickster/conversion/cool/infested_stone_bricks.json
 63ed293d9197738f4af835c123cc56adaaf319d2 data/minecraft/tags/block/trickster/conversion/heat/red_sand.json
 73a9189c77b1bf661a7fdedbcb9d4b517a712ab6 data/minecraft/tags/block/trickster/conversion/heat/flowering_azalea.json
-357a5546afdab292c443ffea8e8a4c32a2775bc8 data/minecraft/tags/block/trickster/conversion/heat/gold_ore.json
 ceca8f907f329d111b9680b2ac45ec04594a8a00 data/minecraft/tags/block/trickster/conversion/heat/iron_ore.json
+357a5546afdab292c443ffea8e8a4c32a2775bc8 data/minecraft/tags/block/trickster/conversion/heat/gold_ore.json
 5bbb6a2b0b6cfb56d868fa2cd84763e229f0eee8 data/minecraft/tags/block/trickster/conversion/heat/dirt_path.json
+f2cdc7afb5455aaa2523dd4fbae2de104ee8042d data/minecraft/tags/block/trickster/conversion/heat/infested_chiseled_stone_bricks.json
+f7f722fe4d6e1a13df4a9adcde9d5572578748fb data/minecraft/tags/block/trickster/conversion/heat/infested_stone_bricks.json
 764d1372948cbdc6ed1e2aa4e836d511012ab1d6 data/minecraft/tags/block/trickster/conversion/weather/copper_bulb.json
 00011220c9938bac99d76580022aa777de25f9b0 data/minecraft/tags/block/trickster/conversion/weather/cut_copper.json
+4299a3aeb550dac5d1182404571c32a720c12c01 data/minecraft/tags/block/trickster/conversion/heat/infested_cobblestone.json
 6cd68232476860615596e9ce9d2752c7d4d9420e data/minecraft/tags/block/trickster/conversion/weather/cobblestone.json
 9e2ff2082e029ef8849b3e1cf3d0551f5c3eaf5d data/minecraft/tags/block/trickster/conversion/weather/exposed_copper_bulb.json
+f92c41ce4c3dd51d875dafefe81e048bf6b8f9ed data/minecraft/tags/block/trickster/conversion/heat/infested_stone.json
 82aeade700265a023adf13ac5e3866b479208176 data/minecraft/tags/block/trickster/conversion/weather/gravel.json
 619667c1b7332d180fa0737d335fc257a9549000 data/minecraft/tags/block/trickster/conversion/heat/packed_ice.json
 88b15887ef86d0801b8097db9ee28910d1f59da0 data/minecraft/tags/block/trickster/conversion/weather/exposed_cut_copper_slab.json
@@ -51,6 +59,7 @@ ceca8f907f329d111b9680b2ac45ec04594a8a00 data/minecraft/tags/block/trickster/con
 db6195d77bd598771b111d12750ba39f41fe35c7 data/minecraft/tags/block/trickster/conversion/heat/magma_block.json
 b3f1b1d239b241aa008e5f4b0fd7d8a3e669e19f data/minecraft/tags/block/trickster/conversion/weather/exposed_cut_copper_stairs.json
 73a9189c77b1bf661a7fdedbcb9d4b517a712ab6 data/minecraft/tags/block/trickster/conversion/heat/birch_sapling.json
+6a71ec4c3c800f9427394fc30fcdda8b9d6ad6a1 data/minecraft/tags/block/trickster/conversion/heat/infested_mossy_stone_bricks.json
 a1ca7533ec53db0aeffbbc4b0d01e2b98e62c87f data/minecraft/tags/block/trickster/conversion/heat/lapis_ore.json
 f12710e9c28fd237cbfc94b57f80a2fd67940d54 data/minecraft/tags/block/trickster/conversion/cool/packed_ice.json
 4342dbe120758da700a1d9f914789a75c43c98e9 data/minecraft/tags/block/trickster/conversion/heat/blue_ice.json
@@ -66,9 +75,12 @@ e00b115cf27fcd028d9c733c99d74e5e2db9b89f data/minecraft/tags/block/trickster/con
 a9d9ea4becab53f2ae18b53a28175f1dae5fcaf4 data/minecraft/tags/block/trickster/conversion/heat/diorite.json
 aba1b5c0a1fcb1ddea1f4621b93557813a527148 data/minecraft/tags/block/trickster/conversion/weather/polished_blackstone_bricks.json
 73a9189c77b1bf661a7fdedbcb9d4b517a712ab6 data/minecraft/tags/block/trickster/conversion/cool/dark_oak_sapling.json
+7f7eb361dcdaa2f081bfed7582c93d6b1b29f8db data/minecraft/tags/block/trickster/conversion/heat/coal_block.json
 f0f92c5f0b5c5412980a4ca8436b4cb180919deb data/minecraft/tags/block/trickster/conversion/heat/cobbled_deepslate.json
+965b6a5353209b6388e04a00dcbd69ab309d1ab9 data/minecraft/tags/block/trickster/conversion/cool/infested_deepslate.json
 73a9189c77b1bf661a7fdedbcb9d4b517a712ab6 data/minecraft/tags/block/trickster/conversion/heat/jungle_sapling.json
 7ab410155debfc615cf3b16457bb920f89c98971 data/minecraft/tags/block/trickster/conversion/weather/weathered_copper_trapdoor.json
+c541a5fdb4ea2a5bac6317ab8b943f91dc00dd8e data/minecraft/tags/block/trickster/conversion/heat/infested_cracked_stone_bricks.json
 13ef85abf8f5314a6a9ceeba0d45791cea631c85 data/minecraft/tags/block/trickster/conversion/weather/weathered_cut_copper.json
 f0f92c5f0b5c5412980a4ca8436b4cb180919deb data/minecraft/tags/block/trickster/conversion/heat/deepslate.json
 fbcd98d1d2abb24331bac87d5263db81c4e51145 data/minecraft/tags/block/trickster/conversion/heat/diamond_ore.json
@@ -80,9 +92,11 @@ fbcd98d1d2abb24331bac87d5263db81c4e51145 data/minecraft/tags/block/trickster/con
 73a9189c77b1bf661a7fdedbcb9d4b517a712ab6 data/minecraft/tags/block/trickster/conversion/cool/flowering_azalea.json
 08d8e8719772f4723880077afb74fb95fd02a9ce data/minecraft/tags/block/trickster/conversion/weather/cobblestone_slab.json
 45629fae47899b8f58f069a6b871e03d167c4e6b data/minecraft/tags/block/trickster/conversion/weather/exposed_copper.json
+5e4fb1e2d48148743595bfd69cc7f0969cdcdb11 data/minecraft/tags/block/trickster/conversion/heat/mossy_cobblestone.json
 5bbb6a2b0b6cfb56d868fa2cd84763e229f0eee8 data/minecraft/tags/block/trickster/conversion/heat/farmland.json
 7d37bbd06eaf97b48668a211bf5b0282197d1dd5 data/minecraft/tags/block/trickster/conversion/weather/cobblestone_stairs.json
 e421bd9327ae7702330fbee72e5c002d8c5af1c9 data/minecraft/tags/block/trickster/conversion/weather/chipped_anvil.json
+6a71ec4c3c800f9427394fc30fcdda8b9d6ad6a1 data/minecraft/tags/block/trickster/conversion/cool/infested_mossy_stone_bricks.json
 24b95a8222b2e264a29fce78603c52d4847a0e2e data/minecraft/tags/block/trickster/conversion/heat/mud.json
 44694f08399e80df1de413600acf7be3de1c0f42 data/minecraft/tags/block/trickster/conversion/weather/deepslate_tiles.json
 73a9189c77b1bf661a7fdedbcb9d4b517a712ab6 data/minecraft/tags/block/trickster/conversion/cool/jungle_sapling.json
@@ -101,10 +115,12 @@ cd356037244ceba492eb01d59ee03181d998cfe6 data/minecraft/tags/block/trickster/con
 73a9189c77b1bf661a7fdedbcb9d4b517a712ab6 data/minecraft/tags/block/trickster/conversion/cool/birch_sapling.json
 73a9189c77b1bf661a7fdedbcb9d4b517a712ab6 data/minecraft/tags/block/trickster/conversion/cool/oak_sapling.json
 f9ef47a782cc8ff167eb9aec22b0fc78f96cff8e data/minecraft/tags/block/trickster/conversion/weather/gilded_blackstone.json
+f2cdc7afb5455aaa2523dd4fbae2de104ee8042d data/minecraft/tags/block/trickster/conversion/cool/infested_chiseled_stone_bricks.json
 c3bc5983c5d167563f57b85cc8e75a10911df6b4 data/minecraft/tags/block/trickster/conversion/weather/stone_brick_stairs.json
 8a3b6c43de5696d22edea798ffefe18769ecd1fb data/minecraft/tags/block/trickster/conversion/weather/damaged_anvil.json
 5bbb6a2b0b6cfb56d868fa2cd84763e229f0eee8 data/minecraft/tags/block/trickster/conversion/heat/grass_block.json
 486c003bd2b4c4cae36201fb887d1af87c52ac35 data/minecraft/tags/block/trickster/conversion/weather/copper_grate.json
 4342dbe120758da700a1d9f914789a75c43c98e9 data/minecraft/tags/block/trickster/conversion/cool/ice.json
 73a9189c77b1bf661a7fdedbcb9d4b517a712ab6 data/minecraft/tags/block/trickster/conversion/heat/spruce_sapling.json
+965b6a5353209b6388e04a00dcbd69ab309d1ab9 data/minecraft/tags/block/trickster/conversion/heat/infested_deepslate.json
 554d40f40b7705bbd25e668938bfaad041e12d2b data/minecraft/tags/block/trickster/conversion/weather/copper_trapdoor.json
