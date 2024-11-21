@@ -99,6 +99,7 @@ public class ModBlockTagGenerator extends FabricTagProvider.BlockTagProvider {
         registerCoolConversion(Blocks.INFESTED_CHISELED_STONE_BRICKS, Blocks.CHISELED_STONE_BRICKS);
         registerCoolConversion(Blocks.INFESTED_DEEPSLATE, Blocks.DEEPSLATE);
 
+        registerWeatherConversion(Blocks.STONE, Blocks.COBBLESTONE);
         registerWeatherConversion(Blocks.COBBLESTONE, Blocks.GRAVEL);
         registerWeatherConversion(Blocks.COBBLESTONE, Blocks.MOSSY_COBBLESTONE);
         registerWeatherConversion(Blocks.COBBLESTONE_STAIRS, Blocks.MOSSY_COBBLESTONE_STAIRS);
