@@ -154,6 +154,7 @@ import net.minecraft.registry.SimpleRegistry;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryEntryInfo;
 
+@SuppressWarnings("unused")
 public class Tricks {
     private static final Map<Pattern, Trick> LOOKUP = new HashMap<>();
 
