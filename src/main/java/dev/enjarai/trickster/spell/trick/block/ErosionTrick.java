@@ -43,7 +43,7 @@ public class WeatherTrick extends Trick {
         BlockState state = world.getBlockState(waterPos);
 
         if ((!state.isOf(Blocks.WATER_CAULDRON) || state.get(LeveledCauldronBlock.LEVEL) != 3) && !state.getFluidState().isOf(Fluids.WATER)) {
-            throw new BlockInvalidBlunder(this);
+            throw new BlockInvalidBlunder(this, state.getBlock());
         }
 
         if (!blockState.isAir()) {
@@ -51,14 +51,14 @@ public class WeatherTrick extends Trick {
 
             var tag = TagKey.of(RegistryKeys.BLOCK, Registries.BLOCK.getId(blockState.getBlock()).withPrefixedPath("trickster/conversion/weather/"));
             if (Registries.BLOCK.getEntryList(tag).isEmpty()) {
-                throw new BlockInvalidBlunder(this);
+                throw new BlockInvalidBlunder(this, blockState.getBlock());
             }
 
             Optional<RegistryEntry<Block>> conversion;
             conversion = Registries.BLOCK.getEntryList(tag).flatMap(e -> e.getRandom(random));
 
             if (conversion.isEmpty()) {
-                throw new BlockInvalidBlunder(this);
+                throw new BlockInvalidBlunder(this, blockState.getBlock());
             }
 
             ctx.useMana(this, 80);
@@ -86,7 +86,7 @@ public class WeatherTrick extends Trick {
 
             world.emitGameEvent(null, GameEvent.BLOCK_CHANGE, weatheringPos);
         } else {
-            throw new BlockInvalidBlunder(this);
+            throw new BlockInvalidBlunder(this, blockState.getBlock());
         }
 
         return weatheringPosFragment;
