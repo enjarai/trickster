@@ -68,6 +68,9 @@ public class WeatherTrick extends Trick {
             } else if (state.getFluidState().isOf(Fluids.WATER)) {
                 if (state.getProperties().contains(Properties.WATERLOGGED)) {
                     world.setBlockState(waterPos, state.with(Properties.WATERLOGGED, false));
+                } else if (!state.isOf(Blocks.WATER)) {
+                    world.breakBlock(waterPos, true, ctx.source().getCaster().orElse(null));
+                    world.setBlockState(waterPos, Blocks.AIR.getDefaultState());
                 } else {
                     world.setBlockState(waterPos, Blocks.AIR.getDefaultState());
                 }
