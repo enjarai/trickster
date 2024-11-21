@@ -114,10 +114,10 @@ Powers the [Spell Resonator](^trickster:items/spell_resonator) at the given posi
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:weather,title=Temporal Ploy|>
+<|glyph@trickster:templates|trick-id=trickster:erosion,title=Temporal Ploy|>
 
-vector, vector ->
+vector, vector -> vector
 
-<|cost-rule@trickster:templates|formula=20kG|>
+<|cost-rule@trickster:templates|formula=80kG|>
 
-Uses a lot of water to cause a block to weather and age. 
+Throws water aggressively on a block, causing erosion and weathering.

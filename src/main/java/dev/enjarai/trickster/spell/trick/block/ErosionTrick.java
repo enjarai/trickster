@@ -22,8 +22,8 @@ import net.minecraft.world.event.GameEvent;
 import java.util.List;
 import java.util.Optional;
 
-public class WeatherTrick extends Trick {
-    public WeatherTrick() {
+public class ErosionTrick extends Trick {
+    public ErosionTrick() {
         super(Pattern.of(0, 4, 6, 7, 8, 4, 2));
     }
 
@@ -49,7 +49,7 @@ public class WeatherTrick extends Trick {
         if (!blockState.isAir()) {
             Random random = ctx.source().getWorld().getRandom();
 
-            var tag = TagKey.of(RegistryKeys.BLOCK, Registries.BLOCK.getId(blockState.getBlock()).withPrefixedPath("trickster/conversion/weather/"));
+            var tag = TagKey.of(RegistryKeys.BLOCK, Registries.BLOCK.getId(blockState.getBlock()).withPrefixedPath("trickster/conversion/erosion/"));
             if (Registries.BLOCK.getEntryList(tag).isEmpty()) {
                 throw new BlockInvalidBlunder(this, blockState.getBlock());
             }
