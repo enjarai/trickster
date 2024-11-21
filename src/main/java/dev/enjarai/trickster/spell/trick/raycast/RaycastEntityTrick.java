@@ -13,7 +13,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
 public class RaycastEntityTrick extends AbstractRaycastTrick {
@@ -22,7 +22,7 @@ public class RaycastEntityTrick extends AbstractRaycastTrick {
     }
 
     @Override
-    public Fragment activate(SpellContext ctx, Optional<Entity> entity, Vec3d position, Vec3d direction) throws BlunderException {
+    public Fragment activate(List<Fragment> fragments, SpellContext ctx, Optional<Entity> entity, Vec3d position, Vec3d direction) throws BlunderException {
         var multipliedDirection = position.add(direction.multiply(64d));
         var hit = raycast(ctx.source().getWorld(), entity, position, multipliedDirection, new Box(position, multipliedDirection), 64 * 64);
         return hit == null ? VoidFragment.INSTANCE : EntityFragment.from(hit.getEntity());
@@ -31,45 +31,41 @@ public class RaycastEntityTrick extends AbstractRaycastTrick {
     // I needed some changes from ProjectileUtil's impl -- Aurora
     @Nullable
     private static EntityHitResult raycast(World world, Optional<Entity> entity, Vec3d min, Vec3d max, Box box, double maxDistance) {
-        double d = maxDistance;
-        Entity entity2 = null;
-        Vec3d vec3d = null;
-        Iterator var12 = world.getOtherEntities(entity.orElse(null), box, e -> true).iterator();
+        double distance = maxDistance;
+        Entity foundEntity = null;
+        Vec3d pos = null;
 
-        while(true) {
-            while(var12.hasNext()) {
-                Entity entity3 = (Entity)var12.next();
-                Box box2 = entity3.getBoundingBox().expand(entity3.getTargetingMargin());
-                Optional<Vec3d> optional = box2.raycast(min, max);
-                if (box2.contains(min)) {
-                    if (d >= 0.0) {
-                        entity2 = entity3;
-                        vec3d = optional.orElse(min);
-                        d = 0.0;
-                    }
-                } else if (optional.isPresent()) {
-                    Vec3d vec3d2 = optional.get();
-                    double e = min.squaredDistanceTo(vec3d2);
-                    if (e < d || d == 0.0) {
-                        if (entity.isPresent() && entity3.getRootVehicle() == entity.get().getRootVehicle()) {
-                            if (d == 0.0) {
-                                entity2 = entity3;
-                                vec3d = vec3d2;
-                            }
-                        } else {
-                            entity2 = entity3;
-                            vec3d = vec3d2;
-                            d = e;
+        for (Entity entityToBeMaybeFound : world.getOtherEntities(entity.orElse(null), box, e -> true)) {
+            Box box2 = entityToBeMaybeFound.getBoundingBox().expand(entityToBeMaybeFound.getTargetingMargin());
+            Optional<Vec3d> perhapsRaycastEntityPos = box2.raycast(min, max);
+            if (box2.contains(min)) {
+                if (distance >= 0.0) {
+                    foundEntity = entityToBeMaybeFound;
+                    pos = perhapsRaycastEntityPos.orElse(min);
+                    distance = 0.0;
+                }
+            } else if (perhapsRaycastEntityPos.isPresent()) {
+                Vec3d raycastEntityPos = perhapsRaycastEntityPos.get();
+                double squareDistance = min.squaredDistanceTo(raycastEntityPos);
+                if (squareDistance < distance || distance == 0.0) {
+                    if (entity.isPresent() && entityToBeMaybeFound.getRootVehicle() == entity.get().getRootVehicle()) {
+                        if (distance == 0.0) {
+                            foundEntity = entityToBeMaybeFound;
+                            pos = raycastEntityPos;
                         }
+                    } else {
+                        foundEntity = entityToBeMaybeFound;
+                        pos = raycastEntityPos;
+                        distance = squareDistance;
                     }
                 }
             }
-
-            if (entity2 == null) {
-                return null;
-            }
-
-            return new EntityHitResult(entity2, vec3d);
         }
+
+        if (foundEntity == null) {
+            return null;
+        }
+
+        return new EntityHitResult(foundEntity, pos);
     }
 }
