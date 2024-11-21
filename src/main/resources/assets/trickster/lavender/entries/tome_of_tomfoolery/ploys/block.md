@@ -111,3 +111,13 @@ vector, number -> boolean
 <|cost-rule@trickster:templates|formula=distance / 2kG|>
 
 Powers the [Spell Resonator](^trickster:items/spell_resonator) at the given position with the given power level, between 0 and 15.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:weather,title=Temporal Ploy|>
+
+vector, vector ->
+
+<|cost-rule@trickster:templates|formula=20kG|>
+
+Uses a lot of water to cause a block to weather and age. 

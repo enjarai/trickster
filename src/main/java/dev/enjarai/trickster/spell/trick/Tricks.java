@@ -324,6 +324,7 @@ public class Tricks {
     public static final GetRedstonePowerTrick GET_REDSTONE_POWER = register("get_redstone_power", new GetRedstonePowerTrick());
     public static final HeatTrick HEAT = register("heat", new HeatTrick());
     public static final CoolTrick COOL = register("cool", new CoolTrick());
+    public static final WeatherTrick WEATHER = register("weather", new WeatherTrick());
 
     // Inventory
     public static final ImportTrick IMPORT = register("import", new ImportTrick());
