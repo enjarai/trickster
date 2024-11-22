@@ -20,8 +20,7 @@ public class ModBlockTagGenerator extends FabricTagProvider.BlockTagProvider {
     protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
         registerHeatConversion(Blocks.STONE, Blocks.DEEPSLATE);
         registerHeatConversion(Blocks.COBBLESTONE, Blocks.COBBLED_DEEPSLATE);
-        registerHeatConversion(Blocks.MOSSY_COBBLESTONE, Blocks.COBBLESTONE);
-        registerHeatConversion(Blocks.MOSSY_COBBLESTONE, Blocks.COBBLED_DEEPSLATE);
+        registerHeatConversion(Blocks.MOSSY_COBBLESTONE, Blocks.COBBLESTONE, Blocks.COBBLED_DEEPSLATE);
         registerHeatConversion(Blocks.DEEPSLATE, Blocks.MAGMA_BLOCK);
         registerHeatConversion(Blocks.COBBLED_DEEPSLATE, Blocks.MAGMA_BLOCK);
         registerHeatConversion(Blocks.DIORITE, Blocks.TUFF);
@@ -100,18 +99,15 @@ public class ModBlockTagGenerator extends FabricTagProvider.BlockTagProvider {
         registerCoolConversion(Blocks.INFESTED_DEEPSLATE, Blocks.DEEPSLATE);
 
         registerErosionConversion(Blocks.STONE, Blocks.COBBLESTONE);
-        registerErosionConversion(Blocks.COBBLESTONE, Blocks.GRAVEL);
-        registerErosionConversion(Blocks.COBBLESTONE, Blocks.MOSSY_COBBLESTONE);
+        registerErosionConversion(Blocks.COBBLESTONE, Blocks.GRAVEL, Blocks.MOSSY_COBBLESTONE);
         registerErosionConversion(Blocks.COBBLESTONE_STAIRS, Blocks.MOSSY_COBBLESTONE_STAIRS);
         registerErosionConversion(Blocks.COBBLESTONE_SLAB, Blocks.MOSSY_COBBLESTONE_SLAB);
         registerErosionConversion(Blocks.COBBLESTONE_WALL, Blocks.MOSSY_COBBLESTONE_WALL);
-        registerErosionConversion(Blocks.STONE_BRICKS, Blocks.MOSSY_STONE_BRICKS);
-        registerErosionConversion(Blocks.STONE_BRICKS, Blocks.CRACKED_STONE_BRICKS);
+        registerErosionConversion(Blocks.STONE_BRICKS, Blocks.MOSSY_STONE_BRICKS, Blocks.CRACKED_STONE_BRICKS);
         registerErosionConversion(Blocks.STONE_BRICK_STAIRS, Blocks.MOSSY_STONE_BRICK_STAIRS);
         registerErosionConversion(Blocks.STONE_BRICK_SLAB, Blocks.MOSSY_STONE_BRICK_SLAB);
         registerErosionConversion(Blocks.STONE_BRICK_WALL, Blocks.MOSSY_STONE_BRICK_WALL);
-        registerErosionConversion(Blocks.INFESTED_STONE_BRICKS, Blocks.INFESTED_MOSSY_STONE_BRICKS);
-        registerErosionConversion(Blocks.INFESTED_STONE_BRICKS, Blocks.INFESTED_CRACKED_STONE_BRICKS);
+        registerErosionConversion(Blocks.INFESTED_STONE_BRICKS, Blocks.INFESTED_MOSSY_STONE_BRICKS, Blocks.INFESTED_CRACKED_STONE_BRICKS);
         registerErosionConversion(Blocks.DEEPSLATE_BRICKS, Blocks.CRACKED_DEEPSLATE_BRICKS);
         registerErosionConversion(Blocks.DEEPSLATE_TILES, Blocks.CRACKED_DEEPSLATE_TILES);
         registerErosionConversion(Blocks.NETHER_BRICKS, Blocks.CRACKED_NETHER_BRICKS);
