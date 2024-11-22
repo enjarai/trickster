@@ -43,6 +43,16 @@ Creates a new list containing the elements of all given lists.
 
 ;;;;;
 
+<|glyph@trickster:templates|trick-id=trickster:list_zip,title=Pairing Stratagem|>
+
+any[]... -> any[][]
+
+---
+
+Creates a new list containing lists of elements taken from each list.
+
+;;;;;
+
 <|glyph@trickster:templates|trick-id=trickster:list_insert,title=Inflation Stratagem|>
 
 any[], number, any... -> any[]

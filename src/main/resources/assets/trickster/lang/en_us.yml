@@ -141,6 +141,7 @@ trickster:
     list_remove: Expulsion Stratagem
     list_remove_element: Eviction Stratagem
     list_size: Tally Distortion
+    list_zip: Pairing Stratagem
 
     locate_glyph: Pinpoint Distortion
     locate_glyphs: Discovering Distortion
