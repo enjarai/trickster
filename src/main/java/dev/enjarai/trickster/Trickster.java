@@ -32,7 +32,6 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.item.Item.TooltipContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -42,7 +41,6 @@ import nl.enjarai.cicada.api.util.JsonSource;
 import nl.enjarai.cicada.api.util.ProperLogger;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 
