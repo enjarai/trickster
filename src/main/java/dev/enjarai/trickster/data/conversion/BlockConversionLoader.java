@@ -11,7 +11,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.data.CompleteJsonDataLoader;
 import dev.enjarai.trickster.mixin.accessor.StateAccessor;
-import dev.enjarai.trickster.util.WeightedRandom;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -26,6 +25,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.profiler.Profiler;
 import net.minecraft.world.World;
+import nl.enjarai.cicada.api.util.random.RandomUtil;
+import nl.enjarai.cicada.api.util.random.Weighted;
 
 import java.util.*;
 
@@ -33,7 +34,7 @@ public abstract class BlockConversionLoader extends CompleteJsonDataLoader imple
     protected static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
     protected final RegistryWrapper.WrapperLookup registryLookup;
     private final String type;
-    protected ImmutableMap<Block, WeightedRandom<WeightedValue>> conversions = ImmutableMap.of();
+    protected ImmutableMap<Block, List<WeightedValue>> conversions = ImmutableMap.of();
 
     public BlockConversionLoader(String dataType, RegistryWrapper.WrapperLookup registryLookup) {
         // This uses CODEC in a future version
@@ -72,25 +73,22 @@ public abstract class BlockConversionLoader extends CompleteJsonDataLoader imple
             });
         });
 
-        ImmutableMap.Builder<Block, WeightedRandom<WeightedValue>> builder = ImmutableMap.builder();
+        ImmutableMap.Builder<Block, List<WeightedValue>> builder = ImmutableMap.builder();
         map.forEach((block, weightedValues) -> {
-            WeightedRandom<WeightedValue> weightedRandom = new WeightedRandom<>();
-            for (WeightedValue value : weightedValues) {
-                weightedRandom.add(value.weight(), value);
-            }
-
-            weightedRandom.lock();
-            builder.put(block, weightedRandom);
+            builder.put(block, List.copyOf(weightedValues));
         });
 
         conversions = builder.build();
     }
 
     public boolean convert(Block block, World world, BlockPos pos) {
-        WeightedRandom<WeightedValue> random = conversions.get(block);
-        if (random == null) return false;
+        List<WeightedValue> values = conversions.get(block);
+        if (values == null) return false;
 
-        WeightedValue weightedValue = random.next();
+        Optional<WeightedValue> perhapsWeightedValue = RandomUtil.chooseWeighted(values);
+        if (perhapsWeightedValue.isEmpty()) return false;
+
+        WeightedValue weightedValue = perhapsWeightedValue.get();
 
         BlockEntity blockEntity;
         BlockState blockState = Block.postProcessState(weightedValue.state(), world, pos);
@@ -112,7 +110,7 @@ public abstract class BlockConversionLoader extends CompleteJsonDataLoader imple
         );
     }
 
-    public record WeightedValue(BlockState state, Optional<NbtCompound> nbt, int weight) {
+    public record WeightedValue(BlockState state, Optional<NbtCompound> nbt, int weight) implements Weighted {
         public static final MapCodec<BlockState> BLOCK_STATE_CODEC = Registries.BLOCK.getCodec().dispatchMap("id", state -> ((StateAccessor) state).getOwner(), owner -> {
             BlockState state = owner.getDefaultState();
             if (state.getEntries().isEmpty()) {
@@ -128,5 +126,10 @@ public abstract class BlockConversionLoader extends CompleteJsonDataLoader imple
             Codec.INT.fieldOf("weight").forGetter(WeightedValue::weight)
           ).apply(instance, WeightedValue::new)
         );
+
+        @Override
+        public double getWeight() {
+            return weight;
+        }
     }
 }
