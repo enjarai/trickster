@@ -1,0 +1,11 @@
+{
+  "conversions": [
+    {
+      "id": "minecraft:deepslate",
+      "properties": {
+        "axis": "y"
+      },
+      "weight": 1
+    }
+  ]
+}

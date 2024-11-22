@@ -36,6 +36,7 @@ repositories {
 }
 
 loom {
+    accessWidenerPath.set(file("src/main/resources/trickster.accesswidener"))
     splitEnvironmentSourceSets()
 
     mods {

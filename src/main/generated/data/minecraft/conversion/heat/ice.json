@@ -1,0 +1,11 @@
+{
+  "conversions": [
+    {
+      "id": "minecraft:water",
+      "properties": {
+        "level": "0"
+      },
+      "weight": 1
+    }
+  ]
+}
