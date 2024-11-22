@@ -56,7 +56,6 @@ public class Trickster implements ModInitializer, CicadaEntrypoint {
     public static final TricksterConfig CONFIG = TricksterConfig.createAndLoad();
 
     public static MerlinTooltipAppender merlinTooltipAppender;
-    private static Optional<MinecraftServer> perhapsServer = Optional.empty();
 
     @Override
     public void onInitialize() {
@@ -115,10 +114,6 @@ public class Trickster implements ModInitializer, CicadaEntrypoint {
 
     public static Identifier id(String... path) {
         return Identifier.of(MOD_ID, String.join("/", path));
-    }
-
-    public static Optional<MinecraftServer> getServer() {
-        return perhapsServer;
     }
 
     public interface MerlinTooltipAppender {
