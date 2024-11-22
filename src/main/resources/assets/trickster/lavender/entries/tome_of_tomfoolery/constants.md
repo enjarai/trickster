@@ -36,13 +36,3 @@ Replaces the glyph with an empty list.
 ---
 
 Replaces the glyph with an empty map.
-
-;;;;;
-
-<|pattern@trickster:templates|pattern=6\,0\,2\,8\,5,title=Circumferential Revision|>
-
-{gray}(Scribing pattern){}
-
----
-
-Replaces the glyph with the Pi constant.
