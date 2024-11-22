@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.spell.trick.block;
 
+import dev.enjarai.trickster.data.DataLoader;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
@@ -41,9 +42,7 @@ public class CoolTrick extends Trick {
         } else if (!blockState.isAir()) {
             ctx.useMana(this, 80);
 
-            var tag = TagKey.of(RegistryKeys.BLOCK, Registries.BLOCK.getId(blockState.getBlock()).withPrefixedPath("trickster/conversion/cool/"));
-            var conversion = Registries.BLOCK.getEntryList(tag).flatMap(e -> e.getRandom(ctx.source().getWorld().getRandom()));
-            conversion.ifPresent(blockRegistryEntry -> world.setBlockState(blockPos, blockRegistryEntry.value().getDefaultState()));
+            DataLoader.getCoolLoader().convert(blockState.getBlock(), world, blockPos);
 
             for (Direction direction : Direction.values()) {
                 var offsetPos = blockPos.offset(direction);
