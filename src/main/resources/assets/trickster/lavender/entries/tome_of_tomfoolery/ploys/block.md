@@ -73,6 +73,16 @@ Instantly cools off the given block significantly.
 
 ;;;;;
 
+<|glyph@trickster:templates|trick-id=trickster:erode,title=Ploy of Attrition|>
+
+vector, vector -> vector
+
+<|cost-rule@trickster:templates|formula=80kG|>
+
+Wears down the block at the first given position, making use of the water at the second given position.
+
+;;;;;
+
 <|glyph@trickster:templates|trick-id=trickster:conjure_flower,title=Floral Ploy|>
 
 vector -> vector
@@ -111,13 +121,3 @@ vector, number -> boolean
 <|cost-rule@trickster:templates|formula=distance / 2kG|>
 
 Powers the [Spell Resonator](^trickster:items/spell_resonator) at the given position with the given power level, between 0 and 15.
-
-;;;;;
-
-<|glyph@trickster:templates|trick-id=trickster:erosion,title=Temporal Ploy|>
-
-vector, vector -> vector
-
-<|cost-rule@trickster:templates|formula=80kG|>
-
-Throws water aggressively on a block, causing erosion and weathering.

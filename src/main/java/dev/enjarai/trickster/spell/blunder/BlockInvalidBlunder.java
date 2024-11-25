@@ -21,7 +21,7 @@ public class BlockInvalidBlunder extends TrickBlunderException {
     @Override
     public MutableText createMessage() {
         if (block != null) {
-            return super.createMessage().append("Invalid block type \"").append(Text.translatable(block.getTranslationKey())).append("\"");
+            return super.createMessage().append("Invalid block type. Did not expect ").append(Text.translatable(block.getTranslationKey()));
         }
 
         return super.createMessage().append("Invalid block type");

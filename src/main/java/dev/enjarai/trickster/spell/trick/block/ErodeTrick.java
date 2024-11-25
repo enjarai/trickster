@@ -22,8 +22,8 @@ import net.minecraft.world.event.GameEvent;
 import java.util.List;
 import java.util.Optional;
 
-public class ErosionTrick extends Trick {
-    public ErosionTrick() {
+public class ErodeTrick extends Trick {
+    public ErodeTrick() {
         super(Pattern.of(0, 4, 6, 7, 8, 4, 2));
     }
 
