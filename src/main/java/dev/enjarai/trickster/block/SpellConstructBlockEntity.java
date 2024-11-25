@@ -73,6 +73,7 @@ public class SpellConstructBlockEntity extends BlockEntity implements SpellColor
 
     public void tick() {
         age++;
+        boolean updateClient = false;
 
         if (getWorld() instanceof ServerWorld serverWorld) {
             var coreComponent = getComponents().get(ModComponents.SPELL_CORE);
@@ -100,11 +101,20 @@ public class SpellConstructBlockEntity extends BlockEntity implements SpellColor
                         setComponents(ComponentMap.builder()
                                 .addAll(getComponents()).add(ModComponents.SPELL_CORE, coreComponent.fail(e)).build());
                     });
+
+                    if (error.isPresent()) {
+                        updateClient = true;
+                    }
                 }
             }
 
             ManaComponent.tryRecharge(serverWorld, getPos().toCenterPos(), stack);
-            markDirty();
+
+            if (updateClient) {
+                markDirtyAndUpdateClients();
+            } else {
+                markDirty();
+            }
         }
     }
 
@@ -127,13 +137,13 @@ public class SpellConstructBlockEntity extends BlockEntity implements SpellColor
     @Override
     public void setColors(int[] colors) {
         this.colors = colors;
-        markDirty();
+        markDirtyAndUpdateClients();
     }
 
     @Override
     public void clear() {
         this.stack = ItemStack.EMPTY;
-        markDirty();
+        markDirtyAndUpdateClients();
     }
 
     @Override
@@ -160,7 +170,7 @@ public class SpellConstructBlockEntity extends BlockEntity implements SpellColor
             return ItemStack.EMPTY;
 
         var result = stack.copyAndEmpty();
-        markDirty();
+        markDirtyAndUpdateClients();
         return result;
     }
 
@@ -170,7 +180,7 @@ public class SpellConstructBlockEntity extends BlockEntity implements SpellColor
             return ItemStack.EMPTY;
 
         var result = stack.split(amount);
-        markDirty();
+        markDirtyAndUpdateClients();
         return result;
     }
 
@@ -180,7 +190,7 @@ public class SpellConstructBlockEntity extends BlockEntity implements SpellColor
             return;
 
         this.stack = stack;
-        markDirty();
+        markDirtyAndUpdateClients();
     }
 
     @Override
@@ -191,7 +201,7 @@ public class SpellConstructBlockEntity extends BlockEntity implements SpellColor
     @Override
     public void setCrowMind(Fragment fragment) {
         crowMind = fragment;
-        markDirty();
+        markDirtyAndUpdateClients();
     }
 
     @Override
@@ -199,8 +209,7 @@ public class SpellConstructBlockEntity extends BlockEntity implements SpellColor
         return crowMind;
     }
 
-    @Override
-    public void markDirty() {
+    public void markDirtyAndUpdateClients() {
         super.markDirty();
         if (world != null) {
             world.updateListeners(pos, getCachedState(), getCachedState(), 0);

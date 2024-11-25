@@ -105,7 +105,7 @@ public class SpellConstructBlock extends BlockWithEntity {
             if (player.isSneaking()) {
                 SpellCoreComponent.refresh(blockEntity.getComponents(), component -> blockEntity.setComponents(ComponentMap.builder()
                         .addAll(blockEntity.getComponents()).add(ModComponents.SPELL_CORE, component).build()));
-                blockEntity.markDirty();
+                blockEntity.markDirtyAndUpdateClients();
             } else {
                 var slotStack = blockEntity.getStack(0);
 
@@ -147,7 +147,7 @@ public class SpellConstructBlock extends BlockWithEntity {
         if (blockEntity instanceof SpellConstructBlockEntity circle) {
             SpellCoreComponent.refresh(circle.getComponents(), component -> circle.setComponents(ComponentMap.builder()
                     .addAll(circle.getComponents()).add(ModComponents.SPELL_CORE, component).build()));
-            circle.markDirty();
+            circle.markDirtyAndUpdateClients();
         }
 
         super.onPlaced(world, pos, state, placer, itemStack);
