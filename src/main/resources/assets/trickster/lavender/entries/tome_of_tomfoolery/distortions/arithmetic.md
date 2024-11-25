@@ -164,3 +164,43 @@ number -> number
 ---
 
 Returns the tangent of the given number.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:arcsin,title=Primary Inverse Distortion of Geometry|>
+
+number -> number
+
+---
+
+Returns the arcsine of the given number.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:arccos,title=Secondary Inverse Distortion of Geometry|>
+
+number -> number
+
+---
+
+Returns the arccosine of the given number.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:arctan,title=Tertiary Inverse Distortion of Geometry|>
+
+number -> number
+
+---
+
+Returns the arctangent of the given number.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:arctan2,title=Cartesian Angle Distortion|>
+
+number, number -> number
+
+---
+
+Returns the angle measure between positive X axis and the ray from the origin to the point (y, x).

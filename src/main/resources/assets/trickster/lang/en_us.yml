@@ -48,6 +48,10 @@ trickster:
     sin: Primary Distortion of Geometry
     cos: Secondary Distortion of Geometry
     tan: Tertiary Distortion of Geometry
+    arcsin: Primary Inverse Distortion of Geometry
+    arccos: Secondary Inverse Distortion of Geometry
+    arctan: Tertiary Inverse Distortion of Geometry
+    arctan2: Cartesian Angle Distortion
 
     if_else: Decision Distortion
     equals: Parity Stratagem
