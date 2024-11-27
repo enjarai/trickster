@@ -274,3 +274,8 @@ tasks.register('publishAll') {
     dependsOn 'publish'
     dependsOn 'publishMods'
 }
+
+// the following three lines are so that JDTLS/Eclipse can pick up owo's generated code
+((Task)tasks.findByName("sourcesJar")).configure { dependsOn("compileJava") }
+sourceSets.main.java.srcDirs += [ 'src/main/generatedJava' ]
+compileJava.options.generatedSourceOutputDirectory = file("${projectDir}/src/main/generatedJava/dev/enjarai/trickster/config")

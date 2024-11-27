@@ -337,9 +337,13 @@ text.config.trickster-config:
     server: Server
     aurora-client: Aurora's Personal Client Tweaks
   option:
+    topHatInterceptScrolling: Offhand hat intercepts hotbar scrolling
+    invertTopHatScrolling: Invert hat scrolling
+    revealToHotbar: Write revealed values to action bar
+    maxExecutionsPerSpellPerTick: Max operations per tick per spell
+    allowSwapBedrock: Permit block swapping of bedrock
+    maxBlockBreakingHardness: Max hardness for Ploy of Destruction
+
     dragDrawing: Draw by dragging
-    topHatInterceptScrolling: Top Hat intercepts hotbar scrolling
     barsHorizontal: Show spell-created bars horizontally
-    revealToHotbar: Write spell-revealed values to action bar
-    maxExecutionsPerSpellPerTick: Maximum operations per tick per spell
-    allowSwapBedrock: Bedrock can be swapped with other blocks
+    disableOffhandScrollOpening: Require scroll in main hand to edit
