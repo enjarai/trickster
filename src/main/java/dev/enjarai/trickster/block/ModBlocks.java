@@ -3,7 +3,6 @@ package dev.enjarai.trickster.block;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.block.cauldron.EraseSpellCauldronBehavior;
 import dev.enjarai.trickster.item.ModItems;
-import net.fabricmc.fabric.api.object.builder.v1.world.poi.PointOfInterestHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.cauldron.CauldronBehavior;
 import net.minecraft.block.entity.BlockEntityType;
@@ -11,7 +10,6 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
-import net.minecraft.world.poi.PointOfInterestType;
 
 public class ModBlocks {
     public static final SpellResonatorBlock SPELL_RESONATOR = register("spell_resonator", new SpellResonatorBlock());
@@ -29,9 +27,7 @@ public class ModBlocks {
     public static final BlockEntityType<ScrollShelfBlockEntity> SCROLL_SHELF_ENTITY =
             BlockEntityType.Builder.create(ScrollShelfBlockEntity::new, SCROLL_SHELF).build(null);
 
-    public static final PointOfInterestType SPELL_CIRCLE_POI =
-            PointOfInterestHelper.register(Trickster.id("spell_circle"), 0, 2, SPELL_CONSTRUCT);
-
+    public static final TagKey<Block> UNBREAKABLE = TagKey.of(RegistryKeys.BLOCK, Trickster.id("unbreakable"));
     public static final TagKey<Block> CONJURABLE_FLOWERS = TagKey.of(RegistryKeys.BLOCK, Trickster.id("conjurable_flowers"));
 
     private static <T extends Block> T register(String name, T block) {

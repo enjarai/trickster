@@ -1,11 +1,13 @@
 package dev.enjarai.trickster.spell.trick.block;
 
 import dev.enjarai.trickster.Trickster;
+import dev.enjarai.trickster.block.ModBlocks;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.blunder.BlockTooHardBlunder;
 import dev.enjarai.trickster.spell.blunder.BlockUnoccupiedBlunder;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 
@@ -29,9 +31,11 @@ public class BreakBlockTrick extends Trick {
 
         float hardness = state.getBlock().getHardness();
 
-        if (hardness >= 0 && hardness < Trickster.CONFIG.maxBlockBreakingHardness()) {
+        if (!state.isIn(ModBlocks.UNBREAKABLE) && hardness >= 0 && hardness < Trickster.CONFIG.maxBlockBreakingHardness()) {
             ctx.useMana(this, Math.max(hardness, 8));
             ctx.source().getCaster().ifPresentOrElse(c -> world.breakBlock(blockPos, true, c), () -> world.breakBlock(blockPos, true));
+        } else {
+            throw new BlockTooHardBlunder(this);
         }
 
         return pos;
