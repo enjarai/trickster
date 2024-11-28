@@ -131,6 +131,11 @@ public final class NumberFragment implements AddableFragment, SubtractableFragme
         return false;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof NumberFragment n && n.number == number;
+    }
+
     public boolean isInteger() {
         return number - Math.floor(number) == 0;
     }
@@ -150,8 +155,6 @@ public final class NumberFragment implements AddableFragment, SubtractableFragme
 
     @Override
     public String toString() {
-        return "NumberFragment[" +
-                "number=" + number + ']';
+        return "NumberFragment[" + "number=" + number + "]";
     }
-
 }
