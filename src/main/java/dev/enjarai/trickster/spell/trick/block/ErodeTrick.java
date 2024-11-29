@@ -15,6 +15,7 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.WorldEvents;
 import net.minecraft.world.event.GameEvent;
@@ -47,6 +48,8 @@ public class ErodeTrick extends Trick {
         }
 
         if (!blockState.isAir()) {
+            ctx.useMana(this, 80);
+
             Random random = ctx.source().getWorld().getRandom();
 
             var tag = TagKey.of(RegistryKeys.BLOCK, Registries.BLOCK.getId(blockState.getBlock()).withPrefixedPath("trickster/conversion/erosion/"));
@@ -56,12 +59,6 @@ public class ErodeTrick extends Trick {
 
             Optional<RegistryEntry<Block>> conversion;
             conversion = Registries.BLOCK.getEntryList(tag).flatMap(e -> e.getRandom(random));
-
-            if (conversion.isEmpty()) {
-                throw new BlockInvalidBlunder(this, blockState.getBlock());
-            }
-
-            ctx.useMana(this, 80);
 
             if (state.isOf(Blocks.WATER_CAULDRON)) {
                 world.setBlockState(waterPos, Blocks.CAULDRON.getDefaultState());
@@ -82,9 +79,17 @@ public class ErodeTrick extends Trick {
             if (defaultState.isAir()) {
                 world.syncWorldEvent(WorldEvents.BLOCK_BROKEN, weatheringPos, Block.getRawIdFromState(blockState));
             }
+
             world.setBlockState(weatheringPos, defaultState);
 
             world.emitGameEvent(null, GameEvent.BLOCK_CHANGE, weatheringPos);
+
+            for (Direction direction : Direction.values()) {
+                var offsetPos = weatheringPos.offset(direction);
+                if (world.getBlockState(offsetPos).isReplaceable()) {
+                    world.setBlockState(offsetPos, Blocks.WATER.getDefaultState().with(Properties.LEVEL_12, 12));
+                }
+            }
         } else {
             throw new BlockInvalidBlunder(this, blockState.getBlock());
         }
