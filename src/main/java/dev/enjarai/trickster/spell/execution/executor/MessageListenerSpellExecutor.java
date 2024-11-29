@@ -43,7 +43,7 @@ public class MessageListenerSpellExecutor implements SpellExecutor {
     
     @Override
     public SpellExecutorType<?> type() {
-        return SpellExecutorType.LISTENER;
+        return SpellExecutorType.MESSAGE_LISTENER;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class MessageListenerSpellExecutor implements SpellExecutor {
         if (result.isEmpty()) {
             ModGlobalComponents.MESSAGE_HANDLER
                 .get(source.getWorld().getScoreboard())
-                .await(channel.<Key>map(n -> n).orElseGet(() -> new Key.Broadcast(source.getWorld().getRegistryKey(), source.getPos())), this::listen);
+                .await(channel.<Key>map(n -> n).orElseGet(() -> new Key.Broadcast(source.getWorld().getRegistryKey(), source.getPos(), 0)), this::listen);
         }
         
         return result.map(n -> n);

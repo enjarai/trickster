@@ -10,6 +10,7 @@ import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.ExecutionLimitReachedBlunder;
 import dev.enjarai.trickster.spell.blunder.ItemInvalidBlunder;
+import dev.enjarai.trickster.spell.blunder.OutOfRangeBlunder;
 import dev.enjarai.trickster.spell.execution.executor.MessageListenerSpellExecutor;
 import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
@@ -30,6 +31,12 @@ public class MessageListenTrick extends Trick implements ForkingTrick {
     @Override
     public SpellExecutor makeFork(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var channel = supposeInput(fragments, FragmentType.SLOT, 0).map(s -> {
+            var range = s.getSourcePos(this, ctx).toCenterPos().subtract(ctx.source().getBlockPos().toCenterPos()).length();
+
+            if (range > 16) {
+                throw new OutOfRangeBlunder(this, 16.0, range);
+            }
+
             var comp = s.reference(this, ctx).get(ModComponents.MANA);
 
             if (comp != null && comp.pool() instanceof SharedManaPool pool) {

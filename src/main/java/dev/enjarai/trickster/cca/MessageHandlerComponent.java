@@ -63,7 +63,7 @@ public class MessageHandlerComponent implements ServerTickingComponent {
     }
 
     public void send(Key key, Fragment value) {
-        messages.add(new Message(key, value));
+        messages.add(new Message(key, value.applyEphemeral()));
     }
 
     private static record Message(Key key, Fragment value) {
@@ -83,12 +83,12 @@ public class MessageHandlerComponent implements ServerTickingComponent {
             }
         }
 
-        public static record Broadcast(RegistryKey<World> world, Vector3d pos) implements Key {
+        public static record Broadcast(RegistryKey<World> world, Vector3d pos, double extraRange) implements Key {
             @Override
             public boolean match(Key other) {
                 return other instanceof Broadcast broadcast
                     && broadcast.world.equals(world)
-                    && broadcast.pos.sub(pos, new Vector3d()).length() <= 16;
+                    && broadcast.pos.distanceSquared(pos) <= (256 + Math.pow(broadcast.extraRange, 2) + Math.pow(extraRange, 2));
             }
         }
     }
