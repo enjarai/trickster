@@ -52,3 +52,14 @@ vector, [slot] -> entity
 
 Summons lit TNT at the given position, returning it.
 Requires TNT.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:summon_lightning,title=Electrician's Ploy|>
+
+vector, [slot] -> entity
+
+<|cost-rule@trickster:templates|formula=20kG + distance ^ (distance / 3kG)|>
+
+Summons a lightning bolt at the given position, returning it.
+Requires Copper or Redstone.

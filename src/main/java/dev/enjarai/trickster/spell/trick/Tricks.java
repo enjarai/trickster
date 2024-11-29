@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import dev.enjarai.trickster.spell.trick.block.*;
+import dev.enjarai.trickster.spell.trick.projectile.*;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
@@ -126,10 +127,6 @@ import dev.enjarai.trickster.spell.trick.misc.PinChunkTrick;
 import dev.enjarai.trickster.spell.trick.misc.ShowBarTrick;
 import dev.enjarai.trickster.spell.trick.misc.TypeFragmentTrick;
 import dev.enjarai.trickster.spell.trick.particle.HighlightTrick;
-import dev.enjarai.trickster.spell.trick.projectile.SummonArrowTrick;
-import dev.enjarai.trickster.spell.trick.projectile.SummonDragonBreathTrick;
-import dev.enjarai.trickster.spell.trick.projectile.SummonFireballTrick;
-import dev.enjarai.trickster.spell.trick.projectile.SummonTntTrick;
 import dev.enjarai.trickster.spell.trick.raycast.RaycastBlockPosTrick;
 import dev.enjarai.trickster.spell.trick.raycast.RaycastBlockSideTrick;
 import dev.enjarai.trickster.spell.trick.raycast.RaycastEntityTrick;
@@ -354,6 +351,7 @@ public class Tricks {
     public static final SummonFireballTrick SUMMON_FIREBALL = register("summon_fireball", new SummonFireballTrick());
     public static final SummonDragonBreathTrick SUMMON_DRAGON_BREATH = register("summon_dragon_breath", new SummonDragonBreathTrick());
     public static final SummonTntTrick SUMMON_TNT = register("summon_tnt", new SummonTntTrick());
+    public static final SummonLightningTrick SUMMON_LIGHTNING = register("summon_lightning", new SummonLightningTrick());
 
     // Dimension
     public static final GetDimensionTrick GET_DIMENSION = register("get_dimension", new GetDimensionTrick());
