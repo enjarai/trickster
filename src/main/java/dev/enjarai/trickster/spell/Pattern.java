@@ -60,7 +60,24 @@ public record Pattern(List<PatternEntry> entries) implements Fragment {
     }
 
     public static Pattern of(int... pattern) {
-        return from(Stream.of(ArrayUtils.toObject(pattern)).map(Integer::byteValue).toList());
+        var result = from(Stream.of(ArrayUtils.toObject(pattern)).map(Integer::byteValue).toList());
+
+        for (var line : result.entries) {
+            boolean b = false;
+
+            for (var line2 : possibleLines) {
+                if (line2.equals(line)) {
+                    b = true;
+                    break;
+                }
+            }
+
+            if (!b) {
+                throw new IllegalArgumentException("Pattern is not valid");
+            }
+        }
+
+        return result;
     }
 
     public boolean isEmpty() {

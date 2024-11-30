@@ -1,8 +1,9 @@
 package dev.enjarai.trickster.item;
 
-
+import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.item.component.FragmentComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
+import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.screen.ScrollAndQuillScreenHandler;
 import io.vavr.collection.HashMap;
 import net.minecraft.entity.EquipmentSlot;
@@ -46,6 +47,13 @@ public class ScrollAndQuillItem extends Item {
                 screenOpener.accept(Text.of("trickster.screen.sign_scroll"), hand);
             }
         } else {
+            if (hand == Hand.OFF_HAND
+                    && ModNetworking.clientOrDefault(user,
+                        Trickster.CONFIG.keys.disableOffhandScrollOpening,
+                        Trickster.CONFIG.disableOffhandScrollOpening())) {
+                return TypedActionResult.pass(stack);
+            }
+            
             user.openHandledScreen(new NamedScreenHandlerFactory() {
                 @Override
                 public Text getDisplayName() {

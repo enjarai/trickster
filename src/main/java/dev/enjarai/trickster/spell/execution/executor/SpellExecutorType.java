@@ -15,6 +15,7 @@ public record SpellExecutorType<T extends SpellExecutor>(StructEndec<T> endec) {
     public static final SpellExecutorType<ErroredSpellExecutor> ERRORED = register("errored", ErroredSpellExecutor.ENDEC);
     public static final SpellExecutorType<AtomicSpellExecutor> ATOMIC = register("atomic", AtomicSpellExecutor.ENDEC);
     public static final SpellExecutorType<FoldingSpellExecutor> FOLDING = register("folding", FoldingSpellExecutor.ENDEC);
+    public static final SpellExecutorType<MessageListenerSpellExecutor> MESSAGE_LISTENER = register("message_listener", MessageListenerSpellExecutor.ENDEC);
 
     private static <T extends SpellExecutor> SpellExecutorType<T> register(String name, StructEndec<T> codec) {
         return Registry.register(REGISTRY, Trickster.id(name), new SpellExecutorType<>(codec));

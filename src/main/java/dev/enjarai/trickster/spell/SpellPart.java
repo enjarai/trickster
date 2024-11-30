@@ -231,6 +231,7 @@ public final class SpellPart implements Fragment {
 
     private static final byte[] base64Header = new byte[]{0x1f, (byte) 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, (byte) 0xff};
 
+    //TODO: add encoding from any fragment
     public String toBase64() {
         var buf = Unpooled.buffer();
         buf.writeByte(2); // Protocol version
@@ -262,6 +263,7 @@ public final class SpellPart implements Fragment {
         return result;
     }
 
+    //TODO: add decoding to any fragment
     public static SpellPart fromBase64(String string) {
         var buf = Unpooled.buffer();
 

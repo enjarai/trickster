@@ -49,6 +49,7 @@
             "trickster:flecks",
             "trickster:ward",
             "trickster:shared_mana",
+            "trickster:message_handler",
             "trickster:disguise",
             "trickster:is_editing_scroll",
             "trickster:pinned_chunks",

@@ -113,9 +113,15 @@ import dev.enjarai.trickster.spell.trick.math.SinTrick;
 import dev.enjarai.trickster.spell.trick.math.SqrtTrick;
 import dev.enjarai.trickster.spell.trick.math.SubtractTrick;
 import dev.enjarai.trickster.spell.trick.math.TanTrick;
+import dev.enjarai.trickster.spell.trick.math.ArcCosTrick;
+import dev.enjarai.trickster.spell.trick.math.ArcSinTrick;
+import dev.enjarai.trickster.spell.trick.math.ArcTan2Trick;
+import dev.enjarai.trickster.spell.trick.math.ArcTanTrick;
 import dev.enjarai.trickster.spell.trick.misc.ClearBarTrick;
 import dev.enjarai.trickster.spell.trick.misc.DelayExecutionTrick;
 import dev.enjarai.trickster.spell.trick.misc.HashValuesTrick;
+import dev.enjarai.trickster.spell.trick.misc.MessageListenTrick;
+import dev.enjarai.trickster.spell.trick.misc.MessageSendTrick;
 import dev.enjarai.trickster.spell.trick.misc.PinChunkTrick;
 import dev.enjarai.trickster.spell.trick.misc.ShowBarTrick;
 import dev.enjarai.trickster.spell.trick.misc.TypeFragmentTrick;
@@ -257,6 +263,10 @@ public class Tricks {
     public static final SinTrick SIN = register("sin", new SinTrick());
     public static final CosTrick COS = register("cos", new CosTrick());
     public static final TanTrick TAN = register("tan", new TanTrick());
+    public static final ArcSinTrick ARCSIN = register("arcsin", new ArcSinTrick());
+    public static final ArcCosTrick ARCCOS = register("arccos", new ArcCosTrick());
+    public static final ArcTanTrick ARCTAN = register("arctan", new ArcTanTrick());
+    public static final ArcTan2Trick ARCTAN2 = register("arctan2", new ArcTan2Trick());
     public static final PowerTrick POWER = register("power", new PowerTrick());
 
     // Vector
@@ -362,6 +372,8 @@ public class Tricks {
     public static final PinChunkTrick PIN_CHUNK = register("pin_chunk", new PinChunkTrick());
     public static final ShowBarTrick SHOW_BAR = register("show_bar", new ShowBarTrick());
     public static final ClearBarTrick CLEAR_BAR = register("clear_bar", new ClearBarTrick());
+    public static final MessageSendTrick MESSAGE_SEND = register("message_send", new MessageSendTrick());
+    public static final MessageListenTrick MESSAGE_LISTEN = register("message_listen", new MessageListenTrick());
 
     // Mana
     public static final BatteryCreationTrick BATTERY_CREATION = register("battery_creation", new BatteryCreationTrick());

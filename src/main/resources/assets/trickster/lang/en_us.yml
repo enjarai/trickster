@@ -48,6 +48,10 @@ trickster:
     sin: Primary Distortion of Geometry
     cos: Secondary Distortion of Geometry
     tan: Tertiary Distortion of Geometry
+    arcsin: Primary Inverse Distortion of Geometry
+    arccos: Secondary Inverse Distortion of Geometry
+    arctan: Tertiary Inverse Distortion of Geometry
+    arctan2: Cartesian Angle Distortion
 
     if_else: Decision Distortion
     equals: Parity Stratagem
@@ -215,6 +219,9 @@ trickster:
     push_mana: Benevolent Conduit's Ploy
     pull_mana: Malevolent Conduit's Ploy
 
+    message_send: Dispatch Ploy
+    message_listen: Ploy of Receipt
+
   fragment.trickster:
     type: Type
     number: Number
@@ -334,9 +341,13 @@ text.config.trickster-config:
     server: Server
     aurora-client: Aurora's Personal Client Tweaks
   option:
+    topHatInterceptScrolling: Offhand hat intercepts hotbar scrolling
+    invertTopHatScrolling: Invert hat scrolling
+    revealToHotbar: Write revealed values to action bar
+    maxExecutionsPerSpellPerTick: Max operations per tick per spell
+    allowSwapBedrock: Permit block swapping of bedrock
+    maxBlockBreakingHardness: Max hardness for Ploy of Destruction
+
     dragDrawing: Draw by dragging
-    topHatInterceptScrolling: Top Hat intercepts hotbar scrolling
     barsHorizontal: Show spell-created bars horizontally
-    revealToHotbar: Write spell-revealed values to action bar
-    maxExecutionsPerSpellPerTick: Maximum operations per tick per spell
-    allowSwapBedrock: Bedrock can be swapped with other blocks
+    disableOffhandScrollOpening: Require scroll in main hand to edit
