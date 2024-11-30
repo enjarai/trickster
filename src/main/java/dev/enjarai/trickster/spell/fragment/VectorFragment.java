@@ -31,7 +31,7 @@ public class VectorFragment implements AddableFragment, SubtractableFragment, Mu
 
     private final Vector3dc vector;
 
-    public VectorFragment(Vector3dc vector) {
+    public VectorFragment(Vector3dc vector) throws BlunderException {
         if (Double.isNaN(vector.x()) || Double.isNaN(vector.y()) || Double.isNaN(vector.z())) {
             throw new NaNBlunder();
         }
