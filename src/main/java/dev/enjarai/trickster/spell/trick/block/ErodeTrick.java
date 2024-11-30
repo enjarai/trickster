@@ -11,17 +11,14 @@ import net.minecraft.block.*;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.world.WorldEvents;
 import net.minecraft.world.event.GameEvent;
 
 import java.util.List;
-import java.util.Optional;
 
 public class ErodeTrick extends Trick {
     public ErodeTrick() {
@@ -38,27 +35,19 @@ public class ErodeTrick extends Trick {
         expectCanBuild(ctx, waterPos);
 
         ServerWorld world = ctx.source().getWorld();
-
         BlockState blockState = world.getBlockState(weatheringPos);
-
         BlockState state = world.getBlockState(waterPos);
 
-        if ((!state.isOf(Blocks.WATER_CAULDRON) || state.get(LeveledCauldronBlock.LEVEL) != 3) && !state.getFluidState().isOf(Fluids.WATER)) {
-            throw new BlockInvalidBlunder(this, state.getBlock());
-        }
-
-        if (!blockState.isAir()) {
+        if (!blockState.isAir()
+                && ((state.isOf(Blocks.WATER)
+                        && state.get(FluidBlock.LEVEL) == 0)
+                    || state.getFluidState().isOf(Fluids.WATER)
+                    || state.isOf(Blocks.WATER_CAULDRON))) {
             ctx.useMana(this, 80);
 
-            Random random = ctx.source().getWorld().getRandom();
-
+            var random = ctx.source().getWorld().getRandom();
             var tag = TagKey.of(RegistryKeys.BLOCK, Registries.BLOCK.getId(blockState.getBlock()).withPrefixedPath("trickster/conversion/erosion/"));
-            if (Registries.BLOCK.getEntryList(tag).isEmpty()) {
-                throw new BlockInvalidBlunder(this, blockState.getBlock());
-            }
-
-            Optional<RegistryEntry<Block>> conversion;
-            conversion = Registries.BLOCK.getEntryList(tag).flatMap(e -> e.getRandom(random));
+            var conversion = Registries.BLOCK.getEntryList(tag).flatMap(e -> e.getRandom(random));
 
             if (state.isOf(Blocks.WATER_CAULDRON)) {
                 world.setBlockState(waterPos, Blocks.CAULDRON.getDefaultState());
@@ -73,25 +62,25 @@ public class ErodeTrick extends Trick {
                 }
             }
 
-            RegistryEntry<Block> blockRegistryEntry = conversion.get();
+            conversion.ifPresent(blockRegistryEntry -> {
+                BlockState defaultState = blockRegistryEntry.value().getDefaultState();
 
-            BlockState defaultState = blockRegistryEntry.value().getDefaultState();
-            if (defaultState.isAir()) {
-                world.syncWorldEvent(WorldEvents.BLOCK_BROKEN, weatheringPos, Block.getRawIdFromState(blockState));
-            }
+                if (defaultState.isAir()) {
+                    world.syncWorldEvent(WorldEvents.BLOCK_BROKEN, weatheringPos, Block.getRawIdFromState(blockState));
+                }
 
-            world.setBlockState(weatheringPos, defaultState);
-
-            world.emitGameEvent(null, GameEvent.BLOCK_CHANGE, weatheringPos);
+                world.setBlockState(weatheringPos, defaultState);
+                world.emitGameEvent(null, GameEvent.BLOCK_CHANGE, weatheringPos);
+            });
 
             for (Direction direction : Direction.values()) {
                 var offsetPos = weatheringPos.offset(direction);
                 if (world.getBlockState(offsetPos).isReplaceable()) {
-                    world.setBlockState(offsetPos, Blocks.WATER.getDefaultState().with(Properties.LEVEL_12, 12));
+                    world.setBlockState(offsetPos, Blocks.WATER.getDefaultState().with(FluidBlock.LEVEL, 7));
                 }
             }
         } else {
-            throw new BlockInvalidBlunder(this, blockState.getBlock());
+            throw new BlockInvalidBlunder(this);
         }
 
         return weatheringPosFragment;
