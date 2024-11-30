@@ -73,6 +73,16 @@ Instantly cools off the given block significantly.
 
 ;;;;;
 
+<|glyph@trickster:templates|trick-id=trickster:erode,title=Ploy of Attrition|>
+
+vector, vector -> vector
+
+<|cost-rule@trickster:templates|formula=80kG|>
+
+Wears down the block at the first given position, making use of the water at the second given position.
+
+;;;;;
+
 <|glyph@trickster:templates|trick-id=trickster:conjure_flower,title=Floral Ploy|>
 
 vector -> vector
