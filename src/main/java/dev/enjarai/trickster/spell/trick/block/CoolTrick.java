@@ -1,18 +1,15 @@
 package dev.enjarai.trickster.spell.trick.block;
 
+import dev.enjarai.trickster.data.DataLoader;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlockInvalidBlunder;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import net.minecraft.block.*;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.TagKey;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.event.GameEvent;
@@ -41,9 +38,7 @@ public class CoolTrick extends Trick {
         } else if (!blockState.isAir()) {
             ctx.useMana(this, 80);
 
-            var tag = TagKey.of(RegistryKeys.BLOCK, Registries.BLOCK.getId(blockState.getBlock()).withPrefixedPath("trickster/conversion/cool/"));
-            var conversion = Registries.BLOCK.getEntryList(tag).flatMap(e -> e.getRandom(ctx.source().getWorld().getRandom()));
-            conversion.ifPresent(blockRegistryEntry -> world.setBlockState(blockPos, blockRegistryEntry.value().getDefaultState()));
+            DataLoader.getCoolLoader().convert(blockState.getBlock(), world, blockPos);
 
             for (Direction direction : Direction.values()) {
                 var offsetPos = blockPos.offset(direction);

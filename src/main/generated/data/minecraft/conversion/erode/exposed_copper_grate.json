@@ -1,0 +1,11 @@
+{
+  "conversions": [
+    {
+      "id": "minecraft:weathered_copper_grate",
+      "properties": {
+        "waterlogged": "false"
+      },
+      "weight": 1
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "conversions": [
+    {
+      "id": "minecraft:weathered_cut_copper_slab",
+      "properties": {
+        "type": "bottom",
+        "waterlogged": "false"
+      },
+      "weight": 1
+    }
+  ]
+}

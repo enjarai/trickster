@@ -1,0 +1,12 @@
+{
+  "conversions": [
+    {
+      "id": "minecraft:mossy_cobblestone_slab",
+      "properties": {
+        "type": "bottom",
+        "waterlogged": "false"
+      },
+      "weight": 1
+    }
+  ]
+}

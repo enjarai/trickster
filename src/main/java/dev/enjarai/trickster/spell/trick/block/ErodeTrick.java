@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.spell.trick.block;
 
+import dev.enjarai.trickster.data.DataLoader;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
@@ -9,14 +10,9 @@ import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.trick.Trick;
 import net.minecraft.block.*;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.Direction;
-import net.minecraft.world.WorldEvents;
-import net.minecraft.world.event.GameEvent;
 
 import java.util.List;
 
@@ -45,10 +41,6 @@ public class ErodeTrick extends Trick {
                     || state.isOf(Blocks.WATER_CAULDRON))) {
             ctx.useMana(this, 80);
 
-            var random = ctx.source().getWorld().getRandom();
-            var tag = TagKey.of(RegistryKeys.BLOCK, Registries.BLOCK.getId(blockState.getBlock()).withPrefixedPath("trickster/conversion/erosion/"));
-            var conversion = Registries.BLOCK.getEntryList(tag).flatMap(e -> e.getRandom(random));
-
             if (state.isOf(Blocks.WATER_CAULDRON)) {
                 world.setBlockState(waterPos, Blocks.CAULDRON.getDefaultState());
             } else if (state.getFluidState().isOf(Fluids.WATER)) {
@@ -62,16 +54,7 @@ public class ErodeTrick extends Trick {
                 }
             }
 
-            conversion.ifPresent(blockRegistryEntry -> {
-                BlockState defaultState = blockRegistryEntry.value().getDefaultState();
-
-                if (defaultState.isAir()) {
-                    world.syncWorldEvent(WorldEvents.BLOCK_BROKEN, weatheringPos, Block.getRawIdFromState(blockState));
-                }
-
-                world.setBlockState(weatheringPos, defaultState);
-                world.emitGameEvent(null, GameEvent.BLOCK_CHANGE, weatheringPos);
-            });
+            DataLoader.getErodeLoader().convert(blockState.getBlock(), world, weatheringPos);
 
             for (Direction direction : Direction.values()) {
                 var offsetPos = weatheringPos.offset(direction);

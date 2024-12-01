@@ -11,6 +11,7 @@
     "ItemFrameEntityMixin",
     "ItemMixin",
     "LivingEntityMixin",
+    "accessor.StateAccessor",
     "chunk_pinning.MinecraftServerMixin",
     "chunk_pinning.ServerChunkLoadingManagerMixin",
     "chunk_pinning.ServerWorldMixin",

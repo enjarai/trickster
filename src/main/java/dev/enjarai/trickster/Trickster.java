@@ -5,6 +5,7 @@ import dev.enjarai.trickster.block.ModBlocks;
 import dev.enjarai.trickster.compat.ModCompat;
 import dev.enjarai.trickster.compat.transmog.TransmogCompat;
 import dev.enjarai.trickster.config.TricksterConfig;
+import dev.enjarai.trickster.data.DataLoader;
 import dev.enjarai.trickster.effects.ModEffects;
 import dev.enjarai.trickster.fleck.FleckType;
 import dev.enjarai.trickster.item.ModItems;
@@ -44,9 +45,6 @@ import java.util.List;
 import org.slf4j.Logger;
 
 public class Trickster implements ModInitializer, CicadaEntrypoint {
-    // This logger is used to write text to the console and the log file.
-    // It is considered best practice to use your mod id as the logger's name.
-    // That way, it's clear which mod wrote info, warnings, and errors.
     public static final String MOD_ID = "trickster";
     public static final Logger LOGGER = ProperLogger.getLogger(MOD_ID);
 
@@ -83,6 +81,7 @@ public class Trickster implements ModInitializer, CicadaEntrypoint {
         ManaEventType.register();
         SpellExecutorType.register();
         FleckType.register();
+        DataLoader.registerLoaders();
 
         PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, blockEntity) -> {
             if (player instanceof ServerPlayerEntity serverPlayer)
@@ -111,8 +110,8 @@ public class Trickster implements ModInitializer, CicadaEntrypoint {
         );
     }
 
-    public static Identifier id(String path) {
-        return Identifier.of(MOD_ID, path);
+    public static Identifier id(String... path) {
+        return Identifier.of(MOD_ID, String.join("/", path));
     }
 
     public interface MerlinTooltipAppender {

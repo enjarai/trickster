@@ -1,0 +1,12 @@
+{
+  "conversions": [
+    {
+      "id": "minecraft:gravel",
+      "weight": 1
+    },
+    {
+      "id": "minecraft:mossy_cobblestone",
+      "weight": 1
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "conversions": [
+    {
+      "id": "minecraft:deepslate_redstone_ore",
+      "properties": {
+        "lit": "false"
+      },
+      "weight": 1
+    }
+  ]
+}
