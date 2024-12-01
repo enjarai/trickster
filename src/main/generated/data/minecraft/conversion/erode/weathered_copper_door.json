@@ -1,0 +1,15 @@
+{
+  "conversions": [
+    {
+      "id": "minecraft:oxidized_copper_door",
+      "properties": {
+        "facing": "north",
+        "half": "lower",
+        "hinge": "left",
+        "open": "false",
+        "powered": "false"
+      },
+      "weight": 1
+    }
+  ]
+}

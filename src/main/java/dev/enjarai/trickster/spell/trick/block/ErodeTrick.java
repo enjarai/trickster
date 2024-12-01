@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.spell.trick.block;
 
+import dev.enjarai.trickster.data.DataLoader;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
@@ -45,10 +46,6 @@ public class ErodeTrick extends Trick {
                     || state.isOf(Blocks.WATER_CAULDRON))) {
             ctx.useMana(this, 80);
 
-            var random = ctx.source().getWorld().getRandom();
-            var tag = TagKey.of(RegistryKeys.BLOCK, Registries.BLOCK.getId(blockState.getBlock()).withPrefixedPath("trickster/conversion/erosion/"));
-            var conversion = Registries.BLOCK.getEntryList(tag).flatMap(e -> e.getRandom(random));
-
             if (state.isOf(Blocks.WATER_CAULDRON)) {
                 world.setBlockState(waterPos, Blocks.CAULDRON.getDefaultState());
             } else if (state.getFluidState().isOf(Fluids.WATER)) {
@@ -62,16 +59,7 @@ public class ErodeTrick extends Trick {
                 }
             }
 
-            conversion.ifPresent(blockRegistryEntry -> {
-                BlockState defaultState = blockRegistryEntry.value().getDefaultState();
-
-                if (defaultState.isAir()) {
-                    world.syncWorldEvent(WorldEvents.BLOCK_BROKEN, weatheringPos, Block.getRawIdFromState(blockState));
-                }
-
-                world.setBlockState(weatheringPos, defaultState);
-                world.emitGameEvent(null, GameEvent.BLOCK_CHANGE, weatheringPos);
-            });
+            DataLoader.getHeatLoader().convert(blockState.getBlock(), world, weatheringPos);
 
             for (Direction direction : Direction.values()) {
                 var offsetPos = weatheringPos.offset(direction);

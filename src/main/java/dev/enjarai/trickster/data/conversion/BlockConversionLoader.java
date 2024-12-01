@@ -25,6 +25,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.profiler.Profiler;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldEvents;
+import net.minecraft.world.event.GameEvent;
 import nl.enjarai.cicada.api.util.random.RandomUtil;
 import nl.enjarai.cicada.api.util.random.Weighted;
 
@@ -92,9 +94,17 @@ public abstract class BlockConversionLoader extends CompleteJsonDataLoader imple
 
         BlockEntity blockEntity;
         BlockState blockState = Block.postProcessState(weightedValue.state(), world, pos);
+
+        if (blockState.isAir()) {
+            world.syncWorldEvent(WorldEvents.BLOCK_BROKEN, pos, Block.getRawIdFromState(blockState));
+        }
+
         if (!world.setBlockState(pos, blockState)) {
             return false;
         }
+
+        world.emitGameEvent(null, GameEvent.BLOCK_CHANGE, pos);
+
         if (weightedValue.nbt().isPresent() && (blockEntity = world.getBlockEntity(pos)) != null) {
             blockEntity.read(weightedValue.nbt().get(), world.getRegistryManager());
         }

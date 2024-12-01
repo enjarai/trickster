@@ -1,0 +1,15 @@
+{
+  "conversions": [
+    {
+      "id": "minecraft:weathered_copper_trapdoor",
+      "properties": {
+        "facing": "north",
+        "half": "bottom",
+        "open": "false",
+        "powered": "false",
+        "waterlogged": "false"
+      },
+      "weight": 1
+    }
+  ]
+}

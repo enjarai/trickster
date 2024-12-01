@@ -1,4 +1,4 @@
-// 1.21	2024-11-21T23:26:11.123335037	Trickster/Model Definitions
+// 1.21	2024-12-01T13:10:00.634368746	Trickster/Model Definitions
 e7e256d1cc75121b08bfb8a9cf6c6bf4818b559f assets/trickster/models/item/modular_spell_construct.json
 76a7c57257f8f9538cf8c631e412d6c22ce1c1eb assets/trickster/models/item/scroll_and_quill_light_gray.json
 f00b04573fa8a37423acbd2cfa58995b577acc9f assets/trickster/models/item/written_scroll_light_gray.json
@@ -40,8 +40,8 @@ edec8170be553ecb287cd4f9e718988b201f58a9 assets/trickster/models/item/wand.json
 06fb6fc1c900f99d2dd7537b8c7d13481323604e assets/trickster/models/item/echo_knot.json
 0c24009d9f713f084ff55efcb5aedef3924fc3bf assets/trickster/models/item/written_scroll_white.json
 b0c13ffb9082049c0ed38c75744d557504409e86 assets/trickster/models/item/written_scroll_gray.json
-2a8749d4361b2691332bd1d021866d7f9106ca0e assets/trickster/blockstates/modular_spell_construct.json
 11f88e31ee80e48a4b56df7363c1dfd36659bd76 assets/trickster/models/item/scroll_and_quill_yellow.json
+2a8749d4361b2691332bd1d021866d7f9106ca0e assets/trickster/blockstates/modular_spell_construct.json
 96809df525387fe221827afd762b90062300440f assets/trickster/models/item/scroll_and_quill_black.json
 9d5d343103d621d1a2f492cec156c06274efdc15 assets/trickster/blockstates/spell_resonator.json
 ce371fd6383c178fd713cbe03828b8015df480d8 assets/trickster/models/item/scroll_and_quill_gray.json

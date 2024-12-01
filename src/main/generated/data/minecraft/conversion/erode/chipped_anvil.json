@@ -1,0 +1,11 @@
+{
+  "conversions": [
+    {
+      "id": "minecraft:damaged_anvil",
+      "properties": {
+        "facing": "north"
+      },
+      "weight": 1
+    }
+  ]
+}

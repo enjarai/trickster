@@ -1,0 +1,12 @@
+{
+  "conversions": [
+    {
+      "id": "minecraft:cobblestone",
+      "weight": 1
+    },
+    {
+      "id": "minecraft:cobbled_deepslate",
+      "weight": 1
+    }
+  ]
+}
