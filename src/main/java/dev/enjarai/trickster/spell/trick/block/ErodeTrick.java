@@ -10,14 +10,9 @@ import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.trick.Trick;
 import net.minecraft.block.*;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.Direction;
-import net.minecraft.world.WorldEvents;
-import net.minecraft.world.event.GameEvent;
 
 import java.util.List;
 
@@ -59,7 +54,7 @@ public class ErodeTrick extends Trick {
                 }
             }
 
-            DataLoader.getHeatLoader().convert(blockState.getBlock(), world, weatheringPos);
+            DataLoader.getErodeLoader().convert(blockState.getBlock(), world, weatheringPos);
 
             for (Direction direction : Direction.values()) {
                 var offsetPos = weatheringPos.offset(direction);

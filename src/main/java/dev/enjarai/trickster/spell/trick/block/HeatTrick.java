@@ -1,7 +1,6 @@
 package dev.enjarai.trickster.spell.trick.block;
 
 import dev.enjarai.trickster.data.DataLoader;
-import dev.enjarai.trickster.data.conversion.HeatConversionLoader;
 import dev.enjarai.trickster.pond.FuelableFurnaceDuck;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
