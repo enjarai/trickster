@@ -4,6 +4,7 @@ import com.mojang.serialization.MapCodec;
 import dev.enjarai.trickster.particle.SpellParticleOptions;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
@@ -29,7 +30,9 @@ public class LightBlock extends BlockWithEntity implements Waterloggable {
     protected LightBlock() {
         super(Settings.create()
                 .noCollision().luminance(b -> 15).breakInstantly()
-                .noBlockBreakParticles().sounds(BlockSoundGroup.AMETHYST_BLOCK));
+                .noBlockBreakParticles().sounds(BlockSoundGroup.AMETHYST_BLOCK)
+                .replaceable()
+                .pistonBehavior(PistonBehavior.DESTROY));
         setDefaultState(getStateManager().getDefaultState().with(WATERLOGGED, false));
     }
 
