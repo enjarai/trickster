@@ -7,6 +7,7 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.PatternGlyph;
 import dev.enjarai.trickster.spell.SpellPart;
+import dev.enjarai.trickster.spell.trick.type.ArgType;
 import io.wispforest.endec.StructEndec;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -20,9 +21,12 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
+import java.util.List;
 import java.util.OptionalInt;
 
-public record FragmentType<T extends Fragment>(StructEndec<T> endec, OptionalInt color) {
+import org.jetbrains.annotations.Nullable;
+
+public record FragmentType<T extends Fragment>(StructEndec<T> endec, OptionalInt color) implements ArgType<T> {
     public static final RegistryKey<Registry<FragmentType<?>>> REGISTRY_KEY = RegistryKey.ofRegistry(Trickster.id("fragment_type"));
     public static final Int2ObjectMap<Identifier> INT_ID_LOOKUP = new Int2ObjectOpenHashMap<>();
     public static final Registry<FragmentType<?>> REGISTRY = FabricRegistryBuilder.from(new SimpleRegistry<>(REGISTRY_KEY, Lifecycle.stable()) {
@@ -95,5 +99,23 @@ public record FragmentType<T extends Fragment>(StructEndec<T> endec, OptionalInt
 
     public int getIntId() {
         return REGISTRY.getId(this).hashCode();
+    }
+
+    @Override
+    public int argc(List<Fragment> fragments) {
+        return 1;
+    }
+
+    @Override
+    @Nullable
+    @SuppressWarnings("unchecked")
+    public T compose(List<Fragment> fragments) {
+        var result = fragments.get(0);
+
+        if (result.type() == this) {
+            return (T) result;
+        }
+
+        return null;
     }
 }

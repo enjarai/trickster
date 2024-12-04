@@ -29,15 +29,15 @@ public class PolymorphTrick extends AbstractLivingEntityQueryTrick {
         if (realTarget instanceof ServerPlayerEntity targetPlayer && realSource instanceof ServerPlayerEntity sourcePlayer) {
             ctx.useMana(this, 8000);
 
-            var cumpoonent = targetPlayer.getComponent(ModEntityComponents.DISGUISE);
-            var sourceCumponent = sourcePlayer.getComponent(ModEntityComponents.DISGUISE);
+            var component = targetPlayer.getComponent(ModEntityComponents.DISGUISE);
+            var sourceComponent = sourcePlayer.getComponent(ModEntityComponents.DISGUISE);
             var uuid = sourcePlayer.getUuid();
 
-            if (sourceCumponent.getUuid() != null) {
-                uuid = sourceCumponent.getUuid();
+            if (sourceComponent.getUuid() != null) {
+                uuid = sourceComponent.getUuid();
             }
 
-            cumpoonent.setUuid(uuid);
+            component.setUuid(uuid);
         } else {
             throw new UnknownEntityBlunder(this);
         }

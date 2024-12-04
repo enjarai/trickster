@@ -18,14 +18,12 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public abstract class AbstractFleckTrick extends Trick {
-
     public AbstractFleckTrick(Pattern pattern) {
         super(pattern);
     }
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) {
-
         var playerList = supposeType(fragments.getLast(), FragmentType.LIST) // take either a list of entities
             .map(listFragment -> listFragment.fragments().stream()
                 .map(entry -> expectType(entry, FragmentType.ENTITY)))
