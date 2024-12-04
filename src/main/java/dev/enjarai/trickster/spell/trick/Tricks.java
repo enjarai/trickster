@@ -162,12 +162,12 @@ import net.minecraft.registry.entry.RegistryEntryInfo;
 
 @SuppressWarnings("unused")
 public class Tricks {
-    private static final Map<Pattern, Trick> LOOKUP = new HashMap<>();
+    private static final Map<Pattern, Trick<?>> LOOKUP = new HashMap<>();
 
-    public static final RegistryKey<Registry<Trick>> REGISTRY_KEY = RegistryKey.ofRegistry(Trickster.id("trick"));
-    public static final Registry<Trick> REGISTRY = FabricRegistryBuilder.from(new SimpleRegistry<>(REGISTRY_KEY, Lifecycle.stable()) {
+    public static final RegistryKey<Registry<Trick<?>>> REGISTRY_KEY = RegistryKey.ofRegistry(Trickster.id("trick"));
+    public static final Registry<Trick<?>> REGISTRY = FabricRegistryBuilder.from(new SimpleRegistry<>(REGISTRY_KEY, Lifecycle.stable()) {
         @Override
-        public RegistryEntry.Reference<Trick> add(RegistryKey<Trick> key, Trick value, RegistryEntryInfo info) {
+        public RegistryEntry.Reference<Trick<?>> add(RegistryKey<Trick<?>> key, Trick<?> value, RegistryEntryInfo info) {
             if (LOOKUP.containsKey(value.getPattern())) {
                 Trickster.LOGGER.warn(
                         "WARNING: A mod is overriding a pattern that is already defined! This may result in one of the tricks being unusable. ({} overrode {})",
@@ -381,12 +381,12 @@ public class Tricks {
     public static final PullManaTrick PULL_MANA = register("pull_mana", new PullManaTrick());
 
     @ApiStatus.Internal
-    public static <T extends Trick> T register(String path, T trick) {
+    public static <T extends Trick<?>> T register(String path, T trick) {
         return Registry.register(REGISTRY, Trickster.id(path), trick);
     }
 
     @Nullable
-    public static Trick lookup(Pattern pattern) {
+    public static Trick<?> lookup(Pattern pattern) {
         return LOOKUP.get(pattern);
     }
 

@@ -7,11 +7,11 @@ import org.jetbrains.annotations.Nullable;
 
 import dev.enjarai.trickster.spell.Fragment;
 
-public class VariadicTrickType<T extends Fragment> implements ArgType<List<T>> {
+public class VariadicArgType<T extends Fragment> implements ArgType<List<T>> {
     private final Class<T>[] types;
     
     @SuppressWarnings("unchecked")
-    public VariadicTrickType(Class<T>... types) {
+    public VariadicArgType(Class<T>... types) {
         this.types = types;
     }
 

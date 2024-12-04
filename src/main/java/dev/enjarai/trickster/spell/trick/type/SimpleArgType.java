@@ -6,10 +6,10 @@ import org.jetbrains.annotations.Nullable;
 
 import dev.enjarai.trickster.spell.Fragment;
 
-public class SimpleTrickType<T extends Fragment> implements ArgType<T> {
+public class SimpleArgType<T extends Fragment> implements ArgType<T> {
     private final Class<T> type;
 
-    public SimpleTrickType(Class<T> type) {
+    public SimpleArgType(Class<T> type) {
         this.type = type;
     }
     @Override

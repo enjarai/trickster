@@ -14,8 +14,9 @@ import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
+import dev.enjarai.trickster.spell.trick.type.SimpleArgType;
 import dev.enjarai.trickster.spell.trick.type.TrickSignature;
-import dev.enjarai.trickster.spell.trick.type.VariadicTrickType;
+import dev.enjarai.trickster.spell.trick.type.VariadicArgType;
 import io.vavr.collection.HashMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -26,15 +27,14 @@ import net.minecraft.util.math.BlockPos;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 public abstract class Trick<T extends Trick<T>> {
     public static final Identifier TRICK_RANDOM = Trickster.id("trick");
 
     protected final Pattern pattern;
-    protected final Set<TrickSignature<T>> handlers;
+    protected final List<TrickSignature<T>> handlers;
 
-    public Trick(Pattern pattern, Set<TrickSignature<T>> handlers) {
+    public Trick(Pattern pattern, List<TrickSignature<T>> handlers) {
         this.pattern = pattern;
         this.handlers = handlers;
     }
@@ -45,16 +45,22 @@ public abstract class Trick<T extends Trick<T>> {
     }
 
     public Trick(Pattern pattern) {
-        this(pattern, Set.of());
+        this(pattern, List.of());
     }
 
     public final Pattern getPattern() {
         return pattern;
     }
 
+    public final void overload(TrickSignature<T> signature) {
+        this.handlers.add(signature);
+    }
+
     @SuppressWarnings("unchecked")
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        for (var handler : handlers) {
+        for (int i = handlers.size(); i >= 0; i--) {
+            var handler = handlers.get(i);
+
             if (handler.match(fragments)) {
                 return handler.run((T) this, ctx, fragments);
             }
@@ -63,9 +69,13 @@ public abstract class Trick<T extends Trick<T>> {
         throw new InvalidArgumentsBlunder(this);
     }
 
+    protected static <T extends Fragment> SimpleArgType<T> simple(Class<T> type) {
+        return new SimpleArgType<T>(type);
+    }
+
     @SuppressWarnings("unchecked")
-    protected static <T extends Fragment> VariadicTrickType<T> variadic(Class<T>... types) {
-        return new VariadicTrickType<T>(types);
+    protected static <T extends Fragment> VariadicArgType<T> variadic(Class<T>... types) {
+        return new VariadicArgType<T>(types);
     }
    
     protected void expectCanBuild(SpellContext ctx, BlockPos... positions) {
