@@ -4,6 +4,7 @@ import dev.enjarai.trickster.ClientUtils;
 import dev.enjarai.trickster.Trickster.MerlinTooltipAppender;
 import dev.enjarai.trickster.item.component.ManaComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
+import dev.enjarai.trickster.spell.mana.ManaPoolType;
 import dev.enjarai.trickster.spell.mana.SharedManaPool;
 import dev.enjarai.trickster.util.ImGoingToStabWhoeverInventedTime;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -82,9 +83,14 @@ public class MerlinKeeperTracker implements MerlinTooltipAppender {
             }
 
             if (type.isAdvanced()) {
-                tooltip.add(Text.literal("Stored: ")
+                if (pool.type() == ManaPoolType.INFINITE) {
+                    tooltip.add(Text.literal("39 digits of mana")
+                        .styled(s -> s.withColor(0xaaaabb)));
+                } else {
+                    tooltip.add(Text.literal("Stored: ")
                         .append("%.1fkG / %.1fkG".formatted(pool.get(world), pool.getMax(world)))
                         .styled(s -> s.withColor(0xaaaabb)));
+                }
 
                 if (pool instanceof SharedManaPool shared && MinecraftClient.getInstance().world != null) {
                     tooltip.add(Text
