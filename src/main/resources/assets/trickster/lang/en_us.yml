@@ -192,6 +192,8 @@ trickster:
     get_inventory_slot: Intrusive Ingress
     drop_stack_from_slot: Ploy of Offering
     swap_slot: Swindler's Ploy
+    block_from_item: Placement Distortion
+    item_from_block: Pickup Distortion
 
     type_fragment: Argumentative Distortion
     hash_values: Decaying Distortion
