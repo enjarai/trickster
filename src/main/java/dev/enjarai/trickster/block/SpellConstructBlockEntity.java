@@ -27,7 +27,7 @@ import java.util.Optional;
 
 import org.jetbrains.annotations.Nullable;
 
-public class SpellConstructBlockEntity extends BlockEntity implements SpellColoredBlockEntity, Inventory, CrowMind {
+public class SpellConstructBlockEntity extends BlockEntity implements SpellColoredBlockEntity, Inventory, CrowMind, SpellCastingBlockEntity {
     public static final KeyedEndec<Fragment> CROW_MIND_ENDEC =
             Fragment.ENDEC.keyed("crow_mind", () -> VoidFragment.INSTANCE);
 
@@ -103,6 +103,7 @@ public class SpellConstructBlockEntity extends BlockEntity implements SpellColor
                     });
 
                     if (error.isPresent()) {
+                        playCastSound(serverWorld, getPos(), 0.5f, 0.1f);
                         updateClient = true;
                     }
                 }

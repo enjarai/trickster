@@ -39,7 +39,7 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
-public class ModularSpellConstructBlockEntity extends BlockEntity implements Inventory, CrowMind, SpellExecutionManager {
+public class ModularSpellConstructBlockEntity extends BlockEntity implements Inventory, CrowMind, SpellExecutionManager, SpellCastingBlockEntity {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(5, ItemStack.EMPTY);
     private Fragment crowMind = VoidFragment.INSTANCE;
     public int age;
@@ -94,6 +94,7 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
 
                     error.ifPresent(e -> stack.set(ModComponents.SPELL_CORE, slot.fail(e)));
                     if (error.isPresent()) {
+                        playCastSound(serverWorld, getPos(), 0.5f, 0.1f);
                         updateClient = true;
                     }
                 }
