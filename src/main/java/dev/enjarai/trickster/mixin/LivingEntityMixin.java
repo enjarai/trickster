@@ -54,8 +54,8 @@ public abstract class LivingEntityMixin extends Entity {
         if (!ModEntityComponents.GRACE.get(this).isInGrace("scale")) {
             // Handle slow scaling reset
             var currentScale = 0d;
-            if (getAttributes().hasModifierForAttribute(EntityAttributes.GENERIC_SCALE, SCALE_ID)) {
-                currentScale = getAttributes().getModifierValue(EntityAttributes.GENERIC_SCALE, SCALE_ID);
+            if (getAttributes().hasModifierForAttribute(EntityAttributes.SCALE, SCALE_ID)) {
+                currentScale = getAttributes().getModifierValue(EntityAttributes.SCALE, SCALE_ID);
             }
             var newScale = currentScale;
 
@@ -66,7 +66,7 @@ public abstract class LivingEntityMixin extends Entity {
             }
 
             if (newScale != currentScale) {
-                getAttributes().getCustomInstance(EntityAttributes.GENERIC_SCALE)
+                getAttributes().getCustomInstance(EntityAttributes.SCALE)
                         .overwritePersistentModifier(new EntityAttributeModifier(SCALE_ID, newScale, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
             }
         }

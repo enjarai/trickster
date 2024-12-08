@@ -137,11 +137,12 @@ public class SharedManaComponent implements AutoSyncedComponent {
             return nbt;
         }
 
-        public void save(File file, RegistryWrapper.WrapperLookup registryLookup) {
-            file.getParentFile().mkdirs();
-            setDirty(true);
-            super.save(file, registryLookup);
-        }
+        // TODO not sure why we needed this, but its probably fine?
+//        public void save(File file, RegistryWrapper.WrapperLookup registryLookup) {
+//            file.getParentFile().mkdirs();
+//            setDirty(true);
+//            super.save(file, registryLookup);
+//        }
 
         public SimpleManaPool getPool() {
             return pool;

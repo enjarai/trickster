@@ -50,17 +50,6 @@ public abstract class AbstractClientPlayerEntityMixin extends PlayerEntityMixin 
         return disguisePlayerListEntry;
     }
 
-    @ModifyExpressionValue(
-            method = "getFovMultiplier",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Ljava/lang/Float;isInfinite(F)Z"
-            )
-    )
-    private boolean fixFovWhenFrozen(boolean original) {
-        return original || getAttributes().hasModifierForAttribute(EntityAttributes.GENERIC_MOVEMENT_SPEED, Trickster.NEGATE_ATTRIBUTE.id());
-    }
-
     @Inject(
             method = "getSkinTextures",
             at = @At("HEAD"),

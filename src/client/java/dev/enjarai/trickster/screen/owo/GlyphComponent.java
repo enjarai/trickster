@@ -41,25 +41,27 @@ public class GlyphComponent extends BaseComponent {
     public void draw(OwoUIDrawContext context, int mouseX, int mouseY, float partialTicks, float delta) {
         var patternSize = size / 2;
 
-        for (int i = 0; i < 9; i++) {
-            var pos = getPatternDotPosition(x + patternSize + 4, y + patternSize + 4, i, patternSize);
+        context.draw(vertexConsumers -> {
+            for (int i = 0; i < 9; i++) {
+                var pos = getPatternDotPosition(x + patternSize + 4, y + patternSize + 4, i, patternSize);
 
-            var isLinked = patternList.contains(i);
-            var dotSize = 1;
+                var isLinked = patternList.contains(i);
+                var dotSize = 1;
 
-            drawFlatPolygon(context.getMatrices(), context.getVertexConsumers(), c -> {
-                c.accept(pos.x - dotSize, pos.y - dotSize);
-                c.accept(pos.x - dotSize, pos.y + dotSize);
-                c.accept(pos.x + dotSize, pos.y + dotSize);
-                c.accept(pos.x + dotSize, pos.y - dotSize);
-            }, 0, 0, 0, 0, isLinked ? 0.9f : 0.5f);
-        }
+                drawFlatPolygon(context.getMatrices(), vertexConsumers, c -> {
+                    c.accept(pos.x - dotSize, pos.y - dotSize);
+                    c.accept(pos.x - dotSize, pos.y + dotSize);
+                    c.accept(pos.x + dotSize, pos.y + dotSize);
+                    c.accept(pos.x + dotSize, pos.y - dotSize);
+                }, 0, 0, 0, 0, isLinked ? 0.9f : 0.5f);
+            }
 
-        for (var line : pattern.entries()) {
-            var now = getPatternDotPosition(x + patternSize + 4, y + patternSize + 4, line.p1(), patternSize);
-            var last = getPatternDotPosition(x + patternSize + 4, y + patternSize + 4, line.p2(), patternSize);
-            drawGlyphLine(context.getMatrices(), context.getVertexConsumers(), last, now, 1, false, 0, 1f, 1f, 1f, 0.9f, false);
-        }
+            for (var line : pattern.entries()) {
+                var now = getPatternDotPosition(x + patternSize + 4, y + patternSize + 4, line.p1(), patternSize);
+                var last = getPatternDotPosition(x + patternSize + 4, y + patternSize + 4, line.p2(), patternSize);
+                drawGlyphLine(context.getMatrices(), vertexConsumers, last, now, 1, false, 0, 1f, 1f, 1f, 0.9f, false);
+            }
+        });
     }
 
     @Override

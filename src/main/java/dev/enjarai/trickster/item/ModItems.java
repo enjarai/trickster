@@ -55,12 +55,6 @@ public class ModItems {
                             .nutrition(0)
                             .saturationModifier(0)
                             .alwaysEdible()
-                            .usingConvertsTo(Items.GLASS_BOTTLE)
-                            .statusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 60 * 20), 1)
-                            .statusEffect(new StatusEffectInstance(StatusEffects.POISON, 60 * 20), 1)
-                            .statusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 60 * 20), 1)
-                            .statusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 60 * 20), 1)
-                            .statusEffect(new StatusEffectInstance(ModEffects.MANA_BOOST, 60 * 20), 1)
                             .build())));
     public static final SpellCoreItem SPELL_CORE = register("spell_core", new SpellCoreItem());
     public static final RustedSpellCoreItem RUSTED_SPELL_CORE = register("rusted_spell_core", new RustedSpellCoreItem());

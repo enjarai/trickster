@@ -12,7 +12,6 @@ public class ModDataStuff implements DataGeneratorEntrypoint {
     public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
         var pack = fabricDataGenerator.createPack();
         pack.addProvider(ModModelGenerator::new);
-        pack.addProvider(ModRecipeGenerator::new);
         pack.addProvider(ModItemTagGenerator::new);
         pack.addProvider(HeatBlockConversionGenerator::new);
         pack.addProvider(CoolBlockConversionGenerator::new);

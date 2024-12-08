@@ -2,8 +2,9 @@ package dev.enjarai.trickster.mixin.client;
 
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.screen.SpellSlotWidget;
-import net.minecraft.client.gui.screen.ingame.AbstractInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
+import net.minecraft.client.gui.screen.ingame.RecipeBookScreen;
+import net.minecraft.client.gui.screen.recipebook.RecipeBookWidget;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.text.Text;
@@ -17,13 +18,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Mixin(InventoryScreen.class)
-public abstract class InventoryScreenMixin extends AbstractInventoryScreen<PlayerScreenHandler> {
-    public InventoryScreenMixin(PlayerScreenHandler screenHandler, PlayerInventory playerInventory, Text text) {
-        super(screenHandler, playerInventory, text);
-    }
-
+public abstract class InventoryScreenMixin extends RecipeBookScreen<PlayerScreenHandler> {
     @Unique
     public List<SpellSlotWidget> spellSlots;
+
+    public InventoryScreenMixin(PlayerScreenHandler handler, RecipeBookWidget<?> recipeBook, PlayerInventory inventory, Text title) {
+        super(handler, recipeBook, inventory, title);
+    }
 
     @Inject(
             method = "init",

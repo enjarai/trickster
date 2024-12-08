@@ -6,7 +6,7 @@ import dev.enjarai.trickster.block.SpellResonatorBlock;
 import dev.enjarai.trickster.item.ModItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
-import net.minecraft.data.client.*;
+import net.minecraft.client.data.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.state.property.Properties;
 

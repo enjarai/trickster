@@ -24,7 +24,7 @@
             "dev.enjarai.trickster.TricksterClient"
         ],
         "fabric-datagen": [
-            "dev.enjarai.trickster.datagen.ModDataStuff"
+          "dev.enjarai.trickster.datagen.ModDataStuff"
         ],
         "cardinal-components-chunk": [
             "dev.enjarai.trickster.cca.ModChunkComponents"

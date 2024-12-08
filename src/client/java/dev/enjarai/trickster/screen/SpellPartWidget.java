@@ -141,13 +141,12 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 //        context.getMatrices().push();
 //        context.getMatrices().scale((float) PRECISION_OFFSET, (float) PRECISION_OFFSET, (float) PRECISION_OFFSET);
 
-        this.renderer.renderPart(
-                context.getMatrices(), context.getVertexConsumers(), spellPart,
+        context.draw(vertexConsumers -> this.renderer.renderPart(
+                context.getMatrices(), vertexConsumers, spellPart,
                 x, y, size, angleOffsets.peek(), delta,
                 size -> (float) Math.clamp(1 / (size / context.getScaledWindowHeight() * 3) - 0.2, 0, 1),
                 new Vec3d(-1, 0, 0)
-        );
-        context.draw();
+        ));
 
 //        context.getMatrices().pop();
     }

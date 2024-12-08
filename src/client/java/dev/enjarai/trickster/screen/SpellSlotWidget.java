@@ -8,6 +8,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ButtonTextures;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
@@ -65,7 +66,7 @@ public class SpellSlotWidget extends ButtonWidget {
 
     public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
         Identifier identifier = currentState.textures.get(this.isNarratable(), this.isSelected());
-        context.drawGuiTexture(identifier, this.getX(), this.getY(), this.width, this.height);
+        context.drawGuiTexture(RenderLayer::getGuiTextured, identifier, this.getX(), this.getY(), this.width, this.height);
     }
 
     public enum State {

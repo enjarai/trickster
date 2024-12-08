@@ -54,7 +54,7 @@ public abstract class BlockConversionLoader extends CompleteJsonDataLoader imple
     @Override
     // The inline commented code is for easier porting for future versions, as mojang changed this to use codecs
     protected void apply(Map<Identifier, List<JsonElement/*Replaceable*/>> prepared, ResourceManager manager, Profiler profiler) {
-        RegistryWrapper.Impl<Block> lookup = registryLookup.getWrapperOrThrow(RegistryKeys.BLOCK);
+        RegistryWrapper.Impl<Block> lookup = registryLookup.getOrThrow(RegistryKeys.BLOCK);
         Map<Block, List<WeightedValue>> map = new HashMap<>();
 
         prepared.forEach((identifier, jsonElements) -> {

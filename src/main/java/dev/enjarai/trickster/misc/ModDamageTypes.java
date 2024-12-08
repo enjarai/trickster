@@ -11,7 +11,7 @@ public class ModDamageTypes {
     public static final RegistryKey<DamageType> MANA_OVERFLUX = register("mana_overflux");
 
     public static DamageSource of(World world, RegistryKey<DamageType> key) {
-        return new DamageSource(world.getRegistryManager().get(RegistryKeys.DAMAGE_TYPE).entryOf(key));
+        return new DamageSource(world.getRegistryManager().getOrThrow(RegistryKeys.DAMAGE_TYPE).getOrThrow(key));
     }
 
     private static RegistryKey<DamageType> register(String name) {

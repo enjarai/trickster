@@ -3,6 +3,7 @@ package dev.enjarai.trickster.block;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.block.cauldron.EraseSpellCauldronBehavior;
 import dev.enjarai.trickster.item.ModItems;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.cauldron.CauldronBehavior;
 import net.minecraft.block.entity.BlockEntityType;
@@ -19,13 +20,13 @@ public class ModBlocks {
     public static final ScrollShelfBlock SCROLL_SHELF = register("scroll_shelf", new ScrollShelfBlock());
 
     public static final BlockEntityType<SpellConstructBlockEntity> SPELL_CONSTRUCT_ENTITY =
-            BlockEntityType.Builder.create(SpellConstructBlockEntity::new, SPELL_CONSTRUCT).build(null);
+            FabricBlockEntityTypeBuilder.create(SpellConstructBlockEntity::new, SPELL_CONSTRUCT).build(null);
     public static final BlockEntityType<LightBlockEntity> LIGHT_ENTITY =
-            BlockEntityType.Builder.create(LightBlockEntity::new, LIGHT).build(null);
+            FabricBlockEntityTypeBuilder.create(LightBlockEntity::new, LIGHT).build(null);
     public static final BlockEntityType<ModularSpellConstructBlockEntity> MODULAR_SPELL_CONSTRUCT_ENTITY =
-            BlockEntityType.Builder.create(ModularSpellConstructBlockEntity::new, MODULAR_SPELL_CONSTRUCT).build(null);
+            FabricBlockEntityTypeBuilder.create(ModularSpellConstructBlockEntity::new, MODULAR_SPELL_CONSTRUCT).build(null);
     public static final BlockEntityType<ScrollShelfBlockEntity> SCROLL_SHELF_ENTITY =
-            BlockEntityType.Builder.create(ScrollShelfBlockEntity::new, SCROLL_SHELF).build(null);
+            FabricBlockEntityTypeBuilder.create(ScrollShelfBlockEntity::new, SCROLL_SHELF).build(null);
 
     public static final TagKey<Block> UNBREAKABLE = TagKey.of(RegistryKeys.BLOCK, Trickster.id("unbreakable"));
     public static final TagKey<Block> CONJURABLE_FLOWERS = TagKey.of(RegistryKeys.BLOCK, Trickster.id("conjurable_flowers"));

@@ -10,7 +10,6 @@ import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.recipe.input.CraftingRecipeInput;
 import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
 public class ScrollCloningRecipe extends SpecialCraftingRecipe {
@@ -22,7 +21,7 @@ public class ScrollCloningRecipe extends SpecialCraftingRecipe {
         int i = 0;
         ItemStack itemStack = ItemStack.EMPTY;
 
-        for(int j = 0; j < craftingRecipeInput.getSize(); ++j) {
+        for(int j = 0; j < craftingRecipeInput.size(); ++j) {
             ItemStack itemStack2 = craftingRecipeInput.getStackInSlot(j);
             if (!itemStack2.isEmpty()) {
                 if (itemStack2.getItem() instanceof WrittenScrollItem && itemStack2.get(ModComponents.FRAGMENT) instanceof FragmentComponent spell && !spell.closed()) {
@@ -48,7 +47,7 @@ public class ScrollCloningRecipe extends SpecialCraftingRecipe {
         int i = 0;
         ItemStack itemStack = ItemStack.EMPTY;
 
-        for(int j = 0; j < craftingRecipeInput.getSize(); ++j) {
+        for(int j = 0; j < craftingRecipeInput.size(); ++j) {
             ItemStack itemStack2 = craftingRecipeInput.getStackInSlot(j);
             if (!itemStack2.isEmpty()) {
                 if (itemStack2.getItem() instanceof WrittenScrollItem) {
@@ -84,29 +83,24 @@ public class ScrollCloningRecipe extends SpecialCraftingRecipe {
         }
     }
 
-    public DefaultedList<ItemStack> getRemainder(CraftingRecipeInput craftingRecipeInput) {
-        DefaultedList<ItemStack> defaultedList = DefaultedList.ofSize(craftingRecipeInput.getSize(), ItemStack.EMPTY);
-
-        for(int i = 0; i < defaultedList.size(); ++i) {
-            ItemStack itemStack = craftingRecipeInput.getStackInSlot(i);
-            if (itemStack.getItem().hasRecipeRemainder()) {
-                defaultedList.set(i, new ItemStack(itemStack.getItem().getRecipeRemainder()));
-            } else if (itemStack.getItem() instanceof WrittenScrollItem) {
-                defaultedList.set(i, itemStack.copyWithCount(1));
-                break;
-            }
-        }
-
-        return defaultedList;
-    }
+//    public DefaultedList<ItemStack> getRemainder(CraftingRecipeInput craftingRecipeInput) {
+//        DefaultedList<ItemStack> defaultedList = DefaultedList.ofSize(craftingRecipeInput.size(), ItemStack.EMPTY);
+//
+//        for(int i = 0; i < defaultedList.size(); ++i) {
+//            ItemStack itemStack = craftingRecipeInput.getStackInSlot(i);
+//            if (itemStack.getItem().getRecipeRemainder()) {
+//                defaultedList.set(i, new ItemStack(itemStack.getItem().getRecipeRemainder()));
+//            } else if (itemStack.getItem() instanceof WrittenScrollItem) {
+//                defaultedList.set(i, itemStack.copyWithCount(1));
+//                break;
+//            }
+//        }
+//
+//        return defaultedList;
+//    }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<? extends SpecialCraftingRecipe> getSerializer() {
         return ModRecipes.SCROLL_CLONING_RECIPE;
-    }
-
-    @Override
-    public boolean fits(int width, int height) {
-        return width >= 2 && height >= 2;
     }
 }

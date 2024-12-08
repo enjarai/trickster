@@ -19,11 +19,10 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.state.StateManager;
-import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -35,7 +34,7 @@ import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
 public class SpellConstructBlock extends BlockWithEntity {
-    public static final DirectionProperty FACING = Properties.FACING;
+    public static final EnumProperty<Direction> FACING = Properties.FACING;
     public static final VoxelShape[] SHAPES = new VoxelShape[]{
             createCuboidShape(0, 14, 0, 16, 16, 16),
             createCuboidShape(0, 0, 0, 16, 2, 16),
@@ -84,18 +83,18 @@ public class SpellConstructBlock extends BlockWithEntity {
     }
 
     @Override
-    protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (world.getBlockEntity(pos) instanceof SpellConstructBlockEntity blockEntity) {
             var slotStack = blockEntity.getStack(0);
 
             if (slotStack.isEmpty() && stack.isIn(ModItems.MANA_KNOTS)) {
                 tryAddCore(world, pos, player, blockEntity, stack, 0);
-                return ItemActionResult.success(world.isClient);
+                return ActionResult.SUCCESS;
             }
 
-            return ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            return ActionResult.PASS_TO_DEFAULT_BLOCK_ACTION;
         } else {
-            return ItemActionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+            return ActionResult.CONSUME;
         }
     }
 
@@ -115,7 +114,7 @@ public class SpellConstructBlock extends BlockWithEntity {
                 tryRemoveCore(world, pos, player, blockEntity, 0);
             }
 
-            return ActionResult.success(world.isClient);
+            return ActionResult.SUCCESS;
         } else {
             return ActionResult.PASS;
         }

@@ -8,6 +8,7 @@ import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.MissingItemBlunder;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -27,7 +28,7 @@ public class SummonDragonBreathTrick extends AbstractProjectileTrick {
         var world = ctx.source().getWorld();
 
         try {
-            var fireball = EntityType.DRAGON_FIREBALL.create(world); assert fireball != null;
+            var fireball = EntityType.DRAGON_FIREBALL.create(world, SpawnReason.SPAWN_ITEM_USE); assert fireball != null;
             fireball.setPos(pos.x(), pos.y(), pos.z());
             return fireball;
         } catch (BlunderException blunder) {

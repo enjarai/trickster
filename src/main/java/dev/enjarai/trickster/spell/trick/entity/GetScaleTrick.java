@@ -31,8 +31,8 @@ public class GetScaleTrick extends Trick {
         }
 
         var currentScale = 0d;
-        if (livingEntity.getAttributes().hasModifierForAttribute(EntityAttributes.GENERIC_SCALE, SCALE_ID)) {
-            currentScale = livingEntity.getAttributes().getModifierValue(EntityAttributes.GENERIC_SCALE, SCALE_ID);
+        if (livingEntity.getAttributes().hasModifierForAttribute(EntityAttributes.SCALE, SCALE_ID)) {
+            currentScale = livingEntity.getAttributes().getModifierValue(EntityAttributes.SCALE, SCALE_ID);
         }
         return new NumberFragment(currentScale + 1);
     }

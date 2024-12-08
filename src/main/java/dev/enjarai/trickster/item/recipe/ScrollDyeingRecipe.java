@@ -2,8 +2,6 @@ package dev.enjarai.trickster.item.recipe;
 
 import com.google.common.collect.ImmutableMap;
 import dev.enjarai.trickster.item.ModItems;
-import net.minecraft.block.Block;
-import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.item.DyeItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -41,17 +39,17 @@ public class ScrollDyeingRecipe extends SpecialCraftingRecipe {
         }
         this.dyeMap = dyeMap.build();
 
-        this.ingredient = Ingredient.ofStacks(Stream.concat(
+        this.ingredient = Ingredient.ofItems(Stream.concat(
                 Stream.of(original),
                 ModItems.DYED_VARIANTS.stream().filter(v -> v.original() == original).map(ModItems.DyedVariant::variant)
-        ).map(ItemStack::new));
+        ));
     }
 
     public boolean matches(CraftingRecipeInput craftingRecipeInput, World world) {
         int i = 0;
         int j = 0;
 
-        for(int k = 0; k < craftingRecipeInput.getSize(); ++k) {
+        for(int k = 0; k < craftingRecipeInput.size(); ++k) {
             ItemStack itemStack = craftingRecipeInput.getStackInSlot(k);
             if (!itemStack.isEmpty()) {
                 if (ingredient.test(itemStack)) {
@@ -77,7 +75,7 @@ public class ScrollDyeingRecipe extends SpecialCraftingRecipe {
         ItemStack itemStack = ItemStack.EMPTY;
         DyeItem dyeItem = (DyeItem) Items.WHITE_DYE;
 
-        for(int i = 0; i < craftingRecipeInput.getSize(); ++i) {
+        for(int i = 0; i < craftingRecipeInput.size(); ++i) {
             ItemStack itemStack2 = craftingRecipeInput.getStackInSlot(i);
             if (!itemStack2.isEmpty()) {
                 Item item = itemStack2.getItem();
@@ -94,13 +92,8 @@ public class ScrollDyeingRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public boolean fits(int width, int height) {
-        return width * height >= 2;
-    }
-
-    @Override
-    public RecipeSerializer<?> getSerializer() {
-        return Registries.RECIPE_SERIALIZER.get(recipeSerializer);
+    public RecipeSerializer<? extends SpecialCraftingRecipe> getSerializer() {
+        return (RecipeSerializer<? extends SpecialCraftingRecipe>) Registries.RECIPE_SERIALIZER.get(recipeSerializer);
     }
 }
 

@@ -35,7 +35,7 @@ public class FlecksRenderer {
             }
 
             colorsRandom.setSeed(flecks.id());
-            var color = ColorHelper.Argb.fromFloats(1f, colorsRandom.nextFloat(), colorsRandom.nextFloat(), colorsRandom.nextFloat());
+            var color = ColorHelper.fromFloats(1f, colorsRandom.nextFloat(), colorsRandom.nextFloat(), colorsRandom.nextFloat());
 
             //noinspection unchecked
             renderer.render(

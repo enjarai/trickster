@@ -1,4 +1,4 @@
-package dev.enjarai.trickster.datagen;
+package dev.enjarai.trickster.data;
 
 import java.util.Random;
 

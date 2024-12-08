@@ -16,10 +16,10 @@ import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.StringHelper;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -31,7 +31,7 @@ public class WrittenScrollItem extends Item {
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+    public ActionResult use(World world, PlayerEntity user, Hand hand) {
         var stack = user.getStackInHand(hand);
         var otherStack = user.getStackInHand(hand == Hand.MAIN_HAND ? Hand.OFF_HAND : Hand.MAIN_HAND);
         var slot = hand == Hand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
@@ -46,12 +46,12 @@ public class WrittenScrollItem extends Item {
 
                     if (result.type() != SpellQueueResult.Type.NOT_QUEUED && result.state().hasUsedMana())
                         stack.decrement(1);
-                    return TypedActionResult.success(stack);
+                    return ActionResult.SUCCESS;
                 }
             }
         } else {
             if (hand == Hand.OFF_HAND) {
-                return TypedActionResult.pass(stack);
+                return ActionResult.PASS;
             }
 
             user.openHandledScreen(new NamedScreenHandlerFactory() {
@@ -71,7 +71,7 @@ public class WrittenScrollItem extends Item {
             });
         }
 
-        return TypedActionResult.success(stack);
+        return ActionResult.SUCCESS;
     }
 
     @Override

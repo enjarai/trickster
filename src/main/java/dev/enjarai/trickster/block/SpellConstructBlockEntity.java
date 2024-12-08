@@ -64,7 +64,7 @@ public class SpellConstructBlockEntity extends BlockEntity implements SpellColor
         super.writeNbt(nbt, registryLookup);
 
         if (!stack.isEmpty()) {
-            nbt.put("stack", stack.encode(registryLookup, new NbtCompound()));
+            nbt.put("stack", stack.toNbt(registryLookup));
         }
 
         nbt.put(CROW_MIND_ENDEC, crowMind);

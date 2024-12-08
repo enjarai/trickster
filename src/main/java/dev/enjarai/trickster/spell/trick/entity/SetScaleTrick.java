@@ -38,13 +38,13 @@ public class SetScaleTrick extends Trick {
         }
 
         var currentScale = 0d;
-        if (livingEntity.getAttributes().hasModifierForAttribute(EntityAttributes.GENERIC_SCALE, SCALE_ID)) {
-            currentScale = livingEntity.getAttributes().getModifierValue(EntityAttributes.GENERIC_SCALE, SCALE_ID);
+        if (livingEntity.getAttributes().hasModifierForAttribute(EntityAttributes.SCALE, SCALE_ID)) {
+            currentScale = livingEntity.getAttributes().getModifierValue(EntityAttributes.SCALE, SCALE_ID);
         }
 
         var difference = Math.abs(scale - currentScale);
         ctx.useMana(this, (float) (difference * difference * 100 + scale * 50));
-        livingEntity.getAttributes().getCustomInstance(EntityAttributes.GENERIC_SCALE)
+        livingEntity.getAttributes().getCustomInstance(EntityAttributes.SCALE)
                 .overwritePersistentModifier(new EntityAttributeModifier(SCALE_ID, scale, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
         ModEntityComponents.GRACE.get(livingEntity).triggerGrace("scale", 100);
 

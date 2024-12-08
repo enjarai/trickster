@@ -3,7 +3,6 @@ package dev.enjarai.trickster.item;
 import dev.enjarai.trickster.item.component.EntityStorageComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.SelectedSlotComponent;
-import dev.enjarai.trickster.screen.ScrollAndQuillScreenHandler;
 import dev.enjarai.trickster.screen.ScrollContainerScreenHandler;
 import io.wispforest.accessories.api.AccessoryItem;
 import io.wispforest.accessories.api.slot.SlotReference;
@@ -12,36 +11,30 @@ import net.minecraft.component.type.ContainerComponent;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.Equipment;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
 import java.util.Optional;
 
-public class TrickHatItem extends AccessoryItem implements Equipment {
+public class TrickHatItem extends AccessoryItem {
     public TrickHatItem(Settings settings) {
         super(settings
                 .maxCount(1)
                 .component(DataComponentTypes.CONTAINER,
                         ContainerComponent.fromStacks(DefaultedList.ofSize(27, ItemStack.EMPTY)))
                 .component(ModComponents.SELECTED_SLOT, new SelectedSlotComponent(0, 27))
-                .component(ModComponents.ENTITY_STORAGE, new EntityStorageComponent(Optional.empty())));
+                .component(ModComponents.ENTITY_STORAGE, new EntityStorageComponent(Optional.empty()))
+                .equipmentSlot((entity, stack) -> EquipmentSlot.HEAD));
     }
 
     @Override
-    public EquipmentSlot getSlotType() {
-        return EquipmentSlot.HEAD;
-    }
-
-    @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+    public ActionResult use(World world, PlayerEntity user, Hand hand) {
         if (hand == Hand.OFF_HAND) {
             return super.use(world, user, hand);
         }
@@ -64,7 +57,7 @@ public class TrickHatItem extends AccessoryItem implements Equipment {
             }
         });
 
-        return TypedActionResult.success(stack);
+        return ActionResult.SUCCESS;
     }
 
     public static ItemStack getScrollRelative(ItemStack hatStack, int offset) {

@@ -60,7 +60,7 @@ public class ScrollShelfBlockEntityRenderer implements BlockEntityRenderer<Scrol
 
         matrices.push();
         matrices.translate(0.5f, 0, 0.5f);
-        matrices.multiply(RotationAxis.NEGATIVE_Y.rotationDegrees(facing.asRotation()));
+        matrices.multiply(RotationAxis.NEGATIVE_Y.rotationDegrees(facing.getPositiveHorizontalDegrees()));
         matrices.translate(-0.5f, 0, -0.5f);
 
         for (int i = 0; i < GRID_WIDTH * GRID_HEIGHT; i++) {

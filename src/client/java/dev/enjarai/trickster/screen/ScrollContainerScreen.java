@@ -8,6 +8,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
@@ -35,8 +36,8 @@ public class ScrollContainerScreen extends HandledScreen<ScrollContainerScreenHa
     protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
         int i = (this.width - this.backgroundWidth) / 2;
         int j = (this.height - this.backgroundHeight) / 2;
-        context.drawTexture(TEXTURE, i, j, 0, 0, this.backgroundWidth, this.rows * 18 + 17);
-        context.drawTexture(TEXTURE, i, j + this.rows * 18 + 17, 0, 126, this.backgroundWidth, 96);
+        context.drawTexture(RenderLayer::getGuiTextured, TEXTURE, i, j, 0, 0, this.backgroundWidth, this.rows * 18 + 17, 256, 256);
+        context.drawTexture(RenderLayer::getGuiTextured, TEXTURE, i, j + this.rows * 18 + 17, 0, 126, this.backgroundWidth, 96, 256, 256);
     }
 
     @Override
@@ -52,7 +53,7 @@ public class ScrollContainerScreen extends HandledScreen<ScrollContainerScreenHa
         context.getMatrices().push();
         context.getMatrices().translate(0.0F, 0.0F, 110.0F);
         if (slot.id == handler.selectedSlot.get()) {
-            context.drawTexture(SELECTED_SLOT_TEXTURE, slot.x - 4, slot.y - 4, 0, 0, 24, 24, 24, 24);
+            context.drawTexture(RenderLayer::getGuiTextured, SELECTED_SLOT_TEXTURE, slot.x - 4, slot.y - 4, 0, 0, 24, 24, 24, 24);
         }
         context.getMatrices().pop();
     }

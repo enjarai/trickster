@@ -273,7 +273,7 @@ public class SpellCircleRenderer {
                 matrices.translate(x, y, 0);
                 matrices.scale(size / 1.3f / width, size / 1.3f / width, 1);
 
-                var color = ColorHelper.Argb.withAlpha((int) (alpha * 0xff), 0xffffff);
+                var color = ColorHelper.withAlpha((int) (alpha * 0xff), 0xffffff);
 
                 textRenderer.draw(
                         text,

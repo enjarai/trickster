@@ -40,7 +40,7 @@ public class LineFleckRenderer implements FleckRenderer<LineFleck> {
         var cur = pos1.add(step, new Vector3f());
 
         var buffer = vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(LINE_TEXTURE));
-        var argb = ColorHelper.Argb.withAlpha(LINE_ALPHA, color);
+        var argb = ColorHelper.withAlpha(LINE_ALPHA, color);
         var camPos = context.camera().getPos().toVector3f();
 
         while (pos1.distance(pos2) >= pos1.distance(cur)) {

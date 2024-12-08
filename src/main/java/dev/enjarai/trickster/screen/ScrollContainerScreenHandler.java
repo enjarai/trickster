@@ -141,10 +141,9 @@ public class ScrollContainerScreenHandler extends ScreenHandler {
             return stack.isIn(ModItems.SCROLLS);
         }
 
-        @Nullable
         @Override
-        public Pair<Identifier, Identifier> getBackgroundSprite() {
-            return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, Trickster.id("item/empty_scroll_slot"));
+        public Identifier getBackgroundSprite() {
+            return Trickster.id("item/empty_scroll_slot");
         }
     }
 }

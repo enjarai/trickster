@@ -10,12 +10,11 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
 import java.util.function.BiConsumer;
@@ -31,7 +30,7 @@ public class ScrollAndQuillItem extends Item {
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+    public ActionResult use(World world, PlayerEntity user, Hand hand) {
         var stack = user.getStackInHand(hand);
         var otherStack = user.getStackInHand(hand == Hand.MAIN_HAND ? Hand.OFF_HAND : Hand.MAIN_HAND);
         var slot = hand == Hand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
@@ -39,7 +38,7 @@ public class ScrollAndQuillItem extends Item {
 
         var spell = stack.get(ModComponents.FRAGMENT);
         if (spell == null || spell.closed()) {
-            return TypedActionResult.fail(stack);
+            return ActionResult.FAIL;
         }
 
         if (user.isSneaking()) {
@@ -51,7 +50,7 @@ public class ScrollAndQuillItem extends Item {
                     && ModNetworking.clientOrDefault(user,
                         Trickster.CONFIG.keys.disableOffhandScrollOpening,
                         Trickster.CONFIG.disableOffhandScrollOpening())) {
-                return TypedActionResult.pass(stack);
+                return ActionResult.PASS;
             }
             
             user.openHandledScreen(new NamedScreenHandlerFactory() {
@@ -71,6 +70,6 @@ public class ScrollAndQuillItem extends Item {
             });
         }
 
-        return TypedActionResult.success(stack);
+        return ActionResult.SUCCESS;
     }
 }

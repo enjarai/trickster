@@ -4,7 +4,7 @@ import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ToolItem;
+import net.minecraft.item.MiningToolItem;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public class ItemTriggerHelper {
         var stack = player.getMainHandStack();
         var item = stack.getItem();
 
-        if (item instanceof ToolItem || (isWeaponTrigger && stack.isIn(ModItems.WEAPON_SPELL_TRIGGERS))) {
+        if (item instanceof MiningToolItem || (isWeaponTrigger && stack.isIn(ModItems.WEAPON_SPELL_TRIGGERS))) {
             trigger(player, stack, List.of(arguments));
         }
     }

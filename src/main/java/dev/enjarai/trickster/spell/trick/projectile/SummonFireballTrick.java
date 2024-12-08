@@ -6,6 +6,7 @@ import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -20,7 +21,7 @@ public class SummonFireballTrick extends AbstractProjectileTrick {
 
     @Override
     protected Entity makeProjectile(SpellContext ctx, Vector3dc pos, ItemStack stack, List<Fragment> extraInputs) throws BlunderException {
-        var fireball = EntityType.FIREBALL.create(ctx.source().getWorld()); assert fireball != null;
+        var fireball = EntityType.FIREBALL.create(ctx.source().getWorld(), SpawnReason.SPAWN_ITEM_USE); assert fireball != null;
         fireball.setPos(pos.x(), pos.y(), pos.z());
         return fireball;
     }

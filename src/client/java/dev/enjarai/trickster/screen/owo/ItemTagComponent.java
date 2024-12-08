@@ -21,7 +21,7 @@ public class ItemTagComponent extends FlowLayout {
 
         alignment(HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
-        Registries.ITEM.getOrCreateEntryList(tagKey).forEach(entry -> {
+        Registries.ITEM.iterateEntries(tagKey).forEach(entry -> {
             var stack = entry.value().getDefaultStack();
             child(Components.item(stack)
                     .showOverlay(true)

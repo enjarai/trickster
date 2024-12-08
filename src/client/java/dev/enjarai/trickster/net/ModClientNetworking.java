@@ -27,7 +27,7 @@ public class ModClientNetworking {
             var clipboard = access.runtime().keyboard.getClipboard();
 
             if (clipboard.isBlank()) {
-                access.player().sendMessage(Text.literal("Clipboard is empty").formatted(Formatting.RED));
+                access.player().sendMessage(Text.literal("Clipboard is empty").formatted(Formatting.RED), false);
                 return;
             }
 
@@ -35,7 +35,7 @@ public class ModClientNetworking {
             try {
                 spell = SpellPart.fromBase64(clipboard);
             } catch (Exception e) {
-                access.player().sendMessage(Text.literal("Failed to decode clipboard, does it contain a valid spell?").formatted(Formatting.RED));
+                access.player().sendMessage(Text.literal("Failed to decode clipboard, does it contain a valid spell?").formatted(Formatting.RED), false);
                 return;
             }
 

@@ -14,7 +14,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.state.StateManager;
-import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
@@ -33,7 +33,7 @@ public class ScrollShelfBlock extends BlockWithEntity {
     public static final int GRID_WIDTH = 3;
     public static final int GRID_HEIGHT = 3;
 
-    public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
+    public static final EnumProperty<Direction> FACING = Properties.HORIZONTAL_FACING;
 
     protected ScrollShelfBlock() {
         super(AbstractBlock.Settings.create()
@@ -86,14 +86,14 @@ public class ScrollShelfBlock extends BlockWithEntity {
     }
 
     @Override
-    protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (world.getBlockEntity(pos) instanceof ScrollShelfBlockEntity blockEntity) {
             if (!stack.isIn(ModItems.SCROLLS)) {
-                return ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+                return ActionResult.PASS_TO_DEFAULT_BLOCK_ACTION;
             } else {
                 OptionalInt slot = getSlotForHitPos(hit, state);
                 if (slot.isEmpty()) {
-                    return ItemActionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+                    return ActionResult.CONSUME;
                 } else {
                     var slotStack = blockEntity.getStack(slot.getAsInt());
                     if (!slotStack.isEmpty()) {
@@ -101,15 +101,15 @@ public class ScrollShelfBlock extends BlockWithEntity {
 //                        if (ItemStack.areItemsAndComponentsEqual(stack, slotStack)) {
 //
 //                        }
-                        return ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+                        return ActionResult.PASS_TO_DEFAULT_BLOCK_ACTION;
                     } else {
                         tryAddBook(world, pos, player, blockEntity, stack, slot.getAsInt());
-                        return ItemActionResult.success(world.isClient);
+                        return ActionResult.SUCCESS;
                     }
                 }
             }
         } else {
-            return ItemActionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+            return ActionResult.CONSUME;
         }
     }
 
@@ -123,7 +123,7 @@ public class ScrollShelfBlock extends BlockWithEntity {
                 return ActionResult.CONSUME;
             } else {
                 tryRemoveBook(world, pos, player, blockEntity, slot.getAsInt());
-                return ActionResult.success(world.isClient);
+                return ActionResult.SUCCESS;
             }
         } else {
             return ActionResult.PASS;

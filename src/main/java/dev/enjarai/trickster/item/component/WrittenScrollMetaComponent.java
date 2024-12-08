@@ -19,7 +19,7 @@ public record WrittenScrollMetaComponent(String title, String author, int genera
             PacketCodecs.STRING, WrittenScrollMetaComponent::title,
             PacketCodecs.STRING, WrittenScrollMetaComponent::author,
             PacketCodecs.INTEGER, WrittenScrollMetaComponent::generation,
-            PacketCodecs.BOOL, WrittenScrollMetaComponent::executable,
+            PacketCodecs.BOOLEAN, WrittenScrollMetaComponent::executable,
             PacketCodecs.FLOAT, WrittenScrollMetaComponent::mana,
             WrittenScrollMetaComponent::new
     );

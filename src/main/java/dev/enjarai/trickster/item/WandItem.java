@@ -5,9 +5,8 @@ import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.SpellPart;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -18,7 +17,7 @@ public class WandItem extends Item {
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+    public ActionResult use(World world, PlayerEntity user, Hand hand) {
         var stack = user.getStackInHand(hand);
 
         if (!world.isClient()) {
@@ -29,6 +28,6 @@ public class WandItem extends Item {
             }
         }
 
-        return TypedActionResult.success(stack);
+        return ActionResult.SUCCESS;
     }
 }

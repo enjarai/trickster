@@ -4,13 +4,11 @@ import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.WrittenScrollItem;
 import dev.enjarai.trickster.item.component.ModComponents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.recipe.input.CraftingRecipeInput;
 import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
 import java.util.Optional;
@@ -24,7 +22,7 @@ public class ScrollEnhancingRecipe extends SpecialCraftingRecipe {
         int i = 0;
         ItemStack itemStack = ItemStack.EMPTY;
 
-        for(int j = 0; j < craftingRecipeInput.getSize(); ++j) {
+        for(int j = 0; j < craftingRecipeInput.size(); ++j) {
             ItemStack itemStack2 = craftingRecipeInput.getStackInSlot(j);
             if (!itemStack2.isEmpty()) {
                 if (itemStack2.getItem() instanceof WrittenScrollItem) {
@@ -50,7 +48,7 @@ public class ScrollEnhancingRecipe extends SpecialCraftingRecipe {
         int i = 0;
         ItemStack itemStack = ItemStack.EMPTY;
 
-        for(int j = 0; j < craftingRecipeInput.getSize(); ++j) {
+        for(int j = 0; j < craftingRecipeInput.size(); ++j) {
             ItemStack itemStack2 = craftingRecipeInput.getStackInSlot(j);
             if (!itemStack2.isEmpty()) {
                 if (itemStack2.getItem() instanceof WrittenScrollItem) {
@@ -84,12 +82,7 @@ public class ScrollEnhancingRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<? extends SpecialCraftingRecipe> getSerializer() {
         return ModRecipes.SCROLL_ENHANCING_RECIPE;
-    }
-
-    @Override
-    public boolean fits(int width, int height) {
-        return width >= 2 && height >= 2;
     }
 }

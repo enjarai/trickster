@@ -97,9 +97,9 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
 
     @SuppressWarnings("DataFlowIssue")
     @Override
-    protected void applyBlur(float delta) {
+    protected void applyBlur() {
         if (!this.client.player.getOffHandStack().isOf(ModItems.TOME_OF_TOMFOOLERY)) {
-            super.applyBlur(delta);
+            super.applyBlur();
         }
     }
 

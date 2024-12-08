@@ -14,6 +14,7 @@ import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.EntityInvalidBlunder;
 import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.util.math.Vec3d;
 
 import java.util.List;
@@ -39,7 +40,7 @@ public class ReleaseEntityTrick extends Trick {
             ctx.useMana(this, (float) (2000 + Math.pow(dist, (dist / 5))));
             offhand.set(ModComponents.ENTITY_STORAGE, new EntityStorageComponent(Optional.empty()));
 
-            var entity = EntityType.getEntityFromNbt(entityStorage.nbt().get(), ctx.source().getWorld());
+            var entity = EntityType.getEntityFromNbt(entityStorage.nbt().get(), ctx.source().getWorld(), SpawnReason.SPAWN_ITEM_USE);
 
             if (entity.isPresent()) {
                 entity.get().setPos(pos.x(), pos.y(), pos.z());
