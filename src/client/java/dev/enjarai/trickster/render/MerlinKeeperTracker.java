@@ -83,7 +83,7 @@ public class MerlinKeeperTracker implements MerlinTooltipAppender {
 
             if (type.isAdvanced()) {
                 tooltip.add(Text.literal("Stored: ")
-                        .append("%.1fkG / %.1fkG".formatted(pool.get(world), pool.getMax(world)))
+                        .append("%.1f kG / %.1f kG".formatted(pool.get(world), pool.getMax(world)))
                         .styled(s -> s.withColor(0xaaaabb)));
 
                 if (pool instanceof SharedManaPool shared && MinecraftClient.getInstance().world != null) {
