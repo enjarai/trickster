@@ -44,7 +44,7 @@ public class AddVelocityTrick extends Trick {
         entity.limitFallDistance();
         entity.velocityModified = true;
 
-        if (entity instanceof PlayerEntity && vector.x() >= 0) {
+        if (entity instanceof PlayerEntity && vector.y() >= 0) {
             ModEntityComponents.GRACE.get(entity).triggerGrace("gravity", 2);
         }
 
