@@ -10,7 +10,7 @@ import net.minecraft.text.Text;
 
 import java.util.List;
 
-public class LoadArgumentTrick extends Trick {
+public class LoadArgumentTrick extends Trick<LoadArgumentTrick> {
     private final int index;
 
     public LoadArgumentTrick(Pattern pattern, int index) {

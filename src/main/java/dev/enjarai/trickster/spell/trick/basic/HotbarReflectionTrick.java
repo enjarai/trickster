@@ -10,7 +10,7 @@ import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
 
 import java.util.List;
 
-public class HotbarReflectionTrick extends Trick {
+public class HotbarReflectionTrick extends Trick<HotbarReflectionTrick> {
     public HotbarReflectionTrick() {
         super(Pattern.of(6, 4, 8, 5, 4, 3, 6, 8));
     }

@@ -8,8 +8,9 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.type.Signature;
 
-public abstract class DistortionTrick extends Trick {
+public abstract class DistortionTrick<T extends DistortionTrick<T>> extends Trick<T> {
     private static int CACHE_SIZE = 20;
 
     private Map<Fragment[], Fragment> cache = new LinkedHashMap<>() {
@@ -23,18 +24,24 @@ public abstract class DistortionTrick extends Trick {
         super(pattern);
     }
 
+    public DistortionTrick(Pattern pattern, List<Signature<T, Fragment>> handlers) {
+        super(pattern, handlers);
+    }
+
+    public DistortionTrick(Pattern pattern, Signature<T, Fragment> primary) {
+        super(pattern, primary);
+    }
+
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var fragmentArray = fragments.toArray(new Fragment[fragments.size()]);
         var fragment = cache.get(fragmentArray);
 
         if (fragment == null) {
-            fragment = distort(ctx, fragments);
+            fragment = super.activate(ctx, fragments);
             cache.put(fragmentArray, fragment);
         }
         
         return fragment;
     }
-
-    public abstract Fragment distort(SpellContext ctx, List<Fragment> fragments) throws BlunderException;
 }

@@ -1,4 +1,4 @@
-package dev.enjarai.trickster.spell.trick.type;
+package dev.enjarai.trickster.spell.type;
 
 import java.util.List;
 

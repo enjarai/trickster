@@ -8,7 +8,7 @@ import dev.enjarai.trickster.spell.blunder.IncompatibleSourceBlunder;
 
 import java.util.List;
 
-public class FacingReflectionTrick extends Trick {
+public class FacingReflectionTrick extends Trick<FacingReflectionTrick> {
     public FacingReflectionTrick() {
         super(Pattern.of(3, 1, 5, 7, 3, 6, 4, 2, 5));
     }

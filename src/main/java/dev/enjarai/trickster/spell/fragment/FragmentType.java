@@ -7,7 +7,7 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.PatternGlyph;
 import dev.enjarai.trickster.spell.SpellPart;
-import dev.enjarai.trickster.spell.trick.type.ArgType;
+import dev.enjarai.trickster.spell.type.ArgType;
 import io.wispforest.endec.StructEndec;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;

@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.spell.trick.misc;
 
 import java.util.List;
+import java.util.Optional;
 
 import dev.enjarai.trickster.cca.MessageHandlerComponent.Key;
 import dev.enjarai.trickster.item.component.ModComponents;
@@ -14,13 +15,15 @@ import dev.enjarai.trickster.spell.blunder.OutOfRangeBlunder;
 import dev.enjarai.trickster.spell.execution.executor.MessageListenerSpellExecutor;
 import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
+import dev.enjarai.trickster.spell.fragment.NumberFragment;
+import dev.enjarai.trickster.spell.fragment.SlotFragment;
 import dev.enjarai.trickster.spell.mana.SharedManaPool;
-import dev.enjarai.trickster.spell.trick.Trick;
-import dev.enjarai.trickster.spell.trick.func.ForkingTrick;
+import dev.enjarai.trickster.spell.trick.ExecutionTrick;
+import dev.enjarai.trickster.spell.type.Signature;
 
-public class MessageListenTrick extends Trick implements ForkingTrick {
+public class MessageListenTrick extends ExecutionTrick<MessageListenTrick> {
     public MessageListenTrick() {
-        super(Pattern.of(4, 0, 7, 2, 4));
+        super(Pattern.of(4, 0, 7, 2, 4), Signature.of(FragmentType.NUMBER, FragmentType.SLOT.optionalOf(), MessageListenTrick::run));
     }
 
     @Override
@@ -28,9 +31,8 @@ public class MessageListenTrick extends Trick implements ForkingTrick {
         throw new ExecutionLimitReachedBlunder(); // the spell executor always moves to the next tick
     }
 
-    @Override
-    public SpellExecutor makeFork(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var channel = supposeInput(fragments, FragmentType.SLOT, 0).map(s -> {
+    public SpellExecutor run(SpellContext ctx, NumberFragment timeout, Optional<SlotFragment> slot) throws BlunderException {
+        var channel = slot.map(s -> {
             var range = s.getSourcePos(this, ctx).toCenterPos().subtract(ctx.source().getBlockPos().toCenterPos()).length();
 
             if (range > 16) {
@@ -46,6 +48,6 @@ public class MessageListenTrick extends Trick implements ForkingTrick {
             throw new ItemInvalidBlunder(this);
         });
 
-        return new MessageListenerSpellExecutor(ctx.state(), channel);
+        return new MessageListenerSpellExecutor(ctx.state(), timeout.asInt(), channel);
     }
 }

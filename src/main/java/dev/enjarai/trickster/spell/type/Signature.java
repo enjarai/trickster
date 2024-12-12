@@ -1,4 +1,4 @@
-package dev.enjarai.trickster.spell.trick.type;
+package dev.enjarai.trickster.spell.type;
 
 import java.util.List;
 
@@ -13,12 +13,12 @@ import io.vavr.Function6;
 import io.vavr.Function7;
 import io.vavr.Function8;
 
-public interface TrickSignature<T extends Trick<T>> {
+public interface Signature<T extends Trick<T>, R> {
     boolean match(List<Fragment> fragments);
-    Fragment run(T trick, SpellContext ctx, List<Fragment> fragments) throws BlunderException;
+    R run(T trick, SpellContext ctx, List<Fragment> fragments) throws BlunderException;
 
-    static <T extends Trick<T>, T1> TrickSignature<T> of(ArgType<T1> t1, Function3<T, SpellContext, T1, Fragment> handler) {
-        return new TrickSignature<T>() {
+    static <T extends Trick<T>, R, T1> Signature<T, R> of(ArgType<T1> t1, Function3<T, SpellContext, T1, R> handler) {
+        return new Signature<T, R>() {
             @Override
             public boolean match(List<Fragment> fragments) {
                 var args1 = t1.isolate(0, fragments);
@@ -32,7 +32,7 @@ public interface TrickSignature<T extends Trick<T>> {
             }
 
             @Override
-            public Fragment run(T trick, SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+            public R run(T trick, SpellContext ctx, List<Fragment> fragments) throws BlunderException {
                 var args1 = t1.isolate(0, fragments);
                 var v1 = t1.compose(args1);
                 fragments = fragments.subList(args1.size(), fragments.size());
@@ -42,8 +42,8 @@ public interface TrickSignature<T extends Trick<T>> {
         };
     }
 
-    static <T extends Trick<T>, T1, T2> TrickSignature<T> of(ArgType<T1> t1, ArgType<T2> t2, Function4<T, SpellContext, T1, T2, Fragment> handler) {
-        return new TrickSignature<T>() {
+    static <T extends Trick<T>, R, T1, T2> Signature<T, R> of(ArgType<T1> t1, ArgType<T2> t2, Function4<T, SpellContext, T1, T2, R> handler) {
+        return new Signature<T, R>() {
             @Override
             public boolean match(List<Fragment> fragments) {
                 var args1 = t1.isolate(0, fragments);
@@ -64,7 +64,7 @@ public interface TrickSignature<T extends Trick<T>> {
             }
 
             @Override
-            public Fragment run(T trick, SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+            public R run(T trick, SpellContext ctx, List<Fragment> fragments) throws BlunderException {
                 var args1 = t1.isolate(0, fragments);
                 var v1 = t1.compose(args1);
                 fragments = fragments.subList(args1.size(), fragments.size());
@@ -78,8 +78,8 @@ public interface TrickSignature<T extends Trick<T>> {
         };
     }
 
-    static <T extends Trick<T>, T1, T2, T3> TrickSignature<T> of(ArgType<T1> t1, ArgType<T2> t2, ArgType<T3> t3, Function5<T, SpellContext, T1, T2, T3, Fragment> handler) {
-        return new TrickSignature<T>() {
+    static <T extends Trick<T>, R, T1, T2, T3> Signature<T, R> of(ArgType<T1> t1, ArgType<T2> t2, ArgType<T3> t3, Function5<T, SpellContext, T1, T2, T3, R> handler) {
+        return new Signature<T, R>() {
             @Override
             public boolean match(List<Fragment> fragments) {
                 var args1 = t1.isolate(0, fragments);
@@ -107,7 +107,7 @@ public interface TrickSignature<T extends Trick<T>> {
             }
 
             @Override
-            public Fragment run(T trick, SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+            public R run(T trick, SpellContext ctx, List<Fragment> fragments) throws BlunderException {
                 var args1 = t1.isolate(0, fragments);
                 var v1 = t1.compose(args1);
                 fragments = fragments.subList(args1.size(), fragments.size());
@@ -125,8 +125,8 @@ public interface TrickSignature<T extends Trick<T>> {
         };
     }
 
-    static <T extends Trick<T>, T1, T2, T3, T4> TrickSignature<T> of(ArgType<T1> t1, ArgType<T2> t2, ArgType<T3> t3, ArgType<T4> t4, Function6<T, SpellContext, T1, T2, T3, T4, Fragment> handler) {
-        return new TrickSignature<T>() {
+    static <T extends Trick<T>, R, T1, T2, T3, T4> Signature<T, R> of(ArgType<T1> t1, ArgType<T2> t2, ArgType<T3> t3, ArgType<T4> t4, Function6<T, SpellContext, T1, T2, T3, T4, R> handler) {
+        return new Signature<T, R>() {
             @Override
             public boolean match(List<Fragment> fragments) {
                 var args1 = t1.isolate(0, fragments);
@@ -161,7 +161,7 @@ public interface TrickSignature<T extends Trick<T>> {
             }
 
             @Override
-            public Fragment run(T trick, SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+            public R run(T trick, SpellContext ctx, List<Fragment> fragments) throws BlunderException {
                 var args1 = t1.isolate(0, fragments);
                 var v1 = t1.compose(args1);
                 fragments = fragments.subList(args1.size(), fragments.size());
@@ -183,8 +183,8 @@ public interface TrickSignature<T extends Trick<T>> {
         };
     }
 
-    static <T extends Trick<T>, T1, T2, T3, T4, T5> TrickSignature<T> of(ArgType<T1> t1, ArgType<T2> t2, ArgType<T3> t3, ArgType<T4> t4, ArgType<T5> t5, Function7<T, SpellContext, T1, T2, T3, T4, T5, Fragment> handler) {
-        return new TrickSignature<T>() {
+    static <T extends Trick<T>, R, T1, T2, T3, T4, T5> Signature<T, R> of(ArgType<T1> t1, ArgType<T2> t2, ArgType<T3> t3, ArgType<T4> t4, ArgType<T5> t5, Function7<T, SpellContext, T1, T2, T3, T4, T5, R> handler) {
+        return new Signature<T, R>() {
             @Override
             public boolean match(List<Fragment> fragments) {
                 var args1 = t1.isolate(0, fragments);
@@ -226,7 +226,7 @@ public interface TrickSignature<T extends Trick<T>> {
             }
 
             @Override
-            public Fragment run(T trick, SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+            public R run(T trick, SpellContext ctx, List<Fragment> fragments) throws BlunderException {
                 var args1 = t1.isolate(0, fragments);
                 var v1 = t1.compose(args1);
                 fragments = fragments.subList(args1.size(), fragments.size());
@@ -252,8 +252,8 @@ public interface TrickSignature<T extends Trick<T>> {
         };
     }
 
-    static <T extends Trick<T>, T1, T2, T3, T4, T5, T6> TrickSignature<T> of(ArgType<T1> t1, ArgType<T2> t2, ArgType<T3> t3, ArgType<T4> t4, ArgType<T5> t5, ArgType<T6> t6, Function8<T, SpellContext, T1, T2, T3, T4, T5, T6, Fragment> handler) {
-        return new TrickSignature<T>() {
+    static <T extends Trick<T>, R, T1, T2, T3, T4, T5, T6> Signature<T, R> of(ArgType<T1> t1, ArgType<T2> t2, ArgType<T3> t3, ArgType<T4> t4, ArgType<T5> t5, ArgType<T6> t6, Function8<T, SpellContext, T1, T2, T3, T4, T5, T6, R> handler) {
+        return new Signature<T, R>() {
             @Override
             public boolean match(List<Fragment> fragments) {
                 var args1 = t1.isolate(0, fragments);
@@ -302,7 +302,7 @@ public interface TrickSignature<T extends Trick<T>> {
             }
 
             @Override
-            public Fragment run(T trick, SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+            public R run(T trick, SpellContext ctx, List<Fragment> fragments) throws BlunderException {
                 var args1 = t1.isolate(0, fragments);
                 var v1 = t1.compose(args1);
                 fragments = fragments.subList(args1.size(), fragments.size());

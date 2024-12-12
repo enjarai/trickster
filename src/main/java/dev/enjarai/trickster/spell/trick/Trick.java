@@ -14,9 +14,9 @@ import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
-import dev.enjarai.trickster.spell.trick.type.SimpleArgType;
-import dev.enjarai.trickster.spell.trick.type.TrickSignature;
-import dev.enjarai.trickster.spell.trick.type.VariadicArgType;
+import dev.enjarai.trickster.spell.type.Signature;
+import dev.enjarai.trickster.spell.type.SimpleArgType;
+import dev.enjarai.trickster.spell.type.VariadicArgType;
 import io.vavr.collection.HashMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -31,15 +31,18 @@ import java.util.Optional;
 public abstract class Trick<T extends Trick<T>> {
     public static final Identifier TRICK_RANDOM = Trickster.id("trick");
 
-    protected final Pattern pattern;
-    protected final List<TrickSignature<T>> handlers;
+    protected static final SimpleArgType<Fragment> ANY = simple(Fragment.class);
+    protected static final VariadicArgType<Fragment> ANY_VARIADIC = variadic(Fragment.class);
 
-    public Trick(Pattern pattern, List<TrickSignature<T>> handlers) {
+    protected final Pattern pattern;
+    private final List<Signature<T, Fragment>> handlers;
+
+    public Trick(Pattern pattern, List<Signature<T, Fragment>> handlers) {
         this.pattern = pattern;
         this.handlers = handlers;
     }
 
-    public Trick(Pattern pattern, TrickSignature<T> primary) {
+    public Trick(Pattern pattern, Signature<T, Fragment> primary) {
         this(pattern);
         this.handlers.add(primary);
     }
@@ -52,8 +55,9 @@ public abstract class Trick<T extends Trick<T>> {
         return pattern;
     }
 
-    public final void overload(TrickSignature<T> signature) {
+    public Trick<T> overload(Signature<T, Fragment> signature) {
         this.handlers.add(signature);
+        return this;
     }
 
     @SuppressWarnings("unchecked")
@@ -76,6 +80,10 @@ public abstract class Trick<T extends Trick<T>> {
     @SuppressWarnings("unchecked")
     protected static <T extends Fragment> VariadicArgType<T> variadic(Class<T>... types) {
         return new VariadicArgType<T>(types);
+    }
+
+    protected static <T extends Fragment> VariadicArgType<T> variadic(Class<T> type) {
+        return variadic(type);
     }
    
     protected void expectCanBuild(SpellContext ctx, BlockPos... positions) {

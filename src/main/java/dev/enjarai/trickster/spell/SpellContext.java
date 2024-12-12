@@ -8,14 +8,13 @@ import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.fragment.SlotFragment;
 import dev.enjarai.trickster.spell.mana.MutableManaPool;
 import dev.enjarai.trickster.spell.trick.Trick;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import java.util.Optional;
-import java.util.function.Function;
+import java.util.function.Predicate;
 
 public record SpellContext(ExecutionState state, SpellSource source, TickData data) {
-    public void useMana(Trick trickSource, float amount) throws BlunderException {
+    public void useMana(Trick<?> trickSource, float amount) throws BlunderException {
         try {
             state.useMana(trickSource, this, amount);
         } catch (NotEnoughManaBlunder blunder) {
@@ -32,11 +31,11 @@ public record SpellContext(ExecutionState state, SpellSource source, TickData da
 
     // I am disappointed in myself for having written this.
     // Maybe I'll clean it up one day. -- Aurora D.
-    public Optional<ItemStack> getStack(Trick trickSource, Optional<SlotFragment> optionalSlot, Function<Item, Boolean> validator) throws BlunderException {
+    public Optional<ItemStack> getStack(Trick<?> trickSource, Optional<SlotFragment> optionalSlot, Predicate<ItemStack> validator) throws BlunderException {
         ItemStack result = null;
 
         if (optionalSlot.isPresent()) {
-            if (!validator.apply(optionalSlot.get().getItem(trickSource, this))) throw new ItemInvalidBlunder(trickSource);
+            if (!validator.test(optionalSlot.get().reference(trickSource, this))) throw new ItemInvalidBlunder(trickSource);
             result = optionalSlot.get().move(trickSource, this, 1);
         } else {
             var player = source.getPlayer().orElseThrow(() -> new NoPlayerBlunder(trickSource));
@@ -45,7 +44,7 @@ public record SpellContext(ExecutionState state, SpellSource source, TickData da
             for (int i = 0; i < inventory.size(); i++) {
                 var stack = inventory.getStack(i);
 
-                if (validator.apply(stack.getItem())) {
+                if (validator.test(stack)) {
                     result = stack.copyWithCount(1);
                     stack.decrement(1);
                     break;

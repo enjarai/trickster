@@ -10,8 +10,9 @@ import dev.enjarai.trickster.spell.blunder.*;
 import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.trick.Trick;
-import dev.enjarai.trickster.spell.trick.func.ForkingTrick;
+import dev.enjarai.trickster.spell.fragment.NumberFragment;
+import dev.enjarai.trickster.spell.trick.ExecutionTrick;
+import dev.enjarai.trickster.spell.type.Signature;
 import io.wispforest.accessories.api.slot.SlotReference;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.EquipmentSlot;
@@ -19,20 +20,12 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public class ImportHatTrick extends Trick implements ForkingTrick {
+public class ImportHatTrick extends ExecutionTrick<ImportHatTrick> {
     public ImportHatTrick() {
-        super(Pattern.of(3, 0, 5, 6, 3, 2, 5, 8, 3, 1, 5, 7, 3));
+        super(Pattern.of(3, 0, 5, 6, 3, 2, 5, 8, 3, 1, 5, 7, 3), Signature.of(FragmentType.NUMBER, ANY_VARIADIC, ImportHatTrick::run));
     }
 
-    @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        return makeFork(ctx, fragments).singleTickRun(ctx);
-    }
-
-    @Override
-    public SpellExecutor makeFork(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var index = expectInput(fragments, FragmentType.NUMBER, 0);
-
+    public SpellExecutor run(SpellContext ctx, NumberFragment index, List<Fragment> args) throws BlunderException {
         var player = ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this));
         ItemStack hatStack;
 
@@ -62,7 +55,7 @@ public class ImportHatTrick extends Trick implements ForkingTrick {
             }
 
             var spell = component.value() instanceof SpellPart part ? part : new SpellPart(component.value());
-            return new DefaultSpellExecutor(spell, ctx.state().recurseOrThrow(fragments.subList(1, fragments.size())));
+            return new DefaultSpellExecutor(spell, ctx.state().recurseOrThrow(args));
         }
 
         throw new ItemInvalidBlunder(this);

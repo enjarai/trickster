@@ -5,7 +5,7 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.*;
 import dev.enjarai.trickster.spell.trick.Trick;
-import dev.enjarai.trickster.spell.trick.type.TrickSignature;
+import dev.enjarai.trickster.spell.type.Signature;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.OutOfRangeBlunder;
 import net.minecraft.entity.Entity;
@@ -17,10 +17,10 @@ import java.util.Optional;
 
 public class RangeFindEntityTrick extends Trick<RangeFindEntityTrick> {
     public RangeFindEntityTrick() {
-        super(Pattern.of(3, 1, 0, 3, 6, 7, 8, 5, 7), TrickSignature.of(FragmentType.VECTOR, FragmentType.NUMBER, FragmentType.ENTITY_TYPE.optionalOf(), RangeFindEntityTrick::run));
+        super(Pattern.of(3, 1, 0, 3, 6, 7, 8, 5, 7), Signature.of(FragmentType.VECTOR, FragmentType.NUMBER, FragmentType.ENTITY_TYPE.optionalOf(), RangeFindEntityTrick::run));
     }
 
-    private Fragment run(SpellContext ctx, VectorFragment posFragment, NumberFragment rangeFragment, Optional<EntityTypeFragment> type) throws BlunderException {
+    public Fragment run(SpellContext ctx, VectorFragment posFragment, NumberFragment rangeFragment, Optional<EntityTypeFragment> type) throws BlunderException {
         TypeFilter<Entity, ?> filter = type
                 .<TypeFilter<Entity, ?>>map(EntityTypeFragment::entityType)
                 .orElse(TypeFilter.instanceOf(Entity.class));

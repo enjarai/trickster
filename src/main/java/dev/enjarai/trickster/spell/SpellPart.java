@@ -116,7 +116,7 @@ public final class SpellPart implements Fragment {
         return value;
     }
 
-    public void buildClosure(io.vavr.collection.Map<Fragment, Fragment> replacements) {
+    public SpellPart buildClosure(io.vavr.collection.Map<Fragment, Fragment> replacements) {
         subParts.forEach(part -> part.buildClosure(replacements));
 
         if (glyph instanceof SpellPart spellPart) {
@@ -124,6 +124,8 @@ public final class SpellPart implements Fragment {
         } else if (replacements.containsKey(glyph)) {
             glyph = replacements.get(glyph).get();
         }
+
+        return this;
     }
 
     public boolean setSubPartInTree(Function<SpellPart, SpellPart> replace, SpellPart current, boolean targetIsInner) {

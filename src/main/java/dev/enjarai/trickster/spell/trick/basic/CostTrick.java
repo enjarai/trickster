@@ -12,7 +12,7 @@ import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
 
 import java.util.List;
 
-public class CostTrick extends Trick {
+public class CostTrick extends Trick<CostTrick> {
     public CostTrick() {
         super(Pattern.of(1, 5, 8, 6, 3, 1));
     }

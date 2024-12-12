@@ -3,7 +3,6 @@ package dev.enjarai.trickster.spell.trick;
 import java.util.HashMap;
 import java.util.Map;
 
-import dev.enjarai.trickster.spell.trick.block.*;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
@@ -25,6 +24,21 @@ import dev.enjarai.trickster.spell.trick.basic.RevealTrick;
 import dev.enjarai.trickster.spell.trick.basic.WriteClosedSpellTrick;
 import dev.enjarai.trickster.spell.trick.basic.WriteCrowMindTrick;
 import dev.enjarai.trickster.spell.trick.basic.WriteSpellTrick;
+import dev.enjarai.trickster.spell.trick.block.BreakBlockTrick;
+import dev.enjarai.trickster.spell.trick.block.CanPlaceTrick;
+import dev.enjarai.trickster.spell.trick.block.CheckBlockTrick;
+import dev.enjarai.trickster.spell.trick.block.CheckResonatorTrick;
+import dev.enjarai.trickster.spell.trick.block.ConjureFlowerTrick;
+import dev.enjarai.trickster.spell.trick.block.ConjureLightTrick;
+import dev.enjarai.trickster.spell.trick.block.ConjureWaterTrick;
+import dev.enjarai.trickster.spell.trick.block.CoolTrick;
+import dev.enjarai.trickster.spell.trick.block.ErodeTrick;
+import dev.enjarai.trickster.spell.trick.block.GetBlockHardnessTrick;
+import dev.enjarai.trickster.spell.trick.block.GetRedstonePowerTrick;
+import dev.enjarai.trickster.spell.trick.block.HeatTrick;
+import dev.enjarai.trickster.spell.trick.block.PlaceBlockTrick;
+import dev.enjarai.trickster.spell.trick.block.PowerResonatorTrick;
+import dev.enjarai.trickster.spell.trick.block.SwapBlockTrick;
 import dev.enjarai.trickster.spell.trick.bool.AllTrick;
 import dev.enjarai.trickster.spell.trick.bool.AnyTrick;
 import dev.enjarai.trickster.spell.trick.bool.EqualsTrick;
@@ -203,7 +217,6 @@ public class Tricks {
     // Basic
     public static final OnePonyTrick TWO = register("two", new OnePonyTrick());
     public static final RevealTrick REVEAL = register("reveal", new RevealTrick());
-    public static final HighlightTrick HIGHLIGHT = register("highlight", new HighlightTrick());
     public static final ReadSpellTrick READ_SPELL = register("read_spell", new ReadSpellTrick());
     public static final WriteSpellTrick WRITE_SPELL = register("write_spell", new WriteSpellTrick());
     public static final WriteClosedSpellTrick WRITE_CLOSED_SPELL = register("write_closed_spell", new WriteClosedSpellTrick());
@@ -211,7 +224,7 @@ public class Tricks {
     public static final WriteCrowMindTrick WRITE_CROW_MIND = register("write_crow_mind", new WriteCrowMindTrick());
 
     // Caster
-    public static final ReflectionTrick REFLECTION = register("reflection", new ReflectionTrick());
+    public static final ReflectionTrick REFLECTION = register("reflection", new ReflectionTrick()); //TODO: rai I'm so disappointed why is it named this
     public static final CasterReflectionTrick CASTER_REFLECTION = register("caster_reflection", new CasterReflectionTrick());
     public static final CostTrick COST = register("cost", new CostTrick());
     public static final ManaReflectionTrick MANA_REFLECTION = register("mana_reflection", new ManaReflectionTrick());
@@ -248,6 +261,9 @@ public class Tricks {
     public static final BlockFindEntityTrick BLOCK_FIND_ENTITY = register("block_find_entity", new BlockFindEntityTrick());
     public static final RangeFindEntityTrick RANGE_FIND_ENTITY = register("range_find_entity", new RangeFindEntityTrick());
 
+    // Particles
+    public static final HighlightTrick HIGHLIGHT = register("highlight", new HighlightTrick());
+
     // Math
     public static final AddTrick ADD = register("add", new AddTrick());
     public static final SubtractTrick SUBTRACT = register("subtract", new SubtractTrick());
@@ -259,6 +275,7 @@ public class Tricks {
     public static final RoundTrick ROUND = register("round", new RoundTrick());
     public static final MaxTrick MAX = register("max", new MaxTrick());
     public static final MinTrick MIN = register("min", new MinTrick());
+    public static final PowerTrick POWER = register("power", new PowerTrick());
     public static final SqrtTrick SQRT = register("sqrt", new SqrtTrick());
     public static final SinTrick SIN = register("sin", new SinTrick());
     public static final CosTrick COS = register("cos", new CosTrick());
@@ -267,7 +284,6 @@ public class Tricks {
     public static final ArcCosTrick ARCCOS = register("arccos", new ArcCosTrick());
     public static final ArcTanTrick ARCTAN = register("arctan", new ArcTanTrick());
     public static final ArcTan2Trick ARCTAN2 = register("arctan2", new ArcTan2Trick());
-    public static final PowerTrick POWER = register("power", new PowerTrick());
 
     // Vector
     public static final ExtractXTrick EXTRACT_X = register("extract_x", new ExtractXTrick());

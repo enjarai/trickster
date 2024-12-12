@@ -1,4 +1,4 @@
-package dev.enjarai.trickster.spell.trick.type;
+package dev.enjarai.trickster.spell.type;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +24,9 @@ public class VariadicArgType<T extends Fragment> implements ArgType<List<T>> {
     @Nullable
     @SuppressWarnings("unchecked")
     public List<T> compose(List<Fragment> fragments) {
+        if (fragments.size() % types.length != 0)
+            return null;
+        
         var result = new ArrayList<T>();
         int offset = 0;
 

@@ -9,7 +9,7 @@ import dev.enjarai.trickster.spell.blunder.BlunderException;
 
 import java.util.List;
 
-public class ManaReflectionTrick extends Trick {
+public class ManaReflectionTrick extends Trick<ManaReflectionTrick> {
     public ManaReflectionTrick() {
         super(Pattern.of(5, 7, 3, 1, 5, 2, 4, 0, 3, 4, 5));
     }

@@ -4,10 +4,10 @@ import dev.enjarai.trickster.spell.blunder.OverweightFragmentBlunder;
 import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
+import dev.enjarai.trickster.spell.trick.ExecutionTrick;
 import dev.enjarai.trickster.spell.trick.Tricks;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.UnknownTrickBlunder;
-import dev.enjarai.trickster.spell.trick.func.ForkingTrick;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import net.minecraft.text.Text;
@@ -56,15 +56,15 @@ public record PatternGlyph(Pattern pattern) implements Fragment {
 
     @Override
     public boolean forks(SpellContext ctx, List<Fragment> args) {
-        return Tricks.lookup(pattern) instanceof ForkingTrick;
+        return Tricks.lookup(pattern) instanceof ExecutionTrick;
     }
 
     @Override
     public SpellExecutor makeFork(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var trick = Tricks.lookup(pattern);
 
-        if (trick instanceof ForkingTrick forkingTrick)
-            return forkingTrick.makeFork(ctx, fragments);
+        if (trick instanceof ExecutionTrick executionTrick)
+            return executionTrick.makeExecutor(ctx, fragments); //TODO: why complain???
 
         throw new UnknownTrickBlunder();
     }

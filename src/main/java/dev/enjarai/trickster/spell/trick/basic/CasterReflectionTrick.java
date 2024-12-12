@@ -10,7 +10,7 @@ import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
 
 import java.util.List;
 
-public class CasterReflectionTrick extends Trick {
+public class CasterReflectionTrick extends Trick<CasterReflectionTrick> {
     public CasterReflectionTrick() {
         super(Pattern.of(4, 5, 7, 3, 4));
     }

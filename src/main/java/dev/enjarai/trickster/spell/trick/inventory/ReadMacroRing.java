@@ -12,7 +12,7 @@ import io.vavr.collection.HashMap;
 
 import java.util.List;
 
-public class ReadMacroRing extends Trick {
+public class ReadMacroRing extends Trick<ReadMacroRing> {
     public ReadMacroRing() {
         super(Pattern.of(1, 2, 5, 8, 7, 6, 3, 0, 1, 5, 7, 3, 1, 4, 7));
     }
