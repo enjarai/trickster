@@ -39,8 +39,7 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
         return Text.literal("slot %d at %s".formatted(slot,
                 source.map(either -> {
                     var mapped = either
-                        .mapLeft(blockPos -> "(%d, %d, %d)".formatted(blockPos.getX(), blockPos.getY(), blockPos.getZ()))
-                        .mapRight(uuid -> uuid.toString());
+                        .mapBoth(blockPos -> "(%d, %d, %d)".formatted(blockPos.getX(), blockPos.getY(), blockPos.getZ()), UUID::toString);
                     return mapped.right().orElseGet(() -> mapped.left().get());
                 }).orElse("caster")));
     }

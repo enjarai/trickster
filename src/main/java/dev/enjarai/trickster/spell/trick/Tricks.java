@@ -3,6 +3,10 @@ package dev.enjarai.trickster.spell.trick;
 import java.util.HashMap;
 import java.util.Map;
 
+import dev.enjarai.trickster.spell.trick.wristpocket.AttackTrick;
+import dev.enjarai.trickster.spell.trick.wristpocket.DropPocketTrick;
+import dev.enjarai.trickster.spell.trick.wristpocket.MageHandTrick;
+import dev.enjarai.trickster.spell.trick.wristpocket.PocketTrick;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
@@ -356,6 +360,12 @@ public class Tricks {
     public static final SpellFleckTrick DRAW_SPELL = register("draw_spell", new SpellFleckTrick());
     public static final GetFlecksTrick GET_FLECKS = register("get_flecks", new GetFlecksTrick());
 
+    //Wrist Pocket
+    public static final PocketTrick POCKET = register("pocket", new PocketTrick());
+    public static final DropPocketTrick DROP_POCKET = register("drop_pocket", new DropPocketTrick());
+    public static final MageHandTrick MAGE_HAND = register("mage_hand", new MageHandTrick());
+    public static final AttackTrick ATTACK = register("attack", new AttackTrick());
+
     // Misc
     public static final TypeFragmentTrick TYPE_FRAGMENT = register("type_fragment", new TypeFragmentTrick());
     public static final HashValuesTrick HASH_VALUES = register("hash_values", new HashValuesTrick());
@@ -368,6 +378,7 @@ public class Tricks {
     public static final BatteryCreationTrick BATTERY_CREATION = register("battery_creation", new BatteryCreationTrick());
     public static final PushManaTrick PUSH_MANA = register("push_mana", new PushManaTrick());
     public static final PullManaTrick PULL_MANA = register("pull_mana", new PullManaTrick());
+
 
     @ApiStatus.Internal
     public static <T extends Trick> T register(String path, T trick) {

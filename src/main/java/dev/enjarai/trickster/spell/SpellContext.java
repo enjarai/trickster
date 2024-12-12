@@ -29,9 +29,6 @@ public record SpellContext(ExecutionState state, SpellSource source, TickData da
     public MutableManaPool getManaPool() {
         return state().tryOverridePool(source.getManaPool());
     }
-
-    // I am disappointed in myself for having written this.
-    // Maybe I'll clean it up one day. -- Aurora D.
     public Optional<ItemStack> getStack(Trick trickSource, Optional<SlotFragment> optionalSlot, Function<Item, Boolean> validator) throws BlunderException {
         ItemStack result = null;
 
