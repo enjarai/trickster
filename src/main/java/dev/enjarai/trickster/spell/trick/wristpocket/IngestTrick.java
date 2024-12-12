@@ -24,14 +24,13 @@ public class IngestTrick extends Trick {
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var component = ctx.source().getComponent(ModEntityComponents.WRIST_POCKET)
                 .orElseThrow(() -> new IncompatibleSourceBlunder(this));
-
         var player = ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this));
-
         var stack = component.getPocketed();
 
-        if (stack.isOf(Items.POTION) || stack.isOf(Items.HONEY_BOTTLE) || stack.isOf(Items.MILK_BUCKET) ||stack.isIn(ConventionalItemTags.FOODS)) {
+        if (stack.isOf(Items.POTION) || stack.isOf(Items.HONEY_BOTTLE) || stack.isOf(Items.MILK_BUCKET) || stack.isIn(ConventionalItemTags.FOODS)) {
             var originalItem = player.getStackInHand(Hand.MAIN_HAND);
             player.setStackInHand(Hand.MAIN_HAND, stack);
+
             var newStack = stack.finishUsing(ctx.source().getWorld(), player);
             component.setPocketed(newStack);
             player.setStackInHand(Hand.MAIN_HAND, originalItem);

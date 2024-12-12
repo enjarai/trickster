@@ -10,29 +10,23 @@ import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import net.minecraft.entity.Entity;
-import org.joml.Vector3dc;
-
 import java.util.List;
-import java.util.Optional;
 
 public class MageHandTrick extends Trick {
     public MageHandTrick() {
-        super(Pattern.of(7,4,1,2,8,4));
+        super(Pattern.of(7, 4, 1, 2, 8, 4));
     }
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         Either<Entity, VectorFragment> target = expectEitherInput(fragments, FragmentType.ENTITY, FragmentType.VECTOR, 0)
-                .mapLeft(entityFragment -> entityFragment
-                    .getEntity(ctx).orElseThrow(() -> new EntityInvalidBlunder(this)));
+                .mapLeft(entityFragment -> entityFragment.getEntity(ctx).orElseThrow(() -> new EntityInvalidBlunder(this)));
 
         var position = target.map(e -> e.getPos().toVector3d(), VectorFragment::vector);
-
         var face = supposeInput(fragments, FragmentType.VECTOR, 1).map(VectorFragment::toDirection);
         face.ifPresent(dir -> fragments.remove(1));
 
         var crouch = supposeInput(fragments, 1).map(Fragment::asBoolean);
-
         var wristpocket = ctx.source().getComponent(ModEntityComponents.WRIST_POCKET)
             .orElseThrow(() -> new IncompatibleSourceBlunder(this));
 
