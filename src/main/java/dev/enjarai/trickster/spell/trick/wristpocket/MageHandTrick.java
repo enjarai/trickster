@@ -41,6 +41,6 @@ public class MageHandTrick extends Trick {
         target.ifLeft(entity -> wristpocket.useOnEntity(entity, crouch, ctx.source().getWorld()));
         target.ifRight(block -> wristpocket.useOnBlock(block.toBlockPos(), face, crouch, ctx.source().getWorld()));
 
-        return fragments.removeFirst();
+        return fragments.getFirst();
     }
 }

@@ -27,6 +27,7 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
+import net.minecraft.util.Hand;
 
 import java.util.List;
 import java.util.Optional;
@@ -176,8 +177,9 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
                     var server = player().getServer();
                     if (server != null) {
                         server.execute(() -> {
-                            FragmentComponent.setValue(otherHandStack, spell, Optional.empty(), false);
-                            otherHandSpell.set(spell);
+                            var updated = FragmentComponent.writeSpell(otherHandStack, spell);
+                            player().setStackInHand(Hand.OFF_HAND, updated.orElse(otherHandStack)); //on fail do nothing
+                            otherHandSpell.set(spell); // im leaving this because i have no idea what its doing :p
                         });
                     }
                 }

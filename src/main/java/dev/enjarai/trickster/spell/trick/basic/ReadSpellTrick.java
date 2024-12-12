@@ -22,8 +22,7 @@ public class ReadSpellTrick extends Trick {
         return supposeInput(fragments, FragmentType.SLOT, 0)
                 .map(slotFragment -> slotFragment.reference(this, ctx))
                 .or(() -> ctx.source().getOtherHandStack(stack -> stack.contains(ModComponents.FRAGMENT)))
-                .map(stack -> stack.get(ModComponents.FRAGMENT))
-                .map(FragmentComponent::value)
+                .flatMap(FragmentComponent::getFragment)
                 .orElse(VoidFragment.INSTANCE);
     }
 }

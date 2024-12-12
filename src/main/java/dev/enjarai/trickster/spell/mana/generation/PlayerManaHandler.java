@@ -37,7 +37,7 @@ public class PlayerManaHandler implements ManaHandler {
 
         if (entity instanceof ServerPlayerEntity player) {
             var pool = new PlayerManaPool(player);
-            return pool.refill(amount);
+            return pool.refill(amount, world);
         }
 
         return amount;

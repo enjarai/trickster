@@ -89,7 +89,6 @@ public class PocketComponent implements Component {
 
         player.setSneaking(crouch);
         player.setStackInHand(Hand.MAIN_HAND, pocketed);
-        player.setStackInHand(Hand.MAIN_HAND, pocketed);
 
         entity.interact(player, Hand.MAIN_HAND);
         if (entity instanceof LivingEntity livingEntity) {
@@ -101,14 +100,19 @@ public class PocketComponent implements Component {
         player.setSneaking(sneakState);
     }
 
-    public void attack(Entity entity) {
+    public void attack(Entity entity, boolean crouch) {
         var originalItem = player.getStackInHand(Hand.MAIN_HAND);
+        var sneakState = player.isSneaking();
+
+        player.setSneaking(crouch);
         player.setStackInHand(Hand.MAIN_HAND, pocketed);
+
         player.attack(entity);
         if (entity instanceof LivingEntity livingEntity) {
             pocketed.postHit(livingEntity, player);
         }
 
+        player.setSneaking(sneakState);
         player.setStackInHand(Hand.MAIN_HAND, originalItem);
     }
 }

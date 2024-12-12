@@ -10,7 +10,7 @@ import java.util.List;
 
 public class IngestTrick extends Trick {
     public IngestTrick() {
-        super(Pattern.of(0));
+        super(Pattern.of(7, 4, 3, 0, 4, 2, 5, 4));
     }
 
     @Override

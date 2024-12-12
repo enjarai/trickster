@@ -21,15 +21,17 @@ public class AttackTrick extends Trick {
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var wristpocket = ctx.source().getComponent(ModEntityComponents.WRIST_POCKET)
                 .orElseThrow(() -> new IncompatibleSourceBlunder(this));
+
         var entity = expectInput(fragments,FragmentType.ENTITY,0).getEntity(ctx)
                 .orElseThrow(() -> new InvalidEntityBlunder(this));
+        var crouch = supposeInput(fragments, 1).map(Fragment::asBoolean).orElse(false);
 
         ctx.useMana(this, (float) Math.max(
                 0.0,
                 ctx.source().getPos().distance(entity.getPos().toVector3d()) - 3.0
         ));
 
-        wristpocket.attack(entity);
+        wristpocket.attack(entity, crouch);
         return fragments.getFirst();
     }
 }

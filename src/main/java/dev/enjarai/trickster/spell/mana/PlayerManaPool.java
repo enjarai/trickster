@@ -4,6 +4,8 @@ import dev.enjarai.trickster.item.component.ModComponents;
 import io.wispforest.accessories.api.slot.SlotEntryReference;
 import io.wispforest.accessories.api.slot.SlotReference;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.world.World;
+
 import java.util.List;
 
 public class PlayerManaPool extends CachedInventoryManaPool {
@@ -11,6 +13,7 @@ public class PlayerManaPool extends CachedInventoryManaPool {
 
     public PlayerManaPool(ServerPlayerEntity player) {
         super(player.getInventory());
+
         var playerAccessories = player.accessoriesCapability();
         if (playerAccessories != null) {
             cached = playerAccessories.getEquipped(itemStack -> itemStack.get(ModComponents.MANA) != null).stream().map(SlotEntryReference::reference).toList();
@@ -20,52 +23,61 @@ public class PlayerManaPool extends CachedInventoryManaPool {
     }
 
     @Override
-    public float getMax() {
+    public float getMax(World world) {
         var max = 0.0f;
         for (var slotReference : cached) {
             var component = slotReference.getStack().get(ModComponents.MANA);
-            if (component != null) max += component.pool().getMax();
+            if (component != null) max += component.pool().getMax(world);
         }
 
-        return max + super.getMax();
+        return max + super.getMax(world);
     }
 
     @Override
-    public float use(float amount) {
+    public float use(float amount, World world) {
         for (var slotReference : cached) {
-            var component = slotReference.getStack().get(ModComponents.MANA);
-            if (component != null) {
-                var pool = component.pool().makeClone();
-                var left = pool.use(amount);
-                slotReference.getStack().set(ModComponents.MANA, component.with(pool));
-                if (left <= 0.0f) break;
-            }
+            var stack = slotReference.getStack();
+            if (stack == null)  continue;
+
+            var component = stack.get(ModComponents.MANA);
+            if (component == null) continue;
+
+            var pool = component.pool().makeClone(world);
+            amount = pool.use(amount, world);
+            stack.set(ModComponents.MANA, component.with(pool));
+
+            if (amount <= 0.0f) break;
         }
-        return super.use(amount);
+        return super.use(amount, world);
     }
 
     @Override
-    public float refill(float amount) {
+    public float refill(float amount, World world) {
         for (var slotReference : cached) {
-            var component = slotReference.getStack().get(ModComponents.MANA);
-            if (component != null) {
-                var pool = component.pool().makeClone();
-                var left = pool.refill(amount);
-                slotReference.getStack().set(ModComponents.MANA, component.with(pool));
-                if (left <= 0.0f) break;
-            }
+
+            var stack = slotReference.getStack();
+            if (stack == null) continue;
+
+            var component = stack.get(ModComponents.MANA);
+            if (component == null) continue;
+
+            var pool = component.pool().makeClone(world);
+            amount = pool.refill(amount, world);
+            stack.set(ModComponents.MANA, component.with(pool));
+
+            if (amount <= 0.0f) break;
         }
-        return super.refill(amount);
+        return super.refill(amount, world);
     }
  
     @Override
-    public float get() {
+    public float get(World world) {
         var total = 0.0f;
         for (var slotReference : cached) {
             var component = slotReference.getStack().get(ModComponents.MANA);
-            if (component != null) total += component.pool().get();
+            if (component != null) total += component.pool().get(world);
         }
 
-        return total + super.get();
+        return total + super.get(world);
     }
 }
