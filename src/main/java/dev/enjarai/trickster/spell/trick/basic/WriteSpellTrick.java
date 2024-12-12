@@ -6,7 +6,6 @@ import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.StringFragment;
-import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 
@@ -28,8 +27,9 @@ public class WriteSpellTrick extends Trick {
         var slot = supposeInput(fragments, FragmentType.SLOT, 1).or(() -> ctx.source().getOtherHandSlot()).orElseThrow(() -> new NoPlayerBlunder(this));
         var name = supposeInput(fragments, FragmentType.STRING, 2).map(StringFragment::asText);
 
-        slot.writeSpell(input, closed, name, player, this, ctx);
-
+        //TODO: limit slot refs to a range of 16 from the caster
+        
+        slot.writeFragment(input, closed, name, player, this, ctx);
         return input;
     }
 }

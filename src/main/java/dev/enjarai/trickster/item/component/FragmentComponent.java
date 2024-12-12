@@ -6,7 +6,6 @@ import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellPart;
-import dev.enjarai.trickster.spell.blunder.ImmutableItemBlunder;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.MapFragment;
 import io.vavr.collection.HashMap;
@@ -16,15 +15,12 @@ import io.wispforest.endec.impl.StructEndecBuilder;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ContainerComponent;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextCodecs;
-import org.jetbrains.annotations.Contract;
-
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.function.Function;
@@ -38,7 +34,7 @@ public record FragmentComponent(Fragment value, Optional<Text> name, boolean imm
             }),
             Endec.BOOLEAN.optionalFieldOf("immutable", FragmentComponent::immutable, false),
             Endec.BOOLEAN.optionalFieldOf("closed", FragmentComponent::closed, false),
-            (value, immutable, closed) -> (new FragmentComponent(value, Optional.empty(), immutable, closed))
+            (value, immutable, closed) -> new FragmentComponent(value, Optional.empty(), immutable, closed)
     );
     private static final Endec<FragmentComponent> NEW_ENDEC = StructEndecBuilder.of(
             Fragment.ENDEC.fieldOf("value", FragmentComponent::value),
@@ -72,50 +68,56 @@ public record FragmentComponent(Fragment value, Optional<Text> name, boolean imm
     }
 
     /**
-     * @param stack item stack to write fragment too
-     * @return returns updated item stack. or empty on fail
+     * @param stack the item stack to write the given fragment.
+     * @param fragment the fragment to write.
+     * @return the new item stack, or empty if the item's fragment is immutable.
      */
-    public static Optional<ItemStack> writeSpell(ItemStack stack, Fragment fragment) {
-        return writeSpell(stack, fragment, false, Optional.empty(), Optional.empty());
+    public static Optional<ItemStack> write(ItemStack stack, Fragment fragment) {
+        return write(stack, fragment, false, Optional.empty(), Optional.empty());
     }
 
-    public static Optional<ItemStack> writeSpell(ItemStack stack, Fragment fragment, boolean closed, Optional<ServerPlayerEntity> player, Optional<Text> name) {
-        var ret = stack;
-
-        if (fragment.type() != FragmentType.SPELL_PART) {
-            fragment = new SpellPart(fragment);
-        }
-
-        if (!FragmentComponent.setValue(ret, fragment, name, closed)) {
+    /**
+     * Writes a fragment to an item stack.
+     * @param stack the item stack to write the given fragment.
+     * @param fragment the fragment to write.
+     * @param closed whether the fragment is unreadable.
+     * @param player the player that is inscribing to the item, if applicable.
+     * @param name the name of the fragment to be displayed in the item's tooltip.
+     * @return the new item stack, or empty if the item's fragment is immutable.
+     */
+    public static Optional<ItemStack> write(ItemStack stack, Fragment fragment, boolean closed, Optional<ServerPlayerEntity> player, Optional<Text> name) {
+        if (!FragmentComponent.setValue(stack, fragment, name, closed)) {
             return Optional.empty();
         }
 
         if (stack.isOf(Items.BOOK)) {
-            ret = stack.withItem(Items.ENCHANTED_BOOK);
+            stack = stack.withItem(Items.ENCHANTED_BOOK);
         }
 
         player.ifPresent(ModCriteria.INSCRIBE_SPELL::trigger);
-        return Optional.of(ret);
+        return Optional.of(stack);
     }
 
     /**
-     * @param stack item stack to clear of fragment component
-     * @return returns correct item stack (i.e, if enchanted book is cleared, returns book)
-     * on attempting to modify immutable stack, returns empty, so that tricks know to throw
+     * Resets an item stack to its default fragment value.
+     * @param stack the item stack to clear.
+     * @return the new item stack, or empty if the item's fragment is immutable.
      */
+    public static Optional<ItemStack> reset(ItemStack stack) {
+        if (getReferencedStack(stack).isEmpty()) {
+            return Optional.of(stack);
+        }
 
-    public static Optional<ItemStack> clearSpell(ItemStack stack) {
-        if (getReferencedStack(stack).isEmpty()) return Optional.of(stack);
-
-        boolean successful = FragmentComponent.modifyReferencedStack(stack, (s) -> {
+        boolean successful = FragmentComponent.modifyReferencedStack(stack, s -> {
             var component = s.get(ModComponents.FRAGMENT);
 
             if (component == null) {
                 return true;
             }
 
-            if (component.immutable())
+            if (component.immutable()) {
                 return false;
+            }
 
             var itemDefault = s.getItem().getDefaultStack().get(ModComponents.FRAGMENT);
 
@@ -128,7 +130,9 @@ public record FragmentComponent(Fragment value, Optional<Text> name, boolean imm
             return true;
         });
 
-        if (!successful) return Optional.empty();
+        if (!successful) {
+            return Optional.empty();
+        }
 
         if (stack.isOf(Items.ENCHANTED_BOOK)
                 && (stack.get(DataComponentTypes.STORED_ENCHANTMENTS) instanceof ItemEnchantmentsComponent enchants)
@@ -154,7 +158,6 @@ public record FragmentComponent(Fragment value, Optional<Text> name, boolean imm
             }
 
             stack2.set(ModComponents.FRAGMENT, new FragmentComponent(value, name, false, closed));
-
             return true;
         });
     }
@@ -172,21 +175,20 @@ public record FragmentComponent(Fragment value, Optional<Text> name, boolean imm
     }
 
     /**
-     * @param stack  stack to modify with a given function
-     * @param modifier function to apply to the given stack. return true if modified
-     * @return returns true if stack was modified
+     * @param stack the item stack to modify with the given function.
+     * @param modifier the function to apply to the given stack. Must return true if the stack was modified.
+     * @return true if the stack was modified, false otherwise.
      */
     public static boolean modifyReferencedStack(ItemStack stack, Function<ItemStack, Boolean> modifier) {
         if (stack.isIn(ModItems.HOLDABLE_HAT) && stack.contains(DataComponentTypes.CONTAINER) && stack.contains(ModComponents.SELECTED_SLOT)) {
             var stacks = stack.get(DataComponentTypes.CONTAINER).stream().collect(Collectors.toCollection(ArrayList::new));
-            var index = stack.get(ModComponents.SELECTED_SLOT).slot();
-
-            var stack2 = stacks.get(index);
+            var stack2 = stacks.get(stack.get(ModComponents.SELECTED_SLOT).slot());
             boolean modified = modifier.apply(stack2);
 
             if (modified) {
                 stack.set(DataComponentTypes.CONTAINER, ContainerComponent.fromStacks(stacks));
             }
+
             return modified;
         } else {
             return modifier.apply(stack);

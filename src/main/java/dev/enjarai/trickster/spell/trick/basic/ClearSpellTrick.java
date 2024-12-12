@@ -13,15 +13,15 @@ import java.util.List;
 
 public class ClearSpellTrick extends Trick {
     public ClearSpellTrick() {
-        super(Pattern.of(1,4,5,8,7,6,3,4));
+        super(Pattern.of(1, 4, 5, 8, 7, 6, 3, 4));
     }
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var slot = supposeInput(fragments, FragmentType.SLOT, 0)
+        supposeInput(fragments, FragmentType.SLOT, 0)
                 .or(() -> ctx.source().getOtherHandSlot())
-                .orElseThrow(() -> new NoPlayerBlunder(this));
-        slot.clearSpell(this, ctx);
+                .orElseThrow(() -> new NoPlayerBlunder(this))
+                .resetFragment(this, ctx);
         return VoidFragment.INSTANCE;
     }
 }

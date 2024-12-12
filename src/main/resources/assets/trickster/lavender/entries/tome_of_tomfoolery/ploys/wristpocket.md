@@ -1,22 +1,22 @@
 ```json
 {
-  "title": "Wrist Pocket",
+  "title": "Wristpocket",
   "icon": "minecraft:barrel",
   "category": "trickster:ploys"
 }
 ```
 
-Listed here are ploys that use the wrist pocket.
+Listed here are ploys that use the wristpocket.
 
 ;;;;;
 
 <|glyph@trickster:templates|trick-id=trickster:pocket,title=Ploy of Pilfering|>
 
-slot [integer] -> slot
+slot, [integer] -> slot
 
 ---
 
-moves, from the chosen slot, the given number of items, or all of them, to the wrist pocket.
+Moves the given number of items, or all of them, from the given slot to the wristpocket.
 
 ;;;;;
 
@@ -26,24 +26,24 @@ moves, from the chosen slot, the given number of items, or all of them, to the w
 
 ---
 
-empties the wristpocket into the inventory, if possible.
+Empties the contents of the wristpocket into the caster's inventory if possible.
 
 ;;;;;
 
 <|glyph@trickster:templates|trick-id=trickster:mage_hand,title=Mage Hand Ploy|>
 
-vector|entity [bool] -> vector|entity
+vector | entity, [bool] -> vector | entity
 
 ---
 
-simulates the use of the item stowed in the wristpocket on the given block or entity. optionally, while crouching.
+Simulates the use of the item held in the wristpocket on the given target. Crouching may be optionally specified.
 
 ;;;;;
 
 <|glyph@trickster:templates|trick-id=trickster:attack,title=Barbarian's Ploy|>
 
-entity [bool] -> entity
+entity, [bool] -> entity
 
 ---
 
-simulates the *violent* use of the item stowed in the wristpocket on the given block or entity. optionally, while crouching.
+Simulates the *violent* use of the item held in the wristpocket on the given target. Crouching may be optionally specified.

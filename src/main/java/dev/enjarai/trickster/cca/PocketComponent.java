@@ -21,15 +21,6 @@ import java.util.Optional;
 
 public class PocketComponent implements Component {
     private final PlayerEntity player;
-
-    public ItemStack getPocketed() {
-        return pocketed;
-    }
-
-    public void setPocketed(ItemStack pocketed) {
-        this.pocketed = pocketed;
-    }
-
     private ItemStack pocketed;
 
     public PocketComponent(PlayerEntity player) {
@@ -37,17 +28,22 @@ public class PocketComponent implements Component {
         this.pocketed = ItemStack.EMPTY;
     }
 
-
     @Override
     public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-        var serialized = tag.getCompound("wristpocket");
-        pocketed = ItemStack.fromNbtOrEmpty(registryLookup, serialized);
+        pocketed = ItemStack.fromNbtOrEmpty(registryLookup, tag.getCompound("wristpocket"));
     }
 
     @Override
     public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-        var serialized = pocketed.encodeAllowEmpty(registryLookup);
-        tag.put("wristpocket", serialized);
+        tag.put("wristpocket", pocketed.encodeAllowEmpty(registryLookup));
+    }
+
+    public ItemStack getPocketed() {
+        return pocketed;
+    }
+
+    public void setPocketed(ItemStack pocketed) {
+        this.pocketed = pocketed;
     }
 
     public void put(ItemStack item, SpellContext ctx) {
@@ -100,6 +96,7 @@ public class PocketComponent implements Component {
         player.setStackInHand(Hand.MAIN_HAND, pocketed);
 
         entity.interact(player, Hand.MAIN_HAND);
+
         if (entity instanceof LivingEntity livingEntity) {
             pocketed.useOnEntity(player, livingEntity, Hand.MAIN_HAND);
         }
@@ -117,6 +114,7 @@ public class PocketComponent implements Component {
         player.setStackInHand(Hand.MAIN_HAND, pocketed);
 
         player.attack(entity);
+
         if (entity instanceof LivingEntity livingEntity) {
             pocketed.postHit(livingEntity, player);
         }

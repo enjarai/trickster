@@ -163,8 +163,6 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
                     });
                 }
             } else {
-//            var result = SpellPart.CODEC.encodeStart(JsonOps.INSTANCE, spell).result().get();
-//            Trickster.LOGGER.warn(result.toString());
                 sendMessage(new SpellMessage(spell));
             }
         }
@@ -177,9 +175,9 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
                     var server = player().getServer();
                     if (server != null) {
                         server.execute(() -> {
-                            var updated = FragmentComponent.writeSpell(otherHandStack, spell);
-                            player().setStackInHand(Hand.OFF_HAND, updated.orElse(otherHandStack)); //on fail do nothing
-                            otherHandSpell.set(spell); // im leaving this because i have no idea what its doing :p
+                            var updated = FragmentComponent.write(otherHandStack, spell);
+                            player().setStackInHand(Hand.OFF_HAND, updated.orElse(otherHandStack)); // does nothing on fail
+                            otherHandSpell.set(spell);
                         });
                     }
                 }

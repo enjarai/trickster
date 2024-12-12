@@ -5,29 +5,29 @@ import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.mana.SimpleManaPool;
 import io.wispforest.accessories.api.AccessoryItem;
 import io.wispforest.accessories.api.slot.SlotReference;
-import net.fabricmc.fabric.mixin.client.indigo.renderer.BlockModelRendererMixin;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.FallingBlock;
-import net.minecraft.entity.FallingBlockEntity;
 import net.minecraft.item.ItemStack;
 
 public class ManaAccessory extends AccessoryItem {
-    // rai can go ahead and decide on a max mana amount :p
-
     private static final float recharge = 1.0f;
     private static final float maxMana = 256.0f;
 
     public ManaAccessory() {
-        super(new Settings().maxCount(1).component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(maxMana))));
+        super(new Settings()
+                .maxCount(1)
+                .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(maxMana))));
     }
 
     @Override
     public void tick(ItemStack stack, SlotReference reference) {
         var component = stack.get(ModComponents.MANA);
-        if (component == null) return;
-        var world = reference.entity().getWorld();
 
+        if (component == null) {
+            return;
+        }
+
+        var world = reference.entity().getWorld();
         var pool = component.pool().makeClone(world);
+
         pool.refill(recharge, world);
         stack.set(ModComponents.MANA, component.with(pool));
     }
