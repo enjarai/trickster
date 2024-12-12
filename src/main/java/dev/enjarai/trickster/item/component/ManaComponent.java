@@ -48,6 +48,7 @@ public record ManaComponent(ManaPool pool, float naturalRechargeMultiplier, bool
         }
 
         var moonSize = world.getMoonSize();
+
         // Recharge most strongly at new and full moons, with no recharging halfway inbetween
         var chargeMultiplier = Math.max(moonSize * 2 - 1, 1 - moonSize * 2);
         chargeMultiplier *= component.naturalRechargeMultiplier();

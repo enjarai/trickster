@@ -15,11 +15,9 @@ public class CachedInventoryManaPool implements MutableManaPool {
     public CachedInventoryManaPool(Inventory inventory) {
         this.inventory = inventory;
 
-        for (int i = 0; i < inventory.size(); i++) {
-            if (inventory.getStack(i).contains(ModComponents.MANA)) {
+        for (int i = 0; i < inventory.size(); i++)
+            if (inventory.getStack(i).contains(ModComponents.MANA))
                 slots.add(i);
-            }
-        }
     }
 
     @Override

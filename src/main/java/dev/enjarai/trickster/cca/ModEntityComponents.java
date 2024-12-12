@@ -23,11 +23,15 @@ public class ModEntityComponents implements EntityComponentInitializer {
 
     public static final ComponentKey<GraceComponent> GRACE =
             ComponentRegistry.getOrCreate(Trickster.id("grace"), GraceComponent.class);
+
     public static final ComponentKey<FlecksComponent> FLECKS =
             ComponentRegistry.getOrCreate(Trickster.id("flecks"), FlecksComponent.class);
 
     public static final ComponentKey<PlayerAnimationComponent> PLAYER_ANIMATION =
             ComponentRegistry.getOrCreate(Trickster.id("player_animation"), PlayerAnimationComponent.class);
+
+    public static final ComponentKey<PocketComponent> WRIST_POCKET =
+            ComponentRegistry.getOrCreate(Trickster.id("wristpocket"), PocketComponent.class);
 
     @Override
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
@@ -38,5 +42,6 @@ public class ModEntityComponents implements EntityComponentInitializer {
         registry.registerForPlayers(IS_EDITING_SCROLL, IsEditingScrollComponent::new, RespawnCopyStrategy.NEVER_COPY);
         registry.registerFor(LivingEntity.class, GRACE, GraceComponent::new);
         registry.registerForPlayers(PLAYER_ANIMATION, PlayerAnimationComponent::new, RespawnCopyStrategy.NEVER_COPY);
+        registry.registerForPlayers(WRIST_POCKET, PocketComponent::new, RespawnCopyStrategy.INVENTORY);
     }
 }

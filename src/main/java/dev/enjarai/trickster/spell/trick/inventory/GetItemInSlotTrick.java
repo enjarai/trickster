@@ -17,6 +17,5 @@ public class GetItemInSlotTrick extends Trick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        return new ItemTypeFragment(expectInput(fragments, FragmentType.SLOT, 0).getItem(this, ctx));
-    }
+        return new ItemTypeFragment(expectInput(fragments, FragmentType.SLOT, 0).getItem(this, ctx)); }
 }
