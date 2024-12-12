@@ -1,0 +1,12 @@
+{
+  "conversions": [
+    {
+      "id": "minecraft:infested_mossy_stone_bricks",
+      "weight": 1
+    },
+    {
+      "id": "minecraft:infested_cracked_stone_bricks",
+      "weight": 1
+    }
+  ]
+}

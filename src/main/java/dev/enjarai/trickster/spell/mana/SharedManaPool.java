@@ -1,14 +1,14 @@
 package dev.enjarai.trickster.spell.mana;
 
-import java.util.Optional;
 import java.util.UUID;
 
 import dev.enjarai.trickster.EndecTomfoolery;
-import dev.enjarai.trickster.cca.SharedManaComponent;
+import dev.enjarai.trickster.cca.ModGlobalComponents;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
+import net.minecraft.world.World;
 
-public class SharedManaPool implements MutableManaPool {
+public record SharedManaPool(UUID uuid) implements MutableManaPool {
     public static final StructEndec<SharedManaPool> ENDEC = StructEndecBuilder.of(
             EndecTomfoolery.UUID.fieldOf("uuid", SharedManaPool::uuid),
             SharedManaPool::new
@@ -16,31 +16,15 @@ public class SharedManaPool implements MutableManaPool {
 
     private static final SimpleManaPool THE_SKILL_ISSUE = new SimpleManaPool(0) {
         @Override
-        public void set(float value) {
+        public void set(float value, World world) {
             mana = 0;
         }
 
         @Override
-        public void setMax(float value) {
+        public void setMax(float value, World world) {
             maxMana = 0;
         }
     };
-
-    private final UUID uuid;
-    private Optional<SimpleManaPool> self = Optional.empty();
-
-    public SharedManaPool(UUID uuid) {
-        this.uuid = uuid;
-    }
-
-    private SharedManaPool(UUID uuid, Optional<SimpleManaPool> self) {
-        this(uuid);
-        this.self = self;
-    }
-
-    public UUID uuid() {
-        return uuid;
-    }
 
     @Override
     public ManaPoolType<?> type() {
@@ -48,38 +32,44 @@ public class SharedManaPool implements MutableManaPool {
     }
 
     @Override
-    public float get() {
-        return getSelf().get();
+    public float get(World world) {
+        return getSelf(world).get(world);
     }
 
     @Override
-    public float getMax() {
-        return getSelf().getMax();
+    public float getMax(World world) {
+        return getSelf(world).getMax(world);
     }
 
     @Override
-    public void set(float value) {
-        getSelf().set(value);
+    public void set(float value, World world) {
+        getSelf(world).set(value, world);
+        ModGlobalComponents.SHARED_MANA.sync(world.getScoreboard());
     }
 
     @Override
-    public void setMax(float value) {
-        getSelf().setMax(value);
+    public void setMax(float value, World world) {
+        getSelf(world).setMax(value, world);
+        ModGlobalComponents.SHARED_MANA.sync(world.getScoreboard());
     }
 
     @Override
-    public float use(float amount) {
-        return getSelf().use(amount);
+    public float use(float amount, World world) {
+        var result = getSelf(world).use(amount, world);
+        ModGlobalComponents.SHARED_MANA.sync(world.getScoreboard());
+        return result;
     }
 
     @Override
-    public float refill(float amount) {
-        return getSelf().refill(amount);
+    public float refill(float amount, World world) {
+        var result = getSelf(world).refill(amount, world);
+        ModGlobalComponents.SHARED_MANA.sync(world.getScoreboard());
+        return result;
     }
 
     @Override
-    public MutableManaPool makeClone() {
-        return new SharedManaPool(uuid, self);
+    public MutableManaPool makeClone(World world) {
+        return new SharedManaPool(uuid);
     }
 
     @Override
@@ -92,7 +82,7 @@ public class SharedManaPool implements MutableManaPool {
         return uuid.hashCode();
     }
 
-    private SimpleManaPool getSelf() {
-        return (self = self.or(() -> SharedManaComponent.getInstance().get(uuid))).orElse(THE_SKILL_ISSUE);
+    private SimpleManaPool getSelf(World world) {
+        return ModGlobalComponents.SHARED_MANA.get(world.getScoreboard()).get(uuid).orElse(THE_SKILL_ISSUE);
     }
 }

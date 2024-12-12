@@ -58,8 +58,49 @@ Constructs a slot from an index and an inventory source, using the caster by def
 
 <|glyph@trickster:templates|trick-id=trickster:check_hat,title=Cranium Delusion|>
 
--> number
+-> number | void
 
 ---
 
 Returns the selected slot in the caster's [Top Hat](^trickster:items/top_hat).
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:get_mana_in_slot,title=Ingress of Authority|>
+
+slot... -> number
+
+---
+
+Returns the amount of mana in the given slots.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:get_max_mana_in_slot,title=Crowning Ingress|>
+
+slot... -> number
+
+---
+
+Returns the maximum amount of mana which may be stored in the given slots.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:block_from_item,title=Placement Distortion|>
+
+item -> block | void
+
+---
+
+Returns the block type the given item type can be placed as, or void if the item is not a block.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:item_from_block,title=Pickup Distortion|>
+
+block -> item | void
+
+---
+
+Returns the item type that can be used to place the given block type, 
+or void if the block doesn't have a corresponding item.

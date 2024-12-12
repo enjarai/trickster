@@ -3,16 +3,15 @@ package dev.enjarai.trickster.spell.trick.func;
 import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.trick.DistortionTrick;
-import dev.enjarai.trickster.util.Hamt;
 import dev.enjarai.trickster.spell.fragment.MapFragment;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.IncorrectFragmentBlunder;
-import dev.enjarai.trickster.spell.blunder.MissingFragmentBlunder;
+import io.vavr.Tuple2;
+import io.vavr.collection.HashMap;
+import io.vavr.collection.Map;
 import net.minecraft.text.Text;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ClosureTrick extends DistortionTrick {
     public ClosureTrick() {
@@ -26,17 +25,15 @@ public class ClosureTrick extends DistortionTrick {
         var map = expectInput(fragments, FragmentType.MAP, 1).map();
 
         var result = executable.deepClone();
-        result.buildClosure(map.asMap());
+        result.buildClosure(map);
 
         return result;
     }
 
-    private Map<Pattern, Fragment> expectPatternMap(Hamt<Fragment, Fragment> map) throws IncorrectFragmentBlunder {
-        var replacements = new HashMap<Pattern, Fragment>();
-
-        map.iterator().forEachRemaining(entry -> {
-            if (entry.getKey() instanceof PatternGlyph pattern) {
-                replacements.put(pattern.pattern(), entry.getValue());
+    private Map<Pattern, Fragment> expectPatternMap(HashMap<Fragment, Fragment> map) throws IncorrectFragmentBlunder {
+        return map.map((key, value) -> {
+            if (key instanceof PatternGlyph pattern) {
+                return new Tuple2<>(pattern.pattern(), value);
             } else {
                 throw new IncorrectFragmentBlunder(this, 1,
                         Text.literal("{")
@@ -47,7 +44,5 @@ public class ClosureTrick extends DistortionTrick {
                         new MapFragment(map));
             }
         });
-
-        return replacements;
     }
 }

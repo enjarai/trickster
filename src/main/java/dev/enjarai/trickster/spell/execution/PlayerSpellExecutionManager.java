@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.spell.execution;
 
+import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
@@ -57,12 +58,12 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
                             (index, executor3) -> { });
                     return new SpellQueueResult(isDone.get()
                             ? SpellQueueResult.Type.QUEUED_DONE
-                            : SpellQueueResult.Type.QUEUED_STILL_RUNNING, executor.getCurrentState());
+                            : SpellQueueResult.Type.QUEUED_STILL_RUNNING, executor.getDeepestState());
                 }
             }
         }
 
-        return new SpellQueueResult(SpellQueueResult.Type.NOT_QUEUED, executor.getCurrentState());
+        return new SpellQueueResult(SpellQueueResult.Type.NOT_QUEUED, executor.getDeepestState());
     }
 
     @Override
@@ -115,7 +116,7 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
             }
         } catch (BlunderException blunder) {
             var message = blunder.createMessage()
-                    .append(" (").append(executor.getCurrentState().formatStackTrace()).append(")");
+                    .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")");
 
             if (blunder instanceof NaNBlunder)
                 source.getPlayer().ifPresent(ModCriteria.NAN_NUMBER::trigger);
@@ -125,7 +126,9 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
             errorCallback.callTheBack(entry.getIntKey(), executor);
         } catch (Exception e) {
             var message = Text.literal("Uncaught exception in spell: " + e.getMessage())
-                    .append(" (").append(executor.getCurrentState().formatStackTrace()).append(")");
+                    .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")");
+
+            Trickster.LOGGER.warn("Uncaught error in spell:", e);
 
             entry.setValue(new ErroredSpellExecutor(executor.spell(), message));
             source.getPlayer().ifPresent(player -> player.sendMessage(message));

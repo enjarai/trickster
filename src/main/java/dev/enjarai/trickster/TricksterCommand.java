@@ -100,8 +100,8 @@ public class TricksterCommand {
             var comp = stack.get(ModComponents.MANA);
 
             if (comp != null) {
-                var pool = comp.pool().makeClone();
-                pool.refill(pool.getMax());
+                var pool = comp.pool().makeClone(context.getSource().getWorld());
+                pool.refill(pool.getMax(context.getSource().getWorld()), context.getSource().getWorld());
                 stack.set(ModComponents.MANA, new ManaComponent(pool));
                 player.sendMessage(Text.literal("Mana refilled"));
                 return 0;

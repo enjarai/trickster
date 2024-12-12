@@ -38,7 +38,7 @@ public record ManaComponent(ManaPool pool, float naturalRechargeMultiplier, bool
         }
 
         var pool = component.pool();
-        if (pool.get() >= pool.getMax()) {
+        if (pool.get(world) >= pool.getMax(world)) {
             return 0;
         }
 
@@ -53,8 +53,8 @@ public record ManaComponent(ManaPool pool, float naturalRechargeMultiplier, bool
         var chargeMultiplier = Math.max(moonSize * 2 - 1, 1 - moonSize * 2);
         chargeMultiplier *= component.naturalRechargeMultiplier();
 
-        var newPool = pool.makeClone();
-        newPool.refill(chargeMultiplier);
+        var newPool = pool.makeClone(world);
+        newPool.refill(chargeMultiplier, world);
         stack.set(ModComponents.MANA, component.with(newPool));
 
         var recharged = chargeMultiplier - world.random.nextFloat();

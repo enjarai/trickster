@@ -36,7 +36,7 @@ vector, [block] -> boolean
 
 ---
 
-Returns whether the given block can be placed at the given position. 
+Returns whether the given block can be placed at the given position. If no block is given, returns whether the position is replaceable.
 
 ;;;;;
 

@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.spell.mana;
 
 import net.minecraft.inventory.Inventory;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import dev.enjarai.trickster.item.component.ModComponents;
 
@@ -26,41 +27,41 @@ public class CachedInventoryManaPool implements MutableManaPool {
     }
 
     @Override
-    public float get() {
+    public float get(World world) {
         float result = 0;
 
         for (var i : slots) {
             var comp = inventory.getStack(i).get(ModComponents.MANA);
-            result += comp != null ? comp.pool().get() : 0;
+            result += comp != null ? comp.pool().get(world) : 0;
         }
 
         return result;
     }
 
     @Override
-    public float getMax() {
+    public float getMax(World world) {
         float result = 0;
 
         for (var i : slots) {
             var comp = inventory.getStack(i).get(ModComponents.MANA);
-            result += comp != null ? comp.pool().getMax() : 0;
+            result += comp != null ? comp.pool().getMax(world) : 0;
         }
 
         return result;
     }
 
     @Override
-    public void set(float value) {
+    public void set(float value, World world) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void setMax(float value) {
+    public void setMax(float value, World world) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public float use(float amount) {
+    public float use(float amount, World world) {
         for (var i : slots) {
             var stack = inventory.getStack(i);
             var comp = stack.get(ModComponents.MANA);
@@ -68,8 +69,8 @@ public class CachedInventoryManaPool implements MutableManaPool {
             if (comp == null)
                 continue;
             
-            var pool = comp.pool().makeClone();
-            amount = pool.use(amount);
+            var pool = comp.pool().makeClone(world);
+            amount = pool.use(amount, world);
             stack.set(ModComponents.MANA, comp.with(pool));
         }
 
@@ -77,7 +78,7 @@ public class CachedInventoryManaPool implements MutableManaPool {
     }
 
     @Override
-    public float refill(float amount) {
+    public float refill(float amount, World world) {
         for (var i : slots) {
             var stack = inventory.getStack(i);
             var comp = stack.get(ModComponents.MANA);
@@ -85,8 +86,8 @@ public class CachedInventoryManaPool implements MutableManaPool {
             if (comp == null)
                 continue;
             
-            var pool = comp.pool().makeClone();
-            amount = pool.refill(amount);
+            var pool = comp.pool().makeClone(world);
+            amount = pool.refill(amount, world);
             stack.set(ModComponents.MANA, comp.with(pool));
         }
 
@@ -94,7 +95,7 @@ public class CachedInventoryManaPool implements MutableManaPool {
     }
 
     @Override
-    public MutableManaPool makeClone() throws UnsupportedOperationException {
+    public MutableManaPool makeClone(World world) throws UnsupportedOperationException {
         throw new UnsupportedOperationException();
     }
 }

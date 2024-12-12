@@ -33,10 +33,20 @@ If there is a value associated with the given fragment, returns it. Otherwise, r
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:map_remove,title=Erasing Distortion|>
+<|glyph@trickster:templates|trick-id=trickster:map_merge,title=Admiral's Stratagem|>
 
-{any: any}, any -> {any: any}
+{any: any}, {any: any}... -> {any: any}
 
 ---
 
-If there is a value associated with the given fragment, removes it.
+Combines many maps into one. Duplicate entries are prioritized by input index.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:map_remove,title=Stratagem of Annulment|>
+
+{any: any}, any... -> {any: any}
+
+---
+
+Removes entries from the given map which have any of the given keys.

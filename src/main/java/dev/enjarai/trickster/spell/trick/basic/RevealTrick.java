@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.spell.trick.basic;
 
 import dev.enjarai.trickster.Trickster;
+import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
@@ -39,9 +40,7 @@ public class RevealTrick extends Trick {
 
         Text finalResult = result;
         ctx.source().getPlayer().ifPresent(player -> {
-            player.sendMessage(Text.of(finalResult), ConfigSynchronizer.getClientOptions(player, Trickster.CONFIG.name()) instanceof Map<Option.Key, ?> map
-                    ? (boolean) map.get(Trickster.CONFIG.keys.revealToHotbar)
-                    : Trickster.CONFIG.revealToHotbar());
+            player.sendMessage(Text.of(finalResult), ModNetworking.clientOrDefault(player, Trickster.CONFIG.keys.revealToHotbar, Trickster.CONFIG.revealToHotbar()));
         });
 
         return first;

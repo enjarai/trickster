@@ -22,7 +22,7 @@ Creates a Knot of the type of the given item using a Glass Block. Uses amethyst 
 
 <|glyph@trickster:templates|trick-id=trickster:push_mana,title=Benevolent Conduit's Ploy|>
 
-number, [slot]... -> number
+number, slot... -> number
 
 ---
 
@@ -32,7 +32,7 @@ Pushes the caster's mana into the items at the given slots, up to the given numb
 
 <|glyph@trickster:templates|trick-id=trickster:pull_mana,title=Malevolent Conduit's Ploy|>
 
-number, [slot]... -> number
+number, slot... -> number
 
 ---
 

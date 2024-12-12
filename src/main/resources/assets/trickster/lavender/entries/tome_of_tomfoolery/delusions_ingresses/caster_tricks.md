@@ -92,7 +92,7 @@ Returns the selected hotbar slot of the caster, if available.
 
 <|glyph@trickster:templates|trick-id=trickster:read_macro_ring,title=Macro Delusion|>
 
--> {spell: spell}
+-> {pattern: spell}
 
 ---
 

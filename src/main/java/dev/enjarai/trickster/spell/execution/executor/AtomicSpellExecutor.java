@@ -26,7 +26,7 @@ import io.wispforest.endec.impl.StructEndecBuilder;
 
 public class AtomicSpellExecutor implements SpellExecutor {
     public static final StructEndec<AtomicSpellExecutor> ENDEC = StructEndecBuilder.of(
-            SpellPart.ENDEC.fieldOf("root", AtomicSpellExecutor::spell),
+            SpellPart.ENDEC.fieldOf("root", e -> e.root),
             SpellInstruction.STACK_ENDEC.fieldOf("instructions", e -> e.instructions),
             Fragment.ENDEC.listOf().fieldOf("inputs", e -> e.inputs),
             Endec.INT.listOf().fieldOf("scope", e -> e.scope),
@@ -131,7 +131,7 @@ public class AtomicSpellExecutor implements SpellExecutor {
     }
 
     @Override
-    public ExecutionState getCurrentState() {
+    public ExecutionState getDeepestState() {
         return state;
     }
 

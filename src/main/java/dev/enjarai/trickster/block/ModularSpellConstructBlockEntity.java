@@ -39,7 +39,7 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
-public class ModularSpellConstructBlockEntity extends BlockEntity implements Inventory, CrowMind, SpellExecutionManager {
+public class ModularSpellConstructBlockEntity extends BlockEntity implements Inventory, CrowMind, SpellExecutionManager, SpellCastingBlockEntity {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(5, ItemStack.EMPTY);
     private Fragment crowMind = VoidFragment.INSTANCE;
     public int age;
@@ -63,6 +63,7 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
 
     public void tick() {
         age++;
+        boolean updateClient = false;
 
         if (getWorld() instanceof ServerWorld serverWorld) {
             var source = new BlockSpellSource<>(serverWorld, getPos(), this);
@@ -75,8 +76,9 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
                     var executor = slot.executor();
                     var error = Optional.<Text>empty();
 
-                    if (slot.executor() instanceof ErroredSpellExecutor)
+                    if (slot.executor() instanceof ErroredSpellExecutor) {
                         continue;
+                    }
 
                     try {
                         if (executor.run(source, new TickData().withSlot(i).withBonusExecutions(item.getExecutionBonus())).isPresent()) {
@@ -84,13 +86,17 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
                         }
                     } catch (BlunderException blunder) {
                         error = Optional.of(blunder.createMessage()
-                                .append(" (").append(executor.getCurrentState().formatStackTrace()).append(")"));
-                    } catch (Exception e) {
+                                .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")"));
+                    } catch (Throwable e) {
                         error = Optional.of(Text.literal("Uncaught exception in spell: " + e.getMessage())
-                                .append(" (").append(executor.getCurrentState().formatStackTrace()).append(")"));
+                                .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")"));
                     }
 
                     error.ifPresent(e -> stack.set(ModComponents.SPELL_CORE, slot.fail(e)));
+                    if (error.isPresent()) {
+                        playCastSound(serverWorld, getPos(), 0.5f, 0.1f);
+                        updateClient = true;
+                    }
                 }
 
                 ManaComponent.tryRecharge(
@@ -107,7 +113,11 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
                 );
             }
 
-            markDirty();
+            if (updateClient) {
+                markDirtyAndUpdateClients();
+            } else {
+                markDirty();
+            }
         }
     }
 
@@ -125,7 +135,7 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
     @Override
     public void clear() {
         inventory.clear();
-        markDirty();
+        markDirtyAndUpdateClients();
     }
 
     @Override
@@ -148,7 +158,7 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
         if (slot < inventory.size()) {
             ItemStack itemStack = inventory.get(slot);
             inventory.set(slot, ItemStack.EMPTY);
-            markDirty();
+            markDirtyAndUpdateClients();
 
             if (world instanceof ServerWorld world && itemStack.getItem() instanceof SpellCoreItem item) {
                 if (item.onRemoved(world, getPos(), itemStack)) {
@@ -178,14 +188,13 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
             }
 
             inventory.set(slot, stack);
-            markDirty();
+            markDirtyAndUpdateClients();
         } else if (stack.isEmpty()) {
             removeStack(slot, 1);
         }
     }
 
-    @Override
-    public void markDirty() {
+    public void markDirtyAndUpdateClients() {
         super.markDirty();
         if (world != null) {
             world.updateListeners(pos, getCachedState(), getCachedState(), 0);
@@ -199,7 +208,7 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
 
     @Override
     public boolean isValid(int slot, ItemStack stack) {
-        return (slot == 0 ? stack.isIn(ModItems.MANA_KNOTS) : stack.getItem() instanceof SpellCoreItem) && getStack(slot).isEmpty();
+        return stack.isEmpty() || (slot == 0 ? stack.isIn(ModItems.MANA_KNOTS) : stack.getItem() instanceof SpellCoreItem) && getStack(slot).isEmpty();
     }
 
     @Override
@@ -217,7 +226,7 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
     @Override
     public void setCrowMind(Fragment fragment) {
         crowMind = fragment;
-        markDirty();
+        markDirtyAndUpdateClients();
     }
 
     @Override

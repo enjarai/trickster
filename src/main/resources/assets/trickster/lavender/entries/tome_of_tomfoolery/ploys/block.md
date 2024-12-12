@@ -42,6 +42,47 @@ Exchanges the blocks at two positions in the world. Neither of the positions can
 
 ;;;;;
 
+<|page-title@lavender:book_components|title=Note: Heating and Cooling|>By pushing or pulling a large quantity of mana into or from a block, it may be rapidly heated or cooled.
+
+
+Given these extreme temperature changes, some blocks may change significantly in useful ways, 
+though some collateral effects on surrounding blocks should be expected.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:heat,title=Ploy of Investiture|>
+
+vector -> vector
+
+<|cost-rule@trickster:templates|formula=80kG|>
+
+Instantly heat up the given block significantly.
+
+
+Heating a furnace like this would be quite effective.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:cool,title=Ploy of Divestiture|>
+
+vector -> vector
+
+<|cost-rule@trickster:templates|formula=80kG|>
+
+Instantly cools off the given block significantly.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:erode,title=Ploy of Attrition|>
+
+vector, vector -> vector
+
+<|cost-rule@trickster:templates|formula=80kG|>
+
+Wears down the block at the first given position, making use of the water at the second given position.
+
+;;;;;
+
 <|glyph@trickster:templates|trick-id=trickster:conjure_flower,title=Floral Ploy|>
 
 vector -> vector
@@ -70,16 +111,6 @@ vector -> vector
 <|cost-rule@trickster:templates|formula=20kG|>
 
 Conjures a permanent light source at the given position.
-
-;;;;;
-
-<|glyph@trickster:templates|trick-id=trickster:drain_fluid,title=Drought Ploy|>
-
-vector -> vector
-
-<|cost-rule@trickster:templates|formula=15kG|>
-
-Drains any fluid at the given position.
 
 ;;;;;
 

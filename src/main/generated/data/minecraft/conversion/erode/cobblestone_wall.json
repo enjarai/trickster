@@ -1,0 +1,16 @@
+{
+  "conversions": [
+    {
+      "id": "minecraft:mossy_cobblestone_wall",
+      "properties": {
+        "east": "none",
+        "north": "none",
+        "south": "none",
+        "up": "true",
+        "waterlogged": "false",
+        "west": "none"
+      },
+      "weight": 1
+    }
+  ]
+}

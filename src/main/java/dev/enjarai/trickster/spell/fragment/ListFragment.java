@@ -8,14 +8,14 @@ import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.IncorrectFragmentBlunder;
-import dev.enjarai.trickster.spell.execution.executor.ListFoldingSpellExecutor;
-import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
+import dev.enjarai.trickster.spell.execution.executor.FoldingSpellExecutor;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import net.minecraft.text.Text;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public record ListFragment(List<Fragment> fragments) implements FoldableFragment {
     public static final StructEndec<ListFragment> ENDEC = StructEndecBuilder.of(
@@ -87,7 +87,14 @@ public record ListFragment(List<Fragment> fragments) implements FoldableFragment
     }
 
     @Override
-    public SpellExecutor fold(SpellContext ctx, SpellPart executable, Fragment identity) {
-        return new ListFoldingSpellExecutor(ctx, executable, this, identity);
+    public FoldingSpellExecutor fold(SpellContext ctx, SpellPart executable, Fragment identity) {
+        var keys = new Stack<Fragment>();
+        var values = new Stack<Fragment>();
+
+        for (int i = fragments.size() - 1; i >= 0; i--)
+            keys.push(new NumberFragment(i));
+        
+        values.addAll(fragments.reversed());
+        return new FoldingSpellExecutor(ctx, executable, identity, values, keys, this);
     }
 }

@@ -36,6 +36,11 @@ public class SpellSlotWidget extends ButtonWidget {
         }
     }
 
+    @Override
+    protected boolean isValidClickButton(int button) {
+        return super.isValidClickButton(button) && currentState != State.INACTIVE;
+    }
+
     public void updateState(@Nullable CasterComponent.RunningSpellData spellData) {
         if (spellData == null) {
             currentState = State.INACTIVE;

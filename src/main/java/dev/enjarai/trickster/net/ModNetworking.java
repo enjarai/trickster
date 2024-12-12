@@ -2,6 +2,12 @@ package dev.enjarai.trickster.net;
 
 import dev.enjarai.trickster.Trickster;
 import io.wispforest.owo.network.OwoNetChannel;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
+import io.wispforest.owo.config.ConfigSynchronizer;
+import io.wispforest.owo.config.Option;
+
+import java.util.Map;
 
 public class ModNetworking {
     public static final OwoNetChannel CHANNEL = OwoNetChannel.create(Trickster.id("main"));
@@ -20,5 +26,14 @@ public class ModNetworking {
         CHANNEL.registerClientboundDeferred(RebuildChunkPacket.class);
         CHANNEL.registerClientboundDeferred(GrabClipboardSpellPacket.class);
         CHANNEL.registerClientboundDeferred(MladyAnimationPacket.class);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> T clientOrDefault(PlayerEntity player, Option.Key key, T defaultValue) {
+        if (player instanceof ServerPlayerEntity serverPlayer)
+            return ConfigSynchronizer.getClientOptions(serverPlayer, Trickster.CONFIG.name()) instanceof Map<Option.Key, ?> map
+                ? (T) map.get(key)
+                : defaultValue;
+        else return defaultValue;
     }
 }

@@ -6,7 +6,6 @@ import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.SpellPart;
-import dev.enjarai.trickster.util.ClientUtils;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipData;
@@ -54,8 +53,6 @@ public abstract class ItemMixin {
         }
 
         if (manaComponent != null) {
-            ClientUtils.trySubscribe(manaComponent);
-
             if (Trickster.merlinTooltipAppender != null) {
                 Trickster.merlinTooltipAppender.appendTooltip(stack, context, tooltip, type);
             }

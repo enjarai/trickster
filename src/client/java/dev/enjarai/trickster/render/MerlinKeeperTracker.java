@@ -1,11 +1,9 @@
 package dev.enjarai.trickster.render;
 
+import dev.enjarai.trickster.ClientUtils;
 import dev.enjarai.trickster.Trickster.MerlinTooltipAppender;
-import dev.enjarai.trickster.cca.SharedManaComponent;
 import dev.enjarai.trickster.item.component.ManaComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
-import dev.enjarai.trickster.net.ModNetworking;
-import dev.enjarai.trickster.net.SubscribeToPoolPacket;
 import dev.enjarai.trickster.spell.mana.SharedManaPool;
 import dev.enjarai.trickster.util.ImGoingToStabWhoeverInventedTime;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -36,8 +34,8 @@ public class MerlinKeeperTracker implements MerlinTooltipAppender {
                 var stack = inventory.getStack(i);
 
                 if (stack.get(ModComponents.MANA) instanceof ManaComponent component) {
-                    var usage = stackMap.computeIfAbsent(i, j -> new MerlinUsage(component.pool().get()));
-                    usage.update(component.pool().get());
+                    var usage = stackMap.computeIfAbsent(i, j -> new MerlinUsage(component.pool().get(client.world)));
+                    usage.update(component.pool().get(client.world));
                 }
             }
 
@@ -59,19 +57,23 @@ public class MerlinKeeperTracker implements MerlinTooltipAppender {
         return 0;
     }
 
+    @SuppressWarnings("resource")
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         var usage = getUsage(stack);
+        var world = MinecraftClient.getInstance().world;
 
         tooltip.add(Text.literal("Current draw: %.2f kM".formatted(usage)).styled(s -> s.withColor(0xaaaabb)));
-        if (stack.get(ModComponents.MANA) instanceof ManaComponent component) {
+        if (stack.get(ModComponents.MANA) instanceof ManaComponent component && world != null) {
             var pool = component.pool();
 
+            ClientUtils.trySubscribe(component);
+
             if (usage != 0) {
-                long timeUntilDrained = (long) (pool.get() / usage * 50);
+                long timeUntilDrained = (long) (pool.get(world) / usage * 50);
                 var str = timeUntilDrained >= 0 ? "Time until drained: %s" : "Time until charged: %s";
 
                 if (timeUntilDrained < 0) {
-                    timeUntilDrained = (long) ((pool.get() - pool.getMax()) / usage) * 50;
+                    timeUntilDrained = (long) ((pool.get(world) - pool.getMax(world)) / usage) * 50;
                 }
 
                 tooltip.add(Text.literal(str.formatted(
@@ -81,20 +83,13 @@ public class MerlinKeeperTracker implements MerlinTooltipAppender {
 
             if (type.isAdvanced()) {
                 tooltip.add(Text.literal("Stored: ")
-                        .append(pool.get() + "kG")
-                        .append(" / ")
-                        .append(pool.getMax() + "kG")
+                        .append("%.1f kG / %.1f kG".formatted(pool.get(world), pool.getMax(world)))
                         .styled(s -> s.withColor(0xaaaabb)));
 
-                if (pool instanceof SharedManaPool shared) {
-                        // if ever run on the server, will fail -- consider putting a try-catch if it causes an issue with a mod?
-                        if (SharedManaComponent.getInstance().get(shared.uuid()).isEmpty()) {
-                            ModNetworking.CHANNEL.clientHandle().send(new SubscribeToPoolPacket(shared.uuid()));
-                        }
-
-                        tooltip.add(Text
-                                .literal(shared.uuid().toString())
-                                .setStyle(Style.EMPTY.withFormatting(Formatting.LIGHT_PURPLE)));
+                if (pool instanceof SharedManaPool shared && MinecraftClient.getInstance().world != null) {
+                    tooltip.add(Text
+                            .literal(shared.uuid().toString())
+                            .setStyle(Style.EMPTY.withFormatting(Formatting.LIGHT_PURPLE)));
                 }
             }
         }

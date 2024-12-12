@@ -5,8 +5,8 @@ import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.screen.ScrollAndQuillScreenHandler;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.execution.SpellQueueResult;
-import dev.enjarai.trickster.util.Hamt;
 import dev.enjarai.trickster.spell.mana.SimpleManaPool;
+import io.vavr.collection.HashMap;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -50,6 +50,10 @@ public class WrittenScrollItem extends Item {
                 }
             }
         } else {
+            if (hand == Hand.OFF_HAND) {
+                return TypedActionResult.pass(stack);
+            }
+
             user.openHandledScreen(new NamedScreenHandlerFactory() {
                 @Override
                 public Text getDisplayName() {
@@ -60,7 +64,7 @@ public class WrittenScrollItem extends Item {
                 public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
                     return new ScrollAndQuillScreenHandler(
                             syncId, playerInventory, stack, otherStack, slot,
-                            Hamt.empty(),
+                            HashMap.empty(),
                             false, false
                     );
                 }

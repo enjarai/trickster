@@ -35,7 +35,7 @@ public interface SpellExecutor {
             return run(context.source()).orElseThrow(ExecutionLimitReachedBlunder::new);
         } catch (Exception e) {
             context.state().getStacktrace().clear();
-            context.state().getStacktrace().addAll(getCurrentState().getStacktrace());
+            context.state().getStacktrace().addAll(getDeepestState().getStacktrace());
             throw e;
         }
     }
@@ -70,7 +70,13 @@ public interface SpellExecutor {
      */
     Optional<Fragment> run(SpellContext ctx) throws BlunderException;
 
+    /**
+     * @return the spell's executions in the last tick, or its child's if applicable.
+     */
     int getLastRunExecutions();
 
-    ExecutionState getCurrentState();
+    /**
+     * @return the spell's ExecutionState, or its child's if applicable.
+     */
+    ExecutionState getDeepestState();
 }

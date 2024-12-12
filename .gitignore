@@ -48,6 +48,9 @@ replay_*.log
 
 wiki/
 
+# generated code
+src/main/generatedJava/
+
 # idk something
 
 .factorypath

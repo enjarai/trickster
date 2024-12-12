@@ -6,7 +6,7 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.fragment.MapFragment;
-import dev.enjarai.trickster.util.Hamt;
+import io.vavr.collection.HashMap;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import net.minecraft.component.DataComponentTypes;
@@ -52,17 +52,21 @@ public record FragmentComponent(Fragment value, Optional<String> name, boolean i
     }
 
     public static Optional<SpellPart> getSpellPart(ItemStack stack) {
-        return getReferencedStack(stack)
-                .filter(stack2 -> stack2.contains(ModComponents.FRAGMENT))
-                .map(stack2 -> stack2.get(ModComponents.FRAGMENT))
-                .filter(component -> !component.closed())
-                .map(FragmentComponent::value)
+        return getFragment(stack)
                 .flatMap(value -> {
                     if (value instanceof SpellPart spell)
                         return Optional.of(spell);
                     
                     return Optional.empty();
                 });
+    }
+
+    public static Optional<Fragment> getFragment(ItemStack stack) {
+        return getReferencedStack(stack)
+                .filter(stack2 -> stack2.contains(ModComponents.FRAGMENT))
+                .map(stack2 -> stack2.get(ModComponents.FRAGMENT))
+                .filter(component -> !component.closed())
+                .map(FragmentComponent::value);
     }
 
     public static boolean setValue(ItemStack stack, Fragment value, Optional<String> name, boolean closed) {
@@ -118,12 +122,12 @@ public record FragmentComponent(Fragment value, Optional<String> name, boolean i
                 });
     }
 
-    public static Optional<Hamt<Pattern, SpellPart>> getMap(ItemStack stack) {
+    public static Optional<HashMap<Pattern, SpellPart>> getMap(ItemStack stack) {
         return getValue(stack, MapFragment.class)
-            .flatMap(MapFragment::getMacroMap);
+            .map(MapFragment::getMacroMap);
     }
 
-    public static Optional<Hamt<Pattern, SpellPart>> getUserMergedMap(PlayerEntity user, String type) {
+    public static Optional<HashMap<Pattern, SpellPart>> getUserMergedMap(PlayerEntity user, String type) {
         var capability = user.accessoriesCapability();
 
         if (capability == null)
@@ -134,16 +138,16 @@ public record FragmentComponent(Fragment value, Optional<String> name, boolean i
         if (ringContainer == null)
             return Optional.empty();
 
-        var result = Hamt.<Pattern, SpellPart>empty();
+        var result = HashMap.<Pattern, SpellPart>empty();
 
         for (var pair : ringContainer.getAccessories()) {
-            result = result.assocAll(getMap(pair.getSecond()).orElse(Hamt.empty()));
+            result = result.merge(getMap(pair.getSecond()).orElse(HashMap.empty()));
         }
 
         return Optional.of(result);
     }
 
-    public static Hamt<Pattern, SpellPart> getUserMergedMap(PlayerEntity user, String type, Supplier<Hamt<Pattern, SpellPart>> otherwise) {
+    public static HashMap<Pattern, SpellPart> getUserMergedMap(PlayerEntity user, String type, Supplier<HashMap<Pattern, SpellPart>> otherwise) {
         return getUserMergedMap(user, type).orElseGet(otherwise);
     }
 }

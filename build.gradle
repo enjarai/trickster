@@ -36,6 +36,7 @@ repositories {
 }
 
 loom {
+    accessWidenerPath.set(file("src/main/resources/trickster.accesswidener"))
     splitEnvironmentSourceSets()
 
     mods {
@@ -101,6 +102,8 @@ dependencies {
 //    implementation "io.wispforest:endec:0.1.0-pre.8"
     include modLocalRuntime("io.wispforest.lavender-md:owo-ui:0.1.2+1.21")
 
+    include clientImplementation(implementation("io.vavr:vavr:0.10.5"))
+
     modApi("nl.enjarai:cicada-lib:${property('deps.cicada')}")
 
     include modApi("org.ladysnake.cardinal-components-api:cardinal-components-base:${property('deps.cardinal-components-api')}")
@@ -110,7 +113,7 @@ dependencies {
     include modApi("org.ladysnake.cardinal-components-api:cardinal-components-entity:${property('deps.cardinal-components-api')}")
 
     modCompileOnly modLocalRuntime("com.terraformersmc:modmenu:${property('deps.modmenu')}")
-    modClientCompileOnly /*modLocalRuntime*/("maven.modrinth:sodium:${property('deps.sodium')}")
+    modClientCompileOnly modLocalRuntime("maven.modrinth:sodium:${property('deps.sodium')}")
 
     modApi("io.wispforest:accessories-fabric:${property('deps.accessories')}")
 
@@ -245,7 +248,7 @@ publishMods {
                 slug = "owo-lib"
             }
             requires {
-                slug = "lavender"
+                slug = "lavender-api"
             }
             requires {
                 slug = "accessories"
@@ -272,3 +275,8 @@ tasks.register('publishAll') {
     dependsOn 'publish'
     dependsOn 'publishMods'
 }
+
+// the following three lines are so that JDTLS/Eclipse can pick up owo's generated code
+((Task)tasks.findByName("sourcesJar")).configure { dependsOn("compileJava") }
+sourceSets.main.java.srcDirs += [ 'src/main/generatedJava' ]
+compileJava.options.generatedSourceOutputDirectory = file("${projectDir}/src/main/generatedJava/dev/enjarai/trickster/config")

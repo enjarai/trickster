@@ -15,8 +15,7 @@ import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
-import dev.enjarai.trickster.util.Hamt;
-import net.minecraft.advancement.criterion.Criteria;
+import io.vavr.collection.HashMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.MutableText;
@@ -205,10 +204,10 @@ public abstract class Trick {
             var sourceFragment = triggerCaster
                     .<Fragment>map(EntityFragment::from)
                     .orElse(new VectorFragment(triggerCtx.source().getPos()));
-            var charmMap = FragmentComponent.getUserMergedMap(player, "charm", Hamt::empty);
+            var charmMap = FragmentComponent.getUserMergedMap(player, "charm", HashMap::empty);
             var spell = charmMap.get(getPattern());
             var caster = ModEntityComponents.CASTER.get(player);
-            spell.ifPresent(s -> caster.queueSpellAndCast(s, List.of(sourceFragment, new ListFragment(fragments)), Optional.empty()));
+            spell.peek(s -> caster.queueSpellAndCast(s, List.of(sourceFragment, new ListFragment(fragments)), Optional.empty()));
         }
     }
 

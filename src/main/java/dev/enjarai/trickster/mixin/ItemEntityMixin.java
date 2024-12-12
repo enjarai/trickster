@@ -5,6 +5,7 @@ import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ManaComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.pond.SlotHolderDuck;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
@@ -25,6 +26,9 @@ public abstract class ItemEntityMixin extends Entity implements SlotHolderDuck {
 
     @Shadow
     public abstract ItemStack getStack();
+
+    @Shadow
+    public abstract void setStack(ItemStack stack);
 
     @Inject(
             method = "tick",
@@ -64,6 +68,12 @@ public abstract class ItemEntityMixin extends Entity implements SlotHolderDuck {
     @Override
     public ItemStack trickster$slot_holder$getStack(int slot) {
         return getStack();
+    }
+
+    @Override
+    public boolean trickster$slot_holder$setStack(int slot, ItemStack stack) {
+        setStack(stack);
+        return true;
     }
 
     @Override

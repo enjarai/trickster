@@ -17,13 +17,14 @@ public class PullManaTrick extends AbstractConduitTrick {
         if (comp == null)
             return 0;
 
+        var world = ctx.source().getWorld();
         var self = ctx.source().getManaPool();
-        var target = comp.pool().makeClone();
-        var result = limit - target.use(limit);
+        var target = comp.pool().makeClone(world);
+        var result = limit - target.use(limit, world);
         stack.set(ModComponents.MANA, comp.with(target));
-        var leftover = self.refill(result);
-        target = stack.get(ModComponents.MANA).pool().makeClone();
-        target.refill(leftover);
+        var leftover = self.refill(result, world);
+        target = stack.get(ModComponents.MANA).pool().makeClone(world);
+        target.refill(leftover, world);
         stack.set(ModComponents.MANA, comp.with(target));
         return result - leftover;
     }

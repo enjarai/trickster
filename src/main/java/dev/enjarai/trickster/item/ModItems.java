@@ -8,7 +8,6 @@ import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.effects.ModEffects;
 import io.wispforest.lavender.book.LavenderBookItem;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
-import net.minecraft.block.Block;
 import net.minecraft.component.type.FoodComponent;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -77,6 +76,7 @@ public class ModItems {
     public static final KnotItem.Diamond DIAMOND_KNOT = register("diamond_knot", new KnotItem.Diamond());
     public static final KnotItem.Echo ECHO_KNOT = register("echo_knot", new KnotItem.Echo());
     public static final KnotItem.CrackedEcho CRACKED_ECHO_KNOT = register("cracked_echo_knot", new KnotItem.CrackedEcho());
+    public static final KnotItem.Command COMMAND_KNOT = register("command_knot", new KnotItem.Command());
 
     // Advancement icon
     public static final Item NAN = register("nan", new Item(new Item.Settings()));
@@ -144,6 +144,7 @@ public class ModItems {
                 entries.add(DIAMOND_KNOT);
                 entries.add(ECHO_KNOT);
                 entries.add(CRACKED_ECHO_KNOT);
+                entries.add(COMMAND_KNOT);
             })
             .build();
 

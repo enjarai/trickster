@@ -6,6 +6,7 @@ import dev.enjarai.trickster.spell.trick.Tricks;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.DivideByZeroBlunder;
 import dev.enjarai.trickster.spell.blunder.IncompatibleTypesBlunder;
+import dev.enjarai.trickster.spell.blunder.NaNBlunder;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
@@ -14,16 +15,33 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
+
+import java.util.Objects;
+
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
 
-public record VectorFragment(Vector3dc vector) implements AddableFragment, SubtractableFragment, MultiplicableFragment, DivisibleFragment, RoundableFragment {
+public class VectorFragment implements AddableFragment, SubtractableFragment, MultiplicableFragment, DivisibleFragment, RoundableFragment {
     public static final StructEndec<VectorFragment> ENDEC = StructEndecBuilder.of(
             EndecTomfoolery.<Double, Vector3dc>vectorEndec(Endec.DOUBLE, Vector3d::new, Vector3dc::x, Vector3dc::y, Vector3dc::z)
                     .fieldOf("vector", VectorFragment::vector),
             VectorFragment::new
     );
     public static final VectorFragment ZERO = new VectorFragment(new Vector3d());
+
+    private final Vector3dc vector;
+
+    public VectorFragment(Vector3dc vector) throws BlunderException {
+        if (Double.isNaN(vector.x()) || Double.isNaN(vector.y()) || Double.isNaN(vector.z())) {
+            throw new NaNBlunder();
+        }
+
+        this.vector = vector;
+    }
+
+    public Vector3dc vector() {
+        return vector;
+    }
 
     @Override
     public FragmentType<?> type() {
@@ -127,6 +145,11 @@ public record VectorFragment(Vector3dc vector) implements AddableFragment, Subtr
         return false;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof VectorFragment v && v.vector.equals(vector);
+    }
+
     public static VectorFragment of(BlockPos pos) {
         var dPos = pos.toCenterPos();
         return new VectorFragment(new Vector3d(dPos.getX(), dPos.getY(), dPos.getZ()));
@@ -146,5 +169,15 @@ public record VectorFragment(Vector3dc vector) implements AddableFragment, Subtr
 
     public Direction toDirection() {
         return Direction.getFacing(vector.x(), vector.y(), vector.z());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(vector);
+    }
+
+    @Override
+    public String toString() {
+        return "VectorFragment[" + "vector=" + vector + "]";
     }
 }

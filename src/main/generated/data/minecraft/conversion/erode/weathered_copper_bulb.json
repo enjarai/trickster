@@ -1,0 +1,12 @@
+{
+  "conversions": [
+    {
+      "id": "minecraft:oxidized_copper_bulb",
+      "properties": {
+        "lit": "false",
+        "powered": "false"
+      },
+      "weight": 1
+    }
+  ]
+}

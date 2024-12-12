@@ -6,6 +6,7 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Function3;
 import com.mojang.serialization.Codec;
 import com.mojang.util.UndashedUuid;
+import io.vavr.collection.HashMap;
 import io.wispforest.endec.*;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import io.wispforest.owo.serialization.CodecUtils;
@@ -14,9 +15,11 @@ import net.minecraft.util.math.BlockPos;
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Stack;
 import java.util.UUID;
 import java.util.function.Function;
 import org.joml.Vector3f;
@@ -73,6 +76,14 @@ public class EndecTomfoolery {
                     }
                 }
         )).orElse(endec.optionalOf());
+    }
+
+    public static <T> Endec<Stack<T>> stackOf(Endec<T> endec) {
+        return endec.listOf().xmap(l -> {
+            var stack = new Stack<T>();
+            stack.addAll(l);
+            return stack;
+        }, ArrayList::new);
     }
 
     public static <T> StructEndec<T> funnyFieldOf(Endec<T> endec, String key) {
@@ -174,5 +185,9 @@ public class EndecTomfoolery {
         public T decodeStruct(SerializationContext ctx, Deserializer<?> deserializer, Deserializer.Struct struct) {
             return wrapped.get().decodeStruct(ctx, deserializer, struct);
         }
+    }
+
+    public static <K, V> Endec<HashMap<K, V>> hamt(Endec<K> key, Endec<V> value) {
+        return Endec.map(key, value).xmap(HashMap::ofAll, HashMap::toJavaMap);
     }
 }

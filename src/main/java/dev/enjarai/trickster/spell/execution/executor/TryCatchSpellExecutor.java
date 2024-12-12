@@ -22,12 +22,11 @@ public class TryCatchSpellExecutor implements SpellExecutor {
             TryCatchSpellExecutor::new
     );
 
-    protected final SpellExecutor trySpell;
-    protected final SpellExecutor catchSpell;
-    protected boolean catching = false;
-    protected int lastRunExecutions;
+    private final SpellExecutor trySpell;
+    private final SpellExecutor catchSpell;
+    private boolean catching = false;
 
-    protected TryCatchSpellExecutor(SpellExecutor trySpell, SpellExecutor catchSpell, boolean catching) {
+    private TryCatchSpellExecutor(SpellExecutor trySpell, SpellExecutor catchSpell, boolean catching) {
         this.trySpell = trySpell;
         this.catchSpell = catchSpell;
         this.catching = catching;
@@ -50,8 +49,6 @@ public class TryCatchSpellExecutor implements SpellExecutor {
 
     @Override
     public Optional<Fragment> run(SpellSource source, TickData data) throws BlunderException {
-        lastRunExecutions = 0;
-
         if (catching)
             return catchSpell.run(source);
 
@@ -74,11 +71,11 @@ public class TryCatchSpellExecutor implements SpellExecutor {
     }
 
     @Override
-    public ExecutionState getCurrentState() {
-        return child().getCurrentState();
+    public ExecutionState getDeepestState() {
+        return child().getDeepestState();
     }
 
-    protected SpellExecutor child() {
+    private SpellExecutor child() {
         return catching ? catchSpell : trySpell;
     }
 }

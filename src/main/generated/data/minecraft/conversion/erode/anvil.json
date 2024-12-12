@@ -1,0 +1,11 @@
+{
+  "conversions": [
+    {
+      "id": "minecraft:chipped_anvil",
+      "properties": {
+        "facing": "north"
+      },
+      "weight": 1
+    }
+  ]
+}

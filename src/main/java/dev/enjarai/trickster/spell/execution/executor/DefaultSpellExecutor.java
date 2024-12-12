@@ -19,11 +19,11 @@ import java.util.Stack;
 
 public class DefaultSpellExecutor implements SpellExecutor {
     public static final StructEndec<DefaultSpellExecutor> ENDEC = StructEndecBuilder.of(
-            SpellPart.ENDEC.fieldOf("root", DefaultSpellExecutor::spell),
+            SpellPart.ENDEC.fieldOf("root", e -> e.root),
             SpellInstruction.STACK_ENDEC.fieldOf("instructions", e -> e.instructions),
             Fragment.ENDEC.listOf().fieldOf("inputs", e -> e.inputs),
             Endec.INT.listOf().fieldOf("scope", e -> e.scope),
-            ExecutionState.ENDEC.fieldOf("state", DefaultSpellExecutor::getCurrentState),
+            ExecutionState.ENDEC.fieldOf("state", e -> e.state),
             EndecTomfoolery.safeOptionalOf(SpellExecutor.ENDEC).optionalFieldOf("child", e -> e.child, Optional.empty()),
             EndecTomfoolery.safeOptionalOf(Fragment.ENDEC).optionalFieldOf("override_return_value", e -> e.overrideReturnValue, Optional.empty()),
             DefaultSpellExecutor::new
@@ -180,7 +180,7 @@ public class DefaultSpellExecutor implements SpellExecutor {
         }
     }
 
-    protected Optional<Fragment> runChild(SpellContext ctx) {
+    private Optional<Fragment> runChild(SpellContext ctx) {
         var result = child.flatMap(c -> c.run(ctx.source(), ctx.data()));
 
         if (result.isPresent()) {
@@ -191,7 +191,7 @@ public class DefaultSpellExecutor implements SpellExecutor {
         return result;
     }
 
-    protected static SpellExecutor makeExecutor(SpellContext context, SpellInstruction inst, List<Fragment> args) throws BlunderException {
+    private static SpellExecutor makeExecutor(SpellContext context, SpellInstruction inst, List<Fragment> args) throws BlunderException {
         return inst.makeFork(context, args);
     }
 
@@ -201,8 +201,8 @@ public class DefaultSpellExecutor implements SpellExecutor {
     }
 
     @Override
-    public ExecutionState getCurrentState() {
-        return child.map(SpellExecutor::getCurrentState).orElse(state);
+    public ExecutionState getDeepestState() {
+        return child.map(SpellExecutor::getDeepestState).orElse(state);
     }
 
     //TODO: add way to turn this and all children into a SpellPart using MiscUtils

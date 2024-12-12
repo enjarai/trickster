@@ -13,6 +13,9 @@ import dev.enjarai.trickster.spell.trick.Trick;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.world.event.GameEvent;
 
 import java.util.List;
 import java.util.Optional;
@@ -48,6 +51,17 @@ public class PlaceBlockTrick extends Trick {
             var dist = ctx.source().getPos().distance(pos.vector());
             ctx.useMana(this, Math.max((float) dist, 8f));
             world.setBlockState(blockPos, state);
+
+            BlockSoundGroup blockSoundGroup = state.getSoundGroup();
+            world.playSound(
+                    null,
+                    blockPos,
+                    blockSoundGroup.getPlaceSound(),
+                    SoundCategory.BLOCKS,
+                    (blockSoundGroup.getVolume() + 1.0F) / 2.0F,
+                    blockSoundGroup.getPitch() * 0.8F
+            );
+            world.emitGameEvent(null, GameEvent.BLOCK_PLACE, blockPos);
 
             return pos;
         } catch (BlunderException blunder) {

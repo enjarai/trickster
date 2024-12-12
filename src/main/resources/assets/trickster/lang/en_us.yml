@@ -48,6 +48,10 @@ trickster:
     sin: Primary Distortion of Geometry
     cos: Secondary Distortion of Geometry
     tan: Tertiary Distortion of Geometry
+    arcsin: Primary Inverse Distortion of Geometry
+    arccos: Secondary Inverse Distortion of Geometry
+    arctan: Tertiary Inverse Distortion of Geometry
+    arctan2: Cartesian Angle Distortion
 
     if_else: Decision Distortion
     equals: Parity Stratagem
@@ -155,7 +159,8 @@ trickster:
 
     map_get: Navigator's Distortion
     map_insert: Charting Stratagem
-    map_remove: Erasing Distortion
+    map_merge: Admiral's Stratagem
+    map_remove: Stratagem of Annulment
 
     break_block: Ploy of Destruction
     place_block: Ploy of Creation
@@ -165,6 +170,9 @@ trickster:
     conjure_light: Illumination Ploy
     drain_fluid: Drought Ploy
     power_resonator: Resonance Ploy
+    heat: Ploy of Investiture
+    cool: Ploy of Divestiture
+    erode: Ploy of Attrition
 
     get_block_hardness: Ingress of Hardness
     check_block: Ingress of Validation
@@ -179,8 +187,13 @@ trickster:
     other_hand: Juggling Delusion
     other_hand_slot: Catch Delusion
     get_item_in_slot: Fence's Ingress
+    get_mana_in_slot: Ingress of Authority
+    get_max_mana_in_slot: Crowning Ingress
     get_inventory_slot: Intrusive Ingress
     drop_stack_from_slot: Ploy of Offering
+    swap_slot: Swindler's Ploy
+    block_from_item: Placement Distortion
+    item_from_block: Pickup Distortion
 
     type_fragment: Argumentative Distortion
     hash_values: Decaying Distortion
@@ -207,6 +220,9 @@ trickster:
     battery_creation: Ploy of the Moon Watcher
     push_mana: Benevolent Conduit's Ploy
     pull_mana: Malevolent Conduit's Ploy
+
+    message_send: Dispatch Ploy
+    message_listen: Ploy of Receipt
 
   fragment.trickster:
     type: Type
@@ -285,6 +301,7 @@ item.trickster:
   diamond_knot: Diamond Knot
   echo_knot: Echo Knot
   cracked_echo_knot: Cracked Echo Knot
+  command_knot: Command Knot
 
   spell_core: Spell Core
   rusted_spell_core: Rusted Spell Core
@@ -326,9 +343,13 @@ text.config.trickster-config:
     server: Server
     aurora-client: Aurora's Personal Client Tweaks
   option:
+    topHatInterceptScrolling: Offhand hat intercepts hotbar scrolling
+    invertTopHatScrolling: Invert hat scrolling
+    revealToHotbar: Write revealed values to action bar
+    maxExecutionsPerSpellPerTick: Max operations per tick per spell
+    allowSwapBedrock: Permit block swapping of bedrock
+    maxBlockBreakingHardness: Max hardness for Ploy of Destruction
+
     dragDrawing: Draw by dragging
-    topHatInterceptScrolling: Top Hat intercepts hotbar scrolling
     barsHorizontal: Show spell-created bars horizontally
-    revealToHotbar: Write spell-revealed values to action bar
-    maxExecutionsPerSpellPerTick: Maximum operations per tick per spell
-    allowSwapBedrock: Bedrock can be swapped with other blocks
+    disableOffhandScrollOpening: Require scroll in main hand to edit

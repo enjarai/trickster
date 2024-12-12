@@ -3,11 +3,12 @@ package dev.enjarai.trickster.spell.mana;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
+import net.minecraft.world.World;
 
 public class SimpleManaPool implements MutableManaPool {
     public static final StructEndec<SimpleManaPool> ENDEC = StructEndecBuilder.of(
-            Endec.FLOAT.fieldOf("mana", MutableManaPool::get),
-            Endec.FLOAT.fieldOf("max_mana", MutableManaPool::getMax),
+            Endec.FLOAT.fieldOf("mana", simpleManaPool -> simpleManaPool.mana),
+            Endec.FLOAT.fieldOf("max_mana", simpleManaPool -> simpleManaPool.maxMana),
             SimpleManaPool::new
     );
 
@@ -29,27 +30,27 @@ public class SimpleManaPool implements MutableManaPool {
     }
 
     @Override
-    public void set(float value) {
+    public void set(float value, World world) {
         mana = Math.clamp(value, 0, maxMana);
     }
 
     @Override
-    public float get() {
+    public float get(World world) {
         return mana;
     }
 
     @Override
-    public void setMax(float value) {
+    public void setMax(float value, World world) {
         maxMana = value;
     }
 
     @Override
-    public float getMax() {
+    public float getMax(World world) {
         return maxMana;
     }
 
     @Override
-    public MutableManaPool makeClone() {
+    public MutableManaPool makeClone(World world) {
         return new SimpleManaPool(mana, maxMana);
     }
 

@@ -7,6 +7,8 @@ import dev.enjarai.trickster.spell.trick.wristpocket.AttackTrick;
 import dev.enjarai.trickster.spell.trick.wristpocket.DropPocketTrick;
 import dev.enjarai.trickster.spell.trick.wristpocket.MageHandTrick;
 import dev.enjarai.trickster.spell.trick.wristpocket.PocketTrick;
+import dev.enjarai.trickster.spell.trick.block.*;
+import dev.enjarai.trickster.spell.trick.inventory.*;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,19 +30,6 @@ import dev.enjarai.trickster.spell.trick.basic.RevealTrick;
 import dev.enjarai.trickster.spell.trick.basic.WriteClosedSpellTrick;
 import dev.enjarai.trickster.spell.trick.basic.WriteCrowMindTrick;
 import dev.enjarai.trickster.spell.trick.basic.WriteSpellTrick;
-import dev.enjarai.trickster.spell.trick.block.BreakBlockTrick;
-import dev.enjarai.trickster.spell.trick.block.CanPlaceTrick;
-import dev.enjarai.trickster.spell.trick.block.CheckBlockTrick;
-import dev.enjarai.trickster.spell.trick.block.CheckResonatorTrick;
-import dev.enjarai.trickster.spell.trick.block.ConjureFlowerTrick;
-import dev.enjarai.trickster.spell.trick.block.ConjureLightTrick;
-import dev.enjarai.trickster.spell.trick.block.ConjureWaterTrick;
-import dev.enjarai.trickster.spell.trick.block.DrainFluidTrick;
-import dev.enjarai.trickster.spell.trick.block.GetBlockHardnessTrick;
-import dev.enjarai.trickster.spell.trick.block.GetRedstonePowerTrick;
-import dev.enjarai.trickster.spell.trick.block.PlaceBlockTrick;
-import dev.enjarai.trickster.spell.trick.block.PowerResonatorTrick;
-import dev.enjarai.trickster.spell.trick.block.SwapBlockTrick;
 import dev.enjarai.trickster.spell.trick.bool.AllTrick;
 import dev.enjarai.trickster.spell.trick.bool.AnyTrick;
 import dev.enjarai.trickster.spell.trick.bool.EqualsTrick;
@@ -85,16 +74,6 @@ import dev.enjarai.trickster.spell.trick.func.KillThreadTrick;
 import dev.enjarai.trickster.spell.trick.func.LoadArgumentTrick;
 import dev.enjarai.trickster.spell.trick.func.SupplierTrick;
 import dev.enjarai.trickster.spell.trick.func.TryCatchTrick;
-import dev.enjarai.trickster.spell.trick.inventory.CheckHatTrick;
-import dev.enjarai.trickster.spell.trick.inventory.DropStackFromSlotTrick;
-import dev.enjarai.trickster.spell.trick.inventory.GetInventorySlotTrick;
-import dev.enjarai.trickster.spell.trick.inventory.GetItemInSlotTrick;
-import dev.enjarai.trickster.spell.trick.inventory.ImportHatTrick;
-import dev.enjarai.trickster.spell.trick.inventory.ImportTrick;
-import dev.enjarai.trickster.spell.trick.inventory.OtherHandSlotTrick;
-import dev.enjarai.trickster.spell.trick.inventory.OtherHandTrick;
-import dev.enjarai.trickster.spell.trick.inventory.ReadMacroRing;
-import dev.enjarai.trickster.spell.trick.inventory.SetHatTrick;
 import dev.enjarai.trickster.spell.trick.list.ListAddRangeTrick;
 import dev.enjarai.trickster.spell.trick.list.ListAddTrick;
 import dev.enjarai.trickster.spell.trick.list.ListCreateTrick;
@@ -109,6 +88,7 @@ import dev.enjarai.trickster.spell.trick.mana.PullManaTrick;
 import dev.enjarai.trickster.spell.trick.mana.PushManaTrick;
 import dev.enjarai.trickster.spell.trick.map.MapGetTrick;
 import dev.enjarai.trickster.spell.trick.map.MapInsertTrick;
+import dev.enjarai.trickster.spell.trick.map.MapMergeTrick;
 import dev.enjarai.trickster.spell.trick.map.MapRemoveTrick;
 import dev.enjarai.trickster.spell.trick.math.AddTrick;
 import dev.enjarai.trickster.spell.trick.math.CeilTrick;
@@ -125,9 +105,15 @@ import dev.enjarai.trickster.spell.trick.math.SinTrick;
 import dev.enjarai.trickster.spell.trick.math.SqrtTrick;
 import dev.enjarai.trickster.spell.trick.math.SubtractTrick;
 import dev.enjarai.trickster.spell.trick.math.TanTrick;
+import dev.enjarai.trickster.spell.trick.math.ArcCosTrick;
+import dev.enjarai.trickster.spell.trick.math.ArcSinTrick;
+import dev.enjarai.trickster.spell.trick.math.ArcTan2Trick;
+import dev.enjarai.trickster.spell.trick.math.ArcTanTrick;
 import dev.enjarai.trickster.spell.trick.misc.ClearBarTrick;
 import dev.enjarai.trickster.spell.trick.misc.DelayExecutionTrick;
 import dev.enjarai.trickster.spell.trick.misc.HashValuesTrick;
+import dev.enjarai.trickster.spell.trick.misc.MessageListenTrick;
+import dev.enjarai.trickster.spell.trick.misc.MessageSendTrick;
 import dev.enjarai.trickster.spell.trick.misc.PinChunkTrick;
 import dev.enjarai.trickster.spell.trick.misc.ShowBarTrick;
 import dev.enjarai.trickster.spell.trick.misc.TypeFragmentTrick;
@@ -166,6 +152,7 @@ import net.minecraft.registry.SimpleRegistry;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryEntryInfo;
 
+@SuppressWarnings("unused")
 public class Tricks {
     private static final Map<Pattern, Trick> LOOKUP = new HashMap<>();
 
@@ -268,6 +255,10 @@ public class Tricks {
     public static final SinTrick SIN = register("sin", new SinTrick());
     public static final CosTrick COS = register("cos", new CosTrick());
     public static final TanTrick TAN = register("tan", new TanTrick());
+    public static final ArcSinTrick ARCSIN = register("arcsin", new ArcSinTrick());
+    public static final ArcCosTrick ARCCOS = register("arccos", new ArcCosTrick());
+    public static final ArcTanTrick ARCTAN = register("arctan", new ArcTanTrick());
+    public static final ArcTan2Trick ARCTAN2 = register("arctan2", new ArcTan2Trick());
     public static final PowerTrick POWER = register("power", new PowerTrick());
 
     // Vector
@@ -306,6 +297,7 @@ public class Tricks {
     // Map
     public static final MapGetTrick MAP_GET = register("map_get", new MapGetTrick());
     public static final MapInsertTrick MAP_INSERT = register("map_insert", new MapInsertTrick());
+    public static final MapMergeTrick MAP_MERGE = register("map_merge", new MapMergeTrick());
     public static final MapRemoveTrick MAP_REMOVE = register("map_remove", new MapRemoveTrick());
 
     // Tree
@@ -327,13 +319,15 @@ public class Tricks {
     public static final ConjureFlowerTrick CONJURE_FLOWER = register("conjure_flower", new ConjureFlowerTrick());
     public static final ConjureWaterTrick CONJURE_WATER = register("conjure_water", new ConjureWaterTrick());
     public static final ConjureLightTrick CONJURE_LIGHT = register("conjure_light", new ConjureLightTrick());
-    public static final DrainFluidTrick DRAIN_FLUID = register("drain_fluid", new DrainFluidTrick());
     public static final CheckBlockTrick CHECK_BLOCK = register("check_block", new CheckBlockTrick());
     public static final CanPlaceTrick CAN_PLACE_BLOCK = register("can_place_block", new CanPlaceTrick());
     public static final GetBlockHardnessTrick GET_BLOCK_HARDNESS = register("get_block_hardness", new GetBlockHardnessTrick());
     public static final PowerResonatorTrick POWER_RESONATOR = register("power_resonator", new PowerResonatorTrick());
     public static final CheckResonatorTrick CHECK_RESONATOR = register("check_resonator", new CheckResonatorTrick());
     public static final GetRedstonePowerTrick GET_REDSTONE_POWER = register("get_redstone_power", new GetRedstonePowerTrick());
+    public static final HeatTrick HEAT = register("heat", new HeatTrick());
+    public static final CoolTrick COOL = register("cool", new CoolTrick());
+    public static final ErodeTrick ERODE = register("erode", new ErodeTrick());
 
     // Inventory
     public static final ImportTrick IMPORT = register("import", new ImportTrick());
@@ -343,8 +337,13 @@ public class Tricks {
     public static final OtherHandTrick OTHER_HAND = register("other_hand", new OtherHandTrick());
     public static final OtherHandSlotTrick OTHER_HAND_SLOT = register("other_hand_slot", new OtherHandSlotTrick());
     public static final GetItemInSlotTrick GET_ITEM_IN_SLOT = register("get_item_in_slot", new GetItemInSlotTrick());
+    public static final GetManaInSlotTrick GET_MANA_IN_SLOT = register("get_mana_in_slot", new GetManaInSlotTrick());
+    public static final GetMaxManaInSlotTrick GET_MAX_MANA_IN_SLOT = register("get_max_mana_in_slot", new GetMaxManaInSlotTrick());
     public static final GetInventorySlotTrick GET_INVENTORY_SLOT = register("get_inventory_slot", new GetInventorySlotTrick());
     public static final DropStackFromSlotTrick DROP_STACK_FROM_SLOT = register("drop_stack_from_slot", new DropStackFromSlotTrick());
+    public static final SwapSlotTrick SWAP_SLOT = register("swap_slot", new SwapSlotTrick());
+    public static final BlockFromItemTrick BLOCK_FROM_ITEM = register("block_from_item", new BlockFromItemTrick());
+    public static final ItemFromBlockTrick ITEM_FROM_BLOCK = register("item_from_block", new ItemFromBlockTrick());
 
     // Projectile
     public static final SummonArrowTrick SUMMON_ARROW = register("summon_arrow", new SummonArrowTrick());
@@ -373,6 +372,8 @@ public class Tricks {
     public static final PinChunkTrick PIN_CHUNK = register("pin_chunk", new PinChunkTrick());
     public static final ShowBarTrick SHOW_BAR = register("show_bar", new ShowBarTrick());
     public static final ClearBarTrick CLEAR_BAR = register("clear_bar", new ClearBarTrick());
+    public static final MessageSendTrick MESSAGE_SEND = register("message_send", new MessageSendTrick());
+    public static final MessageListenTrick MESSAGE_LISTEN = register("message_listen", new MessageListenTrick());
 
     // Mana
     public static final BatteryCreationTrick BATTERY_CREATION = register("battery_creation", new BatteryCreationTrick());

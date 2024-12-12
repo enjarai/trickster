@@ -1,22 +1,24 @@
 package dev.enjarai.trickster.spell.fragment;
 
-import java.util.HashMap;
-import java.util.Optional;
+import java.util.Stack;
 
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.PatternGlyph;
+import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.SpellPart;
+import dev.enjarai.trickster.spell.execution.executor.FoldingSpellExecutor;
+import io.vavr.Tuple2;
+import io.vavr.collection.HashMap;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import net.minecraft.text.MutableText;
-import dev.enjarai.trickster.util.Hamt;
 import net.minecraft.text.Text;
 
-public record MapFragment(Hamt<Fragment, Fragment> map) implements Fragment {
+public record MapFragment(HashMap<Fragment, Fragment> map) implements FoldableFragment {
     public static final StructEndec<MapFragment> ENDEC = StructEndecBuilder.of(
-            Endec.map(Fragment.ENDEC, Fragment.ENDEC).xmap(Hamt::fromMap, Hamt::asMap).fieldOf("entries", MapFragment::map),
+            Endec.map(Fragment.ENDEC, Fragment.ENDEC).xmap(HashMap::ofAll, HashMap::toJavaMap).fieldOf("entries", MapFragment::map),
             MapFragment::new
     );
 
@@ -32,7 +34,7 @@ public record MapFragment(Hamt<Fragment, Fragment> map) implements Fragment {
         var iterator = map.iterator();
 
         iterator.forEachRemaining(entry -> {
-            out.append(entry.getKey().asFormattedText()).append(": ").append(entry.getValue().asFormattedText());
+            out.append(entry._1().asFormattedText()).append(": ").append(entry._2().asFormattedText());
             if (iterator.hasNext())
                 out.append(", ");
         });
@@ -52,8 +54,8 @@ public record MapFragment(Hamt<Fragment, Fragment> map) implements Fragment {
         int weight = 16;
 
         for (var kv : map) {
-            weight += kv.getKey().getWeight();
-            weight += kv.getValue().getWeight();
+            weight += kv._1().getWeight();
+            weight += kv._2().getWeight();
         }
 
         return weight;
@@ -61,23 +63,29 @@ public record MapFragment(Hamt<Fragment, Fragment> map) implements Fragment {
 
     @Override
     public MapFragment applyEphemeral() {
-        return new MapFragment(map.stream()
-                .reduce(Hamt.<Fragment, Fragment>empty(),
-                    (last, current) -> Hamt.<Fragment, Fragment>empty().assoc(current.getKey().applyEphemeral(), current.getValue().applyEphemeral()),
-                    Hamt::assocAll));
+        return new MapFragment(map.map((key, value) -> new Tuple2<>(key.applyEphemeral(), value.applyEphemeral())));
     }
 
-    public Optional<Hamt<Pattern, SpellPart>> getMacroMap() {
-        var macros = new HashMap<Pattern, SpellPart>();
+    public HashMap<Pattern, SpellPart> getMacroMap() {
+        return map.filter((key, value) -> key instanceof PatternGlyph && value instanceof SpellPart)
+                .mapKeys(k -> ((PatternGlyph) k).pattern())
+                .mapValues(SpellPart.class::cast);
+    }
 
-        for (var entry : map) {
-            if (entry.getKey() instanceof PatternGlyph pattern && entry.getValue() instanceof SpellPart spell) {
-                macros.put(pattern.pattern(), spell);
-            } else {
-                return Optional.empty();
-            }
+    @Override
+    public FoldingSpellExecutor fold(SpellContext ctx, SpellPart executable, Fragment identity) {
+        var keys = new Stack<Fragment>();
+        var values = new Stack<Fragment>();
+
+        for (var kv : map) {
+            keys.addFirst(kv._1());
+            values.addFirst(kv._2());
         }
 
-        return Optional.of(Hamt.fromMap(macros));
+        return new FoldingSpellExecutor(ctx, executable, identity, values, keys, this);
+    }
+
+    public MapFragment mergeWith(MapFragment other) {
+        return new MapFragment(map.merge(other.map));
     }
 }

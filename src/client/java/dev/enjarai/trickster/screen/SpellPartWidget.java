@@ -3,11 +3,9 @@ package dev.enjarai.trickster.screen;
 import dev.enjarai.trickster.ModSounds;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.render.SpellCircleRenderer;
-import dev.enjarai.trickster.revision.Revision;
 import dev.enjarai.trickster.revision.RevisionContext;
 import dev.enjarai.trickster.revision.Revisions;
 import dev.enjarai.trickster.spell.*;
-import dev.enjarai.trickster.util.Hamt;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
@@ -427,7 +425,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
                 spellPart = result;
             }
-        } else if (revisionContext.getMacros().get(compiled).isPresent()) {
+        } else if (revisionContext.getMacros().get(compiled).isDefined()) {
             toBeReplaced = drawingPart;
             revisionContext.updateSpellWithSpell(drawingPart, revisionContext.getMacros().get(compiled).get());
         } else {

@@ -1,0 +1,11 @@
+{
+  "conversions": [
+    {
+      "id": "minecraft:exposed_copper_grate",
+      "properties": {
+        "waterlogged": "false"
+      },
+      "weight": 1
+    }
+  ]
+}
