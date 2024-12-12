@@ -67,7 +67,7 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
         inventory.trickster$slot_holder$setStack(slot, itemStack);
     }
 
-    public void writeSpell(Fragment fragment, boolean closed, Optional<Text> name, Optional<ServerPlayerEntity> player, Trick trick, SpellContext ctx) {
+    public void writeSpell(Fragment fragment, boolean closed, Optional<Text> name, Optional<ServerPlayerEntity> player, Trick trick, SpellContext ctx) throws BlunderException {
         var inventory = getInventory(trick, ctx);
         var stack = inventory.trickster$slot_holder$getStack(slot);
         var updated = FragmentComponent.writeSpell(stack, fragment, closed, player, name);
@@ -75,7 +75,7 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
         inventory.trickster$slot_holder$setStack(slot, updated.get());
     }
 
-    public void clearSpell(Trick trick, SpellContext ctx) {
+    public void clearSpell(Trick trick, SpellContext ctx) throws BlunderException {
         var inventory = getInventory(trick, ctx);
         ItemStack stack = inventory.trickster$slot_holder$getStack(slot);
         var updated = FragmentComponent.clearSpell(stack);

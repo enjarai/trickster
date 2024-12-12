@@ -4,10 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import dev.enjarai.trickster.spell.trick.basic.*;
-import dev.enjarai.trickster.spell.trick.wristpocket.AttackTrick;
-import dev.enjarai.trickster.spell.trick.wristpocket.DropPocketTrick;
-import dev.enjarai.trickster.spell.trick.wristpocket.MageHandTrick;
-import dev.enjarai.trickster.spell.trick.wristpocket.PocketTrick;
+import dev.enjarai.trickster.spell.trick.wristpocket.*;
 import dev.enjarai.trickster.spell.trick.block.*;
 import dev.enjarai.trickster.spell.trick.inventory.*;
 import org.jetbrains.annotations.ApiStatus;
@@ -352,6 +349,7 @@ public class Tricks {
     public static final DropPocketTrick DROP_POCKET = register("drop_pocket", new DropPocketTrick());
     public static final MageHandTrick MAGE_HAND = register("mage_hand", new MageHandTrick());
     public static final AttackTrick ATTACK = register("attack", new AttackTrick());
+    public static final IngestTrick INGEST = register("ingest", new IngestTrick());
 
     // Misc
     public static final TypeFragmentTrick TYPE_FRAGMENT = register("type_fragment", new TypeFragmentTrick());

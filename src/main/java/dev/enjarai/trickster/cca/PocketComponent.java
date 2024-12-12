@@ -22,12 +22,21 @@ import java.util.Optional;
 public class PocketComponent implements Component {
     private final PlayerEntity player;
 
+    public ItemStack getPocketed() {
+        return pocketed;
+    }
+
+    public void setPocketed(ItemStack pocketed) {
+        this.pocketed = pocketed;
+    }
+
+    private ItemStack pocketed;
+
     public PocketComponent(PlayerEntity player) {
         this.player = player;
         this.pocketed = ItemStack.EMPTY;
     }
 
-    private ItemStack pocketed;
 
     @Override
     public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
