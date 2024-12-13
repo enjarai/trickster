@@ -34,11 +34,13 @@ public class ErodeTrick extends Trick {
         BlockState blockState = world.getBlockState(weatheringPos);
         BlockState state = world.getBlockState(waterPos);
 
-        if (!blockState.isAir()
-                && ((state.isOf(Blocks.WATER)
-                        && state.get(FluidBlock.LEVEL) == 0)
-                    || state.getFluidState().isOf(Fluids.WATER)
-                    || state.isOf(Blocks.WATER_CAULDRON))) {
+        if (
+            !blockState.isAir()
+                    && ((state.isOf(Blocks.WATER)
+                            && state.get(FluidBlock.LEVEL) == 0)
+                            || state.getFluidState().isOf(Fluids.WATER)
+                            || state.isOf(Blocks.WATER_CAULDRON))
+        ) {
             ctx.useMana(this, 80);
 
             if (state.isOf(Blocks.WATER_CAULDRON)) {

@@ -29,35 +29,49 @@ public class ModLoot {
             LootTables.ANCIENT_CITY_CHEST
     );
 
-    public static final LootFunctionType<RandomManaLootFunction> RANDOM_MANA_FUNCTION_TYPE =
-        Registry.register(Registries.LOOT_FUNCTION_TYPE, Trickster.id("random_mana"),
-                new LootFunctionType<>(RandomManaLootFunction.CODEC));
+    public static final LootFunctionType<RandomManaLootFunction> RANDOM_MANA_FUNCTION_TYPE = Registry.register(
+            Registries.LOOT_FUNCTION_TYPE,
+            Trickster.id("random_mana"),
+            new LootFunctionType<>(RandomManaLootFunction.CODEC)
+    );
 
     public static void register() {
         LootTableEvents.MODIFY.register((key, tableBuilder, source, registries) -> {
             if (RUSTED_SPELL_CORE_LOOT_TABLES.contains(key)) {
-                tableBuilder.pool(LootPool.builder()
-                        .with(ItemEntry.builder(ModItems.RUSTED_SPELL_CORE)
-                            .conditionally(RandomChanceLootCondition.builder(0.25f)))
-                        .rolls(UniformLootNumberProvider.create(0, 2)))
-                    .build();
+                tableBuilder.pool(
+                        LootPool.builder()
+                                .with(
+                                        ItemEntry.builder(ModItems.RUSTED_SPELL_CORE)
+                                                .conditionally(RandomChanceLootCondition.builder(0.25f))
+                                )
+                                .rolls(UniformLootNumberProvider.create(0, 2))
+                )
+                        .build();
             }
 
             if (OMINOUS_SPELL_CORE_LOOT_TABLES.contains(key)) {
-                tableBuilder.pool(LootPool.builder()
-                        .with(ItemEntry.builder(ModItems.OMINOUS_SPELL_CORE)
-                            .conditionally(RandomChanceLootCondition.builder(0.4f)))
-                        .rolls(UniformLootNumberProvider.create(0, 1)))
-                    .build();
+                tableBuilder.pool(
+                        LootPool.builder()
+                                .with(
+                                        ItemEntry.builder(ModItems.OMINOUS_SPELL_CORE)
+                                                .conditionally(RandomChanceLootCondition.builder(0.4f))
+                                )
+                                .rolls(UniformLootNumberProvider.create(0, 1))
+                )
+                        .build();
             }
 
             if (CRACKED_ECHO_KNOT_LOOT_TABLES.contains(key)) {
-                tableBuilder.pool(LootPool.builder()
-                        .with(ItemEntry.builder(ModItems.CRACKED_ECHO_KNOT)
-                            .conditionally(RandomChanceLootCondition.builder(0.35f))
-                            .apply(() -> new RandomManaLootFunction(0.01f, 0.3f)))
-                        .rolls(UniformLootNumberProvider.create(0, 1)))
-                    .build();
+                tableBuilder.pool(
+                        LootPool.builder()
+                                .with(
+                                        ItemEntry.builder(ModItems.CRACKED_ECHO_KNOT)
+                                                .conditionally(RandomChanceLootCondition.builder(0.35f))
+                                                .apply(() -> new RandomManaLootFunction(0.01f, 0.3f))
+                                )
+                                .rolls(UniformLootNumberProvider.create(0, 1))
+                )
+                        .build();
             }
         });
     }

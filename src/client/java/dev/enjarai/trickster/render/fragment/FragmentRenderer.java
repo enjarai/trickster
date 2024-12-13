@@ -2,7 +2,6 @@ package dev.enjarai.trickster.render.fragment;
 
 import dev.enjarai.trickster.Trickster;
 
-
 import dev.enjarai.trickster.render.SpellCircleRenderer;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
@@ -24,9 +23,13 @@ public interface FragmentRenderer<T extends Fragment> {
         return Registry.register(REGISTRY, FragmentType.REGISTRY.getId(type), renderer);
     }
 
-    static void register() {}
+    static void register() {
+    }
 
-    void render(T fragment, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float size, float alpha, Vec3d normal, SpellCircleRenderer delegator);
+    void render(
+            T fragment, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float size, float alpha, Vec3d normal,
+            SpellCircleRenderer delegator
+    );
 
     default boolean renderRedrawDots() {
         return true;

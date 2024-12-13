@@ -42,7 +42,10 @@ public class WrittenScrollItem extends Item {
                 var component = stack.get(ModComponents.FRAGMENT);
                 if (component != null) {
                     var spell = component.value() instanceof SpellPart part ? part : new SpellPart(component.value());
-                    var result = ModEntityComponents.CASTER.get(user).queueSpellAndCast(spell, List.of(), Optional.of(SimpleManaPool.getSingleUse(meta.mana())));
+                    var result = ModEntityComponents.CASTER.get(user).queueSpellAndCast(
+                            spell, List.of(),
+                            Optional.of(SimpleManaPool.getSingleUse(meta.mana()))
+                    );
 
                     if (result.type() != SpellQueueResult.Type.NOT_QUEUED && result.state().hasUsedMana())
                         stack.decrement(1);

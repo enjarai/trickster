@@ -44,8 +44,10 @@ public class ScrollContainerScreenHandler extends ScreenHandler {
             if (container != null) {
                 container.copyTo(inventory.getHeldStacks());
                 inventory.addListener(i -> {
-                    this.containerStack.set(DataComponentTypes.CONTAINER,
-                            ContainerComponent.fromStacks(this.inventory.getHeldStacks()));
+                    this.containerStack.set(
+                            DataComponentTypes.CONTAINER,
+                            ContainerComponent.fromStacks(this.inventory.getHeldStacks())
+                    );
                 });
             }
 
@@ -64,19 +66,19 @@ public class ScrollContainerScreenHandler extends ScreenHandler {
 
         int i = (this.rows - 4) * 18;
 
-        for(int j = 0; j < this.rows; ++j) {
-            for(int k = 0; k < 9; ++k) {
+        for (int j = 0; j < this.rows; ++j) {
+            for (int k = 0; k < 9; ++k) {
                 this.addSlot(new ScrollSlot(inventory, k + j * 9, 8 + k * 18, 18 + j * 18));
             }
         }
 
-        for(int j = 0; j < 3; ++j) {
-            for(int k = 0; k < 9; ++k) {
+        for (int j = 0; j < 3; ++j) {
+            for (int k = 0; k < 9; ++k) {
                 this.addSlot(new Slot(playerInventory, k + j * 9 + 9, 8 + k * 18, 103 + j * 18 + i));
             }
         }
 
-        for(int j = 0; j < 9; ++j) {
+        for (int j = 0; j < 9; ++j) {
             var index = j;
             this.addSlot(new Slot(playerInventory, j, 8 + j * 18, 161 + i) {
                 @Override

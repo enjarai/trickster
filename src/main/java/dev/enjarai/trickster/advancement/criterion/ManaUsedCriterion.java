@@ -20,14 +20,14 @@ public class ManaUsedCriterion extends AbstractCriterion<ManaUsedCriterion.Condi
         super.trigger(player, conditions -> conditions.match(amountUsed));
     }
 
-    public record Conditions(Optional<LootContextPredicate> player, Optional<Float> min, Optional<Float> max) implements AbstractCriterion.Conditions
-    {
-        public static final Codec<Conditions> CODEC = RecordCodecBuilder.create(instance ->
-          instance.group(
-                  EntityPredicate.LOOT_CONTEXT_PREDICATE_CODEC.optionalFieldOf("player").forGetter(Conditions::player),
-                  Codec.FLOAT.optionalFieldOf("min").forGetter(Conditions::min),
-                  Codec.FLOAT.optionalFieldOf("max").forGetter(Conditions::max)
-          ).apply(instance, Conditions::new)
+    public record Conditions(Optional<LootContextPredicate> player, Optional<Float> min, Optional<Float> max) implements AbstractCriterion.Conditions {
+
+        public static final Codec<Conditions> CODEC = RecordCodecBuilder.create(
+                instance -> instance.group(
+                        EntityPredicate.LOOT_CONTEXT_PREDICATE_CODEC.optionalFieldOf("player").forGetter(Conditions::player),
+                        Codec.FLOAT.optionalFieldOf("min").forGetter(Conditions::min),
+                        Codec.FLOAT.optionalFieldOf("max").forGetter(Conditions::max)
+                ).apply(instance, Conditions::new)
         );
 
         public boolean match(float amountUsed) {

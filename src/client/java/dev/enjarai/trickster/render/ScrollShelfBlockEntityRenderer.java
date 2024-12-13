@@ -37,10 +37,12 @@ public class ScrollShelfBlockEntityRenderer implements BlockEntityRenderer<Scrol
         for (int i = 0; i < GRID_WIDTH * GRID_HEIGHT; i++) {
             var x = i % GRID_WIDTH;
             var y = i / GRID_HEIGHT;
-            modelPartData.addChild("scroll_" + i, ModelPartBuilder.create()
+            modelPartData.addChild(
+                    "scroll_" + i, ModelPartBuilder.create()
                             .uv(0, 0)
                             .cuboid(15f / GRID_WIDTH * x + 1.5f, 15f / GRID_HEIGHT * y + 1f, 16f, 3f, 3f, 1f),
-                    ModelTransform.NONE);
+                    ModelTransform.NONE
+            );
         }
         return TexturedModelData.of(modelData, 16, 16);
     }
@@ -73,9 +75,11 @@ public class ScrollShelfBlockEntityRenderer implements BlockEntityRenderer<Scrol
             }
         }
 
-        if (MinecraftClient.getInstance().crosshairTarget instanceof BlockHitResult blockHit
-                && blockHit.getBlockPos().equals(entity.getPos())
-                && blockHit.getSide() == entity.getCachedState().get(ScrollShelfBlock.FACING)) {
+        if (
+            MinecraftClient.getInstance().crosshairTarget instanceof BlockHitResult blockHit
+                    && blockHit.getBlockPos().equals(entity.getPos())
+                    && blockHit.getSide() == entity.getCachedState().get(ScrollShelfBlock.FACING)
+        ) {
             var slot = ScrollShelfBlock.getSlotForHitPos(blockHit, entity.getCachedState());
             if (slot.isPresent()) {
                 var stack = entity.getStack(slot.getAsInt());
@@ -88,7 +92,10 @@ public class ScrollShelfBlockEntityRenderer implements BlockEntityRenderer<Scrol
         matrices.pop();
     }
 
-    public void renderLabel(ScrollShelfBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int slot, Text name) {
+    public void renderLabel(
+            ScrollShelfBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int slot,
+            Text name
+    ) {
         matrices.push();
         matrices.translate(0, 0, 1.1f);
 
@@ -107,7 +114,7 @@ public class ScrollShelfBlockEntityRenderer implements BlockEntityRenderer<Scrol
         TextRenderer textRenderer = client.textRenderer;
         float offsetX = (float) (-textRenderer.getWidth(name) / 2);
 
-//        textRenderer.draw(name, offsetX, 0, 553648127, false, matrix4f, vertexConsumers, TextRenderer.TextLayerType.NORMAL, backgroundColor, light);
+        //        textRenderer.draw(name, offsetX, 0, 553648127, false, matrix4f, vertexConsumers, TextRenderer.TextLayerType.NORMAL, backgroundColor, light);
         textRenderer.draw(name, offsetX, 0, Colors.WHITE, false, matrix4f, vertexConsumers, TextRenderer.TextLayerType.NORMAL, 0, light);
 
         matrices.pop();

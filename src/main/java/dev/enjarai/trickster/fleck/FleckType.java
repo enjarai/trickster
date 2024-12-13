@@ -18,5 +18,6 @@ public record FleckType<T extends Fleck>(StructEndec<T> endec) {
         return Registry.register(REGISTRY, Trickster.id(name), new FleckType<>(endec));
     }
 
-    public static void register() {}
+    public static void register() {
+    }
 }

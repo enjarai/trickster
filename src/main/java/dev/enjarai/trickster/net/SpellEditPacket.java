@@ -14,11 +14,15 @@ public record SpellEditPacket() {
     public void handleServer(ServerAccess access) {
         var player = access.player();
 
-        if (!player.isCreative()) return;
+        if (!player.isCreative()) {
+            return;
+        }
 
         var stack = player.getMainHandStack();
 
-        if (stack.isEmpty()) return;
+        if (stack.isEmpty()) {
+            return;
+        }
 
         player.openHandledScreen(new NamedScreenHandlerFactory() {
             @Override
@@ -29,8 +33,8 @@ public record SpellEditPacket() {
             @Override
             public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
                 return new ScrollAndQuillScreenHandler(
-                  syncId, stack, player.getOffHandStack(), EquipmentSlot.MAINHAND,
-                  HashMap.empty(), false, true, true
+                        syncId, stack, player.getOffHandStack(), EquipmentSlot.MAINHAND,
+                        HashMap.empty(), false, true, true
                 );
             }
         });

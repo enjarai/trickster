@@ -43,7 +43,10 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
     }
 
     public SpellQueueResult queueAndCast(SpellSource source, SpellPart spell, List<Fragment> arguments, Optional<MutableManaPool> poolOverride) {
-        var executor = new DefaultSpellExecutor(spell, poolOverride.flatMap(pool -> Optional.of(new ExecutionState(arguments, pool))).orElse(new ExecutionState(arguments)));
+        var executor = new DefaultSpellExecutor(
+                spell,
+                poolOverride.flatMap(pool -> Optional.of(new ExecutionState(arguments, pool))).orElse(new ExecutionState(arguments))
+        );
         int queued = queue(executor);
 
         if (queued >= 0) {
@@ -52,13 +55,18 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
 
                 if (entry.getValue() == executor) {
                     AtomicBoolean isDone = new AtomicBoolean(true);
-                    tryRun(source, entry,
+                    tryRun(
+                            source, entry,
                             (index, executor1) -> isDone.set(false),
                             (index, executor2) -> iterator.remove(),
-                            (index, executor3) -> { });
-                    return new SpellQueueResult(isDone.get()
-                            ? SpellQueueResult.Type.QUEUED_DONE
-                            : SpellQueueResult.Type.QUEUED_STILL_RUNNING, executor.getDeepestState());
+                            (index, executor3) -> {}
+                    );
+                    return new SpellQueueResult(
+                            isDone.get()
+                                    ? SpellQueueResult.Type.QUEUED_DONE
+                                    : SpellQueueResult.Type.QUEUED_STILL_RUNNING,
+                            executor.getDeepestState()
+                    );
                 }
             }
         }
@@ -96,14 +104,23 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
 
     /**
      * Attempts to run the given entry's SpellExecutor.
-     * @param source TODO
-     * @param entry TODO
-     * @param tickCallback TODO
-     * @param completeCallback TODO
-     * @param errorCallback TODO
+     * 
+     * @param source
+     *                         TODO
+     * @param entry
+     *                         TODO
+     * @param tickCallback
+     *                         TODO
+     * @param completeCallback
+     *                         TODO
+     * @param errorCallback
+     *                         TODO
      * @return whether the spell has finished running or not. Blunders and normal completion return true, otherwise returns false.
      */
-    private boolean tryRun(SpellSource source, Int2ObjectMap.Entry<SpellExecutor> entry, ExecutorCallback tickCallback, ExecutorCallback completeCallback, ExecutorCallback errorCallback) {
+    private boolean tryRun(
+            SpellSource source, Int2ObjectMap.Entry<SpellExecutor> entry, ExecutorCallback tickCallback, ExecutorCallback completeCallback,
+            ExecutorCallback errorCallback
+    ) {
         var executor = entry.getValue();
 
         try {

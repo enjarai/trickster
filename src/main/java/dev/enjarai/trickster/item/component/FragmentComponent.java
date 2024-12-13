@@ -21,6 +21,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public record FragmentComponent(Fragment value, Optional<String> name, boolean immutable, boolean closed) {
+
     private static final Endec<FragmentComponent> OLD_ENDEC = StructEndecBuilder.of(
             SpellPart.ENDEC.fieldOf("spell", comp -> {
                 throw new IllegalStateException("Serializing as a spell is no longer supported");
@@ -56,7 +57,7 @@ public record FragmentComponent(Fragment value, Optional<String> name, boolean i
                 .flatMap(value -> {
                     if (value instanceof SpellPart spell)
                         return Optional.of(spell);
-                    
+
                     return Optional.empty();
                 });
     }
@@ -124,7 +125,7 @@ public record FragmentComponent(Fragment value, Optional<String> name, boolean i
 
     public static Optional<HashMap<Pattern, SpellPart>> getMap(ItemStack stack) {
         return getValue(stack, MapFragment.class)
-            .map(MapFragment::getMacroMap);
+                .map(MapFragment::getMacroMap);
     }
 
     public static Optional<HashMap<Pattern, SpellPart>> getUserMergedMap(PlayerEntity user, String type) {

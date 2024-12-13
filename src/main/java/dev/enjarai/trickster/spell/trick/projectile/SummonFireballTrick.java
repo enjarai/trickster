@@ -20,7 +20,8 @@ public class SummonFireballTrick extends AbstractProjectileTrick {
 
     @Override
     protected Entity makeProjectile(SpellContext ctx, Vector3dc pos, ItemStack stack, List<Fragment> extraInputs) throws BlunderException {
-        var fireball = EntityType.FIREBALL.create(ctx.source().getWorld()); assert fireball != null;
+        var fireball = EntityType.FIREBALL.create(ctx.source().getWorld());
+        assert fireball != null;
         fireball.setPos(pos.x(), pos.y(), pos.z());
         return fireball;
     }

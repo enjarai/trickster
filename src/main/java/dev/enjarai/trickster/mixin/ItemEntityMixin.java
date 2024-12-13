@@ -30,26 +30,13 @@ public abstract class ItemEntityMixin extends Entity implements SlotHolderDuck {
     @Shadow
     public abstract void setStack(ItemStack stack);
 
-    @Inject(
-            method = "tick",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/entity/Entity;tick()V"
-            )
-    )
+    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;tick()V"))
     private void chargeCrystal(CallbackInfo ci) {
         if (getWorld() instanceof ServerWorld world)
             ManaComponent.tryRecharge(world, getPos(), getStack());
     }
 
-    @WrapWithCondition(
-            method = "tick",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/entity/ItemEntity;discard()V",
-                    ordinal = 1
-            )
-    )
+    @WrapWithCondition(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/ItemEntity;discard()V", ordinal = 1))
     private boolean cancelDespawn(ItemEntity instance) {
         if (getStack().isIn(ModItems.CANT_DESPAWN))
             return false;

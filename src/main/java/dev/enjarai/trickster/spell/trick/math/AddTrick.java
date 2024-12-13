@@ -20,9 +20,9 @@ public class AddTrick extends DistortionTrick {
     @Override
     public Fragment distort(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         fragments = supposeInput(fragments, 0)
-           .flatMap(l -> supposeType(l, FragmentType.LIST))
-           .map(ListFragment::fragments)
-           .orElse(fragments);
+                .flatMap(l -> supposeType(l, FragmentType.LIST))
+                .map(ListFragment::fragments)
+                .orElse(fragments);
 
         AddableFragment result = null;
         for (int i = 0; i < fragments.size(); i++) {

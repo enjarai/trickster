@@ -47,13 +47,17 @@ public class ScrollAndQuillItem extends Item {
                 screenOpener.accept(Text.of("trickster.screen.sign_scroll"), hand);
             }
         } else {
-            if (hand == Hand.OFF_HAND
-                    && ModNetworking.clientOrDefault(user,
-                        Trickster.CONFIG.keys.disableOffhandScrollOpening,
-                        Trickster.CONFIG.disableOffhandScrollOpening())) {
+            if (
+                hand == Hand.OFF_HAND
+                        && ModNetworking.clientOrDefault(
+                                user,
+                                Trickster.CONFIG.keys.disableOffhandScrollOpening,
+                                Trickster.CONFIG.disableOffhandScrollOpening()
+                        )
+            ) {
                 return TypedActionResult.pass(stack);
             }
-            
+
             user.openHandledScreen(new NamedScreenHandlerFactory() {
                 @Override
                 public Text getDisplayName() {

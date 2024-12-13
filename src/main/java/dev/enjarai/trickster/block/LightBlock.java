@@ -28,19 +28,21 @@ public class LightBlock extends BlockWithEntity implements Waterloggable {
     public static final VoxelShape SHAPE = createCuboidShape(5, 5, 5, 11, 11, 11);
 
     protected LightBlock() {
-        super(Settings.create()
-                .noCollision().luminance(b -> 15).breakInstantly()
-                .noBlockBreakParticles().sounds(BlockSoundGroup.AMETHYST_BLOCK)
-                .replaceable()
-                .pistonBehavior(PistonBehavior.DESTROY));
+        super(
+                Settings.create()
+                        .noCollision().luminance(b -> 15).breakInstantly()
+                        .noBlockBreakParticles().sounds(BlockSoundGroup.AMETHYST_BLOCK)
+                        .replaceable()
+                        .pistonBehavior(PistonBehavior.DESTROY)
+        );
         setDefaultState(getStateManager().getDefaultState().with(WATERLOGGED, false));
     }
 
     // TODO decide if we can make this work?
-//    @Override
-//    protected BlockRenderType getRenderType(BlockState state) {
-//        return BlockRenderType.MODEL;
-//    }
+    //    @Override
+    //    protected BlockRenderType getRenderType(BlockState state) {
+    //        return BlockRenderType.MODEL;
+    //    }
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
@@ -72,7 +74,10 @@ public class LightBlock extends BlockWithEntity implements Waterloggable {
     }
 
     @Override
-    protected BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+    protected BlockState getStateForNeighborUpdate(
+            BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos,
+            BlockPos neighborPos
+    ) {
         if (state.get(WATERLOGGED)) {
             world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
         }

@@ -19,13 +19,11 @@ import java.util.Map;
 @Mixin(BakedModelManager.class)
 public class BakedModelManagerMixin {
     @Final
-    @Shadow @Mutable
+    @Shadow
+    @Mutable
     private static Map<Identifier, Identifier> LAYERS_TO_LOADERS;
 
-    @Inject(
-            method = "<clinit>",
-            at = @At("TAIL")
-    )
+    @Inject(method = "<clinit>", at = @At("TAIL"))
     private static void appendToAtlases(CallbackInfo ci) {
         LAYERS_TO_LOADERS = new HashMap<>(LAYERS_TO_LOADERS);
         LAYERS_TO_LOADERS.put(ScrollShelfBlockEntityRenderer.ATLAS_ID, Trickster.id("scroll_shelf"));

@@ -15,7 +15,8 @@ public class SubtitlesHudMixin {
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;translate(FFF)V"))
     private void offsetSubtitles(DrawContext context, CallbackInfo ci) {
         var player = MinecraftClient.getInstance().player;
-        if (player == null) return;
+        if (player == null)
+            return;
         var barsComponent = player.getComponent(ModEntityComponents.BARS);
         var bars = barsComponent.getBars();
 

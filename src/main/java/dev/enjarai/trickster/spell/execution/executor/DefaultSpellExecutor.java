@@ -38,13 +38,15 @@ public class DefaultSpellExecutor implements SpellExecutor {
     private Optional<Fragment> overrideReturnValue = Optional.empty();
     private int lastRunExecutions;
 
-    private DefaultSpellExecutor(SpellPart root,
-                                   Stack<SpellInstruction> instructions,
-                                   List<Fragment> inputs,
-                                   List<Integer> scope,
-                                   ExecutionState state,
-                                   Optional<SpellExecutor> child,
-                                   Optional<Fragment> overrideReturnValue) {
+    private DefaultSpellExecutor(
+            SpellPart root,
+            Stack<SpellInstruction> instructions,
+            List<Fragment> inputs,
+            List<Integer> scope,
+            ExecutionState state,
+            Optional<SpellExecutor> child,
+            Optional<Fragment> overrideReturnValue
+    ) {
         this.root = root;
         this.instructions = instructions;
         this.inputs.addAll(inputs);

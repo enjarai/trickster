@@ -37,10 +37,12 @@ public class ModularSpellConstructBlockEntityRenderer implements BlockEntityRend
         for (int i = 0; i < 4; i++) {
             var x = i % 2;
             var z = i / 2;
-            modelPartData.addChild("core_" + i, ModelPartBuilder.create()
+            modelPartData.addChild(
+                    "core_" + i, ModelPartBuilder.create()
                             .uv(0, 0)
                             .cuboid(18f / 2 * x + 2f, 10f, 18f / 2 * z + 2f, 3f, 1f, 3f),
-                    ModelTransform.NONE);
+                    ModelTransform.NONE
+            );
         }
         return TexturedModelData.of(modelData, 16, 16);
     }
@@ -55,7 +57,10 @@ public class ModularSpellConstructBlockEntityRenderer implements BlockEntityRend
     }
 
     @Override
-    public void render(ModularSpellConstructBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+    public void render(
+            ModularSpellConstructBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light,
+            int overlay
+    ) {
         var facing = entity.getCachedState().get(ModularSpellConstructBlock.FACING);
 
         matrices.push();
@@ -97,7 +102,7 @@ public class ModularSpellConstructBlockEntityRenderer implements BlockEntityRend
         matrices.translate(-0.5f, -0.5f, -0.5f);
 
         var normal = new Vec3d(new Vector3f(0, 0, -1)); //.rotate(facing.getRotationQuaternion().rotateX((float) Math.toRadians(90))).mul(-1));//
-//                )); // .conjugate()
+        //                )); // .conjugate()
         // matrices.peek().getNormalMatrix().getNormalizedRotation(new Quaternionf())
         // TODO WTF glisco help!
 
@@ -105,21 +110,25 @@ public class ModularSpellConstructBlockEntityRenderer implements BlockEntityRend
             var coreStack = entity.getStack(i);
             matrices.push();
 
-            if (!coreStack.isEmpty()
-                    && coreStack.get(ModComponents.SPELL_CORE) instanceof SpellCoreComponent component
-                    && !(component.executor() instanceof ErroredSpellExecutor)) {
+            if (
+                !coreStack.isEmpty()
+                        && coreStack.get(ModComponents.SPELL_CORE) instanceof SpellCoreComponent component
+                        && !(component.executor() instanceof ErroredSpellExecutor)
+            ) {
                 float age = entity.age
-                    + tickDelta
-                    + (entity.getPos().getX()
-                            + entity.getPos().getY()
-                            + entity.getPos().getZ()
-                            + i)
-                    * 999;
+                        + tickDelta
+                        + (entity.getPos().getX()
+                                + entity.getPos().getY()
+                                + entity.getPos().getZ()
+                                + i)
+                                * 999;
                 var j = i - 1;
                 var x = j % 2;
                 var z = j / 2;
-                matrices.translate((18f / 2 * x + 3.5f) / 16f, (18f / 2 * z + 3.5f) / 16f,
-                        0.2f + (float) Math.sin(age * 0.14f) * 0.02f);
+                matrices.translate(
+                        (18f / 2 * x + 3.5f) / 16f, (18f / 2 * z + 3.5f) / 16f,
+                        0.2f + (float) Math.sin(age * 0.14f) * 0.02f
+                );
                 matrices.multiply(RotationAxis.POSITIVE_Z.rotation(age / 10));
 
                 this.renderer.renderPart(

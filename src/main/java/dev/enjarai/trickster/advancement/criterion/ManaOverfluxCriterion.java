@@ -20,12 +20,12 @@ public class ManaOverfluxCriterion extends AbstractCriterion<ManaOverfluxCriteri
         super.trigger(player, conditions -> true);
     }
 
-    public record Conditions(Optional<LootContextPredicate> player) implements AbstractCriterion.Conditions
-    {
-        public static final Codec<ManaOverfluxCriterion.Conditions> CODEC = RecordCodecBuilder.create(instance ->
-                instance.group(
+    public record Conditions(Optional<LootContextPredicate> player) implements AbstractCriterion.Conditions {
+        public static final Codec<ManaOverfluxCriterion.Conditions> CODEC = RecordCodecBuilder.create(
+                instance -> instance.group(
                         EntityPredicate.LOOT_CONTEXT_PREDICATE_CODEC.optionalFieldOf("player").forGetter(ManaOverfluxCriterion.Conditions::player)
-                ).apply(instance, ManaOverfluxCriterion.Conditions::new)
+                )
+                        .apply(instance, ManaOverfluxCriterion.Conditions::new)
         );
 
         @Override

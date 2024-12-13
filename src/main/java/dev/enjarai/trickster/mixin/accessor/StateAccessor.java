@@ -7,6 +7,9 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(State.class)
 public interface StateAccessor {
-    @Accessor <O> O getOwner();
-    @Accessor <S> MapCodec<S> getCodec();
+    @Accessor
+    <O> O getOwner();
+
+    @Accessor
+    <S> MapCodec<S> getCodec();
 }

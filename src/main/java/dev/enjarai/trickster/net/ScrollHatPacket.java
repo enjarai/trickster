@@ -39,8 +39,10 @@ public record ScrollHatPacket(float amount, boolean inGame) {
                         newSlot = 0;
                     }
 
-                    stack.set(ModComponents.SELECTED_SLOT,
-                            new SelectedSlotComponent(newSlot, current.maxSlot()));
+                    stack.set(
+                            ModComponents.SELECTED_SLOT,
+                            new SelectedSlotComponent(newSlot, current.maxSlot())
+                    );
 
                     var name = container.stream().skip(newSlot).findFirst().filter(s -> !s.isEmpty());
                     var message = Text.translatable("trickster.scroll_hat", newSlot);

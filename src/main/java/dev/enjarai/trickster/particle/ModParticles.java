@@ -9,8 +9,7 @@ import net.minecraft.registry.Registry;
 
 public class ModParticles {
     public static final SimpleParticleType PROTECTED_BLOCK = FabricParticleTypes.simple();
-    public static final ParticleType<SpellParticleOptions> SPELL =
-            FabricParticleTypes.complex(SpellParticleOptions.CODEC, SpellParticleOptions.PACKET_CODEC);
+    public static final ParticleType<SpellParticleOptions> SPELL = FabricParticleTypes.complex(SpellParticleOptions.CODEC, SpellParticleOptions.PACKET_CODEC);
 
     public static final SpellParticleOptions SPELL_WHITE = new SpellParticleOptions(0xffffff);
 

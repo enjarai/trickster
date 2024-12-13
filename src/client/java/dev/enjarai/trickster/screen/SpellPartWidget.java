@@ -117,7 +117,10 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     }
 
     public ScrollAndQuillScreen.PositionMemory save() {
-        return new ScrollAndQuillScreen.PositionMemory(rootSpellPart.hashCode(), x, y, size, rootSpellPart, spellPart, new ArrayList<>(parents), new ArrayList<>(angleOffsets));
+        return new ScrollAndQuillScreen.PositionMemory(
+                rootSpellPart.hashCode(), x, y, size, rootSpellPart, spellPart, new ArrayList<>(parents),
+                new ArrayList<>(angleOffsets)
+        );
     }
 
     public void load(ScrollAndQuillScreen.PositionMemory memory) {
@@ -138,8 +141,8 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             this.renderer.setMousePosition(mouseX, mouseY);
         }
 
-//        context.getMatrices().push();
-//        context.getMatrices().scale((float) PRECISION_OFFSET, (float) PRECISION_OFFSET, (float) PRECISION_OFFSET);
+        //        context.getMatrices().push();
+        //        context.getMatrices().scale((float) PRECISION_OFFSET, (float) PRECISION_OFFSET, (float) PRECISION_OFFSET);
 
         this.renderer.renderPart(
                 context.getMatrices(), context.getVertexConsumers(), spellPart,
@@ -149,7 +152,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         );
         context.draw();
 
-//        context.getMatrices().pop();
+        //        context.getMatrices().pop();
     }
 
     public static boolean isCircleClickable(double size) {
@@ -295,14 +298,22 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (isMutable || isDrawing()) {
             if (Trickster.CONFIG.dragDrawing() && button == 0 && !isDrawing()) {
-                if (propagateMouseEvent(spellPart, x, y, size, angleOffsets.peek(), toScaledSpace(mouseX), toScaledSpace(mouseY),
-                        (part, x, y, size) -> selectPattern(part, x, y, size, mouseX, mouseY))) {
+                if (
+                    propagateMouseEvent(
+                            spellPart, x, y, size, angleOffsets.peek(), toScaledSpace(mouseX), toScaledSpace(mouseY),
+                            (part, x, y, size) -> selectPattern(part, x, y, size, mouseX, mouseY)
+                    )
+                ) {
                     return true;
                 }
             } else {
                 // We need to return true on the mouse down event to make sure the screen knows if we're on a clickable node
-                if (propagateMouseEvent(spellPart, x, y, size, angleOffsets.peek(), toScaledSpace(mouseX), toScaledSpace(mouseY),
-                        (part, x, y, size) -> true)) {
+                if (
+                    propagateMouseEvent(
+                            spellPart, x, y, size, angleOffsets.peek(), toScaledSpace(mouseX), toScaledSpace(mouseY),
+                            (part, x, y, size) -> true
+                    )
+                ) {
                     return true;
                 }
             }
@@ -322,8 +333,12 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             }
 
             if (!Trickster.CONFIG.dragDrawing() && button == 0 && !isDrawing()) {
-                if (propagateMouseEvent(spellPart, x, y, size, angleOffsets.peek(), toScaledSpace(mouseX), toScaledSpace(mouseY),
-                        (part, x, y, size) -> selectPattern(part, x, y, size, mouseX, mouseY))) {
+                if (
+                    propagateMouseEvent(
+                            spellPart, x, y, size, angleOffsets.peek(), toScaledSpace(mouseX), toScaledSpace(mouseY),
+                            (part, x, y, size) -> selectPattern(part, x, y, size, mouseX, mouseY)
+                    )
+                ) {
                     return true;
                 }
             }
@@ -340,8 +355,10 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     @Override
     public void mouseMoved(double mouseX, double mouseY) {
         if (isDrawing()) {
-            propagateMouseEvent(spellPart, x, y, size, angleOffsets.peek(), toScaledSpace(mouseX), toScaledSpace(mouseY),
-                    (part, x, y, size) -> selectPattern(part, x, y, size, mouseX, mouseY));
+            propagateMouseEvent(
+                    spellPart, x, y, size, angleOffsets.peek(), toScaledSpace(mouseX), toScaledSpace(mouseY),
+                    (part, x, y, size) -> selectPattern(part, x, y, size, mouseX, mouseY)
+            );
         }
 
         super.mouseMoved(mouseX, mouseY);
@@ -373,8 +390,10 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
                             ModSounds.DRAW, SoundCategory.MASTER,
                             1f, ModSounds.randomPitch(0.6f, 0.2f)
                     );
-                } else if (drawingPattern.isEmpty() ||
-                        (drawingPattern.getLast() != (byte) i && !hasOverlappingLines(drawingPattern, drawingPattern.getLast(), (byte) i))) {
+                } else if (
+                    drawingPattern.isEmpty() ||
+                            (drawingPattern.getLast() != (byte) i && !hasOverlappingLines(drawingPattern, drawingPattern.getLast(), (byte) i))
+                ) {
                     drawingPattern.add((byte) i);
 
                     //add middle point to path if connecting opposite corners
@@ -484,7 +503,10 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         return false;
     }
 
-    protected boolean propagateMouseEvent(SpellPart part, double x, double y, double size, double startingAngle, double mouseX, double mouseY, MouseEventHandler callback) {
+    protected boolean propagateMouseEvent(
+            SpellPart part, double x, double y, double size, double startingAngle, double mouseX, double mouseY,
+            MouseEventHandler callback
+    ) {
         var closest = part;
         var closestAngle = startingAngle;
         var closestX = x;
@@ -554,38 +576,38 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         boolean handle(SpellPart part, float x, float y, float size);
     }
 
-//    @Override
-//    public void setX(int x) {
-//        this.x = x + size;
-//    }
-//
-//    @Override
-//    public void setY(int y) {
-//        this.y = y + size;
-//    }
-//
-//    @Override
-//    public int getX() {
-//        return (int) (x - size);
-//    }
-//
-//    @Override
-//    public int getY() {
-//        return (int) (y - size);
-//    }
-//
-//    @Override
-//    public int getWidth() {
-//        return (int) size * 2;
-//    }
-//
-//    @Override
-//    public int getHeight() {
-//        return (int) size * 2;
-//    }
-//
-//    @Override
-//    public void forEachChild(Consumer<ClickableWidget> consumer) {
-//
-//    }
+    //    @Override
+    //    public void setX(int x) {
+    //        this.x = x + size;
+    //    }
+    //
+    //    @Override
+    //    public void setY(int y) {
+    //        this.y = y + size;
+    //    }
+    //
+    //    @Override
+    //    public int getX() {
+    //        return (int) (x - size);
+    //    }
+    //
+    //    @Override
+    //    public int getY() {
+    //        return (int) (y - size);
+    //    }
+    //
+    //    @Override
+    //    public int getWidth() {
+    //        return (int) size * 2;
+    //    }
+    //
+    //    @Override
+    //    public int getHeight() {
+    //        return (int) size * 2;
+    //    }
+    //
+    //    @Override
+    //    public void forEachChild(Consumer<ClickableWidget> consumer) {
+    //
+    //    }
 }

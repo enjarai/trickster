@@ -12,4 +12,3 @@ public interface Fleck {
 
     FleckType<?> type();
 }
-

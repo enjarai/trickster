@@ -28,7 +28,7 @@ public class SpellResonatorBlock extends Block implements SpellControlledRedston
     public static final DirectionProperty FACING = Properties.FACING;
     public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 
-    public static final VoxelShape[] SHAPE = new VoxelShape[]{
+    public static final VoxelShape[] SHAPE = new VoxelShape[] {
             createCuboidShape(3, 2, 3, 13, 16, 13),
             createCuboidShape(3, 0, 3, 13, 14, 13),
             createCuboidShape(3, 3, 2, 13, 13, 16),
@@ -38,13 +38,17 @@ public class SpellResonatorBlock extends Block implements SpellControlledRedston
     };
 
     public SpellResonatorBlock() {
-        super(AbstractBlock.Settings.copyShallow(Blocks.REDSTONE_BLOCK)
-                .luminance(state -> Math.max(1, state.get(POWER)))
-                .emissiveLighting((state, world, pos) -> true));
-        setDefaultState(getStateManager().getDefaultState()
-                .with(POWER, 0)
-                .with(FACING, Direction.UP)
-                .with(WATERLOGGED, false));
+        super(
+                AbstractBlock.Settings.copyShallow(Blocks.REDSTONE_BLOCK)
+                        .luminance(state -> Math.max(1, state.get(POWER)))
+                        .emissiveLighting((state, world, pos) -> true)
+        );
+        setDefaultState(
+                getStateManager().getDefaultState()
+                        .with(POWER, 0)
+                        .with(FACING, Direction.UP)
+                        .with(WATERLOGGED, false)
+        );
     }
 
     @Override
@@ -78,13 +82,17 @@ public class SpellResonatorBlock extends Block implements SpellControlledRedston
     }
 
     @Override
-    protected BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+    protected BlockState getStateForNeighborUpdate(
+            BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos,
+            BlockPos neighborPos
+    ) {
         if (state.get(WATERLOGGED)) {
             world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
         }
 
         return direction == state.get(FACING).getOpposite() && !state.canPlaceAt(world, pos)
-                ? Blocks.AIR.getDefaultState() : super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
+                ? Blocks.AIR.getDefaultState()
+                : super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
     }
 
     @Nullable

@@ -54,7 +54,7 @@ public class SwapBlockTrick extends Trick {
             }
         }
 
-        ctx.useMana(this, (float)(60 + (pos1.vector().distance(pos2.vector()))));
+        ctx.useMana(this, (float) (60 + (pos1.vector().distance(pos2.vector()))));
 
         NbtCompound blockEntity1Nbt = null;
         NbtCompound blockEntity2Nbt = null;

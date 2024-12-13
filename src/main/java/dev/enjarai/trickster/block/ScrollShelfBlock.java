@@ -36,12 +36,14 @@ public class ScrollShelfBlock extends BlockWithEntity {
     public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
 
     protected ScrollShelfBlock() {
-        super(AbstractBlock.Settings.create()
-                .mapColor(MapColor.OAK_TAN)
-                .instrument(NoteBlockInstrument.BASS)
-                .strength(1.5F)
-                .sounds(BlockSoundGroup.CHISELED_BOOKSHELF)
-                .burnable());
+        super(
+                AbstractBlock.Settings.create()
+                        .mapColor(MapColor.OAK_TAN)
+                        .instrument(NoteBlockInstrument.BASS)
+                        .strength(1.5F)
+                        .sounds(BlockSoundGroup.CHISELED_BOOKSHELF)
+                        .burnable()
+        );
         setDefaultState(getStateManager().getDefaultState().with(FACING, Direction.NORTH));
     }
 
@@ -98,9 +100,9 @@ public class ScrollShelfBlock extends BlockWithEntity {
                     var slotStack = blockEntity.getStack(slot.getAsInt());
                     if (!slotStack.isEmpty()) {
                         // TODO merge stacks if required?
-//                        if (ItemStack.areItemsAndComponentsEqual(stack, slotStack)) {
-//
-//                        }
+                        //                        if (ItemStack.areItemsAndComponentsEqual(stack, slotStack)) {
+                        //
+                        //                        }
                         return ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
                     } else {
                         tryAddBook(world, pos, player, blockEntity, stack, slot.getAsInt());

@@ -20,6 +20,6 @@ public class LineFleckTrick extends AbstractFleckTrick {
         var pos1 = expectInput(fragments, FragmentType.VECTOR, 0).vector();
         var pos2 = expectInput(fragments, FragmentType.VECTOR, 1).vector();
 
-       return new LineFleck( pos1.get(new Vector3f()), pos2.get(new Vector3f()));
+        return new LineFleck(pos1.get(new Vector3f()), pos2.get(new Vector3f()));
     }
 }

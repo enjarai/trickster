@@ -106,7 +106,8 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
 
     @Override
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        if (this.isDragging()) this.setDragging(false);
+        if (this.isDragging())
+            this.setDragging(false);
         return super.mouseReleased(mouseX, mouseY, button);
     }
 
@@ -231,11 +232,12 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
     }
 
     record PositionMemory(int spellHash,
-                          double x,
-                          double y,
-                          double size,
-                          SpellPart rootSpellPart,
-                          SpellPart spellPart,
-                          ArrayList<SpellPart> parents,
-                          ArrayList<Double> angleOffsets) { }
+            double x,
+            double y,
+            double size,
+            SpellPart rootSpellPart,
+            SpellPart spellPart,
+            ArrayList<SpellPart> parents,
+            ArrayList<Double> angleOffsets) {
+    }
 }

@@ -74,9 +74,11 @@ public class ModularSpellConstructBlock extends BlockWithEntity {
     };
 
     protected ModularSpellConstructBlock() {
-        super(AbstractBlock.Settings.create()
-                .strength(1.5F)
-                .sounds(BlockSoundGroup.STONE));
+        super(
+                AbstractBlock.Settings.create()
+                        .strength(1.5F)
+                        .sounds(BlockSoundGroup.STONE)
+        );
         setDefaultState(getStateManager().getDefaultState().with(FACING, Direction.UP));
     }
 
@@ -90,7 +92,7 @@ public class ModularSpellConstructBlock extends BlockWithEntity {
             int x = Math.clamp((int) (hitPos.x * GRID_WIDTH), 0, GRID_WIDTH - 1);
             int y = Math.clamp((int) (hitPos.y * GRID_HEIGHT), 0, GRID_HEIGHT - 1);
             int slot = x + y * GRID_WIDTH;
-            
+
             if (slot % 2 != 0)
                 return Optional.empty();
 

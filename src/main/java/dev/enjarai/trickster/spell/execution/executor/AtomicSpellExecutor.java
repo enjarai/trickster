@@ -43,7 +43,10 @@ public class AtomicSpellExecutor implements SpellExecutor {
     private final int requiredExecutions;
     private int lastRunExecutions;
 
-    private AtomicSpellExecutor(SpellPart root, Stack<SpellInstruction> instructions, List<Fragment> inputs, List<Integer> scope, ExecutionState state, int requiredExecutions) {
+    private AtomicSpellExecutor(
+            SpellPart root, Stack<SpellInstruction> instructions, List<Fragment> inputs, List<Integer> scope, ExecutionState state,
+            int requiredExecutions
+    ) {
         this.root = root;
         this.instructions = instructions;
         this.inputs.addAll(inputs);
@@ -52,10 +55,11 @@ public class AtomicSpellExecutor implements SpellExecutor {
         this.requiredExecutions = requiredExecutions;
     }
 
-    private AtomicSpellExecutor(Trick trickSource, TickData data, SpellPart root, Stack<SpellInstruction> instructions, ExecutionState state) throws BlunderException {
+    private AtomicSpellExecutor(Trick trickSource, TickData data, SpellPart root, Stack<SpellInstruction> instructions, ExecutionState state)
+            throws BlunderException {
         this(root, instructions, List.of(), List.of(), state, calculateExecutionCost(trickSource, data, instructions));
     }
-    
+
     public AtomicSpellExecutor(Trick trickSource, TickData data, SpellPart root, ExecutionState state) throws BlunderException {
         this(trickSource, data, root, SpellUtils.flattenNode(root), state);
     }
@@ -137,7 +141,7 @@ public class AtomicSpellExecutor implements SpellExecutor {
 
     private static int calculateExecutionCost(Trick trickSource, TickData data, Stack<SpellInstruction> instructions) throws BlunderException {
         int cost = 0;
-        
+
         for (var inst : instructions) {
             if (inst instanceof EnterScopeInstruction || inst instanceof ExitScopeInstruction)
                 continue;

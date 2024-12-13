@@ -20,9 +20,9 @@ public class ForkTrick extends Trick {
         var spell = expectInput(fragments, FragmentType.SPELL_PART, 0);
         var arguments = fragments.subList(1, fragments.size());
         var queued = ctx.source()
-            .getExecutionManager()
-            .map(manager -> manager.queue(spell, arguments))
-            .orElse(-1);
+                .getExecutionManager()
+                .map(manager -> manager.queue(spell, arguments))
+                .orElse(-1);
         return new NumberFragment(queued);
     }
 }

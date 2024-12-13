@@ -23,7 +23,10 @@ public class SpellConstructBlockEntityRenderer implements BlockEntityRenderer<Sp
     }
 
     @Override
-    public void render(SpellConstructBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+    public void render(
+            SpellConstructBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light,
+            int overlay
+    ) {
         matrices.push();
 
         matrices.translate(0.5f, 0.5f, 0.5f);

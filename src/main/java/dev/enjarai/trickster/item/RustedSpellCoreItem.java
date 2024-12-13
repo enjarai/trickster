@@ -24,10 +24,12 @@ public class RustedSpellCoreItem extends SpellCoreItem {
     public boolean onRemoved(ServerWorld world, BlockPos pos, ItemStack stack) {
         var comp = stack.get(ModComponents.SPELL_CORE);
 
-        if (comp != null
-                && !(comp.executor() instanceof ErroredSpellExecutor)
-                && !comp.executor().getDeepestState().isDelayed()
-                && world.random.nextBoolean()) {
+        if (
+            comp != null
+                    && !(comp.executor() instanceof ErroredSpellExecutor)
+                    && !comp.executor().getDeepestState().isDelayed()
+                    && world.random.nextBoolean()
+        ) {
             world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), 5f, true, ExplosionSourceType.BLOCK);
             return true;
         }

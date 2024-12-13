@@ -54,7 +54,7 @@ public class BatteryCreationTrick extends Trick {
                 this,
                 supposeInput(fragments, FragmentType.SLOT, 1),
                 (item) -> item.equals(Items.GLASS)
-            ).orElseThrow(() -> new MissingItemBlunder(this));
+        ).orElseThrow(() -> new MissingItemBlunder(this));
         var sourceItem = sourceSlot.getItem(this, ctx);
         var type = types.get(sourceItem);
 

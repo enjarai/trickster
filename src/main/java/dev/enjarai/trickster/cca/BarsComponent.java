@@ -28,7 +28,7 @@ public class BarsComponent implements ServerTickingComponent, AutoSyncedComponen
 
     @Override
     public void serverTick() {
-        for (var iterator = bars.int2ObjectEntrySet().iterator(); iterator.hasNext(); ) {
+        for (var iterator = bars.int2ObjectEntrySet().iterator(); iterator.hasNext();) {
             var entry = iterator.next();
 
             if (entry.getValue().age >= STAY_FOR_TICKS) {
@@ -67,7 +67,8 @@ public class BarsComponent implements ServerTickingComponent, AutoSyncedComponen
 
     @Override
     public boolean shouldSyncWith(ServerPlayerEntity player) {
-        if (player != this.player) return false;
+        if (player != this.player)
+            return false;
 
         var hash = bars.hashCode();
         if (hash != lastBarsHashcode) {
@@ -108,8 +109,10 @@ public class BarsComponent implements ServerTickingComponent, AutoSyncedComponen
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o)
+                return true;
+            if (o == null || getClass() != o.getClass())
+                return false;
 
             Bar bar = (Bar) o;
             return Double.compare(fill, bar.fill) == 0;

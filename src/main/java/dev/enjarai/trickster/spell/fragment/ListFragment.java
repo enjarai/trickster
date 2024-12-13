@@ -79,7 +79,8 @@ public record ListFragment(List<Fragment> fragments) implements FoldableFragment
                         source,
                         1,
                         Text.translatable(Trickster.MOD_ID + ".fragment." + Trickster.MOD_ID + "." + "integer_list"),
-                        this);
+                        this
+                );
             }
         }
 
@@ -93,7 +94,7 @@ public record ListFragment(List<Fragment> fragments) implements FoldableFragment
 
         for (int i = fragments.size() - 1; i >= 0; i--)
             keys.push(new NumberFragment(i));
-        
+
         values.addAll(fragments.reversed());
         return new FoldingSpellExecutor(ctx, executable, identity, values, keys, this);
     }

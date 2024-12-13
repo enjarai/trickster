@@ -12,10 +12,8 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(SillyHairsFeatureRenderer.class)
 public class SillyHairsFeatureRendererMixin {
     @ModifyExpressionValue(
-            method = "render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/client/network/AbstractClientPlayerEntity;FFFFFF)V",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/client/network/AbstractClientPlayerEntity;getGameProfile()Lcom/mojang/authlib/GameProfile;"
+            method = "render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/client/network/AbstractClientPlayerEntity;FFFFFF)V", at = @At(
+                    value = "INVOKE", target = "Lnet/minecraft/client/network/AbstractClientPlayerEntity;getGameProfile()Lcom/mojang/authlib/GameProfile;"
             )
     )
     private GameProfile fixSillyHairs(GameProfile original, @Local(argsOnly = true) AbstractClientPlayerEntity player) {

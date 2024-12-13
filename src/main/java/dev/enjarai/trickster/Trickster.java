@@ -49,7 +49,10 @@ public class Trickster implements ModInitializer, CicadaEntrypoint {
     public static final Logger LOGGER = ProperLogger.getLogger(MOD_ID);
 
     public static final Identifier SPELL_CIRCLE_ATTRIBUTE = id("spell_circle");
-    public static final EntityAttributeModifier NEGATE_ATTRIBUTE = new EntityAttributeModifier(Trickster.SPELL_CIRCLE_ATTRIBUTE, -1d, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+    public static final EntityAttributeModifier NEGATE_ATTRIBUTE = new EntityAttributeModifier(
+            Trickster.SPELL_CIRCLE_ATTRIBUTE, -1d,
+            EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
+    );
 
     public static final TricksterConfig CONFIG = TricksterConfig.createAndLoad();
 

@@ -26,19 +26,24 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 public final class SpellPart implements Fragment {
-    public static final StructEndec<SpellPart> ENDEC = EndecTomfoolery.recursive(self -> StructEndecBuilder.of(
-            Fragment.ENDEC.fieldOf("glyph", SpellPart::getGlyph),
-            EndecTomfoolery.protocolVersionAlternatives(
-                    Map.of(
-                            (byte) 1, self.listOf()
-                    ),
-                    EndecTomfoolery.withAlternative(SpellInstruction.STACK_ENDEC.xmap(
-                            instructions -> SpellUtils.decodeInstructions(instructions, new Stack<>(), new Stack<>(), Optional.empty()),
-                            SpellUtils::flattenNode
-                    ), self).listOf()
-            ).fieldOf("sub_parts", SpellPart::getSubParts),
-            SpellPart::new
-    ));
+    public static final StructEndec<SpellPart> ENDEC = EndecTomfoolery.recursive(
+            self -> StructEndecBuilder.of(
+                    Fragment.ENDEC.fieldOf("glyph", SpellPart::getGlyph),
+                    EndecTomfoolery.protocolVersionAlternatives(
+                            Map.of(
+                                    (byte) 1, self.listOf()
+                            ),
+                            EndecTomfoolery.withAlternative(
+                                    SpellInstruction.STACK_ENDEC.xmap(
+                                            instructions -> SpellUtils.decodeInstructions(instructions, new Stack<>(), new Stack<>(), Optional.empty()),
+                                            SpellUtils::flattenNode
+                                    ), self
+                            ).listOf()
+                    )
+                            .fieldOf("sub_parts", SpellPart::getSubParts),
+                    SpellPart::new
+            )
+    );
 
     public Fragment glyph;
     public List<SpellPart> subParts;
@@ -80,8 +85,10 @@ public final class SpellPart implements Fragment {
      */
     @Override
     public SpellPart applyEphemeral() {
-        return new SpellPart(glyph.applyEphemeral(), subParts.stream()
-                .map(SpellPart::applyEphemeral).toList());
+        return new SpellPart(
+                glyph.applyEphemeral(), subParts.stream()
+                        .map(SpellPart::applyEphemeral).toList()
+        );
     }
 
     @Override
@@ -174,8 +181,10 @@ public final class SpellPart implements Fragment {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == this) return true;
-        if (obj == null || obj.getClass() != this.getClass()) return false;
+        if (obj == this)
+            return true;
+        if (obj == null || obj.getClass() != this.getClass())
+            return false;
         var that = (SpellPart) obj;
         return Objects.equals(this.glyph, that.glyph) &&
                 Objects.equals(this.subParts, that.subParts);
@@ -225,11 +234,13 @@ public final class SpellPart implements Fragment {
     public SpellPart deepClone() {
         var glyph = this.glyph instanceof SpellPart spell ? spell.deepClone() : this.glyph;
 
-        return new SpellPart(glyph, subParts.stream()
-                .map(SpellPart::deepClone).collect(Collectors.toList()));
+        return new SpellPart(
+                glyph, subParts.stream()
+                        .map(SpellPart::deepClone).collect(Collectors.toList())
+        );
     }
 
-    private static final byte[] base64Header = new byte[]{0x1f, (byte) 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, (byte) 0xff};
+    private static final byte[] base64Header = new byte[] { 0x1f, (byte) 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, (byte) 0xff };
 
     //TODO: add encoding from any fragment
     public String toBase64() {

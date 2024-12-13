@@ -9,6 +9,8 @@ import dev.enjarai.trickster.spell.execution.executor.ErroredSpellExecutor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderTickCounter;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 import net.minecraft.util.hit.BlockHitResult;
 
@@ -19,28 +21,51 @@ public class SpellConstructErrorRenderer {
         if (client.crosshairTarget instanceof BlockHitResult hitResult) {
             var blockEntity = client.world.getBlockEntity(hitResult.getBlockPos());
 
-            if (blockEntity instanceof SpellConstructBlockEntity construct
-                    && construct.getComponents().get(ModComponents.SPELL_CORE) instanceof SpellCoreComponent component
-                    && component.executor() instanceof ErroredSpellExecutor executor) {
-                draw(client, context, executor.errorMessage());
+            if (blockEntity instanceof SpellConstructBlockEntity construct) {
+                var y = context.getScaledWindowHeight() / 2 - 10;
+
+                if (construct.getComponents().contains(DataComponentTypes.CUSTOM_NAME)) {
+                    y = draw(client, context, construct.getComponents().get(DataComponentTypes.CUSTOM_NAME), y);
+                    y += 3;
+                }
+
+                if (
+                    construct.getComponents().get(ModComponents.SPELL_CORE) instanceof SpellCoreComponent component
+                            && component.executor() instanceof ErroredSpellExecutor executor
+                ) {
+                    draw(client, context, executor.errorMessage(), y);
+                }
             }
 
             if (blockEntity instanceof ModularSpellConstructBlockEntity modularConstruct) {
                 ModularSpellConstructBlock.getSlotForHitPos(hitResult, client.world.getBlockState(modularConstruct.getPos())).ifPresent(i -> {
-                    if (modularConstruct.getStack(i).get(ModComponents.SPELL_CORE) instanceof SpellCoreComponent component
-                            && component.executor() instanceof ErroredSpellExecutor executor) {
-                        draw(client, context, executor.errorMessage());
+                    var stack = modularConstruct.getStack(i);
+                    var y = context.getScaledWindowHeight() / 2 - 10;
+
+                    if (stack.contains(DataComponentTypes.CUSTOM_NAME)) {
+                        y = draw(client, context, stack.get(DataComponentTypes.CUSTOM_NAME), y);
+                        y += 3;
+                    }
+
+                    if (
+                        stack.get(ModComponents.SPELL_CORE) instanceof SpellCoreComponent component
+                                && component.executor() instanceof ErroredSpellExecutor executor
+                    ) {
+                        draw(client, context, executor.errorMessage(), y);
                     }
                 });
             }
         }
     }
 
-    private static void draw(MinecraftClient client, DrawContext context, Text errorMessage) {
-        context.drawText(
-                client.textRenderer, errorMessage,
-                context.getScaledWindowWidth() / 2 + 10, context.getScaledWindowHeight() / 2 - 10,
-                0xffffff, true
-        );
+    private static int draw(MinecraftClient client, DrawContext context, Text errorMessage, int y) {
+        for (OrderedText orderedText : client.textRenderer.wrapLines(errorMessage, context.getScaledWindowWidth() / 3)) {
+            context.drawText(
+                    client.textRenderer, orderedText, context.getScaledWindowWidth() / 2 + 10,
+                    y, 0xffffff, true
+            );
+            y += 9;
+        }
+        return y;
     }
 }

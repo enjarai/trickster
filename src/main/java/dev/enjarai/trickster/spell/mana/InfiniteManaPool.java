@@ -6,13 +6,13 @@ import org.jetbrains.annotations.Nullable;
 import dev.enjarai.trickster.EndecTomfoolery;
 import io.wispforest.endec.StructEndec;
 
-public class InfiniteManaPool implements MutableManaPool {
+public final class InfiniteManaPool implements MutableManaPool {
     public static final InfiniteManaPool INSTANCE = new InfiniteManaPool();
     public static final StructEndec<InfiniteManaPool> ENDEC = EndecTomfoolery.unit(INSTANCE);
 
     private InfiniteManaPool() {
     }
-    
+
     @Override
     @Nullable
     public ManaPoolType<?> type() {
@@ -21,12 +21,12 @@ public class InfiniteManaPool implements MutableManaPool {
 
     @Override
     public float get(World world) {
-        return Float.MAX_VALUE;
+        return Float.POSITIVE_INFINITY;
     }
 
     @Override
     public float getMax(World world) {
-        return Float.MAX_VALUE;
+        return Float.POSITIVE_INFINITY;
     }
 
     @Override
@@ -39,6 +39,6 @@ public class InfiniteManaPool implements MutableManaPool {
 
     @Override
     public MutableManaPool makeClone(World world) throws UnsupportedOperationException {
-        return this;
+        return INSTANCE;
     }
 }

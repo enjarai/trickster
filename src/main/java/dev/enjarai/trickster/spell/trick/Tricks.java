@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import dev.enjarai.trickster.spell.trick.block.*;
+import dev.enjarai.trickster.spell.trick.inventory.*;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
@@ -69,19 +70,6 @@ import dev.enjarai.trickster.spell.trick.func.KillThreadTrick;
 import dev.enjarai.trickster.spell.trick.func.LoadArgumentTrick;
 import dev.enjarai.trickster.spell.trick.func.SupplierTrick;
 import dev.enjarai.trickster.spell.trick.func.TryCatchTrick;
-import dev.enjarai.trickster.spell.trick.inventory.CheckHatTrick;
-import dev.enjarai.trickster.spell.trick.inventory.DropStackFromSlotTrick;
-import dev.enjarai.trickster.spell.trick.inventory.GetInventorySlotTrick;
-import dev.enjarai.trickster.spell.trick.inventory.GetItemInSlotTrick;
-import dev.enjarai.trickster.spell.trick.inventory.GetManaInSlotTrick;
-import dev.enjarai.trickster.spell.trick.inventory.GetMaxManaInSlotTrick;
-import dev.enjarai.trickster.spell.trick.inventory.ImportHatTrick;
-import dev.enjarai.trickster.spell.trick.inventory.ImportTrick;
-import dev.enjarai.trickster.spell.trick.inventory.OtherHandSlotTrick;
-import dev.enjarai.trickster.spell.trick.inventory.OtherHandTrick;
-import dev.enjarai.trickster.spell.trick.inventory.ReadMacroRing;
-import dev.enjarai.trickster.spell.trick.inventory.SetHatTrick;
-import dev.enjarai.trickster.spell.trick.inventory.SwapSlotTrick;
 import dev.enjarai.trickster.spell.trick.list.ListAddRangeTrick;
 import dev.enjarai.trickster.spell.trick.list.ListAddTrick;
 import dev.enjarai.trickster.spell.trick.list.ListCreateTrick;
@@ -350,6 +338,8 @@ public class Tricks {
     public static final GetInventorySlotTrick GET_INVENTORY_SLOT = register("get_inventory_slot", new GetInventorySlotTrick());
     public static final DropStackFromSlotTrick DROP_STACK_FROM_SLOT = register("drop_stack_from_slot", new DropStackFromSlotTrick());
     public static final SwapSlotTrick SWAP_SLOT = register("swap_slot", new SwapSlotTrick());
+    public static final BlockFromItemTrick BLOCK_FROM_ITEM = register("block_from_item", new BlockFromItemTrick());
+    public static final ItemFromBlockTrick ITEM_FROM_BLOCK = register("item_from_block", new ItemFromBlockTrick());
 
     // Projectile
     public static final SummonArrowTrick SUMMON_ARROW = register("summon_arrow", new SummonArrowTrick());

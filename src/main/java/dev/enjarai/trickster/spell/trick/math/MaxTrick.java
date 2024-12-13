@@ -20,13 +20,15 @@ public class MaxTrick extends DistortionTrick {
     @Override
     public Fragment distort(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         fragments = supposeInput(fragments, 0)
-           .flatMap(l -> supposeType(l, FragmentType.LIST))
-           .map(ListFragment::fragments)
-           .orElse(fragments);
+                .flatMap(l -> supposeType(l, FragmentType.LIST))
+                .map(ListFragment::fragments)
+                .orElse(fragments);
 
-        return new NumberFragment(fragments.stream()
-                .mapToDouble(frag -> expectType(frag, FragmentType.NUMBER).number())
-                .max()
-                .orElseThrow(() -> new MissingInputsBlunder(this)));
+        return new NumberFragment(
+                fragments.stream()
+                        .mapToDouble(frag -> expectType(frag, FragmentType.NUMBER).number())
+                        .max()
+                        .orElseThrow(() -> new MissingInputsBlunder(this))
+        );
     }
 }

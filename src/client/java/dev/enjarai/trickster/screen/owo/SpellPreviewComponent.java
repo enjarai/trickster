@@ -77,7 +77,6 @@ public class SpellPreviewComponent extends BaseComponent {
     public void mount(ParentComponent parent, int x, int y) {
         super.mount(parent, x, y);
 
-
         var loadButton = parent.childById(ButtonComponent.class, "load-button");
         if (loadButton != null) {
             loadButton.onPress(this::loadSpellToGame);

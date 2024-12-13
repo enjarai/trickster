@@ -13,24 +13,23 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(BipedEntityModel.class)
 public class BipedEntityModelMixin<T extends LivingEntity> {
-    @Shadow @Final public ModelPart rightArm;
-    @Shadow @Final public ModelPart leftArm;
+    @Shadow
+    @Final
+    public ModelPart rightArm;
+    @Shadow
+    @Final
+    public ModelPart leftArm;
     @Unique
     protected float tickDelta;
 
-    @Inject(
-            method = "animateModel(Lnet/minecraft/entity/LivingEntity;FFF)V",
-            at = @At("HEAD")
-    )
+    @Inject(method = "animateModel(Lnet/minecraft/entity/LivingEntity;FFF)V", at = @At("HEAD"))
     private void grabTickDelta(T livingEntity, float f, float g, float h, CallbackInfo ci) {
         tickDelta = h;
     }
 
     @Inject(
-            method = "setAngles(Lnet/minecraft/entity/LivingEntity;FFFFF)V",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/client/model/ModelPart;copyTransform(Lnet/minecraft/client/model/ModelPart;)V"
+            method = "setAngles(Lnet/minecraft/entity/LivingEntity;FFFFF)V", at = @At(
+                    value = "INVOKE", target = "Lnet/minecraft/client/model/ModelPart;copyTransform(Lnet/minecraft/client/model/ModelPart;)V"
             )
     )
     protected void positionModelParts(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci) {

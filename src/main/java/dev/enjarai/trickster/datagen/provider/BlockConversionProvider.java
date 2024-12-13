@@ -35,22 +35,25 @@ public abstract class BlockConversionProvider implements DataProvider {
     @Override
     public CompletableFuture<?> run(DataWriter writer) {
         return this.getRegistryLookupFuture()
-          .thenCompose(wrapperLookup -> {
-              return CompletableFuture.allOf(
-                this.builders
-                  .entrySet()
-                  .stream()
-                  .map(
-                    entry -> {
-                        Identifier identifier = entry.getKey();
-                        List<BlockConversionLoader.WeightedValue> values = entry.getValue().build();
-                        Path path = this.pathResolver.resolveJson(identifier);
-                        return DataProvider.writeCodecToPath(writer, wrapperLookup, BlockConversionLoader.Replaceable.CODEC, new BlockConversionLoader.Replaceable(false, values), path);
-                    }
-                  )
-                  .toArray(CompletableFuture[]::new)
-              );
-          });
+                .thenCompose(wrapperLookup -> {
+                    return CompletableFuture.allOf(
+                            this.builders
+                                    .entrySet()
+                                    .stream()
+                                    .map(
+                                            entry -> {
+                                                Identifier identifier = entry.getKey();
+                                                List<BlockConversionLoader.WeightedValue> values = entry.getValue().build();
+                                                Path path = this.pathResolver.resolveJson(identifier);
+                                                return DataProvider.writeCodecToPath(
+                                                        writer, wrapperLookup, BlockConversionLoader.Replaceable.CODEC,
+                                                        new BlockConversionLoader.Replaceable(false, values), path
+                                                );
+                                            }
+                                    )
+                                    .toArray(CompletableFuture[]::new)
+                    );
+                });
     }
 
     protected CompletableFuture<RegistryWrapper.WrapperLookup> getRegistryLookupFuture() {
