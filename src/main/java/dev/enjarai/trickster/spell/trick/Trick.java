@@ -62,7 +62,7 @@ public abstract class Trick<T extends Trick<T>> {
 
     @SuppressWarnings("unchecked")
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        for (int i = handlers.size(); i >= 0; i--) {
+        for (int i = handlers.size() - 1; i >= 0; i--) {
             var handler = handlers.get(i);
 
             if (handler.match(fragments)) {
