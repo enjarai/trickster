@@ -25,7 +25,7 @@ import java.util.Optional;
 
 public class WriteSpellTrick extends Trick<WriteSpellTrick> {
     public WriteSpellTrick() {
-        super(Pattern.of(1, 4, 7, 8, 5, 4, 3, 6, 7), Signature.of());
+        super(Pattern.of(1, 4, 7, 8, 5, 4, 3, 6, 7), Signature.of(ANY, ));
     }
 
     @Override

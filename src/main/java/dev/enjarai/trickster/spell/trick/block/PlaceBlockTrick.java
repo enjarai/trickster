@@ -7,9 +7,12 @@ import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.CannotPlaceBlockBlunder;
 import dev.enjarai.trickster.spell.blunder.ItemInvalidBlunder;
 import dev.enjarai.trickster.spell.blunder.MissingItemBlunder;
+import dev.enjarai.trickster.spell.fragment.BlockTypeFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.SlotFragment;
+import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.Signature;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
@@ -20,25 +23,27 @@ import net.minecraft.world.event.GameEvent;
 import java.util.List;
 import java.util.Optional;
 
-public class PlaceBlockTrick extends Trick {
+public class PlaceBlockTrick extends Trick<PlaceBlockTrick> {
     public PlaceBlockTrick() {
-        super(Pattern.of(0, 2, 8, 6, 0));
+        super(Pattern.of(0, 2, 8, 6, 0), Signature.of(FragmentType.VECTOR, FragmentType.SLOT, PlaceBlockTrick::placeSlot));
+        overload(Signature.of(FragmentType.VECTOR, FragmentType.BLOCK_TYPE, PlaceBlockTrick::placeType));
     }
 
-    @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var pos = expectInput(fragments, FragmentType.VECTOR, 0);
-        var arg2 = expectInput(fragments, 1);
+    public Fragment placeSlot(SpellContext ctx, VectorFragment pos, SlotFragment slot) throws BlunderException {
+        var stack = ctx.getStack(this, Optional.of(slot), item -> item.getItem() instanceof BlockItem)
+                .orElseThrow(() -> new MissingItemBlunder(this));
+        return place(ctx, pos, stack);
+    }
+
+    public Fragment placeType(SpellContext ctx, VectorFragment pos, BlockTypeFragment type) throws BlunderException {
+        var stack = ctx.getStack(this, Optional.empty(), item -> item.getItem() instanceof BlockItem blockItem && blockItem.getBlock() == type.block())
+                .orElseThrow(() -> new MissingItemBlunder(this));
+        return place(ctx, pos, stack);
+    }
+
+    public Fragment place(SpellContext ctx, VectorFragment pos, ItemStack stack) throws BlunderException {
         var world = ctx.source().getWorld();
         var blockPos = pos.toBlockPos();
-        ItemStack stack;
-
-        if (arg2 instanceof SlotFragment slot)
-            stack = ctx.getStack(this, Optional.of(slot), item -> item instanceof BlockItem).orElseThrow(() -> new MissingItemBlunder(this));
-        else {
-            var block = expectInput(fragments, FragmentType.BLOCK_TYPE, 1).block();
-            stack = ctx.getStack(this, Optional.empty(), item -> item instanceof BlockItem blockItem && blockItem.getBlock() == block).orElseThrow(() -> new MissingItemBlunder(this));
-        }
 
         try {
             if (!(stack.getItem() instanceof BlockItem blockItem)) throw new ItemInvalidBlunder(this);

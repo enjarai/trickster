@@ -5,10 +5,12 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
+import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlockOccupiedBlunder;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.type.Signature;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
@@ -27,14 +29,12 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class ConjureWaterTrick extends Trick {
+public class ConjureWaterTrick extends Trick<ConjureWaterTrick> {
     public ConjureWaterTrick() {
-        super(Pattern.of(3, 0, 4, 2, 5));
+        super(Pattern.of(3, 0, 4, 2, 5), Signature.of(FragmentType.VECTOR, ConjureWaterTrick::conjure));
     }
 
-    @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var pos = expectInput(fragments, FragmentType.VECTOR, 0);
+    public Fragment conjure(SpellContext ctx, VectorFragment pos) throws BlunderException {
         var blockPos = pos.toBlockPos();
         var bucket = Items.WATER_BUCKET;
         var world = ctx.source().getWorld();

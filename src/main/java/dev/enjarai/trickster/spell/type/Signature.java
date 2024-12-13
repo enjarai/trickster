@@ -6,16 +6,25 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.trick.Trick;
-import io.vavr.Function3;
-import io.vavr.Function4;
-import io.vavr.Function5;
-import io.vavr.Function6;
-import io.vavr.Function7;
-import io.vavr.Function8;
+import io.vavr.*;
 
 public interface Signature<T extends Trick<T>, R> {
     boolean match(List<Fragment> fragments);
     R run(T trick, SpellContext ctx, List<Fragment> fragments) throws BlunderException;
+
+    static <T extends Trick<T>, R> Signature<T, R> of(Function2<T, SpellContext, R> handler) {
+        return new Signature<T, R>() {
+            @Override
+            public boolean match(List<Fragment> fragments) {
+                return true;
+            }
+
+            @Override
+            public R run(T trick, SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+                return handler.apply(trick, ctx);
+            }
+        };
+    }
 
     static <T extends Trick<T>, R, T1> Signature<T, R> of(ArgType<T1> t1, Function3<T, SpellContext, T1, R> handler) {
         return new Signature<T, R>() {

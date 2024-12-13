@@ -7,7 +7,9 @@ import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlockInvalidBlunder;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
+import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.Signature;
 import net.minecraft.block.*;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.state.property.Properties;
@@ -16,14 +18,12 @@ import net.minecraft.world.event.GameEvent;
 
 import java.util.List;
 
-public class CoolTrick extends Trick {
+public class CoolTrick extends Trick<CoolTrick> {
     public CoolTrick() {
-        super(Pattern.of(3, 4, 5, 8, 3, 6, 5, 7, 3));
+        super(Pattern.of(3, 4, 5, 8, 3, 6, 5, 7, 3), Signature.of(FragmentType.VECTOR, CoolTrick::cool));
     }
 
-    @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var pos = expectInput(fragments, FragmentType.VECTOR, 0);
+    public Fragment cool(SpellContext ctx, VectorFragment pos) throws BlunderException {
         var blockPos = pos.toBlockPos();
         var world = ctx.source().getWorld();
         var blockState = world.getBlockState(blockPos);
