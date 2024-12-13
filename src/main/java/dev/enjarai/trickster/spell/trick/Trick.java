@@ -77,16 +77,11 @@ public abstract class Trick<T extends Trick<T>> {
         return new SimpleArgType<T>(type);
     }
 
-    @SuppressWarnings("unchecked")
+    @SafeVarargs
     protected static <T extends Fragment> VariadicArgType<T> variadic(Class<T>... types) {
         return new VariadicArgType<>(types);
     }
 
-    @SuppressWarnings("unchecked")
-    protected static <T extends Fragment> VariadicArgType<T> variadic(Class<T> type) {
-        return variadic((Class<T>[]) new Class[]{type});
-    }
-   
     protected void expectCanBuild(SpellContext ctx, BlockPos... positions) {
         if (ctx.source().getPlayer().isEmpty()) {
             return;
@@ -134,6 +129,7 @@ public abstract class Trick<T extends Trick<T>> {
 
         return Text.literal("").append(
                 Text.translatable(Trickster.MOD_ID + ".trick." + id.getNamespace() + "." + id.getPath())
-                        .withColor(FragmentType.PATTERN.color().getAsInt()));
+                        .withColor(FragmentType.PATTERN.color().getAsInt())
+        );
     }
 }

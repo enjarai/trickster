@@ -9,8 +9,8 @@ import dev.enjarai.trickster.spell.Fragment;
 
 public class VariadicArgType<T extends Fragment> implements ArgType<List<T>> {
     private final Class<T>[] types;
-    
-    @SuppressWarnings("unchecked")
+
+    @SafeVarargs
     public VariadicArgType(Class<T>... types) {
         this.types = types;
     }
@@ -26,7 +26,7 @@ public class VariadicArgType<T extends Fragment> implements ArgType<List<T>> {
     public List<T> compose(List<Fragment> fragments) {
         if (fragments.size() % types.length != 0)
             return null;
-        
+
         var result = new ArrayList<T>();
         int offset = 0;
 
