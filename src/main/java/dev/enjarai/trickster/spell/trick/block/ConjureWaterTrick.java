@@ -40,10 +40,12 @@ public class ConjureWaterTrick extends Trick {
         var world = ctx.source().getWorld();
         expectCanBuild(ctx, blockPos);
 
-        if (!(world.getBlockState(blockPos).isAir()
-                || world.getBlockState(blockPos).getBlock() instanceof Waterloggable
-                || world.getBlockState(blockPos).isOf(Blocks.CAULDRON)
-                || world.getFluidState(blockPos).isIn(FluidTags.WATER))) {
+        if (
+            !(world.getBlockState(blockPos).isAir()
+                    || world.getBlockState(blockPos).getBlock() instanceof Waterloggable
+                    || world.getBlockState(blockPos).isOf(Blocks.CAULDRON)
+                    || world.getFluidState(blockPos).isIn(FluidTags.WATER))
+        ) {
             throw new BlockOccupiedBlunder(this, pos);
         }
 
@@ -52,16 +54,20 @@ public class ConjureWaterTrick extends Trick {
 
         if (state.getBlock() == Blocks.CAULDRON) {
             world.setBlockState(blockPos, Blocks.WATER_CAULDRON.getDefaultState().with(LeveledCauldronBlock.LEVEL, LeveledCauldronBlock.MAX_LEVEL), 3);
-        } else if (!tryPlaceWater(
-                world,
-                blockPos) && bucket instanceof BucketItem) {
-                    ((BucketItem) bucket).placeFluid(null, world, blockPos, null);
-                }
+        } else if (
+            !tryPlaceWater(
+                    world,
+                    blockPos
+            ) && bucket instanceof BucketItem
+        ) {
+            ((BucketItem) bucket).placeFluid(null, world, blockPos, null);
+        }
 
         var particlePos = blockPos.toCenterPos();
         world.spawnParticles(
                 ModParticles.PROTECTED_BLOCK, particlePos.x, particlePos.y, particlePos.z,
-                1, 0, 0, 0, 0);
+                1, 0, 0, 0, 0
+        );
 
         return pos;
     }

@@ -41,9 +41,12 @@ public class ScrollDyeingRecipe extends SpecialCraftingRecipe {
         }
         this.dyeMap = dyeMap.build();
 
-        this.ingredient = Ingredient.ofStacks(Stream.concat(
-                Stream.of(original),
-                ModItems.DYED_VARIANTS.stream().filter(v -> v.original() == original).map(ModItems.DyedVariant::variant)).map(ItemStack::new));
+        this.ingredient = Ingredient.ofStacks(
+                Stream.concat(
+                        Stream.of(original),
+                        ModItems.DYED_VARIANTS.stream().filter(v -> v.original() == original).map(ModItems.DyedVariant::variant)
+                ).map(ItemStack::new)
+        );
     }
 
     public boolean matches(CraftingRecipeInput craftingRecipeInput, World world) {

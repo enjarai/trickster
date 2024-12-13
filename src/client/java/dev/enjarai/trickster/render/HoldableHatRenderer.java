@@ -16,9 +16,11 @@ import net.minecraft.util.math.RotationAxis;
 
 public class HoldableHatRenderer implements AccessoryRenderer {
     @Override
-    public <M extends LivingEntity> void render(ItemStack stack, SlotReference reference, MatrixStack matrices, EntityModel<M> model,
+    public <M extends LivingEntity> void render(
+            ItemStack stack, SlotReference reference, MatrixStack matrices, EntityModel<M> model,
             VertexConsumerProvider multiBufferSource, int light, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw,
-            float headPitch) {
+            float headPitch
+    ) {
         if (!(model instanceof BipedEntityModel<? extends LivingEntity> humanoidModel))
             return;
 
@@ -29,6 +31,7 @@ public class HoldableHatRenderer implements AccessoryRenderer {
 
         MinecraftClient.getInstance().getItemRenderer().renderItem(
                 stack, ModelTransformationMode.HEAD, light, OverlayTexture.DEFAULT_UV,
-                matrices, multiBufferSource, reference.entity().getWorld(), 0);
+                matrices, multiBufferSource, reference.entity().getWorld(), 0
+        );
     }
 }

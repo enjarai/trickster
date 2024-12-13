@@ -24,51 +24,89 @@ import java.util.List;
 
 public class ModItems {
     public static final LavenderBookItem TOME_OF_TOMFOOLERY = LavenderBookItem.registerForBook(
-            Trickster.id("tome_of_tomfoolery"), new Item.Settings().maxCount(1));
-    public static final WrittenScrollItem WRITTEN_SCROLL = register("written_scroll",
-            new WrittenScrollItem(new Item.Settings().maxCount(16)
-                    .component(ModComponents.FRAGMENT, new FragmentComponent(new SpellPart(), true))
-                    .component(ModComponents.WRITTEN_SCROLL_META,
-                            new WrittenScrollMetaComponent("Unknown", "Unknown", 0))));
-    public static final ScrollAndQuillItem SCROLL_AND_QUILL = register("scroll_and_quill",
-            new ScrollAndQuillItem(new Item.Settings().maxCount(16)
-                    .component(ModComponents.FRAGMENT, new FragmentComponent(new SpellPart())), WRITTEN_SCROLL));
-    public static final EvaluationMirrorItem MIRROR_OF_EVALUATION = register("mirror_of_evaluation",
-            new EvaluationMirrorItem(new Item.Settings().maxCount(1)
-                    .component(ModComponents.FRAGMENT, new FragmentComponent(new SpellPart()))));
-    public static final TrickHatItem TOP_HAT = register("top_hat",
-            new TrickHatItem(new Item.Settings()));
-    public static final TrickHatItem WITCH_HAT = register("witch_hat",
-            new TrickHatItem(new Item.Settings()));
-    public static final TrickHatItem FEZ = register("fez",
-            new TrickHatItem(new Item.Settings()));
-    public static final WandItem WAND = register("wand",
-            new WandItem(new Item.Settings().maxCount(1)
-                    .component(ModComponents.FRAGMENT, new FragmentComponent(new SpellPart()))));
-    public static final Item MACRO_RING = register("macro_ring",
-            new Item(new Item.Settings().maxCount(1)));
-    public static final Item WARDING_CHARM = register("warding_charm",
-            new Item(new Item.Settings().maxCount(1)));
-    public static final SpellInkItem SPELL_INK = register("spell_ink",
-            new SpellInkItem(new Item.Settings().recipeRemainder(Items.GLASS_BOTTLE)
-                    .food(new FoodComponent.Builder()
-                            .nutrition(0)
-                            .saturationModifier(0)
-                            .alwaysEdible()
-                            .usingConvertsTo(Items.GLASS_BOTTLE)
-                            .statusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 60 * 20), 1)
-                            .statusEffect(new StatusEffectInstance(StatusEffects.POISON, 60 * 20), 1)
-                            .statusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 60 * 20), 1)
-                            .statusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 60 * 20), 1)
-                            .statusEffect(new StatusEffectInstance(ModEffects.MANA_BOOST, 60 * 20), 1)
-                            .build())));
+            Trickster.id("tome_of_tomfoolery"), new Item.Settings().maxCount(1)
+    );
+    public static final WrittenScrollItem WRITTEN_SCROLL = register(
+            "written_scroll",
+            new WrittenScrollItem(
+                    new Item.Settings().maxCount(16)
+                            .component(ModComponents.FRAGMENT, new FragmentComponent(new SpellPart(), true))
+                            .component(
+                                    ModComponents.WRITTEN_SCROLL_META,
+                                    new WrittenScrollMetaComponent("Unknown", "Unknown", 0)
+                            )
+            )
+    );
+    public static final ScrollAndQuillItem SCROLL_AND_QUILL = register(
+            "scroll_and_quill",
+            new ScrollAndQuillItem(
+                    new Item.Settings().maxCount(16)
+                            .component(ModComponents.FRAGMENT, new FragmentComponent(new SpellPart())),
+                    WRITTEN_SCROLL
+            )
+    );
+    public static final EvaluationMirrorItem MIRROR_OF_EVALUATION = register(
+            "mirror_of_evaluation",
+            new EvaluationMirrorItem(
+                    new Item.Settings().maxCount(1)
+                            .component(ModComponents.FRAGMENT, new FragmentComponent(new SpellPart()))
+            )
+    );
+    public static final TrickHatItem TOP_HAT = register(
+            "top_hat",
+            new TrickHatItem(new Item.Settings())
+    );
+    public static final TrickHatItem WITCH_HAT = register(
+            "witch_hat",
+            new TrickHatItem(new Item.Settings())
+    );
+    public static final TrickHatItem FEZ = register(
+            "fez",
+            new TrickHatItem(new Item.Settings())
+    );
+    public static final WandItem WAND = register(
+            "wand",
+            new WandItem(
+                    new Item.Settings().maxCount(1)
+                            .component(ModComponents.FRAGMENT, new FragmentComponent(new SpellPart()))
+            )
+    );
+    public static final Item MACRO_RING = register(
+            "macro_ring",
+            new Item(new Item.Settings().maxCount(1))
+    );
+    public static final Item WARDING_CHARM = register(
+            "warding_charm",
+            new Item(new Item.Settings().maxCount(1))
+    );
+    public static final SpellInkItem SPELL_INK = register(
+            "spell_ink",
+            new SpellInkItem(
+                    new Item.Settings().recipeRemainder(Items.GLASS_BOTTLE)
+                            .food(
+                                    new FoodComponent.Builder()
+                                            .nutrition(0)
+                                            .saturationModifier(0)
+                                            .alwaysEdible()
+                                            .usingConvertsTo(Items.GLASS_BOTTLE)
+                                            .statusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 60 * 20), 1)
+                                            .statusEffect(new StatusEffectInstance(StatusEffects.POISON, 60 * 20), 1)
+                                            .statusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 60 * 20), 1)
+                                            .statusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 60 * 20), 1)
+                                            .statusEffect(new StatusEffectInstance(ModEffects.MANA_BOOST, 60 * 20), 1)
+                                            .build()
+                            )
+            )
+    );
     public static final SpellCoreItem SPELL_CORE = register("spell_core", new SpellCoreItem());
     public static final RustedSpellCoreItem RUSTED_SPELL_CORE = register("rusted_spell_core", new RustedSpellCoreItem());
     public static final OminousSpellCoreItem OMINOUS_SPELL_CORE = register("ominous_spell_core", new OminousSpellCoreItem());
     public static final BlockItem SPELL_RESONATOR_ITEM = register("spell_resonator", new BlockItem(ModBlocks.SPELL_RESONATOR, new Item.Settings()));
     public static final BlockItem SPELL_CONSTRUCT_ITEM = register("spell_construct", new BlockItem(ModBlocks.SPELL_CONSTRUCT, new Item.Settings()));
-    public static final BlockItem MODULAR_SPELL_CONSTRUCT_ITEM = register("modular_spell_construct",
-            new BlockItem(ModBlocks.MODULAR_SPELL_CONSTRUCT, new Item.Settings()));
+    public static final BlockItem MODULAR_SPELL_CONSTRUCT_ITEM = register(
+            "modular_spell_construct",
+            new BlockItem(ModBlocks.MODULAR_SPELL_CONSTRUCT, new Item.Settings())
+    );
     public static final BlockItem SCROLL_SHELF_BLOCK_ITEM = register("scroll_shelf", new BlockItem(ModBlocks.SCROLL_SHELF, new Item.Settings()));
     public static final KnotItem.Amethyst AMETHYST_KNOT = register("amethyst_knot", new KnotItem.Amethyst());
     public static final KnotItem.Emerald EMERALD_KNOT = register("emerald_knot", new KnotItem.Emerald());
@@ -98,17 +136,28 @@ public class ModItems {
         for (int i = 0; i < DyeColor.values().length; i++) {
             var color = DyeColor.values()[i];
 
-            var writtenScroll = register("written_scroll_" + color.getName(),
-                    new WrittenScrollItem(new Item.Settings().maxCount(16)
-                            .component(ModComponents.FRAGMENT, new FragmentComponent(new SpellPart(), true))
-                            .component(ModComponents.WRITTEN_SCROLL_META,
-                                    new WrittenScrollMetaComponent("Unknown", "Unknown", 0))));
+            var writtenScroll = register(
+                    "written_scroll_" + color.getName(),
+                    new WrittenScrollItem(
+                            new Item.Settings().maxCount(16)
+                                    .component(ModComponents.FRAGMENT, new FragmentComponent(new SpellPart(), true))
+                                    .component(
+                                            ModComponents.WRITTEN_SCROLL_META,
+                                            new WrittenScrollMetaComponent("Unknown", "Unknown", 0)
+                                    )
+                    )
+            );
             list.add(new DyedVariant(WRITTEN_SCROLL, writtenScroll, color));
             COLORED_WRITTEN_SCROLLS[i] = writtenScroll;
 
-            var scrollAndQuill = register("scroll_and_quill_" + color.getName(),
-                    new ScrollAndQuillItem(new Item.Settings().maxCount(16)
-                            .component(ModComponents.FRAGMENT, new FragmentComponent(new SpellPart())), writtenScroll));
+            var scrollAndQuill = register(
+                    "scroll_and_quill_" + color.getName(),
+                    new ScrollAndQuillItem(
+                            new Item.Settings().maxCount(16)
+                                    .component(ModComponents.FRAGMENT, new FragmentComponent(new SpellPart())),
+                            writtenScroll
+                    )
+            );
             list.add(new DyedVariant(SCROLL_AND_QUILL, scrollAndQuill, color));
             COLORED_SCROLLS_AND_QUILLS[i] = scrollAndQuill;
         }

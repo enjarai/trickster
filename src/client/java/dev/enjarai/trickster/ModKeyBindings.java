@@ -28,16 +28,19 @@ public class ModKeyBindings {
                 if (TAKE_HAT.wasPressed()) {
                     var hat = SlotReference.of(player, "hat", 0);
                     var hatStack = hat.getStack();
-                    if (((hatStack != null && hatStack.isIn(ModItems.HOLDABLE_HAT)) || player.getEquippedStack(EquipmentSlot.HEAD).isIn(ModItems.HOLDABLE_HAT))
-                            && player.getEquippedStack(EquipmentSlot.OFFHAND).isEmpty()) {
+                    if (
+                        ((hatStack != null && hatStack.isIn(ModItems.HOLDABLE_HAT)) || player.getEquippedStack(EquipmentSlot.HEAD).isIn(ModItems.HOLDABLE_HAT))
+                                && player.getEquippedStack(EquipmentSlot.OFFHAND).isEmpty()
+                    ) {
                         ModNetworking.CHANNEL.clientHandle().send(new MladyPacket(true));
-                    } else if (((hatStack != null && hatStack.isEmpty()) || player.getEquippedStack(EquipmentSlot.HEAD).isEmpty())
-                            && player.getOffHandStack().isIn(ModItems.HOLDABLE_HAT)) {
-                                ModNetworking.CHANNEL.clientHandle().send(new MladyPacket(false));
-                            }
-                    // Consume remaining key presses
-                    while (TAKE_HAT.wasPressed()) {
+                    } else if (
+                        ((hatStack != null && hatStack.isEmpty()) || player.getEquippedStack(EquipmentSlot.HEAD).isEmpty())
+                                && player.getOffHandStack().isIn(ModItems.HOLDABLE_HAT)
+                    ) {
+                        ModNetworking.CHANNEL.clientHandle().send(new MladyPacket(false));
                     }
+                    // Consume remaining key presses
+                    while (TAKE_HAT.wasPressed()) {}
                 }
 
                 if (MODIFY_SPELL.wasPressed()) {
@@ -46,8 +49,7 @@ public class ModKeyBindings {
                         ModNetworking.CHANNEL.clientHandle().send(new SpellEditPacket());
                     }
                     // Consume remaining key presses
-                    while (MODIFY_SPELL.wasPressed()) {
-                    }
+                    while (MODIFY_SPELL.wasPressed()) {}
                 }
             }
         });
@@ -55,11 +57,13 @@ public class ModKeyBindings {
 
     public static boolean interceptScroll(float amount) {
         var player = MinecraftClient.getInstance().player;
-        if (player != null
-                && (((Trickster.CONFIG.topHatInterceptScrolling() || player.isSneaking())
-                        && player.getOffHandStack().contains(ModComponents.SELECTED_SLOT))
-                        || (player.isSneaking()
-                                && player.getMainHandStack().contains(ModComponents.SELECTED_SLOT)))) {
+        if (
+            player != null
+                    && (((Trickster.CONFIG.topHatInterceptScrolling() || player.isSneaking())
+                            && player.getOffHandStack().contains(ModComponents.SELECTED_SLOT))
+                            || (player.isSneaking()
+                                    && player.getMainHandStack().contains(ModComponents.SELECTED_SLOT)))
+        ) {
             ModNetworking.CHANNEL.clientHandle().send(new ScrollHatPacket(Trickster.CONFIG.invertTopHatScrolling() ? amount : -amount, true));
             return true;
         }

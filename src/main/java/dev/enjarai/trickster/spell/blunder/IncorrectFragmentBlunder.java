@@ -20,7 +20,10 @@ public class IncorrectFragmentBlunder extends TrickBlunderException {
 
     @Override
     public MutableText createMessage() {
-        return source.getName().append(": ").append(Text.translatable(
-                Trickster.MOD_ID + ".blunder.incorrect_fragment", formatInt(index), expectedType, found.asFormattedText()));
+        return source.getName().append(": ").append(
+                Text.translatable(
+                        Trickster.MOD_ID + ".blunder.incorrect_fragment", formatInt(index), expectedType, found.asFormattedText()
+                )
+        );
     }
 }

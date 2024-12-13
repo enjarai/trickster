@@ -38,13 +38,18 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
     private int lastSentSpellDataHash;
     private int wait;
 
-    public static final Endec<Map<Integer, RunningSpellData>> SPELL_DATA_ENDEC = Endec.map(Endec.INT, StructEndecBuilder.of(
-            Endec.INT.fieldOf("executions_last_tick", RunningSpellData::executionsLastTick),
-            Endec.BOOLEAN.fieldOf("errored", RunningSpellData::errored),
-            EndecTomfoolery.safeOptionalOf(MinecraftEndecs.TEXT).optionalFieldOf("message", RunningSpellData::message, Optional.empty()),
-            RunningSpellData::new));
-    public static final KeyedEndec<PlayerSpellExecutionManager> EXECUTION_MANAGER_ENDEC = PlayerSpellExecutionManager.ENDEC.keyed("manager",
-            () -> new PlayerSpellExecutionManager(5));
+    public static final Endec<Map<Integer, RunningSpellData>> SPELL_DATA_ENDEC = Endec.map(
+            Endec.INT, StructEndecBuilder.of(
+                    Endec.INT.fieldOf("executions_last_tick", RunningSpellData::executionsLastTick),
+                    Endec.BOOLEAN.fieldOf("errored", RunningSpellData::errored),
+                    EndecTomfoolery.safeOptionalOf(MinecraftEndecs.TEXT).optionalFieldOf("message", RunningSpellData::message, Optional.empty()),
+                    RunningSpellData::new
+            )
+    );
+    public static final KeyedEndec<PlayerSpellExecutionManager> EXECUTION_MANAGER_ENDEC = PlayerSpellExecutionManager.ENDEC.keyed(
+            "manager",
+            () -> new PlayerSpellExecutionManager(5)
+    );
 
     public CasterComponent(PlayerEntity player) {
         this.player = player;
@@ -71,8 +76,11 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
             message = error.errorMessage();
             errored = true;
         }
-        runningSpellData.put(index, new RunningSpellData(
-                executor.getLastRunExecutions(), errored, Optional.ofNullable(message)));
+        runningSpellData.put(
+                index, new RunningSpellData(
+                        executor.getLastRunExecutions(), errored, Optional.ofNullable(message)
+                )
+        );
     }
 
     private void completeExecutor(int index, SpellExecutor executor) {
@@ -86,7 +94,8 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
     private void playCastSound(float startPitch, float pitchRange) {
         if (player instanceof ServerPlayerEntity serverPlayer) {
             serverPlayer.getServerWorld().playSoundFromEntity(
-                    null, serverPlayer, ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(startPitch, pitchRange));
+                    null, serverPlayer, ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(startPitch, pitchRange)
+            );
         }
     }
 

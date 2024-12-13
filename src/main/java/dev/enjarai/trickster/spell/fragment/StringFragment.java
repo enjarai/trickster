@@ -8,7 +8,8 @@ import net.minecraft.text.Text;
 public record StringFragment(String value) implements Fragment {
     public static final StructEndec<StringFragment> ENDEC = StructEndecBuilder.of(
             StructEndec.STRING.fieldOf("value", StringFragment::value),
-            StringFragment::new);
+            StringFragment::new
+    );
 
     @Override
     public FragmentType<?> type() {

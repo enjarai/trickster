@@ -18,10 +18,12 @@ public class GetVelocityTrick extends Trick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        return new VectorFragment(expectInput(fragments, FragmentType.ENTITY, 0)
-                .getEntity(ctx)
-                .orElseThrow(() -> new UnknownEntityBlunder(this))
-                .getVelocity()
-                .toVector3d());
+        return new VectorFragment(
+                expectInput(fragments, FragmentType.ENTITY, 0)
+                        .getEntity(ctx)
+                        .orElseThrow(() -> new UnknownEntityBlunder(this))
+                        .getVelocity()
+                        .toVector3d()
+        );
     }
 }

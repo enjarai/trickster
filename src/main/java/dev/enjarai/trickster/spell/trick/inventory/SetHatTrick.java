@@ -43,8 +43,11 @@ public class SetHatTrick extends Trick {
 
         var slot = hatStack.get(ModComponents.SELECTED_SLOT);
         if (slot != null) {
-            hatStack.set(ModComponents.SELECTED_SLOT, new SelectedSlotComponent(
-                    ((int) Math.floor(Math.abs(newSlot))) % slot.maxSlot(), slot.maxSlot()));
+            hatStack.set(
+                    ModComponents.SELECTED_SLOT, new SelectedSlotComponent(
+                            ((int) Math.floor(Math.abs(newSlot))) % slot.maxSlot(), slot.maxSlot()
+                    )
+            );
             return BooleanFragment.TRUE;
         }
 

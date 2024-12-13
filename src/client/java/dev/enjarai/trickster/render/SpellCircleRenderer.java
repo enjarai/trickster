@@ -112,19 +112,23 @@ public class SpellCircleRenderer {
         return (float) (value * precisionOffset);
     }
 
-    public void renderPart(MatrixStack matrices, VertexConsumerProvider vertexConsumers, SpellPart entry, double x, double y, double size, double startingAngle,
-            float delta, Function<Float, Float> alphaGetter, Vec3d normal) {
+    public void renderPart(
+            MatrixStack matrices, VertexConsumerProvider vertexConsumers, SpellPart entry, double x, double y, double size, double startingAngle,
+            float delta, Function<Float, Float> alphaGetter, Vec3d normal
+    ) {
         var alpha = alphaGetter.apply(toLocalSpace(size));
 
         drawTexturedQuad(
                 matrices, vertexConsumers, CIRCLE_TEXTURE,
                 toLocalSpace(x - size), toLocalSpace(x + size), toLocalSpace(y - size), toLocalSpace(y + size),
                 0,
-                r, g, b, alpha * circleTransparency, inUI);
+                r, g, b, alpha * circleTransparency, inUI
+        );
         drawGlyph(
                 matrices, vertexConsumers, entry,
                 x, y, size, startingAngle,
-                delta, alphaGetter, normal);
+                delta, alphaGetter, normal
+        );
 
         int partCount = entry.getSubParts().size();
 
@@ -154,8 +158,10 @@ public class SpellCircleRenderer {
         matrices.pop();
     }
 
-    protected void drawDivider(MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, double startingAngle, float size,
-            float partCount, float alpha) {
+    protected void drawDivider(
+            MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, double startingAngle, float size,
+            float partCount, float alpha
+    ) {
         var pixelSize = size / PART_PIXEL_RADIUS;
         var lineAngle = startingAngle + (2 * Math.PI) / partCount * -0.5 - (Math.PI / 2);
 
@@ -182,8 +188,10 @@ public class SpellCircleRenderer {
         //        );
     }
 
-    protected void drawGlyph(MatrixStack matrices, VertexConsumerProvider vertexConsumers, SpellPart parent, double x, double y, double size,
-            double startingAngle, float delta, Function<Float, Float> alphaGetter, Vec3d normal) {
+    protected void drawGlyph(
+            MatrixStack matrices, VertexConsumerProvider vertexConsumers, SpellPart parent, double x, double y, double size,
+            double startingAngle, float delta, Function<Float, Float> alphaGetter, Vec3d normal
+    ) {
         var glyph = parent.getGlyph();
         if (glyph instanceof SpellPart part) {
             renderPart(matrices, vertexConsumers, part, x, y, size / 3, startingAngle, delta, alphaGetter, normal);
@@ -201,8 +209,10 @@ public class SpellCircleRenderer {
         }
     }
 
-    private void drawSide(MatrixStack matrices, VertexConsumerProvider vertexConsumers, SpellPart parent, float x, float y, float size,
-            Function<Float, Float> alphaGetter, Vec3d normal, Fragment glyph) {
+    private void drawSide(
+            MatrixStack matrices, VertexConsumerProvider vertexConsumers, SpellPart parent, float x, float y, float size,
+            Function<Float, Float> alphaGetter, Vec3d normal, Fragment glyph
+    ) {
         var alpha = alphaGetter.apply(size);
         var patternSize = size / PATTERN_TO_PART_RATIO;
         var pixelSize = patternSize / PART_PIXEL_RADIUS;
@@ -281,7 +291,8 @@ public class SpellCircleRenderer {
                         -width / 2f, -height / 2f, color, false,
                         matrices.peek().getPositionMatrix(),
                         vertexConsumers, TextRenderer.TextLayerType.NORMAL,
-                        0, 0xf000f0);
+                        0, 0xf000f0
+                );
 
                 matrices.pop();
             }
@@ -319,8 +330,10 @@ public class SpellCircleRenderer {
 
     private static final Random glyphRandom = new LocalRandom(0);
 
-    public static void drawGlyphLine(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Vector2f last, Vector2f now, float pixelSize,
-            boolean isDrawing, float tone, float r, float g, float b, float opacity, boolean animated) {
+    public static void drawGlyphLine(
+            MatrixStack matrices, VertexConsumerProvider vertexConsumers, Vector2f last, Vector2f now, float pixelSize,
+            boolean isDrawing, float tone, float r, float g, float b, float opacity, boolean animated
+    ) {
         var parallelVec = new Vector2f(last.y - now.y, now.x - last.x).normalize().mul(pixelSize / 2);
         var directionVec = new Vector2f(last.x - now.x, last.y - now.y).normalize().mul(pixelSize * 3);
 
@@ -372,7 +385,8 @@ public class SpellCircleRenderer {
 
         return new Vector2f(
                 x + xSign * size,
-                y + ySign * size);
+                y + ySign * size
+        );
     }
 
     public static boolean isInsideHitbox(Vector2f pos, float pixelSize, double mouseX, double mouseY) {
@@ -381,8 +395,10 @@ public class SpellCircleRenderer {
                 mouseY >= pos.y - hitboxSize && mouseY <= pos.y + hitboxSize;
     }
 
-    public static void drawTexturedQuad(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Identifier texture, float x1, float x2, float y1,
-            float y2, float z, float r, float g, float b, float alpha, boolean inGui) {
+    public static void drawTexturedQuad(
+            MatrixStack matrices, VertexConsumerProvider vertexConsumers, Identifier texture, float x1, float x2, float y1,
+            float y2, float z, float r, float g, float b, float alpha, boolean inGui
+    ) {
         //        if (inUI) {
         //            RenderSystem.setShaderTexture(0, texture);
         //            RenderSystem.setShader(GameRenderer::getPositionTexProgram);
@@ -425,8 +441,10 @@ public class SpellCircleRenderer {
         }
     }
 
-    public static void drawFlatPolygon(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Consumer<BiConsumer<Float, Float>> vertexProvider, float z,
-            float r, float g, float b, float alpha) {
+    public static void drawFlatPolygon(
+            MatrixStack matrices, VertexConsumerProvider vertexConsumers, Consumer<BiConsumer<Float, Float>> vertexProvider, float z,
+            float r, float g, float b, float alpha
+    ) {
         Matrix4f matrix4f = matrices.peek().getPositionMatrix();
         VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderLayer.getGui());
         vertexProvider.accept((x, y) -> vertexConsumer.vertex(matrix4f, x, y, z).color(r, g, b, alpha));

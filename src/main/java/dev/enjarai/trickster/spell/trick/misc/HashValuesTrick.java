@@ -17,10 +17,12 @@ public class HashValuesTrick extends Trick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        return new NumberFragment(fragments.stream()
-                .map(Fragment::applyEphemeral)
-                .map(Fragment::hashCode)
-                .reduce(0, (left, right) -> Objects.hash(left, right)));
+        return new NumberFragment(
+                fragments.stream()
+                        .map(Fragment::applyEphemeral)
+                        .map(Fragment::hashCode)
+                        .reduce(0, (left, right) -> Objects.hash(left, right))
+        );
     }
 
 }

@@ -62,7 +62,8 @@ public class HeatTrick extends Trick {
             var particlePos = blockPos.toCenterPos();
             world.spawnParticles(
                     ParticleTypes.FLAME, particlePos.x, particlePos.y, particlePos.z,
-                    16, 0.5, 0.5, 0.5, 0);
+                    16, 0.5, 0.5, 0.5, 0
+            );
         } else {
             throw new BlockInvalidBlunder(this);
         }

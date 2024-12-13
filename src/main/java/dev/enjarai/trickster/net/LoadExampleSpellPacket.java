@@ -13,7 +13,8 @@ import net.minecraft.util.Hand;
 public record LoadExampleSpellPacket(SpellPart spell) {
     public static final StructEndec<LoadExampleSpellPacket> ENDEC = StructEndecBuilder.of(
             SpellPart.ENDEC.fieldOf("spell", LoadExampleSpellPacket::spell),
-            LoadExampleSpellPacket::new);
+            LoadExampleSpellPacket::new
+    );
 
     public void handleServer(ServerAccess access) {
         for (var hand : Hand.values()) {

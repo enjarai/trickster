@@ -19,7 +19,8 @@ import net.minecraft.text.Text;
 public record MapFragment(HashMap<Fragment, Fragment> map) implements FoldableFragment {
     public static final StructEndec<MapFragment> ENDEC = StructEndecBuilder.of(
             Endec.map(Fragment.ENDEC, Fragment.ENDEC).xmap(HashMap::ofAll, HashMap::toJavaMap).fieldOf("entries", MapFragment::map),
-            MapFragment::new);
+            MapFragment::new
+    );
 
     @Override
     public FragmentType<?> type() {

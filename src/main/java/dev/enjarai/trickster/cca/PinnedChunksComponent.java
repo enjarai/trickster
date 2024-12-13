@@ -16,10 +16,8 @@ import java.util.Comparator;
 import java.util.Map;
 
 public class PinnedChunksComponent implements ServerTickingComponent {
-    public static final KeyedEndec<Map<Long, Integer>> PINS_ENDEC =
-            Endec.map(Endec.LONG, Endec.INT).keyed("pins", Map.of());
-    public static final ChunkTicketType<ChunkPos> TICKET_TYPE =
-            ChunkTicketType.create("trickster:pinned", Comparator.comparingLong(ChunkPos::toLong), 80);
+    public static final KeyedEndec<Map<Long, Integer>> PINS_ENDEC = Endec.map(Endec.LONG, Endec.INT).keyed("pins", Map.of());
+    public static final ChunkTicketType<ChunkPos> TICKET_TYPE = ChunkTicketType.create("trickster:pinned", Comparator.comparingLong(ChunkPos::toLong), 80);
 
     private final World world;
     private final Long2IntMap pins = new Long2IntOpenHashMap();

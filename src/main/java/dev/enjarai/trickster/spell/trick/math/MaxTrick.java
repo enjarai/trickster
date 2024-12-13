@@ -24,9 +24,11 @@ public class MaxTrick extends DistortionTrick {
                 .map(ListFragment::fragments)
                 .orElse(fragments);
 
-        return new NumberFragment(fragments.stream()
-                .mapToDouble(frag -> expectType(frag, FragmentType.NUMBER).number())
-                .max()
-                .orElseThrow(() -> new MissingInputsBlunder(this)));
+        return new NumberFragment(
+                fragments.stream()
+                        .mapToDouble(frag -> expectType(frag, FragmentType.NUMBER).number())
+                        .max()
+                        .orElseThrow(() -> new MissingInputsBlunder(this))
+        );
     }
 }

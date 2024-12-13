@@ -44,8 +44,10 @@ public class ScrollContainerScreenHandler extends ScreenHandler {
             if (container != null) {
                 container.copyTo(inventory.getHeldStacks());
                 inventory.addListener(i -> {
-                    this.containerStack.set(DataComponentTypes.CONTAINER,
-                            ContainerComponent.fromStacks(this.inventory.getHeldStacks()));
+                    this.containerStack.set(
+                            DataComponentTypes.CONTAINER,
+                            ContainerComponent.fromStacks(this.inventory.getHeldStacks())
+                    );
                 });
             }
 

@@ -31,16 +31,14 @@ public final class BackwardCompatibleStructEndec<T, A extends T> implements Stru
 
             try {
                 result = deserializer.tryRead(d -> this.primary.decodeStruct(ctx, d, struct));
-            } catch (Exception ignore) {
-            }
+            } catch (Exception ignore) {}
 
             if (result != null)
                 return result;
 
             try {
                 result = deserializer.tryRead(d -> this.alternative.decodeStruct(ctx, d, struct));
-            } catch (Exception ignore) {
-            }
+            } catch (Exception ignore) {}
 
             if (result != null)
                 return result;

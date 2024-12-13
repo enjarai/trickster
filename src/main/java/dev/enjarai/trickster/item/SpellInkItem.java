@@ -33,9 +33,14 @@ public class SpellInkItem extends Item {
     @Override
     public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
         if (!world.isClient()) {
-            if (!user.addStatusEffect(new StatusEffectInstance(
-                    ModEffects.MANA_BOOST,
-                    20 * 60, 0)))
+            if (
+                !user.addStatusEffect(
+                        new StatusEffectInstance(
+                                ModEffects.MANA_BOOST,
+                                20 * 60, 0
+                        )
+                )
+            )
                 user.damage(new DamageSource(user.getRegistryManager().get(DamageTypes.MAGIC.getRegistryRef()).entryOf(DamageTypes.MAGIC)), 22);
         }
 

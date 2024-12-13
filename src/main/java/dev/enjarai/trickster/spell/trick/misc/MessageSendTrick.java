@@ -26,26 +26,28 @@ public class MessageSendTrick extends Trick {
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var value = expectInput(fragments, 0);
         var secondary = supposeEitherInput(fragments, FragmentType.NUMBER, FragmentType.SLOT, 1);
-        var key = secondary.map(either -> either
-                .<Key>mapLeft(n -> {
-                    ctx.useMana(this, (float) n.number());
-                    return new Key.Broadcast(ctx.source().getWorld().getRegistryKey(), ctx.source().getPos(), n.number());
-                })
-                .<Key>mapRight(s -> {
-                    var range = s.getSourcePos(this, ctx).toCenterPos().subtract(ctx.source().getBlockPos().toCenterPos()).length();
+        var key = secondary.map(
+                either -> either
+                        .<Key>mapLeft(n -> {
+                            ctx.useMana(this, (float) n.number());
+                            return new Key.Broadcast(ctx.source().getWorld().getRegistryKey(), ctx.source().getPos(), n.number());
+                        })
+                        .<Key>mapRight(s -> {
+                            var range = s.getSourcePos(this, ctx).toCenterPos().subtract(ctx.source().getBlockPos().toCenterPos()).length();
 
-                    if (range > 16) {
-                        throw new OutOfRangeBlunder(this, 16.0, range);
-                    }
+                            if (range > 16) {
+                                throw new OutOfRangeBlunder(this, 16.0, range);
+                            }
 
-                    var comp = s.reference(this, ctx).get(ModComponents.MANA);
+                            var comp = s.reference(this, ctx).get(ModComponents.MANA);
 
-                    if (comp != null && comp.pool() instanceof SharedManaPool pool) {
-                        return new Key.Channel(pool.uuid());
-                    }
+                            if (comp != null && comp.pool() instanceof SharedManaPool pool) {
+                                return new Key.Channel(pool.uuid());
+                            }
 
-                    throw new ItemInvalidBlunder(this);
-                }))
+                            throw new ItemInvalidBlunder(this);
+                        })
+        )
                 .map(Either::unwrap)
                 .orElseGet(() -> new Key.Broadcast(ctx.source().getWorld().getRegistryKey(), ctx.source().getPos(), 0));
 

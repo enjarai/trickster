@@ -92,7 +92,8 @@ public class BarsComponent implements ServerTickingComponent, AutoSyncedComponen
     public static class Bar {
         public static final Endec<Bar> ENDEC = StructEndecBuilder.of(
                 Endec.DOUBLE.fieldOf("fill", b -> b.fill),
-                Bar::new);
+                Bar::new
+        );
 
         public double fill;
         public int age;

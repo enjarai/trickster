@@ -22,15 +22,20 @@ import java.util.function.BiFunction;
 public non-sealed interface Fragment extends SpellInstruction {
     final int MAX_WEIGHT = 64000;
     final Text TRUNCATED_VALUE_TEXT = Text.literal(" [...]")
-            .setStyle(Style.EMPTY
-                    .withColor(Formatting.RED)
-                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.translatable(Trickster.MOD_ID + ".text.misc.value_truncated"))));
+            .setStyle(
+                    Style.EMPTY
+                            .withColor(Formatting.RED)
+                            .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.translatable(Trickster.MOD_ID + ".text.misc.value_truncated")))
+            );
     @SuppressWarnings("unchecked")
-    final StructEndec<Fragment> ENDEC = EndecTomfoolery.lazy(() -> (StructEndec<Fragment>) Endec.dispatchedStruct(
-            FragmentType::endec,
-            Fragment::type,
-            Endec.<FragmentType<?>>ifAttr(EndecTomfoolery.UBER_COMPACT_ATTRIBUTE, Endec.INT.xmap(FragmentType::getFromInt, FragmentType::getIntId))
-                    .orElse(MinecraftEndecs.ofRegistry(FragmentType.REGISTRY))));
+    final StructEndec<Fragment> ENDEC = EndecTomfoolery.lazy(
+            () -> (StructEndec<Fragment>) Endec.dispatchedStruct(
+                    FragmentType::endec,
+                    Fragment::type,
+                    Endec.<FragmentType<?>>ifAttr(EndecTomfoolery.UBER_COMPACT_ATTRIBUTE, Endec.INT.xmap(FragmentType::getFromInt, FragmentType::getIntId))
+                            .orElse(MinecraftEndecs.ofRegistry(FragmentType.REGISTRY))
+            )
+    );
 
     FragmentType<?> type();
 
@@ -43,9 +48,11 @@ public non-sealed interface Fragment extends SpellInstruction {
         var newSiblings = new ArrayList<>(siblings).subList(0, Math.min(size, 100));
         siblings.clear();
         siblings.addAll(newSiblings);
-        return text.append(size != newSiblings.size()
-                ? TRUNCATED_VALUE_TEXT
-                : Text.of(""));
+        return text.append(
+                size != newSiblings.size()
+                        ? TRUNCATED_VALUE_TEXT
+                        : Text.of("")
+        );
     }
 
     boolean asBoolean();

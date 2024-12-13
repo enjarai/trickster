@@ -13,4 +13,3 @@ public class ItemInvalidBlunder extends TrickBlunderException {
         return super.createMessage().append("Invalid item");
     }
 }
-

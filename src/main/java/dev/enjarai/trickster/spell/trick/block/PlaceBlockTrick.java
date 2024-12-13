@@ -61,7 +61,8 @@ public class PlaceBlockTrick extends Trick {
                     blockSoundGroup.getPlaceSound(),
                     SoundCategory.BLOCKS,
                     (blockSoundGroup.getVolume() + 1.0F) / 2.0F,
-                    blockSoundGroup.getPitch() * 0.8F);
+                    blockSoundGroup.getPitch() * 0.8F
+            );
             world.emitGameEvent(null, GameEvent.BLOCK_PLACE, blockPos);
 
             return pos;

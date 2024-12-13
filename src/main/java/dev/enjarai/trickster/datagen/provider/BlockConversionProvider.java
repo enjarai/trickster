@@ -45,10 +45,14 @@ public abstract class BlockConversionProvider implements DataProvider {
                                                 Identifier identifier = entry.getKey();
                                                 List<BlockConversionLoader.WeightedValue> values = entry.getValue().build();
                                                 Path path = this.pathResolver.resolveJson(identifier);
-                                                return DataProvider.writeCodecToPath(writer, wrapperLookup, BlockConversionLoader.Replaceable.CODEC,
-                                                        new BlockConversionLoader.Replaceable(false, values), path);
-                                            })
-                                    .toArray(CompletableFuture[]::new));
+                                                return DataProvider.writeCodecToPath(
+                                                        writer, wrapperLookup, BlockConversionLoader.Replaceable.CODEC,
+                                                        new BlockConversionLoader.Replaceable(false, values), path
+                                                );
+                                            }
+                                    )
+                                    .toArray(CompletableFuture[]::new)
+                    );
                 });
     }
 

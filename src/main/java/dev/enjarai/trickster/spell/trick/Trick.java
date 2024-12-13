@@ -91,8 +91,10 @@ public abstract class Trick {
         return Optional.of(fragments.get(index));
     }
 
-    protected <T1 extends Fragment, T2 extends Fragment> Optional<Either<T1, T2>> supposeEitherInput(List<Fragment> fragments, FragmentType<T1> primary,
-            FragmentType<T2> alternative, int index) {
+    protected <T1 extends Fragment, T2 extends Fragment> Optional<Either<T1, T2>> supposeEitherInput(
+            List<Fragment> fragments, FragmentType<T1> primary,
+            FragmentType<T2> alternative, int index
+    ) {
         var input = supposeInput(fragments, index);
         var r1 = input.flatMap(fragment -> supposeType(fragment, primary));
 
@@ -107,13 +109,17 @@ public abstract class Trick {
         return Optional.empty();
     }
 
-    protected <T1 extends Fragment, T2 extends Fragment> Either<T1, T2> expectEitherInput(List<Fragment> fragments, FragmentType<T1> primary,
-            FragmentType<T2> alternative, int index) throws BlunderException {
+    protected <T1 extends Fragment, T2 extends Fragment> Either<T1, T2> expectEitherInput(
+            List<Fragment> fragments, FragmentType<T1> primary,
+            FragmentType<T2> alternative, int index
+    ) throws BlunderException {
         var input = supposeInput(fragments, index);
         var expected = Text.literal("Either of ").append(primary.getName()).append(" or ").append(alternative.getName());
         return supposeEitherInput(fragments, primary, alternative, index)
-                .orElseThrow(() -> input.<BlunderException>map(fragment -> new IncorrectFragmentBlunder(this, index, expected, fragment))
-                        .orElse(new MissingFragmentBlunder(this, index, expected)));
+                .orElseThrow(
+                        () -> input.<BlunderException>map(fragment -> new IncorrectFragmentBlunder(this, index, expected, fragment))
+                                .orElse(new MissingFragmentBlunder(this, index, expected))
+                );
     }
 
     @SuppressWarnings("unchecked")
@@ -221,6 +227,7 @@ public abstract class Trick {
 
         return Text.literal("").append(
                 Text.translatable(Trickster.MOD_ID + ".trick." + id.getNamespace() + "." + id.getPath())
-                        .withColor(FragmentType.PATTERN.color().getAsInt()));
+                        .withColor(FragmentType.PATTERN.color().getAsInt())
+        );
     }
 }

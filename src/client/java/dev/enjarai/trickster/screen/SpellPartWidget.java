@@ -117,8 +117,10 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     }
 
     public ScrollAndQuillScreen.PositionMemory save() {
-        return new ScrollAndQuillScreen.PositionMemory(rootSpellPart.hashCode(), x, y, size, rootSpellPart, spellPart, new ArrayList<>(parents),
-                new ArrayList<>(angleOffsets));
+        return new ScrollAndQuillScreen.PositionMemory(
+                rootSpellPart.hashCode(), x, y, size, rootSpellPart, spellPart, new ArrayList<>(parents),
+                new ArrayList<>(angleOffsets)
+        );
     }
 
     public void load(ScrollAndQuillScreen.PositionMemory memory) {
@@ -146,7 +148,8 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
                 context.getMatrices(), context.getVertexConsumers(), spellPart,
                 x, y, size, angleOffsets.peek(), delta,
                 size -> (float) Math.clamp(1 / (size / context.getScaledWindowHeight() * 3) - 0.2, 0, 1),
-                new Vec3d(-1, 0, 0));
+                new Vec3d(-1, 0, 0)
+        );
         context.draw();
 
         //        context.getMatrices().pop();
@@ -295,14 +298,22 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (isMutable || isDrawing()) {
             if (Trickster.CONFIG.dragDrawing() && button == 0 && !isDrawing()) {
-                if (propagateMouseEvent(spellPart, x, y, size, angleOffsets.peek(), toScaledSpace(mouseX), toScaledSpace(mouseY),
-                        (part, x, y, size) -> selectPattern(part, x, y, size, mouseX, mouseY))) {
+                if (
+                    propagateMouseEvent(
+                            spellPart, x, y, size, angleOffsets.peek(), toScaledSpace(mouseX), toScaledSpace(mouseY),
+                            (part, x, y, size) -> selectPattern(part, x, y, size, mouseX, mouseY)
+                    )
+                ) {
                     return true;
                 }
             } else {
                 // We need to return true on the mouse down event to make sure the screen knows if we're on a clickable node
-                if (propagateMouseEvent(spellPart, x, y, size, angleOffsets.peek(), toScaledSpace(mouseX), toScaledSpace(mouseY),
-                        (part, x, y, size) -> true)) {
+                if (
+                    propagateMouseEvent(
+                            spellPart, x, y, size, angleOffsets.peek(), toScaledSpace(mouseX), toScaledSpace(mouseY),
+                            (part, x, y, size) -> true
+                    )
+                ) {
                     return true;
                 }
             }
@@ -322,8 +333,12 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             }
 
             if (!Trickster.CONFIG.dragDrawing() && button == 0 && !isDrawing()) {
-                if (propagateMouseEvent(spellPart, x, y, size, angleOffsets.peek(), toScaledSpace(mouseX), toScaledSpace(mouseY),
-                        (part, x, y, size) -> selectPattern(part, x, y, size, mouseX, mouseY))) {
+                if (
+                    propagateMouseEvent(
+                            spellPart, x, y, size, angleOffsets.peek(), toScaledSpace(mouseX), toScaledSpace(mouseY),
+                            (part, x, y, size) -> selectPattern(part, x, y, size, mouseX, mouseY)
+                    )
+                ) {
                     return true;
                 }
             }
@@ -340,8 +355,10 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     @Override
     public void mouseMoved(double mouseX, double mouseY) {
         if (isDrawing()) {
-            propagateMouseEvent(spellPart, x, y, size, angleOffsets.peek(), toScaledSpace(mouseX), toScaledSpace(mouseY),
-                    (part, x, y, size) -> selectPattern(part, x, y, size, mouseX, mouseY));
+            propagateMouseEvent(
+                    spellPart, x, y, size, angleOffsets.peek(), toScaledSpace(mouseX), toScaledSpace(mouseY),
+                    (part, x, y, size) -> selectPattern(part, x, y, size, mouseX, mouseY)
+            );
         }
 
         super.mouseMoved(mouseX, mouseY);
@@ -371,20 +388,24 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
                     drawingPattern.removeLast();
                     MinecraftClient.getInstance().player.playSoundToPlayer(
                             ModSounds.DRAW, SoundCategory.MASTER,
-                            1f, ModSounds.randomPitch(0.6f, 0.2f));
-                } else if (drawingPattern.isEmpty() ||
-                        (drawingPattern.getLast() != (byte) i && !hasOverlappingLines(drawingPattern, drawingPattern.getLast(), (byte) i))) {
-                            drawingPattern.add((byte) i);
+                            1f, ModSounds.randomPitch(0.6f, 0.2f)
+                    );
+                } else if (
+                    drawingPattern.isEmpty() ||
+                            (drawingPattern.getLast() != (byte) i && !hasOverlappingLines(drawingPattern, drawingPattern.getLast(), (byte) i))
+                ) {
+                    drawingPattern.add((byte) i);
 
-                            //add middle point to path if connecting opposite corners
-                            if (drawingPattern.size() > 1 && drawingPattern.get(drawingPattern.size() - 2) == (byte) (8 - i))
-                                drawingPattern.add(drawingPattern.size() - 1, (byte) 4);
+                    //add middle point to path if connecting opposite corners
+                    if (drawingPattern.size() > 1 && drawingPattern.get(drawingPattern.size() - 2) == (byte) (8 - i))
+                        drawingPattern.add(drawingPattern.size() - 1, (byte) 4);
 
-                            // TODO click sound?
-                            MinecraftClient.getInstance().player.playSoundToPlayer(
-                                    ModSounds.DRAW, SoundCategory.MASTER,
-                                    1f, ModSounds.randomPitch(1f, 0.2f));
-                        }
+                    // TODO click sound?
+                    MinecraftClient.getInstance().player.playSoundToPlayer(
+                            ModSounds.DRAW, SoundCategory.MASTER,
+                            1f, ModSounds.randomPitch(1f, 0.2f)
+                    );
+                }
 
                 return true;
             }
@@ -440,7 +461,8 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
         MinecraftClient.getInstance().player.playSoundToPlayer(
                 ModSounds.COMPLETE, SoundCategory.MASTER,
-                1f, patternSize > 1 ? 1f : 0.6f);
+                1f, patternSize > 1 ? 1f : 0.6f
+        );
     }
 
     public void replaceCallback(Fragment fragment) {
@@ -481,8 +503,10 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         return false;
     }
 
-    protected boolean propagateMouseEvent(SpellPart part, double x, double y, double size, double startingAngle, double mouseX, double mouseY,
-            MouseEventHandler callback) {
+    protected boolean propagateMouseEvent(
+            SpellPart part, double x, double y, double size, double startingAngle, double mouseX, double mouseY,
+            MouseEventHandler callback
+    ) {
         var closest = part;
         var closestAngle = startingAngle;
         var closestX = x;

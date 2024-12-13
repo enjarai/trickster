@@ -10,8 +10,10 @@ import java.util.function.Function;
 
 public class TextFleckRenderer implements FleckRenderer<TextFleck> {
     @Override
-    public void render(TextFleck fleck, TextFleck lastFleck, WorldRenderContext context, ClientWorld world, float tickDelta, MatrixStack matrices,
-            VertexConsumerProvider vertexConsumers, int color) {
+    public void render(
+            TextFleck fleck, TextFleck lastFleck, WorldRenderContext context, ClientWorld world, float tickDelta, MatrixStack matrices,
+            VertexConsumerProvider vertexConsumers, int color
+    ) {
 
     }
 }

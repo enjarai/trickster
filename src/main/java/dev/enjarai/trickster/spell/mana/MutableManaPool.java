@@ -11,7 +11,8 @@ public interface MutableManaPool extends ManaPool {
     void setMax(float max, World world);
 
     /**
-     * @param amount the amount to consume from this pool.
+     * @param amount
+     *               the amount to consume from this pool.
      * @param world
      * @return the amount not consumed from this pool.
      */
@@ -27,7 +28,8 @@ public interface MutableManaPool extends ManaPool {
     }
 
     /**
-     * @param amount the amount to refill this pool with.
+     * @param amount
+     *               the amount to refill this pool with.
      * @param world
      * @return the amount that could not be added to this pool.
      */

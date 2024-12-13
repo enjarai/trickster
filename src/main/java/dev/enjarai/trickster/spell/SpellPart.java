@@ -26,16 +26,24 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 public final class SpellPart implements Fragment {
-    public static final StructEndec<SpellPart> ENDEC = EndecTomfoolery.recursive(self -> StructEndecBuilder.of(
-            Fragment.ENDEC.fieldOf("glyph", SpellPart::getGlyph),
-            EndecTomfoolery.protocolVersionAlternatives(
-                    Map.of(
-                            (byte) 1, self.listOf()),
-                    EndecTomfoolery.withAlternative(SpellInstruction.STACK_ENDEC.xmap(
-                            instructions -> SpellUtils.decodeInstructions(instructions, new Stack<>(), new Stack<>(), Optional.empty()),
-                            SpellUtils::flattenNode), self).listOf())
-                    .fieldOf("sub_parts", SpellPart::getSubParts),
-            SpellPart::new));
+    public static final StructEndec<SpellPart> ENDEC = EndecTomfoolery.recursive(
+            self -> StructEndecBuilder.of(
+                    Fragment.ENDEC.fieldOf("glyph", SpellPart::getGlyph),
+                    EndecTomfoolery.protocolVersionAlternatives(
+                            Map.of(
+                                    (byte) 1, self.listOf()
+                            ),
+                            EndecTomfoolery.withAlternative(
+                                    SpellInstruction.STACK_ENDEC.xmap(
+                                            instructions -> SpellUtils.decodeInstructions(instructions, new Stack<>(), new Stack<>(), Optional.empty()),
+                                            SpellUtils::flattenNode
+                                    ), self
+                            ).listOf()
+                    )
+                            .fieldOf("sub_parts", SpellPart::getSubParts),
+                    SpellPart::new
+            )
+    );
 
     public Fragment glyph;
     public List<SpellPart> subParts;
@@ -77,8 +85,10 @@ public final class SpellPart implements Fragment {
      */
     @Override
     public SpellPart applyEphemeral() {
-        return new SpellPart(glyph.applyEphemeral(), subParts.stream()
-                .map(SpellPart::applyEphemeral).toList());
+        return new SpellPart(
+                glyph.applyEphemeral(), subParts.stream()
+                        .map(SpellPart::applyEphemeral).toList()
+        );
     }
 
     @Override
@@ -224,8 +234,10 @@ public final class SpellPart implements Fragment {
     public SpellPart deepClone() {
         var glyph = this.glyph instanceof SpellPart spell ? spell.deepClone() : this.glyph;
 
-        return new SpellPart(glyph, subParts.stream()
-                .map(SpellPart::deepClone).collect(Collectors.toList()));
+        return new SpellPart(
+                glyph, subParts.stream()
+                        .map(SpellPart::deepClone).collect(Collectors.toList())
+        );
     }
 
     private static final byte[] base64Header = new byte[] { 0x1f, (byte) 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, (byte) 0xff };
@@ -236,7 +248,8 @@ public final class SpellPart implements Fragment {
         buf.writeByte(2); // Protocol version
         ENDEC.encode(
                 SerializationContext.empty().withAttributes(EndecTomfoolery.UBER_COMPACT_ATTRIBUTE),
-                ByteBufSerializer.of(buf), this);
+                ByteBufSerializer.of(buf), this
+        );
 
         var byteStream = new ByteArrayOutputStream(buf.writerIndex());
         try (byteStream) {
@@ -281,8 +294,10 @@ public final class SpellPart implements Fragment {
             result = ENDEC.decode(
                     SerializationContext.empty().withAttributes(
                             EndecTomfoolery.UBER_COMPACT_ATTRIBUTE,
-                            EndecTomfoolery.PROTOCOL_VERSION_ATTRIBUTE.instance(protocolVersion)),
-                    ByteBufDeserializer.of(buf));
+                            EndecTomfoolery.PROTOCOL_VERSION_ATTRIBUTE.instance(protocolVersion)
+                    ),
+                    ByteBufDeserializer.of(buf)
+            );
         } catch (Throwable e) {
             buf.release();
             throw e;

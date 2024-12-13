@@ -25,33 +25,41 @@ public abstract class KnotItem extends Item {
 
     public static class Amethyst extends KnotItem {
         public Amethyst() {
-            super(new Settings()
-                    .component(ModComponents.MANA, new ManaComponent(SimpleManaPool.getSingleUse(128), 0, false)),
-                    0);
+            super(
+                    new Settings()
+                            .component(ModComponents.MANA, new ManaComponent(SimpleManaPool.getSingleUse(128), 0, false)),
+                    0
+            );
         }
     }
 
     public static class Emerald extends KnotItem {
         public Emerald() {
-            super(new Settings()
-                    .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(1024), 1 / 12f)),
-                    512);
+            super(
+                    new Settings()
+                            .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(1024), 1 / 12f)),
+                    512
+            );
         }
     }
 
     public static class Diamond extends KnotItem {
         public Diamond() {
-            super(new Settings()
-                    .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(16384), 4 / 12f)),
-                    8192);
+            super(
+                    new Settings()
+                            .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(16384), 4 / 12f)),
+                    8192
+            );
         }
     }
 
     public static class Echo extends KnotItem {
         public Echo() {
-            super(new Settings()
-                    .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(32768), 1)),
-                    65536);
+            super(
+                    new Settings()
+                            .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(32768), 1)),
+                    65536
+            );
         }
 
         @Override
@@ -67,17 +75,21 @@ public abstract class KnotItem extends Item {
 
     public static class CrackedEcho extends KnotItem {
         public CrackedEcho() {
-            super(new Settings()
-                    .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(32768), 2 / 12f)),
-                    Float.MAX_VALUE);
+            super(
+                    new Settings()
+                            .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(32768), 2 / 12f)),
+                    Float.MAX_VALUE
+            );
         }
     }
 
     public static class Command extends KnotItem {
         public Command() {
-            super(new Settings()
-                    .component(ModComponents.MANA, new ManaComponent(InfiniteManaPool.INSTANCE, 0)),
-                    Float.MAX_VALUE);
+            super(
+                    new Settings()
+                            .component(ModComponents.MANA, new ManaComponent(InfiniteManaPool.INSTANCE, 0)),
+                    Float.MAX_VALUE
+            );
         }
     }
 

@@ -14,7 +14,8 @@ public record TextFleck(Vector3fc pos, Vector3fc facing, Text text) implements F
             VECTOR_3F_ENDEC.fieldOf("pos", TextFleck::pos),
             VECTOR_3F_ENDEC.fieldOf("facing", TextFleck::facing),
             MinecraftEndecs.TEXT.fieldOf("text", TextFleck::text),
-            TextFleck::new);
+            TextFleck::new
+    );
 
     @Override
     public FleckType<?> type() {

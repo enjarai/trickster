@@ -28,11 +28,13 @@ public class LightBlock extends BlockWithEntity implements Waterloggable {
     public static final VoxelShape SHAPE = createCuboidShape(5, 5, 5, 11, 11, 11);
 
     protected LightBlock() {
-        super(Settings.create()
-                .noCollision().luminance(b -> 15).breakInstantly()
-                .noBlockBreakParticles().sounds(BlockSoundGroup.AMETHYST_BLOCK)
-                .replaceable()
-                .pistonBehavior(PistonBehavior.DESTROY));
+        super(
+                Settings.create()
+                        .noCollision().luminance(b -> 15).breakInstantly()
+                        .noBlockBreakParticles().sounds(BlockSoundGroup.AMETHYST_BLOCK)
+                        .replaceable()
+                        .pistonBehavior(PistonBehavior.DESTROY)
+        );
         setDefaultState(getStateManager().getDefaultState().with(WATERLOGGED, false));
     }
 
@@ -65,14 +67,17 @@ public class LightBlock extends BlockWithEntity implements Waterloggable {
                         particlePos.x, particlePos.y, particlePos.z,
                         random.nextFloat() * 0.005f - 0.0025f,
                         random.nextFloat() * 0.02f + 0.01f,
-                        random.nextFloat() * 0.005f - 0.0025f);
+                        random.nextFloat() * 0.005f - 0.0025f
+                );
             }
         }
     }
 
     @Override
-    protected BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos,
-            BlockPos neighborPos) {
+    protected BlockState getStateForNeighborUpdate(
+            BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos,
+            BlockPos neighborPos
+    ) {
         if (state.get(WATERLOGGED)) {
             world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
         }

@@ -24,8 +24,11 @@ public class LocateGlyphsTrick extends AbstractMetaTrick {
         var addresses = new ArrayList<List<Integer>>();
         search(spell, glyph, addresses);
 
-        return new ListFragment(addresses.stream().map(
-                address -> (Fragment) new ListFragment(address.stream().map(num -> (Fragment) new NumberFragment(num)).toList())).toList());
+        return new ListFragment(
+                addresses.stream().map(
+                        address -> (Fragment) new ListFragment(address.stream().map(num -> (Fragment) new NumberFragment(num)).toList())
+                ).toList()
+        );
 
     }
 

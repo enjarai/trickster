@@ -33,7 +33,8 @@ public record SpellEditPacket() {
             public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
                 return new ScrollAndQuillScreenHandler(
                         syncId, playerInventory, stack, player.getOffHandStack(), EquipmentSlot.MAINHAND,
-                        HashMap.empty(), stack.isOf(ModItems.MIRROR_OF_EVALUATION), true);
+                        HashMap.empty(), stack.isOf(ModItems.MIRROR_OF_EVALUATION), true
+                );
             }
         });
     }

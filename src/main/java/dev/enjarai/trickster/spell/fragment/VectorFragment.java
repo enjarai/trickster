@@ -25,7 +25,8 @@ public class VectorFragment implements AddableFragment, SubtractableFragment, Mu
     public static final StructEndec<VectorFragment> ENDEC = StructEndecBuilder.of(
             EndecTomfoolery.<Double, Vector3dc>vectorEndec(Endec.DOUBLE, Vector3d::new, Vector3dc::x, Vector3dc::y, Vector3dc::z)
                     .fieldOf("vector", VectorFragment::vector),
-            VectorFragment::new);
+            VectorFragment::new
+    );
     public static final VectorFragment ZERO = new VectorFragment(new Vector3d());
 
     private final Vector3dc vector;

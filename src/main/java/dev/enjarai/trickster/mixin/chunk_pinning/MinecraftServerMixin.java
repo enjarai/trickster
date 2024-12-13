@@ -12,7 +12,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(MinecraftServer.class)
 public class MinecraftServerMixin {
-    @Inject(method = "prepareStartRegion", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/ServerWorld;getPersistentStateManager()Lnet/minecraft/world/PersistentStateManager;"))
+    @Inject(
+            method = "prepareStartRegion", at = @At(
+                    value = "INVOKE", target = "Lnet/minecraft/server/world/ServerWorld;getPersistentStateManager()Lnet/minecraft/world/PersistentStateManager;"
+            )
+    )
     private void loadPinChunks(WorldGenerationProgressListener worldGenerationProgressListener, CallbackInfo ci, @Local(ordinal = 1) ServerWorld serverWorld) {
         ModWorldComponents.PINNED_CHUNKS.get(serverWorld).pinThemAll();
     }

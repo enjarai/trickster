@@ -5,4 +5,3 @@ public record SpellQueueResult(Type type, ExecutionState state) {
         NOT_QUEUED, QUEUED_DONE, QUEUED_STILL_RUNNING
     }
 }
-

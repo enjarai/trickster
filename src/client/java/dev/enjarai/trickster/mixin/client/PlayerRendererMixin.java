@@ -27,9 +27,15 @@ public abstract class PlayerRendererMixin {
     @Unique
     public SpellCircleRenderer trickster$renderer = new SpellCircleRenderer(false, 1);
 
-    @Inject(method = "render(Lnet/minecraft/client/network/AbstractClientPlayerEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At("HEAD"))
-    public void trickster$onRender(AbstractClientPlayerEntity player, float $$1, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers,
-            int $$5, CallbackInfo ci) {
+    @Inject(
+            method = "render(Lnet/minecraft/client/network/AbstractClientPlayerEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At(
+                "HEAD"
+            )
+    )
+    public void trickster$onRender(
+            AbstractClientPlayerEntity player, float $$1, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers,
+            int $$5, CallbackInfo ci
+    ) {
         var spell = trickster$get_spell(player);
         if (spell.isPresent() && (player != MinecraftClient.getInstance().player || MinecraftClient.getInstance().gameRenderer.getCamera().isThirdPerson())) {
             matrices.push();
@@ -44,8 +50,7 @@ public abstract class PlayerRendererMixin {
             //push forward from eyes a bit
             matrices.translate(0f, 0f, 1f);
 
-            var rot = new Vec3d(-1, -1, player.getRotationVector().y);
-            ;
+            var rot = new Vec3d(-1, -1, player.getRotationVector().y);;
 
             this.trickster$renderer.renderPart(matrices, vertexConsumers, spell.get(), 0, 0, 0.5f, 0, tickDelta, size -> 1f, rot);
             matrices.pop();

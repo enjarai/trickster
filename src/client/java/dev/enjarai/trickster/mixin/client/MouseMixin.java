@@ -14,4 +14,3 @@ public class MouseMixin {
         return !ModKeyBindings.interceptScroll((float) scrollAmount);
     }
 }
-

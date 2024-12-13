@@ -25,8 +25,10 @@ public class ScrollCloningRecipe extends SpecialCraftingRecipe {
         for (int j = 0; j < craftingRecipeInput.getSize(); ++j) {
             ItemStack itemStack2 = craftingRecipeInput.getStackInSlot(j);
             if (!itemStack2.isEmpty()) {
-                if (itemStack2.getItem() instanceof WrittenScrollItem && itemStack2.get(ModComponents.FRAGMENT) instanceof FragmentComponent spell
-                        && !spell.closed()) {
+                if (
+                    itemStack2.getItem() instanceof WrittenScrollItem && itemStack2.get(ModComponents.FRAGMENT) instanceof FragmentComponent spell
+                            && !spell.closed()
+                ) {
                     if (!itemStack.isEmpty()) {
                         return false;
                     }

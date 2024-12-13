@@ -21,9 +21,11 @@ public class MessageListenerSpellExecutor implements SpellExecutor {
             ExecutionState.ENDEC.fieldOf("state", e -> e.state),
             EndecTomfoolery.UUID.xmap(
                     uuid -> new Key.Channel(uuid),
-                    channel -> channel.uuid()).optionalOf().fieldOf("channel", e -> e.channel),
+                    channel -> channel.uuid()
+            ).optionalOf().fieldOf("channel", e -> e.channel),
             ListFragment.ENDEC.optionalOf().fieldOf("result", e -> e.result),
-            MessageListenerSpellExecutor::new);
+            MessageListenerSpellExecutor::new
+    );
 
     private final ExecutionState state; // DO NOT USE
     private final Optional<Key.Channel> channel;

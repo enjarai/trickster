@@ -76,20 +76,29 @@ public class MerlinKeeperTracker implements MerlinTooltipAppender {
                     timeUntilDrained = (long) ((pool.get(world) - pool.getMax(world)) / usage) * 50;
                 }
 
-                tooltip.add(Text.literal(str.formatted(
-                        ImGoingToStabWhoeverInventedTime.howLongIsThisQuestionMark(timeUntilDrained)))
-                        .styled(s -> s.withColor(0xaaaabb)));
+                tooltip.add(
+                        Text.literal(
+                                str.formatted(
+                                        ImGoingToStabWhoeverInventedTime.howLongIsThisQuestionMark(timeUntilDrained)
+                                )
+                        )
+                                .styled(s -> s.withColor(0xaaaabb))
+                );
             }
 
             if (type.isAdvanced()) {
-                tooltip.add(Text.literal("Stored: ")
-                        .append("%.1f kG / %.1f kG".formatted(pool.get(world), pool.getMax(world)))
-                        .styled(s -> s.withColor(0xaaaabb)));
+                tooltip.add(
+                        Text.literal("Stored: ")
+                                .append("%.1f kG / %.1f kG".formatted(pool.get(world), pool.getMax(world)))
+                                .styled(s -> s.withColor(0xaaaabb))
+                );
 
                 if (pool instanceof SharedManaPool shared && MinecraftClient.getInstance().world != null) {
-                    tooltip.add(Text
-                            .literal(shared.uuid().toString())
-                            .setStyle(Style.EMPTY.withFormatting(Formatting.LIGHT_PURPLE)));
+                    tooltip.add(
+                            Text
+                                    .literal(shared.uuid().toString())
+                                    .setStyle(Style.EMPTY.withFormatting(Formatting.LIGHT_PURPLE))
+                    );
                 }
             }
         }
@@ -120,7 +129,8 @@ public class MerlinKeeperTracker implements MerlinTooltipAppender {
 
             return MathHelper.lerp(
                     (float) (MinecraftClient.getInstance().player.age % tickSpan) / tickSpan,
-                    prevLastMerlins - lastMerlins, lastMerlins - latestMerlins) / tickSpan;
+                    prevLastMerlins - lastMerlins, lastMerlins - latestMerlins
+            ) / tickSpan;
         }
     }
 }

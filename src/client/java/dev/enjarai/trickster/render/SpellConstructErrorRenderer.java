@@ -29,8 +29,10 @@ public class SpellConstructErrorRenderer {
                     y += 3;
                 }
 
-                if (construct.getComponents().get(ModComponents.SPELL_CORE) instanceof SpellCoreComponent component
-                        && component.executor() instanceof ErroredSpellExecutor executor) {
+                if (
+                    construct.getComponents().get(ModComponents.SPELL_CORE) instanceof SpellCoreComponent component
+                            && component.executor() instanceof ErroredSpellExecutor executor
+                ) {
                     draw(client, context, executor.errorMessage(), y);
                 }
             }
@@ -45,8 +47,10 @@ public class SpellConstructErrorRenderer {
                         y += 3;
                     }
 
-                    if (stack.get(ModComponents.SPELL_CORE) instanceof SpellCoreComponent component
-                            && component.executor() instanceof ErroredSpellExecutor executor) {
+                    if (
+                        stack.get(ModComponents.SPELL_CORE) instanceof SpellCoreComponent component
+                                && component.executor() instanceof ErroredSpellExecutor executor
+                    ) {
                         draw(client, context, executor.errorMessage(), y);
                     }
                 });
@@ -58,7 +62,8 @@ public class SpellConstructErrorRenderer {
         for (OrderedText orderedText : client.textRenderer.wrapLines(errorMessage, context.getScaledWindowWidth() / 3)) {
             context.drawText(
                     client.textRenderer, orderedText, context.getScaledWindowWidth() / 2 + 10,
-                    y, 0xffffff, true);
+                    y, 0xffffff, true
+            );
             y += 9;
         }
         return y;
