@@ -14,6 +14,7 @@ import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.ImmutableItemBlunder;
 import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
+import dev.enjarai.trickster.spell.type.Signature;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.entity.EquipmentSlot;
@@ -22,9 +23,9 @@ import net.minecraft.item.Items;
 import java.util.List;
 import java.util.Optional;
 
-public class WriteSpellTrick extends Trick {
+public class WriteSpellTrick extends Trick<WriteSpellTrick> {
     public WriteSpellTrick() {
-        super(Pattern.of(1, 4, 7, 8, 5, 4, 3, 6, 7));
+        super(Pattern.of(1, 4, 7, 8, 5, 4, 3, 6, 7), Signature.of());
     }
 
     @Override

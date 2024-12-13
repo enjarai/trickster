@@ -20,7 +20,7 @@ public interface ArgType<T> {
     }
 
     default ArgType<Optional<T>> optionalOf() {
-        return new ArgType<Optional<T>>() {
+        return new ArgType<>() {
             @Override
             public int argc(List<Fragment> fragments) {
                 return Math.min(fragments.size(), 1);

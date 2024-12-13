@@ -12,7 +12,7 @@ import dev.enjarai.trickster.spell.blunder.BlunderException;
 
 import java.util.List;
 
-public class ReadSpellTrick extends Trick {
+public class ReadSpellTrick extends Trick<ReadSpellTrick> {
     public ReadSpellTrick() {
         super(Pattern.of(7, 4, 1, 0, 3, 4, 5, 2, 1));
     }

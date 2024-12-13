@@ -77,13 +77,13 @@ public abstract class Trick<T extends Trick<T>> {
         return new SimpleArgType<T>(type);
     }
 
-    @SuppressWarnings("unchecked")
-    protected static <T extends Fragment> VariadicArgType<T> variadic(Class<T>... types) {
-        return new VariadicArgType<T>(types);
+    protected static SimpleArgType<Fragment> any() {
+        return simple(Fragment.class);
     }
 
-    protected static <T extends Fragment> VariadicArgType<T> variadic(Class<T> type) {
-        return variadic(type);
+    @SuppressWarnings("unchecked")
+    protected static <T extends Fragment> VariadicArgType<T> variadic(Class<T>... types) {
+        return new VariadicArgType<>(types);
     }
    
     protected void expectCanBuild(SpellContext ctx, BlockPos... positions) {

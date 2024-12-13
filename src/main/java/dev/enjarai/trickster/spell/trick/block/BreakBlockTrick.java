@@ -6,21 +6,21 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
+import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlockTooHardBlunder;
 import dev.enjarai.trickster.spell.blunder.BlockUnoccupiedBlunder;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.type.Signature;
 
 import java.util.List;
 
-public class BreakBlockTrick extends Trick {
+public class BreakBlockTrick extends Trick<BreakBlockTrick> {
     public BreakBlockTrick() {
-        super(Pattern.of(1, 5, 8, 6, 4, 1, 0, 3, 6));
+        super(Pattern.of(1, 5, 8, 6, 4, 1, 0, 3, 6), Signature.of(FragmentType.VECTOR, BreakBlockTrick::breakBlock));
     }
 
-    @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var pos = expectInput(fragments, FragmentType.VECTOR, 0);
+    public Fragment breakBlock(SpellContext ctx, VectorFragment pos) throws BlunderException {
         var blockPos = pos.toBlockPos();
         var world = ctx.source().getWorld();
         var state = world.getBlockState(blockPos);

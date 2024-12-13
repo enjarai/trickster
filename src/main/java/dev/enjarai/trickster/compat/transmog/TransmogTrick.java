@@ -7,21 +7,20 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
+import dev.enjarai.trickster.spell.fragment.ItemTypeFragment;
+import dev.enjarai.trickster.spell.fragment.SlotFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.type.Signature;
 
 import java.util.List;
 
-public class TransmogTrick extends Trick {
+public class TransmogTrick extends Trick<TransmogTrick> {
     public TransmogTrick() {
-        super(Pattern.of(6, 3, 4, 5, 2, 4, 6, 1, 4, 7, 2));
+        super(Pattern.of(6, 3, 4, 5, 2, 4, 6, 1, 4, 7, 2), Signature.of(FragmentType.SLOT, FragmentType.ITEM_TYPE, TransmogTrick::transmog));
     }
 
-    @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var slot = expectInput(fragments, FragmentType.SLOT, 0);
-        var item = expectInput(fragments, FragmentType.ITEM_TYPE, 1);
-
+    public Fragment transmog(SpellContext ctx, SlotFragment slot, ItemTypeFragment item) throws BlunderException {
         var stack = slot.reference(this, ctx);
         var currentTransmog = stack.get(ModDataComponents.TRANSMOG_APPEARANCE_ITEM.get());
 
