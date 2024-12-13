@@ -63,7 +63,7 @@ public class WrittenScrollItem extends Item {
                 @Override
                 public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
                     return new ScrollAndQuillScreenHandler(
-                            syncId, playerInventory, stack, otherStack, slot,
+                            syncId, stack, otherStack, slot,
                             HashMap.empty(),
                             false, false
                     );

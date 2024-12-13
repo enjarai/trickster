@@ -38,7 +38,7 @@ public class EvaluationMirrorItem extends Item {
                 @Override
                 public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
                     return new ScrollAndQuillScreenHandler(
-                            syncId, playerInventory, stack, otherStack,
+                            syncId, stack, otherStack,
                             hand == Hand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND,
                             macros,
                             true, true

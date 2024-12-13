@@ -40,6 +40,7 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
     public final SyncedProperty<SpellPart> otherHandSpell = createProperty(SpellPart.class, SpellPart.ENDEC, new SpellPart());
     public final SyncedProperty<Boolean> isMutable = createProperty(Boolean.class, true);
     public final SyncedProperty<HashMap<Pattern, SpellPart>> macros = createProperty(null, EndecTomfoolery.hamt(Pattern.ENDEC, SpellPart.ENDEC), HashMap.empty());
+    public final SyncedProperty<Boolean> evaluationButton = createProperty(Boolean.class, false);
 
     public Consumer<Fragment> replacerCallback;
     public Consumer<Optional<SpellPart>> updateDrawingPartCallback;
@@ -48,10 +49,14 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
     public final boolean greedyEvaluation;
 
     public ScrollAndQuillScreenHandler(int syncId, PlayerInventory playerInventory) {
-        this(syncId, playerInventory, null, null, null, null, false, true);
+        this(syncId, null, null, null, null, false, true, false);
     }
 
-    public ScrollAndQuillScreenHandler(int syncId, PlayerInventory playerInventory, ItemStack scrollStack, ItemStack otherHandStack, EquipmentSlot slot, HashMap<Pattern, SpellPart> macros, boolean greedyEvaluation, boolean isMutable) {
+    public ScrollAndQuillScreenHandler(int syncId, ItemStack scrollStack, ItemStack otherHandStack, EquipmentSlot slot, HashMap<Pattern, SpellPart> macros, boolean greedyEvaluation, boolean isMutable) {
+        this(syncId, scrollStack, otherHandStack, slot, macros, greedyEvaluation, isMutable, false);
+    }
+
+    public ScrollAndQuillScreenHandler(int syncId, ItemStack scrollStack, ItemStack otherHandStack, EquipmentSlot slot, HashMap<Pattern, SpellPart> macros, boolean greedyEvaluation, boolean isMutable, boolean evaluationButton) {
         super(ModScreenHandlers.SCROLL_AND_QUILL, syncId);
 
         this.scrollStack = scrollStack;
@@ -59,6 +64,7 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
 
         this.slot = slot;
         this.greedyEvaluation = greedyEvaluation;
+        this.evaluationButton.set(evaluationButton);
 
         if (macros != null) {
             this.macros.set(macros);
@@ -78,6 +84,7 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
         addServerboundMessage(OtherHandSpellMessage.class, OtherHandSpellMessage.ENDEC, msg -> updateOtherHandSpell(msg.spell()));
         addServerboundMessage(UpdateSpellWithSpellMessage.class, UpdateSpellWithSpellMessage.ENDEC, msg -> updateSpellWithSpell(msg.drawingPart, msg.spell));
 
+        addServerboundMessage(EvaluateCurrentSpell.class, msg -> evaluateCurrentSpell());
         addServerboundMessage(ExecuteOffhand.class, msg -> executeOffhand());
         addClientboundMessage(UpdateDrawingPartMessage.class, UpdateDrawingPartMessage.ENDEC, msg -> {
             if (updateDrawingPartCallback != null) {
@@ -143,8 +150,9 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
                                 spell.destructiveRun(new SpellContext(executionState, new PlayerSpellSource((ServerPlayerEntity) player()), new TickData()));
                                 this.spell.set(spell);
                             } catch (BlunderException e) {
-                                if (e instanceof NaNBlunder)
+                                if (e instanceof NaNBlunder) {
                                     ModCriteria.NAN_NUMBER.trigger((ServerPlayerEntity) player());
+                                }
 
                                 player().sendMessage(e.createMessage().append(" (").append(executionState.formatStackTrace()).append(")"));
                             } catch (Exception e) {
@@ -228,6 +236,38 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
         }
     }
 
+    public void evaluateCurrentSpell() {
+        var server = player().getServer();
+        if (server != null) {
+            server.execute(() -> {
+                if (evaluationButton.get()) {
+                    var executionState = new ExecutionState(List.of());
+                    try {
+                        var spell = this.spell.get().deepClone();
+                        spell.destructiveRun(new SpellContext(executionState, new PlayerSpellSource((ServerPlayerEntity) player()), new TickData()));
+                        this.spell.set(spell);
+                    } catch (BlunderException e) {
+                        if (e instanceof NaNBlunder) {
+                            ModCriteria.NAN_NUMBER.trigger((ServerPlayerEntity) player());
+                        }
+
+                        player().sendMessage(e.createMessage().append(" (").append(executionState.formatStackTrace()).append(")"));
+                    } catch (Exception e) {
+                        player().sendMessage(Text.literal("Uncaught exception in spell: " + e.getMessage())
+                          .append(" (").append(executionState.formatStackTrace()).append(")"));
+                    }
+
+                    ((ServerPlayerEntity) player()).getServerWorld().playSoundFromEntity(
+                      null, player(), ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f));
+                }
+
+                FragmentComponent.setValue(scrollStack, spell.get(), Optional.empty(), false);
+            });
+        } else {
+            sendMessage(new EvaluateCurrentSpell());
+        }
+    }
+
     @Override
     public ItemStack quickMove(PlayerEntity player, int slot) {
         return ItemStack.EMPTY;
@@ -254,8 +294,9 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
         public static final Endec<OtherHandSpellMessage> ENDEC = SpellPart.ENDEC.xmap(OtherHandSpellMessage::new, OtherHandSpellMessage::spell);
     }
 
-    public record ExecuteOffhand() {
-    }
+    public record ExecuteOffhand() {}
+
+    public record EvaluateCurrentSpell() {}
 
     public record Replace(Fragment fragment) {
         public static final Endec<Replace> ENDEC = Fragment.ENDEC.xmap(Replace::new, Replace::fragment);

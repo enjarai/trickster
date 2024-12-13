@@ -1,6 +1,5 @@
 package dev.enjarai.trickster.net;
 
-import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.screen.ScrollAndQuillScreenHandler;
 import io.vavr.collection.HashMap;
 import io.wispforest.owo.network.ServerAccess;
@@ -30,8 +29,8 @@ public record SpellEditPacket() {
             @Override
             public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
                 return new ScrollAndQuillScreenHandler(
-                  syncId, playerInventory, stack, player.getOffHandStack(), EquipmentSlot.MAINHAND,
-                  HashMap.empty(), stack.isOf(ModItems.MIRROR_OF_EVALUATION), true
+                  syncId, stack, player.getOffHandStack(), EquipmentSlot.MAINHAND,
+                  HashMap.empty(), false, true, true
                 );
             }
         });

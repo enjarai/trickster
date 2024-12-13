@@ -17,6 +17,11 @@ trickster:
       line0: 'Note: When you sign the scroll,'
       line1: it will no longer be editable.
     load_button: Write to scroll
+    evaluate_spell:
+      .: Evaluate spell
+      warning:
+        - text: Warning! this is a destructive action!
+          color: red
 
   message:
     missing_scroll: Hold a Scroll and Quill in your other hand to import example spells
