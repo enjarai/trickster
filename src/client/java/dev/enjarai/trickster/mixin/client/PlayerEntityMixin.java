@@ -16,11 +16,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         super(entityType, world);
     }
 
-    @Inject(
-            method = "getName",
-            at = @At("HEAD"),
-            cancellable = true
-    )
+    @Inject(method = "getName", at = @At("HEAD"), cancellable = true)
     protected void disguiseDisplayName(CallbackInfoReturnable<Text> cir) {
 
     }

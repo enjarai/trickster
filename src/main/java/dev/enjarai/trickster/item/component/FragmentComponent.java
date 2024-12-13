@@ -21,6 +21,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public record FragmentComponent(Fragment value, Optional<String> name, boolean immutable, boolean closed) {
+
     private static final Endec<FragmentComponent> OLD_ENDEC = StructEndecBuilder.of(
             SpellPart.ENDEC.fieldOf("spell", comp -> {
                 throw new IllegalStateException("Serializing as a spell is no longer supported");
@@ -28,15 +29,13 @@ public record FragmentComponent(Fragment value, Optional<String> name, boolean i
             Endec.STRING.optionalOf().optionalFieldOf("name", FragmentComponent::name, Optional.empty()),
             Endec.BOOLEAN.optionalFieldOf("immutable", FragmentComponent::immutable, false),
             Endec.BOOLEAN.optionalFieldOf("closed", FragmentComponent::closed, false),
-            FragmentComponent::new
-    );
+            FragmentComponent::new);
     private static final Endec<FragmentComponent> NEW_ENDEC = StructEndecBuilder.of(
             Fragment.ENDEC.fieldOf("value", FragmentComponent::value),
             EndecTomfoolery.safeOptionalOf(Endec.STRING).fieldOf("name", FragmentComponent::name),
             Endec.BOOLEAN.optionalFieldOf("immutable", FragmentComponent::immutable, false),
             Endec.BOOLEAN.optionalFieldOf("closed", FragmentComponent::closed, false),
-            FragmentComponent::new
-    );
+            FragmentComponent::new);
     public static final Endec<FragmentComponent> ENDEC = EndecTomfoolery.withAlternative(NEW_ENDEC, OLD_ENDEC);
 
     public FragmentComponent(SpellPart spell) {
@@ -56,7 +55,7 @@ public record FragmentComponent(Fragment value, Optional<String> name, boolean i
                 .flatMap(value -> {
                     if (value instanceof SpellPart spell)
                         return Optional.of(spell);
-                    
+
                     return Optional.empty();
                 });
     }
@@ -124,7 +123,7 @@ public record FragmentComponent(Fragment value, Optional<String> name, boolean i
 
     public static Optional<HashMap<Pattern, SpellPart>> getMap(ItemStack stack) {
         return getValue(stack, MapFragment.class)
-            .map(MapFragment::getMacroMap);
+                .map(MapFragment::getMacroMap);
     }
 
     public static Optional<HashMap<Pattern, SpellPart>> getUserMergedMap(PlayerEntity user, String type) {

@@ -26,35 +26,34 @@ import org.joml.Vector3f;
 import org.joml.Vector3fc;
 
 public class EndecTomfoolery {
-    public static final Endec<BlockPos> ALWAYS_READABLE_BLOCK_POS =
-            vectorEndec(Endec.INT, BlockPos::new, BlockPos::getX, BlockPos::getY, BlockPos::getZ);
+    public static final Endec<BlockPos> ALWAYS_READABLE_BLOCK_POS = vectorEndec(Endec.INT, BlockPos::new, BlockPos::getX, BlockPos::getY, BlockPos::getZ);
     public static final Endec<UUID> UUID = Endec.STRING.xmap(UndashedUuid::fromStringLenient, java.util.UUID::toString);
     public static final SerializationAttribute.Marker UBER_COMPACT_ATTRIBUTE = SerializationAttribute.marker("uber_compact");
     public static final SerializationAttribute.WithValue<Byte> PROTOCOL_VERSION_ATTRIBUTE = SerializationAttribute.withValue("protocol_version");
-    public static Endec<Vector3dc> VECTOR_3D_ENDEC = EndecTomfoolery.<Double, Vector3dc>vectorEndec(Endec.DOUBLE, Vector3d::new, Vector3dc::x, Vector3dc::y, Vector3dc::z);
-    public static Endec<Vector3fc> VECTOR_3F_ENDEC = EndecTomfoolery.<Float, Vector3fc>vectorEndec(Endec.FLOAT, Vector3f::new, Vector3fc::x, Vector3fc::y, Vector3fc::z);
+    public static Endec<Vector3dc> VECTOR_3D_ENDEC = EndecTomfoolery.<Double, Vector3dc>vectorEndec(Endec.DOUBLE, Vector3d::new, Vector3dc::x, Vector3dc::y,
+            Vector3dc::z);
+    public static Endec<Vector3fc> VECTOR_3F_ENDEC = EndecTomfoolery.<Float, Vector3fc>vectorEndec(Endec.FLOAT, Vector3f::new, Vector3fc::x, Vector3fc::y,
+            Vector3fc::z);
     public static final SerializationAttribute.Marker CODEC_SAFE = SerializationAttribute.marker("codec_safe");
 
-    public static <C, V> Endec<V> vectorEndec(Endec<C> componentEndec, Function3<C, C, C, V> constructor, Function<V, C> xGetter, Function<V, C> yGetter, Function<V, C> zGetter) {
+    public static <C, V> Endec<V> vectorEndec(Endec<C> componentEndec, Function3<C, C, C, V> constructor, Function<V, C> xGetter, Function<V, C> yGetter,
+            Function<V, C> zGetter) {
         return componentEndec.listOf().validate(ints -> {
             if (ints.size() != 3) {
                 throw new IllegalStateException("vector array must have three elements");
             }
         }).xmap(
                 components -> constructor.apply(components.get(0), components.get(1), components.get(2)),
-                vector -> List.of(xGetter.apply(vector), yGetter.apply(vector), zGetter.apply(vector))
-        );
+                vector -> List.of(xGetter.apply(vector), yGetter.apply(vector), zGetter.apply(vector)));
     }
-    
+
     public static <T, A extends T> Endec<T> withAlternative(Endec<T> primary, Endec<A> alternative) {
         return new EitherEndec<T, A>(
-            primary,
-            alternative,
-            false
-        ).xmap(
-            Either::unwrap,
-            Either::left
-        );
+                primary,
+                alternative,
+                false).xmap(
+                        Either::unwrap,
+                        Either::left);
     }
 
     public static <T> Endec<Optional<T>> safeOptionalOf(Endec<T> endec) {
@@ -74,8 +73,7 @@ public class EndecTomfoolery {
                     } else {
                         return Optional.empty();
                     }
-                }
-        )).orElse(endec.optionalOf());
+                })).orElse(endec.optionalOf());
     }
 
     public static <T> Endec<Stack<T>> stackOf(Endec<T> endec) {
@@ -89,8 +87,7 @@ public class EndecTomfoolery {
     public static <T> StructEndec<T> funnyFieldOf(Endec<T> endec, String key) {
         return StructEndecBuilder.of(
                 endec.fieldOf(key, Function.identity()),
-                Function.identity()
-        );
+                Function.identity());
     }
 
     public static <T> Codec<T> toCodec(Endec<T> endec) {

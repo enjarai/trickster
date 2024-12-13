@@ -20,13 +20,10 @@ public class UseMacroCriterion extends AbstractCriterion<UseMacroCriterion.Condi
         super.trigger(player, conditions -> true);
     }
 
-    public record Conditions(Optional<LootContextPredicate> player) implements AbstractCriterion.Conditions
-    {
-        public static final Codec<UseMacroCriterion.Conditions> CODEC = RecordCodecBuilder.create(instance ->
-                instance.group(
-                        EntityPredicate.LOOT_CONTEXT_PREDICATE_CODEC.optionalFieldOf("player").forGetter(UseMacroCriterion.Conditions::player)
-                ).apply(instance, UseMacroCriterion.Conditions::new)
-        );
+    public record Conditions(Optional<LootContextPredicate> player) implements AbstractCriterion.Conditions {
+        public static final Codec<UseMacroCriterion.Conditions> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                EntityPredicate.LOOT_CONTEXT_PREDICATE_CODEC.optionalFieldOf("player").forGetter(UseMacroCriterion.Conditions::player))
+                .apply(instance, UseMacroCriterion.Conditions::new));
 
         @Override
         public void validate(LootContextPredicateValidator validator) {

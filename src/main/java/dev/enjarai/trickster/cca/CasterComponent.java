@@ -38,15 +38,13 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
     private int lastSentSpellDataHash;
     private int wait;
 
-    public static final Endec<Map<Integer, RunningSpellData>> SPELL_DATA_ENDEC =
-            Endec.map(Endec.INT, StructEndecBuilder.of(
-                    Endec.INT.fieldOf("executions_last_tick", RunningSpellData::executionsLastTick),
-                    Endec.BOOLEAN.fieldOf("errored", RunningSpellData::errored),
-                    EndecTomfoolery.safeOptionalOf(MinecraftEndecs.TEXT).optionalFieldOf("message", RunningSpellData::message, Optional.empty()),
-                    RunningSpellData::new
-            ));
-    public static final KeyedEndec<PlayerSpellExecutionManager> EXECUTION_MANAGER_ENDEC =
-            PlayerSpellExecutionManager.ENDEC.keyed("manager", () -> new PlayerSpellExecutionManager(5));
+    public static final Endec<Map<Integer, RunningSpellData>> SPELL_DATA_ENDEC = Endec.map(Endec.INT, StructEndecBuilder.of(
+            Endec.INT.fieldOf("executions_last_tick", RunningSpellData::executionsLastTick),
+            Endec.BOOLEAN.fieldOf("errored", RunningSpellData::errored),
+            EndecTomfoolery.safeOptionalOf(MinecraftEndecs.TEXT).optionalFieldOf("message", RunningSpellData::message, Optional.empty()),
+            RunningSpellData::new));
+    public static final KeyedEndec<PlayerSpellExecutionManager> EXECUTION_MANAGER_ENDEC = PlayerSpellExecutionManager.ENDEC.keyed("manager",
+            () -> new PlayerSpellExecutionManager(5));
 
     public CasterComponent(PlayerEntity player) {
         this.player = player;
@@ -105,7 +103,8 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
 
     @Override
     public boolean shouldSyncWith(ServerPlayerEntity player) {
-        if (player != this.player) return false;
+        if (player != this.player)
+            return false;
 
         var hash = runningSpellData.hashCode();
         if (hash != lastSentSpellDataHash) {
@@ -142,7 +141,7 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
 
     public void kill(int index) {
         executionManager.kill(index);
-//        playCastSound(0.6f, 0.1f);
+        //        playCastSound(0.6f, 0.1f);
     }
 
     public PlayerSpellExecutionManager getExecutionManager() {

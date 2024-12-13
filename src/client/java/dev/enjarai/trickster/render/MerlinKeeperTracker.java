@@ -120,8 +120,7 @@ public class MerlinKeeperTracker implements MerlinTooltipAppender {
 
             return MathHelper.lerp(
                     (float) (MinecraftClient.getInstance().player.age % tickSpan) / tickSpan,
-                    prevLastMerlins - lastMerlins, lastMerlins - latestMerlins
-            ) / tickSpan;
+                    prevLastMerlins - lastMerlins, lastMerlins - latestMerlins) / tickSpan;
         }
     }
 }

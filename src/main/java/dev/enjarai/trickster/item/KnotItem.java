@@ -13,7 +13,6 @@ import net.minecraft.world.World;
 
 import java.util.function.ToIntFunction;
 
-
 public abstract class KnotItem extends Item {
     public static ToIntFunction<ItemStack> barStepFunction = i -> 0;
 

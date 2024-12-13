@@ -22,10 +22,11 @@ public class ScrollCloningRecipe extends SpecialCraftingRecipe {
         int i = 0;
         ItemStack itemStack = ItemStack.EMPTY;
 
-        for(int j = 0; j < craftingRecipeInput.getSize(); ++j) {
+        for (int j = 0; j < craftingRecipeInput.getSize(); ++j) {
             ItemStack itemStack2 = craftingRecipeInput.getStackInSlot(j);
             if (!itemStack2.isEmpty()) {
-                if (itemStack2.getItem() instanceof WrittenScrollItem && itemStack2.get(ModComponents.FRAGMENT) instanceof FragmentComponent spell && !spell.closed()) {
+                if (itemStack2.getItem() instanceof WrittenScrollItem && itemStack2.get(ModComponents.FRAGMENT) instanceof FragmentComponent spell
+                        && !spell.closed()) {
                     if (!itemStack.isEmpty()) {
                         return false;
                     }
@@ -48,7 +49,7 @@ public class ScrollCloningRecipe extends SpecialCraftingRecipe {
         int i = 0;
         ItemStack itemStack = ItemStack.EMPTY;
 
-        for(int j = 0; j < craftingRecipeInput.getSize(); ++j) {
+        for (int j = 0; j < craftingRecipeInput.getSize(); ++j) {
             ItemStack itemStack2 = craftingRecipeInput.getStackInSlot(j);
             if (!itemStack2.isEmpty()) {
                 if (itemStack2.getItem() instanceof WrittenScrollItem) {
@@ -87,7 +88,7 @@ public class ScrollCloningRecipe extends SpecialCraftingRecipe {
     public DefaultedList<ItemStack> getRemainder(CraftingRecipeInput craftingRecipeInput) {
         DefaultedList<ItemStack> defaultedList = DefaultedList.ofSize(craftingRecipeInput.getSize(), ItemStack.EMPTY);
 
-        for(int i = 0; i < defaultedList.size(); ++i) {
+        for (int i = 0; i < defaultedList.size(); ++i) {
             ItemStack itemStack = craftingRecipeInput.getStackInSlot(i);
             if (itemStack.getItem().hasRecipeRemainder()) {
                 defaultedList.set(i, new ItemStack(itemStack.getItem().getRecipeRemainder()));

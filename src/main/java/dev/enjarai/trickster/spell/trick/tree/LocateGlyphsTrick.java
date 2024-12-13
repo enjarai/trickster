@@ -24,17 +24,15 @@ public class LocateGlyphsTrick extends AbstractMetaTrick {
         var addresses = new ArrayList<List<Integer>>();
         search(spell, glyph, addresses);
 
-
         return new ListFragment(addresses.stream().map(
-                address -> (Fragment) new ListFragment(address.stream().map(num -> (Fragment) new NumberFragment(num)
-                ).toList())).toList());
+                address -> (Fragment) new ListFragment(address.stream().map(num -> (Fragment) new NumberFragment(num)).toList())).toList());
 
     }
 
     private void search(SpellPart spell, Fragment target, List<List<Integer>> addresses) {
         Queue<Pair<Integer[], SpellPart>> queue = new LinkedList<>();
 
-        queue.add(new Pair<>(new Integer[]{}, spell));
+        queue.add(new Pair<>(new Integer[] {}, spell));
         while (!queue.isEmpty()) {
 
             var temp = queue.poll();

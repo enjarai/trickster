@@ -11,7 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
 public class LightBlockEntity extends BlockEntity implements SpellColoredBlockEntity {
-    public int[] colors = new int[]{0xffffff};
+    public int[] colors = new int[] { 0xffffff };
 
     public LightBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlocks.LIGHT_ENTITY, pos, state);
@@ -26,7 +26,7 @@ public class LightBlockEntity extends BlockEntity implements SpellColoredBlockEn
     protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         colors = nbt.getIntArray("colors");
         if (colors.length == 0) {
-            colors = new int[]{0xffffff};
+            colors = new int[] { 0xffffff };
         }
     }
 

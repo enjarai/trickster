@@ -14,11 +14,16 @@ import org.jetbrains.annotations.Nullable;
 
 public class SpellSlotWidget extends ButtonWidget {
     public static final ButtonTextures TEXTURES_INACTIVE = new ButtonTextures(Trickster.id("spell_slot/inactive"), Trickster.id("spell_slot/inactive"));
-    public static final ButtonTextures TEXTURES_ACTIVE_SUSPENDED = new ButtonTextures(Trickster.id("spell_slot/active_suspended"), Trickster.id("spell_slot/active_suspended_hover"));
-    public static final ButtonTextures TEXTURES_ACTIVE_OK = new ButtonTextures(Trickster.id("spell_slot/active_ok"), Trickster.id("spell_slot/active_ok_hover"));
-    public static final ButtonTextures TEXTURES_ACTIVE_PARTIAL = new ButtonTextures(Trickster.id("spell_slot/active_partial"), Trickster.id("spell_slot/active_partial_hover"));
-    public static final ButtonTextures TEXTURES_ACTIVE_FULL = new ButtonTextures(Trickster.id("spell_slot/active_full"), Trickster.id("spell_slot/active_full_hover"));
-    public static final ButtonTextures TEXTURES_ACTIVE_ERROR = new ButtonTextures(Trickster.id("spell_slot/active_error"), Trickster.id("spell_slot/active_error_hover"));
+    public static final ButtonTextures TEXTURES_ACTIVE_SUSPENDED = new ButtonTextures(Trickster.id("spell_slot/active_suspended"),
+            Trickster.id("spell_slot/active_suspended_hover"));
+    public static final ButtonTextures TEXTURES_ACTIVE_OK = new ButtonTextures(Trickster.id("spell_slot/active_ok"),
+            Trickster.id("spell_slot/active_ok_hover"));
+    public static final ButtonTextures TEXTURES_ACTIVE_PARTIAL = new ButtonTextures(Trickster.id("spell_slot/active_partial"),
+            Trickster.id("spell_slot/active_partial_hover"));
+    public static final ButtonTextures TEXTURES_ACTIVE_FULL = new ButtonTextures(Trickster.id("spell_slot/active_full"),
+            Trickster.id("spell_slot/active_full_hover"));
+    public static final ButtonTextures TEXTURES_ACTIVE_ERROR = new ButtonTextures(Trickster.id("spell_slot/active_error"),
+            Trickster.id("spell_slot/active_error_hover"));
 
     public final int index;
     public State currentState = State.INACTIVE;
@@ -69,12 +74,8 @@ public class SpellSlotWidget extends ButtonWidget {
     }
 
     public enum State {
-        INACTIVE(TEXTURES_INACTIVE),
-        ACTIVE_SUSPENDED(TEXTURES_ACTIVE_SUSPENDED),
-        ACTIVE_OK(TEXTURES_ACTIVE_OK),
-        ACTIVE_PARTIAL(TEXTURES_ACTIVE_PARTIAL),
-        ACTIVE_FULL(TEXTURES_ACTIVE_FULL),
-        ACTIVE_ERROR(TEXTURES_ACTIVE_ERROR);
+        INACTIVE(TEXTURES_INACTIVE), ACTIVE_SUSPENDED(TEXTURES_ACTIVE_SUSPENDED), ACTIVE_OK(TEXTURES_ACTIVE_OK), ACTIVE_PARTIAL(
+                TEXTURES_ACTIVE_PARTIAL), ACTIVE_FULL(TEXTURES_ACTIVE_FULL), ACTIVE_ERROR(TEXTURES_ACTIVE_ERROR);
 
         public final ButtonTextures textures;
 

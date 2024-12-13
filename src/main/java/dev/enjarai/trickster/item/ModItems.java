@@ -67,7 +67,8 @@ public class ModItems {
     public static final OminousSpellCoreItem OMINOUS_SPELL_CORE = register("ominous_spell_core", new OminousSpellCoreItem());
     public static final BlockItem SPELL_RESONATOR_ITEM = register("spell_resonator", new BlockItem(ModBlocks.SPELL_RESONATOR, new Item.Settings()));
     public static final BlockItem SPELL_CONSTRUCT_ITEM = register("spell_construct", new BlockItem(ModBlocks.SPELL_CONSTRUCT, new Item.Settings()));
-    public static final BlockItem MODULAR_SPELL_CONSTRUCT_ITEM = register("modular_spell_construct", new BlockItem(ModBlocks.MODULAR_SPELL_CONSTRUCT, new Item.Settings()));
+    public static final BlockItem MODULAR_SPELL_CONSTRUCT_ITEM = register("modular_spell_construct",
+            new BlockItem(ModBlocks.MODULAR_SPELL_CONSTRUCT, new Item.Settings()));
     public static final BlockItem SCROLL_SHELF_BLOCK_ITEM = register("scroll_shelf", new BlockItem(ModBlocks.SCROLL_SHELF, new Item.Settings()));
     public static final KnotItem.Amethyst AMETHYST_KNOT = register("amethyst_knot", new KnotItem.Amethyst());
     public static final KnotItem.Emerald EMERALD_KNOT = register("emerald_knot", new KnotItem.Emerald());
@@ -153,5 +154,6 @@ public class ModItems {
         Registry.register(Registries.ITEM_GROUP, Trickster.id("trickster"), ITEM_GROUP);
     }
 
-    public record DyedVariant(Item original, Item variant, DyeColor color) {}
+    public record DyedVariant(Item original, Item variant, DyeColor color) {
+    }
 }

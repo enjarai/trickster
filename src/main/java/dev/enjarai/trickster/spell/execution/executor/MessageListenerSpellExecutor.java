@@ -20,12 +20,10 @@ public class MessageListenerSpellExecutor implements SpellExecutor {
     public static final StructEndec<MessageListenerSpellExecutor> ENDEC = StructEndecBuilder.of(
             ExecutionState.ENDEC.fieldOf("state", e -> e.state),
             EndecTomfoolery.UUID.xmap(
-                uuid -> new Key.Channel(uuid),
-                channel -> channel.uuid()
-            ).optionalOf().fieldOf("channel", e -> e.channel),
+                    uuid -> new Key.Channel(uuid),
+                    channel -> channel.uuid()).optionalOf().fieldOf("channel", e -> e.channel),
             ListFragment.ENDEC.optionalOf().fieldOf("result", e -> e.result),
-            MessageListenerSpellExecutor::new
-    );
+            MessageListenerSpellExecutor::new);
 
     private final ExecutionState state; // DO NOT USE
     private final Optional<Key.Channel> channel;
@@ -40,7 +38,7 @@ public class MessageListenerSpellExecutor implements SpellExecutor {
     public MessageListenerSpellExecutor(ExecutionState state, Optional<Key.Channel> channel) {
         this(state, channel, Optional.empty());
     }
-    
+
     @Override
     public SpellExecutorType<?> type() {
         return SpellExecutorType.MESSAGE_LISTENER;
@@ -55,10 +53,10 @@ public class MessageListenerSpellExecutor implements SpellExecutor {
     public Optional<Fragment> run(SpellSource source, TickData data) throws BlunderException {
         if (result.isEmpty()) {
             ModGlobalComponents.MESSAGE_HANDLER
-                .get(source.getWorld().getScoreboard())
-                .await(channel.<Key>map(n -> n).orElseGet(() -> new Key.Broadcast(source.getWorld().getRegistryKey(), source.getPos(), 0)), this::listen);
+                    .get(source.getWorld().getScoreboard())
+                    .await(channel.<Key>map(n -> n).orElseGet(() -> new Key.Broadcast(source.getWorld().getRegistryKey(), source.getPos(), 0)), this::listen);
         }
-        
+
         return result.map(n -> n);
     }
 

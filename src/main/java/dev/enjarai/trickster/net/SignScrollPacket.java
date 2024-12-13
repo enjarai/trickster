@@ -22,8 +22,7 @@ public record SignScrollPacket(Hand hand, String name) {
 
             newStack.set(ModComponents.FRAGMENT, new FragmentComponent(component.value(), component.name(), true, component.closed()));
             newStack.set(ModComponents.WRITTEN_SCROLL_META, new WrittenScrollMetaComponent(
-                    name(), player.getName().getString(), 0
-            ));
+                    name(), player.getName().getString(), 0));
             newStack.setCount(stack.getCount());
 
             player.setStackInHand(hand(), newStack);

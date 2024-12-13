@@ -12,7 +12,7 @@ public final class InfiniteManaPool implements MutableManaPool {
 
     private InfiniteManaPool() {
     }
-    
+
     @Override
     @Nullable
     public ManaPoolType<?> type() {

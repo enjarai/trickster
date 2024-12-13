@@ -27,12 +27,12 @@ public abstract class AbstractFleckTrick extends Trick {
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) {
 
         var playerList = supposeType(fragments.getLast(), FragmentType.LIST) // take either a list of entities
-            .map(listFragment -> listFragment.fragments().stream()
-                .map(entry -> expectType(entry, FragmentType.ENTITY)))
-            .or(() -> supposeType(fragments.getLast(), FragmentType.ENTITY) // or a single entity
-                .map(Stream::of))
-            .map(stream -> stream                                           // and throw if an entity doesn't exit
-                .map(frag -> frag.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this))).toList());
+                .map(listFragment -> listFragment.fragments().stream()
+                        .map(entry -> expectType(entry, FragmentType.ENTITY)))
+                .or(() -> supposeType(fragments.getLast(), FragmentType.ENTITY) // or a single entity
+                        .map(Stream::of))
+                .map(stream -> stream                                           // and throw if an entity doesn't exit
+                        .map(frag -> frag.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this))).toList());
 
         var id = expectType(fragments.removeFirst(), FragmentType.NUMBER).asInt();
         var pos = ctx.source().getPos();
@@ -41,18 +41,16 @@ public abstract class AbstractFleckTrick extends Trick {
         ctx.source().getWorld().collectEntitiesByType(
                 EntityType.PLAYER, new Box(
                         pos.x() - 64, pos.y() - 64, pos.z() - 64,
-                        pos.x() + 64, pos.y() + 64, pos.z() + 64
-                ),
-                e -> e.getPos().squaredDistanceTo(pos.x(), pos.y(), pos.z()) <= 64*64, entities
-         ); //find all the players within a 64 block sphere
+                        pos.x() + 64, pos.y() + 64, pos.z() + 64),
+                e -> e.getPos().squaredDistanceTo(pos.x(), pos.y(), pos.z()) <= 64 * 64, entities); //find all the players within a 64 block sphere
 
         if (playerList.isPresent()) {
             fragments.removeLast();
         }
 
         entities.stream()
-            .filter(serverPlayer -> playerList.map(list -> list.contains(serverPlayer)).orElse(true)) // if a list of players was specified, filter against it
-            .forEach(serverPlayer -> serverPlayer.getComponent(ModEntityComponents.FLECKS).addFleck(id, makeFleck(ctx, fragments)));
+                .filter(serverPlayer -> playerList.map(list -> list.contains(serverPlayer)).orElse(true)) // if a list of players was specified, filter against it
+                .forEach(serverPlayer -> serverPlayer.getComponent(ModEntityComponents.FLECKS).addFleck(id, makeFleck(ctx, fragments)));
 
         return fragments.getFirst();
     }

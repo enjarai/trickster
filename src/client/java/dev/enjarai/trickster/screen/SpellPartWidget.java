@@ -117,7 +117,8 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     }
 
     public ScrollAndQuillScreen.PositionMemory save() {
-        return new ScrollAndQuillScreen.PositionMemory(rootSpellPart.hashCode(), x, y, size, rootSpellPart, spellPart, new ArrayList<>(parents), new ArrayList<>(angleOffsets));
+        return new ScrollAndQuillScreen.PositionMemory(rootSpellPart.hashCode(), x, y, size, rootSpellPart, spellPart, new ArrayList<>(parents),
+                new ArrayList<>(angleOffsets));
     }
 
     public void load(ScrollAndQuillScreen.PositionMemory memory) {
@@ -138,18 +139,17 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             this.renderer.setMousePosition(mouseX, mouseY);
         }
 
-//        context.getMatrices().push();
-//        context.getMatrices().scale((float) PRECISION_OFFSET, (float) PRECISION_OFFSET, (float) PRECISION_OFFSET);
+        //        context.getMatrices().push();
+        //        context.getMatrices().scale((float) PRECISION_OFFSET, (float) PRECISION_OFFSET, (float) PRECISION_OFFSET);
 
         this.renderer.renderPart(
                 context.getMatrices(), context.getVertexConsumers(), spellPart,
                 x, y, size, angleOffsets.peek(), delta,
                 size -> (float) Math.clamp(1 / (size / context.getScaledWindowHeight() * 3) - 0.2, 0, 1),
-                new Vec3d(-1, 0, 0)
-        );
+                new Vec3d(-1, 0, 0));
         context.draw();
 
-//        context.getMatrices().pop();
+        //        context.getMatrices().pop();
     }
 
     public static boolean isCircleClickable(double size) {
@@ -371,22 +371,20 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
                     drawingPattern.removeLast();
                     MinecraftClient.getInstance().player.playSoundToPlayer(
                             ModSounds.DRAW, SoundCategory.MASTER,
-                            1f, ModSounds.randomPitch(0.6f, 0.2f)
-                    );
+                            1f, ModSounds.randomPitch(0.6f, 0.2f));
                 } else if (drawingPattern.isEmpty() ||
                         (drawingPattern.getLast() != (byte) i && !hasOverlappingLines(drawingPattern, drawingPattern.getLast(), (byte) i))) {
-                    drawingPattern.add((byte) i);
+                            drawingPattern.add((byte) i);
 
-                    //add middle point to path if connecting opposite corners
-                    if (drawingPattern.size() > 1 && drawingPattern.get(drawingPattern.size() - 2) == (byte) (8 - i))
-                        drawingPattern.add(drawingPattern.size() - 1, (byte) 4);
+                            //add middle point to path if connecting opposite corners
+                            if (drawingPattern.size() > 1 && drawingPattern.get(drawingPattern.size() - 2) == (byte) (8 - i))
+                                drawingPattern.add(drawingPattern.size() - 1, (byte) 4);
 
-                    // TODO click sound?
-                    MinecraftClient.getInstance().player.playSoundToPlayer(
-                            ModSounds.DRAW, SoundCategory.MASTER,
-                            1f, ModSounds.randomPitch(1f, 0.2f)
-                    );
-                }
+                            // TODO click sound?
+                            MinecraftClient.getInstance().player.playSoundToPlayer(
+                                    ModSounds.DRAW, SoundCategory.MASTER,
+                                    1f, ModSounds.randomPitch(1f, 0.2f));
+                        }
 
                 return true;
             }
@@ -442,8 +440,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
         MinecraftClient.getInstance().player.playSoundToPlayer(
                 ModSounds.COMPLETE, SoundCategory.MASTER,
-                1f, patternSize > 1 ? 1f : 0.6f
-        );
+                1f, patternSize > 1 ? 1f : 0.6f);
     }
 
     public void replaceCallback(Fragment fragment) {
@@ -484,7 +481,8 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         return false;
     }
 
-    protected boolean propagateMouseEvent(SpellPart part, double x, double y, double size, double startingAngle, double mouseX, double mouseY, MouseEventHandler callback) {
+    protected boolean propagateMouseEvent(SpellPart part, double x, double y, double size, double startingAngle, double mouseX, double mouseY,
+            MouseEventHandler callback) {
         var closest = part;
         var closestAngle = startingAngle;
         var closestX = x;
@@ -554,38 +552,38 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         boolean handle(SpellPart part, float x, float y, float size);
     }
 
-//    @Override
-//    public void setX(int x) {
-//        this.x = x + size;
-//    }
-//
-//    @Override
-//    public void setY(int y) {
-//        this.y = y + size;
-//    }
-//
-//    @Override
-//    public int getX() {
-//        return (int) (x - size);
-//    }
-//
-//    @Override
-//    public int getY() {
-//        return (int) (y - size);
-//    }
-//
-//    @Override
-//    public int getWidth() {
-//        return (int) size * 2;
-//    }
-//
-//    @Override
-//    public int getHeight() {
-//        return (int) size * 2;
-//    }
-//
-//    @Override
-//    public void forEachChild(Consumer<ClickableWidget> consumer) {
-//
-//    }
+    //    @Override
+    //    public void setX(int x) {
+    //        this.x = x + size;
+    //    }
+    //
+    //    @Override
+    //    public void setY(int y) {
+    //        this.y = y + size;
+    //    }
+    //
+    //    @Override
+    //    public int getX() {
+    //        return (int) (x - size);
+    //    }
+    //
+    //    @Override
+    //    public int getY() {
+    //        return (int) (y - size);
+    //    }
+    //
+    //    @Override
+    //    public int getWidth() {
+    //        return (int) size * 2;
+    //    }
+    //
+    //    @Override
+    //    public int getHeight() {
+    //        return (int) size * 2;
+    //    }
+    //
+    //    @Override
+    //    public void forEachChild(Consumer<ClickableWidget> consumer) {
+    //
+    //    }
 }

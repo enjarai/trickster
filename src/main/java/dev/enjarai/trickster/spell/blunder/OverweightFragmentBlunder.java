@@ -17,7 +17,7 @@ public class OverweightFragmentBlunder extends TrickBlunderException {
     @Override
     public MutableText createMessage() {
         return source.getName()
-            .append(": ")
-            .append(Text.translatable(Trickster.MOD_ID + ".blunder.overweight_fragment", found.asFormattedText()));
+                .append(": ")
+                .append(Text.translatable(Trickster.MOD_ID + ".blunder.overweight_fragment", found.asFormattedText()));
     }
 }

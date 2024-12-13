@@ -27,13 +27,11 @@ public class SignScrollScreen extends Screen {
         addDrawableChild(new TextWidget(
                 centerX - 100, centerY - 36, 200, 10,
                 Text.translatable("trickster.widget.enter_scroll_name"),
-                textRenderer
-        ));
+                textRenderer));
 
         textField = addDrawableChild(new TextFieldWidget(
                 textRenderer, centerX - 100, centerY - 24, 200, 20,
-                Text.translatable("trickster.widget.scroll_name")
-        ));
+                Text.translatable("trickster.widget.scroll_name")));
 
         addDrawableChild(ButtonWidget.builder(Text.translatable("book.signButton"), button -> {
             ModNetworking.CHANNEL.clientHandle().send(new SignScrollPacket(hand, textField.getText()));
@@ -47,13 +45,11 @@ public class SignScrollScreen extends Screen {
         addDrawableChild(new TextWidget(
                 centerX - 100, centerY + 24, 200, 10,
                 Text.translatable("trickster.widget.scroll_sign_note.line0"),
-                textRenderer
-        ));
+                textRenderer));
         addDrawableChild(new TextWidget(
                 centerX - 100, centerY + 34, 200, 10,
                 Text.translatable("trickster.widget.scroll_sign_note.line1"),
-                textRenderer
-        ));
+                textRenderer));
     }
 
     @Override

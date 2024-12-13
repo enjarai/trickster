@@ -22,16 +22,15 @@ import java.util.function.BiFunction;
 public non-sealed interface Fragment extends SpellInstruction {
     final int MAX_WEIGHT = 64000;
     final Text TRUNCATED_VALUE_TEXT = Text.literal(" [...]")
-        .setStyle(Style.EMPTY
-                .withColor(Formatting.RED)
-                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.translatable(Trickster.MOD_ID + ".text.misc.value_truncated"))));
+            .setStyle(Style.EMPTY
+                    .withColor(Formatting.RED)
+                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.translatable(Trickster.MOD_ID + ".text.misc.value_truncated"))));
     @SuppressWarnings("unchecked")
     final StructEndec<Fragment> ENDEC = EndecTomfoolery.lazy(() -> (StructEndec<Fragment>) Endec.dispatchedStruct(
             FragmentType::endec,
             Fragment::type,
             Endec.<FragmentType<?>>ifAttr(EndecTomfoolery.UBER_COMPACT_ATTRIBUTE, Endec.INT.xmap(FragmentType::getFromInt, FragmentType::getIntId))
-                    .orElse(MinecraftEndecs.ofRegistry(FragmentType.REGISTRY))
-    ));
+                    .orElse(MinecraftEndecs.ofRegistry(FragmentType.REGISTRY))));
 
     FragmentType<?> type();
 
@@ -65,17 +64,21 @@ public non-sealed interface Fragment extends SpellInstruction {
     }
 
     /**
-     * Potentially recursively remove ephemeral values from this fragment.
-     * May return <pre>this</pre> or any other new fragment.
-     * Potentially results in cloning the entire fragment if required.
+     * Potentially recursively remove ephemeral values from this fragment. May return
+     * 
+     * <pre>
+     * this
+     * </pre>
+     * 
+     * or any other new fragment. Potentially results in cloning the entire fragment if required.
      */
     default Fragment applyEphemeral() {
         return this;
     }
 
     /**
-     * The weight of this fragment in terms of memory footprint.
-     * If possible, should be *roughly* equivalent to the amount of bytes in the fields of this fragment.
+     * The weight of this fragment in terms of memory footprint. If possible, should be *roughly* equivalent to the amount of bytes in the fields of this
+     * fragment.
      */
     int getWeight();
 

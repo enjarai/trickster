@@ -28,8 +28,7 @@ public abstract class AbstractRaycastBlockTrick extends AbstractRaycastTrick {
                 position.add(direction.multiply(64d)),
                 RaycastContext.ShapeType.OUTLINE,
                 includeFluids ? RaycastContext.FluidHandling.ANY : RaycastContext.FluidHandling.NONE,
-                entity.map(ShapeContext::of).orElseGet(ShapeContext::absent)
-        )));
+                entity.map(ShapeContext::of).orElseGet(ShapeContext::absent))));
     }
 
     public abstract Fragment activate(BlockHitResult hit) throws BlunderException;

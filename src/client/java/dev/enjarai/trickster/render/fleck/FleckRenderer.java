@@ -23,7 +23,9 @@ public interface FleckRenderer<T extends Fleck> {
         return Registry.register(REGISTRY, FleckType.REGISTRY.getId(type), renderer);
     }
 
-    static void register() {}
+    static void register() {
+    }
 
-    void render(T fleck, @Nullable T lastFleck, WorldRenderContext context, ClientWorld world, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int color);
+    void render(T fleck, @Nullable T lastFleck, WorldRenderContext context, ClientWorld world, float tickDelta, MatrixStack matrices,
+            VertexConsumerProvider vertexConsumers, int color);
 }

@@ -27,23 +27,22 @@ public class FoldingSpellExecutor implements SpellExecutor {
             EndecTomfoolery.stackOf(Fragment.ENDEC).fieldOf("keys", e -> e.keys),
             Fragment.ENDEC.fieldOf("previous", e -> e.previous),
             EndecTomfoolery.safeOptionalOf(SpellExecutor.ENDEC).fieldOf("child", e -> e.child),
-            FoldingSpellExecutor::new
-    ), StructEndecBuilder.of( // <=2.0.0-beta.1 compat
-            ExecutionState.ENDEC.fieldOf("state", e -> e.state),
-            SpellPart.ENDEC.fieldOf("executable", e -> e.executable),
-            ListFragment.ENDEC.fieldOf("list", e -> (ListFragment) e.previous),
-            EndecTomfoolery.stackOf(Fragment.ENDEC).fieldOf("elements", executor -> executor.values),
-            EndecTomfoolery.safeOptionalOf(SpellExecutor.ENDEC).optionalFieldOf("child", executor -> executor.child, Optional.empty()),
-            Fragment.ENDEC.fieldOf("last", executor -> executor.lastResult),
-            (state, executable, list, elements, child, last) -> {
-                var keys = new Stack<Fragment>();
+            FoldingSpellExecutor::new),
+            StructEndecBuilder.of( // <=2.0.0-beta.1 compat
+                    ExecutionState.ENDEC.fieldOf("state", e -> e.state),
+                    SpellPart.ENDEC.fieldOf("executable", e -> e.executable),
+                    ListFragment.ENDEC.fieldOf("list", e -> (ListFragment) e.previous),
+                    EndecTomfoolery.stackOf(Fragment.ENDEC).fieldOf("elements", executor -> executor.values),
+                    EndecTomfoolery.safeOptionalOf(SpellExecutor.ENDEC).optionalFieldOf("child", executor -> executor.child, Optional.empty()),
+                    Fragment.ENDEC.fieldOf("last", executor -> executor.lastResult),
+                    (state, executable, list, elements, child, last) -> {
+                        var keys = new Stack<Fragment>();
 
-                for (int i = list.fragments().size() - 1; i >= list.fragments().size() - elements.size(); i--)
-                    keys.push(new NumberFragment(i));
-                
-                return new FoldingSpellExecutor(state, executable, last, elements, keys, list, child);
-            }
-    ));
+                        for (int i = list.fragments().size() - 1; i >= list.fragments().size() - elements.size(); i--)
+                            keys.push(new NumberFragment(i));
+
+                        return new FoldingSpellExecutor(state, executable, last, elements, keys, list, child);
+                    }));
 
     private final ExecutionState state;
     private final SpellPart executable;
@@ -54,7 +53,8 @@ public class FoldingSpellExecutor implements SpellExecutor {
     private int lastRunExecutions;
     private Fragment lastResult;
 
-    private FoldingSpellExecutor(ExecutionState state, SpellPart executable, Fragment lastResult, Stack<Fragment> values, Stack<Fragment> keys, Fragment previous, Optional<SpellExecutor> child) {
+    private FoldingSpellExecutor(ExecutionState state, SpellPart executable, Fragment lastResult, Stack<Fragment> values, Stack<Fragment> keys,
+            Fragment previous, Optional<SpellExecutor> child) {
         this.state = state;
         this.executable = executable;
         this.lastResult = lastResult;
@@ -70,7 +70,7 @@ public class FoldingSpellExecutor implements SpellExecutor {
         if (values.size() != keys.size())
             throw new IllegalStateException("FoldingSpellExecutor requires that the `values` and `keys` stack be of equal length!");
     }
-    
+
     @Override
     public SpellExecutorType<?> type() {
         return SpellExecutorType.FOLDING;
@@ -111,10 +111,7 @@ public class FoldingSpellExecutor implements SpellExecutor {
                                     lastResult,
                                     values.pop(),
                                     keys.pop(),
-                                    previous
-                            ))
-                    )
-            );
+                                    previous))));
 
             var result = runChild(ctx);
 

@@ -49,9 +49,9 @@ public class WriteSpellTrick extends Trick {
                 } else if (stack2.isOf(Items.ENCHANTED_BOOK)
                         && (stack.get(DataComponentTypes.STORED_ENCHANTMENTS) instanceof ItemEnchantmentsComponent enchants)
                         && enchants.isEmpty()) {
-                    serverPlayer.equipStack(EquipmentSlot.OFFHAND, stack2.withItem(Items.BOOK));
-                    stack2 = serverPlayer.getOffHandStack();
-                }
+                            serverPlayer.equipStack(EquipmentSlot.OFFHAND, stack2.withItem(Items.BOOK));
+                            stack2 = serverPlayer.getOffHandStack();
+                        }
 
                 ModCriteria.INSCRIBE_SPELL.trigger(serverPlayer);
 

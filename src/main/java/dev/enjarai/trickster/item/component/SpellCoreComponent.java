@@ -16,8 +16,7 @@ import net.minecraft.text.Text;
 
 public record SpellCoreComponent(SpellExecutor executor) {
     public static final Codec<SpellCoreComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            EndecTomfoolery.toCodec(SpellExecutor.ENDEC).fieldOf("executor").forGetter(SpellCoreComponent::executor)
-    ).apply(instance, SpellCoreComponent::new));
+            EndecTomfoolery.toCodec(SpellExecutor.ENDEC).fieldOf("executor").forGetter(SpellCoreComponent::executor)).apply(instance, SpellCoreComponent::new));
 
     public SpellCoreComponent(SpellPart spell) {
         this(new DefaultSpellExecutor(spell, List.of()));
@@ -34,8 +33,8 @@ public record SpellCoreComponent(SpellExecutor executor) {
             if (fragment instanceof SpellPart spell) {
                 if (!map.contains(ModComponents.SPELL_CORE)
                         || map.get(ModComponents.SPELL_CORE) instanceof SpellCoreComponent comp
-                        && (!spell.equals(comp.executor().spell())
-                        || comp.executor() instanceof ErroredSpellExecutor)) {
+                                && (!spell.equals(comp.executor().spell())
+                                        || comp.executor() instanceof ErroredSpellExecutor)) {
                     updateCallback.accept(new SpellCoreComponent(spell));
                 }
             }

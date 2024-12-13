@@ -21,7 +21,8 @@ public abstract class BlunderException extends RuntimeException {
         var out = Text.literal("[");
         var first = true;
         for (int integer : address) {
-            if (!first) out.append(Text.literal(", "));
+            if (!first)
+                out.append(Text.literal(", "));
             out.append(formatInt(integer));
             first = false;
         }

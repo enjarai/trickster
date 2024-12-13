@@ -9,8 +9,7 @@ import net.minecraft.text.Text;
 public class BooleanFragment implements Fragment {
     public static final StructEndec<BooleanFragment> ENDEC = StructEndecBuilder.of(
             Endec.BOOLEAN.fieldOf("bool", BooleanFragment::asBoolean),
-            BooleanFragment::of
-    );
+            BooleanFragment::of);
     public static final BooleanFragment TRUE = new BooleanFragment(true);
     public static final BooleanFragment FALSE = new BooleanFragment(false);
 

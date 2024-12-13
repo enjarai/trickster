@@ -25,8 +25,7 @@ public class HighlightTrick extends Trick {
             var block = expectInput(fragments, FragmentType.VECTOR, i).toBlockPos().toCenterPos();
             ctx.source().getWorld().spawnParticles(
                     ModParticles.PROTECTED_BLOCK, block.x, block.y, block.z,
-                    1, 0, 0, 0, 0
-            );
+                    1, 0, 0, 0, 0);
         }
 
         return ret;

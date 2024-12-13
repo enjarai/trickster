@@ -19,11 +19,11 @@ public class GetInventorySlotTrick extends Trick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var slot = expectInput(fragments, FragmentType.NUMBER, 0).number();        
+        var slot = expectInput(fragments, FragmentType.NUMBER, 0).number();
         var source = supposeInput(fragments, 1)
-            .map(fragment -> expectEitherInput(fragments, FragmentType.VECTOR, FragmentType.ENTITY, 1)
-                    .mapLeft(VectorFragment::toBlockPos)
-                    .mapRight(EntityFragment::uuid));
+                .map(fragment -> expectEitherInput(fragments, FragmentType.VECTOR, FragmentType.ENTITY, 1)
+                        .mapLeft(VectorFragment::toBlockPos)
+                        .mapRight(EntityFragment::uuid));
 
         return new SlotFragment((int) Math.round(slot), source);
     }

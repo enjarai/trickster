@@ -40,8 +40,7 @@ public class DrainFluidTrick extends Trick {
         var particlePos = blockPos.toCenterPos();
         world.spawnParticles(
                 ModParticles.PROTECTED_BLOCK, particlePos.x, particlePos.y, particlePos.z,
-                1, 0, 0, 0, 0
-        );
+                1, 0, 0, 0, 0);
 
         return pos;
     }

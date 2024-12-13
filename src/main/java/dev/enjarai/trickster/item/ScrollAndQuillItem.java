@@ -49,11 +49,11 @@ public class ScrollAndQuillItem extends Item {
         } else {
             if (hand == Hand.OFF_HAND
                     && ModNetworking.clientOrDefault(user,
-                        Trickster.CONFIG.keys.disableOffhandScrollOpening,
-                        Trickster.CONFIG.disableOffhandScrollOpening())) {
+                            Trickster.CONFIG.keys.disableOffhandScrollOpening,
+                            Trickster.CONFIG.disableOffhandScrollOpening())) {
                 return TypedActionResult.pass(stack);
             }
-            
+
             user.openHandledScreen(new NamedScreenHandlerFactory() {
                 @Override
                 public Text getDisplayName() {
@@ -65,8 +65,7 @@ public class ScrollAndQuillItem extends Item {
                     return new ScrollAndQuillScreenHandler(
                             syncId, playerInventory, stack, otherStack, slot,
                             mergedMap,
-                            false, true
-                    );
+                            false, true);
                 }
             });
         }

@@ -17,12 +17,9 @@ import java.util.UUID;
 @Mixin(targets = "org/figuramc/figura/avatar/AvatarManager")
 public class AvatarManagerMixin {
     @Dynamic
-    @Inject(
-            method = "getAvatarForPlayer",
-            at = @At("HEAD")
-    )
+    @Inject(method = "getAvatarForPlayer", at = @At("HEAD"))
     private static void changeAvatarWhenPolymorphed(UUID uuid, CallbackInfoReturnable<Object> cir,
-                                                    @Local(argsOnly = true, index = 0) LocalRef<UUID> uuidRef) {
+            @Local(argsOnly = true, index = 0) LocalRef<UUID> uuidRef) {
         var world = MinecraftClient.getInstance().world;
         if (world != null) {
             var player = world.getPlayerByUuid(uuidRef.get());

@@ -37,10 +37,10 @@ public class LightBlock extends BlockWithEntity implements Waterloggable {
     }
 
     // TODO decide if we can make this work?
-//    @Override
-//    protected BlockRenderType getRenderType(BlockState state) {
-//        return BlockRenderType.MODEL;
-//    }
+    //    @Override
+    //    protected BlockRenderType getRenderType(BlockState state) {
+    //        return BlockRenderType.MODEL;
+    //    }
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
@@ -65,14 +65,14 @@ public class LightBlock extends BlockWithEntity implements Waterloggable {
                         particlePos.x, particlePos.y, particlePos.z,
                         random.nextFloat() * 0.005f - 0.0025f,
                         random.nextFloat() * 0.02f + 0.01f,
-                        random.nextFloat() * 0.005f - 0.0025f
-                );
+                        random.nextFloat() * 0.005f - 0.0025f);
             }
         }
     }
 
     @Override
-    protected BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+    protected BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos,
+            BlockPos neighborPos) {
         if (state.get(WATERLOGGED)) {
             world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
         }

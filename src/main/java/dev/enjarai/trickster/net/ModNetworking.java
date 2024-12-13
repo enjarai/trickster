@@ -32,8 +32,8 @@ public class ModNetworking {
     public static <T> T clientOrDefault(PlayerEntity player, Option.Key key, T defaultValue) {
         if (player instanceof ServerPlayerEntity serverPlayer)
             return ConfigSynchronizer.getClientOptions(serverPlayer, Trickster.CONFIG.name()) instanceof Map<Option.Key, ?> map
-                ? (T) map.get(key)
-                : defaultValue;
+                    ? (T) map.get(key)
+                    : defaultValue;
         else return defaultValue;
     }
 }

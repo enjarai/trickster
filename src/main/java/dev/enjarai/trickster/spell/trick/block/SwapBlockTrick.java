@@ -54,7 +54,7 @@ public class SwapBlockTrick extends Trick {
             }
         }
 
-        ctx.useMana(this, (float)(60 + (pos1.vector().distance(pos2.vector()))));
+        ctx.useMana(this, (float) (60 + (pos1.vector().distance(pos2.vector()))));
 
         NbtCompound blockEntity1Nbt = null;
         NbtCompound blockEntity2Nbt = null;
@@ -83,12 +83,10 @@ public class SwapBlockTrick extends Trick {
         var particlePos2 = blockPos2.toCenterPos();
         world.spawnParticles(
                 ModParticles.PROTECTED_BLOCK, particlePos1.x, particlePos1.y, particlePos1.z,
-                1, 0, 0, 0, 0
-        );
+                1, 0, 0, 0, 0);
         world.spawnParticles(
                 ModParticles.PROTECTED_BLOCK, particlePos2.x, particlePos2.y, particlePos2.z,
-                1, 0, 0, 0, 0
-        );
+                1, 0, 0, 0, 0);
 
         return VoidFragment.INSTANCE;
     }

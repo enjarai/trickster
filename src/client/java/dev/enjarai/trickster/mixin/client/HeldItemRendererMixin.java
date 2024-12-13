@@ -10,13 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(HeldItemRenderer.class)
 public class HeldItemRendererMixin {
-    @WrapOperation(
-            method = "updateHeldItems",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/item/ItemStack;areEqual(Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemStack;)Z"
-            )
-    )
+    @WrapOperation(method = "updateHeldItems", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;areEqual(Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemStack;)Z"))
     private boolean cancelItemSwapAnimation(ItemStack left, ItemStack right, Operation<Boolean> original) {
         var originalValue = original.call(left, right);
 

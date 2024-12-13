@@ -36,7 +36,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class SpellConstructBlock extends BlockWithEntity {
     public static final DirectionProperty FACING = Properties.FACING;
-    public static final VoxelShape[] SHAPES = new VoxelShape[]{
+    public static final VoxelShape[] SHAPES = new VoxelShape[] {
             createCuboidShape(0, 14, 0, 16, 16, 16),
             createCuboidShape(0, 0, 0, 16, 2, 16),
             createCuboidShape(0, 0, 14, 16, 16, 16),

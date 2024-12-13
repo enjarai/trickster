@@ -11,8 +11,7 @@ import net.minecraft.text.Text;
 public record ItemTypeFragment(Item item) implements Fragment {
     public static final StructEndec<ItemTypeFragment> ENDEC = StructEndecBuilder.of(
             MinecraftEndecs.ofRegistry(Registries.ITEM).fieldOf("item", ItemTypeFragment::item),
-            ItemTypeFragment::new
-    );
+            ItemTypeFragment::new);
 
     @Override
     public FragmentType<?> type() {

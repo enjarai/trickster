@@ -25,8 +25,7 @@ public class ExecutionState {
             Fragment.ENDEC.listOf().fieldOf("arguments", state -> state.arguments),
             Endec.INT.listOf().fieldOf("stacktrace", state -> state.stacktrace.stream().toList()),
             EndecTomfoolery.safeOptionalOf(MutableManaPool.ENDEC).optionalFieldOf("pool_override", state -> state.poolOverride, Optional.empty()),
-            ExecutionState::new
-    );
+            ExecutionState::new);
 
     private int recursions;
     private int delay;
@@ -36,7 +35,8 @@ public class ExecutionState {
     private final Deque<Integer> stacktrace = new ArrayDeque<>();
     private final Optional<MutableManaPool> poolOverride;
 
-    private ExecutionState(int recursions, int delay, boolean hasUsedMana, int initialStacktraceSize, List<Fragment> arguments, List<Integer> stacktrace, Optional<MutableManaPool> poolOverride) {
+    private ExecutionState(int recursions, int delay, boolean hasUsedMana, int initialStacktraceSize, List<Fragment> arguments, List<Integer> stacktrace,
+            Optional<MutableManaPool> poolOverride) {
         this.recursions = recursions;
         this.delay = delay;
         this.hasUsedMana = hasUsedMana;
@@ -109,10 +109,7 @@ public class ExecutionState {
     }
 
     /**
-     * >0: Actual index
-     * -1: Glyph call
-     * -2: Pattern call (Temporarily unused)
-     * -3: Tail recursion
+     * >0: Actual index -1: Glyph call -2: Pattern call (Temporarily unused) -3: Tail recursion
      */
     public void pushStackTrace(int i) {
         stacktrace.push(i);
