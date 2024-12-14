@@ -27,8 +27,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.PersistentState;
 
 public class SharedManaComponent implements AutoSyncedComponent {
-    private static final KeyedEndec<Map<UUID, SimpleManaPool>> POOLS_ENDEC = new KeyedEndec<>("pools", Endec.map(EndecTomfoolery.UUID, SimpleManaPool.ENDEC),
-            new HashMap<>());
+    private static final KeyedEndec<Map<UUID, SimpleManaPool>> POOLS_ENDEC = new KeyedEndec<>("pools", Endec.map(EndecTomfoolery.UUID, SimpleManaPool.ENDEC), new HashMap<>());
 
     private final Map<UUID, SimpleManaPool> pools = new HashMap<>();
     private final Map<UUID, List<UUID>> subscribers = new HashMap<>();
@@ -76,10 +75,12 @@ public class SharedManaComponent implements AutoSyncedComponent {
             final var finalPool = pool;
             pool = server.get().getOverworld().getPersistentStateManager().getOrCreate(
                     new PersistentState.Type<PoolState>(
-                            () -> new PoolState(finalPool),
-                            PoolState::readNbt,
-                            DataFixTypes.LEVEL),
-                    "trickster/shared_mana_pool/" + uuid).getPool();
+                        () -> new PoolState(finalPool),
+                        PoolState::readNbt,
+                        DataFixTypes.LEVEL
+                    ),
+                    "trickster/shared_mana_pool/" + uuid
+            ).getPool();
         }
 
         pools.put(uuid, pool);
@@ -91,7 +92,8 @@ public class SharedManaComponent implements AutoSyncedComponent {
             if (!pools.containsKey(uuid)) {
                 var data = server.getOverworld().getPersistentStateManager().get(
                         PoolState.TYPE,
-                        "trickster/shared_mana_pool/" + uuid);
+                        "trickster/shared_mana_pool/" + uuid
+                );
 
                 if (data != null)
                     pools.put(uuid, data.getPool());
@@ -120,7 +122,8 @@ public class SharedManaComponent implements AutoSyncedComponent {
         public static final Type<PoolState> TYPE = new PersistentState.Type<>(
                 () -> new PoolState(SimpleManaPool.getSingleUse(0)),
                 PoolState::readNbt,
-                DataFixTypes.LEVEL);
+                DataFixTypes.LEVEL
+        );
 
         private final SimpleManaPool pool;
 

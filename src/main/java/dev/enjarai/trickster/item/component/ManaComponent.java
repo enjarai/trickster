@@ -13,11 +13,11 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.LightType;
 
 public record ManaComponent(ManaPool pool, float naturalRechargeMultiplier, boolean rechargeable) {
-
     public static final Codec<ManaComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             EndecTomfoolery.toCodec(ManaPool.ENDEC).fieldOf("pool").forGetter(ManaComponent::pool),
             Codec.FLOAT.fieldOf("natural_recharge_multiplier").forGetter(ManaComponent::naturalRechargeMultiplier),
-            Codec.BOOL.fieldOf("rechargable").forGetter(ManaComponent::rechargeable)).apply(instance, ManaComponent::new));
+            Codec.BOOL.fieldOf("rechargable").forGetter(ManaComponent::rechargeable)
+    ).apply(instance, ManaComponent::new));
 
     public ManaComponent(ManaPool pool) {
         this(pool, 1, true);
@@ -64,7 +64,8 @@ public record ManaComponent(ManaPool pool, float naturalRechargeMultiplier, bool
                     world.random.nextFloat() * 0.005f - 0.0025f,
                     world.random.nextFloat() * 0.02f + 0.01f,
                     world.random.nextFloat() * 0.005f - 0.0025f,
-                    1);
+                    1
+            );
             recharged -= world.random.nextFloat();
         }
 

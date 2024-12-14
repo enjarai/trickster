@@ -23,8 +23,7 @@ public class SpellConstructBlockEntityRenderer implements BlockEntityRenderer<Sp
     }
 
     @Override
-    public void render(SpellConstructBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light,
-            int overlay) {
+    public void render(SpellConstructBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         matrices.push();
 
         matrices.translate(0.5f, 0.5f, 0.5f);
@@ -43,7 +42,8 @@ public class SpellConstructBlockEntityRenderer implements BlockEntityRenderer<Sp
             itemRenderer.renderItem(
                     knotStack, ModelTransformationMode.FIXED,
                     light, overlay, matrices, vertexConsumers,
-                    entity.getWorld(), 0);
+                    entity.getWorld(), 0
+            );
 
             matrices.pop();
         }
@@ -64,7 +64,8 @@ public class SpellConstructBlockEntityRenderer implements BlockEntityRenderer<Sp
         matrices.multiply(RotationAxis.POSITIVE_Z.rotation(age / 10));
         matrices.translate(
                 0, 0,
-                (float) Math.sin(age * 0.14f) * 0.02f);
+                (float) Math.sin(age * 0.14f) * 0.02f
+        );
 
         var normal = new Vec3d(new Vector3f(0, 0, -1));
 
@@ -73,7 +74,8 @@ public class SpellConstructBlockEntityRenderer implements BlockEntityRenderer<Sp
             this.renderer.renderPart(
                     matrices, vertexConsumers, component.executor().spell(),
                     0, 0, 0.5f, 0,
-                    tickDelta, size -> 1f, normal);
+                    tickDelta, size -> 1f, normal
+            );
         }
         matrices.pop();
     }

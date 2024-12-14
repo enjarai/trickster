@@ -41,6 +41,7 @@ public class SetHatTrick extends Trick {
             return BooleanFragment.FALSE;
         }
 
+
         var slot = hatStack.get(ModComponents.SELECTED_SLOT);
         if (slot != null) {
             hatStack.set(ModComponents.SELECTED_SLOT, new SelectedSlotComponent(

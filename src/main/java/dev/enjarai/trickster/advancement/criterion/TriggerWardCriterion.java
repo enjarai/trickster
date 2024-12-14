@@ -20,10 +20,13 @@ public class TriggerWardCriterion extends AbstractCriterion<TriggerWardCriterion
         super.trigger(player, conditions -> true);
     }
 
-    public record Conditions(Optional<LootContextPredicate> player) implements AbstractCriterion.Conditions {
-        public static final Codec<TriggerWardCriterion.Conditions> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                EntityPredicate.LOOT_CONTEXT_PREDICATE_CODEC.optionalFieldOf("player").forGetter(TriggerWardCriterion.Conditions::player))
-                .apply(instance, TriggerWardCriterion.Conditions::new));
+    public record Conditions(Optional<LootContextPredicate> player) implements AbstractCriterion.Conditions
+    {
+        public static final Codec<TriggerWardCriterion.Conditions> CODEC = RecordCodecBuilder.create(instance ->
+                instance.group(
+                        EntityPredicate.LOOT_CONTEXT_PREDICATE_CODEC.optionalFieldOf("player").forGetter(TriggerWardCriterion.Conditions::player)
+                ).apply(instance, TriggerWardCriterion.Conditions::new)
+        );
 
         @Override
         public void validate(LootContextPredicateValidator validator) {

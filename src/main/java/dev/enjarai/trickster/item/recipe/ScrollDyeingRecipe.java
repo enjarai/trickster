@@ -43,14 +43,15 @@ public class ScrollDyeingRecipe extends SpecialCraftingRecipe {
 
         this.ingredient = Ingredient.ofStacks(Stream.concat(
                 Stream.of(original),
-                ModItems.DYED_VARIANTS.stream().filter(v -> v.original() == original).map(ModItems.DyedVariant::variant)).map(ItemStack::new));
+                ModItems.DYED_VARIANTS.stream().filter(v -> v.original() == original).map(ModItems.DyedVariant::variant)
+        ).map(ItemStack::new));
     }
 
     public boolean matches(CraftingRecipeInput craftingRecipeInput, World world) {
         int i = 0;
         int j = 0;
 
-        for (int k = 0; k < craftingRecipeInput.getSize(); ++k) {
+        for(int k = 0; k < craftingRecipeInput.getSize(); ++k) {
             ItemStack itemStack = craftingRecipeInput.getStackInSlot(k);
             if (!itemStack.isEmpty()) {
                 if (ingredient.test(itemStack)) {
@@ -76,7 +77,7 @@ public class ScrollDyeingRecipe extends SpecialCraftingRecipe {
         ItemStack itemStack = ItemStack.EMPTY;
         DyeItem dyeItem = (DyeItem) Items.WHITE_DYE;
 
-        for (int i = 0; i < craftingRecipeInput.getSize(); ++i) {
+        for(int i = 0; i < craftingRecipeInput.getSize(); ++i) {
             ItemStack itemStack2 = craftingRecipeInput.getStackInSlot(i);
             if (!itemStack2.isEmpty()) {
                 Item item = itemStack2.getItem();
@@ -102,3 +103,4 @@ public class ScrollDyeingRecipe extends SpecialCraftingRecipe {
         return Registries.RECIPE_SERIALIZER.get(recipeSerializer);
     }
 }
+

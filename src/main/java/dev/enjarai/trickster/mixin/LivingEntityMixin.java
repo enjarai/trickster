@@ -31,14 +31,23 @@ public abstract class LivingEntityMixin extends Entity {
         super(type, world);
     }
 
-    @Inject(method = "fall", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;applyMovementEffects(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/util/math/BlockPos;)V"))
+    @Inject(
+            method = "fall",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/entity/LivingEntity;applyMovementEffects(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/util/math/BlockPos;)V"
+            )
+    )
     private void triggerBoots(double heightDifference, boolean onGround, BlockState state, BlockPos landedPosition, CallbackInfo ci) {
-        if ((LivingEntity) (Object) this instanceof ServerPlayerEntity player) {
+        if ((LivingEntity)(Object)this instanceof ServerPlayerEntity player) {
             ItemTriggerHelper.triggerBoots(player, new NumberFragment(this.fallDistance));
         }
     }
 
-    @Inject(method = "tick", at = @At("TAIL"))
+    @Inject(
+            method = "tick",
+            at = @At("TAIL")
+    )
     private void tickTricksterThings(CallbackInfo ci) {
         removeAttached(ModAttachments.WHY_IS_THERE_NO_WAY_TO_DETECT_THIS);
 

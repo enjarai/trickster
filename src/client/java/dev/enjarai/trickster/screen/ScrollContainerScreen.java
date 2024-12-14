@@ -16,7 +16,7 @@ import net.minecraft.util.Identifier;
 @Environment(EnvType.CLIENT)
 public class ScrollContainerScreen extends HandledScreen<ScrollContainerScreenHandler> implements ScreenHandlerProvider<ScrollContainerScreenHandler> {
     private static final Identifier TEXTURE = Trickster.id("textures/gui/scroll_54.png");
-    //    private static final Identifier TEXTURE = Identifier.ofVanilla("textures/gui/container/generic_54.png");
+//    private static final Identifier TEXTURE = Identifier.ofVanilla("textures/gui/container/generic_54.png");
     private static final Identifier SELECTED_SLOT_TEXTURE = Trickster.id("textures/gui/selected_slot.png");
     private final int rows;
 
@@ -81,11 +81,11 @@ public class ScrollContainerScreen extends HandledScreen<ScrollContainerScreenHa
                 newSlot = 0;
             }
 
-            ModNetworking.CHANNEL.clientHandle()
-                    .send(new ScrollHatPacket((float) (Trickster.CONFIG.invertTopHatScrolling() ? verticalAmount : -verticalAmount), false));
+            ModNetworking.CHANNEL.clientHandle().send(new ScrollHatPacket((float) (Trickster.CONFIG.invertTopHatScrolling() ? verticalAmount : -verticalAmount), false));
             handler.selectedSlot.set(newSlot);
         }
 
         return true;
     }
 }
+

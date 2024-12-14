@@ -19,13 +19,15 @@ import java.util.function.Supplier;
 
 @Mixin(ServerWorld.class)
 public abstract class ServerWorldMixin extends World {
-    protected ServerWorldMixin(MutableWorldProperties properties, RegistryKey<World> registryRef, DynamicRegistryManager registryManager,
-            RegistryEntry<DimensionType> dimensionEntry, Supplier<Profiler> profiler, boolean isClient, boolean debugWorld, long biomeAccess,
-            int maxChainedNeighborUpdates) {
+    protected ServerWorldMixin(MutableWorldProperties properties, RegistryKey<World> registryRef, DynamicRegistryManager registryManager, RegistryEntry<DimensionType> dimensionEntry, Supplier<Profiler> profiler, boolean isClient, boolean debugWorld, long biomeAccess, int maxChainedNeighborUpdates) {
         super(properties, registryRef, registryManager, dimensionEntry, profiler, isClient, debugWorld, biomeAccess, maxChainedNeighborUpdates);
     }
 
-    @Inject(method = "shouldTick(Lnet/minecraft/util/math/ChunkPos;)Z", at = @At("HEAD"), cancellable = true)
+    @Inject(
+            method = "shouldTick(Lnet/minecraft/util/math/ChunkPos;)Z",
+            at = @At("HEAD"),
+            cancellable = true
+    )
     private void worldPinTick(ChunkPos pos, CallbackInfoReturnable<Boolean> cir) {
         if (ModWorldComponents.PINNED_CHUNKS.get(this).isPinned(pos)) {
             cir.setReturnValue(true);

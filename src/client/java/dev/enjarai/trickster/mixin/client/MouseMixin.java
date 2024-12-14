@@ -9,9 +9,14 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(Mouse.class)
 public class MouseMixin {
-    @WrapWithCondition(method = "onMouseScroll", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerInventory;scrollInHotbar(D)V"))
+    @WrapWithCondition(
+            method = "onMouseScroll",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/entity/player/PlayerInventory;scrollInHotbar(D)V"
+            )
+    )
     private boolean interceptMouseScroll(PlayerInventory instance, double scrollAmount) {
         return !ModKeyBindings.interceptScroll((float) scrollAmount);
     }
 }
-

@@ -24,6 +24,7 @@ public class LocateGlyphTrick extends AbstractMetaTrick {
 
         var address = search(spell, glyph);
 
+
         if (address == null)
             return VoidFragment.INSTANCE;
         else
@@ -35,7 +36,7 @@ public class LocateGlyphTrick extends AbstractMetaTrick {
     private List<Integer> search(SpellPart spell, Fragment target) {
         Queue<Pair<Integer[], SpellPart>> queue = new LinkedList<>();
 
-        queue.add(new Pair<>(new Integer[] {}, spell));
+        queue.add(new Pair<>(new Integer[]{}, spell));
         while (!queue.isEmpty()) {
 
             var temp = queue.poll();

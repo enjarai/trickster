@@ -57,7 +57,8 @@ public record ZalgoFragment(int index) implements Fragment {
             "get it??",
             "actually",
             "i probably have enough strings now",
-            "time to wrap this up");
+            "time to wrap this up"
+    );
 
     public ZalgoFragment() {
         this(RANDOM.nextInt(SILLIES.size()));

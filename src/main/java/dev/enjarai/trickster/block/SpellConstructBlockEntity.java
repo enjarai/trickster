@@ -28,11 +28,12 @@ import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
 
 public class SpellConstructBlockEntity extends BlockEntity implements SpellColoredBlockEntity, Inventory, CrowMind, SpellCastingBlockEntity {
-    public static final KeyedEndec<Fragment> CROW_MIND_ENDEC = Fragment.ENDEC.keyed("crow_mind", () -> VoidFragment.INSTANCE);
+    public static final KeyedEndec<Fragment> CROW_MIND_ENDEC =
+            Fragment.ENDEC.keyed("crow_mind", () -> VoidFragment.INSTANCE);
 
     public int age;
     public Fragment crowMind = VoidFragment.INSTANCE;
-    public int[] colors = new int[] { 0xffffff };
+    public int[] colors = new int[]{0xffffff};
 
     private ItemStack stack = ItemStack.EMPTY;
 
@@ -54,7 +55,7 @@ public class SpellConstructBlockEntity extends BlockEntity implements SpellColor
         colors = nbt.getIntArray("colors");
 
         if (colors.length == 0) {
-            colors = new int[] { 0xffffff };
+            colors = new int[]{0xffffff};
         }
     }
 

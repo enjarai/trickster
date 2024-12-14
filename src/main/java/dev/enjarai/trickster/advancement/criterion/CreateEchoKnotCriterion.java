@@ -20,10 +20,13 @@ public class CreateEchoKnotCriterion extends AbstractCriterion<CreateEchoKnotCri
         super.trigger(player, conditions -> true);
     }
 
-    public record Conditions(Optional<LootContextPredicate> player) implements AbstractCriterion.Conditions {
-        public static final Codec<CreateEchoKnotCriterion.Conditions> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                EntityPredicate.LOOT_CONTEXT_PREDICATE_CODEC.optionalFieldOf("player").forGetter(CreateEchoKnotCriterion.Conditions::player))
-                .apply(instance, CreateEchoKnotCriterion.Conditions::new));
+    public record Conditions(Optional<LootContextPredicate> player) implements AbstractCriterion.Conditions
+    {
+        public static final Codec<CreateEchoKnotCriterion.Conditions> CODEC = RecordCodecBuilder.create(instance ->
+                instance.group(
+                        EntityPredicate.LOOT_CONTEXT_PREDICATE_CODEC.optionalFieldOf("player").forGetter(CreateEchoKnotCriterion.Conditions::player)
+                ).apply(instance, CreateEchoKnotCriterion.Conditions::new)
+        );
 
         @Override
         public void validate(LootContextPredicateValidator validator) {

@@ -36,8 +36,7 @@ public record SpellContext(ExecutionState state, SpellSource source, TickData da
         ItemStack result = null;
 
         if (optionalSlot.isPresent()) {
-            if (!validator.apply(optionalSlot.get().getItem(trickSource, this)))
-                throw new ItemInvalidBlunder(trickSource);
+            if (!validator.apply(optionalSlot.get().getItem(trickSource, this))) throw new ItemInvalidBlunder(trickSource);
             result = optionalSlot.get().move(trickSource, this, 1);
         } else {
             var player = source.getPlayer().orElseThrow(() -> new NoPlayerBlunder(trickSource));

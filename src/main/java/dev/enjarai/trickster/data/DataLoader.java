@@ -16,8 +16,7 @@ public class DataLoader {
         ResourceManagerHelper resourceManagerHelper = ResourceManagerHelper.get(ResourceType.SERVER_DATA);
         resourceManagerHelper.registerReloadListener(Trickster.id("conversion", "heat"), wrapperLookup -> heatLoader = new HeatConversionLoader(wrapperLookup));
         resourceManagerHelper.registerReloadListener(Trickster.id("conversion", "cool"), wrapperLookup -> coolLoader = new CoolConversionLoader(wrapperLookup));
-        resourceManagerHelper.registerReloadListener(Trickster.id("conversion", "erode"),
-                wrapperLookup -> erodeLoader = new ErodeConversionLoader(wrapperLookup));
+        resourceManagerHelper.registerReloadListener(Trickster.id("conversion", "erode"), wrapperLookup -> erodeLoader = new ErodeConversionLoader(wrapperLookup));
     }
 
     public static HeatConversionLoader getHeatLoader() {

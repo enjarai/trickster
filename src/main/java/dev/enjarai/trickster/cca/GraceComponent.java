@@ -39,7 +39,7 @@ public class GraceComponent implements ServerTickingComponent, ClientTickingComp
     }
 
     public void tick() {
-        for (var iterator = graces.object2IntEntrySet().iterator(); iterator.hasNext();) {
+        for (var iterator = graces.object2IntEntrySet().iterator(); iterator.hasNext(); ) {
             var entry = iterator.next();
             var value = entry.getIntValue();
             if (value > 0) {

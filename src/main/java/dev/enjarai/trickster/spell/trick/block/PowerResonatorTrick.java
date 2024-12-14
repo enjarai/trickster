@@ -35,14 +35,15 @@ public class PowerResonatorTrick extends Trick {
             var result = block.setPower(world, blockPos, intPower);
 
             if (result) {
-                //                var particlePos = blockPos.toCenterPos();
-                //                world.spawnParticles(
-                //                        ModParticles.PROTECTED_BLOCK, particlePos.x, particlePos.y, particlePos.z,
-                //                        1, 0, 0, 0, 0
-                //                );
+//                var particlePos = blockPos.toCenterPos();
+//                world.spawnParticles(
+//                        ModParticles.PROTECTED_BLOCK, particlePos.x, particlePos.y, particlePos.z,
+//                        1, 0, 0, 0, 0
+//                );
                 world.playSound(
                         null, blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5,
-                        SoundEvents.BLOCK_BELL_USE, SoundCategory.BLOCKS, 1, 1.6f + 0.1f / 3 * intPower, 0);
+                        SoundEvents.BLOCK_BELL_USE, SoundCategory.BLOCKS, 1, 1.6f + 0.1f / 3 * intPower, 0
+                );
                 ctx.source().getPlayer().ifPresent(ModCriteria.TRIGGER_RESONATOR::trigger);
 
                 return BooleanFragment.TRUE;

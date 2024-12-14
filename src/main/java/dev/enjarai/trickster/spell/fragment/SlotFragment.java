@@ -30,12 +30,11 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 
 public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) implements Fragment {
-
     public static final StructEndec<SlotFragment> ENDEC = StructEndecBuilder.of(
             Endec.INT.fieldOf("slot", SlotFragment::slot),
-            EndecTomfoolery.safeOptionalOf(new EitherEndec<>(EndecTomfoolery.ALWAYS_READABLE_BLOCK_POS, EndecTomfoolery.UUID, true)).fieldOf("source",
-                    SlotFragment::source),
-            SlotFragment::new);
+            EndecTomfoolery.safeOptionalOf(new EitherEndec<>(EndecTomfoolery.ALWAYS_READABLE_BLOCK_POS, EndecTomfoolery.UUID, true)).fieldOf("source", SlotFragment::source),
+            SlotFragment::new
+    );
 
     @Override
     public FragmentType<?> type() {
@@ -47,8 +46,8 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
         return Text.literal("slot %d at %s".formatted(slot,
                 source.map(either -> {
                     var mapped = either
-                            .mapLeft(blockPos -> "(%d, %d, %d)".formatted(blockPos.getX(), blockPos.getY(), blockPos.getZ()))
-                            .mapRight(uuid -> uuid.toString());
+                        .mapLeft(blockPos -> "(%d, %d, %d)".formatted(blockPos.getX(), blockPos.getY(), blockPos.getZ()))
+                        .mapRight(uuid -> uuid.toString());
                     return mapped.right().orElseGet(() -> mapped.left().get());
                 }).orElse("caster")));
     }
@@ -94,7 +93,7 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
             }
 
             try {
-                if (!otherInv.trickster$slot_holder$setStack(other.slot(), movedStack))
+                if(!otherInv.trickster$slot_holder$setStack(other.slot(), movedStack))
                     throw new ItemInvalidBlunder(trickSource);
             } catch (UnsupportedOperationException e) {
                 throw new ItemInvalidBlunder(trickSource);
@@ -124,7 +123,8 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
     }
 
     /**
-     * Instead of taking items from the slot, directly reference the stored stack to modify it. This may return an empty ItemStack if applicable.
+     * Instead of taking items from the slot, directly reference the stored stack to modify it. 
+     * This may return an empty ItemStack if applicable.
      */
     public ItemStack reference(Trick trickSource, SpellContext ctx) {
         return getStack(trickSource, ctx);
@@ -136,16 +136,16 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
 
     public BlockPos getSourcePos(Trick trickSource, SpellContext ctx) {
         return source
-                .map(either -> Either.unwrap(either
+            .map(either -> Either.unwrap(either
                         .mapRight(uuid -> new EntityFragment(uuid, Text.literal(""))
-                                .getEntity(ctx)
-                                .orElseThrow(() -> new UnknownEntityBlunder(trickSource))
-                                .getBlockPos())))
-                .orElseGet(() -> ctx
-                        .source()
-                        .getPlayer()
-                        .orElseThrow(() -> new NoPlayerBlunder(trickSource))
-                        .getBlockPos());
+                            .getEntity(ctx)
+                            .orElseThrow(() -> new UnknownEntityBlunder(trickSource))
+                            .getBlockPos())))
+            .orElseGet(() -> ctx
+                    .source()
+                    .getPlayer()
+                    .orElseThrow(() -> new NoPlayerBlunder(trickSource))
+                    .getBlockPos());
     }
 
     private ItemStack getStack(Trick trickSource, SpellContext ctx) throws BlunderException {
@@ -184,8 +184,8 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
                 else throw new EntityInvalidBlunder(trickSource);
             }
         }).orElseGet(() -> ctx.source().getPlayer()
-                .map(player -> new BridgedSlotHolder(player.getInventory()))
-                .orElseThrow(() -> new NoPlayerBlunder(trickSource)));
+            .map(player -> new BridgedSlotHolder(player.getInventory()))
+            .orElseThrow(() -> new NoPlayerBlunder(trickSource)));
     }
 
     private float getMoveCost(Trick trickSource, SpellContext ctx, BlockPos pos, int amount) throws BlunderException {

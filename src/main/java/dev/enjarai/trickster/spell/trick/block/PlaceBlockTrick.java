@@ -37,13 +37,11 @@ public class PlaceBlockTrick extends Trick {
             stack = ctx.getStack(this, Optional.of(slot), item -> item instanceof BlockItem).orElseThrow(() -> new MissingItemBlunder(this));
         else {
             var block = expectInput(fragments, FragmentType.BLOCK_TYPE, 1).block();
-            stack = ctx.getStack(this, Optional.empty(), item -> item instanceof BlockItem blockItem && blockItem.getBlock() == block)
-                    .orElseThrow(() -> new MissingItemBlunder(this));
+            stack = ctx.getStack(this, Optional.empty(), item -> item instanceof BlockItem blockItem && blockItem.getBlock() == block).orElseThrow(() -> new MissingItemBlunder(this));
         }
 
         try {
-            if (!(stack.getItem() instanceof BlockItem blockItem))
-                throw new ItemInvalidBlunder(this);
+            if (!(stack.getItem() instanceof BlockItem blockItem)) throw new ItemInvalidBlunder(this);
             var state = blockItem.getBlock().getDefaultState();
 
             if (!world.getBlockState(blockPos).isReplaceable() || !state.canPlaceAt(world, blockPos)) {
@@ -61,7 +59,8 @@ public class PlaceBlockTrick extends Trick {
                     blockSoundGroup.getPlaceSound(),
                     SoundCategory.BLOCKS,
                     (blockSoundGroup.getVolume() + 1.0F) / 2.0F,
-                    blockSoundGroup.getPitch() * 0.8F);
+                    blockSoundGroup.getPitch() * 0.8F
+            );
             world.emitGameEvent(null, GameEvent.BLOCK_PLACE, blockPos);
 
             return pos;

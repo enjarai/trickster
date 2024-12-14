@@ -49,8 +49,7 @@ public class Trickster implements ModInitializer, CicadaEntrypoint {
     public static final Logger LOGGER = ProperLogger.getLogger(MOD_ID);
 
     public static final Identifier SPELL_CIRCLE_ATTRIBUTE = id("spell_circle");
-    public static final EntityAttributeModifier NEGATE_ATTRIBUTE = new EntityAttributeModifier(Trickster.SPELL_CIRCLE_ATTRIBUTE, -1d,
-            EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+    public static final EntityAttributeModifier NEGATE_ATTRIBUTE = new EntityAttributeModifier(Trickster.SPELL_CIRCLE_ATTRIBUTE, -1d, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
 
     public static final TricksterConfig CONFIG = TricksterConfig.createAndLoad();
 
@@ -107,7 +106,8 @@ public class Trickster implements ModInitializer, CicadaEntrypoint {
         conversationManager.registerSource(
                 JsonSource.fromUrl("https://raw.githubusercontent.com/enjarai/trickster/master/src/main/resources/cicada/trickster/conversations.json")
                         .or(JsonSource.fromResource("cicada/trickster/conversations.json")),
-                LOGGER::info);
+                LOGGER::info
+        );
     }
 
     public static Identifier id(String... path) {

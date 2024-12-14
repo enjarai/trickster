@@ -38,8 +38,8 @@ public class ModularSpellConstructBlockEntityRenderer implements BlockEntityRend
             var x = i % 2;
             var z = i / 2;
             modelPartData.addChild("core_" + i, ModelPartBuilder.create()
-                    .uv(0, 0)
-                    .cuboid(18f / 2 * x + 2f, 10f, 18f / 2 * z + 2f, 3f, 1f, 3f),
+                            .uv(0, 0)
+                            .cuboid(18f / 2 * x + 2f, 10f, 18f / 2 * z + 2f, 3f, 1f, 3f),
                     ModelTransform.NONE);
         }
         return TexturedModelData.of(modelData, 16, 16);
@@ -55,8 +55,7 @@ public class ModularSpellConstructBlockEntityRenderer implements BlockEntityRend
     }
 
     @Override
-    public void render(ModularSpellConstructBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light,
-            int overlay) {
+    public void render(ModularSpellConstructBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         var facing = entity.getCachedState().get(ModularSpellConstructBlock.FACING);
 
         matrices.push();
@@ -77,7 +76,8 @@ public class ModularSpellConstructBlockEntityRenderer implements BlockEntityRend
             itemRenderer.renderItem(
                     knotStack, ModelTransformationMode.FIXED,
                     light, overlay, matrices, vertexConsumers,
-                    entity.getWorld(), 0);
+                    entity.getWorld(), 0
+            );
 
             matrices.pop();
         }
@@ -97,7 +97,7 @@ public class ModularSpellConstructBlockEntityRenderer implements BlockEntityRend
         matrices.translate(-0.5f, -0.5f, -0.5f);
 
         var normal = new Vec3d(new Vector3f(0, 0, -1)); //.rotate(facing.getRotationQuaternion().rotateX((float) Math.toRadians(90))).mul(-1));//
-        //                )); // .conjugate()
+//                )); // .conjugate()
         // matrices.peek().getNormalMatrix().getNormalizedRotation(new Quaternionf())
         // TODO WTF glisco help!
 
@@ -109,12 +109,12 @@ public class ModularSpellConstructBlockEntityRenderer implements BlockEntityRend
                     && coreStack.get(ModComponents.SPELL_CORE) instanceof SpellCoreComponent component
                     && !(component.executor() instanceof ErroredSpellExecutor)) {
                 float age = entity.age
-                        + tickDelta
-                        + (entity.getPos().getX()
-                                + entity.getPos().getY()
-                                + entity.getPos().getZ()
-                                + i)
-                                * 999;
+                    + tickDelta
+                    + (entity.getPos().getX()
+                            + entity.getPos().getY()
+                            + entity.getPos().getZ()
+                            + i)
+                    * 999;
                 var j = i - 1;
                 var x = j % 2;
                 var z = j / 2;
@@ -125,7 +125,8 @@ public class ModularSpellConstructBlockEntityRenderer implements BlockEntityRend
                 this.renderer.renderPart(
                         matrices, vertexConsumers, component.executor().spell(),
                         0, 0, 0.2f, 0,
-                        tickDelta, size -> 1f, normal);
+                        tickDelta, size -> 1f, normal
+                );
             }
 
             matrices.pop();

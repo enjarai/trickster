@@ -18,13 +18,14 @@ public class ModBlocks {
     public static final ModularSpellConstructBlock MODULAR_SPELL_CONSTRUCT = register("modular_spell_construct", new ModularSpellConstructBlock());
     public static final ScrollShelfBlock SCROLL_SHELF = register("scroll_shelf", new ScrollShelfBlock());
 
-    public static final BlockEntityType<SpellConstructBlockEntity> SPELL_CONSTRUCT_ENTITY = BlockEntityType.Builder
-            .create(SpellConstructBlockEntity::new, SPELL_CONSTRUCT).build(null);
-    public static final BlockEntityType<LightBlockEntity> LIGHT_ENTITY = BlockEntityType.Builder.create(LightBlockEntity::new, LIGHT).build(null);
-    public static final BlockEntityType<ModularSpellConstructBlockEntity> MODULAR_SPELL_CONSTRUCT_ENTITY = BlockEntityType.Builder
-            .create(ModularSpellConstructBlockEntity::new, MODULAR_SPELL_CONSTRUCT).build(null);
-    public static final BlockEntityType<ScrollShelfBlockEntity> SCROLL_SHELF_ENTITY = BlockEntityType.Builder.create(ScrollShelfBlockEntity::new, SCROLL_SHELF)
-            .build(null);
+    public static final BlockEntityType<SpellConstructBlockEntity> SPELL_CONSTRUCT_ENTITY =
+            BlockEntityType.Builder.create(SpellConstructBlockEntity::new, SPELL_CONSTRUCT).build(null);
+    public static final BlockEntityType<LightBlockEntity> LIGHT_ENTITY =
+            BlockEntityType.Builder.create(LightBlockEntity::new, LIGHT).build(null);
+    public static final BlockEntityType<ModularSpellConstructBlockEntity> MODULAR_SPELL_CONSTRUCT_ENTITY =
+            BlockEntityType.Builder.create(ModularSpellConstructBlockEntity::new, MODULAR_SPELL_CONSTRUCT).build(null);
+    public static final BlockEntityType<ScrollShelfBlockEntity> SCROLL_SHELF_ENTITY =
+            BlockEntityType.Builder.create(ScrollShelfBlockEntity::new, SCROLL_SHELF).build(null);
 
     public static final TagKey<Block> UNBREAKABLE = TagKey.of(RegistryKeys.BLOCK, Trickster.id("unbreakable"));
     public static final TagKey<Block> CONJURABLE_FLOWERS = TagKey.of(RegistryKeys.BLOCK, Trickster.id("conjurable_flowers"));

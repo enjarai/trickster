@@ -70,7 +70,7 @@ public class CachedInventoryManaPool implements MutableManaPool {
 
             if (comp == null)
                 continue;
-
+            
             var pool = comp.pool().makeClone(world);
             amount = pool.use(amount, world);
             stack.set(ModComponents.MANA, comp.with(pool));
@@ -87,7 +87,7 @@ public class CachedInventoryManaPool implements MutableManaPool {
 
             if (comp == null)
                 continue;
-
+            
             var pool = comp.pool().makeClone(world);
             amount = pool.refill(amount, world);
             stack.set(ModComponents.MANA, comp.with(pool));

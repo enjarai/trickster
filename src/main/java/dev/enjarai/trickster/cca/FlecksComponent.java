@@ -63,11 +63,11 @@ public class FlecksComponent implements ServerTickingComponent, ClientTickingCom
     }
 
     public List<FleckPair> getRenderFlecks() {
-        return clientFlecks.int2ObjectEntrySet().stream().map(e -> {
-            var current = e.getValue();
-            var old = prevClientFlecks.get(e.getIntKey());
-            return new FleckPair(e.getIntKey(), current.fleck(), old == null ? null : old.fleck());
-        }).toList();
+       return clientFlecks.int2ObjectEntrySet().stream().map(e -> {
+           var current = e.getValue();
+           var old = prevClientFlecks.get(e.getIntKey());
+           return new FleckPair(e.getIntKey(), current.fleck(), old == null ? null : old.fleck());
+       }).toList();
     }
 
     private void markDirty() {
@@ -85,7 +85,7 @@ public class FlecksComponent implements ServerTickingComponent, ClientTickingCom
     }
 
     private void commonTick() {
-        for (var iterator = flecks.int2ObjectEntrySet().iterator(); iterator.hasNext();) {
+        for (var iterator = flecks.int2ObjectEntrySet().iterator(); iterator.hasNext(); ) {
             var entry = iterator.next();
             var life = entry.getValue().life();
             var fleck = entry.getValue().fleck;
@@ -111,9 +111,10 @@ public class FlecksComponent implements ServerTickingComponent, ClientTickingCom
         public static final Endec<FleckEntry> ENDEC = StructEndecBuilder.of(
                 Fleck.ENDEC.fieldOf("fleck", FleckEntry::fleck),
                 Endec.INT.fieldOf("life", FleckEntry::life),
-                FleckEntry::new);
+                FleckEntry::new
+        );
     }
 
-    public record FleckPair(int id, Fleck current, @Nullable Fleck old) {
-    }
+    public record FleckPair(int id, Fleck current, @Nullable Fleck old) {}
 }
+

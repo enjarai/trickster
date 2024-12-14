@@ -17,8 +17,8 @@ import org.joml.Vector3f;
 public class SpellParticle extends SpriteBillboardParticle {
     protected SpellParticle(ClientWorld world, double x, double y, double z, double dx, double dy, double dz, int color) {
         super(world, x, y, z);
-        //        maxAge = 10;
-        //        alpha = 0.6f;
+//        maxAge = 10;
+//        alpha = 0.6f;
         red = ColorHelper.Argb.getRed(color) / 255f;
         green = ColorHelper.Argb.getGreen(color) / 255f;
         blue = ColorHelper.Argb.getBlue(color) / 255f;

@@ -13,11 +13,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ServerChunkLoadingManager.class)
 public class ServerChunkLoadingManagerMixin {
-    @Shadow
-    @Final
+    @Shadow @Final
     ServerWorld world;
 
-    @Inject(method = "shouldTick", at = @At("HEAD"), cancellable = true)
+    @Inject(
+            method = "shouldTick",
+            at = @At("HEAD"),
+            cancellable = true
+    )
     private void enableTicksFromWorldPin(ChunkPos pos, CallbackInfoReturnable<Boolean> cir) {
         if (ModWorldComponents.PINNED_CHUNKS.get(world).isPinned(pos)) {
             cir.setReturnValue(true);

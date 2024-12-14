@@ -20,9 +20,9 @@ public class ReadMacroRing extends Trick {
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         return FragmentComponent.getUserMergedMap(ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this)), "ring")
-                .map(ReadMacroRing::collectMap)
-                .<Fragment>map(MapFragment::new)
-                .orElse(VoidFragment.INSTANCE);
+            .map(ReadMacroRing::collectMap)
+            .<Fragment>map(MapFragment::new)
+            .orElse(VoidFragment.INSTANCE);
     }
 
     private static HashMap<Fragment, Fragment> collectMap(HashMap<Pattern, SpellPart> hamt) {

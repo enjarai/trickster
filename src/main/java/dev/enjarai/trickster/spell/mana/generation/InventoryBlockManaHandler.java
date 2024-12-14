@@ -11,7 +11,8 @@ import net.minecraft.util.math.BlockPos;
 public class InventoryBlockManaHandler implements ManaHandler {
     public static final StructEndec<InventoryBlockManaHandler> ENDEC = StructEndecBuilder.of(
             MinecraftEndecs.BLOCK_POS.fieldOf("pos", handler -> handler.pos),
-            InventoryBlockManaHandler::new);
+            InventoryBlockManaHandler::new
+    );
 
     private BlockPos pos;
 

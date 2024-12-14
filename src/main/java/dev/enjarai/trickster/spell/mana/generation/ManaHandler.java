@@ -9,8 +9,7 @@ import net.minecraft.server.world.ServerWorld;
 //TODO: these should be easily comparable (records) so that we can avoid duplicates in the world mana handler
 public interface ManaHandler {
     @SuppressWarnings("unchecked")
-    StructEndec<ManaHandler> ENDEC = EndecTomfoolery.lazy(() -> (StructEndec<ManaHandler>) Endec.dispatchedStruct(ManaHandlerType::endec, ManaHandler::type,
-            MinecraftEndecs.ofRegistry(ManaHandlerType.REGISTRY)));
+    StructEndec<ManaHandler> ENDEC = EndecTomfoolery.lazy(() -> (StructEndec<ManaHandler>) Endec.dispatchedStruct(ManaHandlerType::endec, ManaHandler::type, MinecraftEndecs.ofRegistry(ManaHandlerType.REGISTRY)));
 
     ManaHandlerType<?> type();
 

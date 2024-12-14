@@ -19,8 +19,14 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
         super(world, pos, yaw, gameProfile);
     }
 
-    @Inject(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;attack(Lnet/minecraft/entity/Entity;)V"))
+    @Inject(
+            method = "attack",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/entity/player/PlayerEntity;attack(Lnet/minecraft/entity/Entity;)V"
+            )
+    )
     private void triggerItemSpell(Entity target, CallbackInfo ci) {
-        ItemTriggerHelper.triggerMainHand((ServerPlayerEntity) (Object) this, true, EntityFragment.from(target));
+        ItemTriggerHelper.triggerMainHand((ServerPlayerEntity)(Object)this, true, EntityFragment.from(target));
     }
 }

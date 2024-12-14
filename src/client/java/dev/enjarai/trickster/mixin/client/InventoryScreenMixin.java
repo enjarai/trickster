@@ -25,7 +25,10 @@ public abstract class InventoryScreenMixin extends AbstractInventoryScreen<Playe
     @Unique
     public List<SpellSlotWidget> spellSlots;
 
-    @Inject(method = "init", at = @At("TAIL"))
+    @Inject(
+            method = "init",
+            at = @At("TAIL")
+    )
     private void initSpellSlots(CallbackInfo ci) {
         spellSlots = new ArrayList<>();
         var spellData = client.player.getComponent(ModEntityComponents.CASTER).getRunningSpellData();
@@ -38,7 +41,10 @@ public abstract class InventoryScreenMixin extends AbstractInventoryScreen<Playe
         }
     }
 
-    @Inject(method = "handledScreenTick", at = @At("TAIL"))
+    @Inject(
+            method = "handledScreenTick",
+            at = @At("TAIL")
+    )
     private void tickSpellSlots(CallbackInfo ci) {
         var spellData = client.player.getComponent(ModEntityComponents.CASTER).getRunningSpellData();
 

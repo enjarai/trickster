@@ -1,7 +1,9 @@
 package dev.enjarai.trickster.spell.execution;
 
 public enum SpellInstructionType {
-    FRAGMENT(1), ENTER_SCOPE(2), EXIT_SCOPE(3);
+    FRAGMENT(1),
+    ENTER_SCOPE(2),
+    EXIT_SCOPE(3);
 
     private final int id;
 

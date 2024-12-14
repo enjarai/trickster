@@ -19,7 +19,8 @@ public class TryCatchSpellExecutor implements SpellExecutor {
             SpellExecutor.ENDEC.fieldOf("try", e -> e.trySpell),
             SpellExecutor.ENDEC.fieldOf("catch", e -> e.catchSpell),
             Endec.BOOLEAN.fieldOf("catching", e -> e.catching),
-            TryCatchSpellExecutor::new);
+            TryCatchSpellExecutor::new
+    );
 
     private final SpellExecutor trySpell;
     private final SpellExecutor catchSpell;

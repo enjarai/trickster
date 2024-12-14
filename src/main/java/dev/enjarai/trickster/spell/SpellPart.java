@@ -30,12 +30,15 @@ public final class SpellPart implements Fragment {
             Fragment.ENDEC.fieldOf("glyph", SpellPart::getGlyph),
             EndecTomfoolery.protocolVersionAlternatives(
                     Map.of(
-                            (byte) 1, self.listOf()),
+                            (byte) 1, self.listOf()
+                    ),
                     EndecTomfoolery.withAlternative(SpellInstruction.STACK_ENDEC.xmap(
                             instructions -> SpellUtils.decodeInstructions(instructions, new Stack<>(), new Stack<>(), Optional.empty()),
-                            SpellUtils::flattenNode), self).listOf())
-                    .fieldOf("sub_parts", SpellPart::getSubParts),
-            SpellPart::new));
+                            SpellUtils::flattenNode
+                    ), self).listOf()
+            ).fieldOf("sub_parts", SpellPart::getSubParts),
+            SpellPart::new
+    ));
 
     public Fragment glyph;
     public List<SpellPart> subParts;
@@ -171,10 +174,8 @@ public final class SpellPart implements Fragment {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == this)
-            return true;
-        if (obj == null || obj.getClass() != this.getClass())
-            return false;
+        if (obj == this) return true;
+        if (obj == null || obj.getClass() != this.getClass()) return false;
         var that = (SpellPart) obj;
         return Objects.equals(this.glyph, that.glyph) &&
                 Objects.equals(this.subParts, that.subParts);
@@ -228,7 +229,7 @@ public final class SpellPart implements Fragment {
                 .map(SpellPart::deepClone).collect(Collectors.toList()));
     }
 
-    private static final byte[] base64Header = new byte[] { 0x1f, (byte) 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, (byte) 0xff };
+    private static final byte[] base64Header = new byte[]{0x1f, (byte) 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, (byte) 0xff};
 
     //TODO: add encoding from any fragment
     public String toBase64() {
@@ -236,7 +237,8 @@ public final class SpellPart implements Fragment {
         buf.writeByte(2); // Protocol version
         ENDEC.encode(
                 SerializationContext.empty().withAttributes(EndecTomfoolery.UBER_COMPACT_ATTRIBUTE),
-                ByteBufSerializer.of(buf), this);
+                ByteBufSerializer.of(buf), this
+        );
 
         var byteStream = new ByteArrayOutputStream(buf.writerIndex());
         try (byteStream) {
@@ -281,8 +283,10 @@ public final class SpellPart implements Fragment {
             result = ENDEC.decode(
                     SerializationContext.empty().withAttributes(
                             EndecTomfoolery.UBER_COMPACT_ATTRIBUTE,
-                            EndecTomfoolery.PROTOCOL_VERSION_ATTRIBUTE.instance(protocolVersion)),
-                    ByteBufDeserializer.of(buf));
+                            EndecTomfoolery.PROTOCOL_VERSION_ATTRIBUTE.instance(protocolVersion)
+                    ),
+                    ByteBufDeserializer.of(buf)
+            );
         } catch (Throwable e) {
             buf.release();
             throw e;

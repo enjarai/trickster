@@ -11,7 +11,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(Entity.class)
 public class EntityMixin {
     @SuppressWarnings("ConstantValue")
-    @Inject(method = "getFinalGravity", at = @At("HEAD"), cancellable = true)
+    @Inject(
+            method = "getFinalGravity",
+            at = @At("HEAD"),
+            cancellable = true
+    )
     private void applyGravityGrace(CallbackInfoReturnable<Double> cir) {
         if ((Object) this instanceof LivingEntity && ModEntityComponents.GRACE.get(this).isInGrace("gravity")) {
             cir.setReturnValue(0.0);

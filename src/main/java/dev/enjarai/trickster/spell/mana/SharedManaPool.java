@@ -11,7 +11,8 @@ import net.minecraft.world.World;
 public record SharedManaPool(UUID uuid) implements MutableManaPool {
     public static final StructEndec<SharedManaPool> ENDEC = StructEndecBuilder.of(
             EndecTomfoolery.UUID.fieldOf("uuid", SharedManaPool::uuid),
-            SharedManaPool::new);
+            SharedManaPool::new
+    );
 
     private static final SimpleManaPool THE_SKILL_ISSUE = new SimpleManaPool(0) {
         @Override

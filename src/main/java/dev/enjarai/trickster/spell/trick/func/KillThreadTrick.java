@@ -20,14 +20,14 @@ public class KillThreadTrick extends Trick {
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         return BooleanFragment.of(OptionalUtils.lift2(
-                (manager, index) -> {
-                    if (index == ctx.data().getSlot())
-                        ctx.data().kill();
+                    (manager, index) -> {
+                        if (index == ctx.data().getSlot())
+                            ctx.data().kill();
 
-                    return manager.kill(index);
-                },
-                ctx.source().getExecutionManager(),
-                supposeInput(fragments, FragmentType.NUMBER, 0)
+                        return manager.kill(index);
+                    },
+                    ctx.source().getExecutionManager(),
+                    supposeInput(fragments, FragmentType.NUMBER, 0)
                         .map(NumberFragment::asInt).filter(i -> i >= 0)
                         .or(() -> OptionalUtils.conditional(i -> i >= 0, ctx.data().getSlot())))
                 .orElse(false));

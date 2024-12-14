@@ -47,7 +47,7 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
     public ModularSpellConstructBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlocks.MODULAR_SPELL_CONSTRUCT_ENTITY, pos, state);
     }
-
+    
     @Override
     protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         super.readNbt(nbt, registryLookup);
@@ -102,13 +102,15 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
                 ManaComponent.tryRecharge(
                         serverWorld,
                         getPos()
-                                .toCenterPos()
-                                .add(
-                                        new Vec3d(getCachedState()
-                                                .get(ModularSpellConstructBlock.FACING)
-                                                .getUnitVector()
-                                                .mul(0.3f, new Vector3f()))),
-                        stack);
+                            .toCenterPos()
+                            .add(
+                                new Vec3d(getCachedState()
+                                    .get(ModularSpellConstructBlock.FACING)
+                                    .getUnitVector()
+                                    .mul(0.3f, new Vector3f()))
+                            ),
+                        stack
+                );
             }
 
             if (updateClient) {
@@ -239,7 +241,7 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
 
             if (stack.getItem() instanceof SpellCoreItem
                     && (!stack.contains(ModComponents.SPELL_CORE)
-                            || stack.get(ModComponents.SPELL_CORE).executor() instanceof ErroredSpellExecutor)) {
+                        || stack.get(ModComponents.SPELL_CORE).executor() instanceof ErroredSpellExecutor)) {
                 stack.set(ModComponents.SPELL_CORE, new SpellCoreComponent(executor));
                 return i;
             }

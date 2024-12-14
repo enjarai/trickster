@@ -35,14 +35,12 @@ public class RevealTrick extends Trick {
                 building = building.append(frag.asFormattedText());
             }
 
-            result = building.append(")");
-            ;
+            result = building.append(")");;
         }
 
         Text finalResult = result;
         ctx.source().getPlayer().ifPresent(player -> {
-            player.sendMessage(Text.of(finalResult),
-                    ModNetworking.clientOrDefault(player, Trickster.CONFIG.keys.revealToHotbar, Trickster.CONFIG.revealToHotbar()));
+            player.sendMessage(Text.of(finalResult), ModNetworking.clientOrDefault(player, Trickster.CONFIG.keys.revealToHotbar, Trickster.CONFIG.revealToHotbar()));
         });
 
         return first;

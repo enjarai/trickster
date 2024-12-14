@@ -26,7 +26,8 @@ public class DefaultSpellExecutor implements SpellExecutor {
             ExecutionState.ENDEC.fieldOf("state", e -> e.state),
             EndecTomfoolery.safeOptionalOf(SpellExecutor.ENDEC).optionalFieldOf("child", e -> e.child, Optional.empty()),
             EndecTomfoolery.safeOptionalOf(Fragment.ENDEC).optionalFieldOf("override_return_value", e -> e.overrideReturnValue, Optional.empty()),
-            DefaultSpellExecutor::new);
+            DefaultSpellExecutor::new
+    );
 
     private final SpellPart root;
     private final Stack<SpellInstruction> instructions;
@@ -38,12 +39,12 @@ public class DefaultSpellExecutor implements SpellExecutor {
     private int lastRunExecutions;
 
     private DefaultSpellExecutor(SpellPart root,
-            Stack<SpellInstruction> instructions,
-            List<Fragment> inputs,
-            List<Integer> scope,
-            ExecutionState state,
-            Optional<SpellExecutor> child,
-            Optional<Fragment> overrideReturnValue) {
+                                   Stack<SpellInstruction> instructions,
+                                   List<Fragment> inputs,
+                                   List<Integer> scope,
+                                   ExecutionState state,
+                                   Optional<SpellExecutor> child,
+                                   Optional<Fragment> overrideReturnValue) {
         this.root = root;
         this.instructions = instructions;
         this.inputs.addAll(inputs);

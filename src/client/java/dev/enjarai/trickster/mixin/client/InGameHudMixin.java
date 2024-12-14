@@ -21,7 +21,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(InGameHud.class)
 public class InGameHudMixin {
-    @Inject(method = "renderVignetteOverlay", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIFFIIII)V"))
+    @Inject(
+            method = "renderVignetteOverlay",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIFFIIII)V"
+            )
+    )
     private void changeColorWhenFrozen(DrawContext context, Entity entity, CallbackInfo ci) {
         if (entity instanceof LivingEntity livingEntity &&
                 livingEntity.getAttributes().hasModifierForAttribute(EntityAttributes.GENERIC_MOVEMENT_SPEED, Trickster.NEGATE_ATTRIBUTE.id())) {
@@ -29,7 +35,13 @@ public class InGameHudMixin {
         }
     }
 
-    @Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/SimpleOption;getValue()Ljava/lang/Object;"))
+    @Inject(
+            method = "renderHotbar",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/option/SimpleOption;getValue()Ljava/lang/Object;"
+            )
+    )
     private void renderHatHud(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci, @Local PlayerEntity player) {
         var hatStack = player.getOffHandStack();
         if (hatStack.isIn(ModItems.HOLDABLE_HAT)) {

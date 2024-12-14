@@ -24,7 +24,10 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
         super(type, syncId, playerInventory, context);
     }
 
-    @Inject(method = "updateResult", at = @At(value = "INVOKE", target = "Lnet/minecraft/component/type/ItemEnchantmentsComponent;getEnchantmentEntries()Ljava/util/Set;"))
+    @Inject(
+            method = "updateResult",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/component/type/ItemEnchantmentsComponent;getEnchantmentEntries()Ljava/util/Set;")
+    )
     private void enableSpellTransfer(CallbackInfo ci, @Local(ordinal = 0) LocalIntRef i, @Local(ordinal = 1) LocalBooleanRef bl2) {
         var left = this.input.getStack(0);
         var middle = this.input.getStack(1);
@@ -35,7 +38,11 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler {
         }
     }
 
-    @ModifyArg(method = "updateResult", at = @At(value = "INVOKE", target = "Lnet/minecraft/inventory/CraftingResultInventory;setStack(ILnet/minecraft/item/ItemStack;)V"), index = 1)
+    @ModifyArg(
+            method = "updateResult",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/inventory/CraftingResultInventory;setStack(ILnet/minecraft/item/ItemStack;)V"),
+            index = 1
+    )
     private ItemStack applySpell(ItemStack stack) {
         var spellComponent = this.input.getStack(1).get(ModComponents.FRAGMENT);
 

@@ -39,8 +39,7 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
     public final SyncedProperty<SpellPart> spell = createProperty(SpellPart.class, SpellPart.ENDEC, new SpellPart());
     public final SyncedProperty<SpellPart> otherHandSpell = createProperty(SpellPart.class, SpellPart.ENDEC, new SpellPart());
     public final SyncedProperty<Boolean> isMutable = createProperty(Boolean.class, true);
-    public final SyncedProperty<HashMap<Pattern, SpellPart>> macros = createProperty(null, EndecTomfoolery.hamt(Pattern.ENDEC, SpellPart.ENDEC),
-            HashMap.empty());
+    public final SyncedProperty<HashMap<Pattern, SpellPart>> macros = createProperty(null, EndecTomfoolery.hamt(Pattern.ENDEC, SpellPart.ENDEC), HashMap.empty());
 
     public Consumer<Fragment> replacerCallback;
     public Consumer<Optional<SpellPart>> updateDrawingPartCallback;
@@ -52,8 +51,7 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
         this(syncId, playerInventory, null, null, null, null, false, true);
     }
 
-    public ScrollAndQuillScreenHandler(int syncId, PlayerInventory playerInventory, ItemStack scrollStack, ItemStack otherHandStack, EquipmentSlot slot,
-            HashMap<Pattern, SpellPart> macros, boolean greedyEvaluation, boolean isMutable) {
+    public ScrollAndQuillScreenHandler(int syncId, PlayerInventory playerInventory, ItemStack scrollStack, ItemStack otherHandStack, EquipmentSlot slot, HashMap<Pattern, SpellPart> macros, boolean greedyEvaluation, boolean isMutable) {
         super(ModScreenHandlers.SCROLL_AND_QUILL, syncId);
 
         this.scrollStack = scrollStack;
@@ -164,8 +162,8 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
                     });
                 }
             } else {
-                //            var result = SpellPart.CODEC.encodeStart(JsonOps.INSTANCE, spell).result().get();
-                //            Trickster.LOGGER.warn(result.toString());
+//            var result = SpellPart.CODEC.encodeStart(JsonOps.INSTANCE, spell).result().get();
+//            Trickster.LOGGER.warn(result.toString());
                 sendMessage(new SpellMessage(spell));
             }
         }
@@ -248,7 +246,8 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
         public static final Endec<UpdateSpellWithSpellMessage> ENDEC = StructEndecBuilder.of(
                 SpellPart.ENDEC.fieldOf("drawing_part", UpdateSpellWithSpellMessage::drawingPart),
                 SpellPart.ENDEC.fieldOf("spell", UpdateSpellWithSpellMessage::spell),
-                UpdateSpellWithSpellMessage::new);
+                UpdateSpellWithSpellMessage::new
+        );
     }
 
     public record OtherHandSpellMessage(SpellPart spell) {
@@ -263,8 +262,7 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
     }
 
     private record UpdateDrawingPartMessage(Optional<SpellPart> spell) {
-        public static final Endec<UpdateDrawingPartMessage> ENDEC = SpellPart.ENDEC.optionalOf().xmap(UpdateDrawingPartMessage::new,
-                UpdateDrawingPartMessage::spell);
+        public static final Endec<UpdateDrawingPartMessage> ENDEC = SpellPart.ENDEC.optionalOf().xmap(UpdateDrawingPartMessage::new, UpdateDrawingPartMessage::spell);
 
     }
 }

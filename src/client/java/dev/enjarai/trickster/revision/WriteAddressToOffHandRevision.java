@@ -54,8 +54,7 @@ public class WriteAddressToOffHandRevision implements Revision {
             address.add(i);
 
             var found = getAddress(subParts.get(i), target, address, glyphSpells);
-            if (found)
-                return true;
+            if (found) return true;
 
             address.removeLast();
         }
@@ -63,8 +62,7 @@ public class WriteAddressToOffHandRevision implements Revision {
         if (address.isEmpty()) {
             for (var glyph : glyphSpells) {
                 var found = getAddress(glyph, target, address, new LinkedList<>());
-                if (found)
-                    return true;
+                if (found) return true;
             }
         }
 

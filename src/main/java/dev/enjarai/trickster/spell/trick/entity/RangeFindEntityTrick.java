@@ -41,8 +41,10 @@ public class RangeFindEntityTrick extends Trick {
         world.collectEntitiesByType(
                 filter, new Box(
                         pos.x() - range, pos.y() - range, pos.z() - range,
-                        pos.x() + range, pos.y() + range, pos.z() + range),
-                e -> e.getPos().squaredDistanceTo(pos.x(), pos.y(), pos.z()) <= squaredRange && world.getEntity(e.getUuid()) != null, entities);
+                        pos.x() + range, pos.y() + range, pos.z() + range
+                ),
+                e -> e.getPos().squaredDistanceTo(pos.x(), pos.y(), pos.z()) <= squaredRange && world.getEntity(e.getUuid()) != null, entities
+        );
 
         return new ListFragment(entities.stream()
                 .filter(EntityFragment::isValidEntity)

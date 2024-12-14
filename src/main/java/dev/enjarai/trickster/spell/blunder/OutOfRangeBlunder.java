@@ -15,7 +15,6 @@ public class OutOfRangeBlunder extends TrickBlunderException {
 
     @Override
     public MutableText createMessage() {
-        return super.createMessage().append("Range out of bounds: ").append(formatFloat((float) usedRange)).append(" is more than ")
-                .append(formatFloat((float) maxRange));
+        return super.createMessage().append("Range out of bounds: ").append(formatFloat((float) usedRange)).append(" is more than ").append(formatFloat((float) maxRange));
     }
 }

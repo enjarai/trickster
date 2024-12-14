@@ -41,7 +41,8 @@ public class EvaluationMirrorItem extends Item {
                             syncId, playerInventory, stack, otherStack,
                             hand == Hand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND,
                             macros,
-                            true, true);
+                            true, true
+                    );
                 }
             });
         } else {

@@ -24,14 +24,20 @@ import java.util.Optional;
 
 @Mixin(Item.class)
 public abstract class ItemMixin {
-    @ModifyReturnValue(method = "hasGlint", at = @At("RETURN"))
+    @ModifyReturnValue(
+            method = "hasGlint",
+            at = @At("RETURN")
+    )
     private boolean spellGlint(boolean original, ItemStack stack) {
         return original
                 || (stack.contains(ModComponents.FRAGMENT))
-                        && !stack.isIn(ModItems.NO_SPELL_GLINT);
+                && !stack.isIn(ModItems.NO_SPELL_GLINT);
     }
 
-    @Inject(method = "appendTooltip", at = @At("HEAD"))
+    @Inject(
+            method = "appendTooltip",
+            at = @At("HEAD")
+    )
     private void addGarble(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType type, CallbackInfo ci) {
         var spellComponent = stack.get(ModComponents.FRAGMENT);
         var manaComponent = stack.get(ModComponents.MANA);
@@ -53,7 +59,11 @@ public abstract class ItemMixin {
         }
     }
 
-    @Inject(method = "getTooltipData", at = @At("HEAD"), cancellable = true)
+    @Inject(
+            method = "getTooltipData",
+            at = @At("HEAD"),
+            cancellable = true
+    )
     private void trickster$getSpellTooltipData(ItemStack stack, CallbackInfoReturnable<Optional<TooltipData>> cir) {
         var comp = stack.get(ModComponents.FRAGMENT);
 

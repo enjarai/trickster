@@ -98,9 +98,9 @@ public class ScrollShelfBlock extends BlockWithEntity {
                     var slotStack = blockEntity.getStack(slot.getAsInt());
                     if (!slotStack.isEmpty()) {
                         // TODO merge stacks if required?
-                        //                        if (ItemStack.areItemsAndComponentsEqual(stack, slotStack)) {
-                        //
-                        //                        }
+//                        if (ItemStack.areItemsAndComponentsEqual(stack, slotStack)) {
+//
+//                        }
                         return ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
                     } else {
                         tryAddBook(world, pos, player, blockEntity, stack, slot.getAsInt());

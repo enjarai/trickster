@@ -27,7 +27,7 @@ public class TricksterConfigModel {
     @Sync(Option.SyncMode.OVERRIDE_CLIENT)
     @PredicateConstraint("requirePositive")
     public float maxBlockBreakingHardness = 55.5f;
-
+    
     @Sync(Option.SyncMode.OVERRIDE_CLIENT)
     public boolean allowSwapBedrock = true;
 

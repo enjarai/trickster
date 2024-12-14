@@ -19,7 +19,8 @@ public record EntityFragment(UUID uuid, Text name) implements Fragment {
     public static final StructEndec<EntityFragment> ENDEC = StructEndecBuilder.of(
             EndecTomfoolery.UUID.fieldOf("uuid", EntityFragment::uuid),
             CodecUtils.toEndec(TextCodecs.STRINGIFIED_CODEC).fieldOf("name", EntityFragment::name),
-            EntityFragment::new);
+            EntityFragment::new
+    );
 
     @Override
     public FragmentType<?> type() {

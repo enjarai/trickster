@@ -15,8 +15,9 @@ import net.minecraft.loot.function.LootFunctionType;
 
 public record RandomManaLootFunction(float fractionalMinimum, float fractionalMaximum) implements LootFunction {
     public static final MapCodec<RandomManaLootFunction> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Codec.FLOAT.fieldOf("min").forGetter(RandomManaLootFunction::fractionalMinimum),
-            Codec.FLOAT.fieldOf("max").forGetter(RandomManaLootFunction::fractionalMaximum)).apply(instance, RandomManaLootFunction::new));
+                Codec.FLOAT.fieldOf("min").forGetter(RandomManaLootFunction::fractionalMinimum),
+                Codec.FLOAT.fieldOf("max").forGetter(RandomManaLootFunction::fractionalMaximum)
+    ).apply(instance, RandomManaLootFunction::new));
 
     private static final Random random = new Random();
 
@@ -29,8 +30,7 @@ public record RandomManaLootFunction(float fractionalMinimum, float fractionalMa
     public ItemStack apply(ItemStack stack, LootContext lootContext) {
         var pool = stack.get(ModComponents.MANA).pool().makeClone(lootContext.getWorld());
 
-        pool.set(pool.getMax(lootContext.getWorld()) * (random.nextFloat() * (fractionalMaximum - fractionalMinimum) + fractionalMinimum),
-                lootContext.getWorld());
+        pool.set(pool.getMax(lootContext.getWorld()) * (random.nextFloat() * (fractionalMaximum - fractionalMinimum) + fractionalMinimum), lootContext.getWorld());
         stack.set(ModComponents.MANA, new ManaComponent(pool));
 
         return stack;

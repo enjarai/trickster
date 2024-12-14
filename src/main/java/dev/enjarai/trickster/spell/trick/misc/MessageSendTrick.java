@@ -46,8 +46,8 @@ public class MessageSendTrick extends Trick {
 
                     throw new ItemInvalidBlunder(this);
                 }))
-                .map(Either::unwrap)
-                .orElseGet(() -> new Key.Broadcast(ctx.source().getWorld().getRegistryKey(), ctx.source().getPos(), 0));
+            .map(Either::unwrap)
+            .orElseGet(() -> new Key.Broadcast(ctx.source().getWorld().getRegistryKey(), ctx.source().getPos(), 0));
 
         ModGlobalComponents.MESSAGE_HANDLER.get(ctx.source().getWorld().getScoreboard()).send(key, value);
         return value;

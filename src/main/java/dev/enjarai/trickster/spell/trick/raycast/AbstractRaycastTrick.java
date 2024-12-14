@@ -39,6 +39,5 @@ public abstract class AbstractRaycastTrick extends AbstractLivingEntityQueryTric
         return activate(fragments, ctx, perhapsEntity, position, direction);
     }
 
-    public abstract Fragment activate(List<Fragment> fragments, SpellContext ctx, Optional<Entity> entity, Vec3d position, Vec3d direction)
-            throws BlunderException;
+    public abstract Fragment activate(List<Fragment> fragments, SpellContext ctx, Optional<Entity> entity, Vec3d position, Vec3d direction) throws BlunderException;
 }

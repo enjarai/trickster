@@ -7,7 +7,9 @@ public interface Fleck {
     Endec<Fleck> ENDEC = Endec.dispatchedStruct(
             FleckType::endec,
             Fleck::type,
-            MinecraftEndecs.ofRegistry(FleckType.REGISTRY));
+            MinecraftEndecs.ofRegistry(FleckType.REGISTRY)
+    );
 
     FleckType<?> type();
 }
+

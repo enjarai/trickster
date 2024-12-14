@@ -20,7 +20,8 @@ public record ErroredSpellExecutor(SpellPart spell, Text errorMessage) implement
     public static final StructEndec<ErroredSpellExecutor> ENDEC = StructEndecBuilder.of(
             SpellPart.ENDEC.fieldOf("spell", ErroredSpellExecutor::spell),
             CodecUtils.toEndec(TextCodecs.STRINGIFIED_CODEC).fieldOf("error_message", ErroredSpellExecutor::errorMessage),
-            ErroredSpellExecutor::new);
+            ErroredSpellExecutor::new
+    );
 
     @Override
     public SpellExecutorType<?> type() {

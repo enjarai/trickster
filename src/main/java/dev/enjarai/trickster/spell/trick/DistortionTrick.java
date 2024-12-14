@@ -32,7 +32,7 @@ public abstract class DistortionTrick extends Trick {
             fragment = distort(ctx, fragments);
             cache.put(fragmentArray, fragment);
         }
-
+        
         return fragment;
     }
 

@@ -23,13 +23,11 @@ public class SummonDragonBreathTrick extends AbstractProjectileTrick {
     @Override
     protected Entity makeProjectile(SpellContext ctx, Vector3dc pos, ItemStack stack, List<Fragment> extraInputs) throws BlunderException {
         var optionalSlot2 = supposeInput(extraInputs, FragmentType.SLOT, 0);
-        var stack2 = ctx.getStack(this, optionalSlot2, item -> isValidItem(item) && !item.equals(stack.getItem()))
-                .orElseThrow(() -> new MissingItemBlunder(this));
+        var stack2 = ctx.getStack(this, optionalSlot2, item -> isValidItem(item) && !item.equals(stack.getItem())).orElseThrow(() -> new MissingItemBlunder(this));
         var world = ctx.source().getWorld();
 
         try {
-            var fireball = EntityType.DRAGON_FIREBALL.create(world);
-            assert fireball != null;
+            var fireball = EntityType.DRAGON_FIREBALL.create(world); assert fireball != null;
             fireball.setPos(pos.x(), pos.y(), pos.z());
             return fireball;
         } catch (BlunderException blunder) {

@@ -24,18 +24,23 @@ public class TricksterCommand {
         dispatcher.register(literal("trickster")
                 .then(literal("killSpells")
                         .requires(ServerCommandSource::isExecutedByPlayer)
-                        .executes(TricksterCommand::killSpells))
+                        .executes(TricksterCommand::killSpells)
+                )
                 .then(literal("exportSpell")
                         .requires(ServerCommandSource::isExecutedByPlayer)
-                        .executes(TricksterCommand::exportSpell))
+                        .executes(TricksterCommand::exportSpell)
+                )
                 .then(literal("importSpell")
                         .requires(ServerCommandSource::isExecutedByPlayer)
                         .requires(s -> s.hasPermissionLevel(2))
-                        .executes(TricksterCommand::importSpell))
+                        .executes(TricksterCommand::importSpell)
+                )
                 .then(literal("fillKnot")
                         .requires(ServerCommandSource::isExecutedByPlayer)
                         .requires(s -> s.hasPermissionLevel(2))
-                        .executes(TricksterCommand::fillKnot)));
+                        .executes(TricksterCommand::fillKnot)
+                )
+        );
     }
 
     private static int exportSpell(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
@@ -51,8 +56,9 @@ public class TricksterCommand {
                                         .withUnderline(true)
                                         .withColor(Formatting.GREEN)
                                         .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Click to copy")))
-                                        .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, string)))),
-                        false);
+                                        .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, string))
+                                )
+                        ), false);
 
                 return 1;
             }

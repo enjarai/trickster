@@ -18,8 +18,7 @@ public class NotEqualsTrick extends DistortionTrick {
     public Fragment distort(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         for (int i = 0; i < fragments.size(); i++) {
             for (int j = 0; j < fragments.size(); j++) {
-                if (i == j)
-                    continue;
+                if (i == j) continue;
 
                 if (fragments.get(i).fuzzyEquals(fragments.get(j))) {
                     return BooleanFragment.FALSE;
