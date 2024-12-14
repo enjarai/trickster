@@ -23,11 +23,9 @@ public class ItemTagComponent extends FlowLayout {
 
         Registries.ITEM.getOrCreateEntryList(tagKey).forEach(entry -> {
             var stack = entry.value().getDefaultStack();
-            child(
-                    Components.item(stack)
-                            .showOverlay(true)
-                            .setTooltipFromStack(true)
-            );
+            child(Components.item(stack)
+                    .showOverlay(true)
+                    .setTooltipFromStack(true));
         });
     }
 

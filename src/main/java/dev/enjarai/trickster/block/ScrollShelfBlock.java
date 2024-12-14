@@ -36,14 +36,12 @@ public class ScrollShelfBlock extends BlockWithEntity {
     public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
 
     protected ScrollShelfBlock() {
-        super(
-                AbstractBlock.Settings.create()
-                        .mapColor(MapColor.OAK_TAN)
-                        .instrument(NoteBlockInstrument.BASS)
-                        .strength(1.5F)
-                        .sounds(BlockSoundGroup.CHISELED_BOOKSHELF)
-                        .burnable()
-        );
+        super(AbstractBlock.Settings.create()
+                .mapColor(MapColor.OAK_TAN)
+                .instrument(NoteBlockInstrument.BASS)
+                .strength(1.5F)
+                .sounds(BlockSoundGroup.CHISELED_BOOKSHELF)
+                .burnable());
         setDefaultState(getStateManager().getDefaultState().with(FACING, Direction.NORTH));
     }
 

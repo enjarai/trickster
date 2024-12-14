@@ -13,10 +13,8 @@ import dev.enjarai.trickster.spell.SpellPart;
 
 public class SpellUtils {
     @SuppressWarnings("unchecked")
-    public static SpellPart decodeInstructions(
-            Stack<SpellInstruction> instructions, Stack<Integer> scope, Stack<Fragment> inputs,
-            Optional<Fragment> overrideReturnValue
-    ) {
+    public static SpellPart decodeInstructions(Stack<SpellInstruction> instructions, Stack<Integer> scope, Stack<Fragment> inputs,
+            Optional<Fragment> overrideReturnValue) {
         var children = new Stack<SpellPart>();
         instructions = (Stack<SpellInstruction>) instructions.clone();
         scope = (Stack<Integer>) scope.clone();

@@ -18,11 +18,9 @@ import java.util.function.Supplier;
 
 @Mixin(ClientWorld.class)
 public abstract class ClientWorldMixin extends World {
-    protected ClientWorldMixin(
-            MutableWorldProperties properties, RegistryKey<World> registryRef, DynamicRegistryManager registryManager,
+    protected ClientWorldMixin(MutableWorldProperties properties, RegistryKey<World> registryRef, DynamicRegistryManager registryManager,
             RegistryEntry<DimensionType> dimensionEntry, Supplier<Profiler> profiler, boolean isClient, boolean debugWorld, long biomeAccess,
-            int maxChainedNeighborUpdates
-    ) {
+            int maxChainedNeighborUpdates) {
         super(properties, registryRef, registryManager, dimensionEntry, profiler, isClient, debugWorld, biomeAccess, maxChainedNeighborUpdates);
     }
 

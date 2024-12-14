@@ -33,8 +33,7 @@ public class BlockFindEntityTrick extends Trick {
 
         var entities = new ArrayList<Entity>();
         ctx.source().getWorld().collectEntitiesByType(
-                filter, Box.enclosing(blockPos, blockPos), e -> e.getBlockPos().equals(blockPos), entities, 1
-        );
+                filter, Box.enclosing(blockPos, blockPos), e -> e.getBlockPos().equals(blockPos), entities, 1);
 
         return entities.stream().findFirst()
                 .filter(EntityFragment::isValidEntity)

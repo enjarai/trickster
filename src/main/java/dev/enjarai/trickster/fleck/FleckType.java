@@ -21,3 +21,4 @@ public record FleckType<T extends Fleck>(StructEndec<T> endec) {
     public static void register() {
     }
 }
+

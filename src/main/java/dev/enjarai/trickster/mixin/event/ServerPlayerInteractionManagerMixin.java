@@ -20,11 +20,7 @@ public abstract class ServerPlayerInteractionManagerMixin {
     @Final
     protected ServerPlayerEntity player;
 
-    @Inject(
-            method = "finishMining", at = @At(
-                    value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerInteractionManager;onBlockBreakingAction(Lnet/minecraft/util/math/BlockPos;ZILjava/lang/String;)V", ordinal = 1
-            )
-    )
+    @Inject(method = "finishMining", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerInteractionManager;onBlockBreakingAction(Lnet/minecraft/util/math/BlockPos;ZILjava/lang/String;)V", ordinal = 1))
     private void whyTheFuckDoesntMojangDoThis(BlockPos pos, int sequence, String reason, CallbackInfo ci) {
         // wait why does this not work...
         var blockEntity = world.getBlockEntity(pos);
@@ -36,3 +32,4 @@ public abstract class ServerPlayerInteractionManagerMixin {
         }
     }
 }
+

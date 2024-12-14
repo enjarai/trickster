@@ -94,10 +94,8 @@ public class GlyphComponent extends BaseComponent {
 
         var patternString = element.getAttributeNode("pattern").getTextContent();
 
-        var pattern = Pattern.from(
-                Arrays.stream(patternString.split(","))
-                        .map(s -> Byte.valueOf(s, 10)).toList()
-        );
+        var pattern = Pattern.from(Arrays.stream(patternString.split(","))
+                .map(s -> Byte.valueOf(s, 10)).toList());
 
         var size = UIParsing.parseUnsignedInt(element.getAttributeNode("size"));
 

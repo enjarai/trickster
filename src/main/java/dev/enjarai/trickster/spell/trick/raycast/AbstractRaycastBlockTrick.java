@@ -24,17 +24,11 @@ public abstract class AbstractRaycastBlockTrick extends AbstractRaycastTrick {
     public Fragment activate(List<Fragment> fragments, SpellContext ctx, Optional<Entity> entity, Vec3d position, Vec3d direction) throws BlunderException {
         boolean includeFluids = supposeInput(fragments, entity.isPresent() ? 1 : 2).orElse(BooleanFragment.FALSE).asBoolean();
 
-        return activate(
-                ctx.source().getWorld().raycast(
-                        new RaycastContext(
-                                position,
-                                position.add(direction.multiply(64d)),
-                                RaycastContext.ShapeType.OUTLINE,
-                                includeFluids ? RaycastContext.FluidHandling.ANY : RaycastContext.FluidHandling.NONE,
-                                entity.map(ShapeContext::of).orElseGet(ShapeContext::absent)
-                        )
-                )
-        );
+        return activate(ctx.source().getWorld().raycast(new RaycastContext(position,
+                position.add(direction.multiply(64d)),
+                RaycastContext.ShapeType.OUTLINE,
+                includeFluids ? RaycastContext.FluidHandling.ANY : RaycastContext.FluidHandling.NONE,
+                entity.map(ShapeContext::of).orElseGet(ShapeContext::absent))));
     }
 
     public abstract Fragment activate(BlockHitResult hit) throws BlunderException;

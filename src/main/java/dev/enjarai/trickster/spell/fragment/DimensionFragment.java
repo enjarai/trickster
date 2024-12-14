@@ -13,8 +13,7 @@ import org.apache.commons.lang3.text.WordUtils;
 public record DimensionFragment(RegistryKey<World> world) implements Fragment {
     public static StructEndec<DimensionFragment> ENDEC = StructEndecBuilder.of(
             CodecUtils.toEndec(RegistryKey.createCodec(RegistryKeys.WORLD)).fieldOf("world", DimensionFragment::world),
-            DimensionFragment::new
-    );
+            DimensionFragment::new);
 
     @Override
     public FragmentType<?> type() {

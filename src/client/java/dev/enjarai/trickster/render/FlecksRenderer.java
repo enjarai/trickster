@@ -42,8 +42,7 @@ public class FlecksRenderer {
                     fleck,
                     lastFleck,
                     worldRenderContext, worldRenderContext.world(), worldRenderContext.tickCounter().getTickDelta(true),
-                    worldRenderContext.matrixStack(), worldRenderContext.consumers(), color
-            );
+                    worldRenderContext.matrixStack(), worldRenderContext.consumers(), color);
         });
     }
 }

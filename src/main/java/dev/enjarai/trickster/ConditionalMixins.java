@@ -19,8 +19,7 @@ public class ConditionalMixins implements IMixinConfigPlugin {
             "dev.enjarai.trickster.mixin.client.sodium.WorldSliceMixin", () -> FabricLoader.getInstance().isModLoaded("sodium"),
             "dev.enjarai.trickster.mixin.client.sodium.ChunkRenderContextMixin", () -> FabricLoader.getInstance().isModLoaded("sodium"),
             "dev.enjarai.trickster.mixin.client.sodium.ChunkBuilderMeshingTaskMixin", () -> FabricLoader.getInstance().isModLoaded("sodium"),
-            "dev.enjarai.trickster.mixin.client.figura.AvatarManagerMixin", () -> FabricLoader.getInstance().isModLoaded("figura")
-    );
+            "dev.enjarai.trickster.mixin.client.figura.AvatarManagerMixin", () -> FabricLoader.getInstance().isModLoaded("figura"));
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {

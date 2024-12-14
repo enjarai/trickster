@@ -29,15 +29,13 @@ public record FragmentComponent(Fragment value, Optional<String> name, boolean i
             Endec.STRING.optionalOf().optionalFieldOf("name", FragmentComponent::name, Optional.empty()),
             Endec.BOOLEAN.optionalFieldOf("immutable", FragmentComponent::immutable, false),
             Endec.BOOLEAN.optionalFieldOf("closed", FragmentComponent::closed, false),
-            FragmentComponent::new
-    );
+            FragmentComponent::new);
     private static final Endec<FragmentComponent> NEW_ENDEC = StructEndecBuilder.of(
             Fragment.ENDEC.fieldOf("value", FragmentComponent::value),
             EndecTomfoolery.safeOptionalOf(Endec.STRING).fieldOf("name", FragmentComponent::name),
             Endec.BOOLEAN.optionalFieldOf("immutable", FragmentComponent::immutable, false),
             Endec.BOOLEAN.optionalFieldOf("closed", FragmentComponent::closed, false),
-            FragmentComponent::new
-    );
+            FragmentComponent::new);
     public static final Endec<FragmentComponent> ENDEC = EndecTomfoolery.withAlternative(NEW_ENDEC, OLD_ENDEC);
 
     public FragmentComponent(SpellPart spell) {

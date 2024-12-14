@@ -9,8 +9,7 @@ import io.wispforest.owo.network.ServerAccess;
 public record ClipBoardSpellResponsePacket(SpellPart spell) {
     public static final StructEndec<ClipBoardSpellResponsePacket> ENDEC = StructEndecBuilder.of(
             SpellPart.ENDEC.fieldOf("spell", ClipBoardSpellResponsePacket::spell),
-            ClipBoardSpellResponsePacket::new
-    );
+            ClipBoardSpellResponsePacket::new);
 
     public void handleServer(ServerAccess access) {
         TricksterCommand.importCallback(access.player(), spell());

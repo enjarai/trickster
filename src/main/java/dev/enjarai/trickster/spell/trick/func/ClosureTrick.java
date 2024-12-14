@@ -35,15 +35,13 @@ public class ClosureTrick extends DistortionTrick {
             if (key instanceof PatternGlyph pattern) {
                 return new Tuple2<>(pattern.pattern(), value);
             } else {
-                throw new IncorrectFragmentBlunder(
-                        this, 1,
+                throw new IncorrectFragmentBlunder(this, 1,
                         Text.literal("{")
                                 .append("pattern")
                                 .append(": ")
                                 .append(Text.of("any"))
                                 .append("}"),
-                        new MapFragment(map)
-                );
+                        new MapFragment(map));
             }
         });
     }

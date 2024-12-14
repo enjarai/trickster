@@ -111,8 +111,7 @@ public class FlecksComponent implements ServerTickingComponent, ClientTickingCom
         public static final Endec<FleckEntry> ENDEC = StructEndecBuilder.of(
                 Fleck.ENDEC.fieldOf("fleck", FleckEntry::fleck),
                 Endec.INT.fieldOf("life", FleckEntry::life),
-                FleckEntry::new
-        );
+                FleckEntry::new);
     }
 
     public record FleckPair(int id, Fleck current, @Nullable Fleck old) {

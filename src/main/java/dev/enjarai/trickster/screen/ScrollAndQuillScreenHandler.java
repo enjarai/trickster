@@ -39,10 +39,8 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
     public final SyncedProperty<SpellPart> spell = createProperty(SpellPart.class, SpellPart.ENDEC, new SpellPart());
     public final SyncedProperty<SpellPart> otherHandSpell = createProperty(SpellPart.class, SpellPart.ENDEC, new SpellPart());
     public final SyncedProperty<Boolean> isMutable = createProperty(Boolean.class, true);
-    public final SyncedProperty<HashMap<Pattern, SpellPart>> macros = createProperty(
-            null, EndecTomfoolery.hamt(Pattern.ENDEC, SpellPart.ENDEC),
-            HashMap.empty()
-    );
+    public final SyncedProperty<HashMap<Pattern, SpellPart>> macros = createProperty(null, EndecTomfoolery.hamt(Pattern.ENDEC, SpellPart.ENDEC),
+            HashMap.empty());
 
     public Consumer<Fragment> replacerCallback;
     public Consumer<Optional<SpellPart>> updateDrawingPartCallback;
@@ -54,10 +52,8 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
         this(syncId, playerInventory, null, null, null, null, false, true);
     }
 
-    public ScrollAndQuillScreenHandler(
-            int syncId, PlayerInventory playerInventory, ItemStack scrollStack, ItemStack otherHandStack, EquipmentSlot slot,
-            HashMap<Pattern, SpellPart> macros, boolean greedyEvaluation, boolean isMutable
-    ) {
+    public ScrollAndQuillScreenHandler(int syncId, PlayerInventory playerInventory, ItemStack scrollStack, ItemStack otherHandStack, EquipmentSlot slot,
+            HashMap<Pattern, SpellPart> macros, boolean greedyEvaluation, boolean isMutable) {
         super(ModScreenHandlers.SCROLL_AND_QUILL, syncId);
 
         this.scrollStack = scrollStack;
@@ -114,10 +110,8 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
 
                             player().sendMessage(e.createMessage().append(" (").append(executionState.formatStackTrace()).append(")"));
                         } catch (Exception e) {
-                            player().sendMessage(
-                                    Text.literal("Uncaught exception in spell: " + e.getMessage())
-                                            .append(" (").append(executionState.formatStackTrace()).append(")")
-                            );
+                            player().sendMessage(Text.literal("Uncaught exception in spell: " + e.getMessage())
+                                    .append(" (").append(executionState.formatStackTrace()).append(")"));
                         }
 
                         if (result instanceof SpellPart spellResult) {
@@ -127,12 +121,8 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
                         } else if (result == null) {
                             sendMessage(new UpdateDrawingPartMessage(Optional.empty()));
                         } else {
-                            player().sendMessage(
-                                    Text.literal("Macro expansion failed: Macro must return a ").append(
-                                            FragmentType.SPELL_PART.getName()
-                                                    .append(" but it returned ").append(result.asFormattedText())
-                                    )
-                            );
+                            player().sendMessage(Text.literal("Macro expansion failed: Macro must return a ").append(FragmentType.SPELL_PART.getName()
+                                    .append(" but it returned ").append(result.asFormattedText())));
                             sendMessage(new UpdateDrawingPartMessage(Optional.empty()));
                         }
                     });
@@ -160,15 +150,12 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
 
                                 player().sendMessage(e.createMessage().append(" (").append(executionState.formatStackTrace()).append(")"));
                             } catch (Exception e) {
-                                player().sendMessage(
-                                        Text.literal("Uncaught exception in spell: " + e.getMessage())
-                                                .append(" (").append(executionState.formatStackTrace()).append(")")
-                                );
+                                player().sendMessage(Text.literal("Uncaught exception in spell: " + e.getMessage())
+                                        .append(" (").append(executionState.formatStackTrace()).append(")"));
                             }
 
                             ((ServerPlayerEntity) player()).getServerWorld().playSoundFromEntity(
-                                    null, player(), ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f)
-                            );
+                                    null, player(), ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f));
                         } else {
                             this.spell.set(spell.applyEphemeral());
                         }
@@ -226,21 +213,16 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
                         if (blunder instanceof NaNBlunder)
                             ModCriteria.NAN_NUMBER.trigger((ServerPlayerEntity) player());
 
-                        player().sendMessage(
-                                blunder.createMessage()
-                                        .append(" (").append(spell.getDeepestState().formatStackTrace()).append(")")
-                        );
+                        player().sendMessage(blunder.createMessage()
+                                .append(" (").append(spell.getDeepestState().formatStackTrace()).append(")"));
                     } catch (Exception e) {
-                        player().sendMessage(
-                                Text.literal("Uncaught exception in spell: " + e.getMessage())
-                                        .append(" (").append(spell.getDeepestState().formatStackTrace()).append(")")
-                        );
+                        player().sendMessage(Text.literal("Uncaught exception in spell: " + e.getMessage())
+                                .append(" (").append(spell.getDeepestState().formatStackTrace()).append(")"));
                     }
 
                     sendMessage(new Replace(result));
                     ((ServerPlayerEntity) player()).getServerWorld().playSoundFromEntity(
-                            null, player(), ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f)
-                    );
+                            null, player(), ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f));
                 }
             });
         } else {
@@ -266,8 +248,7 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
         public static final Endec<UpdateSpellWithSpellMessage> ENDEC = StructEndecBuilder.of(
                 SpellPart.ENDEC.fieldOf("drawing_part", UpdateSpellWithSpellMessage::drawingPart),
                 SpellPart.ENDEC.fieldOf("spell", UpdateSpellWithSpellMessage::spell),
-                UpdateSpellWithSpellMessage::new
-        );
+                UpdateSpellWithSpellMessage::new);
     }
 
     public record OtherHandSpellMessage(SpellPart spell) {
@@ -282,10 +263,8 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
     }
 
     private record UpdateDrawingPartMessage(Optional<SpellPart> spell) {
-        public static final Endec<UpdateDrawingPartMessage> ENDEC = SpellPart.ENDEC.optionalOf().xmap(
-                UpdateDrawingPartMessage::new,
-                UpdateDrawingPartMessage::spell
-        );
+        public static final Endec<UpdateDrawingPartMessage> ENDEC = SpellPart.ENDEC.optionalOf().xmap(UpdateDrawingPartMessage::new,
+                UpdateDrawingPartMessage::spell);
 
     }
 }

@@ -27,16 +27,12 @@ import java.util.Optional;
 
 public class TrickHatItem extends AccessoryItem implements Equipment {
     public TrickHatItem(Settings settings) {
-        super(
-                settings
-                        .maxCount(1)
-                        .component(
-                                DataComponentTypes.CONTAINER,
-                                ContainerComponent.fromStacks(DefaultedList.ofSize(27, ItemStack.EMPTY))
-                        )
-                        .component(ModComponents.SELECTED_SLOT, new SelectedSlotComponent(0, 27))
-                        .component(ModComponents.ENTITY_STORAGE, new EntityStorageComponent(Optional.empty()))
-        );
+        super(settings
+                .maxCount(1)
+                .component(DataComponentTypes.CONTAINER,
+                        ContainerComponent.fromStacks(DefaultedList.ofSize(27, ItemStack.EMPTY)))
+                .component(ModComponents.SELECTED_SLOT, new SelectedSlotComponent(0, 27))
+                .component(ModComponents.ENTITY_STORAGE, new EntityStorageComponent(Optional.empty())));
     }
 
     @Override

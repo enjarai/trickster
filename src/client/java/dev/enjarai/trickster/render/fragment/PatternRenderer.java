@@ -13,17 +13,13 @@ import static dev.enjarai.trickster.screen.SpellPartWidget.isCircleClickable;
 
 public class PatternRenderer implements FragmentRenderer<PatternGlyph> {
     @Override
-    public void render(
-            PatternGlyph fragment, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float size, float alpha,
-            Vec3d normal, SpellCircleRenderer delegator
-    ) {
+    public void render(PatternGlyph fragment, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float size, float alpha,
+            Vec3d normal, SpellCircleRenderer delegator) {
         renderPattern(fragment.pattern(), matrices, vertexConsumers, x, y, size / PATTERN_TO_PART_RATIO, alpha, delegator);
     }
 
-    public static void renderPattern(
-            Pattern pattern, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float size, float alpha,
-            SpellCircleRenderer delegator
-    ) {
+    public static void renderPattern(Pattern pattern, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float size, float alpha,
+            SpellCircleRenderer delegator) {
         var pixelSize = size / PART_PIXEL_RADIUS;
 
         var r = delegator.getR();

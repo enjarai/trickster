@@ -18,10 +18,7 @@ public class MissingFragmentBlunder extends TrickBlunderException {
     @Override
     public MutableText createMessage() {
         return source.getName().append(": ").append(
-                Text.translatable(
-                        Trickster.MOD_ID + ".blunder.missing_fragment",
-                        formatInt(index), expectedType
-                )
-        );
+                Text.translatable(Trickster.MOD_ID + ".blunder.missing_fragment",
+                        formatInt(index), expectedType));
     }
 }

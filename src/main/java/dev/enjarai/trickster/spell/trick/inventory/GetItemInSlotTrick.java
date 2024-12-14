@@ -20,3 +20,4 @@ public class GetItemInSlotTrick extends Trick {
         return new ItemTypeFragment(expectInput(fragments, FragmentType.SLOT, 0).getItem(this, ctx));
     }
 }
+

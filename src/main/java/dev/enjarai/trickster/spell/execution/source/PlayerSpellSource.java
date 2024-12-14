@@ -59,10 +59,8 @@ public class PlayerSpellSource implements SpellSource {
         return Optional
                 .ofNullable(player.getMainHandStack())
                 .filter(filter)
-                .or(
-                        () -> Optional.ofNullable(player.getOffHandStack())
-                                .filter(filter)
-                );
+                .or(() -> Optional.ofNullable(player.getOffHandStack())
+                        .filter(filter));
     }
 
     @Override

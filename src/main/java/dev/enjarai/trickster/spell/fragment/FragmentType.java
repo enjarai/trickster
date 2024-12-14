@@ -32,8 +32,7 @@ public record FragmentType<T extends Fragment>(StructEndec<T> endec, OptionalInt
             if (INT_ID_LOOKUP.containsKey(hash)) {
                 Trickster.LOGGER.warn(
                         "WARNING: Hashcode collision between two fragment types, spell imports and exports may not work as expected. ({} overrode {})",
-                        key.getValue(), INT_ID_LOOKUP.get(hash)
-                );
+                        key.getValue(), INT_ID_LOOKUP.get(hash));
             }
 
             INT_ID_LOOKUP.put(hash, key.getValue());

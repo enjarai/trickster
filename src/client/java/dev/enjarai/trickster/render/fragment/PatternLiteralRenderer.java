@@ -14,18 +14,15 @@ public class PatternLiteralRenderer implements FragmentRenderer<Pattern> {
     public static final Identifier OVERLAY_TEXTURE = Trickster.id("textures/gui/pattern_literal.png");
 
     @Override
-    public void render(
-            Pattern fragment, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float size, float alpha, Vec3d normal,
-            SpellCircleRenderer delegator
-    ) {
+    public void render(Pattern fragment, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float size, float alpha, Vec3d normal,
+            SpellCircleRenderer delegator) {
         PatternRenderer.renderPattern(fragment, matrices, vertexConsumers, x, y, size / PATTERN_TO_PART_RATIO, alpha, delegator);
         SpellCircleRenderer.drawTexturedQuad(
                 matrices, vertexConsumers, OVERLAY_TEXTURE,
                 x - size, x + size, y - size, y + size,
                 0,
                 delegator.getR(), delegator.getG(), delegator.getB(),
-                alpha * delegator.getCircleTransparency(), delegator.inUI
-        );
+                alpha * delegator.getCircleTransparency(), delegator.inUI);
     }
 
     @Override

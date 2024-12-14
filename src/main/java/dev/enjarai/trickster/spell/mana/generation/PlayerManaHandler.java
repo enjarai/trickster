@@ -12,8 +12,7 @@ import net.minecraft.server.world.ServerWorld;
 public class PlayerManaHandler implements ManaHandler {
     public static final StructEndec<PlayerManaHandler> ENDEC = StructEndecBuilder.of(
             EndecTomfoolery.UUID.fieldOf("uuid", handler -> handler.uuid),
-            PlayerManaHandler::new
-    );
+            PlayerManaHandler::new);
 
     private final UUID uuid;
 

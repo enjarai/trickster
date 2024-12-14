@@ -20,8 +20,7 @@ import java.util.Stack;
 public record ListFragment(List<Fragment> fragments) implements FoldableFragment {
     public static final StructEndec<ListFragment> ENDEC = StructEndecBuilder.of(
             Fragment.ENDEC.listOf().fieldOf("fragments", ListFragment::fragments),
-            ListFragment::new
-    );
+            ListFragment::new);
 
     @Override
     public FragmentType<?> type() {
@@ -79,8 +78,7 @@ public record ListFragment(List<Fragment> fragments) implements FoldableFragment
                         source,
                         1,
                         Text.translatable(Trickster.MOD_ID + ".fragment." + Trickster.MOD_ID + "." + "integer_list"),
-                        this
-                );
+                        this);
             }
         }
 

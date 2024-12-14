@@ -14,15 +14,12 @@ public class ModClientNetworking {
         ModNetworking.CHANNEL.registerClientbound(RebuildChunkPacket.class, (message, access) -> {
             var pos = message.pos();
 
-            ChunkSectionPos.forEachChunkSectionAround(
-                    pos, chunk -> ((WorldRendererAccessor) access.runtime().worldRenderer)
-                            .trickster$scheduleChunkRender(
-                                    ChunkSectionPos.unpackX(chunk),
-                                    ChunkSectionPos.unpackY(chunk),
-                                    ChunkSectionPos.unpackZ(chunk),
-                                    true
-                            )
-            );
+            ChunkSectionPos.forEachChunkSectionAround(pos, chunk -> ((WorldRendererAccessor) access.runtime().worldRenderer)
+                    .trickster$scheduleChunkRender(
+                            ChunkSectionPos.unpackX(chunk),
+                            ChunkSectionPos.unpackY(chunk),
+                            ChunkSectionPos.unpackZ(chunk),
+                            true));
         });
         ModNetworking.CHANNEL.registerClientbound(GrabClipboardSpellPacket.class, (message, access) -> {
             var clipboard = access.runtime().keyboard.getClipboard();

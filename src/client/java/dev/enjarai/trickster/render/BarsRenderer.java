@@ -70,14 +70,12 @@ public class BarsRenderer {
                 colorsRandom.nextFloat(),
                 colorsRandom.nextFloat(),
                 colorsRandom.nextFloat(),
-                1
-        );
+                1);
     }
 
     private static void drawTexturedQuad(
             DrawContext context, Identifier texture, int x1, int x2, int y1, int y2, int z,
-            float u1, float u2, float v1, float v2, float red, float green, float blue, float alpha
-    ) {
+            float u1, float u2, float v1, float v2, float red, float green, float blue, float alpha) {
         RenderSystem.setShaderTexture(0, texture);
         RenderSystem.setShader(GameRenderer::getPositionTexColorProgram);
         RenderSystem.enableBlend();

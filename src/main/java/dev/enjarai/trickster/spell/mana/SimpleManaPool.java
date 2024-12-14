@@ -9,8 +9,7 @@ public class SimpleManaPool implements MutableManaPool {
     public static final StructEndec<SimpleManaPool> ENDEC = StructEndecBuilder.of(
             Endec.FLOAT.fieldOf("mana", simpleManaPool -> simpleManaPool.mana),
             Endec.FLOAT.fieldOf("max_mana", simpleManaPool -> simpleManaPool.maxMana),
-            SimpleManaPool::new
-    );
+            SimpleManaPool::new);
 
     protected float maxMana;
     protected float mana;

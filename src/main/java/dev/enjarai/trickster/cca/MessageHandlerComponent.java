@@ -74,12 +74,12 @@ public class MessageHandlerComponent implements ServerTickingComponent {
 
     public static interface Key {
         boolean match(Key other);
-
+        
         public static record Channel(UUID uuid) implements Key {
             @Override
             public boolean match(Key other) {
                 return other instanceof Channel channel
-                        && channel.uuid.equals(uuid);
+                    && channel.uuid.equals(uuid);
             }
         }
 
@@ -87,8 +87,8 @@ public class MessageHandlerComponent implements ServerTickingComponent {
             @Override
             public boolean match(Key other) {
                 return other instanceof Broadcast broadcast
-                        && broadcast.world.equals(world)
-                        && broadcast.pos.distanceSquared(pos) <= (256 + Math.pow(broadcast.extraRange, 2) + Math.pow(extraRange, 2));
+                    && broadcast.world.equals(world)
+                    && broadcast.pos.distanceSquared(pos) <= (256 + Math.pow(broadcast.extraRange, 2) + Math.pow(extraRange, 2));
             }
         }
     }

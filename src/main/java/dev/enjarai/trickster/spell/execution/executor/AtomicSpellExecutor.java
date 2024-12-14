@@ -32,8 +32,7 @@ public class AtomicSpellExecutor implements SpellExecutor {
             Endec.INT.listOf().fieldOf("scope", e -> e.scope),
             ExecutionState.ENDEC.fieldOf("state", e -> e.state),
             Endec.INT.fieldOf("required_executions", e -> e.requiredExecutions),
-            AtomicSpellExecutor::new
-    );
+            AtomicSpellExecutor::new);
 
     private final SpellPart root;
     private final Stack<SpellInstruction> instructions;
@@ -43,10 +42,8 @@ public class AtomicSpellExecutor implements SpellExecutor {
     private final int requiredExecutions;
     private int lastRunExecutions;
 
-    private AtomicSpellExecutor(
-            SpellPart root, Stack<SpellInstruction> instructions, List<Fragment> inputs, List<Integer> scope, ExecutionState state,
-            int requiredExecutions
-    ) {
+    private AtomicSpellExecutor(SpellPart root, Stack<SpellInstruction> instructions, List<Fragment> inputs, List<Integer> scope, ExecutionState state,
+            int requiredExecutions) {
         this.root = root;
         this.instructions = instructions;
         this.inputs.addAll(inputs);

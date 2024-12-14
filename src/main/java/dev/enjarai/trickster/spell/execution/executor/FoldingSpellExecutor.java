@@ -19,19 +19,16 @@ import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 
 public class FoldingSpellExecutor implements SpellExecutor {
-    public static final StructEndec<FoldingSpellExecutor> ENDEC = new BackwardCompatibleStructEndec<>(
-            StructEndecBuilder.of(
-                    ExecutionState.ENDEC.fieldOf("state", e -> e.state),
-                    SpellPart.ENDEC.fieldOf("executable", e -> e.executable),
-                    Fragment.ENDEC.fieldOf("last_result", e -> e.lastResult),
-                    EndecTomfoolery.stackOf(Fragment.ENDEC).fieldOf("values", e -> e.values),
-                    EndecTomfoolery.stackOf(Fragment.ENDEC).fieldOf("keys", e -> e.keys),
-                    Fragment.ENDEC.fieldOf("previous", e -> e.previous),
-                    EndecTomfoolery.safeOptionalOf(SpellExecutor.ENDEC).fieldOf("child", e -> e.child),
-                    FoldingSpellExecutor::new
-            ),
-            StructEndecBuilder.of(
-                    // <=2.0.0-beta.1 compat
+    public static final StructEndec<FoldingSpellExecutor> ENDEC = new BackwardCompatibleStructEndec<>(StructEndecBuilder.of(
+            ExecutionState.ENDEC.fieldOf("state", e -> e.state),
+            SpellPart.ENDEC.fieldOf("executable", e -> e.executable),
+            Fragment.ENDEC.fieldOf("last_result", e -> e.lastResult),
+            EndecTomfoolery.stackOf(Fragment.ENDEC).fieldOf("values", e -> e.values),
+            EndecTomfoolery.stackOf(Fragment.ENDEC).fieldOf("keys", e -> e.keys),
+            Fragment.ENDEC.fieldOf("previous", e -> e.previous),
+            EndecTomfoolery.safeOptionalOf(SpellExecutor.ENDEC).fieldOf("child", e -> e.child),
+            FoldingSpellExecutor::new),
+            StructEndecBuilder.of( // <=2.0.0-beta.1 compat
                     ExecutionState.ENDEC.fieldOf("state", e -> e.state),
                     SpellPart.ENDEC.fieldOf("executable", e -> e.executable),
                     ListFragment.ENDEC.fieldOf("list", e -> (ListFragment) e.previous),
@@ -45,9 +42,7 @@ public class FoldingSpellExecutor implements SpellExecutor {
                             keys.push(new NumberFragment(i));
 
                         return new FoldingSpellExecutor(state, executable, last, elements, keys, list, child);
-                    }
-            )
-    );
+                    }));
 
     private final ExecutionState state;
     private final SpellPart executable;
@@ -58,10 +53,8 @@ public class FoldingSpellExecutor implements SpellExecutor {
     private int lastRunExecutions;
     private Fragment lastResult;
 
-    private FoldingSpellExecutor(
-            ExecutionState state, SpellPart executable, Fragment lastResult, Stack<Fragment> values, Stack<Fragment> keys,
-            Fragment previous, Optional<SpellExecutor> child
-    ) {
+    private FoldingSpellExecutor(ExecutionState state, SpellPart executable, Fragment lastResult, Stack<Fragment> values, Stack<Fragment> keys,
+            Fragment previous, Optional<SpellExecutor> child) {
         this.state = state;
         this.executable = executable;
         this.lastResult = lastResult;
@@ -114,16 +107,11 @@ public class FoldingSpellExecutor implements SpellExecutor {
             child = Optional.of(
                     new DefaultSpellExecutor(
                             executable,
-                            state.recurseOrThrow(
-                                    List.of(
-                                            lastResult,
-                                            values.pop(),
-                                            keys.pop(),
-                                            previous
-                                    )
-                            )
-                    )
-            );
+                            state.recurseOrThrow(List.of(
+                                    lastResult,
+                                    values.pop(),
+                                    keys.pop(),
+                                    previous))));
 
             var result = runChild(ctx);
 

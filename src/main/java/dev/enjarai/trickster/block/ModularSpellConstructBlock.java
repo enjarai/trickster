@@ -44,41 +44,33 @@ public class ModularSpellConstructBlock extends BlockWithEntity {
             VoxelShapes.union(
                     createCuboidShape(0, 6, 0, 16, 8, 16),
                     createCuboidShape(1, 8, 1, 15, 14, 15),
-                    createCuboidShape(0, 14, 0, 16, 16, 16)
-            ),
+                    createCuboidShape(0, 14, 0, 16, 16, 16)),
             VoxelShapes.union(
                     createCuboidShape(0, 0, 0, 16, 2, 16),
                     createCuboidShape(1, 2, 1, 15, 8, 15),
-                    createCuboidShape(0, 8, 0, 16, 10, 16)
-            ),
+                    createCuboidShape(0, 8, 0, 16, 10, 16)),
             VoxelShapes.union(
                     createCuboidShape(0, 0, 6, 16, 16, 8),
                     createCuboidShape(1, 1, 8, 15, 15, 14),
-                    createCuboidShape(0, 0, 14, 16, 16, 16)
-            ),
+                    createCuboidShape(0, 0, 14, 16, 16, 16)),
             VoxelShapes.union(
                     createCuboidShape(0, 0, 0, 16, 16, 2),
                     createCuboidShape(1, 1, 2, 15, 15, 8),
-                    createCuboidShape(0, 0, 8, 16, 16, 10)
-            ),
+                    createCuboidShape(0, 0, 8, 16, 16, 10)),
             VoxelShapes.union(
                     createCuboidShape(6, 0, 0, 8, 16, 16),
                     createCuboidShape(8, 1, 1, 14, 15, 15),
-                    createCuboidShape(14, 0, 0, 16, 16, 16)
-            ),
+                    createCuboidShape(14, 0, 0, 16, 16, 16)),
             VoxelShapes.union(
                     createCuboidShape(0, 0, 0, 2, 16, 16),
                     createCuboidShape(2, 1, 1, 8, 15, 15),
-                    createCuboidShape(8, 0, 0, 10, 16, 16)
-            )
+                    createCuboidShape(8, 0, 0, 10, 16, 16))
     };
 
     protected ModularSpellConstructBlock() {
-        super(
-                AbstractBlock.Settings.create()
-                        .strength(1.5F)
-                        .sounds(BlockSoundGroup.STONE)
-        );
+        super(AbstractBlock.Settings.create()
+                .strength(1.5F)
+                .sounds(BlockSoundGroup.STONE));
         setDefaultState(getStateManager().getDefaultState().with(FACING, Direction.UP));
     }
 

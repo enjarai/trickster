@@ -159,8 +159,7 @@ public class Tricks {
             if (LOOKUP.containsKey(value.getPattern())) {
                 Trickster.LOGGER.warn(
                         "WARNING: A mod is overriding a pattern that is already defined! This may result in one of the tricks being unusable. ({} overrode {})",
-                        key.getValue(), getId(LOOKUP.get(value.getPattern()))
-                );
+                        key.getValue(), getId(LOOKUP.get(value.getPattern())));
             }
 
             LOOKUP.put(value.getPattern(), value);

@@ -38,11 +38,9 @@ public abstract class ItemMixin {
 
         if (spellComponent != null) {
             if (spellComponent.closed()) {
-                tooltip.add(
-                        spellComponent.name()
-                                .flatMap(str -> Optional.of(Text.literal(str)))
-                                .orElse(Text.literal("Mortal eyes upon my carvings").setStyle(Style.EMPTY.withObfuscated(true)))
-                );
+                tooltip.add(spellComponent.name()
+                        .flatMap(str -> Optional.of(Text.literal(str)))
+                        .orElse(Text.literal("Mortal eyes upon my carvings").setStyle(Style.EMPTY.withObfuscated(true))));
             } else if (!(spellComponent.value() instanceof SpellPart)) {
                 tooltip.add(spellComponent.value().asFormattedText());
             }

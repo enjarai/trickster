@@ -114,12 +114,9 @@ public abstract class BlockConversionLoader extends CompleteJsonDataLoader imple
     }
 
     public record Replaceable(boolean replace, List<WeightedValue> conversions) {
-        public static final Codec<Replaceable> CODEC = RecordCodecBuilder.create(
-                instance -> instance.group(
-                        Codec.BOOL.optionalFieldOf("replace", false).forGetter(Replaceable::replace),
-                        WeightedValue.CODEC.listOf().fieldOf("conversions").forGetter(Replaceable::conversions)
-                ).apply(instance, Replaceable::new)
-        );
+        public static final Codec<Replaceable> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                Codec.BOOL.optionalFieldOf("replace", false).forGetter(Replaceable::replace),
+                WeightedValue.CODEC.listOf().fieldOf("conversions").forGetter(Replaceable::conversions)).apply(instance, Replaceable::new));
     }
 
     public record WeightedValue(BlockState state, Optional<NbtCompound> nbt, int weight) implements Weighted {
@@ -130,19 +127,14 @@ public abstract class BlockConversionLoader extends CompleteJsonDataLoader imple
                     if (state.getEntries().isEmpty()) {
                         return MapCodec.unit(state);
                     }
-                    return ((StateAccessor) state).<BlockState>getCodec().codec().optionalFieldOf("properties").xmap(
-                            optional -> optional.orElse(state),
-                            Optional::of
-                    );
+                    return ((StateAccessor) state).<BlockState>getCodec().codec().optionalFieldOf("properties").xmap(optional -> optional.orElse(state),
+                            Optional::of);
                 }).stable();
 
-        public static final Codec<WeightedValue> CODEC = RecordCodecBuilder.create(
-                instance -> instance.group(
-                        RecordCodecBuilder.of(WeightedValue::state, BLOCK_STATE_CODEC),
-                        NbtCompound.CODEC.optionalFieldOf("nbt").forGetter(WeightedValue::nbt),
-                        Codec.INT.fieldOf("weight").forGetter(WeightedValue::weight)
-                ).apply(instance, WeightedValue::new)
-        );
+        public static final Codec<WeightedValue> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                RecordCodecBuilder.of(WeightedValue::state, BLOCK_STATE_CODEC),
+                NbtCompound.CODEC.optionalFieldOf("nbt").forGetter(WeightedValue::nbt),
+                Codec.INT.fieldOf("weight").forGetter(WeightedValue::weight)).apply(instance, WeightedValue::new));
 
         @Override
         public double getWeight() {

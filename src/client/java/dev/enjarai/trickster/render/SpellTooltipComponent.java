@@ -44,10 +44,8 @@ public class SpellTooltipComponent implements TooltipComponent {
         var size = 30f;
 
         matrices.push();
-        renderer.renderPart(
-                matrices, vertexConsumers, spell, x + (float) getWidth(textRenderer) / 2, y + (float) getHeight() / 2, size,
-                0.0, delta, a -> a / size, new Vec3d(0, 0, -1)
-        );
+        renderer.renderPart(matrices, vertexConsumers, spell, x + (float) getWidth(textRenderer) / 2, y + (float) getHeight() / 2, size,
+                0.0, delta, a -> a / size, new Vec3d(0, 0, -1));
         matrices.pop();
     }
 }

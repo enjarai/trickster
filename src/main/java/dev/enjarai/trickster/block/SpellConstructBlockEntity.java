@@ -89,22 +89,16 @@ public class SpellConstructBlockEntity extends BlockEntity implements SpellColor
                             setComponents(getComponents().filtered(type -> !ModComponents.SPELL_CORE.equals(type)));
                         }
                     } catch (BlunderException blunder) {
-                        error = Optional.of(
-                                blunder.createMessage()
-                                        .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")")
-                        );
+                        error = Optional.of(blunder.createMessage()
+                                .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")"));
                     } catch (Exception e) {
-                        error = Optional.of(
-                                Text.literal("Uncaught exception in spell: " + e.getMessage())
-                                        .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")")
-                        );
+                        error = Optional.of(Text.literal("Uncaught exception in spell: " + e.getMessage())
+                                .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")"));
                     }
 
                     error.ifPresent(e -> {
-                        setComponents(
-                                ComponentMap.builder()
-                                        .addAll(getComponents()).add(ModComponents.SPELL_CORE, coreComponent.fail(e)).build()
-                        );
+                        setComponents(ComponentMap.builder()
+                                .addAll(getComponents()).add(ModComponents.SPELL_CORE, coreComponent.fail(e)).build());
                     });
 
                     if (error.isPresent()) {

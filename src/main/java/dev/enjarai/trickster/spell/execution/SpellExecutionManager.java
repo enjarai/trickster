@@ -13,8 +13,6 @@ public interface SpellExecutionManager {
     }
 
     int queue(SpellExecutor executor);
-
     boolean kill(int index);
-
     void killAll();
 }

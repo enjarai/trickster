@@ -21,12 +21,9 @@ public class InscribeSpellCriterion extends AbstractCriterion<InscribeSpellCrite
     }
 
     public record Conditions(Optional<LootContextPredicate> player) implements AbstractCriterion.Conditions {
-        public static final Codec<InscribeSpellCriterion.Conditions> CODEC = RecordCodecBuilder.create(
-                instance -> instance.group(
-                        EntityPredicate.LOOT_CONTEXT_PREDICATE_CODEC.optionalFieldOf("player").forGetter(InscribeSpellCriterion.Conditions::player)
-                )
-                        .apply(instance, InscribeSpellCriterion.Conditions::new)
-        );
+        public static final Codec<InscribeSpellCriterion.Conditions> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                EntityPredicate.LOOT_CONTEXT_PREDICATE_CODEC.optionalFieldOf("player").forGetter(InscribeSpellCriterion.Conditions::player))
+                .apply(instance, InscribeSpellCriterion.Conditions::new));
 
         @Override
         public void validate(LootContextPredicateValidator validator) {

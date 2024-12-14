@@ -21,16 +21,12 @@ public class GetFlecksTrick extends Trick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        return new ListFragment(
-                ModEntityComponents.FLECKS.get(
-                        supposeInput(fragments, FragmentType.ENTITY, 0)
-                                .map(fragment -> fragment.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this)))
-                                .orElseGet(() -> ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this)))
-                )
-                        .getRenderFlecks()
-                        .stream()
-                        .<Fragment>map(fleck -> new NumberFragment(fleck.id()))
-                        .toList()
-        );
+        return new ListFragment(ModEntityComponents.FLECKS.get(supposeInput(fragments, FragmentType.ENTITY, 0)
+                .map(fragment -> fragment.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this)))
+                .orElseGet(() -> ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this))))
+                .getRenderFlecks()
+                .stream()
+                .<Fragment>map(fleck -> new NumberFragment(fleck.id()))
+                .toList());
     }
 }

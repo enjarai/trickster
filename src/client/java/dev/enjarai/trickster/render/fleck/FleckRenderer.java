@@ -26,8 +26,6 @@ public interface FleckRenderer<T extends Fleck> {
     static void register() {
     }
 
-    void render(
-            T fleck, @Nullable T lastFleck, WorldRenderContext context, ClientWorld world, float tickDelta, MatrixStack matrices,
-            VertexConsumerProvider vertexConsumers, int color
-    );
+    void render(T fleck, @Nullable T lastFleck, WorldRenderContext context, ClientWorld world, float tickDelta, MatrixStack matrices,
+            VertexConsumerProvider vertexConsumers, int color);
 }

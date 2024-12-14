@@ -10,15 +10,11 @@ import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleType;
 
 public class SpellParticleOptions implements ParticleEffect {
-    public static final MapCodec<SpellParticleOptions> CODEC = RecordCodecBuilder.mapCodec(
-            instance -> instance.group(
-                    Codec.INT.fieldOf("color").forGetter(p -> p.color)
-            ).apply(instance, SpellParticleOptions::new)
-    );
+    public static final MapCodec<SpellParticleOptions> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+            Codec.INT.fieldOf("color").forGetter(p -> p.color)).apply(instance, SpellParticleOptions::new));
     public static final PacketCodec<RegistryByteBuf, SpellParticleOptions> PACKET_CODEC = PacketCodec.tuple(
             PacketCodecs.INTEGER, p -> p.color,
-            SpellParticleOptions::new
-    );
+            SpellParticleOptions::new);
 
     public final int color;
 

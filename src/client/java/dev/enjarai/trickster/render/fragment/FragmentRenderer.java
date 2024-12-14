@@ -26,10 +26,8 @@ public interface FragmentRenderer<T extends Fragment> {
     static void register() {
     }
 
-    void render(
-            T fragment, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float size, float alpha, Vec3d normal,
-            SpellCircleRenderer delegator
-    );
+    void render(T fragment, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float size, float alpha, Vec3d normal,
+            SpellCircleRenderer delegator);
 
     default boolean renderRedrawDots() {
         return true;

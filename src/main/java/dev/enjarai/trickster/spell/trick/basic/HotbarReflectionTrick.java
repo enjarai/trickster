@@ -17,9 +17,7 @@ public class HotbarReflectionTrick extends Trick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        return new NumberFragment(
-                ctx.source().getPlayer()
-                        .orElseThrow(() -> new NoPlayerBlunder(this)).getInventory().selectedSlot
-        );
+        return new NumberFragment(ctx.source().getPlayer()
+                .orElseThrow(() -> new NoPlayerBlunder(this)).getInventory().selectedSlot);
     }
 }

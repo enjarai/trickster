@@ -17,9 +17,7 @@ public class OtherHandTrick extends Trick {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        return new ItemTypeFragment(
-                ctx.source().getOtherHandStack()
-                        .orElseThrow(() -> new MissingItemBlunder(this)).getItem()
-        );
+        return new ItemTypeFragment(ctx.source().getOtherHandStack()
+                .orElseThrow(() -> new MissingItemBlunder(this)).getItem());
     }
 }

@@ -21,12 +21,9 @@ public class DrinkSpellInkCriterion extends AbstractCriterion<DrinkSpellInkCrite
     }
 
     public record Conditions(Optional<LootContextPredicate> player) implements AbstractCriterion.Conditions {
-        public static final Codec<DrinkSpellInkCriterion.Conditions> CODEC = RecordCodecBuilder.create(
-                instance -> instance.group(
-                        EntityPredicate.LOOT_CONTEXT_PREDICATE_CODEC.optionalFieldOf("player").forGetter(DrinkSpellInkCriterion.Conditions::player)
-                )
-                        .apply(instance, DrinkSpellInkCriterion.Conditions::new)
-        );
+        public static final Codec<DrinkSpellInkCriterion.Conditions> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                EntityPredicate.LOOT_CONTEXT_PREDICATE_CODEC.optionalFieldOf("player").forGetter(DrinkSpellInkCriterion.Conditions::player))
+                .apply(instance, DrinkSpellInkCriterion.Conditions::new));
 
         @Override
         public void validate(LootContextPredicateValidator validator) {

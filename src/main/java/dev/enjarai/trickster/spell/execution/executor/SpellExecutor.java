@@ -15,11 +15,8 @@ import java.util.Optional;
 
 public interface SpellExecutor {
     @SuppressWarnings("unchecked")
-    StructEndec<SpellExecutor> ENDEC = EndecTomfoolery.lazy(
-            () -> (StructEndec<SpellExecutor>) Endec.dispatchedStruct(
-                    SpellExecutorType::endec, SpellExecutor::type, MinecraftEndecs.ofRegistry(SpellExecutorType.REGISTRY)
-            )
-    );
+    StructEndec<SpellExecutor> ENDEC = EndecTomfoolery.lazy(() -> (StructEndec<SpellExecutor>) Endec.dispatchedStruct(
+            SpellExecutorType::endec, SpellExecutor::type, MinecraftEndecs.ofRegistry(SpellExecutorType.REGISTRY)));
 
     SpellExecutorType<?> type();
 

@@ -96,8 +96,7 @@ public class SpellPreviewComponent extends BaseComponent {
             }
         },
                 Text.translatable("trickster.message.import_example"),
-                Text.translatable("trickster.message.import_example.description")
-        ));
+                Text.translatable("trickster.message.import_example.description")));
     }
 
     @Override

@@ -16,10 +16,8 @@ public class SpellFleckRenderer implements FleckRenderer<SpellFleck> {
     private final SpellCircleRenderer renderer = new SpellCircleRenderer(false, 1);
 
     @Override
-    public void render(
-            SpellFleck fleck, SpellFleck lastFleck, WorldRenderContext context, ClientWorld world, float tickDelta, MatrixStack matrices,
-            VertexConsumerProvider vertexConsumers, int color
-    ) {
+    public void render(SpellFleck fleck, SpellFleck lastFleck, WorldRenderContext context, ClientWorld world, float tickDelta, MatrixStack matrices,
+            VertexConsumerProvider vertexConsumers, int color) {
 
         matrices.push();
 
@@ -60,8 +58,7 @@ public class SpellFleckRenderer implements FleckRenderer<SpellFleck> {
                 0,
                 tickDelta,
                 size -> 1.0f,
-                new Vec3d(facing.x(), facing.y(), facing.z())
-        );
+                new Vec3d(facing.x(), facing.y(), facing.z()));
 
         matrices.pop();
     }
