@@ -1,16 +1,16 @@
-// 1.21	2024-12-01T15:41:29.957431721	Trickster/Block Conversion (cool)
-074a1ac0403c184c4f922fd82e5215983abab056 data/minecraft/conversion/cool/jungle_sapling.json
-5d2f23dbd4aa8e87025495da0e5e86b459743d64 data/minecraft/conversion/cool/packed_ice.json
-8a1aa3c809f06ab246ca8e3d7888095464f9f898 data/minecraft/conversion/cool/cauldron.json
+// 1.21	2024-12-16T13:34:42.009385828	Trickster/Block Conversion (cool)
 074a1ac0403c184c4f922fd82e5215983abab056 data/minecraft/conversion/cool/oak_sapling.json
-506da27823475ef29a4140b71c0e020aedf6d5ea data/minecraft/conversion/cool/lava.json
-7ebf3cd89ecfbca041b18aba5e76675ba30de3ff data/minecraft/conversion/cool/magma_block.json
 074a1ac0403c184c4f922fd82e5215983abab056 data/minecraft/conversion/cool/dark_oak_sapling.json
-411fd4561458e8b55ab8e8db17c59325a7f50f26 data/minecraft/conversion/cool/ice.json
-074a1ac0403c184c4f922fd82e5215983abab056 data/minecraft/conversion/cool/cherry_sapling.json
-074a1ac0403c184c4f922fd82e5215983abab056 data/minecraft/conversion/cool/azalea.json
-074a1ac0403c184c4f922fd82e5215983abab056 data/minecraft/conversion/cool/flowering_azalea.json
-074a1ac0403c184c4f922fd82e5215983abab056 data/minecraft/conversion/cool/acacia_sapling.json
-074a1ac0403c184c4f922fd82e5215983abab056 data/minecraft/conversion/cool/spruce_sapling.json
-074a1ac0403c184c4f922fd82e5215983abab056 data/minecraft/conversion/cool/birch_sapling.json
+7ebf3cd89ecfbca041b18aba5e76675ba30de3ff data/minecraft/conversion/cool/magma_block.json
+73175674bb164d74e6e7c648bc5545d242ce3e53 data/minecraft/conversion/cool/cauldron.json
+074a1ac0403c184c4f922fd82e5215983abab056 data/minecraft/conversion/cool/jungle_sapling.json
 d37d3055bdc00865240ee179aced3b8a64ffc9c6 data/minecraft/conversion/cool/water.json
+074a1ac0403c184c4f922fd82e5215983abab056 data/minecraft/conversion/cool/cherry_sapling.json
+506da27823475ef29a4140b71c0e020aedf6d5ea data/minecraft/conversion/cool/lava.json
+074a1ac0403c184c4f922fd82e5215983abab056 data/minecraft/conversion/cool/birch_sapling.json
+074a1ac0403c184c4f922fd82e5215983abab056 data/minecraft/conversion/cool/azalea.json
+074a1ac0403c184c4f922fd82e5215983abab056 data/minecraft/conversion/cool/acacia_sapling.json
+074a1ac0403c184c4f922fd82e5215983abab056 data/minecraft/conversion/cool/flowering_azalea.json
+411fd4561458e8b55ab8e8db17c59325a7f50f26 data/minecraft/conversion/cool/ice.json
+5d2f23dbd4aa8e87025495da0e5e86b459743d64 data/minecraft/conversion/cool/packed_ice.json
+074a1ac0403c184c4f922fd82e5215983abab056 data/minecraft/conversion/cool/spruce_sapling.json
