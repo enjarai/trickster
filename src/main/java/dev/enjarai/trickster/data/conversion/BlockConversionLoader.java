@@ -14,13 +14,16 @@ import dev.enjarai.trickster.mixin.accessor.StateAccessor;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.resource.ResourceManager;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.profiler.Profiler;
@@ -97,6 +100,17 @@ public abstract class BlockConversionLoader extends CompleteJsonDataLoader imple
 
         if (blockState.isAir()) {
             world.syncWorldEvent(WorldEvents.BLOCK_BROKEN, pos, Block.getRawIdFromState(blockState));
+        }
+
+        if (world.getDimension().ultrawarm()) {
+            if (blockState.isOf(Blocks.WATER)) {
+                blockState = Blocks.AIR.getDefaultState();
+            } else if (blockState.getFluidState().isOf(Fluids.WATER)) {
+                Optional<Boolean> perhapsWaterlogged = blockState.getOrEmpty(Properties.WATERLOGGED);
+                if (perhapsWaterlogged.isPresent() && perhapsWaterlogged.get()) {
+                    blockState.with(Properties.WATERLOGGED, false);
+                }
+            }
         }
 
         if (!world.setBlockState(pos, blockState)) {
