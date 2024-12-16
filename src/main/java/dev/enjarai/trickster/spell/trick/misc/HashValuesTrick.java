@@ -9,18 +9,18 @@ import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.Signature;
 
-public class HashValuesTrick extends Trick {
+public class HashValuesTrick extends Trick<HashValuesTrick> {
     public HashValuesTrick() {
-        super(Pattern.of(1, 4, 8, 7, 4, 3));
+        super(Pattern.of(1, 4, 8, 7, 4, 3), Signature.of(ANY_VARIADIC, HashValuesTrick::run));
     }
 
-    @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        return new NumberFragment(fragments.stream()
-            .map(Fragment::applyEphemeral)
-            .map(Fragment::hashCode)
-            .reduce(0, (left, right) -> Objects.hash(left, right)));
+    public Fragment run(SpellContext ctx, List<Fragment> args) throws BlunderException {
+        return new NumberFragment(args.stream()
+                .map(Fragment::applyEphemeral)
+                .map(Fragment::hashCode)
+                .reduce(0, (left, right) -> Objects.hash(left, right)));
     }
 
 }

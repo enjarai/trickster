@@ -10,6 +10,7 @@ import io.vavr.*;
 
 public interface Signature<T extends Trick<T>, R> {
     boolean match(List<Fragment> fragments);
+
     R run(T trick, SpellContext ctx, List<Fragment> fragments) throws BlunderException;
 
     static <T extends Trick<T>, R> Signature<T, R> of(Function2<T, SpellContext, R> handler) {
@@ -51,7 +52,8 @@ public interface Signature<T extends Trick<T>, R> {
         };
     }
 
-    static <T extends Trick<T>, R, T1, T2> Signature<T, R> of(ArgType<T1> t1, ArgType<T2> t2, Function4<T, SpellContext, T1, T2, R> handler) {
+    static <T extends Trick<T>, R, T1, T2> Signature<T, R> of(ArgType<T1> t1, ArgType<T2> t2,
+            Function4<T, SpellContext, T1, T2, R> handler) {
         return new Signature<T, R>() {
             @Override
             public boolean match(List<Fragment> fragments) {
@@ -87,7 +89,8 @@ public interface Signature<T extends Trick<T>, R> {
         };
     }
 
-    static <T extends Trick<T>, R, T1, T2, T3> Signature<T, R> of(ArgType<T1> t1, ArgType<T2> t2, ArgType<T3> t3, Function5<T, SpellContext, T1, T2, T3, R> handler) {
+    static <T extends Trick<T>, R, T1, T2, T3> Signature<T, R> of(ArgType<T1> t1, ArgType<T2> t2, ArgType<T3> t3,
+            Function5<T, SpellContext, T1, T2, T3, R> handler) {
         return new Signature<T, R>() {
             @Override
             public boolean match(List<Fragment> fragments) {
@@ -134,7 +137,8 @@ public interface Signature<T extends Trick<T>, R> {
         };
     }
 
-    static <T extends Trick<T>, R, T1, T2, T3, T4> Signature<T, R> of(ArgType<T1> t1, ArgType<T2> t2, ArgType<T3> t3, ArgType<T4> t4, Function6<T, SpellContext, T1, T2, T3, T4, R> handler) {
+    static <T extends Trick<T>, R, T1, T2, T3, T4> Signature<T, R> of(ArgType<T1> t1, ArgType<T2> t2, ArgType<T3> t3,
+            ArgType<T4> t4, Function6<T, SpellContext, T1, T2, T3, T4, R> handler) {
         return new Signature<T, R>() {
             @Override
             public boolean match(List<Fragment> fragments) {
@@ -192,7 +196,8 @@ public interface Signature<T extends Trick<T>, R> {
         };
     }
 
-    static <T extends Trick<T>, R, T1, T2, T3, T4, T5> Signature<T, R> of(ArgType<T1> t1, ArgType<T2> t2, ArgType<T3> t3, ArgType<T4> t4, ArgType<T5> t5, Function7<T, SpellContext, T1, T2, T3, T4, T5, R> handler) {
+    static <T extends Trick<T>, R, T1, T2, T3, T4, T5> Signature<T, R> of(ArgType<T1> t1, ArgType<T2> t2,
+            ArgType<T3> t3, ArgType<T4> t4, ArgType<T5> t5, Function7<T, SpellContext, T1, T2, T3, T4, T5, R> handler) {
         return new Signature<T, R>() {
             @Override
             public boolean match(List<Fragment> fragments) {
@@ -261,7 +266,9 @@ public interface Signature<T extends Trick<T>, R> {
         };
     }
 
-    static <T extends Trick<T>, R, T1, T2, T3, T4, T5, T6> Signature<T, R> of(ArgType<T1> t1, ArgType<T2> t2, ArgType<T3> t3, ArgType<T4> t4, ArgType<T5> t5, ArgType<T6> t6, Function8<T, SpellContext, T1, T2, T3, T4, T5, T6, R> handler) {
+    static <T extends Trick<T>, R, T1, T2, T3, T4, T5, T6> Signature<T, R> of(ArgType<T1> t1, ArgType<T2> t2,
+            ArgType<T3> t3, ArgType<T4> t4, ArgType<T5> t5, ArgType<T6> t6,
+            Function8<T, SpellContext, T1, T2, T3, T4, T5, T6, R> handler) {
         return new Signature<T, R>() {
             @Override
             public boolean match(List<Fragment> fragments) {

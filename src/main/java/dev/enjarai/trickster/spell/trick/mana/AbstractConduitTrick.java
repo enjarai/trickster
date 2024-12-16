@@ -10,22 +10,22 @@ import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.fragment.SlotFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.Signature;
 import net.minecraft.item.ItemStack;
 
-public abstract class AbstractConduitTrick extends Trick {
+public abstract class AbstractConduitTrick extends Trick<AbstractConduitTrick> {
     public AbstractConduitTrick(Pattern pattern) {
-        super(pattern);
+        super(pattern, Signature.of(FragmentType.NUMBER, variadic(SlotFragment.class), AbstractConduitTrick::run));
     }
 
-    @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var limit = expectInput(fragments, FragmentType.NUMBER, 0).number();
+    public Fragment run(SpellContext ctx, NumberFragment n, List<SlotFragment> slots) throws BlunderException {
+        double limit = n.number();
         float result = 0;
 
-        for (var slot : expectVariadic(fragments, 1, SlotFragment.class)) {
+        for (var slot : slots) {
             if (result >= limit)
                 break;
-            
+
             var stack = slot.reference(this, ctx);
             result += affect(ctx, stack, (float) limit - result);
         }
