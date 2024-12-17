@@ -6,6 +6,9 @@ import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.TrickHatItem;
 import dev.enjarai.trickster.pond.QuackingInGameHud;
+import dev.enjarai.trickster.render.FunnyStaticFrameBufferThing;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gl.Framebuffer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.render.RenderTickCounter;
@@ -66,9 +69,15 @@ public class InGameHudMixin implements QuackingInGameHud {
                 matrices.translate(0, 0, -Math.abs(offsetOffset));
 
                 var brightness = MathHelper.lerp(Math.clamp(Math.abs(offsetOffset / 2), 0, 1), 1f, 0.0f);
-                RenderSystem.setShaderColor(brightness, brightness, brightness, brightness);
 
+                var buf = FunnyStaticFrameBufferThing.THING.get();
+                buf.clear(MinecraftClient.IS_SYSTEM_MAC);
+                buf.beginWrite(false);
                 context.drawItem(scrollStack, (int) (x + offsetOffset * 8), y);
+                context.draw();
+                MinecraftClient.getInstance().getFramebuffer().beginWrite(false);
+
+                FunnyStaticFrameBufferThing.drawFunnily(matrices, brightness, brightness, brightness, brightness);
 
                 matrices.pop();
             }
