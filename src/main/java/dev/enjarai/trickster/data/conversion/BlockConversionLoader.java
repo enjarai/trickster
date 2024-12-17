@@ -108,7 +108,7 @@ public abstract class BlockConversionLoader extends CompleteJsonDataLoader imple
             } else if (blockState.getFluidState().isOf(Fluids.WATER)) {
                 Optional<Boolean> perhapsWaterlogged = blockState.getOrEmpty(Properties.WATERLOGGED);
                 if (perhapsWaterlogged.isPresent() && perhapsWaterlogged.get()) {
-                    blockState.with(Properties.WATERLOGGED, false);
+                    blockState = blockState.with(Properties.WATERLOGGED, false);
                 }
             }
         }
