@@ -24,6 +24,11 @@ public class EntitySpellSource implements SpellSource {
 
     Entity entity;
 
+    @Override
+    public Optional<Entity> getCaster() {
+        return Optional.of(entity);
+    }
+
     public EntitySpellSource(Entity entity) {
 
         if (!(entity instanceof HasMana)) {
@@ -40,11 +45,7 @@ public class EntitySpellSource implements SpellSource {
 
     @Override
     public Optional<Vector3d> getFacing() {
-        var x = Math.sin(Math.toRadians(entity.getYaw()));
-        var y = Math.cos(Math.toRadians(entity.getPitch()));
-        var z = Math.cos(Math.toRadians(entity.getYaw()));
-
-        return Optional.of(new Vector3d(x, y, z));
+        return Optional.of(entity.getRotationVector().toVector3d());
     }
 
     @Override

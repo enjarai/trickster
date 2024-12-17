@@ -77,7 +77,7 @@ public class AmethystProjectile extends PersistentProjectileEntity implements Ha
 
     private AmethystProjectile(LivingEntity owner, ItemStack stack, SpellPart spell) {
         super(ModEntities.AMETHYST_SHARD, owner, owner.getWorld(), stack.copyWithCount(1), null);
-        this.pool = new SimpleManaPool(128);
+        this.pool = new SimpleManaPool(128, 128);
         this.spell = spell;
         this.spellExecutor = null;
         this.setRunningState(Idle.instance);

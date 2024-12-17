@@ -31,7 +31,7 @@ public record EntityManaHandler(UUID uuid) implements ManaHandler {
 
     @Override
     public ManaHandlerType<?> type() {
-        return null;
+        return ManaHandlerType.ENTITY;
     }
 
     @Override

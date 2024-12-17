@@ -26,7 +26,7 @@ public class AmethystProjectileRenderer extends ProjectileEntityRenderer<Amethys
 
     @Override
     public Identifier getTexture(AmethystProjectile entity) {
-        return Trickster.id("resources/assets/trickster/textures/entity/projectile/shard_projectile.png");
+        return Trickster.id("textures/entity/projectile/shard_projectile.png");
     }
 
     @Override
@@ -36,7 +36,7 @@ public class AmethystProjectileRenderer extends ProjectileEntityRenderer<Amethys
         if (projectile.getRunningState() instanceof SpellRunningState.Running running) {
             matrixStack.push();
             matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(MathHelper.lerp(g, projectile.prevYaw, projectile.getYaw())));
-            matrixStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(MathHelper.lerp(g, projectile.prevPitch, projectile.getPitch())));
+            matrixStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-MathHelper.lerp(g, projectile.prevPitch, projectile.getPitch())));
             matrixStack.translate(0,  0, -AmethystProjectile.dimensions);
 
             spellCircleRenderer.renderPart(matrixStack, vertexConsumerProvider, running.spellPart(), 0, 0, 1/3.0, 0, 1.0f, (depth) -> 1.0f, new Vec3d(0, 0, 1));
