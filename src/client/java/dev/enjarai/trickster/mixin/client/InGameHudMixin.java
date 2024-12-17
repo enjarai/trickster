@@ -48,17 +48,15 @@ public class InGameHudMixin {
                 var offset = i - 1;
                 var scrollStack = TrickHatItem.getScrollRelative(hatStack, offset);
 
-                if (!scrollStack.equals(TrickHatItem.getScrollRelative(hatStack, 0))) {
-                    matrices.push();
-                    matrices.translate(0, 0, -Math.abs(offset));
+                matrices.push();
+                matrices.translate(0, 0, -Math.abs(offset));
 
-                    var brightness = offset == 0 ? 1f : 0.6f;
-                    RenderSystem.setShaderColor(brightness, brightness, brightness, brightness);
+                var brightness = offset == 0 ? 1f : 0.6f;
+                RenderSystem.setShaderColor(brightness, brightness, brightness, brightness);
 
-                    context.drawItem(scrollStack, x + offset * 8, y);
+                context.drawItem(scrollStack, x + offset * 8, y);
 
-                    matrices.pop();
-                }
+                matrices.pop();
             }
 
             RenderSystem.setShaderColor(1, 1, 1, 1);
