@@ -47,6 +47,7 @@ public class InGameHudMixin implements QuackingInGameHud {
         if (hatStack.isIn(ModItems.HOLDABLE_HAT)) {
             var deltaAnimationOffset = MathHelper.lerp(tickCounter.getTickDelta(false),
                     animationOffset, animationOffset - animationOffset / 4);
+            int roundedAnimationOffset = deltaAnimationOffset < 0 ? MathHelper.ceil(deltaAnimationOffset) : MathHelper.floor(deltaAnimationOffset);
 
             var matrices = context.getMatrices();
             matrices.push();
@@ -56,19 +57,18 @@ public class InGameHudMixin implements QuackingInGameHud {
             var x = player.getMainArm() == Arm.RIGHT ? middle - 109 - 8 : middle + 109 - 8;
             var y = context.getScaledWindowHeight() - 40;
 
-            for (int i = 0; i < 3; i++) {
-                var offset = i - 1 ;
+            for (int i = 0; i < 5; i++) {
+                var offset = i - 2 - roundedAnimationOffset;
                 var offsetOffset = offset + deltaAnimationOffset;
-                var offsetFraction = deltaAnimationOffset - Math.round(deltaAnimationOffset);
-                var scrollStack = TrickHatItem.getScrollRelative(hatStack, Math.round(offsetOffset));
+                var scrollStack = TrickHatItem.getScrollRelative(hatStack, offset);
 
                 matrices.push();
                 matrices.translate(0, 0, -Math.abs(offsetOffset));
 
-                var brightness = MathHelper.lerp(Math.clamp(Math.abs(offsetOffset), 0, 1), 1f, 0.6f);
+                var brightness = MathHelper.lerp(Math.clamp(Math.abs(offsetOffset / 2), 0, 1), 1f, 0.0f);
                 RenderSystem.setShaderColor(brightness, brightness, brightness, brightness);
 
-                context.drawItem(scrollStack, (int) (x + (offset + offsetFraction) * 8), y);
+                context.drawItem(scrollStack, (int) (x + offsetOffset * 8), y);
 
                 matrices.pop();
             }
