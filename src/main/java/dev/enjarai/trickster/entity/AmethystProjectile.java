@@ -95,6 +95,14 @@ public class AmethystProjectile extends PersistentProjectileEntity implements Ha
     }
 
     @Override
+    protected void age() {
+        if (getRunningState().isRunning()) {
+            return;
+        }
+        super.age();
+    }
+
+    @Override
     public void tick() {
         super.tick();
 

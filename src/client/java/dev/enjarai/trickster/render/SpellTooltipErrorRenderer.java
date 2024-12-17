@@ -68,8 +68,8 @@ public class SpellTooltipErrorRenderer {
             var hit = ProjectileUtil.raycast(client.player, position, multipliedDirection, new Box(position, multipliedDirection), always -> true, 9);
 
             if (hit instanceof EntityHitResult entityHitResult
-                    && entityHitResult.getEntity() instanceof SpellDisplayingEntity spellDisplaying
-                    && spellDisplaying.getRunningState() instanceof SpellRunningState.Error error) {
+                && entityHitResult.getEntity() instanceof SpellDisplayingEntity spellDisplaying
+                && spellDisplaying.getRunningState() instanceof SpellRunningState.Error error) {
 
                 draw(client, context, error.error(), context.getScaledWindowHeight() / 2 - 10);
             }
