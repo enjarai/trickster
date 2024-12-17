@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.spell.execution.executor;
 
 import dev.enjarai.trickster.EndecTomfoolery;
+import dev.enjarai.trickster.entity.SpellRunningState;
 import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.execution.TickData;
 import dev.enjarai.trickster.spell.execution.ExecutionState;
@@ -10,6 +11,7 @@ import dev.enjarai.trickster.spell.blunder.ExecutionLimitReachedBlunder;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.owo.serialization.endec.MinecraftEndecs;
+import net.minecraft.text.Text;
 
 import java.util.Optional;
 
@@ -37,6 +39,22 @@ public interface SpellExecutor {
             context.state().getStacktrace().clear();
             context.state().getStacktrace().addAll(getDeepestState().getStacktrace());
             throw e;
+        }
+    }
+
+    static SpellRunningState.State runReportState(SpellExecutor spellExecutor, SpellPart spell, SpellSource source, TickData tickData) {
+        try {
+            if (spellExecutor.run(source).isPresent()) {
+                return SpellRunningState.Idle.instance;
+            } else {
+                return new SpellRunningState.Running(spell);
+            }
+        } catch (BlunderException blunder) {
+            return new SpellRunningState.Error(blunder.createMessage()
+                    .append(" (").append(spellExecutor.getDeepestState().formatStackTrace()).append(")"));
+        } catch (Exception e) {
+            return new SpellRunningState.Error(Text.literal("Uncaught exception in spell: " + e.getMessage())
+                    .append(" (").append(spellExecutor.getDeepestState().formatStackTrace()).append(")"));
         }
     }
 

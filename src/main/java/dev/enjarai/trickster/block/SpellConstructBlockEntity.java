@@ -100,12 +100,10 @@ public class SpellConstructBlockEntity extends BlockEntity implements SpellColor
                     error.ifPresent(e -> {
                         setComponents(ComponentMap.builder()
                                 .addAll(getComponents()).add(ModComponents.SPELL_CORE, coreComponent.fail(e)).build());
+                        playCastSound(serverWorld, getPos(), 0.5f, 0.1f);
                     });
 
-                    if (error.isPresent()) {
-                        playCastSound(serverWorld, getPos(), 0.5f, 0.1f);
-                        updateClient = true;
-                    }
+                    updateClient = error.isPresent();
                 }
             }
 

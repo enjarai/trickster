@@ -49,7 +49,7 @@ public class SpellCircleRenderer {
     private float r = 1f, g = 1f, b = 1f;
     private float circleTransparency = 1f;
 
-    public SpellCircleRenderer(Boolean inUI, double precisionOffset) {
+    public SpellCircleRenderer(Boolean inUI, double precisionOffset) {;
         this.inUI = inUI;
         this.inEditor = false;
         this.precisionOffset = precisionOffset;
