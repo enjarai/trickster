@@ -3,7 +3,6 @@ package dev.enjarai.trickster.item;
 import dev.enjarai.trickster.item.component.EntityStorageComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.SelectedSlotComponent;
-import dev.enjarai.trickster.screen.ScrollAndQuillScreenHandler;
 import dev.enjarai.trickster.screen.ScrollContainerScreenHandler;
 import io.wispforest.accessories.api.AccessoryItem;
 import io.wispforest.accessories.api.slot.SlotReference;
@@ -13,7 +12,6 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Equipment;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
@@ -70,23 +68,32 @@ public class TrickHatItem extends AccessoryItem implements Equipment {
     public static ItemStack getScrollRelative(ItemStack hatStack, int offset) {
         var slot = hatStack.get(ModComponents.SELECTED_SLOT);
         var container = hatStack.get(DataComponentTypes.CONTAINER);
+
         if (slot != null && container != null) {
-            var selected = slot.slot() + offset;
+            var selectedSlot = slot.slot() + offset;
             var maxSlot = (int) Math.min(slot.maxSlot(), container.stream().count());
 
-            if (maxSlot > 0) {
-                while (selected < 0) {
-                    selected += maxSlot;
-                }
-                while (selected >= maxSlot) {
-                    selected -= maxSlot;
-                }
-            } else {
-                selected = 0;
+            if (maxSlot <= 1 && offset != 0) {
+                return ItemStack.EMPTY;
             }
 
-            return container.stream().skip(selected).findFirst().orElse(ItemStack.EMPTY);
+            if (maxSlot > 0) {
+                while (selectedSlot < 0) {
+                    selectedSlot += maxSlot;
+                }
+                while (selectedSlot >= maxSlot) {
+                    selectedSlot -= maxSlot;
+                }
+            } else {
+                selectedSlot = 0;
+            }
+
+            return container.stream()
+                    .skip(selectedSlot)
+                    .findFirst()
+                    .orElse(ItemStack.EMPTY);
         }
+
         return ItemStack.EMPTY;
     }
 
