@@ -38,9 +38,11 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
     private final ItemStack otherHandStack;
 
     public final SyncedProperty<SpellPart> spell = createProperty(SpellPart.class, SpellPart.ENDEC, new SpellPart());
-    public final SyncedProperty<SpellPart> otherHandSpell = createProperty(SpellPart.class, SpellPart.ENDEC, new SpellPart());
+    public final SyncedProperty<SpellPart> otherHandSpell = createProperty(SpellPart.class, SpellPart.ENDEC,
+            new SpellPart());
     public final SyncedProperty<Boolean> isMutable = createProperty(Boolean.class, true);
-    public final SyncedProperty<HashMap<Pattern, SpellPart>> macros = createProperty(null, EndecTomfoolery.hamt(Pattern.ENDEC, SpellPart.ENDEC), HashMap.empty());
+    public final SyncedProperty<HashMap<Pattern, SpellPart>> macros = createProperty(null,
+            EndecTomfoolery.hamt(Pattern.ENDEC, SpellPart.ENDEC), HashMap.empty());
 
     public Consumer<Fragment> replacerCallback;
     public Consumer<Optional<SpellPart>> updateDrawingPartCallback;
@@ -52,7 +54,9 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
         this(syncId, playerInventory, null, null, null, null, false, true);
     }
 
-    public ScrollAndQuillScreenHandler(int syncId, PlayerInventory playerInventory, ItemStack scrollStack, ItemStack otherHandStack, EquipmentSlot slot, HashMap<Pattern, SpellPart> macros, boolean greedyEvaluation, boolean isMutable) {
+    public ScrollAndQuillScreenHandler(int syncId, PlayerInventory playerInventory, ItemStack scrollStack,
+            ItemStack otherHandStack, EquipmentSlot slot, HashMap<Pattern, SpellPart> macros, boolean greedyEvaluation,
+            boolean isMutable) {
         super(ModScreenHandlers.SCROLL_AND_QUILL, syncId);
 
         this.scrollStack = scrollStack;
@@ -76,8 +80,10 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
         this.isMutable.set(isMutable);
 
         addServerboundMessage(SpellMessage.class, SpellMessage.ENDEC, msg -> updateSpell(msg.spell()));
-        addServerboundMessage(OtherHandSpellMessage.class, OtherHandSpellMessage.ENDEC, msg -> updateOtherHandSpell(msg.spell()));
-        addServerboundMessage(UpdateSpellWithSpellMessage.class, UpdateSpellWithSpellMessage.ENDEC, msg -> updateSpellWithSpell(msg.drawingPart, msg.spell));
+        addServerboundMessage(OtherHandSpellMessage.class, OtherHandSpellMessage.ENDEC,
+                msg -> updateOtherHandSpell(msg.spell()));
+        addServerboundMessage(UpdateSpellWithSpellMessage.class, UpdateSpellWithSpellMessage.ENDEC,
+                msg -> updateSpellWithSpell(msg.drawingPart, msg.spell));
 
         addServerboundMessage(ExecuteOffhand.class, msg -> executeOffhand());
         addClientboundMessage(UpdateDrawingPartMessage.class, UpdateDrawingPartMessage.ENDEC, msg -> {
@@ -102,12 +108,14 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
                         var executionState = new ExecutionState(List.of(drawingPart));
                         Fragment result = null;
                         try {
-                            result = new DefaultSpellExecutor(spell, executionState).singleTickRun(new PlayerSpellSource((ServerPlayerEntity) player()));
+                            result = new DefaultSpellExecutor(spell, executionState)
+                                    .singleTickRun(new PlayerSpellSource((ServerPlayerEntity) player()));
                         } catch (BlunderException e) {
                             if (e instanceof NaNBlunder)
                                 ModCriteria.NAN_NUMBER.trigger((ServerPlayerEntity) player());
 
-                            player().sendMessage(e.createMessage().append(" (").append(executionState.formatStackTrace()).append(")"));
+                            player().sendMessage(e.createMessage().append(" (")
+                                    .append(executionState.formatStackTrace()).append(")"));
                         } catch (Exception e) {
                             player().sendMessage(Text.literal("Uncaught exception in spell: " + e.getMessage())
                                     .append(" (").append(executionState.formatStackTrace()).append(")"));
@@ -120,8 +128,9 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
                         } else if (result == null) {
                             sendMessage(new UpdateDrawingPartMessage(Optional.empty()));
                         } else {
-                            player().sendMessage(Text.literal("Macro expansion failed: Macro must return a ").append(FragmentType.SPELL_PART.getName()
-                                    .append(" but it returned ").append(result.asFormattedText())));
+                            player().sendMessage(Text.literal("Macro expansion failed: Macro must return a ")
+                                    .append(FragmentType.SPELL_PART.getName()
+                                            .append(" but it returned ").append(result.asFormattedText())));
                             sendMessage(new UpdateDrawingPartMessage(Optional.empty()));
                         }
                     });
@@ -141,20 +150,23 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
                         if (greedyEvaluation) {
                             var executionState = new ExecutionState(List.of());
                             try {
-                                spell.destructiveRun(new SpellContext(executionState, new PlayerSpellSource((ServerPlayerEntity) player()), new TickData()));
+                                spell.destructiveRun(new SpellContext(executionState,
+                                        new PlayerSpellSource((ServerPlayerEntity) player()), new TickData()));
                                 this.spell.set(spell);
                             } catch (BlunderException e) {
                                 if (e instanceof NaNBlunder)
                                     ModCriteria.NAN_NUMBER.trigger((ServerPlayerEntity) player());
 
-                                player().sendMessage(e.createMessage().append(" (").append(executionState.formatStackTrace()).append(")"));
+                                player().sendMessage(e.createMessage().append(" (")
+                                        .append(executionState.formatStackTrace()).append(")"));
                             } catch (Exception e) {
                                 player().sendMessage(Text.literal("Uncaught exception in spell: " + e.getMessage())
                                         .append(" (").append(executionState.formatStackTrace()).append(")"));
                             }
 
                             ((ServerPlayerEntity) player()).getServerWorld().playSoundFromEntity(
-                                    null, player(), ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f));
+                                    null, player(), ModSounds.CAST, SoundCategory.PLAYERS, 1f,
+                                    ModSounds.randomPitch(0.8f, 0.2f));
                         } else {
                             this.spell.set(spell.applyEphemeral());
                         }
@@ -185,6 +197,10 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
                 sendMessage(new OtherHandSpellMessage(spell));
             }
         }
+    }
+
+    public boolean isOffhand() {
+        return slot == EquipmentSlot.OFFHAND;
     }
 
     @Override
@@ -220,7 +236,8 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
 
                     sendMessage(new Replace(result));
                     ((ServerPlayerEntity) player()).getServerWorld().playSoundFromEntity(
-                            null, player(), ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f));
+                            null, player(), ModSounds.CAST, SoundCategory.PLAYERS, 1f,
+                            ModSounds.randomPitch(0.8f, 0.2f));
                 }
             });
         } else {
@@ -246,12 +263,12 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
         public static final Endec<UpdateSpellWithSpellMessage> ENDEC = StructEndecBuilder.of(
                 SpellPart.ENDEC.fieldOf("drawing_part", UpdateSpellWithSpellMessage::drawingPart),
                 SpellPart.ENDEC.fieldOf("spell", UpdateSpellWithSpellMessage::spell),
-                UpdateSpellWithSpellMessage::new
-        );
+                UpdateSpellWithSpellMessage::new);
     }
 
     public record OtherHandSpellMessage(SpellPart spell) {
-        public static final Endec<OtherHandSpellMessage> ENDEC = SpellPart.ENDEC.xmap(OtherHandSpellMessage::new, OtherHandSpellMessage::spell);
+        public static final Endec<OtherHandSpellMessage> ENDEC = SpellPart.ENDEC.xmap(OtherHandSpellMessage::new,
+                OtherHandSpellMessage::spell);
     }
 
     public record ExecuteOffhand() {
@@ -262,7 +279,8 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
     }
 
     private record UpdateDrawingPartMessage(Optional<SpellPart> spell) {
-        public static final Endec<UpdateDrawingPartMessage> ENDEC = SpellPart.ENDEC.optionalOf().xmap(UpdateDrawingPartMessage::new, UpdateDrawingPartMessage::spell);
+        public static final Endec<UpdateDrawingPartMessage> ENDEC = SpellPart.ENDEC.optionalOf()
+                .xmap(UpdateDrawingPartMessage::new, UpdateDrawingPartMessage::spell);
 
     }
 }

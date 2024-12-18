@@ -38,6 +38,7 @@ import net.minecraft.util.math.MathHelper;
 public class TricksterClient implements ClientModInitializer {
     public static final MerlinKeeperTracker merlinKeeperTracker = new MerlinKeeperTracker(5);
 
+    @SuppressWarnings("resource")
     @Override
     public void onInitializeClient() {
         ScrollAndQuillItem.screenOpener = (text, hand) -> {
@@ -52,7 +53,8 @@ public class TricksterClient implements ClientModInitializer {
         ModClientNetworking.register();
 
         BlockEntityRendererFactories.register(ModBlocks.SPELL_CONSTRUCT_ENTITY, SpellConstructBlockEntityRenderer::new);
-        BlockEntityRendererFactories.register(ModBlocks.MODULAR_SPELL_CONSTRUCT_ENTITY, ModularSpellConstructBlockEntityRenderer::new);
+        BlockEntityRendererFactories.register(ModBlocks.MODULAR_SPELL_CONSTRUCT_ENTITY,
+                ModularSpellConstructBlockEntityRenderer::new);
         BlockEntityRendererFactories.register(ModBlocks.SCROLL_SHELF_ENTITY, ScrollShelfBlockEntityRenderer::new);
 
         UIParsing.registerFactory(Trickster.id("glyph"), GlyphComponent::parseTrick);
@@ -60,7 +62,8 @@ public class TricksterClient implements ClientModInitializer {
         UIParsing.registerFactory(Trickster.id("spell-preview"), SpellPreviewComponent::parse);
         UIParsing.registerFactory(Trickster.id("item-tag"), ItemTagComponent::parse);
 
-        ParticleFactoryRegistry.getInstance().register(ModParticles.PROTECTED_BLOCK, ProtectedBlockParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(ModParticles.PROTECTED_BLOCK,
+                ProtectedBlockParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(ModParticles.SPELL, SpellParticle.Factory::new);
 
         AccessoriesRendererRegistry.registerRenderer(ModItems.TOP_HAT, HoldableHatRenderer::new);
@@ -75,15 +78,18 @@ public class TricksterClient implements ClientModInitializer {
             if (client.player != null) {
                 var editing = client.currentScreen instanceof ScrollAndQuillScreen;
                 var serverEditing = ModEntityComponents.IS_EDITING_SCROLL.get(client.player).isEditing();
+
                 if (editing != serverEditing) {
-                    ModNetworking.CHANNEL.clientHandle().send(new IsEditingScrollPacket(editing));
+                    ModNetworking.CHANNEL.clientHandle()
+                            .send(new IsEditingScrollPacket(editing, editing
+                                    ? ((ScrollAndQuillScreen) client.currentScreen).getScreenHandler().isOffhand()
+                                    : false));
                 }
             }
         });
         ClientTickEvents.END_CLIENT_TICK.register(merlinKeeperTracker::tick);
 
         Trickster.merlinTooltipAppender = merlinKeeperTracker;
-
         KnotItem.barStepFunction = stack -> {
             var manaComponent = stack.get(ModComponents.MANA);
             if (manaComponent == null || MinecraftClient.getInstance().world == null) {
@@ -93,7 +99,10 @@ public class TricksterClient implements ClientModInitializer {
             ClientUtils.trySubscribe(manaComponent);
 
             float poolMax = manaComponent.pool().getMax(MinecraftClient.getInstance().world);
-            return poolMax == 0 ? 0 : MathHelper.clamp(Math.round(manaComponent.pool().get(MinecraftClient.getInstance().world) * 13.0F / poolMax), 0, 13);
+            return poolMax == 0 ? 0
+                    : MathHelper.clamp(
+                            Math.round(manaComponent.pool().get(MinecraftClient.getInstance().world) * 13.0F / poolMax),
+                            0, 13);
         };
 
         WorldRenderEvents.AFTER_ENTITIES.register(FlecksRenderer::render);
@@ -101,7 +110,9 @@ public class TricksterClient implements ClientModInitializer {
         HudRenderCallback.EVENT.register(BarsRenderer::render);
         HudRenderCallback.EVENT.register(SpellConstructErrorRenderer::render);
 
-        EntityModelLayerRegistry.registerModelLayer(ScrollShelfBlockEntityRenderer.MODEL_LAYER, ScrollShelfBlockEntityRenderer::getTexturedModelData);
-        EntityModelLayerRegistry.registerModelLayer(ModularSpellConstructBlockEntityRenderer.MODEL_LAYER, ModularSpellConstructBlockEntityRenderer::getTexturedModelData);
+        EntityModelLayerRegistry.registerModelLayer(ScrollShelfBlockEntityRenderer.MODEL_LAYER,
+                ScrollShelfBlockEntityRenderer::getTexturedModelData);
+        EntityModelLayerRegistry.registerModelLayer(ModularSpellConstructBlockEntityRenderer.MODEL_LAYER,
+                ModularSpellConstructBlockEntityRenderer::getTexturedModelData);
     }
 }
