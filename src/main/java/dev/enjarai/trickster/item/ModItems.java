@@ -47,6 +47,7 @@ public class ModItems {
                     .component(ModComponents.FRAGMENT, new FragmentComponent(new SpellPart()))));
     public static final Item MACRO_RING = register("macro_ring",
             new Item(new Item.Settings().maxCount(1)));
+    public static final ManaAccessory AMETHYST_WHORL = register("amethyst_whorl", new ManaAccessory());
     public static final Item WARDING_CHARM = register("warding_charm",
             new Item(new Item.Settings().maxCount(1)));
     public static final SpellInkItem SPELL_INK = register("spell_ink",
@@ -126,6 +127,7 @@ public class ModItems {
                 entries.add(WITCH_HAT);
                 entries.add(FEZ);
                 entries.add(WAND);
+                entries.add(AMETHYST_WHORL);
                 entries.add(WARDING_CHARM);
                 entries.add(MACRO_RING);
                 entries.add(SPELL_INK);

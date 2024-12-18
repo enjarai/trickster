@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.spell.mana.CachedInventoryManaPool;
+import dev.enjarai.trickster.spell.mana.PlayerManaPool;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -35,7 +36,7 @@ public class PlayerManaHandler implements ManaHandler {
         var entity = world.getEntity(uuid);
 
         if (entity instanceof ServerPlayerEntity player) {
-            var pool = new CachedInventoryManaPool(player.getInventory());
+            var pool = new PlayerManaPool(player);
             return pool.refill(amount, world);
         }
 

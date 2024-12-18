@@ -21,7 +21,6 @@ import java.util.Map;
 public class FlecksComponent implements ServerTickingComponent, ClientTickingComponent, AutoSyncedComponent {
     /*
      * TODO: make it so the client wont try to render too many flecks at once and crash (probably not a change in this class)
-     * hash fleck id with spell source hash (e.g player uuid), to prevent collisions (only if it becomes annoying)
      * */
 
     private static final Endec<Map<Integer, FleckEntry>> FLECKS_ENDEC = Endec.map(Endec.INT, FleckEntry.ENDEC);
