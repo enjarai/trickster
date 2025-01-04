@@ -93,9 +93,9 @@ trickster:
     sneaking_reflection: Alternative Ingress
     sprinting_reflection: Trekking Ingress
     blocking_reflection: Guard Ingress
-    raycast: Archer's Ingress
-    raycast_side: Architect's Ingress
-    raycast_entity: Scout's Ingress
+    raycast: Pinpoint Ingress
+    raycast_side: Nominal Ingress
+    raycast_entity: Ingress of Hunting
     get_entity_type: Motive Verification Ingress
     get_position: Locational Ingress
     get_eye_position: Perspective Ingress
