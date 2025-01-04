@@ -19,7 +19,7 @@ public record LoadExampleSpellPacket(SpellPart spell) {
     public void handleServer(ServerAccess access) {
         for (var hand : Hand.values()) {
             var stack = access.player().getStackInHand(hand);
-            if (stack.isOf(ModItems.SCROLL_AND_QUILL)) {
+            if (stack.isIn(ModItems.SCROLL_AND_QUILLS)) {
                 var component = stack.get(ModComponents.FRAGMENT);
                 if (component != null && component.immutable()) {
                     access.player().sendMessage(Text.translatable("trickster.message.immutable_scroll"), true);
