@@ -1,6 +1,8 @@
 package dev.enjarai.trickster;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.DoubleArgumentType;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.enjarai.trickster.cca.ModEntityComponents;
@@ -11,12 +13,19 @@ import dev.enjarai.trickster.item.component.ManaComponent;
 import dev.enjarai.trickster.net.GrabClipboardSpellPacket;
 import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.spell.SpellPart;
+import net.minecraft.command.argument.EntityArgumentType;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.*;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 
+import java.util.Collection;
+import java.util.List;
+
+import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
 public class TricksterCommand {
@@ -39,6 +48,23 @@ public class TricksterCommand {
                         .requires(ServerCommandSource::isExecutedByPlayer)
                         .requires(s -> s.hasPermissionLevel(2))
                         .executes(TricksterCommand::fillKnot)
+                )
+                .then(literal("weight")
+                        .requires(s -> s.hasPermissionLevel(2))
+                        .then(argument("weight", DoubleArgumentType.doubleArg(0))
+                                .executes(context -> TricksterCommand.setWeight(
+                                        context,
+                                        DoubleArgumentType.getDouble(context, "weight"),
+                                        List.of(context.getSource().getEntityOrThrow())
+                                ))
+                                .then(argument("target", EntityArgumentType.entities())
+                                        .executes(context -> TricksterCommand.setWeight(
+                                                context,
+                                                DoubleArgumentType.getDouble(context, "weight"),
+                                                EntityArgumentType.getEntities(context, "target")
+                                        ))
+                                )
+                        )
                 )
         );
     }
@@ -109,6 +135,17 @@ public class TricksterCommand {
         }
 
         context.getSource().sendError(Text.literal("Must be holding an item capable of storing mana."));
+        return 0;
+    }
+
+    private static int setWeight(CommandContext<ServerCommandSource> context, double weight, Collection<? extends Entity> targets) throws CommandSyntaxException {
+        for (var targetEntity : targets) {
+            if (targetEntity instanceof LivingEntity) {
+                ModEntityComponents.WEIGHT.get(targetEntity).setWeight(weight);
+                ModEntityComponents.GRACE.get(targetEntity).triggerGrace("weight", 100);
+            }
+        }
+
         return 0;
     }
 }

@@ -104,7 +104,8 @@ trickster:
     get_health: Fettle Ingress
     get_armour: Bulwark Ingress
     get_velocity: Movement Ingress
-    add_velocity: Impulse Ploy
+    add_velocity: Kinetic Ploy
+    change_weight: Ploy of Featherweight
     store_entity: Containment Ploy
     release_entity: Extrication Ploy
 
