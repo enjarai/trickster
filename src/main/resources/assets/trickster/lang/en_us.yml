@@ -93,8 +93,8 @@ trickster:
     sneaking_reflection: Alternative Ingress
     sprinting_reflection: Trekking Ingress
     blocking_reflection: Guard Ingress
-    raycast: Pinpoint Ingress
-    raycast_side: Nominal Ingress
+    raycast: Mark Ingress
+    raycast_side: Bearing Ingress
     raycast_entity: Ingress of Hunting
     get_entity_type: Motive Verification Ingress
     get_position: Locational Ingress

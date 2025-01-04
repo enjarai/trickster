@@ -26,7 +26,7 @@ entity, number -> entity
 
 <|cost-rule@trickster:templates|formula=60kG|>
 
-Given a number between zero and one, multiplies the given entities effective gravity by that number for one second.
+Given a number between zero and one, multiplies the given entity's effective gravity by that number for one second, provided it is alive.
 
 ;;;;;
 
