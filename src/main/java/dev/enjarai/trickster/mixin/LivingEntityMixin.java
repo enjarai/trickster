@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalDoubleRef;
 import dev.enjarai.trickster.ModAttachments;
@@ -11,9 +12,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.AttributeContainer;
 import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -25,13 +24,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static dev.enjarai.trickster.spell.trick.entity.SetScaleTrick.SCALE_ID;
-
 @SuppressWarnings("UnstableApiUsage")
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
-    @Shadow
-    public abstract AttributeContainer getAttributes();
 
     @Shadow public abstract double getAttributeValue(RegistryEntry<EntityAttribute> attribute);
 
@@ -60,26 +55,6 @@ public abstract class LivingEntityMixin extends Entity {
     )
     private void tickTricksterThings(CallbackInfo ci) {
         removeAttached(ModAttachments.WHY_IS_THERE_NO_WAY_TO_DETECT_THIS);
-
-        if (!ModEntityComponents.GRACE.get(this).isInGrace("scale")) {
-            // Handle slow scaling reset
-            var currentScale = 0d;
-            if (getAttributes().hasModifierForAttribute(EntityAttributes.GENERIC_SCALE, SCALE_ID)) {
-                currentScale = getAttributes().getModifierValue(EntityAttributes.GENERIC_SCALE, SCALE_ID);
-            }
-            var newScale = currentScale;
-
-            if (currentScale < -0.01 || currentScale > 0.01) {
-                newScale -= currentScale * 0.001;
-            } else {
-                newScale = 0;
-            }
-
-            if (newScale != currentScale) {
-                getAttributes().getCustomInstance(EntityAttributes.GENERIC_SCALE)
-                        .overwritePersistentModifier(new EntityAttributeModifier(SCALE_ID, newScale, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
-            }
-        }
     }
 
     @ModifyExpressionValue(
@@ -116,5 +91,24 @@ public abstract class LivingEntityMixin extends Entity {
     )
     private void modifyKnockback(double strength, double x, double z, CallbackInfo ci, @Local(argsOnly = true, ordinal = 0) LocalDoubleRef strengthRef) {
         strengthRef.set(strengthRef.get() * (4 - 3 * ModEntityComponents.WEIGHT.get(this).getWeight()));
+    }
+
+    @ModifyExpressionValue(
+            method = "getScale",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/entity/attribute/AttributeContainer;getValue(Lnet/minecraft/registry/entry/RegistryEntry;)D"
+            )
+    )
+    private double modifyScale(double original) {
+        return original * ModEntityComponents.SCALE.get(this).getScale();
+    }
+
+    @ModifyReturnValue(
+            method = "getMovementSpeed()F",
+            at = @At("RETURN")
+    )
+    private float modifySpeed(float original) {
+        return (float) (original * ModEntityComponents.SCALE.get(this).getScale());
     }
 }

@@ -16,6 +16,10 @@ import java.util.function.Function;
 
 public record SpellContext(ExecutionState state, SpellSource source, TickData data) {
     public void useMana(Trick trickSource, float amount) throws BlunderException {
+        if (Float.isNaN(amount)) {
+            throw new NaNBlunder();
+        }
+
         try {
             state.useMana(trickSource, this, amount);
         } catch (NotEnoughManaBlunder blunder) {

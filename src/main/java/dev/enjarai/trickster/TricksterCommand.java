@@ -66,6 +66,23 @@ public class TricksterCommand {
                                 )
                         )
                 )
+                .then(literal("scale")
+                        .requires(s -> s.hasPermissionLevel(2))
+                        .then(argument("scale", DoubleArgumentType.doubleArg(0))
+                                .executes(context -> TricksterCommand.setScale(
+                                        context,
+                                        DoubleArgumentType.getDouble(context, "scale"),
+                                        List.of(context.getSource().getEntityOrThrow())
+                                ))
+                                .then(argument("target", EntityArgumentType.entities())
+                                        .executes(context -> TricksterCommand.setScale(
+                                                context,
+                                                DoubleArgumentType.getDouble(context, "scale"),
+                                                EntityArgumentType.getEntities(context, "target")
+                                        ))
+                                )
+                        )
+                )
         );
     }
 
@@ -143,6 +160,17 @@ public class TricksterCommand {
             if (targetEntity instanceof LivingEntity) {
                 ModEntityComponents.WEIGHT.get(targetEntity).setWeight(weight);
                 ModEntityComponents.GRACE.get(targetEntity).triggerGrace("weight", 100);
+            }
+        }
+
+        return 0;
+    }
+
+    private static int setScale(CommandContext<ServerCommandSource> context, double scale, Collection<? extends Entity> targets) throws CommandSyntaxException {
+        for (var targetEntity : targets) {
+            if (targetEntity instanceof LivingEntity) {
+                ModEntityComponents.SCALE.get(targetEntity).setScale(scale);
+                ModEntityComponents.GRACE.get(targetEntity).triggerGrace("scale", 100);
             }
         }
 

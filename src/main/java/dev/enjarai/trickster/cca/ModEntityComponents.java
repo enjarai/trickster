@@ -33,6 +33,9 @@ public class ModEntityComponents implements EntityComponentInitializer {
     public static final ComponentKey<EntityWeightComponent> WEIGHT =
             ComponentRegistry.getOrCreate(Trickster.id("weight"), EntityWeightComponent.class);
 
+    public static final ComponentKey<EntityScaleComponent> SCALE =
+            ComponentRegistry.getOrCreate(Trickster.id("scale"), EntityScaleComponent.class);
+
     @Override
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
         registry.registerForPlayers(CASTER, CasterComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
@@ -43,5 +46,6 @@ public class ModEntityComponents implements EntityComponentInitializer {
         registry.registerFor(LivingEntity.class, GRACE, GraceComponent::new);
         registry.registerForPlayers(PLAYER_ANIMATION, PlayerAnimationComponent::new, RespawnCopyStrategy.NEVER_COPY);
         registry.registerFor(LivingEntity.class, WEIGHT, EntityWeightComponent::new);
+        registry.registerFor(LivingEntity.class, SCALE, EntityScaleComponent::new);
     }
 }

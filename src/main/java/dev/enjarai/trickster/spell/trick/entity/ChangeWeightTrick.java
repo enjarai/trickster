@@ -33,7 +33,7 @@ public class ChangeWeightTrick extends Trick {
             throw new NumberTooSmallBlunder(this, 0);
         }
 
-        ctx.useMana(this, 60);
+        ctx.useMana(this, (float) (60 * (1 - weight)));
 
         if (entity instanceof LivingEntity) {
             ModEntityComponents.WEIGHT.get(entity).setWeight(weight);

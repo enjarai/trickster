@@ -56,7 +56,8 @@
             "trickster:grace",
             "trickster:mana_handler",
             "trickster:player_animation",
-            "trickster:weight"
+            "trickster:weight",
+            "trickster:scale"
         ]
     },
     "mixins": [

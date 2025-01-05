@@ -17,12 +17,12 @@ public class EntityWeightComponent implements CommonTickingComponent, AutoSynced
 
     @Override
     public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-        setWeight(tag.getDouble("weight"));
+        weight = tag.getDouble("weight");
     }
 
     @Override
     public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-        tag.putDouble("weight", getWeight());
+        tag.putDouble("weight", weight);
     }
 
     @Override
@@ -32,13 +32,11 @@ public class EntityWeightComponent implements CommonTickingComponent, AutoSynced
 
     @Override
     public void tick() {
-        var weight = getWeight();
-
         if (weight != 1.0 && !ModEntityComponents.GRACE.get(entity).isInGrace("weight")) {
             if (weight < 0.99) {
-                setWeight(weight + 0.01);
+                weight += 0.01;
             } else {
-                setWeight(1.0);
+                weight = 1.0;
             }
         }
     }
