@@ -11,11 +11,8 @@ import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.InvalidEntityBlunder;
 import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttributes;
 
 import java.util.List;
-
-import static dev.enjarai.trickster.spell.trick.entity.SetScaleTrick.SCALE_ID;
 
 public class GetScaleTrick extends Trick {
     public GetScaleTrick() {

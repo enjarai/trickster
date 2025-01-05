@@ -20,8 +20,6 @@ import net.minecraft.util.math.MathHelper;
 import java.util.List;
 
 public class SetScaleTrick extends Trick {
-    public static final Identifier SCALE_ID = Trickster.id("scale");
-
     public SetScaleTrick() {
         super(Pattern.of(7, 6, 0, 1, 2, 8, 7, 4));
     }
