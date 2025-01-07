@@ -225,6 +225,11 @@ trickster:
     message_send: Dispatch Ploy
     message_listen: Ploy of Receipt
 
+    mage_hand: Mage Hand Ploy
+    attack: Barbarian's Ploy
+    drop_pocket: Pauper's Ploy
+    pocket: Ploy of Pilfering
+
   fragment.trickster:
     type: Type
     number: Number
@@ -303,6 +308,8 @@ item.trickster:
   echo_knot: Echo Knot
   cracked_echo_knot: Cracked Echo Knot
   command_knot: Command Knot
+
+  amethyst_whorl: Amethyst Whorl
 
   spell_core: Spell Core
   rusted_spell_core: Rusted Spell Core
