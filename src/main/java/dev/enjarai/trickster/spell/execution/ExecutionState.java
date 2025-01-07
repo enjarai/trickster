@@ -22,6 +22,7 @@ public class ExecutionState {
             Endec.BOOLEAN.fieldOf("has_used_mana", ExecutionState::hasUsedMana),
             Endec.INT.fieldOf("stacktrace_size_when_made", ExecutionState::getInitialStacktraceSize),
             Fragment.ENDEC.listOf().fieldOf("arguments", state -> state.arguments),
+            Endec.map(Pattern.ENDEC, SpellPart.ENDEC).fieldOf("imported_tricks", state -> state.importedTricks),
             Endec.INT.listOf().fieldOf("stacktrace", state -> state.stacktrace.stream().toList()),
             EndecTomfoolery.safeOptionalOf(MutableManaPool.ENDEC).optionalFieldOf("pool_override", state -> state.poolOverride, Optional.empty()),
             ExecutionState::new
@@ -34,28 +35,29 @@ public class ExecutionState {
     private final List<Fragment> arguments;
     private final Deque<Integer> stacktrace = new ArrayDeque<>();
     private final Optional<MutableManaPool> poolOverride;
-    private final HashMap<Pattern, SpellPart> importedTricks = new HashMap<>();
+    private final Map<Pattern, SpellPart> importedTricks;
 
-    private ExecutionState(int recursions, int delay, boolean hasUsedMana, int initialStacktraceSize, List<Fragment> arguments, List<Integer> stacktrace, Optional<MutableManaPool> poolOverride) {
+    private ExecutionState(int recursions, int delay, boolean hasUsedMana, int initialStacktraceSize, List<Fragment> arguments, Map<Pattern, SpellPart> importedTricks, List<Integer> stacktrace, Optional<MutableManaPool> poolOverride) {
         this.recursions = recursions;
         this.delay = delay;
         this.hasUsedMana = hasUsedMana;
         this.initialStacktraceSize = initialStacktraceSize;
         this.arguments = arguments;
+        this.importedTricks = importedTricks;
         this.stacktrace.addAll(stacktrace);
         this.poolOverride = poolOverride;
     }
 
     public ExecutionState(List<Fragment> arguments) {
-        this(0, 0, false, 0, arguments, List.of(), Optional.empty());
+        this(0, 0, false, 0, arguments, new HashMap<>(), List.of(), Optional.empty());
     }
 
     public ExecutionState(List<Fragment> arguments, MutableManaPool poolOverride) {
-        this(0, 0, false, 0, arguments, List.of(), Optional.ofNullable(poolOverride));
+        this(0, 0, false, 0, arguments, new HashMap<>(), List.of(), Optional.ofNullable(poolOverride));
     }
 
-    private ExecutionState(int recursions, List<Fragment> arguments, Optional<MutableManaPool> poolOverride, Deque<Integer> stacktrace) {
-        this(recursions, 0, false, stacktrace.size(), arguments, stacktrace.stream().toList(), poolOverride);
+    private ExecutionState(int recursions, List<Fragment> arguments, Map<Pattern, SpellPart> importedTricks, Optional<MutableManaPool> poolOverride, Deque<Integer> stacktrace) {
+        this(recursions, 0, false, stacktrace.size(), arguments, importedTricks, stacktrace.stream().toList(), poolOverride);
     }
 
     public ExecutionState recurseOrThrow(List<Fragment> arguments) throws ExecutionLimitReachedBlunder {
@@ -63,7 +65,7 @@ public class ExecutionState {
             throw new ExecutionLimitReachedBlunder();
         }
 
-        var state = new ExecutionState(recursions + 1, arguments, poolOverride, stacktrace);
+        var state = new ExecutionState(recursions + 1, arguments, importedTricks, poolOverride, stacktrace);
         state.stacktrace.push(-2);
         return state;
     }
@@ -162,7 +164,7 @@ public class ExecutionState {
             throw new NotEnoughManaBlunder(trickSource, amount);
     }
 
-    public HashMap<Pattern, SpellPart> getImportedTricks() {
+    public Map<Pattern, SpellPart> getImportedTricks() {
         return importedTricks;
     }
 }
