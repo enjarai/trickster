@@ -17,7 +17,7 @@ import java.util.function.Function;
 public record SpellContext(ExecutionState state, SpellSource source, TickData data) {
     public void useMana(Trick trickSource, float amount) throws BlunderException {
         if (Float.isNaN(amount)) {
-            throw new NaNBlunder();
+            throw new IllegalStateException("Internal error: Mana used is NaN");
         }
 
         try {

@@ -4,10 +4,7 @@ import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
-import dev.enjarai.trickster.spell.blunder.NumberTooLargeBlunder;
-import dev.enjarai.trickster.spell.blunder.NumberTooSmallBlunder;
-import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
+import dev.enjarai.trickster.spell.blunder.*;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.trick.Trick;
 import net.minecraft.entity.LivingEntity;
@@ -33,12 +30,14 @@ public class ChangeWeightTrick extends Trick {
             throw new NumberTooSmallBlunder(this, 0);
         }
 
+        if (!(entity instanceof LivingEntity)) {
+            throw new EntityInvalidBlunder(this);
+        }
+
         ctx.useMana(this, (float) (60 * (1 - weight)));
 
-        if (entity instanceof LivingEntity) {
-            ModEntityComponents.WEIGHT.get(entity).setWeight(weight);
-            ModEntityComponents.GRACE.get(entity).triggerGrace("weight", 20);
-        }
+        ModEntityComponents.WEIGHT.get(entity).setWeight(weight);
+        ModEntityComponents.GRACE.get(entity).triggerGrace("weight", 20);
 
         return target;
     }
