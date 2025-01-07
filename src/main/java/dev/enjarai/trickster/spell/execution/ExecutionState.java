@@ -1,10 +1,9 @@
 package dev.enjarai.trickster.spell.execution;
 
 import dev.enjarai.trickster.EndecTomfoolery;
-import dev.enjarai.trickster.spell.Fragment;
+import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.mana.MutableManaPool;
 import dev.enjarai.trickster.spell.trick.Trick;
-import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.ExecutionLimitReachedBlunder;
 import dev.enjarai.trickster.spell.blunder.NotEnoughManaBlunder;
 import io.wispforest.endec.Endec;
@@ -35,6 +34,7 @@ public class ExecutionState {
     private final List<Fragment> arguments;
     private final Deque<Integer> stacktrace = new ArrayDeque<>();
     private final Optional<MutableManaPool> poolOverride;
+    private final HashMap<Pattern, SpellPart> importedTricks = new HashMap<>();
 
     private ExecutionState(int recursions, int delay, boolean hasUsedMana, int initialStacktraceSize, List<Fragment> arguments, List<Integer> stacktrace, Optional<MutableManaPool> poolOverride) {
         this.recursions = recursions;
@@ -160,5 +160,9 @@ public class ExecutionState {
 
         if (ctx.getManaPool().use(amount, ctx.source().getWorld()) > 0)
             throw new NotEnoughManaBlunder(trickSource, amount);
+    }
+
+    public HashMap<Pattern, SpellPart> getImportedTricks() {
+        return importedTricks;
     }
 }

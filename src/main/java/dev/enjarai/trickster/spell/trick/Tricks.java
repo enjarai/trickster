@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import dev.enjarai.trickster.spell.trick.block.*;
+import dev.enjarai.trickster.spell.trick.func.*;
 import dev.enjarai.trickster.spell.trick.inventory.*;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
@@ -59,17 +60,6 @@ import dev.enjarai.trickster.spell.trick.entity.query.SprintingReflectionTrick;
 import dev.enjarai.trickster.spell.trick.fleck.GetFlecksTrick;
 import dev.enjarai.trickster.spell.trick.fleck.LineFleckTrick;
 import dev.enjarai.trickster.spell.trick.fleck.SpellFleckTrick;
-import dev.enjarai.trickster.spell.trick.func.AtomicTrick;
-import dev.enjarai.trickster.spell.trick.func.ClosureTrick;
-import dev.enjarai.trickster.spell.trick.func.ExecuteTrick;
-import dev.enjarai.trickster.spell.trick.func.ExecuteWithinCurrentScopeTrick;
-import dev.enjarai.trickster.spell.trick.func.FoldTrick;
-import dev.enjarai.trickster.spell.trick.func.ForkTrick;
-import dev.enjarai.trickster.spell.trick.func.GetCurrentThreadTrick;
-import dev.enjarai.trickster.spell.trick.func.KillThreadTrick;
-import dev.enjarai.trickster.spell.trick.func.LoadArgumentTrick;
-import dev.enjarai.trickster.spell.trick.func.SupplierTrick;
-import dev.enjarai.trickster.spell.trick.func.TryCatchTrick;
 import dev.enjarai.trickster.spell.trick.list.ListAddRangeTrick;
 import dev.enjarai.trickster.spell.trick.list.ListAddTrick;
 import dev.enjarai.trickster.spell.trick.list.ListCreateTrick;
@@ -187,6 +177,7 @@ public class Tricks {
     public static final LoadArgumentTrick LOAD_ARGUMENT_6 = register("load_argument_6", new LoadArgumentTrick(Pattern.of(4, 6), 5));
     public static final LoadArgumentTrick LOAD_ARGUMENT_7 = register("load_argument_7", new LoadArgumentTrick(Pattern.of(4, 3), 6));
     public static final LoadArgumentTrick LOAD_ARGUMENT_8 = register("load_argument_8", new LoadArgumentTrick(Pattern.of(4, 0), 7));
+    public static final ImportTricksTrick IMPORT_TRICKS = register("import_tricks", new ImportTricksTrick());
 
     // Basic
     public static final OnePonyTrick TWO = register("two", new OnePonyTrick());

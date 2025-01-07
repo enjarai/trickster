@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.spell;
 
 import dev.enjarai.trickster.spell.blunder.OverweightFragmentBlunder;
+import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
@@ -38,6 +39,14 @@ public record PatternGlyph(Pattern pattern) implements Fragment {
     public Fragment activateAsGlyph(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         if (pattern.equals(Pattern.EMPTY)) {
             return VoidFragment.INSTANCE;
+        }
+
+
+        //handle custom tricks
+        SpellPart customTrick = ctx.state().getImportedTricks().get(pattern);
+        if (customTrick != null) {
+            DefaultSpellExecutor executor = new DefaultSpellExecutor(customTrick, ctx.state().recurseOrThrow(fragments));
+            return executor.singleTickRun(ctx);
         }
 
         var trick = Tricks.lookup(pattern);
