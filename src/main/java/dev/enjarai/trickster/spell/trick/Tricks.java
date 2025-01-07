@@ -3,6 +3,7 @@ package dev.enjarai.trickster.spell.trick;
 import java.util.HashMap;
 import java.util.Map;
 
+import dev.enjarai.trickster.spell.trick.basic.*;
 import dev.enjarai.trickster.spell.trick.block.*;
 import dev.enjarai.trickster.spell.trick.inventory.*;
 import org.jetbrains.annotations.ApiStatus;
@@ -12,20 +13,6 @@ import com.mojang.serialization.Lifecycle;
 
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Pattern;
-import dev.enjarai.trickster.spell.trick.basic.CasterReflectionTrick;
-import dev.enjarai.trickster.spell.trick.basic.CostTrick;
-import dev.enjarai.trickster.spell.trick.basic.FacingReflectionTrick;
-import dev.enjarai.trickster.spell.trick.basic.HotbarReflectionTrick;
-import dev.enjarai.trickster.spell.trick.basic.ManaReflectionTrick;
-import dev.enjarai.trickster.spell.trick.basic.MaxManaReflectionTrick;
-import dev.enjarai.trickster.spell.trick.basic.OnePonyTrick;
-import dev.enjarai.trickster.spell.trick.basic.ReadCrowMindTrick;
-import dev.enjarai.trickster.spell.trick.basic.ReadSpellTrick;
-import dev.enjarai.trickster.spell.trick.basic.ReflectionTrick;
-import dev.enjarai.trickster.spell.trick.basic.RevealTrick;
-import dev.enjarai.trickster.spell.trick.basic.WriteClosedSpellTrick;
-import dev.enjarai.trickster.spell.trick.basic.WriteCrowMindTrick;
-import dev.enjarai.trickster.spell.trick.basic.WriteSpellTrick;
 import dev.enjarai.trickster.spell.trick.bool.AllTrick;
 import dev.enjarai.trickster.spell.trick.bool.AnyTrick;
 import dev.enjarai.trickster.spell.trick.bool.EqualsTrick;
@@ -194,6 +181,7 @@ public class Tricks {
     public static final HighlightTrick HIGHLIGHT = register("highlight", new HighlightTrick());
     public static final ReadSpellTrick READ_SPELL = register("read_spell", new ReadSpellTrick());
     public static final WriteSpellTrick WRITE_SPELL = register("write_spell", new WriteSpellTrick());
+    public static final ClearSpellTrick CLEAR_SPELL_TRICK = register("clear_spell", new ClearSpellTrick());
     public static final WriteClosedSpellTrick WRITE_CLOSED_SPELL = register("write_closed_spell", new WriteClosedSpellTrick());
     public static final ReadCrowMindTrick READ_CROW_MIND = register("read_crow_mind", new ReadCrowMindTrick());
     public static final WriteCrowMindTrick WRITE_CROW_MIND = register("write_crow_mind", new WriteCrowMindTrick());
