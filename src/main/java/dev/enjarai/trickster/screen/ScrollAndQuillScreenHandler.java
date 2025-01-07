@@ -197,6 +197,10 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
         return macros.get();
     }
 
+    public boolean isOffhand() {
+        return slot == EquipmentSlot.OFFHAND;
+    }
+
     public void executeOffhand() {
         var server = player().getServer();
         if (server != null) {
