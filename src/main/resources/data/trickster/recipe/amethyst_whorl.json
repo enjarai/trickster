@@ -9,7 +9,7 @@
       "item": "minecraft:copper_ingot"
     },
     "s": {
-      "tag": "trickster:string"
+      "item": "minecraft:string"
     }
   },
   "pattern": [
