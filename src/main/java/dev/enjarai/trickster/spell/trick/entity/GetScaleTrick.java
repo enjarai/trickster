@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.spell.trick.entity;
 
+import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
@@ -10,11 +11,8 @@ import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.InvalidEntityBlunder;
 import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttributes;
 
 import java.util.List;
-
-import static dev.enjarai.trickster.spell.trick.entity.SetScaleTrick.SCALE_ID;
 
 public class GetScaleTrick extends Trick {
     public GetScaleTrick() {
@@ -26,14 +24,11 @@ public class GetScaleTrick extends Trick {
         var target = expectInput(fragments, FragmentType.ENTITY, 0)
                 .getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this));
 
-        if (!(target instanceof LivingEntity livingEntity)) {
+        if (!(target instanceof LivingEntity)) {
             throw new InvalidEntityBlunder(this);
         }
 
-        var currentScale = 0d;
-        if (livingEntity.getAttributes().hasModifierForAttribute(EntityAttributes.GENERIC_SCALE, SCALE_ID)) {
-            currentScale = livingEntity.getAttributes().getModifierValue(EntityAttributes.GENERIC_SCALE, SCALE_ID);
-        }
-        return new NumberFragment(currentScale + 1);
+        var currentScale = ModEntityComponents.SCALE.get(target).getScale();
+        return new NumberFragment(currentScale);
     }
 }
