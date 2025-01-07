@@ -65,6 +65,33 @@ public class TrickHatItem extends AccessoryItem implements Equipment {
         return TypedActionResult.success(stack);
     }
 
+    public static int scrollHat(ItemStack stack, float delta) {
+        var current = stack.get(ModComponents.SELECTED_SLOT);
+        var container = stack.get(DataComponentTypes.CONTAINER);
+
+        if (current != null && container != null) {
+            var newSlot = Math.round(current.slot() + delta);
+            int maxSlot = (int) Math.min(current.maxSlot(), container.stream().count());
+
+            if (maxSlot > 0) {
+                while (newSlot < 0) {
+                    newSlot += maxSlot;
+                }
+                while (newSlot >= maxSlot) {
+                    newSlot -= maxSlot;
+                }
+            } else {
+                newSlot = 0;
+            }
+
+            stack.set(ModComponents.SELECTED_SLOT,
+                    new SelectedSlotComponent(newSlot, current.maxSlot()));
+
+            return newSlot;
+        }
+        return 0;
+    }
+
     public static ItemStack getScrollRelative(ItemStack hatStack, int offset) {
         var slot = hatStack.get(ModComponents.SELECTED_SLOT);
         var container = hatStack.get(DataComponentTypes.CONTAINER);
@@ -95,6 +122,23 @@ public class TrickHatItem extends AccessoryItem implements Equipment {
         }
 
         return ItemStack.EMPTY;
+    }
+
+    public static int getSelectedSlot(ItemStack hatStack) {
+        var slot = hatStack.get(ModComponents.SELECTED_SLOT);
+        if (slot != null) {
+            return slot.slot();
+        }
+        return 0;
+    }
+
+    public static int getMaxSlot(ItemStack hatStack) {
+        var slot = hatStack.get(ModComponents.SELECTED_SLOT);
+        var container = hatStack.get(DataComponentTypes.CONTAINER);
+        if (slot != null && container != null) {
+            return (int) Math.min(slot.maxSlot(), container.stream().count());
+        }
+        return 0;
     }
 
     @Override

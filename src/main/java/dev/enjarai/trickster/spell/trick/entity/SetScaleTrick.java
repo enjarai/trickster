@@ -20,8 +20,6 @@ import net.minecraft.util.math.MathHelper;
 import java.util.List;
 
 public class SetScaleTrick extends Trick {
-    public static final Identifier SCALE_ID = Trickster.id("scale");
-
     public SetScaleTrick() {
         super(Pattern.of(7, 6, 0, 1, 2, 8, 7, 4));
     }
@@ -32,20 +30,17 @@ public class SetScaleTrick extends Trick {
         var scaleFragment = expectInput(fragments, FragmentType.NUMBER, 1);
         tryWard(ctx, target, fragments);
 
-        var scale = MathHelper.clamp(scaleFragment.number(), 0.0625, 8.0) - 1;
+        var scale = MathHelper.clamp(scaleFragment.number(), 0.0625, 8.0);
         if (!(target instanceof LivingEntity livingEntity)) {
             throw new InvalidEntityBlunder(this);
         }
 
-        var currentScale = 0d;
-        if (livingEntity.getAttributes().hasModifierForAttribute(EntityAttributes.GENERIC_SCALE, SCALE_ID)) {
-            currentScale = livingEntity.getAttributes().getModifierValue(EntityAttributes.GENERIC_SCALE, SCALE_ID);
-        }
+        var scaleComponent = ModEntityComponents.SCALE.get(target);
+        var currentScale = scaleComponent.getScale();
 
         var difference = Math.abs(scale - currentScale);
         ctx.useMana(this, (float) (difference * difference * 100 + scale * 50));
-        livingEntity.getAttributes().getCustomInstance(EntityAttributes.GENERIC_SCALE)
-                .overwritePersistentModifier(new EntityAttributeModifier(SCALE_ID, scale, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+        scaleComponent.setScale(scale);
         ModEntityComponents.GRACE.get(livingEntity).triggerGrace("scale", 100);
 
         return EntityFragment.from(target);

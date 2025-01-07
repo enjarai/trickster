@@ -43,27 +43,34 @@ public record ManaComponent(ManaPool pool, float naturalRechargeMultiplier, bool
         }
 
         // Require nighttime skylight access
-        if (world.getLightLevel(LightType.SKY, BlockPos.ofFloored(pos)) < 15 || world.isDay()) {
+        var noSky = world.getLightLevel(LightType.SKY, BlockPos.ofFloored(pos)) < 15;
+        if (noSky) {
+            return 0;
+        }
+
+        if (world.isDay() && !world.isThundering()) {
             return 0;
         }
 
         var moonSize = world.getMoonSize();
         // Recharge most strongly at new and full moons, with no recharging halfway inbetween
-        var chargeMultiplier = Math.max(moonSize * 2 - 1, 1 - moonSize * 2);
+        var chargeMultiplier = Math.max(Math.max(moonSize * 2 - 1, 1 - moonSize * 2), world.isThundering() ? 4 : 0);
         chargeMultiplier *= component.naturalRechargeMultiplier();
 
         var newPool = pool.makeClone(world);
         newPool.refill(chargeMultiplier, world);
         stack.set(ModComponents.MANA, component.with(newPool));
 
+        var particleVelocity = world.isThundering() ? 4 : 1;
+
         var recharged = chargeMultiplier - world.random.nextFloat();
         while (recharged > 0) {
             world.spawnParticles(
                     ModParticles.SPELL_WHITE,
                     pos.getX(), pos.getY(), pos.getZ(), 0,
-                    world.random.nextFloat() * 0.005f - 0.0025f,
-                    world.random.nextFloat() * 0.02f + 0.01f,
-                    world.random.nextFloat() * 0.005f - 0.0025f,
+                    (world.random.nextFloat() * 0.005f - 0.0025f) * particleVelocity,
+                    (world.random.nextFloat() * 0.02f + 0.01f) * particleVelocity,
+                    (world.random.nextFloat() * 0.005f - 0.0025f) * particleVelocity,
                     1
             );
             recharged -= world.random.nextFloat();
