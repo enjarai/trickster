@@ -69,6 +69,7 @@ trickster:
     normalize: Regularity Distortion
     align_vector: Aligned Regularity Distortion
     invert: Inversion Distortion
+    abs: Absolutist's Distortion
     length: Magnitude Distortion
 
     two: Foundational Delusion
@@ -141,6 +142,9 @@ trickster:
 
     list_create: Catalogue Delusion
     list_add: Expansion Stratagem
+    list_add_range: Collection Stratagem
+    list_take_range: Isolation Distortion
+    list_reverse: Counter Distortion
     list_insert: Inflation Stratagem
     list_get: Extraction Distortion
     list_index_of: Locating Distortion

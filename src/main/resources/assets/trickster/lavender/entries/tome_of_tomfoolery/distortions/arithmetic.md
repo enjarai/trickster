@@ -137,6 +137,16 @@ Inverts the given number or vector.
 
 ;;;;;
 
+<|glyph@trickster:templates|trick-id=trickster:abs,title=Absolutist's Distortion|>
+
+number -> number
+
+---
+
+If the given number is negative, returns its positive equivalent. Otherwise, does nothing.
+
+;;;;;
+
 <|glyph@trickster:templates|trick-id=trickster:sin,title=Primary Distortion of Geometry|>
 
 number -> number

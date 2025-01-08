@@ -57,7 +57,9 @@ import dev.enjarai.trickster.spell.trick.list.ListIndexOfTrick;
 import dev.enjarai.trickster.spell.trick.list.ListInsertTrick;
 import dev.enjarai.trickster.spell.trick.list.ListRemoveElementTrick;
 import dev.enjarai.trickster.spell.trick.list.ListRemoveTrick;
+import dev.enjarai.trickster.spell.trick.list.ListReverseTrick;
 import dev.enjarai.trickster.spell.trick.list.ListSizeTrick;
+import dev.enjarai.trickster.spell.trick.list.ListTakeRangeTrick;
 import dev.enjarai.trickster.spell.trick.mana.BatteryCreationTrick;
 import dev.enjarai.trickster.spell.trick.mana.PullManaTrick;
 import dev.enjarai.trickster.spell.trick.mana.PushManaTrick;
@@ -65,6 +67,7 @@ import dev.enjarai.trickster.spell.trick.map.MapGetTrick;
 import dev.enjarai.trickster.spell.trick.map.MapInsertTrick;
 import dev.enjarai.trickster.spell.trick.map.MapMergeTrick;
 import dev.enjarai.trickster.spell.trick.map.MapRemoveTrick;
+import dev.enjarai.trickster.spell.trick.math.AbsTrick;
 import dev.enjarai.trickster.spell.trick.math.AddTrick;
 import dev.enjarai.trickster.spell.trick.math.CeilTrick;
 import dev.enjarai.trickster.spell.trick.math.CosTrick;
@@ -237,6 +240,7 @@ public class Tricks {
     public static final ArcTanTrick ARCTAN = register("arctan", new ArcTanTrick());
     public static final ArcTan2Trick ARCTAN2 = register("arctan2", new ArcTan2Trick());
     public static final PowerTrick POWER = register("power", new PowerTrick());
+    public static final AbsTrick ABS = register("abs", new AbsTrick());
 
     // Vector
     public static final ExtractXTrick EXTRACT_X = register("extract_x", new ExtractXTrick());
@@ -265,6 +269,8 @@ public class Tricks {
     public static final ListAddRangeTrick LIST_ADD_RANGE = register("list_add_range", new ListAddRangeTrick());
     public static final ListCreateTrick LIST_CREATE = register("list_create", new ListCreateTrick());
     public static final ListGetTrick LIST_GET = register("list_get", new ListGetTrick());
+    public static final ListTakeRangeTrick LIST_TAKE_RANGE = register("list_take_range", new ListTakeRangeTrick());
+    public static final ListReverseTrick LIST_REVERSE = register("list_reverse", new ListReverseTrick());
     public static final ListIndexOfTrick LIST_INDEX_OF = register("list_index_of", new ListIndexOfTrick());
     public static final ListInsertTrick LIST_INSERT = register("list_insert", new ListInsertTrick());
     public static final ListRemoveElementTrick LIST_REMOVE_ELEMENT = register("list_remove_element", new ListRemoveElementTrick());
