@@ -38,13 +38,15 @@ public class DefaultSpellExecutor implements SpellExecutor {
     private Optional<Fragment> overrideReturnValue = Optional.empty();
     private int lastRunExecutions;
 
-    private DefaultSpellExecutor(SpellPart root,
-                                   Stack<SpellInstruction> instructions,
-                                   List<Fragment> inputs,
-                                   List<Integer> scope,
-                                   ExecutionState state,
-                                   Optional<SpellExecutor> child,
-                                   Optional<Fragment> overrideReturnValue) {
+    private DefaultSpellExecutor(
+            SpellPart root,
+            Stack<SpellInstruction> instructions,
+            List<Fragment> inputs,
+            List<Integer> scope,
+            ExecutionState state,
+            Optional<SpellExecutor> child,
+            Optional<Fragment> overrideReturnValue
+    ) {
         this.root = root;
         this.instructions = instructions;
         this.inputs.addAll(inputs);
@@ -124,6 +126,7 @@ public class DefaultSpellExecutor implements SpellExecutor {
                     args = _args.reversed();
                 }
 
+                //TODO: make this use the return of the activator instead (pain)
                 if (inst.forks(ctx, args)) {
                     var child = makeExecutor(ctx, inst, args);
                     var isTail = true;

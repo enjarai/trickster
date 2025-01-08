@@ -4,6 +4,7 @@ import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.component.FragmentComponent;
+import dev.enjarai.trickster.spell.EvaluationResult;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
@@ -35,14 +36,14 @@ public abstract class Trick<T extends Trick<T>> {
     protected static final VariadicArgType<Fragment> ANY_VARIADIC = variadic(Fragment.class);
 
     protected final Pattern pattern;
-    private final List<Signature<T, Fragment>> handlers;
+    private final List<Signature<T>> handlers;
 
-    public Trick(Pattern pattern, List<Signature<T, Fragment>> handlers) {
+    public Trick(Pattern pattern, List<Signature<T>> handlers) {
         this.pattern = pattern;
         this.handlers = handlers;
     }
 
-    public Trick(Pattern pattern, Signature<T, Fragment> primary) {
+    public Trick(Pattern pattern, Signature<T> primary) {
         this(pattern);
         this.handlers.add(primary);
     }
@@ -55,13 +56,13 @@ public abstract class Trick<T extends Trick<T>> {
         return pattern;
     }
 
-    public Trick<T> overload(Signature<T, Fragment> signature) {
+    public Trick<T> overload(Signature<T> signature) {
         this.handlers.add(signature);
         return this;
     }
 
     @SuppressWarnings("unchecked")
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    public EvaluationResult activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         for (int i = handlers.size() - 1; i >= 0; i--) {
             var handler = handlers.get(i);
 

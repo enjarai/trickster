@@ -1,8 +1,9 @@
-package dev.enjarai.trickster.spell.execution.executor;
+package dev.enjarai.trickster.spell;
 
 import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.execution.TickData;
+import dev.enjarai.trickster.spell.execution.executor.SpellExecutorType;
 import dev.enjarai.trickster.spell.execution.ExecutionState;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
@@ -13,10 +14,13 @@ import io.wispforest.owo.serialization.endec.MinecraftEndecs;
 
 import java.util.Optional;
 
-public interface SpellExecutor {
+public non-sealed interface SpellExecutor extends EvaluationResult {
     @SuppressWarnings("unchecked")
-    StructEndec<SpellExecutor> ENDEC = EndecTomfoolery.lazy(() -> (StructEndec<SpellExecutor>) Endec.dispatchedStruct(
-            SpellExecutorType::endec, SpellExecutor::type, MinecraftEndecs.ofRegistry(SpellExecutorType.REGISTRY)));
+    StructEndec<SpellExecutor> ENDEC = EndecTomfoolery.lazy(
+            () -> (StructEndec<SpellExecutor>) Endec.dispatchedStruct(
+                    SpellExecutorType::endec, SpellExecutor::type, MinecraftEndecs.ofRegistry(SpellExecutorType.REGISTRY)
+            )
+    );
 
     SpellExecutorType<?> type();
 

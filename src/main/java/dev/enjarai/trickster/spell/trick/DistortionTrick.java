@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import dev.enjarai.trickster.spell.EvaluationResult;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
@@ -24,24 +25,27 @@ public abstract class DistortionTrick<T extends DistortionTrick<T>> extends Tric
         super(pattern);
     }
 
-    public DistortionTrick(Pattern pattern, List<Signature<T, Fragment>> handlers) {
+    public DistortionTrick(Pattern pattern, List<Signature<T>> handlers) {
         super(pattern, handlers);
     }
 
-    public DistortionTrick(Pattern pattern, Signature<T, Fragment> primary) {
+    public DistortionTrick(Pattern pattern, Signature<T> primary) {
         super(pattern, primary);
     }
 
     @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    public EvaluationResult activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var fragmentArray = fragments.toArray(new Fragment[fragments.size()]);
-        var fragment = cache.get(fragmentArray);
+        EvaluationResult result = cache.get(fragmentArray);
 
-        if (fragment == null) {
-            fragment = super.activate(ctx, fragments);
-            cache.put(fragmentArray, fragment);
+        if (result == null) {
+            result = super.activate(ctx, fragments);
+
+            if (result instanceof Fragment fragment) {
+                cache.put(fragmentArray, fragment);
+            }
         }
-        
-        return fragment;
+
+        return result;
     }
 }

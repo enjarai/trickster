@@ -15,7 +15,7 @@ import java.util.List;
 
 public class ReadSpellTrick extends Trick<ReadSpellTrick> {
     public ReadSpellTrick() {
-        super(Pattern.of(7, 4, 1, 0, 3, 4, 5, 2, 1));
+        super(Pattern.of(7, 4, 1, 0, 3, 4, 5, 2, 1);
     }
 
     @Override
