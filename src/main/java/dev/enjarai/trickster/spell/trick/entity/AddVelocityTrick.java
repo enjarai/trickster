@@ -1,7 +1,6 @@
 package dev.enjarai.trickster.spell.trick.entity;
 
 import dev.enjarai.trickster.Trickster;
-import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
@@ -11,19 +10,18 @@ import dev.enjarai.trickster.spell.type.Signature;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
 import dev.enjarai.trickster.spell.execution.TickData;
-import net.minecraft.entity.player.PlayerEntity;
-import org.joml.Vector3d;
-
 import java.util.HashMap;
-import java.util.List;
 
 public class AddVelocityTrick extends Trick<AddVelocityTrick> {
     private static final TickData.Key<HashMap<EntityFragment, Float>> COMPOUND_LEN = new TickData.Key<>(
-            Trickster.id("impulse_compound_len"), null);
+            Trickster.id("impulse_compound_len"), null
+    );
 
     public AddVelocityTrick() {
-        super(Pattern.of(4, 6, 0, 1, 2, 8, 4),
-                Signature.of(FragmentType.ENTITY, FragmentType.VECTOR, AddVelocityTrick::run));
+        super(
+                Pattern.of(4, 6, 0, 1, 2, 8, 4),
+                Signature.of(FragmentType.ENTITY.wardOf(), FragmentType.VECTOR, AddVelocityTrick::run)
+        );
     }
 
     public Fragment run(SpellContext ctx, EntityFragment target, VectorFragment v) throws BlunderException {
@@ -31,7 +29,6 @@ public class AddVelocityTrick extends Trick<AddVelocityTrick> {
                 .getEntity(ctx)
                 .orElseThrow(() -> new UnknownEntityBlunder(this));
         var vector = v.vector();
-        tryWard(ctx, entity, fragments);
 
         var map = COMPOUND_LEN.set(ctx.data(), COMPOUND_LEN.get(ctx.data()).orElse(new HashMap<>()));
         var length = (float) vector.length() + map.getOrDefault(target, 0f);

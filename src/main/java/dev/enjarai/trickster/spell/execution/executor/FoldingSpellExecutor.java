@@ -32,7 +32,7 @@ public class FoldingSpellExecutor implements SpellExecutor {
                     FoldingSpellExecutor::new
             ),
             StructEndecBuilder.of(
-                 // <=2.0.0-beta.1 compat
+                    // <=2.0.0-beta.1 compat
                     ExecutionState.ENDEC.fieldOf("state", e -> e.state),
                     SpellPart.ENDEC.fieldOf("executable", e -> e.executable),
                     ListFragment.ENDEC.fieldOf("list", e -> (ListFragment) e.previous),

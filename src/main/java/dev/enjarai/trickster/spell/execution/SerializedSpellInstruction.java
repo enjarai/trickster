@@ -29,3 +29,4 @@ public record SerializedSpellInstruction(SpellInstructionType type, @Nullable Fr
     }
 
 }
+

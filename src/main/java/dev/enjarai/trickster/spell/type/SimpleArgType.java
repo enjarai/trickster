@@ -2,9 +2,10 @@ package dev.enjarai.trickster.spell.type;
 
 import java.util.List;
 
-import org.jetbrains.annotations.Nullable;
-
 import dev.enjarai.trickster.spell.Fragment;
+import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.fragment.EntityFragment;
+import dev.enjarai.trickster.spell.trick.Trick;
 
 public class SimpleArgType<T extends Fragment> implements ArgType<T> {
     private final Class<T> type;
@@ -12,21 +13,41 @@ public class SimpleArgType<T extends Fragment> implements ArgType<T> {
     public SimpleArgType(Class<T> type) {
         this.type = type;
     }
+
     @Override
     public int argc(List<Fragment> fragments) {
         return 1;
     }
 
     @Override
-    @Nullable
     @SuppressWarnings("unchecked")
-    public T compose(List<Fragment> fragments) {
-        var result = fragments.get(0);
+    public T compose(Trick<?> trick, SpellContext ctx, List<Fragment> fragments) {
+        return (T) fragments.get(0);
+    }
 
-        if (type.isInstance(result)) {
-            return (T) result;
-        }
+    @Override
+    public boolean match(List<Fragment> fragments) {
+        return type.isInstance(fragments.get(0));
+    }
 
-        return null;
+    @Override
+    public ArgType<T> wardOf() {
+        return new SimpleArgType<>(type) {
+            @Override
+            public T compose(Trick<?> trick, SpellContext ctx, List<Fragment> fragments) {
+                var result = SimpleArgType.this.compose(trick, ctx, fragments);
+
+                if (result instanceof EntityFragment entity) {
+                    ArgType.tryWard(trick, ctx, entity, fragments);
+                }
+
+                return result;
+            }
+
+            @Override
+            public ArgType<T> wardOf() {
+                return this;
+            }
+        };
     }
 }

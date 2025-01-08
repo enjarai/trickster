@@ -28,7 +28,10 @@ public interface Signature<T extends Trick<T>> {
         };
     }
 
-    static <T extends Trick<T>, T1> Signature<T> of(ArgType<T1> t1, Function3<T, SpellContext, T1, EvaluationResult> handler) {
+    static <T extends Trick<T>, T1> Signature<T> of(
+            ArgType<T1> t1,
+            Function3<T, SpellContext, T1, EvaluationResult> handler
+    ) {
         return new Signature<T>() {
             @Override
             public boolean match(List<Fragment> fragments) {
@@ -45,7 +48,7 @@ public interface Signature<T extends Trick<T>> {
             @Override
             public EvaluationResult run(T trick, SpellContext ctx, List<Fragment> fragments) throws BlunderException {
                 var args1 = t1.isolate(0, fragments);
-                var v1 = t1.compose(args1);
+                var v1 = t1.compose(trick, ctx, args1);
                 fragments = fragments.subList(args1.size(), fragments.size());
 
                 return handler.apply(trick, ctx, v1);
@@ -80,11 +83,11 @@ public interface Signature<T extends Trick<T>> {
             @Override
             public EvaluationResult run(T trick, SpellContext ctx, List<Fragment> fragments) throws BlunderException {
                 var args1 = t1.isolate(0, fragments);
-                var v1 = t1.compose(args1);
+                var v1 = t1.compose(trick, ctx, args1);
                 fragments = fragments.subList(args1.size(), fragments.size());
 
                 var args2 = t2.isolate(0, fragments);
-                var v2 = t2.compose(args2);
+                var v2 = t2.compose(trick, ctx, args2);
                 fragments = fragments.subList(args2.size(), fragments.size());
 
                 return handler.apply(trick, ctx, v1, v2);
@@ -126,15 +129,15 @@ public interface Signature<T extends Trick<T>> {
             @Override
             public EvaluationResult run(T trick, SpellContext ctx, List<Fragment> fragments) throws BlunderException {
                 var args1 = t1.isolate(0, fragments);
-                var v1 = t1.compose(args1);
+                var v1 = t1.compose(trick, ctx, args1);
                 fragments = fragments.subList(args1.size(), fragments.size());
 
                 var args2 = t2.isolate(0, fragments);
-                var v2 = t2.compose(args2);
+                var v2 = t2.compose(trick, ctx, args2);
                 fragments = fragments.subList(args2.size(), fragments.size());
 
                 var args3 = t3.isolate(0, fragments);
-                var v3 = t3.compose(args3);
+                var v3 = t3.compose(trick, ctx, args3);
                 fragments = fragments.subList(args3.size(), fragments.size());
 
                 return handler.apply(trick, ctx, v1, v2, v3);
@@ -183,19 +186,19 @@ public interface Signature<T extends Trick<T>> {
             @Override
             public EvaluationResult run(T trick, SpellContext ctx, List<Fragment> fragments) throws BlunderException {
                 var args1 = t1.isolate(0, fragments);
-                var v1 = t1.compose(args1);
+                var v1 = t1.compose(trick, ctx, args1);
                 fragments = fragments.subList(args1.size(), fragments.size());
 
                 var args2 = t2.isolate(0, fragments);
-                var v2 = t2.compose(args2);
+                var v2 = t2.compose(trick, ctx, args2);
                 fragments = fragments.subList(args2.size(), fragments.size());
 
                 var args3 = t3.isolate(0, fragments);
-                var v3 = t3.compose(args3);
+                var v3 = t3.compose(trick, ctx, args3);
                 fragments = fragments.subList(args3.size(), fragments.size());
 
                 var args4 = t4.isolate(0, fragments);
-                var v4 = t4.compose(args4);
+                var v4 = t4.compose(trick, ctx, args4);
                 fragments = fragments.subList(args4.size(), fragments.size());
 
                 return handler.apply(trick, ctx, v1, v2, v3, v4);
@@ -205,7 +208,8 @@ public interface Signature<T extends Trick<T>> {
 
     static <T extends Trick<T>, T1, T2, T3, T4, T5> Signature<T> of(
             ArgType<T1> t1, ArgType<T2> t2,
-            ArgType<T3> t3, ArgType<T4> t4, ArgType<T5> t5, Function7<T, SpellContext, T1, T2, T3, T4, T5, EvaluationResult> handler
+            ArgType<T3> t3, ArgType<T4> t4, ArgType<T5> t5,
+            Function7<T, SpellContext, T1, T2, T3, T4, T5, EvaluationResult> handler
     ) {
         return new Signature<T>() {
             @Override
@@ -251,23 +255,23 @@ public interface Signature<T extends Trick<T>> {
             @Override
             public EvaluationResult run(T trick, SpellContext ctx, List<Fragment> fragments) throws BlunderException {
                 var args1 = t1.isolate(0, fragments);
-                var v1 = t1.compose(args1);
+                var v1 = t1.compose(trick, ctx, args1);
                 fragments = fragments.subList(args1.size(), fragments.size());
 
                 var args2 = t2.isolate(0, fragments);
-                var v2 = t2.compose(args2);
+                var v2 = t2.compose(trick, ctx, args2);
                 fragments = fragments.subList(args2.size(), fragments.size());
 
                 var args3 = t3.isolate(0, fragments);
-                var v3 = t3.compose(args3);
+                var v3 = t3.compose(trick, ctx, args3);
                 fragments = fragments.subList(args3.size(), fragments.size());
 
                 var args4 = t4.isolate(0, fragments);
-                var v4 = t4.compose(args4);
+                var v4 = t4.compose(trick, ctx, args4);
                 fragments = fragments.subList(args4.size(), fragments.size());
 
                 var args5 = t5.isolate(0, fragments);
-                var v5 = t5.compose(args5);
+                var v5 = t5.compose(trick, ctx, args5);
                 fragments = fragments.subList(args5.size(), fragments.size());
 
                 return handler.apply(trick, ctx, v1, v2, v3, v4, v5);
@@ -331,27 +335,27 @@ public interface Signature<T extends Trick<T>> {
             @Override
             public EvaluationResult run(T trick, SpellContext ctx, List<Fragment> fragments) throws BlunderException {
                 var args1 = t1.isolate(0, fragments);
-                var v1 = t1.compose(args1);
+                var v1 = t1.compose(trick, ctx, args1);
                 fragments = fragments.subList(args1.size(), fragments.size());
 
                 var args2 = t2.isolate(0, fragments);
-                var v2 = t2.compose(args2);
+                var v2 = t2.compose(trick, ctx, args2);
                 fragments = fragments.subList(args2.size(), fragments.size());
 
                 var args3 = t3.isolate(0, fragments);
-                var v3 = t3.compose(args3);
+                var v3 = t3.compose(trick, ctx, args3);
                 fragments = fragments.subList(args3.size(), fragments.size());
 
                 var args4 = t4.isolate(0, fragments);
-                var v4 = t4.compose(args4);
+                var v4 = t4.compose(trick, ctx, args4);
                 fragments = fragments.subList(args4.size(), fragments.size());
 
                 var args5 = t5.isolate(0, fragments);
-                var v5 = t5.compose(args5);
+                var v5 = t5.compose(trick, ctx, args5);
                 fragments = fragments.subList(args5.size(), fragments.size());
 
                 var args6 = t6.isolate(0, fragments);
-                var v6 = t6.compose(args6);
+                var v6 = t6.compose(trick, ctx, args6);
                 fragments = fragments.subList(args6.size(), fragments.size());
 
                 return handler.apply(trick, ctx, v1, v2, v3, v4, v5, v6);

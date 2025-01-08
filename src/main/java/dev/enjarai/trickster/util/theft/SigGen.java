@@ -13,7 +13,7 @@ public class SigGen {
 
         String constructorNum = "{cnum}";
 
-        //--
+        // --
 
         String numberSpot = "{num}";
 
@@ -22,34 +22,31 @@ public class SigGen {
         String structFieldArgs = "{args}";
         String handlerArgs = "{argsv}";
 
-        //--
+        // --
 
-        String structSerCallTemplate =
-            """
-                        var args{num} = t{num}.isolate(0, fragments);
-                        fragments = fragments.subList(args{num}.size(), fragments.size());
+        String structSerCallTemplate = """
+                            var args{num} = t{num}.isolate(0, fragments);
+                            fragments = fragments.subList(args{num}.size(), fragments.size());
 
-                        if (!t{num}.match(args{num})) {
-                            return false;
-                        }
-            """;
+                            if (!t{num}.match(args{num})) {
+                                return false;
+                            }
+                """;
 
         String structSerCallsSpot = "{matches}";
 
-        //--
+        // --
 
-        String structDeserCallTemplate =
-            """
-                        var args{num} = t{num}.isolate(0, fragments);
-                        var v{num} = t{num}.compose(args{num});
-                        fragments = fragments.subList(args{num}.size(), fragments.size());
-            """;
+        String structDeserCallTemplate = """
+                            var args{num} = t{num}.isolate(0, fragments);
+                            var v{num} = t{num}.compose(trick, ctx, args{num});
+                            fragments = fragments.subList(args{num}.size(), fragments.size());
+                """;
 
         String structDeserCallsSpot = "{collects}";
 
-        String method =
-                """
-                static <T extends Trick, {types}> TrickSignature<T> of({args}, Function{cnum}<T, SpellContext, {types}, Fragment> handler) {
+        String method = """
+                static <T extends Trick, {types}> TrickSignature<T> of({args}, Function{cnum}<T, SpellContext, {types}, EvaluationResult> handler) {
                     return new TrickSignature<T>() {
                         @Override
                         public boolean match(List<Fragment> fragments) {
@@ -58,7 +55,7 @@ public class SigGen {
                         }
 
                         @Override
-                        public Fragment run(T trick, SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+                        public EvaluationResult run(T trick, SpellContext ctx, List<Fragment> fragments) throws BlunderException {
                 {collects}
                             return handler.apply(trick, ctx, {argsv});
                         }
