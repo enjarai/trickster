@@ -18,6 +18,7 @@ import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.type.Signature;
 import dev.enjarai.trickster.spell.type.SimpleArgType;
 import dev.enjarai.trickster.spell.type.VariadicArgType;
+import dev.enjarai.trickster.spell.type.VariadicTypeArgType;
 import io.vavr.collection.HashMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -81,6 +82,11 @@ public abstract class Trick<T extends Trick<T>> {
     @SafeVarargs
     protected static <T extends Fragment> VariadicArgType<T> variadic(Class<T>... types) {
         return new VariadicArgType<>(types);
+    }
+
+    @SafeVarargs
+    protected static <T extends Fragment> VariadicTypeArgType<T> variadic(FragmentType<T>... types) {
+        return new VariadicTypeArgType<>(types);
     }
 
     protected void expectCanBuild(SpellContext ctx, BlockPos... positions) {

@@ -12,7 +12,6 @@ import io.vavr.collection.HashMap;
 import io.vavr.collection.Map;
 
 public class ClosureTrick extends DistortionTrick<ClosureTrick> {
-    @SuppressWarnings("unchecked")
     public ClosureTrick() {
         super(Pattern.of(5, 8, 7, 6, 3, 0, 1), Signature.of(FragmentType.SPELL_PART, FragmentType.MAP, ClosureTrick::passedMap));
         overload(Signature.of(FragmentType.SPELL_PART, variadic(Fragment.class, Fragment.class), ClosureTrick::variadicMap));

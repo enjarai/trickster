@@ -20,7 +20,7 @@ public class HashValuesTrick extends Trick<HashValuesTrick> {
         return new NumberFragment(args.stream()
                 .map(Fragment::applyEphemeral)
                 .map(Fragment::hashCode)
-                .reduce(0, (left, right) -> Objects.hash(left, right)));
+                .reduce(0, Objects::hash));
     }
 
 }

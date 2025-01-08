@@ -4,24 +4,23 @@ import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.fragment.EntityFragment;
+import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
-import dev.enjarai.trickster.spell.trick.entity.query.AbstractLivingEntityQueryTrick;
+import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.Signature;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-import java.util.List;
-
-public class PolymorphTrick extends AbstractLivingEntityQueryTrick {
+public class PolymorphTrick extends Trick<PolymorphTrick> {
     public PolymorphTrick() {
-        super(Pattern.of(4, 2, 1, 0, 4, 8, 7, 6, 4));
+        super(Pattern.of(4, 2, 1, 0, 4, 8, 7, 6, 4), Signature.of(FragmentType.ENTITY.wardOf(), FragmentType.ENTITY, PolymorphTrick::morph));
     }
 
-    @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var realSource = getLivingEntity(ctx, fragments, 1);
-        var realTarget = getLivingEntity(ctx, fragments, 0);
-        tryWard(ctx, realSource, fragments);
+    public Fragment morph(SpellContext ctx, EntityFragment source, EntityFragment target) throws BlunderException {
+        var realSource = source.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this));
+        var realTarget = target.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this));
 
         if (realSource.getUuid().equals(realTarget.getUuid()))
             return VoidFragment.INSTANCE;

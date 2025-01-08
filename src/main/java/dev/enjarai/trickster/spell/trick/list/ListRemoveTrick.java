@@ -11,22 +11,19 @@ import dev.enjarai.trickster.spell.trick.DistortionTrick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.IncorrectFragmentBlunder;
 import dev.enjarai.trickster.spell.blunder.IndexOutOfBoundsBlunder;
+import dev.enjarai.trickster.spell.type.Signature;
 import net.minecraft.util.math.MathHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class ListRemoveTrick extends DistortionTrick {
+public class ListRemoveTrick extends DistortionTrick<ListRemoveTrick> {
     public ListRemoveTrick() {
-        super(Pattern.of(6, 3, 0, 4, 8, 5, 2));
+        super(Pattern.of(6, 3, 0, 4, 8, 5, 2), Signature.of(FragmentType.LIST, ANY_VARIADIC, ListRemoveTrick::remove));
     }
 
-    @Override
-    public Fragment distort(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var list = expectInput(fragments, FragmentType.LIST, 0);
-        var indexes = fragments.subList(1, fragments.size());
-
+    public Fragment remove(SpellContext ctx, ListFragment list, List<Fragment> indexes) throws BlunderException {
         for (int i = 0, indexesSize = indexes.size(); i < indexesSize; i++) {
             var index = indexes.get(i);
             if (index.type() != FragmentType.NUMBER) {

@@ -271,7 +271,6 @@ public class Tricks {
     public static final ArcCosTrick ARCCOS = register("arccos", new ArcCosTrick());
     public static final ArcTanTrick ARCTAN = register("arctan", new ArcTanTrick());
     public static final ArcTan2Trick ARCTAN2 = register("arctan2", new ArcTan2Trick());
-    public static final PowerTrick POWER = register("power", new PowerTrick());
     public static final AbsTrick ABS = register("abs", new AbsTrick());
 
     // Vector

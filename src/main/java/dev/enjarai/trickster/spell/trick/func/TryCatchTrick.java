@@ -7,13 +7,13 @@ import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.SpellExecutor;
 import dev.enjarai.trickster.spell.execution.executor.TryCatchSpellExecutor;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.trick.ExecutionTrick;
+import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.Signature;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 
 import java.util.List;
 
-public class TryCatchTrick extends ExecutionTrick<TryCatchTrick> {
+public class TryCatchTrick extends Trick<TryCatchTrick> {
     public TryCatchTrick() {
         super(Pattern.of(1, 6, 8, 1, 5, 2, 0, 3, 1, 4), Signature.of(FragmentType.SPELL_PART, FragmentType.SPELL_PART, ANY_VARIADIC, TryCatchTrick::run));
     }
