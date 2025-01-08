@@ -11,7 +11,7 @@ import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.SpellExecutor;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
-import dev.enjarai.trickster.spell.trick.ExecutionTrick;
+import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.Signature;
 import io.wispforest.accessories.api.slot.SlotReference;
 import net.minecraft.component.DataComponentTypes;
@@ -20,7 +20,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public class ImportHatTrick extends ExecutionTrick<ImportHatTrick> {
+public class ImportHatTrick extends Trick<ImportHatTrick> {
     public ImportHatTrick() {
         super(Pattern.of(3, 0, 5, 6, 3, 2, 5, 8, 3, 1, 5, 7, 3), Signature.of(FragmentType.NUMBER, ANY_VARIADIC, ImportHatTrick::run));
     }
