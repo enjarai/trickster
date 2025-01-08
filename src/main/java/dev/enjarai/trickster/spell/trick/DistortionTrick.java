@@ -35,7 +35,7 @@ public abstract class DistortionTrick<T extends DistortionTrick<T>> extends Tric
 
     @Override
     public EvaluationResult activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var fragmentArray = fragments.toArray(new Fragment[0]);
+        var fragmentArray = fragments.toArray(new Fragment[0]); // Java is a bad language and special-cases this so it's optimized away and returns an array of the correct size
         EvaluationResult result = cache.get(fragmentArray);
 
         if (result == null) {
