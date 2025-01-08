@@ -1,12 +1,29 @@
 package dev.enjarai.trickster.spell;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Stack;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
+
+import org.apache.commons.lang3.ArrayUtils;
+
 import dev.enjarai.trickster.EndecTomfoolery;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
-import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.util.SpellUtils;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import io.netty.buffer.Unpooled;
 import io.wispforest.endec.SerializationContext;
 import io.wispforest.endec.StructEndec;
@@ -14,31 +31,25 @@ import io.wispforest.endec.format.bytebuf.ByteBufDeserializer;
 import io.wispforest.endec.format.bytebuf.ByteBufSerializer;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import net.minecraft.text.Text;
-import org.apache.commons.lang3.ArrayUtils;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
 
 public final class SpellPart implements Fragment {
-    public static final StructEndec<SpellPart> ENDEC = EndecTomfoolery.recursive(self -> StructEndecBuilder.of(
-            Fragment.ENDEC.fieldOf("glyph", SpellPart::getGlyph),
-            EndecTomfoolery.protocolVersionAlternatives(
-                    Map.of(
-                            (byte) 1, self.listOf()
-                    ),
-                    EndecTomfoolery.withAlternative(SpellInstruction.STACK_ENDEC.xmap(
-                            instructions -> SpellUtils.decodeInstructions(instructions, new Stack<>(), new Stack<>(), Optional.empty()),
-                            SpellUtils::flattenNode
-                    ), self).listOf()
-            ).fieldOf("sub_parts", SpellPart::getSubParts),
-            SpellPart::new
-    ));
+    public static final StructEndec<SpellPart> ENDEC = EndecTomfoolery.recursive(
+            self -> StructEndecBuilder.of(
+                    Fragment.ENDEC.fieldOf("glyph", SpellPart::getGlyph),
+                    EndecTomfoolery.protocolVersionAlternatives(
+                            Map.of(
+                                    (byte) 1, self.listOf()
+                            ),
+                            EndecTomfoolery.withAlternative(
+                                    SpellInstruction.STACK_ENDEC.xmap(
+                                            instructions -> SpellUtils.decodeInstructions(instructions, new Stack<>(), new Stack<>(), Optional.empty()),
+                                            SpellUtils::flattenNode
+                                    ), self
+                            ).listOf()
+                    ).fieldOf("sub_parts", SpellPart::getSubParts),
+                    SpellPart::new
+            )
+    );
 
     public Fragment glyph;
     public List<SpellPart> subParts;
@@ -57,22 +68,12 @@ public final class SpellPart implements Fragment {
     }
 
     @Override
-    public Fragment activateAsGlyph(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    public EvaluationResult activateAsGlyph(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         if (fragments.isEmpty()) {
             return Fragment.super.activateAsGlyph(ctx, fragments);
         } else {
-            return makeFork(ctx, fragments).singleTickRun(ctx);
+            return new DefaultSpellExecutor(this, ctx.state().recurseOrThrow(fragments));
         }
-    }
-
-    @Override
-    public boolean forks(SpellContext ctx, List<Fragment> args) {
-        return !args.isEmpty();
-    }
-
-    @Override
-    public SpellExecutor makeFork(SpellContext ctx, List<Fragment> args) throws BlunderException {
-        return new DefaultSpellExecutor(this, ctx.state().recurseOrThrow(args));
     }
 
     /**
@@ -80,8 +81,10 @@ public final class SpellPart implements Fragment {
      */
     @Override
     public SpellPart applyEphemeral() {
-        return new SpellPart(glyph.applyEphemeral(), subParts.stream()
-                .map(SpellPart::applyEphemeral).toList());
+        return new SpellPart(
+                glyph.applyEphemeral(), subParts.stream()
+                        .map(SpellPart::applyEphemeral).toList()
+        );
     }
 
     @Override
@@ -103,7 +106,16 @@ public final class SpellPart implements Fragment {
             arguments.add(subpart.destructiveRun(ctx));
         }
 
-        var value = glyph.activateAsGlyph(ctx, arguments);
+        var result = glyph.activateAsGlyph(ctx, arguments);
+        Fragment value;
+
+        if (result instanceof SpellExecutor executor) {
+            value = executor.singleTickRun(ctx); //TODO: should account for ticks so far
+        } else if (result instanceof Fragment fragment) {
+            value = fragment;
+        } else {
+            throw new UnsupportedOperationException();
+        }
 
         if (!value.equals(VoidFragment.INSTANCE)) {
             if (glyph != value) {
@@ -227,11 +239,13 @@ public final class SpellPart implements Fragment {
     public SpellPart deepClone() {
         var glyph = this.glyph instanceof SpellPart spell ? spell.deepClone() : this.glyph;
 
-        return new SpellPart(glyph, subParts.stream()
-                .map(SpellPart::deepClone).collect(Collectors.toList()));
+        return new SpellPart(
+                glyph, subParts.stream()
+                        .map(SpellPart::deepClone).collect(Collectors.toList())
+        );
     }
 
-    private static final byte[] base64Header = new byte[]{0x1f, (byte) 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, (byte) 0xff};
+    private static final byte[] base64Header = new byte[] { 0x1f, (byte) 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, (byte) 0xff };
 
     //TODO: add encoding from any fragment
     public String toBase64() {

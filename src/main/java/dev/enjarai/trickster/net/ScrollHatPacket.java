@@ -2,7 +2,6 @@ package dev.enjarai.trickster.net;
 
 import dev.enjarai.trickster.item.TrickHatItem;
 import dev.enjarai.trickster.item.component.ModComponents;
-import dev.enjarai.trickster.item.component.SelectedSlotComponent;
 import io.wispforest.owo.network.ServerAccess;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.player.PlayerEntity;

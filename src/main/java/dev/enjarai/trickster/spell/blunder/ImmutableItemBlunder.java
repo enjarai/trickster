@@ -4,7 +4,7 @@ import dev.enjarai.trickster.spell.trick.Trick;
 import net.minecraft.text.MutableText;
 
 public class ImmutableItemBlunder extends TrickBlunderException {
-    public ImmutableItemBlunder(Trick source) {
+    public ImmutableItemBlunder(Trick<?> source) {
         super(source);
     }
 

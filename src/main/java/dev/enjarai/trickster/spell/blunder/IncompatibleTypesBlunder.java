@@ -4,7 +4,7 @@ import dev.enjarai.trickster.spell.trick.Trick;
 import net.minecraft.text.MutableText;
 
 public class IncompatibleTypesBlunder extends TrickBlunderException {
-    public IncompatibleTypesBlunder(Trick source) {
+    public IncompatibleTypesBlunder(Trick<?> source) {
         super(source);
     }
 

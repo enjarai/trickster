@@ -8,7 +8,7 @@ import java.util.List;
 public class AddressNotInTreeBlunder extends TrickBlunderException {
     public final List<Integer> address;
 
-    public AddressNotInTreeBlunder(Trick source, List<Integer> index) {
+    public AddressNotInTreeBlunder(Trick<?> source, List<Integer> index) {
         super(source);
         this.address = index;
     }

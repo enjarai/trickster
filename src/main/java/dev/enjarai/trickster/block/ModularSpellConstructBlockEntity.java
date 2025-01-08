@@ -16,8 +16,8 @@ import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.execution.SpellExecutionManager;
 import dev.enjarai.trickster.spell.execution.TickData;
 import dev.enjarai.trickster.spell.execution.executor.ErroredSpellExecutor;
-import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.BlockSpellSource;
+import dev.enjarai.trickster.spell.SpellExecutor;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -47,7 +47,7 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
     public ModularSpellConstructBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlocks.MODULAR_SPELL_CONSTRUCT_ENTITY, pos, state);
     }
-    
+
     @Override
     protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         super.readNbt(nbt, registryLookup);
@@ -85,11 +85,15 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
                             stack.remove(ModComponents.SPELL_CORE);
                         }
                     } catch (BlunderException blunder) {
-                        error = Optional.of(blunder.createMessage()
-                                .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")"));
+                        error = Optional.of(
+                                blunder.createMessage()
+                                        .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")")
+                        );
                     } catch (Throwable e) {
-                        error = Optional.of(Text.literal("Uncaught exception in spell: " + e.getMessage())
-                                .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")"));
+                        error = Optional.of(
+                                Text.literal("Uncaught exception in spell: " + e.getMessage())
+                                        .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")")
+                        );
                     }
 
                     error.ifPresent(e -> stack.set(ModComponents.SPELL_CORE, slot.fail(e)));
@@ -102,13 +106,15 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
                 ManaComponent.tryRecharge(
                         serverWorld,
                         getPos()
-                            .toCenterPos()
-                            .add(
-                                new Vec3d(getCachedState()
-                                    .get(ModularSpellConstructBlock.FACING)
-                                    .getUnitVector()
-                                    .mul(0.3f, new Vector3f()))
-                            ),
+                                .toCenterPos()
+                                .add(
+                                        new Vec3d(
+                                                getCachedState()
+                                                        .get(ModularSpellConstructBlock.FACING)
+                                                        .getUnitVector()
+                                                        .mul(0.3f, new Vector3f())
+                                        )
+                                ),
                         stack
                 );
             }
@@ -179,12 +185,16 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
 
     @Override
     public void setStack(int slot, ItemStack stack) {
-        if (slot == 0
-                ? stack.isIn(ModItems.MANA_KNOTS)
-                : stack.getItem() instanceof SpellCoreItem) {
+        if (
+            slot == 0
+                    ? stack.isIn(ModItems.MANA_KNOTS)
+                    : stack.getItem() instanceof SpellCoreItem
+        ) {
             if (stack.getItem() instanceof SpellCoreItem) {
-                SpellCoreComponent.refresh(stack.getComponents(),
-                        component -> stack.set(ModComponents.SPELL_CORE, component));
+                SpellCoreComponent.refresh(
+                        stack.getComponents(),
+                        component -> stack.set(ModComponents.SPELL_CORE, component)
+                );
             }
 
             inventory.set(slot, stack);
@@ -239,9 +249,11 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
         for (int i = 0; i < inventory.size(); i++) {
             var stack = inventory.get(i);
 
-            if (stack.getItem() instanceof SpellCoreItem
-                    && (!stack.contains(ModComponents.SPELL_CORE)
-                        || stack.get(ModComponents.SPELL_CORE).executor() instanceof ErroredSpellExecutor)) {
+            if (
+                stack.getItem() instanceof SpellCoreItem
+                        && (!stack.contains(ModComponents.SPELL_CORE)
+                                || stack.get(ModComponents.SPELL_CORE).executor() instanceof ErroredSpellExecutor)
+            ) {
                 stack.set(ModComponents.SPELL_CORE, new SpellCoreComponent(executor));
                 return i;
             }

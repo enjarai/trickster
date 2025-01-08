@@ -6,39 +6,23 @@ import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.MapFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.Signature;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
-import dev.enjarai.trickster.spell.blunder.MissingFragmentBlunder;
-import net.minecraft.text.Text;
-
-import java.util.Iterator;
 import java.util.List;
 
-public class MapInsertTrick extends Trick {
+//TODO: distortion?
+public class MapInsertTrick extends Trick<MapInsertTrick> {
     public MapInsertTrick() {
-        super(Pattern.of(0, 3, 6, 8, 5, 2, 4, 8));
+        super(Pattern.of(0, 3, 6, 8, 5, 2, 4, 8), Signature.of(FragmentType.MAP, variadic(Fragment.class, Fragment.class), MapInsertTrick::run));
     }
 
-    @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        Iterator<Fragment> fragmentIterator = fragments.iterator();
+    public Fragment run(SpellContext ctx, MapFragment map, List<Fragment> pairs) throws BlunderException {
+        var newMap = map.map();
 
-        if (!fragmentIterator.hasNext()) {
-            throw new MissingFragmentBlunder(this, 0, FragmentType.MAP.getName());
-        }
-        var map = expectType(fragmentIterator.next(), FragmentType.MAP).map();
-
-        int index = 1;
-        while (fragmentIterator.hasNext()) {
-            Fragment key = fragmentIterator.next();
-            if (fragmentIterator.hasNext()) {
-                Fragment value = fragmentIterator.next();
-                map = map.put(key, value);
-            } else {
-                throw new MissingFragmentBlunder(this, index, Text.of("any"));
-            }
-            index++;
+        for (int i = 0; i < pairs.size(); i += 2) {
+            newMap = newMap.put(pairs.get(i), pairs.get(i + 1));
         }
 
-        return new MapFragment(map);
+        return new MapFragment(newMap);
     }
 }

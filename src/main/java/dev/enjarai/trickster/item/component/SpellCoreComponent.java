@@ -10,7 +10,7 @@ import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.execution.executor.ErroredSpellExecutor;
-import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
+import dev.enjarai.trickster.spell.SpellExecutor;
 import net.minecraft.component.ComponentMap;
 import net.minecraft.text.Text;
 

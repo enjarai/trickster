@@ -28,12 +28,11 @@ import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
 
 public class SpellConstructBlockEntity extends BlockEntity implements SpellColoredBlockEntity, Inventory, CrowMind, SpellCastingBlockEntity {
-    public static final KeyedEndec<Fragment> CROW_MIND_ENDEC =
-            Fragment.ENDEC.keyed("crow_mind", () -> VoidFragment.INSTANCE);
+    public static final KeyedEndec<Fragment> CROW_MIND_ENDEC = Fragment.ENDEC.keyed("crow_mind", () -> VoidFragment.INSTANCE);
 
     public int age;
     public Fragment crowMind = VoidFragment.INSTANCE;
-    public int[] colors = new int[]{0xffffff};
+    public int[] colors = new int[] { 0xffffff };
 
     private ItemStack stack = ItemStack.EMPTY;
 
@@ -55,7 +54,7 @@ public class SpellConstructBlockEntity extends BlockEntity implements SpellColor
         colors = nbt.getIntArray("colors");
 
         if (colors.length == 0) {
-            colors = new int[]{0xffffff};
+            colors = new int[] { 0xffffff };
         }
     }
 
@@ -90,16 +89,22 @@ public class SpellConstructBlockEntity extends BlockEntity implements SpellColor
                             setComponents(getComponents().filtered(type -> !ModComponents.SPELL_CORE.equals(type)));
                         }
                     } catch (BlunderException blunder) {
-                        error = Optional.of(blunder.createMessage()
-                                .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")"));
+                        error = Optional.of(
+                                blunder.createMessage()
+                                        .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")")
+                        );
                     } catch (Exception e) {
-                        error = Optional.of(Text.literal("Uncaught exception in spell: " + e.getMessage())
-                                .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")"));
+                        error = Optional.of(
+                                Text.literal("Uncaught exception in spell: " + e.getMessage())
+                                        .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")")
+                        );
                     }
 
                     error.ifPresent(e -> {
-                        setComponents(ComponentMap.builder()
-                                .addAll(getComponents()).add(ModComponents.SPELL_CORE, coreComponent.fail(e)).build());
+                        setComponents(
+                                ComponentMap.builder()
+                                        .addAll(getComponents()).add(ModComponents.SPELL_CORE, coreComponent.fail(e)).build()
+                        );
                     });
 
                     if (error.isPresent()) {

@@ -1,7 +1,6 @@
 package dev.enjarai.trickster.spell;
 
 import dev.enjarai.trickster.EndecTomfoolery;
-import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.execution.TickData;
 import dev.enjarai.trickster.spell.execution.executor.SpellExecutorType;
 import dev.enjarai.trickster.spell.execution.ExecutionState;

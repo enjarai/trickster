@@ -3,11 +3,11 @@ package dev.enjarai.trickster.spell.execution;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.spell.Fragment;
+import dev.enjarai.trickster.spell.SpellExecutor;
 import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.execution.executor.ErroredSpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
 import dev.enjarai.trickster.spell.SpellPart;
-import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import dev.enjarai.trickster.spell.mana.MutableManaPool;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.NaNBlunder;
@@ -52,13 +52,18 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
 
                 if (entry.getValue() == executor) {
                     AtomicBoolean isDone = new AtomicBoolean(true);
-                    tryRun(source, entry,
+                    tryRun(
+                            source, entry,
                             (index, executor1) -> isDone.set(false),
                             (index, executor2) -> iterator.remove(),
-                            (index, executor3) -> { });
-                    return new SpellQueueResult(isDone.get()
-                            ? SpellQueueResult.Type.QUEUED_DONE
-                            : SpellQueueResult.Type.QUEUED_STILL_RUNNING, executor.getDeepestState());
+                            (index, executor3) -> {}
+                    );
+                    return new SpellQueueResult(
+                            isDone.get()
+                                    ? SpellQueueResult.Type.QUEUED_DONE
+                                    : SpellQueueResult.Type.QUEUED_STILL_RUNNING,
+                            executor.getDeepestState()
+                    );
                 }
             }
         }
@@ -96,11 +101,17 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
 
     /**
      * Attempts to run the given entry's SpellExecutor.
-     * @param source TODO
-     * @param entry TODO
-     * @param tickCallback TODO
-     * @param completeCallback TODO
-     * @param errorCallback TODO
+     * 
+     * @param source
+     *                         TODO
+     * @param entry
+     *                         TODO
+     * @param tickCallback
+     *                         TODO
+     * @param completeCallback
+     *                         TODO
+     * @param errorCallback
+     *                         TODO
      * @return whether the spell has finished running or not. Blunders and normal completion return true, otherwise returns false.
      */
     private boolean tryRun(SpellSource source, Int2ObjectMap.Entry<SpellExecutor> entry, ExecutorCallback tickCallback, ExecutorCallback completeCallback, ExecutorCallback errorCallback) {

@@ -5,7 +5,7 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
 public class InvalidArgumentsBlunder extends TrickBlunderException {
-    public InvalidArgumentsBlunder(Trick source) {
+    public InvalidArgumentsBlunder(Trick<?> source) {
         super(source);
     }
 

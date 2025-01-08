@@ -4,7 +4,7 @@ import dev.enjarai.trickster.spell.trick.Trick;
 import net.minecraft.text.MutableText;
 
 public class DivideByZeroBlunder extends TrickBlunderException {
-    public DivideByZeroBlunder(Trick source) {
+    public DivideByZeroBlunder(Trick<?> source) {
         super(source);
     }
 

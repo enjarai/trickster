@@ -9,21 +9,21 @@ import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.MissingInputsBlunder;
 import dev.enjarai.trickster.spell.fragment.MapFragment;
 import dev.enjarai.trickster.spell.trick.DistortionTrick;
+import dev.enjarai.trickster.spell.type.Signature;
 
-public class MapMergeTrick extends DistortionTrick {
+public class MapMergeTrick extends DistortionTrick<MapMergeTrick> {
     public MapMergeTrick() {
-        super(Pattern.of(2, 4, 8, 2, 5, 8, 6, 3, 0));
+        super(Pattern.of(2, 4, 8, 2, 5, 8, 6, 3, 0), Signature.of(variadic(MapFragment.class), MapMergeTrick::run));
     }
 
-    @Override
-    public Fragment distort(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment run(SpellContext ctx, List<MapFragment> maps) throws BlunderException {
         MapFragment result = null;
-        for (int i = 0; i < fragments.size(); i++) {
-            var value = expectType(fragments.get(i), MapFragment.class, i);
+
+        for (var map : maps) {
             if (result == null) {
-                result = value;
+                result = map;
             } else {
-                result = result.mergeWith(value);
+                result = result.mergeWith(map);
             }
         }
 

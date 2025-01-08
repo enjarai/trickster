@@ -4,7 +4,7 @@ import dev.enjarai.trickster.spell.trick.Trick;
 import net.minecraft.text.MutableText;
 
 public class MissingInputsBlunder extends TrickBlunderException {
-    public MissingInputsBlunder(Trick source) {
+    public MissingInputsBlunder(Trick<?> source) {
         super(source);
     }
 

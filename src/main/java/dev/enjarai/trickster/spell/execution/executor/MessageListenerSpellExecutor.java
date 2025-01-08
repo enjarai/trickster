@@ -8,6 +8,7 @@ import dev.enjarai.trickster.cca.MessageHandlerComponent.Key;
 import dev.enjarai.trickster.cca.ModGlobalComponents;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.SpellExecutor;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.execution.ExecutionState;
@@ -22,8 +23,8 @@ public class MessageListenerSpellExecutor implements SpellExecutor {
     public static final StructEndec<MessageListenerSpellExecutor> ENDEC = StructEndecBuilder.of(
             ExecutionState.ENDEC.fieldOf("state", e -> e.state),
             EndecTomfoolery.UUID.xmap(
-                uuid -> new Key.Channel(uuid),
-                channel -> channel.uuid()
+                    uuid -> new Key.Channel(uuid),
+                    channel -> channel.uuid()
             ).optionalOf().fieldOf("channel", e -> e.channel),
             Endec.INT.optionalFieldOf("ticksLeft", e -> e.ticksLeft, 0),
             ListFragment.ENDEC.optionalOf().fieldOf("result", e -> e.result),
@@ -45,7 +46,7 @@ public class MessageListenerSpellExecutor implements SpellExecutor {
     public MessageListenerSpellExecutor(ExecutionState state, int timeout, Optional<Key.Channel> channel) {
         this(state, channel, timeout >= 0 ? timeout + 1 : -1, Optional.empty());
     }
-    
+
     @Override
     public SpellExecutorType<?> type() {
         return SpellExecutorType.MESSAGE_LISTENER;
@@ -61,13 +62,13 @@ public class MessageListenerSpellExecutor implements SpellExecutor {
         if (ticksLeft == 0) {
             return Optional.of(new ListFragment(List.of()));
         }
-        
+
         if (result.isEmpty()) {
             ModGlobalComponents.MESSAGE_HANDLER
-                .get(source.getWorld().getScoreboard())
-                .await(channel.<Key>map(n -> n).orElseGet(() -> new Key.Broadcast(source.getWorld().getRegistryKey(), source.getPos(), 0)), this::listen);
+                    .get(source.getWorld().getScoreboard())
+                    .await(channel.<Key>map(n -> n).orElseGet(() -> new Key.Broadcast(source.getWorld().getRegistryKey(), source.getPos(), 0)), this::listen);
         }
-        
+
         if (ticksLeft > 0) {
             ticksLeft--;
         }

@@ -5,7 +5,6 @@ import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ManaComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.pond.SlotHolderDuck;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
@@ -31,10 +30,8 @@ public abstract class ItemEntityMixin extends Entity implements SlotHolderDuck {
     public abstract void setStack(ItemStack stack);
 
     @Inject(
-            method = "tick",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/entity/Entity;tick()V"
+            method = "tick", at = @At(
+                    value = "INVOKE", target = "Lnet/minecraft/entity/Entity;tick()V"
             )
     )
     private void chargeCrystal(CallbackInfo ci) {
@@ -43,11 +40,8 @@ public abstract class ItemEntityMixin extends Entity implements SlotHolderDuck {
     }
 
     @WrapWithCondition(
-            method = "tick",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/entity/ItemEntity;discard()V",
-                    ordinal = 1
+            method = "tick", at = @At(
+                    value = "INVOKE", target = "Lnet/minecraft/entity/ItemEntity;discard()V", ordinal = 1
             )
     )
     private boolean cancelDespawn(ItemEntity instance) {

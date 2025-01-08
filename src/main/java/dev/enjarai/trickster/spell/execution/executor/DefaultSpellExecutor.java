@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Stack;
 
-public class DefaultSpellExecutor implements SpellExecutor {
+public final class DefaultSpellExecutor implements SpellExecutor {
     public static final StructEndec<DefaultSpellExecutor> ENDEC = StructEndecBuilder.of(
             SpellPart.ENDEC.fieldOf("root", e -> e.root),
             SpellInstruction.STACK_ENDEC.fieldOf("instructions", e -> e.instructions),
@@ -85,10 +85,9 @@ public class DefaultSpellExecutor implements SpellExecutor {
         lastRunExecutions = 0;
 
         if (child.isPresent()) {
-            var result = runChild(ctx);
-
-            if (result.isEmpty())
-                return result;
+            if (!runChild(ctx)) {
+                return Optional.empty();
+            }
         }
 
         while (true) {
@@ -104,17 +103,19 @@ public class DefaultSpellExecutor implements SpellExecutor {
             var inst = instructions.pop();
 
             if (inst instanceof EnterScopeInstruction) {
-                if (!scope.isEmpty())
+                if (!scope.isEmpty()) {
                     state.pushStackTrace(scope.peek());
+                }
 
                 scope.push(0);
             } else if (inst instanceof ExitScopeInstruction) {
                 scope.pop();
 
-                if (scope.isEmpty())
+                if (scope.isEmpty()) {
                     return overrideReturnValue.or(() -> Optional.of(inputs.pop()));
-                else
+                } else {
                     state.popStackTrace();
+                }
 
                 scope.push(scope.pop() + 1);
             } else {
@@ -126,9 +127,9 @@ public class DefaultSpellExecutor implements SpellExecutor {
                     args = _args.reversed();
                 }
 
-                //TODO: make this use the return of the activator instead (pain)
-                if (inst.forks(ctx, args)) {
-                    var child = makeExecutor(ctx, inst, args);
+                var result = inst.getActivator().orElseThrow(UnsupportedOperationException::new).apply(ctx, args);
+
+                if (result instanceof SpellExecutor executor) {
                     var isTail = true;
                     Fragment returnValue = null;
 
@@ -147,9 +148,7 @@ public class DefaultSpellExecutor implements SpellExecutor {
                         }
                     }
 
-                    isTail = isTail && type().equals(child.type());
-
-                    if (isTail && child instanceof DefaultSpellExecutor castChild) {
+                    if (isTail && executor instanceof DefaultSpellExecutor defaultExecutor) {
                         instructions.clear();
                         inputs.clear();
                         scope.clear();
@@ -160,21 +159,23 @@ public class DefaultSpellExecutor implements SpellExecutor {
                             overrideReturnValue = Optional.ofNullable(returnValue);
                         }
 
-                        instructions.addAll(castChild.instructions);
-                        state = castChild.state;
+                        instructions.addAll(defaultExecutor.instructions);
+                        state = defaultExecutor.state;
                         // The new state will already have incremented recursion count, but since this isn't
                         // *technically* a recursion, we can just decrement it again.
                         state.decrementRecursions();
                         ctx = new SpellContext(state, ctx.source(), ctx.data());
                     } else {
-                        this.child = Optional.of(child);
-                        var result = runChild(ctx);
+                        this.child = Optional.of(executor);
 
-                        if (result.isEmpty())
-                            return result;
+                        if (!runChild(ctx)) {
+                            return Optional.empty();
+                        }
                     }
+                } else if (result instanceof Fragment fragment) {
+                    inputs.push(fragment);
                 } else {
-                    inputs.push(inst.getActivator().orElseThrow(UnsupportedOperationException::new).apply(ctx, args));
+                    throw new UnsupportedOperationException();
                 }
 
                 ctx.data().incrementExecutions();
@@ -183,7 +184,7 @@ public class DefaultSpellExecutor implements SpellExecutor {
         }
     }
 
-    private Optional<Fragment> runChild(SpellContext ctx) {
+    private boolean runChild(SpellContext ctx) {
         var result = child.flatMap(c -> c.run(ctx.source(), ctx.data()));
 
         if (result.isPresent()) {
@@ -191,11 +192,7 @@ public class DefaultSpellExecutor implements SpellExecutor {
             child = Optional.empty();
         }
 
-        return result;
-    }
-
-    private static SpellExecutor makeExecutor(SpellContext context, SpellInstruction inst, List<Fragment> args) throws BlunderException {
-        return inst.makeFork(context, args);
+        return result.isPresent();
     }
 
     @Override
