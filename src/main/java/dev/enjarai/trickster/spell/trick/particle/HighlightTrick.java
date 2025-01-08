@@ -11,7 +11,7 @@ import dev.enjarai.trickster.spell.blunder.BlunderException;
 
 import java.util.List;
 
-public class HighlightTrick extends Trick {
+public class HighlightTrick extends Trick<HighlightTrick> {
     public HighlightTrick() {
         super(Pattern.of(2, 0, 1, 2, 3, 4, 5, 8, 7, 6, 3));
     }

@@ -12,13 +12,12 @@ import org.joml.Vector3d;
 
 import java.util.List;
 
-public class MergeVectorTrick extends DistortionTrick {
+public class MergeVectorTrick extends DistortionTrick<MergeVectorTrick> {
     public MergeVectorTrick() {
         super(Pattern.of(1, 3, 4, 5, 1, 4, 7));
     }
 
-    @Override
-    public Fragment distort(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment merge(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         fragments = supposeInput(fragments, 0)
             .flatMap(l -> supposeType(l, FragmentType.LIST))
             .map(ListFragment::fragments)
