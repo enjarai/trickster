@@ -38,17 +38,9 @@ public class AddVelocityTrick extends Trick<AddVelocityTrick> {
         ctx.useMana(this, 3 + (float) Math.pow(length, 3) * 2);
         map.put(target, length);
 
-        if (entity instanceof PlayerEntity && ModEntityComponents.GRACE.get(entity).isInGrace("gravity")) {
-            vector = vector.add(0, -entity.getFinalGravity(), 0, new Vector3d());
-        }
-
         entity.addVelocity(vector.x(), vector.y(), vector.z());
         entity.limitFallDistance();
         entity.velocityModified = true;
-
-        if (entity instanceof PlayerEntity && vector.x() >= 0) {
-            ModEntityComponents.GRACE.get(entity).triggerGrace("gravity", 2);
-        }
 
         return target;
     }

@@ -27,6 +27,7 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
+import net.minecraft.util.Hand;
 
 import java.util.List;
 import java.util.Optional;
@@ -162,8 +163,6 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
                     });
                 }
             } else {
-//            var result = SpellPart.CODEC.encodeStart(JsonOps.INSTANCE, spell).result().get();
-//            Trickster.LOGGER.warn(result.toString());
                 sendMessage(new SpellMessage(spell));
             }
         }
@@ -176,7 +175,8 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
                     var server = player().getServer();
                     if (server != null) {
                         server.execute(() -> {
-                            FragmentComponent.setValue(otherHandStack, spell, Optional.empty(), false);
+                            var updated = FragmentComponent.write(otherHandStack, spell);
+                            player().setStackInHand(Hand.OFF_HAND, updated.orElse(otherHandStack)); // does nothing on fail
                             otherHandSpell.set(spell);
                         });
                     }
@@ -195,6 +195,10 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
     @Override
     public HashMap<Pattern, SpellPart> getMacros() {
         return macros.get();
+    }
+
+    public boolean isOffhand() {
+        return slot == EquipmentSlot.OFFHAND;
     }
 
     public void executeOffhand() {

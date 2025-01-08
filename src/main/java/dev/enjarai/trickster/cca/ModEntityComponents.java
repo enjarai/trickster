@@ -23,11 +23,18 @@ public class ModEntityComponents implements EntityComponentInitializer {
 
     public static final ComponentKey<GraceComponent> GRACE =
             ComponentRegistry.getOrCreate(Trickster.id("grace"), GraceComponent.class);
+
     public static final ComponentKey<FlecksComponent> FLECKS =
             ComponentRegistry.getOrCreate(Trickster.id("flecks"), FlecksComponent.class);
 
     public static final ComponentKey<PlayerAnimationComponent> PLAYER_ANIMATION =
             ComponentRegistry.getOrCreate(Trickster.id("player_animation"), PlayerAnimationComponent.class);
+
+    public static final ComponentKey<EntityWeightComponent> WEIGHT =
+            ComponentRegistry.getOrCreate(Trickster.id("weight"), EntityWeightComponent.class);
+
+    public static final ComponentKey<EntityScaleComponent> SCALE =
+            ComponentRegistry.getOrCreate(Trickster.id("scale"), EntityScaleComponent.class);
 
     @Override
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
@@ -38,5 +45,7 @@ public class ModEntityComponents implements EntityComponentInitializer {
         registry.registerForPlayers(IS_EDITING_SCROLL, IsEditingScrollComponent::new, RespawnCopyStrategy.NEVER_COPY);
         registry.registerFor(LivingEntity.class, GRACE, GraceComponent::new);
         registry.registerForPlayers(PLAYER_ANIMATION, PlayerAnimationComponent::new, RespawnCopyStrategy.NEVER_COPY);
+        registry.registerFor(LivingEntity.class, WEIGHT, EntityWeightComponent::new);
+        registry.registerFor(LivingEntity.class, SCALE, EntityScaleComponent::new);
     }
 }

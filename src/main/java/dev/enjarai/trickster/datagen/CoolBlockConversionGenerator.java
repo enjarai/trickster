@@ -3,7 +3,9 @@ package dev.enjarai.trickster.datagen;
 import dev.enjarai.trickster.datagen.provider.BlockConversionProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.LeveledCauldronBlock;
 import net.minecraft.registry.RegistryWrapper;
 
 import java.util.concurrent.CompletableFuture;
@@ -29,12 +31,19 @@ public class CoolBlockConversionGenerator extends BlockConversionProvider {
         registerCoolConversion(Blocks.CHERRY_SAPLING, Blocks.DEAD_BUSH);
         registerCoolConversion(Blocks.AZALEA, Blocks.DEAD_BUSH);
         registerCoolConversion(Blocks.FLOWERING_AZALEA, Blocks.DEAD_BUSH);
-        registerCoolConversion(Blocks.CAULDRON, Blocks.POWDER_SNOW_CAULDRON);
+        registerCoolConversion(Blocks.CAULDRON, Blocks.POWDER_SNOW_CAULDRON.getDefaultState().with(LeveledCauldronBlock.LEVEL, 3));
     }
 
     public void registerCoolConversion(Block block, Block... conversions) {
         Builder builder = getOrCreateConversion(block);
         for (Block conversion : conversions) {
+            builder.add(conversion, 1);
+        }
+    }
+
+    public void registerCoolConversion(Block block, BlockState... conversions) {
+        Builder builder = getOrCreateConversion(block);
+        for (BlockState conversion : conversions) {
             builder.add(conversion, 1);
         }
     }

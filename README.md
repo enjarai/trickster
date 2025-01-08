@@ -3,7 +3,7 @@
 [<img alt="discord-plural" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/social/discord-plural_vector.svg">](https://discord.gg/WcYsDDQtyR)
 [<img alt="kofi-singular" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/donate/kofi-singular_vector.svg">](https://ko-fi.com/enjarai)
 [<img alt="fabric-api" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/requires/fabric-api_vector.svg">](https://modrinth.com/mod/fabric-api)
-[<img alt="fabric-api" height="56" src="https://enjarai.dev/static/requires_cicada_cozy.svg">](https://modrinth.com/mod/cicada)
+[<img alt="cicada" height="56" src="https://enjarai.dev/static/requires_cicada_cozy.svg">](https://modrinth.com/mod/cicada)
 
 [![](https://i.enjarai.dev/u/P9BQxO.png)](https://modfest.net/carnival)
 

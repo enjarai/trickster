@@ -1,21 +1,20 @@
 package dev.enjarai.trickster.spell.trick.basic;
 
-import dev.enjarai.trickster.item.component.FragmentComponent;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.fragment.VoidFragment;
-import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
 import dev.enjarai.trickster.spell.blunder.OutOfRangeBlunder;
+import dev.enjarai.trickster.spell.fragment.FragmentType;
+import dev.enjarai.trickster.spell.fragment.VoidFragment;
+import dev.enjarai.trickster.spell.trick.Trick;
 
 import java.util.List;
 
-public class ReadSpellTrick extends Trick<ReadSpellTrick> {
-    public ReadSpellTrick() {
-        super(Pattern.of(7, 4, 1, 0, 3, 4, 5, 2, 1));
+public class ClearSpellTrick extends Trick {
+    public ClearSpellTrick() {
+        super(Pattern.of(1, 4, 5, 8, 7, 6, 3, 4));
     }
 
     @Override
@@ -30,6 +29,7 @@ public class ReadSpellTrick extends Trick<ReadSpellTrick> {
             throw new OutOfRangeBlunder(this, 16.0, range);
         }
 
-        return FragmentComponent.getFragment(slot.reference(this, ctx)).orElse(VoidFragment.INSTANCE);
+        slot.resetFragment(this, ctx);
+        return VoidFragment.INSTANCE;
     }
 }
