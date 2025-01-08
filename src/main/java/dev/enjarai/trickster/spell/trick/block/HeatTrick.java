@@ -46,7 +46,7 @@ public class HeatTrick extends Trick {
                 TntBlock.primeTnt(world, blockPos);
                 world.removeBlock(blockPos, false);
             } else if (blockState.getBlock() instanceof AbstractFurnaceBlock && world.getBlockEntity(blockPos) instanceof AbstractFurnaceBlockEntity furnace) {
-                ((FuelableFurnaceDuck) furnace).trickster$setFuelLevelAtLeast(1600);
+                ((FuelableFurnaceDuck) furnace).trickster$setFuelLevelAtLeast(1601);
             } else {
                 DataLoader.getHeatLoader().convert(blockState.getBlock(), world, blockPos);
             }
