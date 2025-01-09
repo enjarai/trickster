@@ -99,6 +99,7 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
                     try {
                         if (executor.run(source, new TickData().withSlot(i).withBonusExecutions(item.getExecutionBonus())).isPresent()) {
                             executors.set(executorSlot, Optional.empty());
+                            updateClient = true;
                         }
                     } catch (BlunderException blunder) {
                         error = Optional.of(
@@ -187,6 +188,10 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
             if (world instanceof ServerWorld world && itemStack.getItem() instanceof SpellCoreItem item) {
                 var perhapsExecutor = executors.get(slot - 1);
                 perhapsExecutor.ifPresent(executor -> itemStack.set(ModComponents.SPELL_CORE, SpellCoreComponent.of(executor)));
+
+                if (perhapsExecutor.isEmpty()) {
+                    itemStack.remove(ModComponents.SPELL_CORE);
+                }
 
                 if (item.onRemoved(world, getPos(), itemStack, perhapsExecutor)) {
                     return ItemStack.EMPTY;
