@@ -1,59 +1,64 @@
 package dev.enjarai.trickster.spell.trick.fleck;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
+
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.fleck.Fleck;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
-import dev.enjarai.trickster.spell.fragment.FragmentType;
+import dev.enjarai.trickster.spell.fragment.EntityFragment;
+import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.Signature;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Box;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Stream;
-
-public abstract class AbstractFleckTrick extends Trick {
+public abstract class AbstractFleckTrick<T extends AbstractFleckTrick<T>> extends Trick<T> {
     public AbstractFleckTrick(Pattern pattern) {
         super(pattern);
     }
 
-    @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) {
-        var playerList = supposeType(fragments.getLast(), FragmentType.LIST) // take either a list of entities
-            .map(listFragment -> listFragment.fragments().stream()
-                .map(entry -> expectType(entry, FragmentType.ENTITY)))
-            .or(() -> supposeType(fragments.getLast(), FragmentType.ENTITY) // or a single entity
-                .map(Stream::of))
-            .map(stream -> stream                                           // and throw if an entity doesn't exit
-                .map(frag -> frag.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this))).toList());
-
-        var id = expectType(fragments.removeFirst(), FragmentType.NUMBER).asInt();
-        var pos = ctx.source().getPos();
-
-        ArrayList<PlayerEntity> entities = new ArrayList<>();
-        ctx.source().getWorld().collectEntitiesByType(
-                EntityType.PLAYER, new Box(
-                        pos.x() - 64, pos.y() - 64, pos.z() - 64,
-                        pos.x() + 64, pos.y() + 64, pos.z() + 64
-                ),
-                e -> e.getPos().squaredDistanceTo(pos.x(), pos.y(), pos.z()) <= 64*64, entities
-         ); //find all the players within a 64 block sphere
-
-        if (playerList.isPresent()) {
-            fragments.removeLast();
-        }
-
-        entities.stream()
-            .filter(serverPlayer -> playerList.map(list -> list.contains(serverPlayer)).orElse(true)) // if a list of players was specified, filter against it
-            .forEach(serverPlayer -> serverPlayer.getComponent(ModEntityComponents.FLECKS).addFleck(id, makeFleck(ctx, fragments)));
-
-        return fragments.getFirst();
+    public AbstractFleckTrick(Pattern pattern, List<Signature<T>> handlers) {
+        super(pattern, handlers);
     }
 
-    protected abstract Fleck makeFleck(SpellContext ctx, List<Fragment> fragments) throws BlunderException;
+    public AbstractFleckTrick(Pattern pattern, Signature<T> primary) {
+        super(pattern, primary);
+    }
+
+    protected Fragment display(SpellContext ctx, NumberFragment id, Fleck fleck, Optional<List<EntityFragment>> targets) {
+        var players = targets
+                .map(List::stream)
+                .map(
+                        stream -> stream
+                                .map(
+                                        frag -> frag.getEntity(ctx)
+                                                .orElseThrow(() -> new UnknownEntityBlunder(this))
+                                )
+                                .flatMap(e -> e instanceof PlayerEntity player ? Stream.of(player) : Stream.of())
+                )
+                .orElseGet(() -> {
+                    var pos = ctx.source().getPos();
+
+                    ArrayList<PlayerEntity> entities = new ArrayList<>();
+                    ctx.source().getWorld().collectEntitiesByType(
+                            EntityType.PLAYER, new Box(
+                                    pos.x() - 64, pos.y() - 64, pos.z() - 64,
+                                    pos.x() + 64, pos.y() + 64, pos.z() + 64
+                            ),
+                            e -> e.getPos().squaredDistanceTo(pos.x(), pos.y(), pos.z()) <= 64 * 64, entities
+                    ); //find all the players within a 64 block sphere
+
+                    return entities.stream();
+                });
+
+        players.forEach(player -> player.getComponent(ModEntityComponents.FLECKS).addFleck(id.asInt(), fleck));
+        return id;
+    }
 }
