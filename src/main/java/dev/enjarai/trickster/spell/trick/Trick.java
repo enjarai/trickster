@@ -26,6 +26,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,7 +52,7 @@ public abstract class Trick<T extends Trick<T>> {
     }
 
     public Trick(Pattern pattern) {
-        this(pattern, List.of());
+        this(pattern, new ArrayList<>());
     }
 
     public final Pattern getPattern() {
