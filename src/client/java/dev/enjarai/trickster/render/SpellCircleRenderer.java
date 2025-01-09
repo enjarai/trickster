@@ -193,10 +193,13 @@ public class SpellCircleRenderer {
             matrices.pop();
 
             if (!inUI) {
-                matrices.push();
-                matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
-                drawSide(matrices, vertexConsumers, parent, toLocalSpace(-x), toLocalSpace(y), toLocalSpace(size), alphaGetter, normal, glyph);
-                matrices.pop();
+                var renderer = FragmentRenderer.REGISTRY.get(FragmentType.REGISTRY.getId(glyph.type()));
+                if (renderer == null || renderer.drawTwoSides()) {
+                    matrices.push();
+                    matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
+                    drawSide(matrices, vertexConsumers, parent, toLocalSpace(-x), toLocalSpace(y), toLocalSpace(size), alphaGetter, normal, glyph);
+                    matrices.pop();
+                }
             }
         }
     }
