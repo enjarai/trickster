@@ -3,40 +3,29 @@ package dev.enjarai.trickster.spell.trick.math;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.IncorrectFragmentBlunder;
 import dev.enjarai.trickster.spell.fragment.DivisibleFragment;
-import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.fragment.ListFragment;
 import dev.enjarai.trickster.spell.trick.DistortionTrick;
+import dev.enjarai.trickster.spell.type.Signature;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
-import dev.enjarai.trickster.spell.blunder.MissingInputsBlunder;
 
 import java.util.List;
 
-public class DivideTrick extends DistortionTrick {
+public class DivideTrick extends DistortionTrick<DivideTrick> {
     public DivideTrick() {
-        super(Pattern.of(0, 1, 2, 4, 6, 7, 8));
+        super(Pattern.of(0, 1, 2, 4, 6, 7, 8), Signature.of(variadic(DivisibleFragment.class).required().unpack(), DivideTrick::run));
     }
 
-    public Fragment math(SpellContext ctx, ListFragment numbers) throws BlunderException {
-        if (numbers.fragments().isEmpty()) {
-            throw new MissingInputsBlunder(this);
-        }
+    public Fragment run(SpellContext ctx, List<DivisibleFragment> fragments) throws BlunderException {
+        DivisibleFragment result = null;
 
-        for (var number : numbers.fragments()) {
-            if (!(number instanceof DivisibleFragment)) {
-                throw new IncorrectFragmentBlunder(this, );
+        for (var value : fragments) {
+            if (result == null) {
+                result = value;
+            } else {
+                result = result.divide(value);
             }
         }
 
-        return math(ctx, numbers.fragments().getFirst(), numbers.fragments().subList(0, numbers.fragments().size()));
-    }
-
-    public Fragment math(SpellContext ctx, DivisibleFragment base, List<DivisibleFragment> fragments) throws BlunderException {
-        for (var fragment : fragments) {
-            base = base.divide(fragment);
-        }
-
-        return base;
+        return result;
     }
 }

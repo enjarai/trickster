@@ -4,9 +4,8 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
+import net.minecraft.entity.LivingEntity;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
-
-import java.util.List;
 
 public class SneakingReflectionTrick extends AbstractLivingEntityQueryTrick {
     public SneakingReflectionTrick() {
@@ -14,7 +13,7 @@ public class SneakingReflectionTrick extends AbstractLivingEntityQueryTrick {
     }
 
     @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        return BooleanFragment.of(getLivingEntity(ctx, fragments, 0).isSneaking());
+    protected Fragment run(SpellContext ctx, LivingEntity entity) throws BlunderException {
+        return BooleanFragment.of(entity.isSneaking());
     }
 }

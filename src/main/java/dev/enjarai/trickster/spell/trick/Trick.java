@@ -10,15 +10,14 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.CantEditBlockBlunder;
-import dev.enjarai.trickster.spell.blunder.InvalidArgumentsBlunder;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.type.Signature;
 import dev.enjarai.trickster.spell.type.SimpleArgType;
-import dev.enjarai.trickster.spell.type.VariadicArgType;
-import dev.enjarai.trickster.spell.type.VariadicTypeArgType;
+import dev.enjarai.trickster.spell.type.ClassVariadicArgType;
+import dev.enjarai.trickster.spell.type.TypeVariadicArgType;
 import io.vavr.collection.HashMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -30,11 +29,13 @@ import net.minecraft.util.math.BlockPos;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.lang3.NotImplementedException;
+
 public abstract class Trick<T extends Trick<T>> {
     public static final Identifier TRICK_RANDOM = Trickster.id("trick");
 
     protected static final SimpleArgType<Fragment> ANY = simple(Fragment.class);
-    protected static final VariadicArgType<Fragment> ANY_VARIADIC = variadic(Fragment.class);
+    protected static final ClassVariadicArgType<Fragment> ANY_VARIADIC = variadic(Fragment.class);
 
     protected final Pattern pattern;
     private final List<Signature<T>> handlers;
@@ -72,7 +73,7 @@ public abstract class Trick<T extends Trick<T>> {
             }
         }
 
-        throw new InvalidArgumentsBlunder(this);
+        throw new NotImplementedException("Tricks do not currently handle failed matches"); //TODO: fix ASAP
     }
 
     protected static <T extends Fragment> SimpleArgType<T> simple(Class<T> type) {
@@ -80,13 +81,13 @@ public abstract class Trick<T extends Trick<T>> {
     }
 
     @SafeVarargs
-    protected static <T extends Fragment> VariadicArgType<T> variadic(Class<T>... types) {
-        return new VariadicArgType<>(types);
+    protected static <T extends Fragment> ClassVariadicArgType<T> variadic(Class<T>... types) {
+        return new ClassVariadicArgType<>(types);
     }
 
     @SafeVarargs
-    protected static <T extends Fragment> VariadicTypeArgType<T> variadic(FragmentType<T>... types) {
-        return new VariadicTypeArgType<>(types);
+    protected static <T extends Fragment> TypeVariadicArgType<T> variadic(FragmentType<T>... types) {
+        return new TypeVariadicArgType<>(types);
     }
 
     protected void expectCanBuild(SpellContext ctx, BlockPos... positions) {

@@ -5,7 +5,6 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
-import dev.enjarai.trickster.spell.blunder.IncorrectFragmentBlunder;
 import dev.enjarai.trickster.spell.trick.entity.query.AbstractLivingEntityQueryTrick;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.Vec3d;

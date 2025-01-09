@@ -68,7 +68,7 @@ public record ListFragment(List<Fragment> fragments) implements FoldableFragment
         return new ListFragment(ImmutableList.<Fragment>builder().addAll(fragments).addAll(other.fragments).build());
     }
 
-    public List<Integer> sanitizeAddress(Trick source) {
+    public List<Integer> sanitizeAddress(Trick<?> source) {
         var sanitizedAddress = new ArrayList<Integer>();
 
         for (Fragment fragment : this.fragments()) {
@@ -79,7 +79,8 @@ public record ListFragment(List<Fragment> fragments) implements FoldableFragment
                         source,
                         1,
                         Text.translatable(Trickster.MOD_ID + ".fragment." + Trickster.MOD_ID + "." + "integer_list"),
-                        this);
+                        this
+                );
             }
         }
 
@@ -93,7 +94,7 @@ public record ListFragment(List<Fragment> fragments) implements FoldableFragment
 
         for (int i = fragments.size() - 1; i >= 0; i--)
             keys.push(new NumberFragment(i));
-        
+
         values.addAll(fragments.reversed());
         return new FoldingSpellExecutor(ctx, executable, identity, values, keys, this);
     }

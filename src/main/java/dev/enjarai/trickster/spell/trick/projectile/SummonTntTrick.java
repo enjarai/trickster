@@ -4,27 +4,40 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
-import net.minecraft.entity.Entity;
+import dev.enjarai.trickster.spell.blunder.MissingItemBlunder;
+import dev.enjarai.trickster.spell.fragment.EntityFragment;
+import dev.enjarai.trickster.spell.fragment.FragmentType;
+import dev.enjarai.trickster.spell.fragment.SlotFragment;
+import dev.enjarai.trickster.spell.fragment.VectorFragment;
+import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.Signature;
 import net.minecraft.entity.TntEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import org.joml.Vector3dc;
+import java.util.Optional;
 
-import java.util.List;
-
-public class SummonTntTrick extends AbstractProjectileTrick {
+public class SummonTntTrick extends Trick<SummonTntTrick> {
     public SummonTntTrick() {
-        super(Pattern.of(0, 2, 8, 6, 0, 1, 4, 7, 8, 5, 4, 3, 0, 4, 8));
+        super(Pattern.of(0, 2, 8, 6, 0, 1, 4, 7, 8, 5, 4, 3, 0, 4, 8), Signature.of(FragmentType.VECTOR, FragmentType.SLOT.optionalOf(), SummonTntTrick::run));
     }
 
-    @Override
-    protected Entity makeProjectile(SpellContext ctx, Vector3dc pos, ItemStack stack, List<Fragment> extraInputs) throws BlunderException {
-        return new TntEntity(ctx.source().getWorld(), pos.x(), pos.y(), pos.z(), null);
+    public Fragment run(SpellContext ctx, VectorFragment pos, Optional<SlotFragment> optionalSlot) throws BlunderException {
+        var stack = ctx.getStack(this, optionalSlot, s -> s.isOf(Items.TNT)).orElseThrow(() -> new MissingItemBlunder(this));
+        var world = ctx.source().getWorld();
+
+        try {
+            ctx.useMana(this, cost(ctx.source().getPos().distance(pos.vector())));
+
+            var projectile = new TntEntity(world, pos.x(), pos.y(), pos.z(), null);
+
+            world.spawnEntity(projectile);
+            return EntityFragment.from(projectile);
+        } catch (Throwable err) {
+            ctx.source().offerOrDropItem(stack);
+            throw err;
+        }
     }
 
-    @Override
-    protected boolean isValidItem(Item item) {
-        return item.equals(Items.TNT);
+    private float cost(double dist) {
+        return (float) (20 + Math.pow(dist, (dist / 3)));
     }
 }
