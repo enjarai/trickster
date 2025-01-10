@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import dev.enjarai.trickster.cca.ModEntityComponents;
-import dev.enjarai.trickster.fleck.Fleck;
+import dev.enjarai.trickster.spell.fleck.Fleck;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;

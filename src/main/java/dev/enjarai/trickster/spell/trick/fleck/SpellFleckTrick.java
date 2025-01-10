@@ -1,6 +1,6 @@
 package dev.enjarai.trickster.spell.trick.fleck;
 
-import dev.enjarai.trickster.fleck.SpellFleck;
+import dev.enjarai.trickster.spell.fleck.SpellFleck;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;

@@ -1,10 +1,11 @@
 package dev.enjarai.trickster.render.fleck;
 
 import dev.enjarai.trickster.Trickster;
+import dev.enjarai.trickster.spell.fleck.Fleck;
+import dev.enjarai.trickster.spell.fleck.FleckType;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.minecraft.client.render.VertexConsumerProvider;
-import dev.enjarai.trickster.fleck.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.registry.Registry;

@@ -47,6 +47,7 @@
             "trickster:caster",
             "trickster:bars",
             "trickster:flecks",
+            "trickster:blots",
             "trickster:ward",
             "trickster:shared_mana",
             "trickster:message_handler",

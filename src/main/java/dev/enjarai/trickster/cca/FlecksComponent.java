@@ -1,6 +1,6 @@
 package dev.enjarai.trickster.cca;
 
-import dev.enjarai.trickster.fleck.Fleck;
+import dev.enjarai.trickster.spell.fleck.Fleck;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;

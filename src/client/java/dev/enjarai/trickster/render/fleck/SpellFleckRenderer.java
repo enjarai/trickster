@@ -1,9 +1,9 @@
 package dev.enjarai.trickster.render.fleck;
 
 import dev.enjarai.trickster.render.SpellCircleRenderer;
+import dev.enjarai.trickster.spell.fleck.SpellFleck;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.client.render.*;
-import dev.enjarai.trickster.fleck.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.RotationAxis;

@@ -1,8 +1,8 @@
 package dev.enjarai.trickster.render;
 
 import dev.enjarai.trickster.cca.ModEntityComponents;
-import dev.enjarai.trickster.fleck.*;
 import dev.enjarai.trickster.render.fleck.*;
+import dev.enjarai.trickster.spell.fleck.FleckType;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.math.ColorHelper;

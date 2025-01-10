@@ -6,14 +6,14 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Function3;
 import com.mojang.serialization.Codec;
 import com.mojang.util.UndashedUuid;
+import io.vavr.Function2;
 import io.vavr.collection.HashMap;
 import io.wispforest.endec.*;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import io.wispforest.owo.serialization.CodecUtils;
 import io.wispforest.owo.serialization.endec.EitherEndec;
 import net.minecraft.util.math.BlockPos;
-import org.joml.Vector3d;
-import org.joml.Vector3dc;
+import org.joml.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +22,6 @@ import java.util.Optional;
 import java.util.Stack;
 import java.util.UUID;
 import java.util.function.Function;
-import org.joml.Vector3f;
-import org.joml.Vector3fc;
 
 public class EndecTomfoolery {
     public static final Endec<BlockPos> ALWAYS_READABLE_BLOCK_POS =
@@ -31,8 +29,9 @@ public class EndecTomfoolery {
     public static final Endec<UUID> UUID = Endec.STRING.xmap(UndashedUuid::fromStringLenient, java.util.UUID::toString);
     public static final SerializationAttribute.Marker UBER_COMPACT_ATTRIBUTE = SerializationAttribute.marker("uber_compact");
     public static final SerializationAttribute.WithValue<Byte> PROTOCOL_VERSION_ATTRIBUTE = SerializationAttribute.withValue("protocol_version");
-    public static Endec<Vector3dc> VECTOR_3D_ENDEC = EndecTomfoolery.<Double, Vector3dc>vectorEndec(Endec.DOUBLE, Vector3d::new, Vector3dc::x, Vector3dc::y, Vector3dc::z);
-    public static Endec<Vector3fc> VECTOR_3F_ENDEC = EndecTomfoolery.<Float, Vector3fc>vectorEndec(Endec.FLOAT, Vector3f::new, Vector3fc::x, Vector3fc::y, Vector3fc::z);
+    public static Endec<Vector3dc> VECTOR_3D_ENDEC = EndecTomfoolery.vectorEndec(Endec.DOUBLE, Vector3d::new, Vector3dc::x, Vector3dc::y, Vector3dc::z);
+    public static Endec<Vector3fc> VECTOR_3F_ENDEC = EndecTomfoolery.vectorEndec(Endec.FLOAT, Vector3f::new, Vector3fc::x, Vector3fc::y, Vector3fc::z);
+    public static Endec<Vector2fc> VECTOR_2F_ENDEC = EndecTomfoolery.vectorEndec(Endec.FLOAT, Vector2f::new, Vector2fc::x, Vector2fc::y);
     public static final SerializationAttribute.Marker CODEC_SAFE = SerializationAttribute.marker("codec_safe");
 
     public static <C, V> Endec<V> vectorEndec(Endec<C> componentEndec, Function3<C, C, C, V> constructor, Function<V, C> xGetter, Function<V, C> yGetter, Function<V, C> zGetter) {
@@ -43,6 +42,17 @@ public class EndecTomfoolery {
         }).xmap(
                 components -> constructor.apply(components.get(0), components.get(1), components.get(2)),
                 vector -> List.of(xGetter.apply(vector), yGetter.apply(vector), zGetter.apply(vector))
+        );
+    }
+
+    public static <C, V> Endec<V> vectorEndec(Endec<C> componentEndec, Function2<C, C, V> constructor, Function<V, C> xGetter, Function<V, C> yGetter) {
+        return componentEndec.listOf().validate(ints -> {
+            if (ints.size() != 2) {
+                throw new IllegalStateException("vector array must have two elements");
+            }
+        }).xmap(
+                components -> constructor.apply(components.get(0), components.get(1)),
+                vector -> List.of(xGetter.apply(vector), yGetter.apply(vector))
         );
     }
     

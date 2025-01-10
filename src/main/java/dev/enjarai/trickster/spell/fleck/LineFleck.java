@@ -1,4 +1,4 @@
-package dev.enjarai.trickster.fleck;
+package dev.enjarai.trickster.spell.fleck;
 
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
