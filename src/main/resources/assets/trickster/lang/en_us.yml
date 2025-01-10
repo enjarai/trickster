@@ -59,6 +59,8 @@ trickster:
     all: Stratagem Bar None
     any: Stratagem In General
     none: Stratagem In Absence
+    greater_than: Greater Distortion
+    lesser_than: Lesser Distortion
 
     extract_x: Primary Distortion
     extract_y: Secondary Distortion
@@ -251,6 +253,7 @@ trickster:
       entity_type: Entity Type
       integer_list: List of Integers
     class:
+      Fragment: Any
       AddableFragment: Addable
       DivisibleFragment: Divisible
       FoldableFragment: Foldable

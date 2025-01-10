@@ -141,4 +141,8 @@ public abstract class Trick<T extends Trick<T>> {
                         .withColor(FragmentType.PATTERN.color().getAsInt())
         );
     }
+
+    public List<Signature<T>> getHandlers() {
+        return handlers;
+    }
 }

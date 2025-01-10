@@ -1,13 +1,10 @@
 package dev.enjarai.trickster.spell.type;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
-import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.fragment.ListFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -62,6 +59,6 @@ public class ClassVariadicArgType<T extends Fragment> extends AbstractVariadicAr
 
     @Override
     protected MutableText typeAsText(Class<T> type) {
-        return Text.translatableWithFallback("fragment.class." + type.getSimpleName(), type.getSimpleName());
+        return Text.translatableWithFallback("trickster.fragment.class." + type.getSimpleName(), type.getSimpleName()).withColor(0xaa4444);
     }
 }

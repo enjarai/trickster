@@ -13,6 +13,7 @@ import dev.enjarai.trickster.item.component.ManaComponent;
 import dev.enjarai.trickster.net.GrabClipboardSpellPacket;
 import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.spell.SpellPart;
+import dev.enjarai.trickster.spell.trick.Tricks;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -82,6 +83,10 @@ public class TricksterCommand {
                                         ))
                                 )
                         )
+                )
+                .then(literal("allSignatures")
+                        .requires(ServerCommandSource::isExecutedByPlayer)
+                        .executes(TricksterCommand::showAllSignatures)
                 )
         );
     }
@@ -173,6 +178,16 @@ public class TricksterCommand {
                 ModEntityComponents.GRACE.get(targetEntity).triggerGrace("scale", 100);
             }
         }
+
+        return 0;
+    }
+
+    private static int showAllSignatures(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+        Tricks.REGISTRY.stream().forEach(t -> {
+            t.getHandlers().forEach(h -> {
+                context.getSource().sendFeedback(() -> t.getName().append(": ").append(h.asText()), false);
+            });
+        });
 
         return 0;
     }

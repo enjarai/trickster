@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
 
 public abstract class AbstractConduitTrick extends Trick<AbstractConduitTrick> {
     public AbstractConduitTrick(Pattern pattern) {
-        super(pattern, Signature.of(FragmentType.NUMBER, variadic(SlotFragment.class), AbstractConduitTrick::run));
+        super(pattern, Signature.of(FragmentType.NUMBER, variadic(FragmentType.SLOT), AbstractConduitTrick::run));
     }
 
     public Fragment run(SpellContext ctx, NumberFragment n, List<SlotFragment> slots) throws BlunderException {

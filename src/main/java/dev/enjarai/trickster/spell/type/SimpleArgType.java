@@ -55,6 +55,6 @@ public class SimpleArgType<T extends Fragment> implements ArgType<T> {
 
     @Override
     public MutableText asText() {
-        return Text.translatableWithFallback("fragment.class." + type.getSimpleName(), type.getSimpleName());
+        return Text.translatableWithFallback("trickster.fragment.class." + type.getSimpleName(), type.getSimpleName()).withColor(0xaa4444);
     }
 }

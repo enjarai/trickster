@@ -53,7 +53,7 @@ public record FragmentType<T extends Fragment>(StructEndec<T> endec, OptionalInt
     public static final FragmentType<TypeFragment> TYPE = register("type", TypeFragment.ENDEC, 0x66cc00);
     public static final FragmentType<NumberFragment> NUMBER = register("number", NumberFragment.ENDEC, 0xddaa00);
     public static final FragmentType<BooleanFragment> BOOLEAN = register("boolean", BooleanFragment.ENDEC, 0xaa3355);
-    public static final FragmentType<VectorFragment> VECTOR = register("vector", VectorFragment.ENDEC);
+    public static final FragmentType<VectorFragment> VECTOR = register("vector", VectorFragment.ENDEC, 0xaa7711);
     public static final FragmentType<ListFragment> LIST = register("list", ListFragment.ENDEC);
     public static final FragmentType<VoidFragment> VOID = register("void", VoidFragment.ENDEC, 0x4400aa);
     public static final FragmentType<PatternGlyph> PATTERN = register("pattern", PatternGlyph.ENDEC, 0x6644aa);
@@ -89,7 +89,7 @@ public record FragmentType<T extends Fragment>(StructEndec<T> endec, OptionalInt
     }
 
     private static <T extends Fragment> FragmentType<T> register(String name, StructEndec<T> codec) {
-        return Registry.register(REGISTRY, Trickster.id(name), new FragmentType<>(codec, OptionalInt.empty()));
+        return Registry.register(REGISTRY, Trickster.id(name), new FragmentType<>(codec, OptionalInt.of(0xaaaaaa)));
     }
 
     public static void register() {
