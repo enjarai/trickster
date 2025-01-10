@@ -37,32 +37,6 @@ public abstract class Trick<T extends Trick<T>> {
 
     protected static final SimpleArgType<Fragment> ANY = simple(Fragment.class);
     protected static final ClassVariadicArgType<Fragment> ANY_VARIADIC = variadic(Fragment.class);
-    protected static final ArgType<Boolean> ANY_AS_BOOL = new ArgType<>() {
-        @Override
-        public int argc(List<Fragment> fragments) {
-            return ANY.argc(fragments);
-        }
-
-        @Override
-        public Boolean compose(Trick<?> trick, SpellContext ctx, List<Fragment> fragments) {
-            return ANY.compose(trick, ctx, fragments).asBoolean();
-        }
-
-        @Override
-        public boolean match(List<Fragment> fragments) {
-            return ANY.match(fragments);
-        }
-
-        @Override
-        public ArgType<Boolean> wardOf() {
-            return this;
-        }
-
-        @Override
-        public MutableText asText() {
-            return FragmentType.BOOLEAN.asText();
-        }
-    };
 
     protected final Pattern pattern;
     private final List<Signature<T>> handlers;
