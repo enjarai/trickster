@@ -32,7 +32,7 @@ public interface Signature<T extends Trick<T>> {
 
             @Override
             public MutableText asText() {
-                return Text.literal("");
+                return Text.literal("None").styled(s -> s.withItalic(true).withColor(0x555555));
             }
         };
     }

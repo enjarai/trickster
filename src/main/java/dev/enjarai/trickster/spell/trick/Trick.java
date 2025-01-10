@@ -10,6 +10,7 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.CantEditBlockBlunder;
+import dev.enjarai.trickster.spell.blunder.InvalidInputsBlunder;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
@@ -74,7 +75,7 @@ public abstract class Trick<T extends Trick<T>> {
             }
         }
 
-        throw new NotImplementedException("Tricks do not currently handle failed matches"); //TODO: fix ASAP
+        throw new InvalidInputsBlunder(this);
     }
 
     protected static <T extends Fragment> SimpleArgType<T> simple(Class<T> type) {
