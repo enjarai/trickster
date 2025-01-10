@@ -170,6 +170,11 @@ public record FragmentType<T extends Fragment>(StructEndec<T> endec, OptionalInt
             public ArgType<T> wardOf() {
                 return this;
             }
+
+            @Override
+            public MutableText asText() {
+                return FragmentType.this.asText();
+            }
         };
     }
 }
