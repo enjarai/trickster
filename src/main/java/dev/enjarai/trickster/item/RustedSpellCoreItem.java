@@ -4,9 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import dev.enjarai.trickster.Trickster;
-import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.execution.executor.ErroredSpellExecutor;
-import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
+import dev.enjarai.trickster.spell.SpellExecutor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.server.world.ServerWorld;
@@ -24,10 +23,12 @@ public class RustedSpellCoreItem extends SpellCoreItem {
 
     @Override
     public boolean onRemoved(ServerWorld world, BlockPos pos, ItemStack stack, Optional<SpellExecutor> executor) {
-        if (executor.isPresent()
-                && !(executor.get() instanceof ErroredSpellExecutor)
-                && !executor.get().getDeepestState().isDelayed()
-                && world.random.nextBoolean()) {
+        if (
+            executor.isPresent()
+                    && !(executor.get() instanceof ErroredSpellExecutor)
+                    && !executor.get().getDeepestState().isDelayed()
+                    && world.random.nextBoolean()
+        ) {
             world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), 5f, true, ExplosionSourceType.BLOCK);
             return true;
         }
