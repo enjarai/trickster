@@ -31,6 +31,14 @@ public interface ArgType<T> {
         return fragments.subList(start, argc(fragments));
     }
 
+    default boolean isolateAndMatch(List<Fragment> fragments) {
+        if (argc(fragments) > fragments.size()) {
+            return false;
+        }
+
+        return match(isolate(0, fragments));
+    }
+
     default ArgType<Optional<T>> optionalOf() {
         return new OptionalArgType<>(this);
     }

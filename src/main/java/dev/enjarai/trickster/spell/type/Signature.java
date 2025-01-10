@@ -41,12 +41,10 @@ public interface Signature<T extends Trick<T>> {
         return new Signature<T>() {
             @Override
             public boolean match(List<Fragment> fragments) {
-                var args1 = t1.isolate(0, fragments);
-                fragments = fragments.subList(args1.size(), fragments.size());
-
-                if (!t1.match(args1)) {
+                if (!t1.isolateAndMatch(fragments)) {
                     return false;
                 }
+                fragments = fragments.subList(t1.argc(fragments), fragments.size());
 
                 return true;
             }
@@ -75,19 +73,15 @@ public interface Signature<T extends Trick<T>> {
         return new Signature<T>() {
             @Override
             public boolean match(List<Fragment> fragments) {
-                var args1 = t1.isolate(0, fragments);
-                fragments = fragments.subList(args1.size(), fragments.size());
-
-                if (!t1.match(args1)) {
+                if (!t1.isolateAndMatch(fragments)) {
                     return false;
                 }
+                fragments = fragments.subList(t1.argc(fragments), fragments.size());
 
-                var args2 = t2.isolate(0, fragments);
-                fragments = fragments.subList(args2.size(), fragments.size());
-
-                if (!t2.match(args2)) {
+                if (!t2.isolateAndMatch(fragments)) {
                     return false;
                 }
+                fragments = fragments.subList(t2.argc(fragments), fragments.size());
 
                 return true;
             }
@@ -122,26 +116,20 @@ public interface Signature<T extends Trick<T>> {
         return new Signature<T>() {
             @Override
             public boolean match(List<Fragment> fragments) {
-                var args1 = t1.isolate(0, fragments);
-                fragments = fragments.subList(args1.size(), fragments.size());
-
-                if (!t1.match(args1)) {
+                if (!t1.isolateAndMatch(fragments)) {
                     return false;
                 }
+                fragments = fragments.subList(t1.argc(fragments), fragments.size());
 
-                var args2 = t2.isolate(0, fragments);
-                fragments = fragments.subList(args2.size(), fragments.size());
-
-                if (!t2.match(args2)) {
+                if (!t2.isolateAndMatch(fragments)) {
                     return false;
                 }
+                fragments = fragments.subList(t2.argc(fragments), fragments.size());
 
-                var args3 = t3.isolate(0, fragments);
-                fragments = fragments.subList(args3.size(), fragments.size());
-
-                if (!t3.match(args3)) {
+                if (!t3.isolateAndMatch(fragments)) {
                     return false;
                 }
+                fragments = fragments.subList(t3.argc(fragments), fragments.size());
 
                 return true;
             }
@@ -182,33 +170,25 @@ public interface Signature<T extends Trick<T>> {
         return new Signature<T>() {
             @Override
             public boolean match(List<Fragment> fragments) {
-                var args1 = t1.isolate(0, fragments);
-                fragments = fragments.subList(args1.size(), fragments.size());
-
-                if (!t1.match(args1)) {
+                if (!t1.isolateAndMatch(fragments)) {
                     return false;
                 }
+                fragments = fragments.subList(t1.argc(fragments), fragments.size());
 
-                var args2 = t2.isolate(0, fragments);
-                fragments = fragments.subList(args2.size(), fragments.size());
-
-                if (!t2.match(args2)) {
+                if (!t2.isolateAndMatch(fragments)) {
                     return false;
                 }
+                fragments = fragments.subList(t2.argc(fragments), fragments.size());
 
-                var args3 = t3.isolate(0, fragments);
-                fragments = fragments.subList(args3.size(), fragments.size());
-
-                if (!t3.match(args3)) {
+                if (!t3.isolateAndMatch(fragments)) {
                     return false;
                 }
+                fragments = fragments.subList(t3.argc(fragments), fragments.size());
 
-                var args4 = t4.isolate(0, fragments);
-                fragments = fragments.subList(args4.size(), fragments.size());
-
-                if (!t4.match(args4)) {
+                if (!t4.isolateAndMatch(fragments)) {
                     return false;
                 }
+                fragments = fragments.subList(t4.argc(fragments), fragments.size());
 
                 return true;
             }
@@ -255,40 +235,30 @@ public interface Signature<T extends Trick<T>> {
         return new Signature<T>() {
             @Override
             public boolean match(List<Fragment> fragments) {
-                var args1 = t1.isolate(0, fragments);
-                fragments = fragments.subList(args1.size(), fragments.size());
-
-                if (!t1.match(args1)) {
+                if (!t1.isolateAndMatch(fragments)) {
                     return false;
                 }
+                fragments = fragments.subList(t1.argc(fragments), fragments.size());
 
-                var args2 = t2.isolate(0, fragments);
-                fragments = fragments.subList(args2.size(), fragments.size());
-
-                if (!t2.match(args2)) {
+                if (!t2.isolateAndMatch(fragments)) {
                     return false;
                 }
+                fragments = fragments.subList(t2.argc(fragments), fragments.size());
 
-                var args3 = t3.isolate(0, fragments);
-                fragments = fragments.subList(args3.size(), fragments.size());
-
-                if (!t3.match(args3)) {
+                if (!t3.isolateAndMatch(fragments)) {
                     return false;
                 }
+                fragments = fragments.subList(t3.argc(fragments), fragments.size());
 
-                var args4 = t4.isolate(0, fragments);
-                fragments = fragments.subList(args4.size(), fragments.size());
-
-                if (!t4.match(args4)) {
+                if (!t4.isolateAndMatch(fragments)) {
                     return false;
                 }
+                fragments = fragments.subList(t4.argc(fragments), fragments.size());
 
-                var args5 = t5.isolate(0, fragments);
-                fragments = fragments.subList(args5.size(), fragments.size());
-
-                if (!t5.match(args5)) {
+                if (!t5.isolateAndMatch(fragments)) {
                     return false;
                 }
+                fragments = fragments.subList(t5.argc(fragments), fragments.size());
 
                 return true;
             }
@@ -341,47 +311,35 @@ public interface Signature<T extends Trick<T>> {
         return new Signature<T>() {
             @Override
             public boolean match(List<Fragment> fragments) {
-                var args1 = t1.isolate(0, fragments);
-                fragments = fragments.subList(args1.size(), fragments.size());
-
-                if (!t1.match(args1)) {
+                if (!t1.isolateAndMatch(fragments)) {
                     return false;
                 }
+                fragments = fragments.subList(t1.argc(fragments), fragments.size());
 
-                var args2 = t2.isolate(0, fragments);
-                fragments = fragments.subList(args2.size(), fragments.size());
-
-                if (!t2.match(args2)) {
+                if (!t2.isolateAndMatch(fragments)) {
                     return false;
                 }
+                fragments = fragments.subList(t2.argc(fragments), fragments.size());
 
-                var args3 = t3.isolate(0, fragments);
-                fragments = fragments.subList(args3.size(), fragments.size());
-
-                if (!t3.match(args3)) {
+                if (!t3.isolateAndMatch(fragments)) {
                     return false;
                 }
+                fragments = fragments.subList(t3.argc(fragments), fragments.size());
 
-                var args4 = t4.isolate(0, fragments);
-                fragments = fragments.subList(args4.size(), fragments.size());
-
-                if (!t4.match(args4)) {
+                if (!t4.isolateAndMatch(fragments)) {
                     return false;
                 }
+                fragments = fragments.subList(t4.argc(fragments), fragments.size());
 
-                var args5 = t5.isolate(0, fragments);
-                fragments = fragments.subList(args5.size(), fragments.size());
-
-                if (!t5.match(args5)) {
+                if (!t5.isolateAndMatch(fragments)) {
                     return false;
                 }
+                fragments = fragments.subList(t5.argc(fragments), fragments.size());
 
-                var args6 = t6.isolate(0, fragments);
-                fragments = fragments.subList(args6.size(), fragments.size());
-
-                if (!t6.match(args6)) {
+                if (!t6.isolateAndMatch(fragments)) {
                     return false;
                 }
+                fragments = fragments.subList(t6.argc(fragments), fragments.size());
 
                 return true;
             }
