@@ -1,44 +1,35 @@
 package dev.enjarai.trickster.item.component;
 
-import java.util.List;
-import java.util.function.Consumer;
+import java.util.Optional;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import dev.enjarai.trickster.EndecTomfoolery;
-import dev.enjarai.trickster.spell.SpellPart;
-import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
-import dev.enjarai.trickster.spell.execution.executor.ErroredSpellExecutor;
 import dev.enjarai.trickster.spell.SpellExecutor;
-import net.minecraft.component.ComponentMap;
-import net.minecraft.text.Text;
+import dev.enjarai.trickster.Trickster;
+import io.wispforest.endec.impl.KeyedEndec;
+import net.minecraft.nbt.NbtCompound;
 
-public record SpellCoreComponent(SpellExecutor executor) {
-    public static final Codec<SpellCoreComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            EndecTomfoolery.toCodec(SpellExecutor.ENDEC).fieldOf("executor").forGetter(SpellCoreComponent::executor)
-    ).apply(instance, SpellCoreComponent::new));
+public record SpellCoreComponent(NbtCompound data) {
+    public static final Codec<SpellCoreComponent> CODEC = RecordCodecBuilder.create(
+            instance -> instance.group(
+                    NbtCompound.CODEC.fieldOf("data").forGetter(SpellCoreComponent::data)
+            ).apply(instance, SpellCoreComponent::new)
+    );
+    private static final KeyedEndec<SpellExecutor> ENDEC = SpellExecutor.ENDEC.keyed("data", () -> null);
 
-    public SpellCoreComponent(SpellPart spell) {
-        this(new DefaultSpellExecutor(spell, List.of()));
+    public static SpellCoreComponent of(SpellExecutor executor) {
+        var compound = new NbtCompound();
+        compound.put(ENDEC, executor);
+        return new SpellCoreComponent(compound);
     }
 
-    public SpellCoreComponent fail(Text error) {
-        return new SpellCoreComponent(new ErroredSpellExecutor(executor.spell(), error));
-    }
-
-    public static void refresh(ComponentMap map, Consumer<SpellCoreComponent> updateCallback) {
-        if (map.contains(ModComponents.FRAGMENT)) {
-            var fragment = map.get(ModComponents.FRAGMENT).value();
-
-            if (fragment instanceof SpellPart spell) {
-                if (!map.contains(ModComponents.SPELL_CORE)
-                        || map.get(ModComponents.SPELL_CORE) instanceof SpellCoreComponent comp
-                        && (!spell.equals(comp.executor().spell())
-                        || comp.executor() instanceof ErroredSpellExecutor)) {
-                    updateCallback.accept(new SpellCoreComponent(spell));
-                }
-            }
+    public Optional<SpellExecutor> tryDeserialize() {
+        try {
+            return Optional.ofNullable(data.get(ENDEC));
+        } catch (Throwable e) {
+            Trickster.LOGGER.error(e.getMessage());
+            return Optional.empty();
         }
     }
 }

@@ -86,6 +86,16 @@ Returns the maximum amount of mana which may be stored in the given slots.
 
 ;;;;;
 
+<|glyph@trickster:templates|trick-id=trickster:get_count_in_slot,title=Ingress of Plenitude|>
+
+slot -> number
+
+---
+
+Returns the amount of items stored in the given slot.
+
+;;;;;
+
 <|glyph@trickster:templates|trick-id=trickster:block_from_item,title=Placement Distortion|>
 
 item -> block | void

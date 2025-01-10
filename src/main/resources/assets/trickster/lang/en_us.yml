@@ -194,6 +194,7 @@ trickster:
     other_hand_slot: Catch Delusion
     get_item_in_slot: Fence's Ingress
     get_mana_in_slot: Ingress of Authority
+    get_count_in_slot: Ingress of Plenitude
     get_max_mana_in_slot: Crowning Ingress
     get_inventory_slot: Intrusive Ingress
     drop_stack_from_slot: Ploy of Offering

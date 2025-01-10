@@ -3,8 +3,6 @@ package dev.enjarai.trickster.render;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.block.ModularSpellConstructBlock;
 import dev.enjarai.trickster.block.ModularSpellConstructBlockEntity;
-import dev.enjarai.trickster.item.component.ModComponents;
-import dev.enjarai.trickster.item.component.SpellCoreComponent;
 import dev.enjarai.trickster.spell.execution.executor.ErroredSpellExecutor;
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.RenderLayer;
@@ -105,9 +103,10 @@ public class ModularSpellConstructBlockEntityRenderer implements BlockEntityRend
             var coreStack = entity.getStack(i);
             matrices.push();
 
+            var executor = entity.executors.get(i - 1);
             if (!coreStack.isEmpty()
-                    && coreStack.get(ModComponents.SPELL_CORE) instanceof SpellCoreComponent component
-                    && !(component.executor() instanceof ErroredSpellExecutor)) {
+                    && executor.isPresent()
+                    && !(executor.get() instanceof ErroredSpellExecutor)) {
                 float age = entity.age
                     + tickDelta
                     + (entity.getPos().getX()
@@ -123,7 +122,7 @@ public class ModularSpellConstructBlockEntityRenderer implements BlockEntityRend
                 matrices.multiply(RotationAxis.POSITIVE_Z.rotation(age / 10));
 
                 this.renderer.renderPart(
-                        matrices, vertexConsumers, component.executor().spell(),
+                        matrices, vertexConsumers, executor.get().spell(),
                         0, 0, 0.2f, 0,
                         tickDelta, size -> 1f, normal
                 );
