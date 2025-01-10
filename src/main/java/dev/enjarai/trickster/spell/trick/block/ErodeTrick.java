@@ -7,7 +7,9 @@ import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlockInvalidBlunder;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
+import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.Signature;
 import net.minecraft.block.*;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.server.world.ServerWorld;
@@ -16,16 +18,14 @@ import net.minecraft.util.math.Direction;
 
 import java.util.List;
 
-public class ErodeTrick extends Trick {
+public class ErodeTrick extends Trick<ErodeTrick> {
     public ErodeTrick() {
-        super(Pattern.of(0, 4, 6, 7, 8, 4, 2));
+        super(Pattern.of(0, 4, 6, 7, 8, 4, 2), Signature.of(FragmentType.VECTOR, FragmentType.VECTOR, ErodeTrick::erode));
     }
 
-    @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var weatheringPosFragment = expectInput(fragments, FragmentType.VECTOR, 0);
+    public Fragment erode(SpellContext ctx, VectorFragment weatheringPosFragment, VectorFragment waterPosFragment) throws BlunderException {
         var weatheringPos = weatheringPosFragment.toBlockPos();
-        var waterPos = expectInput(fragments, FragmentType.VECTOR, 1).toBlockPos();
+        var waterPos = waterPosFragment.toBlockPos();
 
         expectCanBuild(ctx, weatheringPos);
         expectCanBuild(ctx, waterPos);

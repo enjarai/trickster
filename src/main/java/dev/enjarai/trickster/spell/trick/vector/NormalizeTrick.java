@@ -7,19 +7,15 @@ import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.trick.DistortionTrick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.type.Signature;
 import org.joml.Vector3d;
 
-import java.util.List;
-
-public class NormalizeTrick extends DistortionTrick {
+public class NormalizeTrick extends DistortionTrick<NormalizeTrick> {
     public NormalizeTrick() {
-        super(Pattern.of(3, 4, 5, 6, 3));
+        super(Pattern.of(3, 4, 5, 6, 3), Signature.of(FragmentType.VECTOR, NormalizeTrick::normalize));
     }
 
-    @Override
-    public Fragment distort(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var vec = expectInput(fragments, FragmentType.VECTOR, 0);
-
+    public Fragment normalize(SpellContext ctx, VectorFragment vec) throws BlunderException {
         return new VectorFragment(vec.vector().normalize(new Vector3d()));
     }
 }

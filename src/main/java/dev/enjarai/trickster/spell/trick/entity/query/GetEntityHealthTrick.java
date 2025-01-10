@@ -4,9 +4,8 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
+import net.minecraft.entity.LivingEntity;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
-
-import java.util.List;
 
 public class GetEntityHealthTrick extends AbstractLivingEntityQueryTrick {
     public GetEntityHealthTrick() {
@@ -14,7 +13,7 @@ public class GetEntityHealthTrick extends AbstractLivingEntityQueryTrick {
     }
 
     @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        return new NumberFragment(getLivingEntity(ctx, fragments, 0).getHealth());
+    public Fragment run(SpellContext ctx, LivingEntity entity) throws BlunderException {
+        return new NumberFragment(entity.getHealth());
     }
 }

@@ -5,8 +5,8 @@ import java.util.Optional;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
+import dev.enjarai.trickster.spell.SpellExecutor;
 import dev.enjarai.trickster.Trickster;
-import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import io.wispforest.endec.impl.KeyedEndec;
 import net.minecraft.nbt.NbtCompound;
 

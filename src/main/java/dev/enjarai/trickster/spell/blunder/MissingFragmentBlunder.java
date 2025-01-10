@@ -9,7 +9,7 @@ public class MissingFragmentBlunder extends TrickBlunderException {
     public final int index;
     public final Text expectedType;
 
-    public MissingFragmentBlunder(Trick source, int index, Text expectedType) {
+    public MissingFragmentBlunder(Trick<?> source, int index, Text expectedType) {
         super(source);
         this.index = index;
         this.expectedType = expectedType;

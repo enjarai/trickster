@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Continues to exist for backwards compatibility, users should instead use the ConstantRevision with the same pattern.
  */
-public class ListCreateTrick extends Trick {
+public class ListCreateTrick extends Trick<ListCreateTrick> {
     public ListCreateTrick() {
         super(Pattern.of(6, 3, 0, 2, 5, 8));
     }

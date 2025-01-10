@@ -6,7 +6,7 @@ import net.minecraft.text.MutableText;
 public class NumberTooLargeBlunder extends TrickBlunderException {
     private final int maximum;
 
-    public NumberTooLargeBlunder(Trick source, int maximum) {
+    public NumberTooLargeBlunder(Trick<?> source, int maximum) {
         super(source);
         this.maximum = maximum;
     }

@@ -14,28 +14,28 @@ import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.SlotFragment;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.Signature;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class BatteryCreationTrick extends Trick {
+public class BatteryCreationTrick extends Trick<BatteryCreationTrick> {
     private final Map<Item, KnotItem> types = Map.of(
             Items.AMETHYST_SHARD, ModItems.AMETHYST_KNOT,
             Items.EMERALD, ModItems.EMERALD_KNOT,
             Items.DIAMOND, ModItems.DIAMOND_KNOT,
-            Items.ECHO_SHARD, ModItems.ECHO_KNOT
-    );
+            Items.ECHO_SHARD, ModItems.ECHO_KNOT);
 
     public BatteryCreationTrick() {
-        super(Pattern.of(6, 8, 5, 2, 1, 8, 7, 6, 1, 0, 3, 6));
+        super(Pattern.of(6, 8, 5, 2, 1, 8, 7, 6, 1, 0, 3, 6), Signature.of(FragmentType.SLOT.optionalOf(),
+                FragmentType.SLOT.optionalOf(), BatteryCreationTrick::run));
     }
 
-    @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var sourceSlot = supposeInput(fragments, FragmentType.SLOT, 0)
+    public Fragment run(SpellContext ctx, Optional<SlotFragment> slot1, Optional<SlotFragment> slot2)
+            throws BlunderException {
+        var sourceSlot = slot1
                 .orElseGet(() -> {
                     var player = ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this));
                     var inventory = player.getInventory();
@@ -52,9 +52,8 @@ public class BatteryCreationTrick extends Trick {
                 });
         var glass = ctx.getStack(
                 this,
-                supposeInput(fragments, FragmentType.SLOT, 1),
-                (item) -> item.equals(Items.GLASS)
-            ).orElseThrow(() -> new MissingItemBlunder(this));
+                slot2,
+                (stack) -> stack.isOf(Items.GLASS)).orElseThrow(() -> new MissingItemBlunder(this));
         var sourceItem = sourceSlot.getItem(this, ctx);
         var type = types.get(sourceItem);
 

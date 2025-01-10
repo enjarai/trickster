@@ -7,7 +7,7 @@ import net.minecraft.text.MutableText;
 public class AssertionBlunder extends TrickBlunderException {
     private final Fragment value;
 
-    public AssertionBlunder(Trick source, Fragment value) {
+    public AssertionBlunder(Trick<?> source, Fragment value) {
         super(source);
         this.value = value;
     }

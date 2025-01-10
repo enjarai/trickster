@@ -1,35 +1,46 @@
 package dev.enjarai.trickster.spell.trick.projectile;
 
+import java.util.Optional;
+
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
-import dev.enjarai.trickster.spell.blunder.ItemInvalidBlunder;
-import net.minecraft.entity.Entity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import dev.enjarai.trickster.spell.blunder.MissingItemBlunder;
+import dev.enjarai.trickster.spell.fragment.EntityFragment;
+import dev.enjarai.trickster.spell.fragment.FragmentType;
+import dev.enjarai.trickster.spell.fragment.SlotFragment;
+import dev.enjarai.trickster.spell.fragment.VectorFragment;
+import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.Signature;
 import net.minecraft.item.ProjectileItem;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
-import org.joml.Vector3dc;
 
-import java.util.List;
-
-public class SummonArrowTrick extends AbstractProjectileTrick {
+public class SummonArrowTrick extends Trick<SummonArrowTrick> {
     public SummonArrowTrick() {
-        super(Pattern.of(2, 5, 1, 2, 4, 3, 6, 4, 7, 6));
+        super(Pattern.of(2, 5, 1, 2, 4, 3, 6, 4, 7, 6), Signature.of(FragmentType.VECTOR, FragmentType.SLOT.optionalOf(), SummonArrowTrick::run));
     }
 
-    @Override
-    protected Entity makeProjectile(SpellContext ctx, Vector3dc pos, ItemStack stack, List<Fragment> extraInputs) throws BlunderException {
-        if (stack.getItem() instanceof ProjectileItem item) {
-            return item.createEntity(ctx.source().getWorld(), new Vec3d(0, 0, 0).fromVector3d(pos), stack, Direction.DOWN);
-        } else throw new ItemInvalidBlunder(this);
+    public Fragment run(SpellContext ctx, VectorFragment pos, Optional<SlotFragment> optionalSlot) throws BlunderException {
+        var stack = ctx.getStack(this, optionalSlot, s -> s.isIn(ItemTags.ARROWS) && s.getItem() instanceof ProjectileItem).orElseThrow(() -> new MissingItemBlunder(this));
+        var world = ctx.source().getWorld();
+
+        try {
+            ctx.useMana(this, cost(ctx.source().getPos().distance(pos.vector())));
+
+            var projectile = ((ProjectileItem) stack.getItem()).createEntity(ctx.source().getWorld(), new Vec3d(0, 0, 0).fromVector3d(pos.vector()), stack, Direction.DOWN);
+
+            world.spawnEntity(projectile);
+            return EntityFragment.from(projectile);
+        } catch (Throwable err) {
+            ctx.source().offerOrDropItem(stack);
+            throw err;
+        }
     }
 
-    @Override
-    protected boolean isValidItem(Item item) {
-        return item.getRegistryEntry().isIn(ItemTags.ARROWS) && item instanceof ProjectileItem;
+    private float cost(double dist) {
+        return (float) (20 + Math.pow(dist, (dist / 3)));
     }
 }

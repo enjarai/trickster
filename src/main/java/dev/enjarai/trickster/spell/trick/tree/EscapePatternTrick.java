@@ -2,21 +2,19 @@ package dev.enjarai.trickster.spell.trick.tree;
 
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.PatternGlyph;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.Signature;
 
-import java.util.List;
-
-public class EscapePatternTrick extends Trick {
+public class EscapePatternTrick extends Trick<EscapePatternTrick> {
     public EscapePatternTrick() {
-        super(Pattern.of(1, 5, 7, 3, 1, 4, 3));
+        super(Pattern.of(1, 5, 7, 3, 1, 4, 3), Signature.of(FragmentType.PATTERN, EscapePatternTrick::run));
     }
 
-    @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var pattern = expectInput(fragments, FragmentType.PATTERN, 0);
+    public Fragment run(SpellContext ctx, PatternGlyph pattern) throws BlunderException {
         return pattern.pattern();
     }
 }

@@ -7,7 +7,7 @@ import net.minecraft.text.MutableText;
 public class EntityCannotBeStoredBlunder extends TrickBlunderException {
     private final Entity entity;
 
-    public EntityCannotBeStoredBlunder(Trick source, Entity entity) {
+    public EntityCannotBeStoredBlunder(Trick<?> source, Entity entity) {
         super(source);
         this.entity = entity;
     }

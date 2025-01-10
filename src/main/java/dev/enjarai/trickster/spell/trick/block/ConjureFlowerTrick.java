@@ -11,19 +11,18 @@ import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlockOccupiedBlunder;
 import dev.enjarai.trickster.spell.blunder.BlockUnoccupiedBlunder;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.type.Signature;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.math.Direction;
 
 import java.util.List;
 
-public class ConjureFlowerTrick extends Trick {
+public class ConjureFlowerTrick extends Trick<ConjureFlowerTrick> {
     public ConjureFlowerTrick() {
-        super(Pattern.of(4, 0, 1, 4, 2, 5, 4, 8, 7, 4, 6, 3, 4));
+        super(Pattern.of(4, 0, 1, 4, 2, 5, 4, 8, 7, 4, 6, 3, 4), Signature.of(FragmentType.VECTOR, ConjureFlowerTrick::conjure));
     }
 
-    @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var pos = expectInput(fragments, FragmentType.VECTOR, 0);
+    public Fragment conjure(SpellContext ctx, VectorFragment pos) throws BlunderException {
         var blockPos = pos.toBlockPos();
         var world = ctx.source().getWorld();
         expectCanBuild(ctx, blockPos);

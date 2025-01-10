@@ -3,21 +3,18 @@ package dev.enjarai.trickster.spell.trick.math;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.trick.DistortionTrick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.type.Signature;
 
-import java.util.List;
-
-public class PowerTrick extends DistortionTrick {
+public class PowerTrick extends DistortionTrick<PowerTrick> {
     public PowerTrick() {
-        super(Pattern.of(6, 1, 8));
+        super(Pattern.of(6, 1, 8), Signature.of(FragmentType.NUMBER, FragmentType.NUMBER, PowerTrick::math));
     }
 
-    @Override
-    public Fragment distort(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var base = expectInput(fragments, NumberFragment.class, 0).number();
-        var exponent = expectInput(fragments, NumberFragment.class, 1).number();
-        return new NumberFragment(Math.pow(base, exponent));
+    public Fragment math(SpellContext ctx, NumberFragment base, NumberFragment exponent) throws BlunderException {
+        return new NumberFragment(Math.pow(base.number(), exponent.number()));
     }
 }

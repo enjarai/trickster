@@ -4,7 +4,7 @@ import dev.enjarai.trickster.spell.trick.Trick;
 import net.minecraft.text.MutableText;
 
 public class EntityAlreadyStoredBlunder extends TrickBlunderException {
-    public EntityAlreadyStoredBlunder(Trick source) {
+    public EntityAlreadyStoredBlunder(Trick<?> source) {
         super(source);
     }
 

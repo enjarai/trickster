@@ -1,6 +1,5 @@
 package dev.enjarai.trickster.spell.execution.source;
 
-import dev.enjarai.trickster.block.SpellConstructBlock;
 import dev.enjarai.trickster.spell.CrowMind;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.execution.SpellExecutionManager;

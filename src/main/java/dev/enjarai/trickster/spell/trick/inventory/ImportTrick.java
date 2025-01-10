@@ -6,49 +6,31 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
-import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
+import dev.enjarai.trickster.spell.SpellExecutor;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
+import dev.enjarai.trickster.spell.fragment.ItemTypeFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.Signature;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
-import dev.enjarai.trickster.spell.blunder.ItemInvalidBlunder;
 import dev.enjarai.trickster.spell.blunder.MissingItemBlunder;
-import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
-import dev.enjarai.trickster.spell.trick.func.ForkingTrick;
 
 import java.util.List;
+import java.util.Optional;
 
-public class ImportTrick extends Trick implements ForkingTrick {
+public class ImportTrick extends Trick<ImportTrick> {
     public ImportTrick() {
-        super(Pattern.of(3, 0, 5, 6, 3, 2, 5, 8, 3));
+        super(Pattern.of(3, 0, 5, 6, 3, 2, 5, 8, 3), Signature.of(FragmentType.ITEM_TYPE, ANY_VARIADIC, ImportTrick::run));
     }
 
-    @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        return makeFork(ctx, fragments).singleTickRun(ctx);
-    }
+    public SpellExecutor run(SpellContext ctx, ItemTypeFragment itemType, List<Fragment> args) throws BlunderException {
+        var stack = ctx.getStack(this, Optional.empty(), s -> s.isOf(itemType.item()) && s.contains(ModComponents.FRAGMENT));
 
-    @Override
-    public SpellExecutor makeFork(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var itemType = expectInput(fragments, FragmentType.ITEM_TYPE, 0);
-
-        var player = ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this));
-        var inventory = player.getInventory();
-
-        for (int i = 0; i < inventory.size(); i++) {
-            var stack = inventory.getStack(i);
-
-            if (stack.isOf(itemType.item())) {
-                var component = stack.get(ModComponents.FRAGMENT);
-
-                if (component == null) {
-                    throw new ItemInvalidBlunder(this);
-                }
-
-                var spell = component.value() instanceof SpellPart part ? part : new SpellPart(component.value());
-                return new DefaultSpellExecutor(spell, ctx.state().recurseOrThrow(fragments.subList(1, fragments.size())));
-            }
+        if (stack.isEmpty()) {
+            throw new MissingItemBlunder(this);
         }
 
-        throw new MissingItemBlunder(this);
+        var component = stack.get().get(ModComponents.FRAGMENT);
+        var spell = component.value() instanceof SpellPart part ? part : new SpellPart(component.value());
+        return new DefaultSpellExecutor(spell, ctx.state().recurseOrThrow(args));
     }
 }

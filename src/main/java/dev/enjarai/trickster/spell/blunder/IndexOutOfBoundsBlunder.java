@@ -6,7 +6,7 @@ import net.minecraft.text.MutableText;
 public class IndexOutOfBoundsBlunder extends TrickBlunderException {
     public final int index;
 
-    public IndexOutOfBoundsBlunder(Trick source, int index) {
+    public IndexOutOfBoundsBlunder(Trick<?> source, int index) {
         super(source);
         this.index = index;
     }

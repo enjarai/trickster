@@ -3,25 +3,24 @@ package dev.enjarai.trickster.spell.trick.func;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.Signature;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 
 import java.util.List;
 
-public class ForkTrick extends Trick {
+public class ForkTrick extends Trick<ForkTrick> {
     public ForkTrick() {
-        super(Pattern.of(7, 4, 1, 0, 3, 6, 7, 8, 5, 4, 2));
+        super(Pattern.of(7, 4, 1, 0, 3, 6, 7, 8, 5, 4, 2), Signature.of(FragmentType.SPELL_PART, ANY_VARIADIC, ForkTrick::run));
     }
 
-    @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var spell = expectInput(fragments, FragmentType.SPELL_PART, 0);
-        var arguments = fragments.subList(1, fragments.size());
+    public Fragment run(SpellContext ctx, SpellPart spell, List<Fragment> args) throws BlunderException {
         var queued = ctx.source()
             .getExecutionManager()
-            .map(manager -> manager.queue(spell, arguments))
+            .map(manager -> manager.queue(spell, args))
             .orElse(-1);
         return new NumberFragment(queued);
     }

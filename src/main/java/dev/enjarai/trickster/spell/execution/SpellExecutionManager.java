@@ -5,7 +5,7 @@ import java.util.List;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
-import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
+import dev.enjarai.trickster.spell.SpellExecutor;
 
 public interface SpellExecutionManager {
     default int queue(SpellPart spell, List<Fragment> arguments) {
@@ -13,6 +13,8 @@ public interface SpellExecutionManager {
     }
 
     int queue(SpellExecutor executor);
+
     boolean kill(int index);
+
     void killAll();
 }

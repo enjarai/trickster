@@ -11,7 +11,7 @@ public class IncorrectFragmentBlunder extends TrickBlunderException {
     public final Text expectedType;
     public final Fragment found;
 
-    public IncorrectFragmentBlunder(Trick source, int index, Text expectedType, Fragment found) {
+    public IncorrectFragmentBlunder(Trick<?> source, int index, Text expectedType, Fragment found) {
         super(source);
         this.index = index;
         this.expectedType = expectedType;

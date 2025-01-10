@@ -8,21 +8,19 @@ import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.Signature;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
 import io.wispforest.accessories.api.slot.SlotReference;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 
-import java.util.List;
-
-public class CheckHatTrick extends Trick {
+public class CheckHatTrick extends Trick<CheckHatTrick> {
     public CheckHatTrick() {
-        super(Pattern.of(3, 0, 2, 5, 8, 6, 3, 1, 5, 7, 3));
+        super(Pattern.of(3, 0, 2, 5, 8, 6, 3, 1, 5, 7, 3), Signature.of(CheckHatTrick::run));
     }
 
-    @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment run(SpellContext ctx) throws BlunderException {
         var player = ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this));
         ItemStack hatStack;
 

@@ -5,17 +5,17 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.trick.DistortionTrick;
+import dev.enjarai.trickster.spell.type.Signature;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 
 import java.util.List;
 
-public class EqualsTrick extends DistortionTrick {
+public class EqualsTrick extends DistortionTrick<EqualsTrick> {
     public EqualsTrick() {
-        super(Pattern.of(0, 2, 5, 8, 6));
+        super(Pattern.of(0, 2, 5, 8, 6), Signature.of(ANY_VARIADIC, EqualsTrick::run));
     }
 
-    @Override
-    public Fragment distort(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment run(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         Fragment last = null;
         for (Fragment fragment : fragments) {
             if (last != null && !fragment.fuzzyEquals(last)) {

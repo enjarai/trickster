@@ -4,7 +4,7 @@ import dev.enjarai.trickster.spell.trick.Trick;
 import net.minecraft.text.MutableText;
 
 public class UnknownEventBlunder extends TrickBlunderException {
-    public UnknownEventBlunder(Trick source) {
+    public UnknownEventBlunder(Trick<?> source) {
         super(source);
     }
 

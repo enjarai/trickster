@@ -9,7 +9,7 @@ public class CannotPlaceBlockBlunder extends TrickBlunderException {
     public final Block block;
     public final VectorFragment pos;
 
-    public CannotPlaceBlockBlunder(Trick source, Block block, VectorFragment pos) {
+    public CannotPlaceBlockBlunder(Trick<?> source, Block block, VectorFragment pos) {
         super(source);
         this.block = block;
         this.pos = pos;

@@ -1,10 +1,7 @@
 package dev.enjarai.trickster.spell;
 
 import dev.enjarai.trickster.spell.execution.SerializedSpellInstruction;
-import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import io.wispforest.endec.Endec;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
-import org.apache.commons.lang3.NotImplementedException;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,15 +17,7 @@ public sealed interface SpellInstruction permits Fragment, EnterScopeInstruction
 
     SerializedSpellInstruction asSerialized();
 
-    default Optional<BiFunction<SpellContext, List<Fragment>, Fragment>> getActivator() {
+    default Optional<BiFunction<SpellContext, List<Fragment>, EvaluationResult>> getActivator() {
         return Optional.empty();
-    }
-
-    default SpellExecutor makeFork(SpellContext ctx, List<Fragment> args) throws BlunderException {
-        throw new NotImplementedException();
-    }
-
-    default boolean forks(SpellContext ctx, List<Fragment> args) {
-        return false;
     }
 }

@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.spell.execution.executor;
 
 import dev.enjarai.trickster.Trickster;
+import dev.enjarai.trickster.spell.SpellExecutor;
 import io.wispforest.endec.StructEndec;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.minecraft.registry.Registry;

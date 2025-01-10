@@ -8,25 +8,25 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
+import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.EntityInvalidBlunder;
 import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
+import dev.enjarai.trickster.spell.type.Signature;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.math.Vec3d;
 
-import java.util.List;
 import java.util.Optional;
 
-public class ReleaseEntityTrick extends Trick {
+public class ReleaseEntityTrick extends Trick<ReleaseEntityTrick> {
     public ReleaseEntityTrick() {
-        super(Pattern.of(4, 3, 6, 7, 4, 8, 2));
+        super(Pattern.of(4, 3, 6, 7, 4, 8, 2), Signature.of(FragmentType.VECTOR, ReleaseEntityTrick::release));
     }
 
-    @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var pos = expectInput(fragments, FragmentType.VECTOR, 0).vector();
+    public Fragment release(SpellContext ctx, VectorFragment vector) throws BlunderException {
+        var pos = vector.vector();
         var player = ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this));
         var offhand = player.getOffHandStack();
         var entityStorage = offhand.get(ModComponents.ENTITY_STORAGE);

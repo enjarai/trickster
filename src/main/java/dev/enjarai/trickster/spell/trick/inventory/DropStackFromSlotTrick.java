@@ -6,30 +6,31 @@ import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
+import dev.enjarai.trickster.spell.fragment.SlotFragment;
+import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.Signature;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.NumberTooSmallBlunder;
 import net.minecraft.entity.ItemEntity;
 
-import java.util.List;
+import java.util.Optional;
 
-public class DropStackFromSlotTrick extends Trick {
+public class DropStackFromSlotTrick extends Trick<DropStackFromSlotTrick> {
     public DropStackFromSlotTrick() {
-        super(Pattern.of(1, 4, 7, 3, 4, 5, 7));
+        super(Pattern.of(1, 4, 7, 3, 4, 5, 7), Signature.of(FragmentType.SLOT, FragmentType.VECTOR, FragmentType.NUMBER.optionalOf(), DropStackFromSlotTrick::run));
     }
 
-    @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var slot = expectInput(fragments, FragmentType.SLOT, 0);
-        var pos = expectInput(fragments, FragmentType.VECTOR, 1).toBlockPos();
-        var amount = supposeInput(fragments, FragmentType.NUMBER, 2).orElse(new NumberFragment(1)).number();
+    public Fragment run(SpellContext ctx, SlotFragment slot, VectorFragment pos, Optional<NumberFragment> optionalAmount) throws BlunderException {
+        var blockPos = pos.toBlockPos();
+        var amount = optionalAmount.orElse(new NumberFragment(1)).number();
 
         if (amount < 1)
             throw new NumberTooSmallBlunder(this, 1);
 
-        var stack = slot.move(this, ctx, (int) Math.round(amount), pos);
+        var stack = slot.move(this, ctx, (int) Math.round(amount), blockPos);
         var world = ctx.source().getWorld();
-        var entity = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), stack);
+        var entity = new ItemEntity(world, blockPos.getX(), blockPos.getY(), blockPos.getZ(), stack);
 
         world.spawnEntity(entity);
         return new EntityFragment(entity.getUuid(), entity.getName());

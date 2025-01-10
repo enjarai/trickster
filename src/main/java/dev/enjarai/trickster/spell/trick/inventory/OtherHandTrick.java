@@ -5,19 +5,19 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.ItemTypeFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.Signature;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.MissingItemBlunder;
 
-import java.util.List;
-
-public class OtherHandTrick extends Trick {
+public class OtherHandTrick extends Trick<OtherHandTrick> {
     public OtherHandTrick() {
-        super(Pattern.of(7, 4, 1, 0, 3, 4));
+        super(Pattern.of(7, 4, 1, 0, 3, 4), Signature.of(OtherHandTrick::run));
     }
 
-    @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        return new ItemTypeFragment(ctx.source().getOtherHandStack()
-                .orElseThrow(() -> new MissingItemBlunder(this)).getItem());
+    public Fragment run(SpellContext ctx) throws BlunderException {
+        return new ItemTypeFragment(
+                ctx.source().getOtherHandStack()
+                        .orElseThrow(() -> new MissingItemBlunder(this)).getItem()
+        );
     }
 }

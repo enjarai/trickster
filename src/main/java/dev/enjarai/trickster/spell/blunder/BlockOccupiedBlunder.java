@@ -7,7 +7,7 @@ import net.minecraft.text.MutableText;
 public class BlockOccupiedBlunder extends TrickBlunderException {
     public final VectorFragment pos;
 
-    public BlockOccupiedBlunder(Trick source, VectorFragment pos) {
+    public BlockOccupiedBlunder(Trick<?> source, VectorFragment pos) {
         super(source);
         this.pos = pos;
     }

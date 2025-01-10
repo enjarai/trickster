@@ -7,20 +7,15 @@ import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.trick.DistortionTrick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.type.Signature;
 import org.joml.Vector3d;
 
-import java.util.List;
-
-public class CrossProductTrick extends DistortionTrick {
+public class CrossProductTrick extends DistortionTrick<CrossProductTrick> {
     public CrossProductTrick() {
-        super(Pattern.of(0, 4, 8, 6, 4, 2));
+        super(Pattern.of(0, 4, 8, 6, 4, 2), Signature.of(FragmentType.VECTOR, FragmentType.VECTOR, CrossProductTrick::math));
     }
 
-    @Override
-    public Fragment distort(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var vec1 = expectInput(fragments, FragmentType.VECTOR, 0);
-        var vec2 = expectInput(fragments, FragmentType.VECTOR, 1);
-
+    public Fragment math(SpellContext ctx, VectorFragment vec1, VectorFragment vec2) throws BlunderException {
         return new VectorFragment(vec1.vector().cross(vec2.vector(), new Vector3d()));
     }
 }

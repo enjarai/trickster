@@ -8,7 +8,6 @@ import dev.enjarai.trickster.item.TrickHatItem;
 import dev.enjarai.trickster.pond.QuackingInGameHud;
 import dev.enjarai.trickster.render.FunnyStaticFrameBufferThing;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gl.Framebuffer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.render.RenderTickCounter;
@@ -28,9 +27,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class InGameHudMixin implements QuackingInGameHud {
     @Inject(method = "renderVignetteOverlay", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIFFIIII)V"))
     private void changeColorWhenFrozen(DrawContext context, Entity entity, CallbackInfo ci) {
-        if (entity instanceof LivingEntity livingEntity
-                && livingEntity.getAttributes().hasModifierForAttribute(EntityAttributes.GENERIC_MOVEMENT_SPEED,
-                        Trickster.NEGATE_ATTRIBUTE.id())) {
+        if (
+            entity instanceof LivingEntity livingEntity
+                    && livingEntity.getAttributes().hasModifierForAttribute(
+                            EntityAttributes.GENERIC_MOVEMENT_SPEED,
+                            Trickster.NEGATE_ATTRIBUTE.id()
+                    )
+        ) {
             context.setShaderColor(0.4f, 0.4f, 0f, 1f);
         }
     }
@@ -39,17 +42,17 @@ public class InGameHudMixin implements QuackingInGameHud {
     private float animationOffset;
 
     @Inject(
-            method = "renderHotbar",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/client/option/SimpleOption;getValue()Ljava/lang/Object;"
+            method = "renderHotbar", at = @At(
+                    value = "INVOKE", target = "Lnet/minecraft/client/option/SimpleOption;getValue()Ljava/lang/Object;"
             )
     )
     private void renderHatHud(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci, @Local PlayerEntity player) {
         var hatStack = player.getOffHandStack();
         if (hatStack.isIn(ModItems.HOLDABLE_HAT)) {
-            var deltaAnimationOffset = MathHelper.lerp(tickCounter.getTickDelta(false),
-                    animationOffset, animationOffset - animationOffset / 4);
+            var deltaAnimationOffset = MathHelper.lerp(
+                    tickCounter.getTickDelta(false),
+                    animationOffset, animationOffset - animationOffset / 4
+            );
             int roundedAnimationOffset = deltaAnimationOffset < 0 ? MathHelper.ceil(deltaAnimationOffset) : MathHelper.floor(deltaAnimationOffset);
 
             var matrices = context.getMatrices();
@@ -88,8 +91,7 @@ public class InGameHudMixin implements QuackingInGameHud {
     }
 
     @Inject(
-            method = "tick()V",
-            at = @At("TAIL")
+            method = "tick()V", at = @At("TAIL")
     )
     private void tickHatHud(CallbackInfo ci) {
         animationOffset -= animationOffset / 4;

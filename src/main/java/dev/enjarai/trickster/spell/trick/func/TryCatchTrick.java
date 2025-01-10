@@ -3,28 +3,22 @@ package dev.enjarai.trickster.spell.trick.func;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
+import dev.enjarai.trickster.spell.SpellPart;
+import dev.enjarai.trickster.spell.SpellExecutor;
 import dev.enjarai.trickster.spell.execution.executor.TryCatchSpellExecutor;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.Signature;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 
 import java.util.List;
 
-public class TryCatchTrick extends Trick implements ForkingTrick {
+public class TryCatchTrick extends Trick<TryCatchTrick> {
     public TryCatchTrick() {
-        super(Pattern.of(1, 6, 8, 1, 5, 2, 0, 3, 1, 4));
+        super(Pattern.of(1, 6, 8, 1, 5, 2, 0, 3, 1, 4), Signature.of(FragmentType.SPELL_PART, FragmentType.SPELL_PART, ANY_VARIADIC, TryCatchTrick::run));
     }
 
-    @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        return makeFork(ctx, fragments).singleTickRun(ctx.source());
-    }
-
-    @Override
-    public SpellExecutor makeFork(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var try_spell = expectInput(fragments, FragmentType.SPELL_PART, 0);
-        var catch_spell = expectInput(fragments, FragmentType.SPELL_PART, 1);
-        return new TryCatchSpellExecutor(ctx, try_spell, catch_spell, fragments.subList(2, fragments.size()));
+    public SpellExecutor run(SpellContext ctx, SpellPart trySpell, SpellPart catchSpell, List<Fragment> args) throws BlunderException {
+        return new TryCatchSpellExecutor(ctx, trySpell, catchSpell, args);
     }
 }

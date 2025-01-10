@@ -6,7 +6,7 @@ import net.minecraft.text.MutableText;
 public class NumberTooSmallBlunder extends TrickBlunderException {
     private final int minimum;
 
-    public NumberTooSmallBlunder(Trick source, int minimum) {
+    public NumberTooSmallBlunder(Trick<?> source, int minimum) {
         super(source);
         this.minimum = minimum;
     }

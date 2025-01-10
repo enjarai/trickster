@@ -4,22 +4,28 @@ import dev.enjarai.trickster.fleck.SpellFleck;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.SpellPart;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
+import dev.enjarai.trickster.spell.fragment.NumberFragment;
+import dev.enjarai.trickster.spell.fragment.VectorFragment;
+import dev.enjarai.trickster.spell.type.Signature;
+
 import org.joml.Vector3f;
 
 import java.util.List;
+import java.util.Optional;
 
-public class SpellFleckTrick extends AbstractFleckTrick {
+public class SpellFleckTrick extends AbstractFleckTrick<SpellFleckTrick> {
     public SpellFleckTrick() {
-        super(Pattern.of(3, 4, 5, 8, 7, 6, 3, 0, 1, 2, 5));
+        super(
+                Pattern.of(3, 4, 5, 8, 7, 6, 3, 0, 1, 2, 5),
+                Signature.of(FragmentType.NUMBER, FragmentType.VECTOR, FragmentType.VECTOR, FragmentType.SPELL_PART, variadic(FragmentType.ENTITY).unpack().optionalOf(), SpellFleckTrick::run)
+        );
     }
 
-    @Override
-    public SpellFleck makeFleck(SpellContext ctx, List<Fragment> fragments) {
-        var position = expectInput(fragments, FragmentType.VECTOR, 0).vector();
-        var facing = expectInput(fragments, FragmentType.VECTOR, 1).vector();
-        var spell = expectInput(fragments, FragmentType.SPELL_PART, 2);
-
-        return new SpellFleck(position.get(new Vector3f()), facing.get(new Vector3f()), spell);
+    public Fragment run(SpellContext ctx, NumberFragment id, VectorFragment position, VectorFragment facing, SpellPart spell, Optional<List<EntityFragment>> targets) throws BlunderException {
+        return display(ctx, id, new SpellFleck(position.vector().get(new Vector3f()), facing.vector().get(new Vector3f()), spell), targets);
     }
 }

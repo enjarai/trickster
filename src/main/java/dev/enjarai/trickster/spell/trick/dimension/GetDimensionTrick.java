@@ -6,16 +6,14 @@ import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.DimensionFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.type.Signature;
 
-import java.util.List;
-
-public class GetDimensionTrick extends Trick {
+public class GetDimensionTrick extends Trick<GetDimensionTrick> {
     public GetDimensionTrick() {
-        super(Pattern.of(4, 0, 1, 4, 3, 6, 5, 2, 4));
+        super(Pattern.of(4, 0, 1, 4, 3, 6, 5, 2, 4), Signature.of(GetDimensionTrick::run));
     }
 
-    @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment run(SpellContext ctx) throws BlunderException {
         return DimensionFragment.of(ctx.source().getWorld());
     }
 }

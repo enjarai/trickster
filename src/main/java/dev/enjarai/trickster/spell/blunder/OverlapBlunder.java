@@ -8,7 +8,7 @@ public class OverlapBlunder extends TrickBlunderException {
     public final VectorFragment pos1;
     public final VectorFragment pos2;
 
-    public OverlapBlunder(Trick source, VectorFragment pos1, VectorFragment pos2) {
+    public OverlapBlunder(Trick<?> source, VectorFragment pos1, VectorFragment pos2) {
         super(source);
         this.pos1 = pos1;
         this.pos2 = pos2;
