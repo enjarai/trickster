@@ -11,9 +11,12 @@ public class InvalidInputsBlunder extends TrickBlunderException {
     @Override
     public MutableText createMessage() {
         var text = super.createMessage().append("Invalid inputs, the following signatures are valid for this trick:");
-        for (var handler : source.getHandlers()) {
-            text = text.append("\n- ").append(handler.asText());
+
+        for (var signature : source.getSignatures()) {
+            text = text.append("\n- ").append(signature.asText());
         }
+
+        text.append("\n");
         return text;
     }
 }

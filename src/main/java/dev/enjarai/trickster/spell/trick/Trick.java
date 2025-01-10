@@ -168,7 +168,7 @@ public abstract class Trick<T extends Trick<T>> {
         );
     }
 
-    public List<Signature<T>> getHandlers() {
+    public List<Signature<T>> getSignatures() {
         return handlers;
     }
 }
