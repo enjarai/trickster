@@ -108,6 +108,11 @@ public record FragmentType<T extends Fragment>(StructEndec<T> endec, OptionalInt
         return text;
     }
 
+    @Override
+    public MutableText asText() {
+        return getName();
+    }
+
     public static FragmentType<?> getFromInt(int intId) {
         var id = INT_ID_LOOKUP.get(intId);
         if (id == null) {

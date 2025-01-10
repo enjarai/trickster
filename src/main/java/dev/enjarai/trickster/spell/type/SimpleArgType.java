@@ -6,6 +6,8 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
 
 public class SimpleArgType<T extends Fragment> implements ArgType<T> {
     private final Class<T> type;
@@ -49,5 +51,10 @@ public class SimpleArgType<T extends Fragment> implements ArgType<T> {
                 return this;
             }
         };
+    }
+
+    @Override
+    public MutableText asText() {
+        return Text.translatableWithFallback("fragment.class." + type.getSimpleName(), type.getSimpleName());
     }
 }

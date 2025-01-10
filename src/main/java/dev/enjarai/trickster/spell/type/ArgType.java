@@ -14,6 +14,7 @@ import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import io.vavr.collection.HashMap;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.MutableText;
 
 public interface ArgType<T> {
     int argc(List<Fragment> fragments);
@@ -23,6 +24,8 @@ public interface ArgType<T> {
     boolean match(List<Fragment> fragments);
 
     ArgType<T> wardOf();
+
+    MutableText asText();
 
     default List<Fragment> isolate(int start, List<Fragment> fragments) {
         return fragments.subList(start, argc(fragments));

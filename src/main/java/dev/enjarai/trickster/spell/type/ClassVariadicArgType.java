@@ -8,6 +8,8 @@ import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
 
 public class ClassVariadicArgType<T extends Fragment> implements VariadicArgType<T> {
     private final Class<T>[] types;
@@ -104,5 +106,22 @@ public class ClassVariadicArgType<T extends Fragment> implements VariadicArgType
     @Override
     public VariadicArgType<T> unpack() {
         return new ClassVariadicArgType<>(types, required, true);
+    }
+
+    @Override
+    public MutableText asText() {
+        if (types.length == 1) {
+            return Text.translatableWithFallback("fragment.class." + types[0].getSimpleName(), types[0].getSimpleName()).append("...");
+        }
+
+        var text = Text.literal("[");
+        for (int i = 0; i < types.length; i++) {
+            var type = types[i];
+            if (i > 0) {
+                text = text.append(", ");
+            }
+            text = text.append(Text.translatableWithFallback("fragment.class." + type.getSimpleName(), type.getSimpleName()));
+        }
+        return text.append("]...");
     }
 }

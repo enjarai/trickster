@@ -6,6 +6,7 @@ import java.util.Optional;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.trick.Trick;
+import net.minecraft.text.MutableText;
 
 public class OptionalArgType<T> implements ArgType<Optional<T>> {
     private final ArgType<T> type;
@@ -40,5 +41,10 @@ public class OptionalArgType<T> implements ArgType<Optional<T>> {
     @Override
     public ArgType<Optional<T>> wardOf() {
         return new OptionalArgType<>(type.wardOf());
+    }
+
+    @Override
+    public MutableText asText() {
+        return type.asText().append("?");
     }
 }

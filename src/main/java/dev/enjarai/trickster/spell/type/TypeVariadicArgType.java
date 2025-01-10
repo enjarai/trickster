@@ -6,6 +6,9 @@ import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,5 +107,22 @@ public class TypeVariadicArgType<T extends Fragment> implements VariadicArgType<
     @Override
     public VariadicArgType<T> unpack() {
         return new TypeVariadicArgType<>(types, required, true);
+    }
+
+    @Override
+    public MutableText asText() {
+        if (types.length == 1) {
+            return types[0].asText().append("...");
+        }
+
+        var text = Text.literal("[");
+        for (int i = 0; i < types.length; i++) {
+            var type = types[i];
+            if (i > 0) {
+                text = text.append(", ");
+            }
+            text = text.append(type.asText());
+        }
+        return text.append("]...");
     }
 }
