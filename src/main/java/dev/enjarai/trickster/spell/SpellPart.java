@@ -231,11 +231,6 @@ public final class SpellPart implements Fragment {
         return asText();
     }
 
-    @Override
-    public boolean asBoolean() {
-        return glyph.asBoolean() || !subParts.isEmpty();
-    }
-
     public SpellPart deepClone() {
         var glyph = this.glyph instanceof SpellPart spell ? spell.deepClone() : this.glyph;
 

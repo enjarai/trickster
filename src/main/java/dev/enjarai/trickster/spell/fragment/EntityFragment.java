@@ -39,11 +39,6 @@ public record EntityFragment(UUID uuid, Text name) implements Fragment {
     }
 
     @Override
-    public boolean asBoolean() {
-        return true;
-    }
-
-    @Override
     public Fragment applyEphemeral() {
         return new ZalgoFragment();
     }

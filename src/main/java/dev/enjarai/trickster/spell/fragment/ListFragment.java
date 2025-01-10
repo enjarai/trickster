@@ -49,11 +49,6 @@ public record ListFragment(List<Fragment> fragments) implements FoldableFragment
     }
 
     @Override
-    public boolean asBoolean() {
-        return !fragments.isEmpty();
-    }
-
-    @Override
     public int getWeight() {
         int weight = 16;
 

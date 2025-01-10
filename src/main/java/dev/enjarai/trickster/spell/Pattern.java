@@ -120,11 +120,6 @@ public record Pattern(List<PatternEntry> entries) implements Fragment {
     }
 
     @Override
-    public boolean asBoolean() {
-        return !isEmpty();
-    }
-
-    @Override
     public int getWeight() {
         return 32;
     }

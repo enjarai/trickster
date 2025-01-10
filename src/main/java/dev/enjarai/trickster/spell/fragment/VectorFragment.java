@@ -72,11 +72,6 @@ public class VectorFragment implements AddableFragment, SubtractableFragment, Mu
     }
 
     @Override
-    public boolean asBoolean() {
-        return !this.equals(VectorFragment.ZERO);
-    }
-
-    @Override
     public int getWeight() {
         return 24;
     }

@@ -55,7 +55,9 @@ public non-sealed interface Fragment extends EvaluationResult, SpellInstruction 
         );
     }
 
-    boolean asBoolean();
+    default boolean asBoolean() {
+        return true;
+    }
 
     default boolean fuzzyEquals(Fragment other) {
         return equals(other);

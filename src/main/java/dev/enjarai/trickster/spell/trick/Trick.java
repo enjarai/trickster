@@ -17,6 +17,7 @@ import dev.enjarai.trickster.spell.fragment.ListFragment;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.type.Signature;
 import dev.enjarai.trickster.spell.type.SimpleArgType;
+import dev.enjarai.trickster.spell.type.ArgType;
 import dev.enjarai.trickster.spell.type.ClassVariadicArgType;
 import dev.enjarai.trickster.spell.type.TypeVariadicArgType;
 import io.vavr.collection.HashMap;
@@ -31,13 +32,37 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.commons.lang3.NotImplementedException;
-
 public abstract class Trick<T extends Trick<T>> {
     public static final Identifier TRICK_RANDOM = Trickster.id("trick");
 
     protected static final SimpleArgType<Fragment> ANY = simple(Fragment.class);
     protected static final ClassVariadicArgType<Fragment> ANY_VARIADIC = variadic(Fragment.class);
+    protected static final ArgType<Boolean> ANY_AS_BOOL = new ArgType<>() {
+        @Override
+        public int argc(List<Fragment> fragments) {
+            return ANY.argc(fragments);
+        }
+
+        @Override
+        public Boolean compose(Trick<?> trick, SpellContext ctx, List<Fragment> fragments) {
+            return ANY.compose(trick, ctx, fragments).asBoolean();
+        }
+
+        @Override
+        public boolean match(List<Fragment> fragments) {
+            return ANY.match(fragments);
+        }
+
+        @Override
+        public ArgType<Boolean> wardOf() {
+            return this;
+        }
+
+        @Override
+        public MutableText asText() {
+            return FragmentType.BOOLEAN.asText();
+        }
+    };
 
     protected final Pattern pattern;
     private final List<Signature<T>> handlers;
