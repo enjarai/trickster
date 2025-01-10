@@ -9,13 +9,18 @@ import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
 
 public class ItemTypeRenderer implements FragmentRenderer<ItemTypeFragment> {
     @Override
-    public void render(ItemTypeFragment fragment, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float size, float alpha, Vec3d normal, SpellCircleRenderer delegator) {
+    public void render(ItemTypeFragment fragment, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float size, float alpha, Vec3d normal, float tickDelta, SpellCircleRenderer delegator) {
         var stack = fragment.item().getDefaultStack();
+        renderItem(stack, ModelTransformationMode.GUI, matrices, vertexConsumers, x, y, size, delegator, 14, false);
+    }
+
+    public static void renderItem(ItemStack stack, ModelTransformationMode transformationMode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float size, SpellCircleRenderer delegator, int light, boolean alwaysFlatLight) {
         var bakedModel = MinecraftClient.getInstance().getItemRenderer().getModel(
                 stack, MinecraftClient.getInstance().world,
                 null, 0
@@ -30,7 +35,7 @@ public class ItemTypeRenderer implements FragmentRenderer<ItemTypeFragment> {
             matrices.multiply(RotationAxis.NEGATIVE_X.rotationDegrees(180));
         }
 
-        boolean notSideLit = !bakedModel.isSideLit() && delegator.inUI;
+        boolean notSideLit = (alwaysFlatLight || !bakedModel.isSideLit()) && delegator.inUI;
         if (notSideLit) {
             if (vertexConsumers instanceof VertexConsumerProvider.Immediate immediate) {
                 immediate.draw();
@@ -40,9 +45,9 @@ public class ItemTypeRenderer implements FragmentRenderer<ItemTypeFragment> {
         }
 
         MinecraftClient.getInstance().getItemRenderer().renderItem(
-                stack, ModelTransformationMode.GUI,
+                stack, transformationMode,
                 false, matrices, vertexConsumers,
-                LightmapTextureManager.pack(0, 14), OverlayTexture.DEFAULT_UV,
+                LightmapTextureManager.pack(0, light), OverlayTexture.DEFAULT_UV,
                 bakedModel
         );
         if (delegator.inUI && vertexConsumers instanceof VertexConsumerProvider.Immediate immediate) {
@@ -57,7 +62,7 @@ public class ItemTypeRenderer implements FragmentRenderer<ItemTypeFragment> {
     }
 
     @Override
-    public boolean drawTwoSides() {
+    public boolean doubleSided() {
         return false;
     }
 }
