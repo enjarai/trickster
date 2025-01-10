@@ -8,7 +8,7 @@ import org.jetbrains.annotations.ApiStatus;
 @ApiStatus.Internal
 public class SigGen {
     @ApiStatus.Internal
-    public static void gen(String[] args) {
+    public static void main(String[] args) {
         String typesSpot = "{types}";
 
         String constructorNum = "{cnum}";
@@ -45,9 +45,21 @@ public class SigGen {
 
         String structDeserCallsSpot = "{collects}";
 
+        // --
+
+        String textsTemplate = """
+                            text = text.append(t{num}.asText());
+                """;
+
+        String textsJoiner = """
+                            text = text.append(", ");
+                """;
+
+        String textsSpot = "{asTexts}";
+
         String method = """
-                static <T extends Trick, {types}> TrickSignature<T> of({args}, Function{cnum}<T, SpellContext, {types}, EvaluationResult> handler) {
-                    return new TrickSignature<T>() {
+                static <T extends Trick<T>, {types}> Signature<T> of({args}, Function{cnum}<T, SpellContext, {types}, EvaluationResult> handler) {
+                    return new Signature<T>() {
                         @Override
                         public boolean match(List<Fragment> fragments) {
                 {matches}
@@ -58,6 +70,14 @@ public class SigGen {
                         public EvaluationResult run(T trick, SpellContext ctx, List<Fragment> fragments) throws BlunderException {
                 {collects}
                             return handler.apply(trick, ctx, {argsv});
+                        }
+                
+                        @Override
+                        public MutableText asText() {
+                            var text = Text.empty();
+            
+                {asTexts}
+                            return text;
                         }
                     };
                 }
@@ -71,6 +91,8 @@ public class SigGen {
         Map<Integer, String> structSerCalls = new LinkedHashMap<>();
         Map<Integer, String> structDeserCalls = new LinkedHashMap<>();
 
+        Map<Integer, String> textsCalls = new LinkedHashMap<>();
+
         String allMethods = "";
 
         for (int i = 1; i < 7; i++) {
@@ -81,6 +103,8 @@ public class SigGen {
             structSerCalls.put(i, structSerCallTemplate.replace(numberSpot, String.valueOf(i)));
             structDeserCalls.put(i, structDeserCallTemplate.replace(numberSpot, String.valueOf(i)));
 
+            textsCalls.put(i, textsTemplate.replace(numberSpot, String.valueOf(i)));
+
             String types = String.join(", ", structTypes.values());
 
             String fieldArgs = String.join(", ", structFields.values());
@@ -89,13 +113,16 @@ public class SigGen {
             String deserCalls = String.join("\n", structDeserCalls.values());
             String handlerArgsString = String.join(", ", structArgs.values());
 
+            String textsString = String.join(textsJoiner, textsCalls.values());
+
             String newMethod = method
                     .replace(constructorNum, String.valueOf(i + 2))
                     .replace(typesSpot, types)
                     .replace(structFieldArgs, fieldArgs)
                     .replace(handlerArgs, handlerArgsString)
                     .replace(structSerCallsSpot, serCalls)
-                    .replace(structDeserCallsSpot, deserCalls);
+                    .replace(structDeserCallsSpot, deserCalls)
+                    .replace(textsSpot, textsString);
 
             allMethods = allMethods.concat(newMethod);
         }
