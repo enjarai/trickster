@@ -251,7 +251,6 @@ trickster:
       item_type: Item
       block_type: Block
       entity_type: Entity Type
-      integer_list: List of Integers
     class:
       Fragment: Any
       AddableFragment: Addable
@@ -260,10 +259,24 @@ trickster:
       MultiplicableFragment: Multiplicable
       RoundableFragment: Roundable
       SubtractableFragment: Subtractable
+      TypeFragment: Type
+      NumberFragment: Number
+      BooleanFragment: Boolean
+      VectorFragment: Vector
+      ListFragment: List
+      MapFragment: Map
+      VoidFragment: Void
+      PatternGlyph: Pattern
+      Pattern: Pattern Literal
+      SpellPart: Spell
+      EntityFragment: Entity
+      SlotFragment: Slot
+      ZalgoFragment: §kZalgo
+      ItemTypeFragment: Item
+      BlockTypeFragment: Block
+      EntityTypeFragment: Entity Type
 
   blunder:
-    incorrect_fragment: Incorrect argument at index %d. Expected %s, got %s
-    missing_fragment: Missing at index %d, expected %s
     overweight_fragment: Result fragment is overweight, result is %s
 
 item.trickster:

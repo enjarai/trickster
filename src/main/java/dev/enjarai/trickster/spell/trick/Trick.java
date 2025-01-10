@@ -17,7 +17,10 @@ import dev.enjarai.trickster.spell.fragment.ListFragment;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.type.Signature;
 import dev.enjarai.trickster.spell.type.SimpleArgType;
-import dev.enjarai.trickster.spell.type.ArgType;
+import dev.enjarai.trickster.spell.type.TypeListArgType;
+import dev.enjarai.trickster.spell.type.TypeMapArgType;
+import dev.enjarai.trickster.spell.type.ClassListArgType;
+import dev.enjarai.trickster.spell.type.ClassMapArgType;
 import dev.enjarai.trickster.spell.type.ClassVariadicArgType;
 import dev.enjarai.trickster.spell.type.TypeVariadicArgType;
 import io.vavr.collection.HashMap;
@@ -89,6 +92,24 @@ public abstract class Trick<T extends Trick<T>> {
     @SafeVarargs
     protected static <T extends Fragment> TypeVariadicArgType<T> variadic(FragmentType<T>... types) {
         return new TypeVariadicArgType<>(types);
+    }
+
+    @SafeVarargs
+    protected static <T extends Fragment> ClassListArgType<T> list(Class<T>... types) {
+        return new ClassListArgType<>(types);
+    }
+
+    @SafeVarargs
+    protected static <T extends Fragment> TypeListArgType<T> list(FragmentType<T>... types) {
+        return new TypeListArgType<>(types);
+    }
+
+    protected static <K extends Fragment, V extends Fragment> ClassMapArgType<K, V> map(Class<K> keyType, Class<V> valueType) {
+        return new ClassMapArgType<>(keyType, valueType);
+    }
+
+    protected static <K extends Fragment, V extends Fragment> TypeMapArgType<K, V> map(FragmentType<K> keyType, FragmentType<V> valueType) {
+        return new TypeMapArgType<>(keyType, valueType);
     }
 
     protected void expectCanBuild(SpellContext ctx, BlockPos... positions) {

@@ -1,29 +1,26 @@
 package dev.enjarai.trickster.spell.type;
 
+import java.util.List;
+
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.trick.Trick;
 import net.minecraft.text.MutableText;
-import java.util.List;
 
-public class TypeVariadicArgType<T extends Fragment> extends AbstractVariadicArgType<T, FragmentType<T>> {
-    public TypeVariadicArgType(FragmentType<T>[] types, boolean required, boolean unpack) {
-        super(types, required, unpack);
-    }
-
+public class TypeListArgType<T extends Fragment> extends AbstractListArgType<T, FragmentType<T>> {
     @SafeVarargs
-    public TypeVariadicArgType(FragmentType<T>... types) {
-        this(types, false, false);
+    public TypeListArgType(FragmentType<T>... types) {
+        super(types);
     }
 
     @Override
     public ArgType<List<T>> wardOf() {
-        return new TypeVariadicArgType<>(types) {
+        return new TypeListArgType<>(types) {
             @Override
             public List<T> compose(Trick<?> trick, SpellContext ctx, List<Fragment> fragments) {
-                var result = TypeVariadicArgType.this.compose(trick, ctx, fragments);
+                var result = TypeListArgType.this.compose(trick, ctx, fragments);
 
                 for (var fragment : result) {
                     if (fragment instanceof EntityFragment entity) {
@@ -42,22 +39,13 @@ public class TypeVariadicArgType<T extends Fragment> extends AbstractVariadicArg
     }
 
     @Override
-    public AbstractVariadicArgType<T, FragmentType<T>> required() {
-        return new TypeVariadicArgType<>(types, true, unpack);
-    }
-
-    @Override
-    public AbstractVariadicArgType<T, FragmentType<T>> unpack() {
-        return new TypeVariadicArgType<>(types, required, true);
-    }
-
-    @Override
     protected boolean matchType(FragmentType<T> type, Fragment fragment) {
-        return type == fragment.type();
+        return fragment.type() == type;
     }
 
     @Override
     protected MutableText typeAsText(FragmentType<T> type) {
         return type.asText();
     }
+
 }

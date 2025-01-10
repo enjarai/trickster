@@ -9,22 +9,18 @@ import dev.enjarai.trickster.spell.trick.Trick;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
-public class ClassVariadicArgType<T extends Fragment> extends AbstractVariadicArgType<T, Class<T>> {
-    public ClassVariadicArgType(Class<T>[] types, boolean required, boolean unpack) {
-        super(types, required, unpack);
-    }
-
+public class ClassListArgType<T extends Fragment> extends AbstractListArgType<T, Class<T>> {
     @SafeVarargs
-    public ClassVariadicArgType(Class<T>... types) {
-        this(types, false, false);
+    public ClassListArgType(Class<T>... types) {
+        super(types);
     }
 
     @Override
     public ArgType<List<T>> wardOf() {
-        return new ClassVariadicArgType<>(types) {
+        return new ClassListArgType<>(types) {
             @Override
             public List<T> compose(Trick<?> trick, SpellContext ctx, List<Fragment> fragments) {
-                var result = ClassVariadicArgType.this.compose(trick, ctx, fragments);
+                var result = ClassListArgType.this.compose(trick, ctx, fragments);
 
                 for (var fragment : result) {
                     if (fragment instanceof EntityFragment entity) {
@@ -40,16 +36,6 @@ public class ClassVariadicArgType<T extends Fragment> extends AbstractVariadicAr
                 return this;
             }
         };
-    }
-
-    @Override
-    public AbstractVariadicArgType<T, Class<T>> required() {
-        return new ClassVariadicArgType<>(types, true, unpack);
-    }
-
-    @Override
-    public AbstractVariadicArgType<T, Class<T>> unpack() {
-        return new ClassVariadicArgType<>(types, required, true);
     }
 
     @Override

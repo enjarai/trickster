@@ -7,7 +7,6 @@ import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
-import dev.enjarai.trickster.spell.blunder.IncorrectFragmentBlunder;
 import dev.enjarai.trickster.spell.execution.executor.FoldingSpellExecutor;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
@@ -61,25 +60,6 @@ public record ListFragment(List<Fragment> fragments) implements FoldableFragment
 
     public ListFragment addRange(ListFragment other) throws BlunderException {
         return new ListFragment(ImmutableList.<Fragment>builder().addAll(fragments).addAll(other.fragments).build());
-    }
-
-    public List<Integer> sanitizeAddress(Trick<?> source) {
-        var sanitizedAddress = new ArrayList<Integer>();
-
-        for (Fragment fragment : this.fragments()) {
-            if (fragment instanceof NumberFragment index && index.isInteger()) {
-                sanitizedAddress.add((int) index.number());
-            } else {
-                throw new IncorrectFragmentBlunder(
-                        source,
-                        1,
-                        Text.translatable(Trickster.MOD_ID + ".fragment." + Trickster.MOD_ID + "." + "integer_list"),
-                        this
-                );
-            }
-        }
-
-        return sanitizedAddress;
     }
 
     @Override
