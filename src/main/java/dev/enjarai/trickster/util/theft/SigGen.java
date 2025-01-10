@@ -25,12 +25,10 @@ public class SigGen {
         // --
 
         String structSerCallTemplate = """
-                            var args{num} = t{num}.isolate(0, fragments);
-                            fragments = fragments.subList(args{num}.size(), fragments.size());
-
-                            if (!t{num}.match(args{num})) {
+                            if (!t{num}.isolateAndMatch(fragments)) {
                                 return false;
                             }
+                            fragments = fragments.subList(t{num}.argc(fragments), fragments.size());
                 """;
 
         String structSerCallsSpot = "{matches}";
