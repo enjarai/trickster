@@ -64,7 +64,7 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
 
         executors.clear();
         var newExecutors = nbt.get(EXECUTORS_ENDEC);
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < Math.min(newExecutors.size(), 4); i++) {
             executors.set(i, newExecutors.get(i));
         }
     }
