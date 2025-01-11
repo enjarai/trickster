@@ -20,6 +20,8 @@ public class CheckBlockTrick extends Trick {
         var pos = expectInput(fragments, FragmentType.VECTOR, 0);
         var blockPos = pos.toBlockPos();
 
+        expectLoaded(ctx, blockPos);
+
         return new BlockTypeFragment(ctx.source().getWorld().getBlockState(blockPos).getBlock());
     }
 }

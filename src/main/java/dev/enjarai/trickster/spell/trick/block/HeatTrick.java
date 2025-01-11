@@ -28,9 +28,9 @@ public class HeatTrick extends Trick {
         var pos = expectInput(fragments, FragmentType.VECTOR, 0);
         var blockPos = pos.toBlockPos();
         var world = ctx.source().getWorld();
-        var blockState = world.getBlockState(blockPos);
-
         expectCanBuild(ctx, blockPos);
+
+        var blockState = world.getBlockState(blockPos);
 
         if (CampfireBlock.canBeLit(blockState) || CandleBlock.canBeLit(blockState) || CandleCakeBlock.canBeLit(blockState)) {
             ctx.useMana(this, 0.001f);

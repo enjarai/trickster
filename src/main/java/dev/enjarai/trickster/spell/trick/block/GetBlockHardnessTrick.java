@@ -19,6 +19,8 @@ public class GetBlockHardnessTrick extends Trick {
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         var pos = expectInput(fragments, FragmentType.VECTOR, 0);
         var blockPos = pos.toBlockPos();
+        expectLoaded(ctx, blockPos);
+
         var state = ctx.source().getWorld().getBlockState(blockPos);
         var hardness = state.getBlock().getHardness();
 

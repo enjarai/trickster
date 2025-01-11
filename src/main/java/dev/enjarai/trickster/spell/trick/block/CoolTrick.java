@@ -26,9 +26,9 @@ public class CoolTrick extends Trick {
         var pos = expectInput(fragments, FragmentType.VECTOR, 0);
         var blockPos = pos.toBlockPos();
         var world = ctx.source().getWorld();
-        var blockState = world.getBlockState(blockPos);
-
         expectCanBuild(ctx, blockPos);
+
+        var blockState = world.getBlockState(blockPos);
 
         if (CampfireBlock.isLitCampfire(blockState) || CandleBlock.isLitCandle(blockState) || CandleCakeBlock.isLitCandle(blockState)) {
             ctx.useMana(this, 0.001f);
