@@ -6,19 +6,23 @@ import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 
-public record SpellExecutorType<T extends SpellExecutor>(StructEndec<T> endec) {
+public record SpellExecutorType<T extends SpellExecutor>(StructEndec<T> endec, StructEndec<T> netEndec) {
     public static final RegistryKey<Registry<SpellExecutorType<?>>> REGISTRY_KEY = RegistryKey.ofRegistry(Trickster.id("spell_executor_type"));
     public static final Registry<SpellExecutorType<?>> REGISTRY = FabricRegistryBuilder.createSimple(REGISTRY_KEY).buildAndRegister();
 
-    public static final SpellExecutorType<DefaultSpellExecutor> DEFAULT = register("default", DefaultSpellExecutor.ENDEC);
+    public static final SpellExecutorType<DefaultSpellExecutor> DEFAULT = register("default", DefaultSpellExecutor.ENDEC, DefaultSpellExecutor.NET_ENDEC);
     public static final SpellExecutorType<TryCatchSpellExecutor> TRY_CATCH = register("try_catch", TryCatchSpellExecutor.ENDEC);
     public static final SpellExecutorType<ErroredSpellExecutor> ERRORED = register("errored", ErroredSpellExecutor.ENDEC);
     public static final SpellExecutorType<AtomicSpellExecutor> ATOMIC = register("atomic", AtomicSpellExecutor.ENDEC);
     public static final SpellExecutorType<FoldingSpellExecutor> FOLDING = register("folding", FoldingSpellExecutor.ENDEC);
     public static final SpellExecutorType<MessageListenerSpellExecutor> MESSAGE_LISTENER = register("message_listener", MessageListenerSpellExecutor.ENDEC);
 
+    private static <T extends SpellExecutor> SpellExecutorType<T> register(String name, StructEndec<T> codec, StructEndec<T> netEndec) {
+        return Registry.register(REGISTRY, Trickster.id(name), new SpellExecutorType<>(codec, netEndec));
+    }
+
     private static <T extends SpellExecutor> SpellExecutorType<T> register(String name, StructEndec<T> codec) {
-        return Registry.register(REGISTRY, Trickster.id(name), new SpellExecutorType<>(codec));
+        return register(name, codec, codec);
     }
 
     public static void register() {
