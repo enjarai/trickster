@@ -23,11 +23,7 @@ public abstract class AbstractConduitTrick extends Trick {
         float result = 0;
 
         for (var slot : expectVariadic(fragments, 1, SlotFragment.class)) {
-            if (result >= limit)
-                break;
-            
-            var stack = slot.reference(this, ctx);
-            result += affect(ctx, stack, (float) limit - result);
+            result += affect(ctx, slot.reference(this, ctx), (float) limit);
         }
 
         return new NumberFragment(result);
