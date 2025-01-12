@@ -44,7 +44,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
 public class ModularSpellConstructBlockEntity extends BlockEntity implements Inventory, CrowMind, SpellExecutionManager, SpellCastingBlockEntity {
+    public static final KeyedEndec<Fragment> CROW_MIND_ENDEC =
+            Fragment.ENDEC.keyed("crow_mind", () -> VoidFragment.INSTANCE);
     public static final KeyedEndec<List<Optional<SpellExecutor>>> EXECUTORS_ENDEC = SpellExecutor.ENDEC
+            .optionalOf().listOf().keyed("executors", () -> null);
+    public static final KeyedEndec<List<Optional<SpellExecutor>>> EXECUTORS_NET_ENDEC = SpellExecutor.NET_ENDEC
             .optionalOf().listOf().keyed("executors", List.of());
 
     public final DefaultedList<Optional<SpellExecutor>> executors = DefaultedList.ofSize(4, Optional.empty());
@@ -62,8 +66,13 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
         this.inventory.clear();
         Inventories.readNbt(nbt, this.inventory, registryLookup);
 
+        crowMind = nbt.get(CROW_MIND_ENDEC);
+
         executors.clear();
         var newExecutors = nbt.get(EXECUTORS_ENDEC);
+        if (newExecutors == null) {
+            newExecutors = nbt.get(EXECUTORS_NET_ENDEC);
+        }
         for (int i = 0; i < Math.min(newExecutors.size(), 4); i++) {
             executors.set(i, newExecutors.get(i));
         }
@@ -71,10 +80,21 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
 
     @Override
     protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        writeCommonNbt(nbt, registryLookup);
+
+        nbt.put(CROW_MIND_ENDEC, crowMind);
+        nbt.put(EXECUTORS_ENDEC, executors);
+    }
+
+    protected void writeNetNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        writeCommonNbt(nbt, registryLookup);
+
+        nbt.put(EXECUTORS_NET_ENDEC, executors);
+    }
+
+    protected void writeCommonNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         super.writeNbt(nbt, registryLookup);
         Inventories.writeNbt(nbt, this.inventory, true, registryLookup);
-
-        nbt.put(EXECUTORS_ENDEC, executors);
     }
 
     public void tick() {
@@ -154,7 +174,9 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
 
     @Override
     public NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup registryLookup) {
-        return createNbt(registryLookup);
+        var nbt = new NbtCompound();
+        writeNetNbt(nbt, registryLookup);
+        return nbt;
     }
 
     @Override
@@ -214,9 +236,9 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
     @Override
     public void setStack(int slot, ItemStack stack) {
         if (
-            slot == 0
-                    ? stack.isIn(ModItems.MANA_KNOTS)
-                    : stack.getItem() instanceof SpellCoreItem
+                slot == 0
+                        ? stack.isIn(ModItems.MANA_KNOTS)
+                        : stack.getItem() instanceof SpellCoreItem
         ) {
             if (stack.getItem() instanceof SpellCoreItem) {
                 var fragment = stack.get(ModComponents.FRAGMENT);
@@ -288,9 +310,9 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
             var stack = inventory.get(i);
 
             if (
-                stack.getItem() instanceof SpellCoreItem
-                        && (executors.get(i - 1).isEmpty()
-                                || executors.get(i - 1).get() instanceof ErroredSpellExecutor)
+                    stack.getItem() instanceof SpellCoreItem
+                            && (executors.get(i - 1).isEmpty()
+                            || executors.get(i - 1).get() instanceof ErroredSpellExecutor)
             ) {
                 executors.set(i - 1, Optional.of(executor));
                 return i - 1;

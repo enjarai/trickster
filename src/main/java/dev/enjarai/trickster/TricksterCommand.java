@@ -91,7 +91,7 @@ public class TricksterCommand {
         for (var hand : Hand.values()) {
             var stack = player.getStackInHand(hand);
             var spell = FragmentComponent.getSpellPart(stack);
-            if (spell.isPresent()) {
+            if (spell.isPresent() && spell.get() instanceof SpellPart) {
                 var string = spell.get().toBase64();
                 context.getSource().sendFeedback(() -> Text.literal("Base64 spell string: ")
                         .append(Text.literal(string)

@@ -34,6 +34,10 @@ public class AtomicSpellExecutor implements SpellExecutor {
             Endec.INT.fieldOf("required_executions", e -> e.requiredExecutions),
             AtomicSpellExecutor::new
     );
+    public static final StructEndec<AtomicSpellExecutor> NET_ENDEC = StructEndecBuilder.of(
+            SpellPart.ENDEC.fieldOf("root", e -> e.root),
+            AtomicSpellExecutor::new
+    );
 
     private final SpellPart root;
     private final Stack<SpellInstruction> instructions;
@@ -50,6 +54,17 @@ public class AtomicSpellExecutor implements SpellExecutor {
         this.scope.addAll(scope);
         this.state = state;
         this.requiredExecutions = requiredExecutions;
+    }
+
+    private AtomicSpellExecutor(SpellPart root) {
+        this(
+                root,
+                new Stack<>(),
+                new ArrayList<>(),
+                new ArrayList<>(),
+                new ExecutionState(List.of()),
+                0
+        );
     }
 
     private AtomicSpellExecutor(Trick trickSource, TickData data, SpellPart root, Stack<SpellInstruction> instructions, ExecutionState state) throws BlunderException {

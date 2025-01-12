@@ -19,11 +19,11 @@ import io.wispforest.endec.impl.StructEndecBuilder;
 public class MessageListenerSpellExecutor implements SpellExecutor {
     public static final StructEndec<MessageListenerSpellExecutor> ENDEC = StructEndecBuilder.of(
             ExecutionState.ENDEC.fieldOf("state", e -> e.state),
-            EndecTomfoolery.UUID.xmap(
-                uuid -> new Key.Channel(uuid),
-                channel -> channel.uuid()
-            ).optionalOf().fieldOf("channel", e -> e.channel),
-            ListFragment.ENDEC.optionalOf().fieldOf("result", e -> e.result),
+            EndecTomfoolery.forcedSafeOptionalOf(EndecTomfoolery.UUID.xmap(
+                    Key.Channel::new,
+                    Key.Channel::uuid
+            )).fieldOf("channel", e -> e.channel),
+            EndecTomfoolery.forcedSafeOptionalOf(ListFragment.ENDEC).fieldOf("result", e -> e.result),
             MessageListenerSpellExecutor::new
     );
 

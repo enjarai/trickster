@@ -34,6 +34,8 @@ public class SpellConstructBlockEntity extends BlockEntity implements SpellColor
             Fragment.ENDEC.keyed("crow_mind", () -> VoidFragment.INSTANCE);
     public static final KeyedEndec<SpellExecutor> EXECUTOR_ENDEC =
             SpellExecutor.ENDEC.nullableOf().keyed("executor", () -> null);
+    public static final KeyedEndec<SpellExecutor> EXECUTOR_NET_ENDEC =
+            SpellExecutor.NET_ENDEC.nullableOf().keyed("executor", () -> null);
 
     public int age;
     public Fragment crowMind = VoidFragment.INSTANCE;
@@ -59,7 +61,7 @@ public class SpellConstructBlockEntity extends BlockEntity implements SpellColor
         crowMind = nbt.get(CROW_MIND_ENDEC);
         colors = nbt.getIntArray("colors");
 
-        executor = nbt.get(EXECUTOR_ENDEC);
+        executor = nbt.getBoolean("net") ? nbt.get(EXECUTOR_NET_ENDEC) : nbt.get(EXECUTOR_ENDEC);
 
         if (colors.length == 0) {
             colors = new int[]{0xffffff};
@@ -68,16 +70,27 @@ public class SpellConstructBlockEntity extends BlockEntity implements SpellColor
 
     @Override
     protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        writeCommonNbt(nbt, registryLookup);
+
+        nbt.put(CROW_MIND_ENDEC, crowMind);
+        nbt.put(EXECUTOR_ENDEC, executor);
+    }
+
+    protected void writeNetNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        writeCommonNbt(nbt, registryLookup);
+
+        nbt.putBoolean("net", true);
+        nbt.put(EXECUTOR_NET_ENDEC, executor);
+    }
+
+    protected void writeCommonNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         super.writeNbt(nbt, registryLookup);
 
         if (!stack.isEmpty()) {
             nbt.put("stack", stack.encode(registryLookup, new NbtCompound()));
         }
 
-        nbt.put(CROW_MIND_ENDEC, crowMind);
         nbt.putIntArray("colors", colors);
-
-        nbt.put(EXECUTOR_ENDEC, executor);
     }
 
     public void tick() {
@@ -148,7 +161,9 @@ public class SpellConstructBlockEntity extends BlockEntity implements SpellColor
 
     @Override
     public NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup registryLookup) {
-        return createNbt(registryLookup);
+        var nbt = new NbtCompound();
+        writeNetNbt(nbt, registryLookup);
+        return nbt;
     }
 
     @Override
