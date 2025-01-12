@@ -2,7 +2,6 @@ package dev.enjarai.trickster;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
-import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.enjarai.trickster.cca.ModEntityComponents;
@@ -30,78 +29,59 @@ import static net.minecraft.server.command.CommandManager.literal;
 
 public class TricksterCommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
-        dispatcher.register(
-                literal("trickster")
-                        .then(
-                                literal("killSpells")
-                                        .requires(ServerCommandSource::isExecutedByPlayer)
-                                        .executes(TricksterCommand::killSpells)
+        dispatcher.register(literal("trickster")
+                .then(literal("killSpells")
+                        .requires(ServerCommandSource::isExecutedByPlayer)
+                        .executes(TricksterCommand::killSpells)
+                )
+                .then(literal("exportSpell")
+                        .requires(ServerCommandSource::isExecutedByPlayer)
+                        .executes(TricksterCommand::exportSpell)
+                )
+                .then(literal("importSpell")
+                        .requires(ServerCommandSource::isExecutedByPlayer)
+                        .requires(s -> s.hasPermissionLevel(2))
+                        .executes(TricksterCommand::importSpell)
+                )
+                .then(literal("fillKnot")
+                        .requires(ServerCommandSource::isExecutedByPlayer)
+                        .requires(s -> s.hasPermissionLevel(2))
+                        .executes(TricksterCommand::fillKnot)
+                )
+                .then(literal("weight")
+                        .requires(s -> s.hasPermissionLevel(2))
+                        .then(argument("weight", DoubleArgumentType.doubleArg(0))
+                                .executes(context -> TricksterCommand.setWeight(
+                                        context,
+                                        DoubleArgumentType.getDouble(context, "weight"),
+                                        List.of(context.getSource().getEntityOrThrow())
+                                ))
+                                .then(argument("target", EntityArgumentType.entities())
+                                        .executes(context -> TricksterCommand.setWeight(
+                                                context,
+                                                DoubleArgumentType.getDouble(context, "weight"),
+                                                EntityArgumentType.getEntities(context, "target")
+                                        ))
+                                )
                         )
-                        .then(
-                                literal("exportSpell")
-                                        .requires(ServerCommandSource::isExecutedByPlayer)
-                                        .executes(TricksterCommand::exportSpell)
+                )
+                .then(literal("scale")
+                        .requires(s -> s.hasPermissionLevel(2))
+                        .then(argument("scale", DoubleArgumentType.doubleArg(0))
+                                .executes(context -> TricksterCommand.setScale(
+                                        context,
+                                        DoubleArgumentType.getDouble(context, "scale"),
+                                        List.of(context.getSource().getEntityOrThrow())
+                                ))
+                                .then(argument("target", EntityArgumentType.entities())
+                                        .executes(context -> TricksterCommand.setScale(
+                                                context,
+                                                DoubleArgumentType.getDouble(context, "scale"),
+                                                EntityArgumentType.getEntities(context, "target")
+                                        ))
+                                )
                         )
-                        .then(
-                                literal("importSpell")
-                                        .requires(ServerCommandSource::isExecutedByPlayer)
-                                        .requires(s -> s.hasPermissionLevel(2))
-                                        .executes(TricksterCommand::importSpell)
-                        )
-                        .then(
-                                literal("fillKnot")
-                                        .requires(ServerCommandSource::isExecutedByPlayer)
-                                        .requires(s -> s.hasPermissionLevel(2))
-                                        .executes(TricksterCommand::fillKnot)
-                        )
-                        .then(
-                                literal("weight")
-                                        .requires(s -> s.hasPermissionLevel(2))
-                                        .then(
-                                                argument("weight", DoubleArgumentType.doubleArg(0))
-                                                        .executes(
-                                                                context -> TricksterCommand.setWeight(
-                                                                        context,
-                                                                        DoubleArgumentType.getDouble(context, "weight"),
-                                                                        List.of(context.getSource().getEntityOrThrow())
-                                                                )
-                                                        )
-                                                        .then(
-                                                                argument("target", EntityArgumentType.entities())
-                                                                        .executes(
-                                                                                context -> TricksterCommand.setWeight(
-                                                                                        context,
-                                                                                        DoubleArgumentType.getDouble(context, "weight"),
-                                                                                        EntityArgumentType.getEntities(context, "target")
-                                                                                )
-                                                                        )
-                                                        )
-                                        )
-                        )
-                        .then(
-                                literal("scale")
-                                        .requires(s -> s.hasPermissionLevel(2))
-                                        .then(
-                                                argument("scale", DoubleArgumentType.doubleArg(0))
-                                                        .executes(
-                                                                context -> TricksterCommand.setScale(
-                                                                        context,
-                                                                        DoubleArgumentType.getDouble(context, "scale"),
-                                                                        List.of(context.getSource().getEntityOrThrow())
-                                                                )
-                                                        )
-                                                        .then(
-                                                                argument("target", EntityArgumentType.entities())
-                                                                        .executes(
-                                                                                context -> TricksterCommand.setScale(
-                                                                                        context,
-                                                                                        DoubleArgumentType.getDouble(context, "scale"),
-                                                                                        EntityArgumentType.getEntities(context, "target")
-                                                                                )
-                                                                        )
-                                                        )
-                                        )
-                        )
+                )
         );
     }
 
@@ -112,20 +92,15 @@ public class TricksterCommand {
             var spell = FragmentComponent.getSpellPart(stack);
             if (spell.isPresent()) {
                 var string = spell.get().toBase64();
-                context.getSource().sendFeedback(
-                        () -> Text.literal("Base64 spell string: ")
-                                .append(
-                                        Text.literal(string)
-                                                .fillStyle(
-                                                        Style.EMPTY
-                                                                .withUnderline(true)
-                                                                .withColor(Formatting.GREEN)
-                                                                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Click to copy")))
-                                                                .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, string))
-                                                )
-                                ),
-                        false
-                );
+                context.getSource().sendFeedback(() -> Text.literal("Base64 spell string: ")
+                        .append(Text.literal(string)
+                                .fillStyle(Style.EMPTY
+                                        .withUnderline(true)
+                                        .withColor(Formatting.GREEN)
+                                        .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Click to copy")))
+                                        .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, string))
+                                )
+                        ), false);
 
                 return 1;
             }
