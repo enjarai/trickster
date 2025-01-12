@@ -13,7 +13,6 @@ import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.SpellCoreItem;
 import dev.enjarai.trickster.item.component.ManaComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
-import dev.enjarai.trickster.item.component.SpellCoreComponent;
 import dev.enjarai.trickster.spell.CrowMind;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
@@ -209,11 +208,6 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
 
             if (world instanceof ServerWorld world && itemStack.getItem() instanceof SpellCoreItem item) {
                 var perhapsExecutor = executors.get(slot - 1);
-                perhapsExecutor.ifPresent(executor -> itemStack.set(ModComponents.SPELL_CORE, SpellCoreComponent.of(executor)));
-
-                if (perhapsExecutor.isEmpty()) {
-                    itemStack.remove(ModComponents.SPELL_CORE);
-                }
 
                 if (item.onRemoved(world, getPos(), itemStack, perhapsExecutor)) {
                     return ItemStack.EMPTY;
@@ -245,13 +239,6 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
 
                 if (fragment != null && fragment.value() instanceof SpellPart spell) {
                     SpellExecutor executor = new DefaultSpellExecutor(spell, List.of());
-
-                    if (stack.get(ModComponents.SPELL_CORE) instanceof SpellCoreComponent comp) {
-                        executor = comp.tryDeserialize()
-                                .filter(e -> e.spell().equals(spell))
-                                .filter(e -> !(e instanceof ErroredSpellExecutor))
-                                .orElse(executor);
-                    }
 
                     executors.set(slot - 1, Optional.of(executor));
                 }
