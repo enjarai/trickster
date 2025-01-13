@@ -30,14 +30,21 @@ import java.util.zip.GZIPOutputStream;
 public non-sealed interface Fragment extends SpellInstruction {
     int MAX_WEIGHT = 64000;
     Text TRUNCATED_VALUE_TEXT = Text.literal(" [...]")
-        .setStyle(Style.EMPTY
-                .withColor(Formatting.RED)
-                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.translatable(Trickster.MOD_ID + ".text.misc.value_truncated"))));
+            .setStyle(Style.EMPTY
+                    .withColor(Formatting.RED)
+                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.translatable(Trickster.MOD_ID + ".text.misc.value_truncated"))));
     @SuppressWarnings("unchecked")
     StructEndec<Fragment> ENDEC = EndecTomfoolery.lazy(() -> (StructEndec<Fragment>) Endec.dispatchedStruct(
             FragmentType::endec,
             Fragment::type,
-            Endec.<FragmentType<?>>ifAttr(EndecTomfoolery.UBER_COMPACT_ATTRIBUTE, Endec.INT.xmap(FragmentType::getFromInt, FragmentType::getIntId))
+            Endec.ifAttr(EndecTomfoolery.UBER_COMPACT_ATTRIBUTE, EndecTomfoolery.protocolVersionAlternatives(
+                            Map.of(
+                                    (byte) 1, FragmentType.INT_ID_ENDEC,
+                                    (byte) 2, FragmentType.INT_ID_ENDEC,
+                                    (byte) 3, FragmentType.INT_ID_ENDEC
+                            ),
+                            MinecraftEndecs.ofRegistry(FragmentType.REGISTRY)
+                    ))
                     .orElse(MinecraftEndecs.ofRegistry(FragmentType.REGISTRY))
     ));
     Endec<Fragment> COMPACT_ENDEC = EndecTomfoolery.withAlternative(
@@ -103,9 +110,12 @@ public non-sealed interface Fragment extends SpellInstruction {
 
     default byte[] toBytes() {
         var buf = Unpooled.buffer();
-        buf.writeByte(3); // Protocol version
+        buf.writeByte(4); // Protocol version
         ENDEC.encode(
-                SerializationContext.empty().withAttributes(EndecTomfoolery.UBER_COMPACT_ATTRIBUTE),
+                SerializationContext.empty().withAttributes(
+                        EndecTomfoolery.UBER_COMPACT_ATTRIBUTE,
+                        EndecTomfoolery.PROTOCOL_VERSION_ATTRIBUTE.instance((byte) 4)
+                ),
                 ByteBufSerializer.of(buf), this
         );
 
