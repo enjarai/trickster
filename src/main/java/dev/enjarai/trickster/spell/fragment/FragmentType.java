@@ -32,10 +32,11 @@ public record FragmentType<T extends Fragment>(StructEndec<T> endec, OptionalInt
         public RegistryEntry.Reference<FragmentType<?>> add(RegistryKey<FragmentType<?>> key, FragmentType<?> value, RegistryEntryInfo info) {
             var hash = key.getValue().hashCode();
             if (INT_ID_LOOKUP.containsKey(hash)) {
-                Trickster.LOGGER.warn(
+                Trickster.LOGGER.error(
                         "WARNING: Hashcode collision between two fragment types, spell imports and exports may not work as expected. ({} overrode {})",
                         key.getValue(), INT_ID_LOOKUP.get(hash)
                 );
+                throw new IllegalStateException("WARNING: Hashcode collision between two fragment types");
             }
 
             INT_ID_LOOKUP.put(hash, key.getValue());
@@ -89,7 +90,7 @@ public record FragmentType<T extends Fragment>(StructEndec<T> endec, OptionalInt
     public static FragmentType<?> getFromInt(int intId) {
         var id = INT_ID_LOOKUP.get(intId);
         if (id == null) {
-            throw new IllegalArgumentException("Not a valid int id for fragment type");
+            throw new IllegalArgumentException("Not a valid int id for fragment type: " + intId);
         }
 
         return REGISTRY.get(id);
