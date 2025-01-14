@@ -23,21 +23,34 @@ public class PlayerManaPool extends CachedInventoryManaPool {
     }
 
     @Override
-    public float getMax(World world) {
-        var max = 0.0f;
+    public float get(World world) {
+        var result = 0.0f;
+
         for (var slotReference : cached) {
             var component = slotReference.getStack().get(ModComponents.MANA);
-            if (component != null) max += component.pool().getMax(world);
+            if (component != null) result += component.pool().get(world);
         }
 
-        return max + super.getMax(world);
+        return result + super.get(world);
+    }
+
+    @Override
+    public float getMax(World world) {
+        var result = 0.0f;
+
+        for (var slotReference : cached) {
+            var component = slotReference.getStack().get(ModComponents.MANA);
+            if (component != null) result += component.pool().getMax(world);
+        }
+
+        return result + super.getMax(world);
     }
 
     @Override
     public float use(float amount, World world) {
         for (var slotReference : cached) {
             var stack = slotReference.getStack();
-            if (stack == null)  continue;
+            if (stack == null) continue;
 
             var component = stack.get(ModComponents.MANA);
             if (component == null) continue;
@@ -46,8 +59,9 @@ public class PlayerManaPool extends CachedInventoryManaPool {
             amount = pool.use(amount, world);
             stack.set(ModComponents.MANA, component.with(pool));
 
-            if (amount <= 0.0f) break;
+            if (amount <= 0.0f) return 0;
         }
+
         return super.use(amount, world);
     }
 
@@ -65,19 +79,9 @@ public class PlayerManaPool extends CachedInventoryManaPool {
             amount = pool.refill(amount, world);
             stack.set(ModComponents.MANA, component.with(pool));
 
-            if (amount <= 0.0f) break;
-        }
-        return super.refill(amount, world);
-    }
- 
-    @Override
-    public float get(World world) {
-        var total = 0.0f;
-        for (var slotReference : cached) {
-            var component = slotReference.getStack().get(ModComponents.MANA);
-            if (component != null) total += component.pool().get(world);
+            if (amount <= 0.0f) return 0;
         }
 
-        return total + super.get(world);
+        return super.refill(amount, world);
     }
 }
