@@ -19,31 +19,35 @@ import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 
 public class FoldingSpellExecutor implements SpellExecutor {
-    public static final StructEndec<FoldingSpellExecutor> ENDEC = new BackwardCompatibleStructEndec<>(StructEndecBuilder.of(
-            ExecutionState.ENDEC.fieldOf("state", e -> e.state),
-            SpellPart.ENDEC.fieldOf("executable", e -> e.executable),
-            Fragment.ENDEC.fieldOf("last_result", e -> e.lastResult),
-            EndecTomfoolery.stackOf(Fragment.ENDEC).fieldOf("values", e -> e.values),
-            EndecTomfoolery.stackOf(Fragment.ENDEC).fieldOf("keys", e -> e.keys),
-            Fragment.ENDEC.fieldOf("previous", e -> e.previous),
-            EndecTomfoolery.safeOptionalOf(SpellExecutor.ENDEC).fieldOf("child", e -> e.child),
-            FoldingSpellExecutor::new
-    ), StructEndecBuilder.of( // <=2.0.0-beta.1 compat
-            ExecutionState.ENDEC.fieldOf("state", e -> e.state),
-            SpellPart.ENDEC.fieldOf("executable", e -> e.executable),
-            ListFragment.ENDEC.fieldOf("list", e -> (ListFragment) e.previous),
-            EndecTomfoolery.stackOf(Fragment.ENDEC).fieldOf("elements", executor -> executor.values),
-            EndecTomfoolery.safeOptionalOf(SpellExecutor.ENDEC).optionalFieldOf("child", executor -> executor.child, Optional.empty()),
-            Fragment.ENDEC.fieldOf("last", executor -> executor.lastResult),
-            (state, executable, list, elements, child, last) -> {
-                var keys = new Stack<Fragment>();
+    public static final StructEndec<FoldingSpellExecutor> ENDEC = new BackwardCompatibleStructEndec<>(
+            StructEndecBuilder.of(
+                    ExecutionState.ENDEC.fieldOf("state", e -> e.state),
+                    SpellPart.ENDEC.fieldOf("executable", e -> e.executable),
+                    Fragment.ENDEC.fieldOf("last_result", e -> e.lastResult),
+                    EndecTomfoolery.stackOf(Fragment.ENDEC).fieldOf("values", e -> e.values),
+                    EndecTomfoolery.stackOf(Fragment.ENDEC).fieldOf("keys", e -> e.keys),
+                    Fragment.ENDEC.fieldOf("previous", e -> e.previous),
+                    EndecTomfoolery.forcedSafeOptionalOf(SpellExecutor.ENDEC).fieldOf("child", e -> e.child),
+                    FoldingSpellExecutor::new
+            ),
+            StructEndecBuilder.of(
+                    // <=2.0.0-beta.1 compat
+                    ExecutionState.ENDEC.fieldOf("state", e -> e.state),
+                    SpellPart.ENDEC.fieldOf("executable", e -> e.executable),
+                    ListFragment.ENDEC.fieldOf("list", e -> (ListFragment) e.previous),
+                    EndecTomfoolery.stackOf(Fragment.ENDEC).fieldOf("elements", executor -> executor.values),
+                    EndecTomfoolery.forcedSafeOptionalOf(SpellExecutor.ENDEC).fieldOf("child", executor -> executor.child),
+                    Fragment.ENDEC.fieldOf("last", executor -> executor.lastResult),
+                    (state, executable, list, elements, child, last) -> {
+                        var keys = new Stack<Fragment>();
 
-                for (int i = list.fragments().size() - 1; i >= list.fragments().size() - elements.size(); i--)
-                    keys.push(new NumberFragment(i));
-                
-                return new FoldingSpellExecutor(state, executable, last, elements, keys, list, child);
-            }
-    ));
+                        for (int i = list.fragments().size() - 1; i >= list.fragments().size() - elements.size(); i--)
+                            keys.push(new NumberFragment(i));
+
+                        return new FoldingSpellExecutor(state, executable, last, elements, keys, list, child);
+                    }
+            )
+    );
 
     private final ExecutionState state;
     private final SpellPart executable;
@@ -70,7 +74,7 @@ public class FoldingSpellExecutor implements SpellExecutor {
         if (values.size() != keys.size())
             throw new IllegalStateException("FoldingSpellExecutor requires that the `values` and `keys` stack be of equal length!");
     }
-    
+
     @Override
     public SpellExecutorType<?> type() {
         return SpellExecutorType.FOLDING;
@@ -107,12 +111,14 @@ public class FoldingSpellExecutor implements SpellExecutor {
             child = Optional.of(
                     new DefaultSpellExecutor(
                             executable,
-                            state.recurseOrThrow(List.of(
-                                    lastResult,
-                                    values.pop(),
-                                    keys.pop(),
-                                    previous
-                            ))
+                            state.recurseOrThrow(
+                                    List.of(
+                                            lastResult,
+                                            values.pop(),
+                                            keys.pop(),
+                                            previous
+                                    )
+                            )
                     )
             );
 

@@ -31,6 +31,7 @@ public class PlaceBlockTrick extends Trick {
         var arg2 = expectInput(fragments, 1);
         var world = ctx.source().getWorld();
         var blockPos = pos.toBlockPos();
+        expectCanBuild(ctx, blockPos);
         ItemStack stack;
 
         if (arg2 instanceof SlotFragment slot)

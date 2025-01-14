@@ -25,7 +25,7 @@ public class ListInsertTrick extends DistortionTrick {
         var index = expectInput(fragments, FragmentType.NUMBER, 1);
         var toAdd = fragments.subList(2, fragments.size());
 
-        if (index.number() < 0 || index.number() >= list.fragments().size()) {
+        if (index.number() < 0 || index.number() > list.fragments().size()) {
             throw new IndexOutOfBoundsBlunder(this, MathHelper.floor(index.number()));
         }
 

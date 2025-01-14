@@ -7,23 +7,16 @@ import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.util.SpellUtils;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
-import io.netty.buffer.Unpooled;
+import io.netty.buffer.ByteBuf;
 import io.wispforest.endec.SerializationContext;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.format.bytebuf.ByteBufDeserializer;
-import io.wispforest.endec.format.bytebuf.ByteBufSerializer;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import net.minecraft.text.Text;
-import org.apache.commons.lang3.ArrayUtils;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
 
 public final class SpellPart implements Fragment {
     public static final StructEndec<SpellPart> ENDEC = EndecTomfoolery.recursive(self -> StructEndecBuilder.of(
@@ -229,55 +222,7 @@ public final class SpellPart implements Fragment {
                 .map(SpellPart::deepClone).collect(Collectors.toList()));
     }
 
-    private static final byte[] base64Header = new byte[]{0x1f, (byte) 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, (byte) 0xff};
-
-    //TODO: add encoding from any fragment
-    public String toBase64() {
-        var buf = Unpooled.buffer();
-        buf.writeByte(2); // Protocol version
-        ENDEC.encode(
-                SerializationContext.empty().withAttributes(EndecTomfoolery.UBER_COMPACT_ATTRIBUTE),
-                ByteBufSerializer.of(buf), this
-        );
-
-        var byteStream = new ByteArrayOutputStream(buf.writerIndex());
-        try (byteStream) {
-            try (GZIPOutputStream zipStream = new GZIPOutputStream(byteStream)) {
-                buf.readBytes(zipStream, buf.writerIndex());
-            }
-        } catch (IOException e) {
-            buf.release();
-            throw new RuntimeException("Spell encoding broke. what.");
-        }
-
-        var bytes = byteStream.toByteArray();
-        String result;
-        try {
-            result = Base64.getEncoder().encodeToString(Arrays.copyOfRange(bytes, 10, bytes.length));
-        } catch (Throwable e) {
-            buf.release();
-            throw e;
-        }
-
-        buf.release();
-        return result;
-    }
-
-    //TODO: add decoding to any fragment
-    public static SpellPart fromBase64(String string) {
-        var buf = Unpooled.buffer();
-
-        var byteStream = new ByteArrayInputStream(ArrayUtils.addAll(base64Header, Base64.getDecoder().decode(string.strip())));
-        try (byteStream) {
-            try (GZIPInputStream zipStream = new GZIPInputStream(byteStream)) {
-                buf.writeBytes(zipStream.readAllBytes());
-            }
-        } catch (IOException e) {
-            buf.release();
-            throw new RuntimeException("Spell decoding broke. what.");
-        }
-
-        var protocolVersion = buf.readByte();
+    public static SpellPart fromBytesOld(byte protocolVersion, ByteBuf buf) {
         SpellPart result;
         try {
             result = ENDEC.decode(
@@ -287,12 +232,10 @@ public final class SpellPart implements Fragment {
                     ),
                     ByteBufDeserializer.of(buf)
             );
-        } catch (Throwable e) {
+        } finally {
             buf.release();
-            throw e;
         }
 
-        buf.release();
         return result;
     }
 }

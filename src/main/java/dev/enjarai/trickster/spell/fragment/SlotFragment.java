@@ -6,17 +6,11 @@ import java.util.UUID;
 import com.mojang.datafixers.util.Either;
 
 import dev.enjarai.trickster.EndecTomfoolery;
+import dev.enjarai.trickster.item.component.FragmentComponent;
 import dev.enjarai.trickster.pond.SlotHolderDuck;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlockInvalidBlunder;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
-import dev.enjarai.trickster.spell.blunder.EntityInvalidBlunder;
-import dev.enjarai.trickster.spell.blunder.ItemInvalidBlunder;
-import dev.enjarai.trickster.spell.blunder.MissingItemBlunder;
-import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
-import dev.enjarai.trickster.spell.blunder.NoSuchSlotBlunder;
-import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
+import dev.enjarai.trickster.spell.blunder.*;
 import dev.enjarai.trickster.spell.trick.Trick;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
@@ -26,6 +20,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 
@@ -60,6 +55,27 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
     @Override
     public int getWeight() {
         return 64;
+    }
+
+    public void setStack(ItemStack itemStack, Trick trick, SpellContext ctx) {
+        var inventory = getInventory(trick, ctx);
+        inventory.trickster$slot_holder$setStack(slot, itemStack);
+    }
+
+    public void writeFragment(Fragment fragment, boolean closed, Optional<Text> name, Optional<ServerPlayerEntity> player, Trick trick, SpellContext ctx) throws BlunderException {
+        var inventory = getInventory(trick, ctx);
+        var stack = inventory.trickster$slot_holder$getStack(slot);
+        var updated = FragmentComponent.write(stack, fragment, closed, player, name);
+
+        inventory.trickster$slot_holder$setStack(slot, updated.orElseThrow(() -> new ImmutableItemBlunder(trick)));
+    }
+
+    public void resetFragment(Trick trick, SpellContext ctx) throws BlunderException {
+        var inventory = getInventory(trick, ctx);
+        var stack = inventory.trickster$slot_holder$getStack(slot);
+        var updated = FragmentComponent.reset(stack);
+
+        inventory.trickster$slot_holder$setStack(slot, updated.orElseThrow(() -> new ImmutableItemBlunder(trick)));
     }
 
     public void swapWith(Trick trickSource, SpellContext ctx, SlotFragment other) throws BlunderException {

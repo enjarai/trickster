@@ -2,6 +2,7 @@ package dev.enjarai.trickster.net;
 
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.mixin.client.WorldRendererAccessor;
+import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellPart;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
@@ -33,7 +34,7 @@ public class ModClientNetworking {
 
             SpellPart spell;
             try {
-                spell = SpellPart.fromBase64(clipboard);
+                spell = (SpellPart) Fragment.fromBase64(clipboard);
             } catch (Exception e) {
                 access.player().sendMessage(Text.literal("Failed to decode clipboard, does it contain a valid spell?").formatted(Formatting.RED));
                 return;

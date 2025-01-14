@@ -12,6 +12,7 @@
     "ItemMixin",
     "LivingEntityMixin",
     "accessor.StateAccessor",
+    "accessor.WorldAccessor",
     "chunk_pinning.MinecraftServerMixin",
     "chunk_pinning.ServerChunkLoadingManagerMixin",
     "chunk_pinning.ServerWorldMixin",

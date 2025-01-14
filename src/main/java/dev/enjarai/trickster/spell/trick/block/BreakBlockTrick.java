@@ -10,6 +10,7 @@ import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlockTooHardBlunder;
 import dev.enjarai.trickster.spell.blunder.BlockUnoccupiedBlunder;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
+import net.minecraft.util.math.ChunkSectionPos;
 
 import java.util.List;
 
@@ -23,6 +24,9 @@ public class BreakBlockTrick extends Trick {
         var pos = expectInput(fragments, FragmentType.VECTOR, 0);
         var blockPos = pos.toBlockPos();
         var world = ctx.source().getWorld();
+
+        expectCanBuild(ctx, blockPos);
+
         var state = world.getBlockState(blockPos);
 
         if (state.isAir()) {

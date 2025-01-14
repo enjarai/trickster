@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Stack;
 
-import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.EnterScopeInstruction;
 import dev.enjarai.trickster.spell.ExitScopeInstruction;
 import dev.enjarai.trickster.spell.Fragment;
@@ -55,7 +54,7 @@ public class AtomicSpellExecutor implements SpellExecutor {
     private AtomicSpellExecutor(Trick trickSource, TickData data, SpellPart root, Stack<SpellInstruction> instructions, ExecutionState state) throws BlunderException {
         this(root, instructions, List.of(), List.of(), state, calculateExecutionCost(trickSource, data, instructions));
     }
-    
+
     public AtomicSpellExecutor(Trick trickSource, TickData data, SpellPart root, ExecutionState state) throws BlunderException {
         this(trickSource, data, root, SpellUtils.flattenNode(root), state);
     }
@@ -137,7 +136,7 @@ public class AtomicSpellExecutor implements SpellExecutor {
 
     private static int calculateExecutionCost(Trick trickSource, TickData data, Stack<SpellInstruction> instructions) throws BlunderException {
         int cost = 0;
-        
+
         for (var inst : instructions) {
             if (inst instanceof EnterScopeInstruction || inst instanceof ExitScopeInstruction)
                 continue;

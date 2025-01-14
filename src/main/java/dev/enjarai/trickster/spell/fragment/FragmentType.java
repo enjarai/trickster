@@ -7,6 +7,7 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.PatternGlyph;
 import dev.enjarai.trickster.spell.SpellPart;
+import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -24,16 +25,38 @@ import java.util.OptionalInt;
 
 public record FragmentType<T extends Fragment>(StructEndec<T> endec, OptionalInt color) {
     public static final RegistryKey<Registry<FragmentType<?>>> REGISTRY_KEY = RegistryKey.ofRegistry(Trickster.id("fragment_type"));
+    public static final Int2ObjectMap<Identifier> INT_ID_FALLBACK = new Int2ObjectOpenHashMap<>() {{
+        put(-777274987, Trickster.id("entity_type"));
+        put(-2055452291, Trickster.id("slot"));
+        put(719778857, Trickster.id("spell_part"));
+        put(1201617608, Trickster.id("number"));
+        put(1343995792, Trickster.id("string"));
+        put(94838885, Trickster.id("item_type"));
+        put(-839744897, Trickster.id("pattern_literal"));
+        put(937706338, Trickster.id("entity"));
+        put(-2055409991, Trickster.id("type"));
+        put(-1943319220, Trickster.id("zalgo"));
+        put(1415594178, Trickster.id("vector"));
+        put(-772426965, Trickster.id("block_type"));
+        put(-2058877733, Trickster.id("map"));
+        put(1444891407, Trickster.id("pattern"));
+        put(1140968677, Trickster.id("dimension"));
+        put(-2055360237, Trickster.id("void"));
+        put(-2055663587, Trickster.id("list"));
+        put(-1994273881, Trickster.id("boolean"));
+    }};
     public static final Int2ObjectMap<Identifier> INT_ID_LOOKUP = new Int2ObjectOpenHashMap<>();
+    public static final Endec<FragmentType<?>> INT_ID_ENDEC = Endec.INT.xmap(FragmentType::getFromInt, FragmentType::getIntId);
     public static final Registry<FragmentType<?>> REGISTRY = FabricRegistryBuilder.from(new SimpleRegistry<>(REGISTRY_KEY, Lifecycle.stable()) {
         @Override
         public RegistryEntry.Reference<FragmentType<?>> add(RegistryKey<FragmentType<?>> key, FragmentType<?> value, RegistryEntryInfo info) {
             var hash = key.getValue().hashCode();
             if (INT_ID_LOOKUP.containsKey(hash)) {
-                Trickster.LOGGER.warn(
+                Trickster.LOGGER.error(
                         "WARNING: Hashcode collision between two fragment types, spell imports and exports may not work as expected. ({} overrode {})",
                         key.getValue(), INT_ID_LOOKUP.get(hash)
                 );
+                throw new IllegalStateException("WARNING: Hashcode collision between two fragment types");
             }
 
             INT_ID_LOOKUP.put(hash, key.getValue());
@@ -87,7 +110,11 @@ public record FragmentType<T extends Fragment>(StructEndec<T> endec, OptionalInt
     public static FragmentType<?> getFromInt(int intId) {
         var id = INT_ID_LOOKUP.get(intId);
         if (id == null) {
-            throw new IllegalArgumentException("Not a valid int id for fragment type");
+            id = INT_ID_FALLBACK.get(intId);
+
+            if (id == null) {
+                throw new IllegalArgumentException("Not a valid int id for fragment type: " + intId);
+            }
         }
 
         return REGISTRY.get(id);

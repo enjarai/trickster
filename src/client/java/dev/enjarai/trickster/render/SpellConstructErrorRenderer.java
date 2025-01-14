@@ -3,8 +3,6 @@ package dev.enjarai.trickster.render;
 import dev.enjarai.trickster.block.ModularSpellConstructBlock;
 import dev.enjarai.trickster.block.ModularSpellConstructBlockEntity;
 import dev.enjarai.trickster.block.SpellConstructBlockEntity;
-import dev.enjarai.trickster.item.component.ModComponents;
-import dev.enjarai.trickster.item.component.SpellCoreComponent;
 import dev.enjarai.trickster.spell.execution.executor.ErroredSpellExecutor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -29,8 +27,7 @@ public class SpellConstructErrorRenderer {
                     y += 3;
                 }
 
-                if (construct.getComponents().get(ModComponents.SPELL_CORE) instanceof SpellCoreComponent component
-                        && component.executor() instanceof ErroredSpellExecutor executor) {
+                if (construct.executor instanceof ErroredSpellExecutor executor) {
                     draw(client, context, executor.errorMessage(), y);
                 }
             }
@@ -45,9 +42,12 @@ public class SpellConstructErrorRenderer {
                         y += 3;
                     }
 
-                    if (stack.get(ModComponents.SPELL_CORE) instanceof SpellCoreComponent component
-                            && component.executor() instanceof ErroredSpellExecutor executor) {
-                        draw(client, context, executor.errorMessage(), y);
+                    if (i > 0) {
+                        var executor = modularConstruct.executors.get(i - 1);
+                        if (executor.isPresent()
+                                && executor.get() instanceof ErroredSpellExecutor errored) {
+                            draw(client, context, errored.errorMessage(), y);
+                        }
                     }
                 });
             }

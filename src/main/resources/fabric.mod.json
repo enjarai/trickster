@@ -55,7 +55,9 @@
             "trickster:pinned_chunks",
             "trickster:grace",
             "trickster:mana_handler",
-            "trickster:player_animation"
+            "trickster:player_animation",
+            "trickster:weight",
+            "trickster:scale"
         ]
     },
     "mixins": [

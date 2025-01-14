@@ -1,7 +1,6 @@
 package dev.enjarai.trickster;
 
 import dev.enjarai.trickster.spell.SpellPart;
-
 import net.minecraft.item.tooltip.TooltipData;
 
 public record SpellTooltipData(SpellPart spell) implements TooltipData {

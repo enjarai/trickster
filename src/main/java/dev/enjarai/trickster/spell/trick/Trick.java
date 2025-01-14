@@ -7,10 +7,7 @@ import dev.enjarai.trickster.item.component.FragmentComponent;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
-import dev.enjarai.trickster.spell.blunder.CantEditBlockBlunder;
-import dev.enjarai.trickster.spell.blunder.IncorrectFragmentBlunder;
-import dev.enjarai.trickster.spell.blunder.MissingFragmentBlunder;
+import dev.enjarai.trickster.spell.blunder.*;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
@@ -28,6 +25,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.mojang.datafixers.util.Either;
+import net.minecraft.util.math.ChunkSectionPos;
 
 public abstract class Trick {
     public static final Identifier TRICK_RANDOM = Trickster.id("trick");
@@ -184,9 +182,18 @@ public abstract class Trick {
             throw new CantEditBlockBlunder(this, positions[0]);
         }
 
+        expectLoaded(ctx, positions);
         for (var pos : positions) {
             if (!player.canModifyAt(ctx.source().getWorld(), pos)) {
                 throw new CantEditBlockBlunder(this, pos);
+            }
+        }
+    }
+
+    protected void expectLoaded(SpellContext ctx, BlockPos... positions) {
+        for (var pos : positions) {
+            if (!ctx.source().getWorld().isChunkLoaded(ChunkSectionPos.getSectionCoord(pos.getX()), ChunkSectionPos.getSectionCoord(pos.getZ()))) {
+                throw new NotLoadedBlunder(this, pos);
             }
         }
     }

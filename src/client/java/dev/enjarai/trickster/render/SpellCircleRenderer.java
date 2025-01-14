@@ -8,12 +8,9 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.PatternGlyph;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.LocalRandom;
@@ -189,19 +186,22 @@ public class SpellCircleRenderer {
             renderPart(matrices, vertexConsumers, part, x, y, size / 3, startingAngle, delta, alphaGetter, normal);
         } else {
             matrices.push();
-            drawSide(matrices, vertexConsumers, parent, toLocalSpace(x), toLocalSpace(y), toLocalSpace(size), alphaGetter, normal, glyph);
+            drawSide(matrices, vertexConsumers, parent, toLocalSpace(x), toLocalSpace(y), toLocalSpace(size), alphaGetter, normal, delta, glyph);
             matrices.pop();
 
             if (!inUI) {
-                matrices.push();
-                matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
-                drawSide(matrices, vertexConsumers, parent, toLocalSpace(-x), toLocalSpace(y), toLocalSpace(size), alphaGetter, normal, glyph);
-                matrices.pop();
+                var renderer = FragmentRenderer.REGISTRY.get(FragmentType.REGISTRY.getId(glyph.type()));
+                if (renderer == null || renderer.doubleSided()) {
+                    matrices.push();
+                    matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
+                    drawSide(matrices, vertexConsumers, parent, toLocalSpace(-x), toLocalSpace(y), toLocalSpace(size), alphaGetter, normal, delta, glyph);
+                    matrices.pop();
+                }
             }
         }
     }
 
-    private void drawSide(MatrixStack matrices, VertexConsumerProvider vertexConsumers, SpellPart parent, float x, float y, float size, Function<Float, Float> alphaGetter, Vec3d normal, Fragment glyph) {
+    private void drawSide(MatrixStack matrices, VertexConsumerProvider vertexConsumers, SpellPart parent, float x, float y, float size, Function<Float, Float> alphaGetter, Vec3d normal, float delta, Fragment glyph) {
         var alpha = alphaGetter.apply(size);
         var patternSize = size / PATTERN_TO_PART_RATIO;
         var pixelSize = patternSize / PART_PIXEL_RADIUS;
@@ -259,31 +259,10 @@ public class SpellCircleRenderer {
 
             if (renderer != null) {
                 //noinspection unchecked
-                renderer.render(glyph, matrices, vertexConsumers, x, y, size, alpha, normal, this);
+                renderer.render(glyph, matrices, vertexConsumers, x, y, size, alpha, normal, delta, this);
                 renderDots = renderer.renderRedrawDots();
             } else {
-                var textRenderer = MinecraftClient.getInstance().textRenderer;
-
-//            var height = textRenderer.wrapLines(Text.literal(glyph.asString()), ) // TODO
-                var text = glyph.asFormattedText();
-                var height = 7;
-                var width = textRenderer.getWidth(text);
-
-                matrices.push();
-                matrices.translate(x, y, 0);
-                matrices.scale(size / 1.3f / width, size / 1.3f / width, 1);
-
-                var color = ColorHelper.Argb.withAlpha((int) (alpha * 0xff), 0xffffff);
-
-                textRenderer.draw(
-                        text,
-                        -width / 2f, -height / 2f, color, false,
-                        matrices.peek().getPositionMatrix(),
-                        vertexConsumers, TextRenderer.TextLayerType.NORMAL,
-                        0, 0xf000f0
-                );
-
-                matrices.pop();
+                FragmentRenderer.renderAsText(glyph, matrices, vertexConsumers, x, y, size, alpha);
             }
 
             if (inEditor && inUI && renderDots) {

@@ -57,8 +57,8 @@ public class EndecTomfoolery {
         );
     }
 
-    public static <T> Endec<Optional<T>> safeOptionalOf(Endec<T> endec) {
-        return Endec.ifAttr(CODEC_SAFE, Endec.<Optional<T>>of(
+    public static <T> Endec<Optional<T>> forcedSafeOptionalOf(Endec<T> endec) {
+        return Endec.of(
                 (ctx, serializer, value) -> {
                     try (var struct = serializer.struct()) {
                         struct.field("present", ctx, Endec.BOOLEAN, value.isPresent());
@@ -75,7 +75,11 @@ public class EndecTomfoolery {
                         return Optional.empty();
                     }
                 }
-        )).orElse(endec.optionalOf());
+        );
+    }
+
+    public static <T> Endec<Optional<T>> safeOptionalOf(Endec<T> endec) {
+        return Endec.ifAttr(CODEC_SAFE, forcedSafeOptionalOf(endec)).orElse(endec.optionalOf());
     }
 
     public static <T> Endec<Stack<T>> stackOf(Endec<T> endec) {
