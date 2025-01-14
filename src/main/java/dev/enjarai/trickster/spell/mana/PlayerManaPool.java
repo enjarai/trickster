@@ -16,7 +16,7 @@ public class PlayerManaPool extends CachedInventoryManaPool {
 
         var playerAccessories = player.accessoriesCapability();
         if (playerAccessories != null) {
-            cached = playerAccessories.getEquipped(itemStack -> itemStack.get(ModComponents.MANA) != null).stream().map(SlotEntryReference::reference).toList();
+            cached = playerAccessories.getEquipped(itemStack -> itemStack.contains(ModComponents.MANA)).stream().map(SlotEntryReference::reference).toList();
         } else {
             cached = List.of();
         }
@@ -28,7 +28,9 @@ public class PlayerManaPool extends CachedInventoryManaPool {
 
         for (var slotReference : cached) {
             var component = slotReference.getStack().get(ModComponents.MANA);
-            if (component != null) result += component.pool().get(world);
+            if (component != null) {
+                result += component.pool().get(world);
+            }
         }
 
         return result + super.get(world);
@@ -40,7 +42,9 @@ public class PlayerManaPool extends CachedInventoryManaPool {
 
         for (var slotReference : cached) {
             var component = slotReference.getStack().get(ModComponents.MANA);
-            if (component != null) result += component.pool().getMax(world);
+            if (component != null) {
+                result += component.pool().getMax(world);
+            }
         }
 
         return result + super.getMax(world);
