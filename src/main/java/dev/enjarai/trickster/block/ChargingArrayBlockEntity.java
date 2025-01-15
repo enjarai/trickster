@@ -1,7 +1,6 @@
 package dev.enjarai.trickster.block;
 
 import dev.enjarai.trickster.item.ModItems;
-import dev.enjarai.trickster.item.SpellCoreItem;
 import dev.enjarai.trickster.item.component.ManaComponent;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -20,10 +19,8 @@ import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3d;
 import org.joml.Vector3f;
 
 public class ChargingArrayBlockEntity extends BlockEntity implements Inventory {
@@ -58,7 +55,7 @@ public class ChargingArrayBlockEntity extends BlockEntity implements Inventory {
                 //noinspection IntegerDivisionInFloatingPointContext
                 var y = (i / 3 - 1) / 16f * 15f;
 
-                var facing = getCachedState().get(ModularSpellConstructBlock.FACING);
+                var facing = getCachedState().get(ChargingArrayBlock.FACING);
 
                 ManaComponent.tryRecharge(
                         serverWorld,
@@ -151,7 +148,7 @@ public class ChargingArrayBlockEntity extends BlockEntity implements Inventory {
 
     @Override
     public boolean isValid(int slot, ItemStack stack) {
-        return stack.isEmpty() || (slot == 0 ? stack.isIn(ModItems.MANA_KNOTS) : stack.getItem() instanceof SpellCoreItem) && getStack(slot).isEmpty();
+        return stack.isEmpty() || stack.isIn(ModItems.MANA_KNOTS) && getStack(slot).isEmpty();
     }
 
     @Override
