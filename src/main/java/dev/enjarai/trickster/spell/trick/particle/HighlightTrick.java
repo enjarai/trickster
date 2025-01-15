@@ -14,7 +14,7 @@ import java.util.List;
 
 public class HighlightTrick extends Trick<HighlightTrick> {
     public HighlightTrick() {
-        super(Pattern.of(2, 0, 1, 2, 3, 4, 5, 8, 7, 6, 3), Signature.of(variadic(FragmentType.VECTOR).required().unpack(), HighlightTrick::run));
+        super(Pattern.of(2, 0, 1, 2, 3, 4, 5, 8, 7, 6, 3), Signature.of(variadic(FragmentType.VECTOR).require().unpack(), HighlightTrick::run));
     }
 
     public Fragment run(SpellContext ctx, List<VectorFragment> positions) throws BlunderException {

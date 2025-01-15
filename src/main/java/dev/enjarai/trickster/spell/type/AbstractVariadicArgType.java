@@ -42,7 +42,7 @@ public abstract class AbstractVariadicArgType<F extends Fragment, T> implements 
         return result;
     }
 
-    public abstract AbstractVariadicArgType<F, T> required();
+    public abstract AbstractVariadicArgType<F, T> require();
 
     public abstract AbstractVariadicArgType<F, T> unpack();
 

@@ -12,7 +12,7 @@ import java.util.List;
 
 public class MultiplyTrick extends DistortionTrick<MultiplyTrick> {
     public MultiplyTrick() {
-        super(Pattern.of(2, 1, 0, 4, 8, 7, 6), Signature.of(variadic(MultiplicableFragment.class).required().unpack(), MultiplyTrick::run));
+        super(Pattern.of(2, 1, 0, 4, 8, 7, 6), Signature.of(variadic(MultiplicableFragment.class).require().unpack(), MultiplyTrick::run));
     }
 
     public Fragment run(SpellContext ctx, List<MultiplicableFragment> fragments) throws BlunderException {

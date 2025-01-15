@@ -27,7 +27,7 @@ import java.util.function.BiFunction;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-public non-sealed interface Fragment extends SpellInstruction {
+public non-sealed interface Fragment extends EvaluationResult, SpellInstruction {
     int MAX_WEIGHT = 64000;
     Text TRUNCATED_VALUE_TEXT = Text.literal(" [...]")
             .setStyle(

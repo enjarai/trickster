@@ -12,7 +12,7 @@ import java.util.List;
 
 public class SubtractTrick extends DistortionTrick<SubtractTrick> {
     public SubtractTrick() {
-        super(Pattern.of(1, 4, 8, 7, 6, 4), Signature.of(variadic(SubtractableFragment.class).required().unpack(), SubtractTrick::run));
+        super(Pattern.of(1, 4, 8, 7, 6, 4), Signature.of(variadic(SubtractableFragment.class).require().unpack(), SubtractTrick::run));
     }
 
     public Fragment run(SpellContext ctx, List<SubtractableFragment> fragments) throws BlunderException {

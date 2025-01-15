@@ -12,7 +12,7 @@ import java.util.List;
 
 public class DivideTrick extends DistortionTrick<DivideTrick> {
     public DivideTrick() {
-        super(Pattern.of(0, 1, 2, 4, 6, 7, 8), Signature.of(variadic(DivisibleFragment.class).required().unpack(), DivideTrick::run));
+        super(Pattern.of(0, 1, 2, 4, 6, 7, 8), Signature.of(variadic(DivisibleFragment.class).require().unpack(), DivideTrick::run));
     }
 
     public Fragment run(SpellContext ctx, List<DivisibleFragment> fragments) throws BlunderException {
