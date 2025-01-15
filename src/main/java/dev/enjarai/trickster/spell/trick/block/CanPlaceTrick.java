@@ -22,6 +22,9 @@ public class CanPlaceTrick extends Trick<CanPlaceTrick> {
     public Fragment check(SpellContext ctx, VectorFragment pos, Optional<BlockTypeFragment> blockType) throws BlunderException {
         var blockPos = pos.toBlockPos();
         var world = ctx.source().getWorld();
+
+        expectLoaded(ctx, blockPos);
+
         boolean result;
 
         result = blockType.map(blockTypeFragment -> blockTypeFragment.block().getDefaultState().canPlaceAt(world, blockPos))

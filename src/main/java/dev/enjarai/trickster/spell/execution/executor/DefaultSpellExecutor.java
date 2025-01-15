@@ -24,8 +24,12 @@ public final class DefaultSpellExecutor implements SpellExecutor {
             Fragment.ENDEC.listOf().fieldOf("inputs", e -> e.inputs),
             Endec.INT.listOf().fieldOf("scope", e -> e.scope),
             ExecutionState.ENDEC.fieldOf("state", e -> e.state),
-            EndecTomfoolery.safeOptionalOf(SpellExecutor.ENDEC).optionalFieldOf("child", e -> e.child, Optional.empty()),
-            EndecTomfoolery.safeOptionalOf(Fragment.ENDEC).optionalFieldOf("override_return_value", e -> e.overrideReturnValue, Optional.empty()),
+            EndecTomfoolery.forcedSafeOptionalOf(SpellExecutor.ENDEC).fieldOf("child", e -> e.child),
+            EndecTomfoolery.forcedSafeOptionalOf(Fragment.ENDEC).fieldOf("override_return_value", e -> e.overrideReturnValue),
+            DefaultSpellExecutor::new
+    );
+    public static final StructEndec<DefaultSpellExecutor> NET_ENDEC = StructEndecBuilder.of(
+            Fragment.COMPACT_ENDEC.fieldOf("root", e -> e.root),
             DefaultSpellExecutor::new
     );
 
@@ -54,6 +58,18 @@ public final class DefaultSpellExecutor implements SpellExecutor {
         this.state = state;
         this.child = child;
         this.overrideReturnValue = overrideReturnValue;
+    }
+
+    private DefaultSpellExecutor(Fragment root) {
+        this(
+                (SpellPart) root,
+                new Stack<>(),
+                new ArrayList<>(),
+                new ArrayList<>(),
+                new ExecutionState(List.of()),
+                Optional.empty(),
+                Optional.empty()
+        );
     }
 
     public DefaultSpellExecutor(SpellPart root, ExecutionState executionState) {

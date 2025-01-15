@@ -20,6 +20,8 @@ public class CheckBlockTrick extends Trick<CheckBlockTrick> {
     public Fragment check(SpellContext ctx, VectorFragment pos) throws BlunderException {
         var blockPos = pos.toBlockPos();
 
+        expectLoaded(ctx, blockPos);
+
         return new BlockTypeFragment(ctx.source().getWorld().getBlockState(blockPos).getBlock());
     }
 }

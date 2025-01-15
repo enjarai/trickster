@@ -37,7 +37,7 @@ public record FragmentComponent(Fragment value, Optional<Text> name, boolean imm
             (value, immutable, closed) -> new FragmentComponent(value, Optional.empty(), immutable, closed)
     );
     private static final Endec<FragmentComponent> NEW_ENDEC = StructEndecBuilder.of(
-            Fragment.ENDEC.fieldOf("value", FragmentComponent::value),
+            Fragment.COMPACT_ENDEC.fieldOf("value", FragmentComponent::value),
             EndecTomfoolery.safeOptionalOf(CodecUtils.ofCodec(TextCodecs.STRINGIFIED_CODEC)).fieldOf("name", FragmentComponent::name),
             Endec.BOOLEAN.optionalFieldOf("immutable", FragmentComponent::immutable, false),
             Endec.BOOLEAN.optionalFieldOf("closed", FragmentComponent::closed, false),

@@ -9,6 +9,7 @@ import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.type.Signature;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class GetRedstonePowerTrick extends Trick<GetRedstonePowerTrick> {
     }
 
     public Fragment get(SpellContext ctx, VectorFragment pos) throws BlunderException {
+        expectLoaded(ctx, pos.toBlockPos());
         return new NumberFragment(ctx.source().getWorld().getReceivedRedstonePower(pos.toBlockPos()));
     }
 }

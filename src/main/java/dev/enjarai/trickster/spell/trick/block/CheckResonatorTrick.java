@@ -23,6 +23,8 @@ public class CheckResonatorTrick extends Trick<CheckResonatorTrick> {
         var blockPos = pos.toBlockPos();
         var world = ctx.source().getWorld();
 
+        expectLoaded(ctx, blockPos);
+
         if (world.getBlockState(blockPos).getBlock() instanceof SpellControlledRedstoneBlock block) {
             return new NumberFragment(block.getPower(world, blockPos));
         }

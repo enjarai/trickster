@@ -30,12 +30,14 @@ public class PlaceBlockTrick extends Trick<PlaceBlockTrick> {
     }
 
     public Fragment placeSlot(SpellContext ctx, VectorFragment pos, SlotFragment slot) throws BlunderException {
+        expectCanBuild(ctx, pos.toBlockPos());
         var stack = ctx.getStack(this, Optional.of(slot), item -> item.getItem() instanceof BlockItem)
                 .orElseThrow(() -> new MissingItemBlunder(this));
         return place(ctx, pos, stack);
     }
 
     public Fragment placeType(SpellContext ctx, VectorFragment pos, BlockTypeFragment type) throws BlunderException {
+        expectCanBuild(ctx, pos.toBlockPos());
         var stack = ctx.getStack(this, Optional.empty(), item -> item.getItem() instanceof BlockItem blockItem && blockItem.getBlock() == type.block())
                 .orElseThrow(() -> new MissingItemBlunder(this));
         return place(ctx, pos, stack);

@@ -15,19 +15,15 @@ import net.minecraft.item.ItemStack;
 
 public abstract class AbstractConduitTrick extends Trick<AbstractConduitTrick> {
     public AbstractConduitTrick(Pattern pattern) {
-        super(pattern, Signature.of(FragmentType.NUMBER, variadic(FragmentType.SLOT).unpack(), AbstractConduitTrick::run));
+        super(pattern, Signature.of(FragmentType.NUMBER, variadic(FragmentType.SLOT).require().unpack(), AbstractConduitTrick::run));
     }
 
     public Fragment run(SpellContext ctx, NumberFragment n, List<SlotFragment> slots) throws BlunderException {
-        double limit = n.number();
+        double limit = n.number() / slots.size();
         float result = 0;
 
         for (var slot : slots) {
-            if (result >= limit)
-                break;
-
-            var stack = slot.reference(this, ctx);
-            result += affect(ctx, stack, (float) limit - result);
+            result += affect(ctx, slot.reference(this, ctx), (float) limit);
         }
 
         return new NumberFragment(result);

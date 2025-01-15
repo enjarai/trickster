@@ -14,6 +14,7 @@ import dev.enjarai.trickster.spell.blunder.NaNBlunder;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
+import it.unimi.dsi.fastutil.ints.AbstractInt2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.text.Text;
@@ -53,7 +54,7 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
                 if (entry.getValue() == executor) {
                     AtomicBoolean isDone = new AtomicBoolean(true);
                     tryRun(
-                            source, entry,
+                            source, entry.getIntKey(), entry.getValue(),
                             (index, executor1) -> isDone.set(false),
                             (index, executor2) -> iterator.remove(),
                             (index, executor3) -> {}
@@ -90,11 +91,17 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
     }
 
     public void tick(SpellSource source, ExecutorCallback tickCallback, ExecutorCallback completeCallback, ExecutorCallback errorCallback) {
-        for (var iterator = spells.int2ObjectEntrySet().iterator(); iterator.hasNext();) {
-            var entry = iterator.next();
-            tryRun(source, entry, tickCallback, (index, executor) -> {
-                iterator.remove();
+        for (int i = 0; i < capacity; i++) {
+            var spell = spells.get(i);
+
+            if (spell == null) {
+                continue;
+            }
+
+            final int i2 = i;
+            tryRun(source, i, spell, tickCallback, (index, executor) -> {
                 completeCallback.callTheBack(index, executor);
+                spells.remove(i2);
             }, errorCallback);
         }
     }
@@ -114,15 +121,13 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
      *                         TODO
      * @return whether the spell has finished running or not. Blunders and normal completion return true, otherwise returns false.
      */
-    private boolean tryRun(SpellSource source, Int2ObjectMap.Entry<SpellExecutor> entry, ExecutorCallback tickCallback, ExecutorCallback completeCallback, ExecutorCallback errorCallback) {
-        var executor = entry.getValue();
-
+    private boolean tryRun(SpellSource source, int key, SpellExecutor executor, ExecutorCallback tickCallback, ExecutorCallback completeCallback, ExecutorCallback errorCallback) {
         try {
-            if (executor.run(source, new TickData().withSlot(entry.getIntKey())).isEmpty()) {
-                tickCallback.callTheBack(entry.getIntKey(), executor);
+            if (executor.run(source, new TickData().withSlot(key)).isEmpty()) {
+                tickCallback.callTheBack(key, executor);
                 return false;
             } else {
-                completeCallback.callTheBack(entry.getIntKey(), executor);
+                completeCallback.callTheBack(key, executor);
                 return true;
             }
         } catch (BlunderException blunder) {
@@ -132,18 +137,18 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
             if (blunder instanceof NaNBlunder)
                 source.getPlayer().ifPresent(ModCriteria.NAN_NUMBER::trigger);
 
-            entry.setValue(new ErroredSpellExecutor(executor.spell(), message));
+            spells.put(key, new ErroredSpellExecutor(executor.spell(), message));
             source.getPlayer().ifPresent(player -> player.sendMessage(message));
-            errorCallback.callTheBack(entry.getIntKey(), executor);
+            errorCallback.callTheBack(key, executor);
         } catch (Exception e) {
             var message = Text.literal("Uncaught exception in spell: " + e.getMessage())
                     .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")");
 
             Trickster.LOGGER.warn("Uncaught error in spell:", e);
 
-            entry.setValue(new ErroredSpellExecutor(executor.spell(), message));
+            spells.put(key, new ErroredSpellExecutor(executor.spell(), message));
             source.getPlayer().ifPresent(player -> player.sendMessage(message));
-            errorCallback.callTheBack(entry.getIntKey(), executor);
+            errorCallback.callTheBack(key, executor);
         }
 
         return true;

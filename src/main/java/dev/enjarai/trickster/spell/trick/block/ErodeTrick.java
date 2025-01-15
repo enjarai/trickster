@@ -27,8 +27,7 @@ public class ErodeTrick extends Trick<ErodeTrick> {
         var weatheringPos = weatheringPosFragment.toBlockPos();
         var waterPos = waterPosFragment.toBlockPos();
 
-        expectCanBuild(ctx, weatheringPos);
-        expectCanBuild(ctx, waterPos);
+        expectCanBuild(ctx, weatheringPos, waterPos);
 
         ServerWorld world = ctx.source().getWorld();
         BlockState blockState = world.getBlockState(weatheringPos);

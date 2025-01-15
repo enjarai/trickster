@@ -20,6 +20,12 @@ public non-sealed interface SpellExecutor extends EvaluationResult {
                     SpellExecutorType::endec, SpellExecutor::type, MinecraftEndecs.ofRegistry(SpellExecutorType.REGISTRY)
             )
     );
+    @SuppressWarnings("unchecked")
+    StructEndec<SpellExecutor> NET_ENDEC = EndecTomfoolery.lazy(
+            () -> (StructEndec<SpellExecutor>) Endec.dispatchedStruct(
+                    SpellExecutorType::netEndec, SpellExecutor::type, MinecraftEndecs.ofRegistry(SpellExecutorType.REGISTRY)
+            )
+    );
 
     SpellExecutorType<?> type();
 

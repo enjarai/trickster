@@ -19,6 +19,8 @@ public class GetBlockHardnessTrick extends Trick<GetBlockHardnessTrick> {
 
     public Fragment get(SpellContext ctx, VectorFragment pos) throws BlunderException {
         var blockPos = pos.toBlockPos();
+        expectLoaded(ctx, blockPos);
+
         var state = ctx.source().getWorld().getBlockState(blockPos);
         var hardness = state.getBlock().getHardness();
 
