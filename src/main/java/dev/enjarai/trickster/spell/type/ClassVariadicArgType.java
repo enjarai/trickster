@@ -49,7 +49,7 @@ public class ClassVariadicArgType<T extends Fragment> extends AbstractVariadicAr
 
     @Override
     public AbstractVariadicArgType<T, Class<T>> unpack() {
-        return new ClassVariadicArgType<>(types, required, true);
+        return new ClassVariadicArgType<>(types, require, true);
     }
 
     @Override

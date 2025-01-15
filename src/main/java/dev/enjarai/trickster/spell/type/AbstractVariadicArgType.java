@@ -12,12 +12,12 @@ import java.util.List;
 
 public abstract class AbstractVariadicArgType<F extends Fragment, T> implements ArgType<List<F>> {
     protected final T[] types;
-    protected final boolean required;
+    protected final boolean require;
     protected final boolean unpack;
 
-    protected AbstractVariadicArgType(T[] types, boolean required, boolean unpack) {
+    protected AbstractVariadicArgType(T[] types, boolean require, boolean unpack) {
         this.types = types;
-        this.required = required;
+        this.require = require;
         this.unpack = unpack;
     }
 
@@ -52,7 +52,7 @@ public abstract class AbstractVariadicArgType<F extends Fragment, T> implements 
             fragments = list.fragments();
         }
 
-        if (required && fragments.isEmpty()) {
+        if (require && fragments.isEmpty()) {
             return false;
         }
 
@@ -91,11 +91,13 @@ public abstract class AbstractVariadicArgType<F extends Fragment, T> implements 
 
     @Override
     public MutableText asText() {
-        if (types.length == 1) {
-            return typeAsText(types[0]).append("...");
-        }
+        MutableText text;
 
-        var text = appendTypesText(Text.literal("(")).append(")...");
+        if (types.length == 1) {
+            text = typeAsText(types[0]).append("...");
+        } else {
+            text = appendTypesText(Text.literal("(")).append(")...");
+        }
 
         if (unpack) {
             text = appendTypesText(text.append(" | [")).append("]"); //TODO: maybe this should be before?

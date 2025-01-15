@@ -9,8 +9,8 @@ import net.minecraft.text.MutableText;
 import java.util.List;
 
 public class TypeVariadicArgType<T extends Fragment> extends AbstractVariadicArgType<T, FragmentType<T>> {
-    public TypeVariadicArgType(FragmentType<T>[] types, boolean required, boolean unpack) {
-        super(types, required, unpack);
+    public TypeVariadicArgType(FragmentType<T>[] types, boolean require, boolean unpack) {
+        super(types, require, unpack);
     }
 
     @SafeVarargs
@@ -48,7 +48,7 @@ public class TypeVariadicArgType<T extends Fragment> extends AbstractVariadicArg
 
     @Override
     public AbstractVariadicArgType<T, FragmentType<T>> unpack() {
-        return new TypeVariadicArgType<>(types, required, true);
+        return new TypeVariadicArgType<>(types, require, true);
     }
 
     @Override
