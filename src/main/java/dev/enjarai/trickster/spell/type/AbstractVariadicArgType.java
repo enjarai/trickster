@@ -23,7 +23,7 @@ public abstract class AbstractVariadicArgType<F extends Fragment, T> implements 
 
     @Override
     public int argc(List<Fragment> fragments) {
-        return fragments.size();
+        return fragments.size() - (fragments.size() % types.length);
     }
 
     @Override
