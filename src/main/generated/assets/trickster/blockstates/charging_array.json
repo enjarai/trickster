@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "trickster:block/charging_array",
+      "x": 180,
+      "y": 0
+    },
+    "facing=east": {
+      "model": "trickster:block/charging_array",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "trickster:block/charging_array",
+      "x": 90,
+      "y": 0
+    },
+    "facing=south": {
+      "model": "trickster:block/charging_array",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "trickster:block/charging_array",
+      "x": 0,
+      "y": 0
+    },
+    "facing=west": {
+      "model": "trickster:block/charging_array",
+      "x": 90,
+      "y": 270
+    }
+  }
+}
