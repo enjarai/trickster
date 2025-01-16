@@ -45,12 +45,12 @@ public class PatternRenderer implements FragmentRenderer<PatternGlyph> {
 
             var dotSize = pixelSize * dotScale;
 
-            drawFlatPolygon(matrices, vertexConsumers, c -> {
-                c.accept(pos.x - dotSize, pos.y - dotSize);
-                c.accept(pos.x - dotSize, pos.y + dotSize);
-                c.accept(pos.x + dotSize, pos.y + dotSize);
-                c.accept(pos.x + dotSize, pos.y - dotSize);
-            }, 0, r, g, b, 0.7f * alpha);
+            drawFlatPolygon(matrices, vertexConsumers,
+                    pos.x - dotSize, pos.y - dotSize,
+                    pos.x - dotSize, pos.y + dotSize,
+                    pos.x + dotSize, pos.y + dotSize,
+                    pos.x + dotSize, pos.y - dotSize,
+                    0, r, g, b, 0.7f * alpha);
         }
 
         for (var line : pattern.entries()) {
