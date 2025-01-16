@@ -96,6 +96,7 @@ trickster:
     height_reflection: Stature Ingress
     sneaking_reflection: Alternative Ingress
     sprinting_reflection: Trekking Ingress
+    burning_reflection: Hearth's Ingress
     blocking_reflection: Guard Ingress
     raycast: Pinpoint Ingress
     raycast_side: Bearing Ingress

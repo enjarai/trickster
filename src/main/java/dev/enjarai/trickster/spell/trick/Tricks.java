@@ -54,6 +54,7 @@ import dev.enjarai.trickster.spell.trick.bool.NotEqualsTrick;
 import dev.enjarai.trickster.spell.trick.dimension.GetDimensionTrick;
 import dev.enjarai.trickster.spell.trick.entity.query.BlockingReflectionTrick;
 import dev.enjarai.trickster.spell.trick.entity.query.GetEntityArmourTrick;
+import dev.enjarai.trickster.spell.trick.entity.query.BurningReflectionTrick;
 import dev.enjarai.trickster.spell.trick.entity.query.GetEntityHealthTrick;
 import dev.enjarai.trickster.spell.trick.entity.query.GetEntityMaxHealthTrick;
 import dev.enjarai.trickster.spell.trick.entity.query.GetEntityTypeTrick;
@@ -231,6 +232,7 @@ public class Tricks {
     public static final HeightReflectionTrick HEIGHT_REFLECTION = register("height_reflection", new HeightReflectionTrick());
     public static final SneakingReflectionTrick SNEAKING_REFLECTION = register("sneaking_reflection", new SneakingReflectionTrick());
     public static final SprintingReflectionTrick SPRINTING_REFLECTION = register("sprinting_reflection", new SprintingReflectionTrick());
+    public static final BurningReflectionTrick BURNING_REFLECTION = register("burning_reflection", new BurningReflectionTrick());
     public static final BlockingReflectionTrick BLOCKING_REFLECTION = register("blocking_reflection", new BlockingReflectionTrick());
     public static final RaycastBlockPosTrick RAYCAST = register("raycast", new RaycastBlockPosTrick());
     public static final RaycastBlockSideTrick RAYCAST_SIDE = register("raycast_side", new RaycastBlockSideTrick());
