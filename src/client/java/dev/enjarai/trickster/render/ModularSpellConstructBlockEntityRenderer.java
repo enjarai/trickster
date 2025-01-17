@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.render;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.block.ModularSpellConstructBlock;
 import dev.enjarai.trickster.block.ModularSpellConstructBlockEntity;
@@ -121,7 +122,7 @@ public class ModularSpellConstructBlockEntityRenderer implements BlockEntityRend
                         0.2f + (float) Math.sin(age * 0.14f) * 0.02f);
                 matrices.multiply(RotationAxis.POSITIVE_Z.rotation(age / 10));
 
-                this.renderer.renderPart(
+                this.renderer.renderPartWithoutDrawing(
                         matrices, vertexConsumers, executor.get().spell(),
                         0, 0, 0.2f, 0,
                         tickDelta, size -> 1f, normal
@@ -130,6 +131,7 @@ public class ModularSpellConstructBlockEntityRenderer implements BlockEntityRend
 
             matrices.pop();
         }
+        SpellCircleRenderer.VERTEX_CONSUMERS.draw();
 
         matrices.pop();
     }
