@@ -39,7 +39,7 @@ public class ModModelGenerator extends FabricModelProvider {
                 )
         );
         blockStateModelGenerator.registerNorthDefaultHorizontalRotated(ModBlocks.SCROLL_SHELF, TexturedModel.ORIENTABLE_WITH_BOTTOM);
-        for (var block : List.of(ModBlocks.MODULAR_SPELL_CONSTRUCT, ModBlocks.SPELL_CONSTRUCT)) {
+        for (var block : List.of(ModBlocks.MODULAR_SPELL_CONSTRUCT, ModBlocks.SPELL_CONSTRUCT, ModBlocks.CHARGING_ARRAY)) {
             blockStateModelGenerator.blockStateCollector.accept(VariantsBlockStateSupplier.create(block)
                     .coordinate(BlockStateVariantMap.create(Properties.FACING)
                             .register(direction ->

@@ -319,6 +319,7 @@ block.trickster:
   modular_spell_construct: Modular Spell Construct
   light: Light
   scroll_shelf: Scroll Shelf
+  charging_array: Charging Array
 
 effect.trickster:
   mana_boost: Mana Hyperflux
