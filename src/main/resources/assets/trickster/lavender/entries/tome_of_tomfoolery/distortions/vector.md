@@ -44,9 +44,7 @@ Returns the Z component of the given vector.
 
 <|glyph@trickster:templates|trick-id=trickster:merge_vector,title=Absorption Distortion|>
 
-number, number, number |
-
-number[] -> vector
+number, number, number -> vector
 
 ---
 

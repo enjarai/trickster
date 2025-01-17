@@ -22,8 +22,8 @@ Sends the given fragment to all spells within 16 blocks. Range may be extended b
 
 <|glyph@trickster:templates|trick-id=trickster:message_listen,title=Ploy of Receipt|>
 
--> any[]
+number -> any[]
 
 ---
 
-Returns all messages received on the tick after they were received. Will not return until at least one message is received.
+Returns all messages received on the tick after they were received. Must be provided with a timeout after which to return anyway.

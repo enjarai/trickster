@@ -250,6 +250,7 @@ trickster:
       item_type: Item
       block_type: Block
       entity_type: Entity Type
+      string: String
     class:
       Fragment: Any
       AddableFragment: Addable
@@ -277,6 +278,7 @@ trickster:
 
   blunder:
     overweight_fragment: Result fragment is overweight, result is %s
+    missing_fragment: Missing at index %d, expected %s
 
 item.trickster:
   tome_of_tomfoolery: Tome of Tomfoolery

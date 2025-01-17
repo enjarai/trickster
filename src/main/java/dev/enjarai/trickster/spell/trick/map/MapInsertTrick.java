@@ -13,7 +13,7 @@ import java.util.List;
 //TODO: distortion?
 public class MapInsertTrick extends Trick<MapInsertTrick> {
     public MapInsertTrick() {
-        super(Pattern.of(0, 3, 6, 8, 5, 2, 4, 8), Signature.of(FragmentType.MAP, variadic(Fragment.class, Fragment.class), MapInsertTrick::run));
+        super(Pattern.of(0, 3, 6, 8, 5, 2, 4, 8), Signature.of(FragmentType.MAP, variadic(Fragment.class, Fragment.class).require(), MapInsertTrick::run));
     }
 
     public Fragment run(SpellContext ctx, MapFragment map, List<Fragment> pairs) throws BlunderException {
