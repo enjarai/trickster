@@ -10,8 +10,6 @@ import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
 import org.joml.Vector3f;
 
-import java.util.function.Function;
-
 public class SpellFleckRenderer implements FleckRenderer<SpellFleck> {
     private final SpellCircleRenderer renderer = new SpellCircleRenderer(false, 1);
 

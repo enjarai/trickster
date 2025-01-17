@@ -83,6 +83,7 @@ public class ModModelGenerator extends FabricModelProvider {
 
         itemModelGenerator.register(ModItems.TOME_OF_TOMFOOLERY, Models.GENERATED);
         itemModelGenerator.register(ModItems.WARDING_CHARM, Models.GENERATED);
+        itemModelGenerator.register(ModItems.AMETHYST_WHORL, Models.GENERATED);
         itemModelGenerator.register(ModItems.MACRO_RING, Models.GENERATED);
         itemModelGenerator.register(ModItems.SPELL_INK, Models.GENERATED);
         itemModelGenerator.register(ModItems.SPELL_RESONATOR_ITEM, Models.GENERATED);

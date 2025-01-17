@@ -47,12 +47,12 @@ public class GlyphComponent extends BaseComponent {
             var isLinked = patternList.contains(i);
             var dotSize = 1;
 
-            drawFlatPolygon(context.getMatrices(), context.getVertexConsumers(), c -> {
-                c.accept(pos.x - dotSize, pos.y - dotSize);
-                c.accept(pos.x - dotSize, pos.y + dotSize);
-                c.accept(pos.x + dotSize, pos.y + dotSize);
-                c.accept(pos.x + dotSize, pos.y - dotSize);
-            }, 0, 0, 0, 0, isLinked ? 0.9f : 0.5f);
+            drawFlatPolygon(context.getMatrices(), context.getVertexConsumers(),
+                    pos.x - dotSize, pos.y - dotSize,
+                    pos.x - dotSize, pos.y + dotSize,
+                    pos.x + dotSize, pos.y + dotSize,
+                    pos.x + dotSize, pos.y - dotSize,
+                    0, 0, 0, 0, isLinked ? 0.9f : 0.5f);
         }
 
         for (var line : pattern.entries()) {

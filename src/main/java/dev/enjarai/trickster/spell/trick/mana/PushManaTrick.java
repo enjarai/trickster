@@ -19,8 +19,9 @@ public class PushManaTrick extends AbstractConduitTrick {
 
         var world = ctx.source().getWorld();
         var self = ctx.source().getManaPool();
-        var target = comp.pool().makeClone(world);
         var result = limit - self.use(limit, world);
+        comp = stack.get(ModComponents.MANA);
+        var target = comp.pool().makeClone(world);
         var leftover = target.refill(result, world);
         stack.set(ModComponents.MANA, comp.with(target));
         self.refill(leftover, world);
