@@ -16,6 +16,17 @@ but cannot be recharged naturally.
 
 ;;;;;
 
+Naturally recharging a Knot is done by exposing it to the night sky.
+It will charge most quickly at or near a full or new moon, but not at all when exactly in between.
+
+
+To count as being exposed, a Knot must either be thrown on the ground or placed in a 
+[Charging Array](^trickster:items/charging_array) or [Spell Construct](^trickster:items/spell_construct) 
+with a clear view of the sky.
+Rechargeable Knots thrown on the ground will not despawn.
+
+;;;;;
+
 Most gems or crystals can be made into Knots using
 [Ploy of the Moon Watcher](^trickster:ploys/mana#2).
 

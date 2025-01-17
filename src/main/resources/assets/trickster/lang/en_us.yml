@@ -325,6 +325,7 @@ item.trickster:
   fez: Fez
   wand: Wand
   macro_ring: Macro Ring
+  amethyst_whorl: Amethyst Whorl
 
   amethyst_knot: Amethyst Knot
   emerald_knot: Emerald Knot
@@ -343,6 +344,7 @@ block.trickster:
   modular_spell_construct: Modular Spell Construct
   light: Light
   scroll_shelf: Scroll Shelf
+  charging_array: Charging Array
 
 effect.trickster:
   mana_boost: Mana Hyperflux
