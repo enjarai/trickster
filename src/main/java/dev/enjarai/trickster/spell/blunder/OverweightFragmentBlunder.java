@@ -9,7 +9,7 @@ import net.minecraft.text.Text;
 public class OverweightFragmentBlunder extends TrickBlunderException {
     public final Fragment found;
 
-    public OverweightFragmentBlunder(Trick source, Fragment found) {
+    public OverweightFragmentBlunder(Trick<?> source, Fragment found) {
         super(source);
         this.found = found;
     }

@@ -2,7 +2,8 @@
 {
   "title": "Charging Array",
   "icon": "trickster:charging_array",
-  "category": "trickster:items"
+  "category": "trickster:items",
+  "ordinal": 80
 }
 ```
 

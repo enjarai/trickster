@@ -3,25 +3,27 @@ package dev.enjarai.trickster.spell.trick.map;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.MapFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.Signature;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 
 import java.util.List;
 
-public class MapRemoveTrick extends Trick {
+//TODO: distortion?
+public class MapRemoveTrick extends Trick<MapRemoveTrick> {
     public MapRemoveTrick() {
-        super(Pattern.of(0, 3, 6, 4, 2, 5, 8));
+        super(Pattern.of(0, 3, 6, 4, 2, 5, 8), Signature.of(FragmentType.MAP, variadic(Fragment.class), MapRemoveTrick::run));
     }
 
-    @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var map = expectInput(fragments, MapFragment.class, 0).map();
-        
-        for (var key : fragments.subList(1, fragments.size())) {
-            map = map.remove(key);
+    public Fragment run(SpellContext ctx, MapFragment map, List<Fragment> keys) throws BlunderException {
+        var newMap = map.map();
+
+        for (var key : keys) {
+            newMap = newMap.remove(key);
         }
 
-        return new MapFragment(map);
+        return new MapFragment(newMap);
     }
 }

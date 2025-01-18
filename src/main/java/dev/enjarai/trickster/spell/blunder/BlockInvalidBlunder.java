@@ -8,12 +8,12 @@ import net.minecraft.text.Text;
 public class BlockInvalidBlunder extends TrickBlunderException {
     private final Block block;
 
-    public BlockInvalidBlunder(Trick source) {
+    public BlockInvalidBlunder(Trick<?> source) {
         super(source);
         block = null;
     }
 
-    public BlockInvalidBlunder(Trick source, Block block) {
+    public BlockInvalidBlunder(Trick<?> source, Block block) {
         super(source);
         this.block = block;
     }

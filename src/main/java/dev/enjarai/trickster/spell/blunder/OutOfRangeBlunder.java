@@ -7,7 +7,7 @@ public class OutOfRangeBlunder extends TrickBlunderException {
     public final double maxRange;
     public final double usedRange;
 
-    public OutOfRangeBlunder(Trick source, double maxRange, double usedRange) {
+    public OutOfRangeBlunder(Trick<?> source, double maxRange, double usedRange) {
         super(source);
         this.maxRange = maxRange;
         this.usedRange = usedRange;

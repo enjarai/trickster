@@ -80,6 +80,16 @@ Given an entity, returns whether the entity is crouching.
 
 ;;;;;
 
+<|glyph@trickster:templates|trick-id=trickster:burning_reflection,title=Hearth's Ingress|>
+
+entity -> boolean
+
+---
+
+Given an entity, returns whether the entity is on fire.
+
+;;;;;
+
 <|glyph@trickster:templates|trick-id=trickster:sprinting_reflection,title=Trekking Ingress|>
 
 entity -> boolean
@@ -130,7 +140,7 @@ Given an entity, returns its total armor value.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:get_scale,title=Distortion of Ingress|>
+<|glyph@trickster:templates|trick-id=trickster:get_scale,title=Distortion of Occupation|>
 
 entity -> number
 

@@ -59,6 +59,8 @@ trickster:
     all: Stratagem Bar None
     any: Stratagem In General
     none: Stratagem In Absence
+    greater_than: Greater Distortion
+    lesser_than: Lesser Distortion
 
     extract_x: Primary Distortion
     extract_y: Secondary Distortion
@@ -93,6 +95,7 @@ trickster:
     height_reflection: Stature Ingress
     sneaking_reflection: Alternative Ingress
     sprinting_reflection: Trekking Ingress
+    burning_reflection: Hearth's Ingress
     blocking_reflection: Guard Ingress
     raycast: Pinpoint Ingress
     raycast_side: Bearing Ingress
@@ -229,29 +232,53 @@ trickster:
     message_send: Dispatch Ploy
     message_listen: Ploy of Receipt
 
-  fragment.trickster:
-    type: Type
-    number: Number
-    boolean: Boolean
-    vector: Vector
-    list: List
-    map: Map
-    void: Void
-    pattern: Pattern
-    pattern_literal: Pattern Literal
-    spell_part: Spell
-    entity: Entity
-    slot: Slot
-    zalgo: §kZalgo
-    item_type: Item
-    block_type: Block
-    entity_type: Entity Type
-    integer_list: List of Integers
+  fragment:
+    trickster:
+      type: Type
+      number: Number
+      boolean: Boolean
+      vector: Vector
+      list: List
+      map: Map
+      void: Void
+      pattern: Pattern
+      pattern_literal: Pattern Literal
+      spell_part: Spell
+      entity: Entity
+      slot: Slot
+      zalgo: §kZalgo
+      item_type: Item
+      block_type: Block
+      entity_type: Entity Type
+      string: String
+    class:
+      Fragment: Any
+      AddableFragment: Addable
+      DivisibleFragment: Divisible
+      FoldableFragment: Foldable
+      MultiplicableFragment: Multiplicable
+      RoundableFragment: Roundable
+      SubtractableFragment: Subtractable
+      TypeFragment: Type
+      NumberFragment: Number
+      BooleanFragment: Boolean
+      VectorFragment: Vector
+      ListFragment: List
+      MapFragment: Map
+      VoidFragment: Void
+      PatternGlyph: Pattern
+      Pattern: Pattern Literal
+      SpellPart: Spell
+      EntityFragment: Entity
+      SlotFragment: Slot
+      ZalgoFragment: §kZalgo
+      ItemTypeFragment: Item
+      BlockTypeFragment: Block
+      EntityTypeFragment: Entity Type
 
   blunder:
-    incorrect_fragment: Incorrect argument at index %d. Expected %s, got %s
-    missing_fragment: Missing at index %d, expected %s
     overweight_fragment: Result fragment is overweight, result is %s
+    missing_fragment: Missing at index %d, expected %s
 
 item.trickster:
   tome_of_tomfoolery: Tome of Tomfoolery

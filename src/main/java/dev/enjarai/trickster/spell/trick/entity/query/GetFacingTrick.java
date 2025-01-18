@@ -4,10 +4,9 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
+import net.minecraft.entity.LivingEntity;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import org.joml.Vector3d;
-
-import java.util.List;
 
 public class GetFacingTrick extends AbstractLivingEntityQueryTrick {
     public GetFacingTrick() {
@@ -15,8 +14,8 @@ public class GetFacingTrick extends AbstractLivingEntityQueryTrick {
     }
 
     @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var facing = getLivingEntity(ctx, fragments, 0).getRotationVector();
+    protected Fragment run(SpellContext ctx, LivingEntity entity) throws BlunderException {
+        var facing = entity.getRotationVector();
 
         return new VectorFragment(new Vector3d(facing.x, facing.y, facing.z));
     }

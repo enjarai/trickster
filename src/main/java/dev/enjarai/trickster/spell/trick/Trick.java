@@ -4,6 +4,7 @@ import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.component.FragmentComponent;
+import dev.enjarai.trickster.spell.EvaluationResult;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
@@ -12,6 +13,14 @@ import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
+import dev.enjarai.trickster.spell.type.Signature;
+import dev.enjarai.trickster.spell.type.SimpleArgType;
+import dev.enjarai.trickster.spell.type.TypeListArgType;
+import dev.enjarai.trickster.spell.type.TypeMapArgType;
+import dev.enjarai.trickster.spell.type.ClassListArgType;
+import dev.enjarai.trickster.spell.type.ClassMapArgType;
+import dev.enjarai.trickster.spell.type.ClassVariadicArgType;
+import dev.enjarai.trickster.spell.type.TypeVariadicArgType;
 import io.vavr.collection.HashMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -19,156 +28,87 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkSectionPos;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.mojang.datafixers.util.Either;
-import net.minecraft.util.math.ChunkSectionPos;
-
-public abstract class Trick {
+public abstract class Trick<T extends Trick<T>> {
     public static final Identifier TRICK_RANDOM = Trickster.id("trick");
 
+    protected static final SimpleArgType<Fragment> ANY = simple(Fragment.class);
+    protected static final ClassVariadicArgType<Fragment> ANY_VARIADIC = variadic(Fragment.class);
+
     protected final Pattern pattern;
+    private final List<Signature<T>> handlers;
+
+    public Trick(Pattern pattern, List<Signature<T>> handlers) {
+        this.pattern = pattern;
+        this.handlers = handlers;
+    }
+
+    public Trick(Pattern pattern, Signature<T> primary) {
+        this(pattern);
+        this.handlers.add(primary);
+    }
 
     public Trick(Pattern pattern) {
-        this.pattern = pattern;
+        this(pattern, new ArrayList<>());
     }
 
     public final Pattern getPattern() {
         return pattern;
     }
 
-    public abstract Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException;
-
-    @SuppressWarnings("unchecked")
-    protected <T extends Fragment> T expectInput(List<Fragment> fragments, FragmentType<T> type, int index) throws BlunderException {
-        if (fragments.size() <= index) {
-            throw new MissingFragmentBlunder(this, index, type.getName());
-        }
-
-        var fragment = fragments.get(index);
-
-        if (fragment.type() != type) {
-            throw new IncorrectFragmentBlunder(this, index, type.getName(), fragment);
-        }
-
-        return (T) fragment;
+    public Trick<T> overload(Signature<T> signature) {
+        this.handlers.add(signature);
+        return this;
     }
 
     @SuppressWarnings("unchecked")
-    protected <T extends Fragment> T expectType(Fragment fragment, FragmentType<T> type) throws BlunderException {
-        if (fragment.type() != type) {
-            throw new IncorrectFragmentBlunder(this, -1, type.getName(), fragment);
+    public EvaluationResult activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+        for (int i = handlers.size() - 1; i >= 0; i--) {
+            var handler = handlers.get(i);
+
+            if (handler.match(fragments)) {
+                return handler.run((T) this, ctx, fragments);
+            }
         }
 
-        return (T) fragment;
+        throw new InvalidInputsBlunder(this);
     }
 
-    @SuppressWarnings("unchecked")
-    protected <T extends Fragment> Optional<T> supposeInput(List<Fragment> fragments, FragmentType<T> type, int index) throws BlunderException {
-        if (fragments.size() <= index) {
-            return Optional.empty();
-        }
-
-        var fragment = fragments.get(index);
-
-        if (fragment.type() != type) {
-            throw new IncorrectFragmentBlunder(this, index, type.getName(), fragment);
-        }
-
-        return Optional.of((T) fragment);
-    }
-
-    protected Optional<Fragment> supposeInput(List<Fragment> fragments, int index) {
-        if (fragments.size() <= index) {
-            return Optional.empty();
-        }
-
-        return Optional.of(fragments.get(index));
-    }
-
-    protected <T1 extends Fragment, T2 extends Fragment> Optional<Either<T1, T2>> supposeEitherInput(List<Fragment> fragments, FragmentType<T1> primary, FragmentType<T2> alternative, int index) {
-        var input = supposeInput(fragments, index);
-        var r1 = input.flatMap(fragment -> supposeType(fragment, primary));
-
-        if (r1.isPresent())
-            return Optional.of(Either.left(r1.get()));
-
-        var r2 = input.flatMap(fragment -> supposeType(fragment, alternative));
-
-        if (r2.isPresent())
-            return Optional.of(Either.right(r2.get()));
-
-        return Optional.empty();
-    }
-
-    protected <T1 extends Fragment, T2 extends Fragment> Either<T1, T2> expectEitherInput(List<Fragment> fragments, FragmentType<T1> primary, FragmentType<T2> alternative, int index) throws BlunderException {
-        var input = supposeInput(fragments, index);
-        var expected = Text.literal("Either of ").append(primary.getName()).append(" or ").append(alternative.getName());
-        return supposeEitherInput(fragments, primary, alternative, index)
-            .orElseThrow(() -> input.
-                    <BlunderException>map(fragment -> new IncorrectFragmentBlunder(this, index, expected, fragment))
-                    .orElse(new MissingFragmentBlunder(this, index, expected)));
-    }
-
-    @SuppressWarnings("unchecked")
-    protected <T extends Fragment> Optional<T> supposeType(Fragment fragment, FragmentType<T> type) {
-        if (fragment.type() != type) {
-            return Optional.empty();
-        }
-
-        return Optional.of((T) fragment);
-    }
-
-    @SuppressWarnings("unchecked")
-    protected <T extends Fragment> T expectInput(List<Fragment> fragments, Class<T> type, int index) throws BlunderException {
-        if (fragments.size() <= index) {
-            throw new MissingFragmentBlunder(this, index, Text.of(type.getSimpleName()));
-        }
-
-        var fragment = fragments.get(index);
-
-        if (!type.isInstance(fragment)) {
-            throw new IncorrectFragmentBlunder(this, index, Text.literal(type.getSimpleName()), fragment);
-        }
-
-        return (T) fragment;
-    }
-
-    @SuppressWarnings("unchecked")
-    protected <T extends Fragment> T expectType(Fragment fragment, Class<T> type, int index) throws BlunderException {
-        if (!type.isInstance(fragment)) {
-            throw new IncorrectFragmentBlunder(this, index, Text.literal(type.getSimpleName()), fragment);
-        }
-
-        return (T) fragment;
-    }
-
-    protected Fragment expectInput(List<Fragment> fragments, int index) throws BlunderException {
-        if (fragments.size() <= index) {
-            throw new MissingFragmentBlunder(this, index, Text.of("any"));
-        }
-
-        return fragments.get(index);
+    protected static <T extends Fragment> SimpleArgType<T> simple(Class<T> type) {
+        return new SimpleArgType<T>(type);
     }
 
     @SafeVarargs
-    protected final <T extends Fragment> List<T> expectVariadic(List<Fragment> fragments, int index, Class<T>... types) throws BlunderException {
-        var result = new ArrayList<T>();
-        int offset = 0;
+    protected static <T extends Fragment> ClassVariadicArgType<T> variadic(Class<T>... types) {
+        return new ClassVariadicArgType<>(types);
+    }
 
-        for (var fragment : fragments.subList(index, fragments.size())) {
-            result.add(expectType(fragment, types[offset % types.length], index + offset));
-            offset++;
-        }
+    @SafeVarargs
+    protected static <T extends Fragment> TypeVariadicArgType<T> variadic(FragmentType<T>... types) {
+        return new TypeVariadicArgType<>(types);
+    }
 
-        if (offset % types.length != 0) {
-            throw new MissingFragmentBlunder(this, offset, Text.of(types[offset % types.length].getSimpleName()));
-        }
+    @SafeVarargs
+    protected static <T extends Fragment> ClassListArgType<T> list(Class<T>... types) {
+        return new ClassListArgType<>(types);
+    }
 
-        return result;
+    @SafeVarargs
+    protected static <T extends Fragment> TypeListArgType<T> list(FragmentType<T>... types) {
+        return new TypeListArgType<>(types);
+    }
+
+    protected static <K extends Fragment, V extends Fragment> ClassMapArgType<K, V> map(Class<K> keyType, Class<V> valueType) {
+        return new ClassMapArgType<>(keyType, valueType);
+    }
+
+    protected static <K extends Fragment, V extends Fragment> TypeMapArgType<K, V> map(FragmentType<K> keyType, FragmentType<V> valueType) {
+        return new TypeMapArgType<>(keyType, valueType);
     }
 
     protected void expectCanBuild(SpellContext ctx, BlockPos... positions) {
@@ -227,6 +167,11 @@ public abstract class Trick {
 
         return Text.literal("").append(
                 Text.translatable(Trickster.MOD_ID + ".trick." + id.getNamespace() + "." + id.getPath())
-                        .withColor(FragmentType.PATTERN.color().getAsInt()));
+                        .withColor(FragmentType.PATTERN.color().getAsInt())
+        );
+    }
+
+    public List<Signature<T>> getSignatures() {
+        return handlers;
     }
 }

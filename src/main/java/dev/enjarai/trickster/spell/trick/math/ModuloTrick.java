@@ -3,22 +3,22 @@ package dev.enjarai.trickster.spell.trick.math;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.blunder.DivideByZeroBlunder;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.trick.DistortionTrick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.type.Signature;
 
-import java.util.List;
-
-public class ModuloTrick extends DistortionTrick {
+public class ModuloTrick extends DistortionTrick<ModuloTrick> {
     public ModuloTrick() {
-        super(Pattern.of(0, 4, 1, 2, 4, 6, 7, 4, 8));
+        super(Pattern.of(0, 4, 1, 2, 4, 6, 7, 4, 8), Signature.of(FragmentType.NUMBER, FragmentType.NUMBER, ModuloTrick::math));
     }
 
-    @Override
-    public Fragment distort(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var param1 = expectInput(fragments, FragmentType.NUMBER, 0);
-        var param2 = expectInput(fragments, FragmentType.NUMBER, 1);
+    public Fragment math(SpellContext ctx, NumberFragment param1, NumberFragment param2) throws BlunderException {
+        if (param2.number() == 0) {
+            throw new DivideByZeroBlunder(this);
+        }
 
         return new NumberFragment(param1.number() % param2.number());
     }

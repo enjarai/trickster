@@ -27,26 +27,32 @@ import java.util.function.BiFunction;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-public non-sealed interface Fragment extends SpellInstruction {
+public non-sealed interface Fragment extends EvaluationResult, SpellInstruction {
     int MAX_WEIGHT = 64000;
     Text TRUNCATED_VALUE_TEXT = Text.literal(" [...]")
-            .setStyle(Style.EMPTY
-                    .withColor(Formatting.RED)
-                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.translatable(Trickster.MOD_ID + ".text.misc.value_truncated"))));
+            .setStyle(
+                    Style.EMPTY
+                            .withColor(Formatting.RED)
+                            .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.translatable(Trickster.MOD_ID + ".text.misc.value_truncated")))
+            );
     @SuppressWarnings("unchecked")
-    StructEndec<Fragment> ENDEC = EndecTomfoolery.lazy(() -> (StructEndec<Fragment>) Endec.dispatchedStruct(
-            FragmentType::endec,
-            Fragment::type,
-            Endec.ifAttr(EndecTomfoolery.UBER_COMPACT_ATTRIBUTE, EndecTomfoolery.protocolVersionAlternatives(
-                            Map.of(
-                                    (byte) 1, FragmentType.INT_ID_ENDEC,
-                                    (byte) 2, FragmentType.INT_ID_ENDEC,
-                                    (byte) 3, FragmentType.INT_ID_ENDEC
-                            ),
-                            MinecraftEndecs.ofRegistry(FragmentType.REGISTRY)
-                    ))
-                    .orElse(MinecraftEndecs.ofRegistry(FragmentType.REGISTRY))
-    ));
+    StructEndec<Fragment> ENDEC = EndecTomfoolery.lazy(
+            () -> (StructEndec<Fragment>) Endec.dispatchedStruct(
+                    FragmentType::endec,
+                    Fragment::type,
+                    Endec.ifAttr(
+                            EndecTomfoolery.UBER_COMPACT_ATTRIBUTE, EndecTomfoolery.protocolVersionAlternatives(
+                                    Map.of(
+                                            (byte) 1, FragmentType.INT_ID_ENDEC,
+                                            (byte) 2, FragmentType.INT_ID_ENDEC,
+                                            (byte) 3, FragmentType.INT_ID_ENDEC
+                                    ),
+                                    MinecraftEndecs.ofRegistry(FragmentType.REGISTRY)
+                            )
+                    )
+                            .orElse(MinecraftEndecs.ofRegistry(FragmentType.REGISTRY))
+            )
+    );
     Endec<Fragment> COMPACT_ENDEC = EndecTomfoolery.withAlternative(
             Endec.BYTES.xmap(Fragment::fromBytes, Fragment::toBytes),
             ENDEC
@@ -63,18 +69,22 @@ public non-sealed interface Fragment extends SpellInstruction {
         var newSiblings = new ArrayList<>(siblings).subList(0, Math.min(size, 100));
         siblings.clear();
         siblings.addAll(newSiblings);
-        return text.append(size != newSiblings.size()
-                ? TRUNCATED_VALUE_TEXT
-                : Text.of(""));
+        return text.append(
+                size != newSiblings.size()
+                        ? TRUNCATED_VALUE_TEXT
+                        : Text.of("")
+        );
     }
 
-    boolean asBoolean();
+    default boolean asBoolean() {
+        return true;
+    }
 
     default boolean fuzzyEquals(Fragment other) {
         return equals(other);
     }
 
-    default Fragment activateAsGlyph(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    default EvaluationResult activateAsGlyph(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         return this;
     }
 
@@ -84,25 +94,28 @@ public non-sealed interface Fragment extends SpellInstruction {
     }
 
     /**
-     * Potentially recursively remove ephemeral values from this fragment.
-     * May return <pre>this</pre> or any other new fragment.
-     * Potentially results in cloning the entire fragment if required.
+     * Potentially recursively remove ephemeral values from this fragment. May return
+     * 
+     * <pre>
+     * this
+     * </pre>
+     * 
+     * or any other new fragment. Potentially results in cloning the entire fragment if required.
      */
     default Fragment applyEphemeral() {
         return this;
     }
 
     /**
-     * The weight of this fragment in terms of memory footprint.
-     * If possible, should be *roughly* equivalent to the amount of bytes in the fields of this fragment.
+     * The weight of this fragment in terms of memory footprint. If possible, should be *roughly* equivalent to the amount of bytes in the fields of this fragment.
      */
     int getWeight();
 
-    default Optional<BiFunction<SpellContext, List<Fragment>, Fragment>> getActivator() {
+    default Optional<BiFunction<SpellContext, List<Fragment>, EvaluationResult>> getActivator() {
         return Optional.of(this::activateAsGlyph);
     }
 
-    byte[] GZIP_HEADER = new byte[]{0x1f, (byte) 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, (byte) 0xff};
+    byte[] GZIP_HEADER = new byte[] { 0x1f, (byte) 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, (byte) 0xff };
 
     default String toBase64() {
         return Base64.getEncoder().encodeToString(toBytes());

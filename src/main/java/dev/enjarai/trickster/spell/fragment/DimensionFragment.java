@@ -28,11 +28,6 @@ public record DimensionFragment(RegistryKey<World> world) implements Fragment {
     }
 
     @Override
-    public boolean asBoolean() {
-        return true;
-    }
-
-    @Override
     public int getWeight() {
         return 16;
     }

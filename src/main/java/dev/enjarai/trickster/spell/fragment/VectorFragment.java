@@ -43,6 +43,18 @@ public class VectorFragment implements AddableFragment, SubtractableFragment, Mu
         return vector;
     }
 
+    public double x() {
+        return vector.x();
+    }
+
+    public double y() {
+        return vector.y();
+    }
+
+    public double z() {
+        return vector.z();
+    }
+
     @Override
     public FragmentType<?> type() {
         return FragmentType.VECTOR;
@@ -57,11 +69,6 @@ public class VectorFragment implements AddableFragment, SubtractableFragment, Mu
                 .append(", ")
                 .append(new NumberFragment(vector.z()).asFormattedText())
                 .append(")");
-    }
-
-    @Override
-    public boolean asBoolean() {
-        return !this.equals(VectorFragment.ZERO);
     }
 
     @Override

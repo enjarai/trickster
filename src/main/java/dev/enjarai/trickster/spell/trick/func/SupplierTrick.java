@@ -5,22 +5,15 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.Signature;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 
-import java.util.List;
-
-public class SupplierTrick extends Trick {
+public class SupplierTrick extends Trick<SupplierTrick> {
     public SupplierTrick() {
-        super(Pattern.of(0, 1, 2, 5, 8, 7, 6, 3, 0));
+        super(Pattern.of(0, 1, 2, 5, 8, 7, 6, 3, 0), Signature.of(ANY, SupplierTrick::run));
     }
 
-    @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var fragment = expectInput(fragments, 0);
-
-        var spell = new SpellPart();
-        spell.glyph = fragment;
-
-        return spell;
+    public Fragment run(SpellContext ctx, Fragment glyph) throws BlunderException {
+        return new SpellPart(glyph);
     }
 }

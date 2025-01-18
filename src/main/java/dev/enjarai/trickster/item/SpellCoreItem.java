@@ -1,7 +1,7 @@
 package dev.enjarai.trickster.item;
 
 import dev.enjarai.trickster.Trickster;
-import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
+import dev.enjarai.trickster.spell.SpellExecutor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
