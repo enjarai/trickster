@@ -51,13 +51,13 @@ public class TryCatchSpellExecutor implements SpellExecutor {
     @Override
     public Optional<Fragment> run(SpellSource source, TickData data) throws BlunderException {
         if (catching)
-            return catchSpell.run(source);
+            return catchSpell.run(source, data);
 
         try {
-            return trySpell.run(source);
+            return trySpell.run(source, data);
         } catch (BlunderException blunder) {
             catching = true;
-            return catchSpell.run(source);
+            return catchSpell.run(source, data);
         }
     }
 
