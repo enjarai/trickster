@@ -3,6 +3,7 @@ package dev.enjarai.trickster.spell.trick.math;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.blunder.DivideByZeroBlunder;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.trick.DistortionTrick;
@@ -15,6 +16,10 @@ public class ModuloTrick extends DistortionTrick<ModuloTrick> {
     }
 
     public Fragment math(SpellContext ctx, NumberFragment param1, NumberFragment param2) throws BlunderException {
+        if (param2.number() == 0) {
+            throw new DivideByZeroBlunder(this);
+        }
+
         return new NumberFragment(param1.number() % param2.number());
     }
 }

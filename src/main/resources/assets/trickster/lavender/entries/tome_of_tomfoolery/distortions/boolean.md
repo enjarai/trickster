@@ -16,7 +16,7 @@ it is worth noting that any fragment will be automatically coerced into a boolea
 
 <|glyph@trickster:templates|trick-id=trickster:if_else,title=Decision Distortion|>
 
-boolean, any, any -> any
+(any, any)..., any -> any
 
 ---
 

@@ -1,6 +1,6 @@
 ```json
 {
-  "title": "List Manipulation",
+  "title": "Lists",
   "icon": "minecraft:string",
   "category": "trickster:distortions"
 }

@@ -140,7 +140,7 @@ Given an entity, returns its total armor value.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:get_scale,title=Distortion of Ingress|>
+<|glyph@trickster:templates|trick-id=trickster:get_scale,title=Distortion of Occupation|>
 
 entity -> number
 

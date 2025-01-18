@@ -2,7 +2,8 @@
 {
   "title": "Knots",
   "icon": "trickster:emerald_knot",
-  "category": "trickster:items"
+  "category": "trickster:items",
+  "ordinal": 10
 }
 ```
 
