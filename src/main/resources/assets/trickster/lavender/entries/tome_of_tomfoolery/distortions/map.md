@@ -1,6 +1,6 @@
 ```json
 {
-  "title": "Map Manipulation",
+  "title": "Maps",
   "icon": "minecraft:filled_map",
   "category": "trickster:distortions"
 }

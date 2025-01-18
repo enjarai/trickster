@@ -1,6 +1,6 @@
 ```json
 {
-  "title": "Vector Operations",
+  "title": "Vectors",
   "icon": "minecraft:arrow",
   "category": "trickster:distortions"
 }
