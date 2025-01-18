@@ -109,7 +109,7 @@ public class ExecutionState {
     }
 
     /**
-     * >0: Actual index -1: Glyph call -2: Pattern call (Temporarily unused) -3: Tail recursion
+     * >0: Actual index; -1: Glyph call; -2: Pattern call (Temporarily unused); -3: Tail recursion
      */
     public void pushStackTrace(int i) {
         stacktrace.push(i);
