@@ -277,7 +277,45 @@ trickster:
       EntityTypeFragment: Entity Type
 
   blunder:
+    unknown_trick: "Unknown trick"
+    unknown_event: "Unknown event"
+    unknown_entity: "Unknown entity"
+    address_not_in_tree: "Spell does not contain a circle at this address: %s"
+    assertion: "Assertion failed for value: %s"
+    atomic_chunk_too_large: "Atomic spell is too large to be run in a single tick"
+    block_invalid:
+      block_supplied: "Invalid block type. Did not expect %s"
+      block_not_supplied: "Invalid block type."
+    block_too_hard: "Block cannot be broken by spells"
+    block_occupied: "Block at %s occupied"
+    block_unoccupied: "Block at %s unoccupied"
+    cannot_place_block: "Cannot place %s at %s"
+    cannot_edit_block: "Cannot edit block %s, restricted by operator."
+    division_by_zero: "Division by zero"
+    entity_already_stored: "There is already an entity stored in the offhand item"
+    entity_cannot_be_stored: "Cannot store %s"
+    entity_invalid: "Invalid entity"
+    execution_limit_reached: "Execution limit reached"
+    illegal_operation_in_atomic: "Illegal operation in atomic spell"
+    immutable_item: "Item immutable, cannot write spell"
+    incompatible_source: "Incompatible casting source"
+    incompatible_types: "Incompatible types"
+    index_out_of_bounds: "Index out of bounds: %s"
+    invalid_entity: "Invalid entity"
+    invalid_inputs: "Invalid inputs, the following signatures are valid for this trick:"
+    invalid_item: "Invalid item"
+    missing_amethyst: "Not enough amethyst in inventory"
+    missing_item: "Missing item"
+    nan: "Number must be a number"
+    no_free_item_slot: "No free item slot."
+    no_player : "No player available"
+    no_such_slot : "Item slot does not exist"
+    not_enough_mana: "Not enough mana, at least %s required"
+    number_too_large: "Number too large, expected %s or lesser"
+    number_too_small: "Number too small, expected %s or greater"
+    out_of_range: "Range out of bounds: %s is more than: %s"
     overweight_fragment: Result fragment is overweight, result is %s
+    overlapping_positions: "Overlapping positions : %s, %s"
 
 item.trickster:
   tome_of_tomfoolery: Tome of Tomfoolery
