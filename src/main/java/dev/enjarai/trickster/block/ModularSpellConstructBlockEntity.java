@@ -43,8 +43,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
 public class ModularSpellConstructBlockEntity extends BlockEntity implements Inventory, CrowMind, SpellExecutionManager, SpellCastingBlockEntity {
-    public static final KeyedEndec<Fragment> CROW_MIND_ENDEC =
-            Fragment.ENDEC.keyed("crow_mind", () -> VoidFragment.INSTANCE);
+    public static final KeyedEndec<Fragment> CROW_MIND_ENDEC = Fragment.ENDEC.keyed("crow_mind", () -> VoidFragment.INSTANCE);
     public static final KeyedEndec<List<Optional<SpellExecutor>>> EXECUTORS_ENDEC = SpellExecutor.ENDEC
             .optionalOf().listOf().keyed("executors", () -> null);
     public static final KeyedEndec<List<Optional<SpellExecutor>>> EXECUTORS_NET_ENDEC = SpellExecutor.NET_ENDEC
@@ -230,9 +229,9 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
     @Override
     public void setStack(int slot, ItemStack stack) {
         if (
-                slot == 0
-                        ? stack.isIn(ModItems.MANA_KNOTS)
-                        : stack.getItem() instanceof SpellCoreItem
+            slot == 0
+                    ? stack.isIn(ModItems.MANA_KNOTS)
+                    : stack.getItem() instanceof SpellCoreItem
         ) {
             if (stack.getItem() instanceof SpellCoreItem) {
                 var fragment = stack.get(ModComponents.FRAGMENT);
@@ -293,15 +292,16 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
 
     @Override
     public int queue(SpellExecutor executor) {
-        for (int i = 0; i < inventory.size(); i++) {
+        for (int i = 1; i < inventory.size(); i++) {
             var stack = inventory.get(i);
 
             if (
-                    stack.getItem() instanceof SpellCoreItem
-                            && (executors.get(i - 1).isEmpty()
-                            || executors.get(i - 1).get() instanceof ErroredSpellExecutor)
+                stack.getItem() instanceof SpellCoreItem
+                        && (executors.get(i - 1).isEmpty()
+                                || executors.get(i - 1).get() instanceof ErroredSpellExecutor)
             ) {
                 executors.set(i - 1, Optional.of(executor));
+                markDirtyAndUpdateClients();
                 return i - 1;
             }
         }

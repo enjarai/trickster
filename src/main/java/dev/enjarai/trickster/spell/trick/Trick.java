@@ -76,7 +76,7 @@ public abstract class Trick<T extends Trick<T>> {
             }
         }
 
-        throw new InvalidInputsBlunder(this);
+        throw new InvalidInputsBlunder(this, fragments);
     }
 
     protected static <T extends Fragment> SimpleArgType<T> simple(Class<T> type) {
