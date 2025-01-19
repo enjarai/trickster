@@ -76,6 +76,7 @@ public class ModItems {
     public static final KnotItem.Diamond DIAMOND_KNOT = register("diamond_knot", new KnotItem.Diamond());
     public static final KnotItem.Echo ECHO_KNOT = register("echo_knot", new KnotItem.Echo());
     public static final KnotItem.CrackedEcho CRACKED_ECHO_KNOT = register("cracked_echo_knot", new KnotItem.CrackedEcho());
+    public static final KnotItem.Astral ASTRAL_KNOT = register("astral_knot", new KnotItem.Astral());
     public static final KnotItem.Command COMMAND_KNOT = register("command_knot", new KnotItem.Command());
 
     // Advancement icon
@@ -146,6 +147,7 @@ public class ModItems {
                 entries.add(DIAMOND_KNOT);
                 entries.add(ECHO_KNOT);
                 entries.add(CRACKED_ECHO_KNOT);
+                entries.add(ASTRAL_KNOT);
                 entries.add(COMMAND_KNOT);
             })
             .build();
