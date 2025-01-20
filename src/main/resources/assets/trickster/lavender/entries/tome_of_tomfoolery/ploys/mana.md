@@ -2,7 +2,12 @@
 {
   "title": "A Shimmer in the Night",
   "icon": "trickster:echo_knot",
-  "category": "trickster:ploys"
+  "category": "trickster:ploys",
+  "additional_search_terms": [
+    "Ploy of the Moon Watcher",
+    "Benevolent Conduit's Ploy",
+    "Malevolent Conduit's Ploy"
+  ]
 }
 ```
 

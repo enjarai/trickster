@@ -2,7 +2,19 @@
 {
   "title": "Lists",
   "icon": "minecraft:string",
-  "category": "trickster:distortions"
+  "category": "trickster:distortions",
+  "additional_search_terms": [
+    "Tally Distortion",
+    "Expansion Stratagem",
+    "Collection Stratagem",
+    "Isolation Distortion",
+    "Counter Distortion",
+    "Inflation Stratagem",
+    "Extraction Distortion",
+    "Locating Distortion",
+    "Expulsion Stratagem",
+    "Eviction Stratagem"
+  ]
 }
 ```
 

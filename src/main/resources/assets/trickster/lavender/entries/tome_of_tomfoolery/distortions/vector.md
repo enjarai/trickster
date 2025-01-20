@@ -2,7 +2,18 @@
 {
   "title": "Vectors",
   "icon": "minecraft:arrow",
-  "category": "trickster:distortions"
+  "category": "trickster:distortions",
+  "additional_search_terms": [
+    "Primary Distortion",
+    "Secondary Distortion",
+    "Tertiary Distortion",
+    "Absorption Distortion",
+    "Magnitude Distortion",
+    "Alignment Distortion",
+    "Perpendicular Distortion",
+    "Regularity Distortion",
+    "Aligned Regularity Distortion"
+  ]
 }
 ```
 

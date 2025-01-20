@@ -2,7 +2,11 @@
 {
   "title": "Interspell Communication",
   "icon": "minecraft:feather",
-  "category": "trickster:ploys"
+  "category": "trickster:ploys",
+  "additional_search_terms": [
+    "Dispatch Ploy",
+    "Ploy of Receipt"
+  ]
 }
 ```
 

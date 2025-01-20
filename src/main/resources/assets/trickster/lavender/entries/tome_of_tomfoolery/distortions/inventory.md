@@ -2,7 +2,11 @@
 {
   "title": "Items",
   "icon": "minecraft:grass_block",
-  "category": "trickster:distortions"
+  "category": "trickster:distortions",
+  "additional_search_terms": [
+    "Placement Distortion",
+    "Pickup Distortion"
+  ]
 }
 ```
 

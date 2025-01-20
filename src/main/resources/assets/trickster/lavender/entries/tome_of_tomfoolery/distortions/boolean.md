@@ -2,7 +2,17 @@
 {
   "title": "Boolean Logic",
   "icon": "minecraft:comparator",
-  "category": "trickster:distortions"
+  "category": "trickster:distortions",
+  "additional_search_terms": [
+    "Decision Distortion",
+    "Parity Stratagem",
+    "Disparity Stratagem",
+    "Stratagem Bar None",
+    "Stratagem In General",
+    "Stratagem In Absence",
+    "Lesser Distortion",
+    "Greater Distortion"
+  ]
 }
 ```
 

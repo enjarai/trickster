@@ -2,7 +2,17 @@
 {
   "title": "Inventory Information",
   "icon": "minecraft:bundle",
-  "category": "trickster:delusions_ingresses"
+  "category": "trickster:delusions_ingresses",
+  "additional_search_terms": [
+    "Fence's Ingress",
+    "Juggling Delusion",
+    "Catch Delusion",
+    "Intrusive Ingress",
+    "Cranium Delusion",
+    "Ingress of Authority",
+    "Crowning Ingress",
+    "Ingress of Plenitude"
+  ]
 }
 ```
 

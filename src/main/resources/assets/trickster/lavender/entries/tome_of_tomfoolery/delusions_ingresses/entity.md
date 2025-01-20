@@ -2,7 +2,24 @@
 {
   "title": "Entity Querying",
   "icon": "minecraft:cow_spawn_egg",
-  "category": "trickster:delusions_ingresses"
+  "category": "trickster:delusions_ingresses",
+  "additional_search_terms": [
+    "Motive Verification Ingress",
+    "Locational Ingress",
+    "Perspective Ingress",
+    "Directional Ingress",
+    "Movement Ingress",
+    "Stature Ingress",
+    "Alternative Ingress",
+    "Hearth's Ingress",
+    "Trekking Ingress",
+    "Guard Ingress",
+    "Vigor Ingress",
+    "Fettle Ingress",
+    "Bulwark Ingress",
+    "Distortion of Occupation",
+    "Observer's Ingress"
+  ]
 }
 ```
 
