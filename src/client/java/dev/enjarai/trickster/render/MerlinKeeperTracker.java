@@ -1,7 +1,7 @@
 package dev.enjarai.trickster.render;
 
 import dev.enjarai.trickster.ClientUtils;
-import dev.enjarai.trickster.Trickster.MerlinTooltipAppender;
+import dev.enjarai.trickster.Trickster.TooltipAppender;
 import dev.enjarai.trickster.item.component.ManaComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.mana.SharedManaPool;
@@ -19,7 +19,7 @@ import net.minecraft.util.math.MathHelper;
 
 import java.util.List;
 
-public class MerlinKeeperTracker implements MerlinTooltipAppender {
+public class MerlinKeeperTracker implements TooltipAppender {
     private final Int2ObjectMap<MerlinUsage> stackMap = new Int2ObjectOpenHashMap<>();
     private final int tickSpan;
 

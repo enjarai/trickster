@@ -48,7 +48,8 @@ public class ModItems {
     public static final Item MACRO_RING = register("macro_ring",
             new Item(new Item.Settings().maxCount(1)));
     public static final ManaAccessory AMETHYST_WHORL = register("amethyst_whorl", new ManaAccessory());
-    public static final ManaAccessory MANA_COLLAR = register("mana_collar", new ManaAccessory());
+    public static final CollarItem COLLAR = register("collar", new CollarItem(new Item.Settings()));
+    public static final LeashItem LEASH = register("leash", new LeashItem(new Item.Settings()));
     public static final Item WARDING_CHARM = register("warding_charm",
             new Item(new Item.Settings().maxCount(1)));
     public static final SpellInkItem SPELL_INK = register("spell_ink",
@@ -90,6 +91,7 @@ public class ModItems {
     public static final TagKey<Item> WEAPON_SPELL_TRIGGERS = TagKey.of(RegistryKeys.ITEM, Trickster.id("weapon_spell_triggers"));
     public static final TagKey<Item> MANA_KNOTS = TagKey.of(RegistryKeys.ITEM, Trickster.id("mana_knots"));
     public static final TagKey<Item> CANT_DESPAWN = TagKey.of(RegistryKeys.ITEM, Trickster.id("cant_despawn"));
+    public static final TagKey<Item> COLLARS = TagKey.of(RegistryKeys.ITEM, Trickster.id("collars"));
 
     public static final WrittenScrollItem[] COLORED_WRITTEN_SCROLLS = new WrittenScrollItem[DyeColor.values().length];
     public static final ScrollAndQuillItem[] COLORED_SCROLLS_AND_QUILLS = new ScrollAndQuillItem[DyeColor.values().length];
@@ -130,7 +132,8 @@ public class ModItems {
                 entries.add(FEZ);
                 entries.add(WAND);
                 entries.add(AMETHYST_WHORL);
-                entries.add(MANA_COLLAR);
+                entries.add(COLLAR);
+                entries.add(LEASH);
                 entries.add(WARDING_CHARM);
                 entries.add(MACRO_RING);
                 entries.add(SPELL_INK);

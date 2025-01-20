@@ -25,6 +25,15 @@ trickster:
     import_example:
       .: Import this example spell?
       description: This will §loverwrite§r the Scroll and Quill in your other hand with the chosen example spell.
+    leash:
+      invalid_collar: "%s is not wearing an unbound Collar"
+      not_sneaking: "%s must be sneaking to leash them"
+      success: "Leash linked to %s's Collar"
+      not_online: "Player not found"
+
+  tooltip:
+    collar_link: "Link id: %s"
+    unlinked: Unlinked
 
   item_group: Trickster
 
