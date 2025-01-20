@@ -26,7 +26,7 @@ public class ConjureLightTrick extends Trick<ConjureLightTrick> {
         var waterlogged = false;
 
         if (!world.getBlockState(blockPos).isAir()) {
-            if (!world.getFluidState(blockPos).isIn(FluidTags.WATER)) {
+            if (!world.getFluidState(blockPos).isIn(FluidTags.WATER) || !world.getFluidState(blockPos).isStill()) {
                 throw new BlockOccupiedBlunder(this, pos);
             }
             waterlogged = true;
