@@ -26,7 +26,9 @@ public class BatteryCreationTrick extends Trick<BatteryCreationTrick> {
             Items.AMETHYST_SHARD, ModItems.AMETHYST_KNOT,
             Items.EMERALD, ModItems.EMERALD_KNOT,
             Items.DIAMOND, ModItems.DIAMOND_KNOT,
-            Items.ECHO_SHARD, ModItems.ECHO_KNOT);
+            Items.ECHO_SHARD, ModItems.ECHO_KNOT,
+            Items.NETHER_STAR, ModItems.ASTRAL_KNOT
+    );
 
     public BatteryCreationTrick() {
         super(Pattern.of(6, 8, 5, 2, 1, 8, 7, 6, 1, 0, 3, 6), Signature.of(FragmentType.SLOT.optionalOf(),
@@ -53,7 +55,8 @@ public class BatteryCreationTrick extends Trick<BatteryCreationTrick> {
         var glass = ctx.getStack(
                 this,
                 slot2,
-                (stack) -> stack.isOf(Items.GLASS)).orElseThrow(() -> new MissingItemBlunder(this));
+                (stack) -> stack.isOf(Items.GLASS)
+        ).orElseThrow(() -> new MissingItemBlunder(this));
         var sourceItem = sourceSlot.getItem(this, ctx);
         var type = types.get(sourceItem);
 

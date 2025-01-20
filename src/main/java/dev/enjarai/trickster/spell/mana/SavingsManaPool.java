@@ -23,7 +23,7 @@ public class SavingsManaPool extends SimpleManaPool {
         this.interest = interest;
     }
 
-    // Its kinda important for this to be the only public constructor.
+    // It's kinda important for this to be the only public constructor.
     // If lastUpdateTime is 0, mana should probably also be 0, or a lot of free interest will be given.
     public SavingsManaPool(float maxMana, float interest) {
         super(maxMana);

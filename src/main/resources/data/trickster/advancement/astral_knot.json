@@ -13,7 +13,7 @@
     "announce_to_chat": true,
     "hidden": true
   },
-  "parent": "trickster:echo_knot",
+  "parent": "trickster:root",
   "criteria": {
     "pickup_astral_knot": {
       "trigger": "minecraft:inventory_changed",
