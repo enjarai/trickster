@@ -6,8 +6,8 @@ public abstract class Unit {
     public Unit(int precision) {
         this.precision = precision;
 
-        if (precision < -1 || precision > 4) {
-            throw new IllegalStateException("Unit must have a precision in the range of -1 and 4 but got " + precision);
+        if (precision < -1 || precision > 10) {
+            throw new IllegalStateException("Unit must have a precision in the range of -1 and 10 but got " + precision);
         }
     }
 
@@ -25,6 +25,18 @@ public abstract class Unit {
 
     private String shortNameStart() {
         switch (precision) {
+            case 10:
+                return "Q";
+            case 9:
+                return "R";
+            case 8:
+                return "Y";
+            case 7:
+                return "Z";
+            case 6:
+                return "E";
+            case 5:
+                return "P";
             case 4:
                 return "T";
             case 3:
@@ -38,12 +50,24 @@ public abstract class Unit {
             case -1:
                 return "m";
             default:
-                throw new IllegalStateException("Unit must have a precision in the range of -1 and 4 but got " + precision);
+                throw new IllegalStateException("Unit must have a precision in the range of -1 and 10 but got " + precision);
         }
     }
 
     private String longNameStart() {
         switch (precision) {
+            case 10:
+                return "quetta";
+            case 9:
+                return "ronna";
+            case 8:
+                return "yotta";
+            case 7:
+                return "zetta";
+            case 6:
+                return "exa";
+            case 5:
+                return "peta";
             case 4:
                 return "tera";
             case 3:
@@ -57,7 +81,7 @@ public abstract class Unit {
             case -1:
                 return "milli";
             default:
-                throw new IllegalStateException("Unit must have a precision in the range of -1 and 4 but got " + precision);
+                throw new IllegalStateException("Unit must have a precision in the range of -1 and 10 but got " + precision);
         }
     }
 
@@ -74,8 +98,8 @@ public abstract class Unit {
     }
 
     private static int kiloUsageToPrecision(float value) {
-        int precision = 4;
-        double d = Math.abs(value) / Math.pow(1000, 3);
+        int precision = 10;
+        double d = Math.abs(value) / Math.pow(1000, precision - 1);
 
         while (precision > -1 && d < 10) {
             precision -= 1;

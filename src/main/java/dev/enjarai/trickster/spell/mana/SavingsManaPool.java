@@ -47,8 +47,7 @@ public class SavingsManaPool extends SimpleManaPool {
         var lastMana = super.get(world); // P
 
         // P(1 + i)^t
-        set((float) (lastMana * Math.pow(1 + interest, ticksPassed)), world);
-        return super.get(world);
+        return (float) Math.clamp(lastMana * Math.pow(1 + interest, ticksPassed), 0, getMax(world));
     }
 
     @Override
