@@ -9,18 +9,18 @@ public class SavingsManaPool extends SimpleManaPool {
     public static final StructEndec<SavingsManaPool> ENDEC = StructEndecBuilder.of(
             Endec.FLOAT.fieldOf("mana", pool -> pool.mana),
             Endec.FLOAT.fieldOf("max_mana", pool -> pool.maxMana),
-            Endec.LONG.fieldOf("last_update_time", pool -> pool.lastUpdateTime),
             Endec.FLOAT.fieldOf("interest", pool -> pool.interest),
+            Endec.LONG.fieldOf("last_update_time", pool -> pool.lastUpdateTime),
             SavingsManaPool::new
     );
 
+    protected final float interest;
     protected long lastUpdateTime;
-    protected float interest;
 
-    protected SavingsManaPool(float mana, float maxMana, long lastUpdateTime, float interest) {
+    protected SavingsManaPool(float mana, float maxMana, float interest, long lastUpdateTime) {
         super(mana, maxMana);
-        this.lastUpdateTime = lastUpdateTime;
         this.interest = interest;
+        this.lastUpdateTime = lastUpdateTime;
     }
 
     // It's kinda important for this to be the only public constructor.
@@ -46,11 +46,12 @@ public class SavingsManaPool extends SimpleManaPool {
         var ticksPassed = world.getTime() - lastUpdateTime;
         var lastMana = super.get(world);
 
-        return (float) Math.clamp(lastMana * Math.pow(1 + interest, ticksPassed), 0, getMax(world));
+        set((float) Math.clamp(lastMana * Math.pow(1 + interest, ticksPassed), 0, getMax(world)), world);
+        return super.get(world);
     }
 
     @Override
     public MutableManaPool makeClone(World world) {
-        return new SavingsManaPool(mana, maxMana, lastUpdateTime, interest);
+        return new SavingsManaPool(mana, maxMana, interest, lastUpdateTime);
     }
 }
