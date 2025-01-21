@@ -17,6 +17,7 @@ public class ModBlocks {
     public static final LightBlock LIGHT = register("light", new LightBlock());
     public static final ModularSpellConstructBlock MODULAR_SPELL_CONSTRUCT = register("modular_spell_construct", new ModularSpellConstructBlock());
     public static final ScrollShelfBlock SCROLL_SHELF = register("scroll_shelf", new ScrollShelfBlock());
+    public static final ChargingArrayBlock CHARGING_ARRAY = register("charging_array", new ChargingArrayBlock());
 
     public static final BlockEntityType<SpellConstructBlockEntity> SPELL_CONSTRUCT_ENTITY =
             BlockEntityType.Builder.create(SpellConstructBlockEntity::new, SPELL_CONSTRUCT).build(null);
@@ -26,6 +27,8 @@ public class ModBlocks {
             BlockEntityType.Builder.create(ModularSpellConstructBlockEntity::new, MODULAR_SPELL_CONSTRUCT).build(null);
     public static final BlockEntityType<ScrollShelfBlockEntity> SCROLL_SHELF_ENTITY =
             BlockEntityType.Builder.create(ScrollShelfBlockEntity::new, SCROLL_SHELF).build(null);
+    public static final BlockEntityType<ChargingArrayBlockEntity> CHARGING_ARRAY_ENTITY =
+            BlockEntityType.Builder.create(ChargingArrayBlockEntity::new, CHARGING_ARRAY).build(null);
 
     public static final TagKey<Block> UNBREAKABLE = TagKey.of(RegistryKeys.BLOCK, Trickster.id("unbreakable"));
     public static final TagKey<Block> CONJURABLE_FLOWERS = TagKey.of(RegistryKeys.BLOCK, Trickster.id("conjurable_flowers"));
@@ -39,6 +42,7 @@ public class ModBlocks {
         Registry.register(Registries.BLOCK_ENTITY_TYPE, Trickster.id("light"), LIGHT_ENTITY);
         Registry.register(Registries.BLOCK_ENTITY_TYPE, Trickster.id("modular_spell_construct"), MODULAR_SPELL_CONSTRUCT_ENTITY);
         Registry.register(Registries.BLOCK_ENTITY_TYPE, Trickster.id("scroll_shelf"), SCROLL_SHELF_ENTITY);
+        Registry.register(Registries.BLOCK_ENTITY_TYPE, Trickster.id("charging_array"), CHARGING_ARRAY_ENTITY);
 
         var cauldronMap = CauldronBehavior.WATER_CAULDRON_BEHAVIOR.map();
         cauldronMap.put(ModItems.WRITTEN_SCROLL, new EraseSpellCauldronBehavior());

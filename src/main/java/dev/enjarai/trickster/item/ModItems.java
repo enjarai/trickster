@@ -72,6 +72,7 @@ public class ModItems {
     public static final BlockItem SPELL_CONSTRUCT_ITEM = register("spell_construct", new BlockItem(ModBlocks.SPELL_CONSTRUCT, new Item.Settings()));
     public static final BlockItem MODULAR_SPELL_CONSTRUCT_ITEM = register("modular_spell_construct", new BlockItem(ModBlocks.MODULAR_SPELL_CONSTRUCT, new Item.Settings()));
     public static final BlockItem SCROLL_SHELF_BLOCK_ITEM = register("scroll_shelf", new BlockItem(ModBlocks.SCROLL_SHELF, new Item.Settings()));
+    public static final BlockItem CHARGING_ARRAY_ITEM = register("charging_array", new BlockItem(ModBlocks.CHARGING_ARRAY, new Item.Settings()));
     public static final KnotItem.Amethyst AMETHYST_KNOT = register("amethyst_knot", new KnotItem.Amethyst());
     public static final KnotItem.Emerald EMERALD_KNOT = register("emerald_knot", new KnotItem.Emerald());
     public static final KnotItem.Diamond DIAMOND_KNOT = register("diamond_knot", new KnotItem.Diamond());
@@ -141,6 +142,7 @@ public class ModItems {
                 entries.add(SCROLL_SHELF_BLOCK_ITEM);
                 entries.add(SPELL_CONSTRUCT_ITEM);
                 entries.add(MODULAR_SPELL_CONSTRUCT_ITEM);
+                entries.add(CHARGING_ARRAY_ITEM);
                 entries.add(SPELL_CORE);
                 entries.add(RUSTED_SPELL_CORE);
                 entries.add(OMINOUS_SPELL_CORE);

@@ -40,11 +40,6 @@ public final class NumberFragment implements AddableFragment, SubtractableFragme
     }
 
     @Override
-    public boolean asBoolean() {
-        return number != 0;
-    }
-
-    @Override
     public int getWeight() {
         return 8;
     }

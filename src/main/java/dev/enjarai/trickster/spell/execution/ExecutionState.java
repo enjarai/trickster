@@ -109,10 +109,7 @@ public class ExecutionState {
     }
 
     /**
-     * >0: Actual index
-     * -1: Glyph call
-     * -2: Pattern call (Temporarily unused)
-     * -3: Tail recursion
+     * >0: Actual index; -1: Glyph call; -2: Pattern call (Temporarily unused); -3: Tail recursion
      */
     public void pushStackTrace(int i) {
         stacktrace.push(i);
@@ -155,7 +152,7 @@ public class ExecutionState {
         return hasUsedMana;
     }
 
-    public void useMana(Trick trickSource, SpellContext ctx, float amount) throws NotEnoughManaBlunder {
+    public void useMana(Trick<?> trickSource, SpellContext ctx, float amount) throws NotEnoughManaBlunder {
         hasUsedMana = true;
 
         if (ctx.getManaPool().use(amount, ctx.source().getWorld()) > 0)

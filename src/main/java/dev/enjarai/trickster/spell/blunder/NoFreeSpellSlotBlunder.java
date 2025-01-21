@@ -4,7 +4,7 @@ import dev.enjarai.trickster.spell.trick.Trick;
 import net.minecraft.text.MutableText;
 
 public class NoFreeSpellSlotBlunder extends TrickBlunderException {
-    public NoFreeSpellSlotBlunder(Trick source) {
+    public NoFreeSpellSlotBlunder(Trick<?> source) {
         super(source);
     }
 

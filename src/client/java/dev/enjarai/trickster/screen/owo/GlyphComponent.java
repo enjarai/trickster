@@ -21,7 +21,7 @@ public class GlyphComponent extends BaseComponent {
     protected List<Integer> patternList;
     protected int size;
 
-    public GlyphComponent(Trick trick, int size) {
+    public GlyphComponent(Trick<?> trick, int size) {
         this(trick.getPattern(), size);
     }
 
@@ -47,12 +47,12 @@ public class GlyphComponent extends BaseComponent {
             var isLinked = patternList.contains(i);
             var dotSize = 1;
 
-            drawFlatPolygon(context.getMatrices(), context.getVertexConsumers(), c -> {
-                c.accept(pos.x - dotSize, pos.y - dotSize);
-                c.accept(pos.x - dotSize, pos.y + dotSize);
-                c.accept(pos.x + dotSize, pos.y + dotSize);
-                c.accept(pos.x + dotSize, pos.y - dotSize);
-            }, 0, 0, 0, 0, isLinked ? 0.9f : 0.5f);
+            drawFlatPolygon(context.getMatrices(), context.getVertexConsumers(),
+                    pos.x - dotSize, pos.y - dotSize,
+                    pos.x - dotSize, pos.y + dotSize,
+                    pos.x + dotSize, pos.y + dotSize,
+                    pos.x + dotSize, pos.y - dotSize,
+                    0, 0, 0, 0, isLinked ? 0.9f : 0.5f);
         }
 
         for (var line : pattern.entries()) {
@@ -94,8 +94,10 @@ public class GlyphComponent extends BaseComponent {
 
         var patternString = element.getAttributeNode("pattern").getTextContent();
 
-        var pattern = Pattern.from(Arrays.stream(patternString.split(","))
-                .map(s -> Byte.valueOf(s, 10)).toList());
+        var pattern = Pattern.from(
+                Arrays.stream(patternString.split(","))
+                        .map(s -> Byte.valueOf(s, 10)).toList()
+        );
 
         var size = UIParsing.parseUnsignedInt(element.getAttributeNode("size"));
 

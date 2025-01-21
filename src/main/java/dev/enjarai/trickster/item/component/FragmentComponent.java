@@ -6,12 +6,11 @@ import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellPart;
-import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.MapFragment;
 import io.vavr.collection.HashMap;
-import io.wispforest.accessories.endec.CodecUtils;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.impl.StructEndecBuilder;
+import io.wispforest.owo.serialization.CodecUtils;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ContainerComponent;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
@@ -38,7 +37,7 @@ public record FragmentComponent(Fragment value, Optional<Text> name, boolean imm
     );
     private static final Endec<FragmentComponent> NEW_ENDEC = StructEndecBuilder.of(
             Fragment.COMPACT_ENDEC.fieldOf("value", FragmentComponent::value),
-            EndecTomfoolery.safeOptionalOf(CodecUtils.ofCodec(TextCodecs.STRINGIFIED_CODEC)).fieldOf("name", FragmentComponent::name),
+            EndecTomfoolery.safeOptionalOf(CodecUtils.toEndec(TextCodecs.STRINGIFIED_CODEC)).fieldOf("name", FragmentComponent::name),
             Endec.BOOLEAN.optionalFieldOf("immutable", FragmentComponent::immutable, false),
             Endec.BOOLEAN.optionalFieldOf("closed", FragmentComponent::closed, false),
             FragmentComponent::new

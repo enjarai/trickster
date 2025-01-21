@@ -38,7 +38,6 @@ import net.minecraft.util.math.MathHelper;
 public class TricksterClient implements ClientModInitializer {
     public static final MerlinKeeperTracker merlinKeeperTracker = new MerlinKeeperTracker(5);
 
-    @SuppressWarnings("resource")
     @Override
     public void onInitializeClient() {
         ScrollAndQuillItem.screenOpener = (text, hand) -> {
@@ -56,6 +55,7 @@ public class TricksterClient implements ClientModInitializer {
         BlockEntityRendererFactories.register(ModBlocks.MODULAR_SPELL_CONSTRUCT_ENTITY,
                 ModularSpellConstructBlockEntityRenderer::new);
         BlockEntityRendererFactories.register(ModBlocks.SCROLL_SHELF_ENTITY, ScrollShelfBlockEntityRenderer::new);
+        BlockEntityRendererFactories.register(ModBlocks.CHARGING_ARRAY_ENTITY, ChargingArrayBlockEntityRenderer::new);
 
         UIParsing.registerFactory(Trickster.id("glyph"), GlyphComponent::parseTrick);
         UIParsing.registerFactory(Trickster.id("pattern"), GlyphComponent::parseList);

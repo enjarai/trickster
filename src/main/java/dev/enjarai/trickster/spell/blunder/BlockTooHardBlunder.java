@@ -5,7 +5,7 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
 public class BlockTooHardBlunder extends TrickBlunderException {
-    public BlockTooHardBlunder(Trick source) {
+    public BlockTooHardBlunder(Trick<?> source) {
         super(source);
     }
 

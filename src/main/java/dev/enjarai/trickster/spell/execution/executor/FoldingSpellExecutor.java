@@ -7,6 +7,7 @@ import java.util.Stack;
 import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.SpellExecutor;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.execution.ExecutionState;

@@ -2,7 +2,16 @@
 {
   "title": "Entity Ploys",
   "icon": "minecraft:sheep_spawn_egg",
-  "category": "trickster:ploys"
+  "category": "trickster:ploys",
+  "additional_search_terms": [
+    "Kinetic Ploy",
+    "Ploy of Featherweight",
+    "Polymorph Ploy",
+    "Dispel Polymorph Ploy",
+    "Containment Ploy",
+    "Extrication Ploy",
+    "Ploy of Occupation"
+  ]
 }
 ```
 
@@ -24,7 +33,7 @@ Applies the given vector as velocity to the given entity.
 
 entity, number -> entity
 
-<|cost-rule@trickster:templates|formula=60kG|>
+<|cost-rule@trickster:templates|formula=60kG * (1 - multiplier)|>
 
 Given a number between zero and one, multiplies the given entity's effective gravity by that number for one second, provided it is alive.
 

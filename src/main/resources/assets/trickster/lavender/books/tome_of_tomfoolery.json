@@ -1,4 +1,8 @@
 {
   "texture": "trickster:textures/gui/white_book.png",
-  "intro_entry": "trickster:intro"
+  "intro_entry": "trickster:intro",
+  "new_entries_toast": {
+    "icon_stack": "trickster:tome_of_tomfoolery",
+    "book_name": "Tome of Tomfoolery"
+  }
 }
