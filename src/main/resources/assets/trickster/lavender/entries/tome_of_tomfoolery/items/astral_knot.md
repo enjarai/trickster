@@ -18,5 +18,5 @@ the moonlight does not replenish its stores. Instead, it replenishes itself.
 
 ;;;;;
 
-The rate at which the Astral Knot fills is a small fraction of the amount it already contains. 
-When empty, it does not replenish itself. As it approaches its capacity, its replenishment rate approaches 1kM.
+The Astral Knot generates mana passively with regard to its current stores. 
+The fuller it is, the faster it fills. However, it does not generate mana when completely empty.
