@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.MapCodec;
@@ -24,6 +25,7 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.state.property.Properties;
+import net.minecraft.state.property.Property;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.profiler.Profiler;
@@ -34,6 +36,7 @@ import nl.enjarai.cicada.api.util.random.RandomUtil;
 import nl.enjarai.cicada.api.util.random.Weighted;
 
 import java.util.*;
+import java.util.function.Function;
 
 public abstract class BlockConversionLoader extends CompleteJsonDataLoader implements IdentifiableResourceReloadListener {
     protected static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
@@ -102,10 +105,27 @@ public abstract class BlockConversionLoader extends CompleteJsonDataLoader imple
             world.syncWorldEvent(WorldEvents.BLOCK_BROKEN, pos, Block.getRawIdFromState(blockState));
         }
 
-        if (world.getDimension().ultrawarm()) {
+        if (weightedValue.keepProperties.isPresent()) {
+            Either<List<String>, Boolean> either = weightedValue.keepProperties.get();
+            Function<String, Boolean> checker;
+            if (either.right().isPresent()) {
+                checker = (name) -> either.right().get();
+            } else {
+                checker = (name) -> either.left().get().contains(name);
+            }
+
+            BlockState oldState = world.getBlockState(pos);
+            for (Property<?> property : blockState.getEntries().keySet()) {
+                if (checker.apply(property.getName()) && oldState.contains(property)) {
+                    blockState = propertyFromOldBlock(blockState, oldState, property);
+                }
+            }
+        }
+
+        if (blockState.getFluidState().isOf(Fluids.WATER) && world.getDimension().ultrawarm()) {
             if (blockState.isOf(Blocks.WATER)) {
                 blockState = Blocks.AIR.getDefaultState();
-            } else if (blockState.getFluidState().isOf(Fluids.WATER)) {
+            } else {
                 Optional<Boolean> perhapsWaterlogged = blockState.getOrEmpty(Properties.WATERLOGGED);
                 if (perhapsWaterlogged.isPresent() && perhapsWaterlogged.get()) {
                     blockState = blockState.with(Properties.WATERLOGGED, false);
@@ -125,6 +145,10 @@ public abstract class BlockConversionLoader extends CompleteJsonDataLoader imple
         return true;
     }
 
+    private <T extends Comparable<T>> BlockState propertyFromOldBlock(BlockState newState, BlockState oldState, Property<T> property) {
+        return newState.with(property, oldState.get(property));
+    }
+
     public record Replaceable(boolean replace, List<WeightedValue> conversions) {
         public static final Codec<Replaceable> CODEC = RecordCodecBuilder.create(instance ->
           instance.group(
@@ -134,7 +158,7 @@ public abstract class BlockConversionLoader extends CompleteJsonDataLoader imple
         );
     }
 
-    public record WeightedValue(BlockState state, Optional<NbtCompound> nbt, int weight) implements Weighted {
+    public record WeightedValue(BlockState state, Optional<Either<List<String>, Boolean>> keepProperties, Optional<NbtCompound> nbt, int weight) implements Weighted {
         public static final MapCodec<BlockState> BLOCK_STATE_CODEC = Registries.BLOCK.getCodec().dispatchMap("id", state -> ((StateAccessor) state).getOwner(), owner -> {
             BlockState state = owner.getDefaultState();
             if (state.getEntries().isEmpty()) {
@@ -146,6 +170,7 @@ public abstract class BlockConversionLoader extends CompleteJsonDataLoader imple
         public static final Codec<WeightedValue> CODEC = RecordCodecBuilder.create(instance ->
           instance.group(
             RecordCodecBuilder.of(WeightedValue::state, BLOCK_STATE_CODEC),
+            Codec.either(Codec.STRING.listOf(), Codec.BOOL).optionalFieldOf("keepProperties").forGetter(WeightedValue::keepProperties),
             NbtCompound.CODEC.optionalFieldOf("nbt").forGetter(WeightedValue::nbt),
             Codec.INT.fieldOf("weight").forGetter(WeightedValue::weight)
           ).apply(instance, WeightedValue::new)
