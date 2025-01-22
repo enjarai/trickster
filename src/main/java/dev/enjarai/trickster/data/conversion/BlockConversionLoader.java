@@ -82,9 +82,7 @@ public abstract class BlockConversionLoader extends CompleteJsonDataLoader imple
         });
 
         ImmutableMap.Builder<Block, List<WeightedValue>> builder = ImmutableMap.builder();
-        map.forEach((block, weightedValues) -> {
-            builder.put(block, List.copyOf(weightedValues));
-        });
+        map.forEach((block, weightedValues) -> builder.put(block, List.copyOf(weightedValues)));
 
         conversions = builder.build();
     }
