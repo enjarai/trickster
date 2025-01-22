@@ -107,7 +107,7 @@ public abstract class BlockConversionLoader extends CompleteJsonDataLoader imple
             Either<List<String>, Boolean> either = weightedValue.keepProperties.get();
             Function<String, Boolean> checker;
             if (either.right().isPresent()) {
-                Boolean shouldKeepAll = either.right().get();
+                boolean shouldKeepAll = either.right().get();
                 checker = (name) -> shouldKeepAll;
             } else {
                 List<String> toKeep = either.left().get();
