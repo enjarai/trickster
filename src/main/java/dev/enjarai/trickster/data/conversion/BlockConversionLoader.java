@@ -142,6 +142,7 @@ public abstract class BlockConversionLoader extends CompleteJsonDataLoader imple
         if (weightedValue.nbt().isPresent() && (blockEntity = world.getBlockEntity(pos)) != null) {
             blockEntity.read(weightedValue.nbt().get(), world.getRegistryManager());
         }
+
         return true;
     }
 
