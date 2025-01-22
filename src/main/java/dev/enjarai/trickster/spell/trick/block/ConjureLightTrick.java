@@ -26,10 +26,8 @@ public class ConjureLightTrick extends Trick<ConjureLightTrick> {
 
         BlockState state = world.getBlockState(blockPos);
         var waterlogged = state.getFluidState().getFluid() == Fluids.WATER;
-        var dry = state.getFluidState().getFluid() == Fluids.EMPTY;
 
-        // Blunder if block can't be replaced or if it has a fluid that isn't still water
-        if (!state.isReplaceable() || (!state.isAir() && !waterlogged && !dry)) {
+        if (!state.isReplaceable()) {
             throw new BlockOccupiedBlunder(this, pos);
         }
 
