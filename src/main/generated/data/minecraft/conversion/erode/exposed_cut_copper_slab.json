@@ -2,6 +2,7 @@
   "conversions": [
     {
       "id": "minecraft:weathered_cut_copper_slab",
+      "keepProperties": true,
       "properties": {
         "type": "bottom",
         "waterlogged": "false"

@@ -2,6 +2,7 @@
   "conversions": [
     {
       "id": "minecraft:exposed_copper_door",
+      "keepProperties": true,
       "properties": {
         "facing": "north",
         "half": "lower",

@@ -2,6 +2,7 @@
   "conversions": [
     {
       "id": "minecraft:weathered_copper_grate",
+      "keepProperties": true,
       "properties": {
         "waterlogged": "false"
       },

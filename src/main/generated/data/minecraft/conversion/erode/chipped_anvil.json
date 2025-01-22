@@ -2,6 +2,7 @@
   "conversions": [
     {
       "id": "minecraft:damaged_anvil",
+      "keepProperties": true,
       "properties": {
         "facing": "north"
       },

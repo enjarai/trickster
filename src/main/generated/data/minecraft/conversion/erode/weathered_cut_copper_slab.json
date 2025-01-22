@@ -2,6 +2,7 @@
   "conversions": [
     {
       "id": "minecraft:oxidized_cut_copper_slab",
+      "keepProperties": true,
       "properties": {
         "type": "bottom",
         "waterlogged": "false"

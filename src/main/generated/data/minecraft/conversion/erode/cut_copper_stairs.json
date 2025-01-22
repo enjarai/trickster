@@ -2,6 +2,7 @@
   "conversions": [
     {
       "id": "minecraft:exposed_cut_copper_stairs",
+      "keepProperties": true,
       "properties": {
         "facing": "north",
         "half": "bottom",

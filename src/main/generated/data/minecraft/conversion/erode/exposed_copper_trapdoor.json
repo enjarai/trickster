@@ -2,6 +2,7 @@
   "conversions": [
     {
       "id": "minecraft:weathered_copper_trapdoor",
+      "keepProperties": true,
       "properties": {
         "facing": "north",
         "half": "bottom",

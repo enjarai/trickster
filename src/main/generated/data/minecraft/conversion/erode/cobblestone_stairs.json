@@ -2,6 +2,7 @@
   "conversions": [
     {
       "id": "minecraft:mossy_cobblestone_stairs",
+      "keepProperties": true,
       "properties": {
         "facing": "north",
         "half": "bottom",

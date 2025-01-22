@@ -2,6 +2,7 @@
   "conversions": [
     {
       "id": "minecraft:mossy_cobblestone_slab",
+      "keepProperties": true,
       "properties": {
         "type": "bottom",
         "waterlogged": "false"

@@ -2,6 +2,7 @@
   "conversions": [
     {
       "id": "minecraft:exposed_copper_bulb",
+      "keepProperties": true,
       "properties": {
         "lit": "false",
         "powered": "false"

@@ -2,6 +2,7 @@
   "conversions": [
     {
       "id": "minecraft:mossy_stone_brick_slab",
+      "keepProperties": true,
       "properties": {
         "type": "bottom",
         "waterlogged": "false"

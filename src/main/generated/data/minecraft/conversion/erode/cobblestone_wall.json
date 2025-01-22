@@ -2,6 +2,7 @@
   "conversions": [
     {
       "id": "minecraft:mossy_cobblestone_wall",
+      "keepProperties": true,
       "properties": {
         "east": "none",
         "north": "none",

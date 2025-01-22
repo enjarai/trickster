@@ -2,6 +2,7 @@
   "conversions": [
     {
       "id": "minecraft:chipped_anvil",
+      "keepProperties": true,
       "properties": {
         "facing": "north"
       },
