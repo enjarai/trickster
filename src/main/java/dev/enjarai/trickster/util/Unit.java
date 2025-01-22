@@ -1,5 +1,9 @@
 package dev.enjarai.trickster.util;
 
+import net.minecraft.util.Util;
+
+import java.util.function.Function;
+
 public abstract class Unit {
     protected final int precision;
 
@@ -24,65 +28,41 @@ public abstract class Unit {
     }
 
     private String shortNameStart() {
-        switch (precision) {
-            case 10:
-                return "Q";
-            case 9:
-                return "R";
-            case 8:
-                return "Y";
-            case 7:
-                return "Z";
-            case 6:
-                return "E";
-            case 5:
-                return "P";
-            case 4:
-                return "T";
-            case 3:
-                return "G";
-            case 2:
-                return "M";
-            case 1:
-                return "k";
-            case 0:
-                return "";
-            case -1:
-                return "m";
-            default:
-                throw new IllegalStateException("Unit must have a precision in the range of -1 and 10 but got " + precision);
-        }
+        return switch (precision) {
+            case 10 -> "Q";
+            case 9 -> "R";
+            case 8 -> "Y";
+            case 7 -> "Z";
+            case 6 -> "E";
+            case 5 -> "P";
+            case 4 -> "T";
+            case 3 -> "G";
+            case 2 -> "M";
+            case 1 -> "k";
+            case 0 -> "";
+            case -1 -> "m";
+            default ->
+                    throw new IllegalStateException("Unit must have a precision in the range of -1 and 10 but got " + precision);
+        };
     }
 
     private String longNameStart() {
-        switch (precision) {
-            case 10:
-                return "quetta";
-            case 9:
-                return "ronna";
-            case 8:
-                return "yotta";
-            case 7:
-                return "zetta";
-            case 6:
-                return "exa";
-            case 5:
-                return "peta";
-            case 4:
-                return "tera";
-            case 3:
-                return "giga";
-            case 2:
-                return "mega";
-            case 1:
-                return "kilo";
-            case 0:
-                return "";
-            case -1:
-                return "milli";
-            default:
-                throw new IllegalStateException("Unit must have a precision in the range of -1 and 10 but got " + precision);
-        }
+        return switch (precision) {
+            case 10 -> "quetta";
+            case 9 -> "ronna";
+            case 8 -> "yotta";
+            case 7 -> "zetta";
+            case 6 -> "exa";
+            case 5 -> "peta";
+            case 4 -> "tera";
+            case 3 -> "giga";
+            case 2 -> "mega";
+            case 1 -> "kilo";
+            case 0 -> "";
+            case -1 -> "milli";
+            default ->
+                    throw new IllegalStateException("Unit must have a precision in the range of -1 and 10 but got " + precision);
+        };
     }
 
     protected abstract String shortNameEnd();
@@ -90,11 +70,11 @@ public abstract class Unit {
     protected abstract String longNameEnd();
 
     public static Gandalf getGandalfUnit(float value) {
-        return new Gandalf(kiloUsageToPrecision(value));
+        return Gandalf.cache.apply(kiloUsageToPrecision(value));
     }
 
     public static Merlin getMerlinUnit(float value) {
-        return new Merlin(kiloUsageToPrecision(value));
+        return Merlin.cache.apply(kiloUsageToPrecision(value));
     }
 
     private static int kiloUsageToPrecision(float value) {
@@ -110,6 +90,8 @@ public abstract class Unit {
     }
 
     public static class Gandalf extends Unit {
+        static final Function<Integer, Gandalf> cache = Util.memoize(Gandalf::new);
+
         public Gandalf(int precision) {
             super(precision);
         }
@@ -126,6 +108,8 @@ public abstract class Unit {
     }
 
     public static class Merlin extends Unit {
+        static final Function<Integer, Merlin> cache = Util.memoize(Merlin::new);
+
         public Merlin(int precision) {
             super(precision);
         }
