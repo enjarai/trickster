@@ -3,9 +3,7 @@ package dev.enjarai.trickster.data.conversion;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.enjarai.trickster.Trickster;
@@ -20,6 +18,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.resource.ResourceFinder;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -32,16 +31,14 @@ import nl.enjarai.cicada.api.util.random.Weighted;
 
 import java.util.*;
 
-public abstract class BlockConversionLoader extends CompleteJsonDataLoader implements IdentifiableResourceReloadListener {
+public abstract class BlockConversionLoader extends CompleteJsonDataLoader<BlockConversionLoader.Replaceable> implements IdentifiableResourceReloadListener {
     protected static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
     protected final RegistryWrapper.WrapperLookup registryLookup;
     private final String type;
     protected ImmutableMap<Block, List<WeightedValue>> conversions = ImmutableMap.of();
 
     public BlockConversionLoader(String dataType, RegistryWrapper.WrapperLookup registryLookup) {
-        // This uses CODEC in a future version
-        // The inline commented code is for easier porting for future versions, as mojang changed this to use codecs
-        super(GSON/*Replaceable.CODEC*/, "conversion/" + dataType);
+        super(Replaceable.CODEC, ResourceFinder.json("conversion/" + dataType));
         this.registryLookup = registryLookup;
         this.type = dataType;
     }
@@ -52,18 +49,16 @@ public abstract class BlockConversionLoader extends CompleteJsonDataLoader imple
     }
 
     @Override
-    // The inline commented code is for easier porting for future versions, as mojang changed this to use codecs
-    protected void apply(Map<Identifier, List<JsonElement/*Replaceable*/>> prepared, ResourceManager manager, Profiler profiler) {
+    protected void apply(Map<Identifier, List<Replaceable>> prepared, ResourceManager manager, Profiler profiler) {
         RegistryWrapper.Impl<Block> lookup = registryLookup.getOrThrow(RegistryKeys.BLOCK);
         Map<Block, List<WeightedValue>> map = new HashMap<>();
 
-        prepared.forEach((identifier, jsonElements) -> {
+        prepared.forEach((identifier, elements) -> {
             Block source = lookup.getOrThrow(RegistryKey.of(RegistryKeys.BLOCK, identifier)).value();
             map.compute(source, (block, weightedValues) -> {
                 List<WeightedValue> values = Objects.requireNonNullElseGet(weightedValues, ArrayList::new);
 
-                for (JsonElement jsonElement : jsonElements) {
-                    Replaceable replaceable = Replaceable.CODEC.parse(JsonOps.INSTANCE, jsonElement).getOrThrow();
+                for (Replaceable replaceable : elements) {
                     if (replaceable.replace) {
                         values.clear();
                     }

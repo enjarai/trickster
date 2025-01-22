@@ -3,12 +3,19 @@ package dev.enjarai.trickster.data;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
 import com.mojang.logging.LogUtils;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.*;
 import java.util.Map.Entry;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DynamicOps;
+import com.mojang.serialization.JsonOps;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceFinder;
 import net.minecraft.resource.ResourceManager;
@@ -22,43 +29,50 @@ import org.slf4j.Logger;
  * An abstract implementation of resource reloader that reads JSON files
  * into Gson representations in the prepare stage.
  */
-public abstract class CompleteJsonDataLoader extends SinglePreparationResourceReloader<Map<Identifier, List<JsonElement>>> {
+public abstract class CompleteJsonDataLoader<T> extends SinglePreparationResourceReloader<Map<Identifier, List<T>>> {
 	private static final Logger LOGGER = LogUtils.getLogger();
-	private final Gson gson;
-	private final String dataType;
+	private final DynamicOps<JsonElement> ops;
+	private final Codec<T> codec;
+	private final ResourceFinder finder;
 
-	// Reminder: This will need to be changed/replaced on a newer version as Mojang changed it
-	// I think it was 1.20.3, idk, never bothered checking
-	public CompleteJsonDataLoader(Gson gson, String dataType) {
-		this.gson = gson;
-		this.dataType = dataType;
+	protected CompleteJsonDataLoader(RegistryWrapper.WrapperLookup registries, Codec<T> codec, RegistryKey<? extends Registry<T>> registryRef) {
+		this(registries.getOps(JsonOps.INSTANCE), codec, ResourceFinder.json(registryRef));
 	}
 
-	protected Map<Identifier, List<JsonElement>> prepare(ResourceManager resourceManager, Profiler profiler) {
-		Map<Identifier, List<JsonElement>> map = new HashMap<>();
-		load(resourceManager, this.dataType, this.gson, map);
+	protected CompleteJsonDataLoader(Codec<T> codec, ResourceFinder finder) {
+		this(JsonOps.INSTANCE, codec, finder);
+	}
+
+	public CompleteJsonDataLoader(DynamicOps<JsonElement> ops, Codec<T> codec, ResourceFinder finder) {
+		this.ops = ops;
+		this.codec = codec;
+		this.finder = finder;
+	}
+
+	protected Map<Identifier, List<T>> prepare(ResourceManager resourceManager, Profiler profiler) {
+		Map<Identifier, List<T>> map = new HashMap<>();
+		load(resourceManager, this.finder, this.ops, this.codec, map);
 		return map;
 	}
 
-	public static void load(ResourceManager manager, String dataType, Gson gson, Map<Identifier, List<JsonElement>> results) {
-		ResourceFinder resourceFinder = ResourceFinder.json(dataType);
-
-		for (Entry<Identifier, List<Resource>> entry : resourceFinder.findAllResources(manager).entrySet()) {
+	public static <T> void load(ResourceManager manager, ResourceFinder finder, DynamicOps<JsonElement> ops, Codec<T> codec, Map<Identifier, List<T>> results) {
+		for (Entry<Identifier, List<Resource>> entry : finder.findAllResources(manager).entrySet()) {
 			Identifier key = entry.getKey();
-			Identifier resourceId = resourceFinder.toResourceId(key);
+			Identifier resourceId = finder.toResourceId(key);
 
 			try {
 				for (Resource resource : entry.getValue()) {
 					Reader reader = resource.getReader();
 
 					try {
-						JsonElement jsonElement = JsonHelper.deserialize(gson, reader, JsonElement.class);
-						results.compute(resourceId, (identifier, jsonElements) -> {
-							List<JsonElement> list;
-                            list = Objects.requireNonNullElseGet(jsonElements, ArrayList::new);
-							list.add(jsonElement);
-							return list;
-						});
+						codec.parse(ops, JsonParser.parseReader(reader)).ifSuccess((value) -> {
+							results.compute(resourceId, (identifier, elements) -> {
+								List<T> list;
+								list = Objects.requireNonNullElseGet(elements, ArrayList::new);
+								list.add(value);
+								return list;
+							});
+						}).ifError((error) -> LOGGER.error("Couldn't parse data file '{}' from '{}': {}", key, resourceId, error));
 					} catch (Throwable exception) {
 						if (reader != null) {
 							try {
