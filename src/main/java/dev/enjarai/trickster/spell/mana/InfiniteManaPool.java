@@ -12,7 +12,7 @@ public final class InfiniteManaPool implements MutableManaPool {
 
     private InfiniteManaPool() {
     }
-    
+
     @Override
     @Nullable
     public ManaPoolType<?> type() {
@@ -21,12 +21,12 @@ public final class InfiniteManaPool implements MutableManaPool {
 
     @Override
     public float get(World world) {
-        return Float.POSITIVE_INFINITY;
+        return Float.MAX_VALUE / 3 * 2;
     }
 
     @Override
     public float getMax(World world) {
-        return Float.POSITIVE_INFINITY;
+        return Float.MAX_VALUE / 3 * 2;
     }
 
     @Override

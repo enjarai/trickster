@@ -1,4 +1,4 @@
-// 1.21	2025-01-18T01:54:59.5987181	Trickster/Model Definitions
+// 1.21	2025-01-19T19:30:18.0017495	Trickster/Model Definitions
 be89ca0492892b810135472265a1fa873151a8f0 assets\trickster\models\item\command_knot.json
 0c24009d9f713f084ff55efcb5aedef3924fc3bf assets\trickster\models\item\written_scroll_white.json
 96809df525387fe221827afd762b90062300440f assets\trickster\models\item\scroll_and_quill_black.json
@@ -6,8 +6,8 @@ be89ca0492892b810135472265a1fa873151a8f0 assets\trickster\models\item\command_kn
 fe72cc051cf77ba7ea5b6ca82cabf06c56cb4503 assets\trickster\blockstates\spell_construct.json
 1b9cef12c72abf3e20c0cb70743fb574e8d0cf04 assets\trickster\models\item\rusted_spell_core.json
 f00b04573fa8a37423acbd2cfa58995b577acc9f assets\trickster\models\item\written_scroll_light_gray.json
-4dadb13156ab71c0e20c3acad5c8e9506610137b assets\trickster\models\item\amethyst_knot.json
 0365b58ff0a90639528778ad8ec3bdf3fd337ace assets\trickster\models\item\scroll_and_quill_lime.json
+4dadb13156ab71c0e20c3acad5c8e9506610137b assets\trickster\models\item\amethyst_knot.json
 7cd9a2d7e13659094779ee999474bc85392fe900 assets\trickster\models\item\scroll_and_quill_white.json
 585aef1a541ae893ae74d54742d2382121c9621b assets\trickster\models\item\amethyst_whorl.json
 1e5f52dedfd765cf5c0ab6579f32614beb368576 assets\trickster\models\item\nan.json
@@ -48,6 +48,7 @@ e622027802fd7ffb1c2e6f6d1733f17ed239e61d assets\trickster\models\item\tome_of_to
 9d5d343103d621d1a2f492cec156c06274efdc15 assets\trickster\blockstates\spell_resonator.json
 1f778e1f2c30077615a7ea8b89c6da45b5c0631f assets\trickster\models\item\written_scroll_light_blue.json
 c651f1dafc6486d4b76b11cafb5adaf86b97f2eb assets\trickster\models\item\emerald_knot.json
+8281443de0ca3a61ddab9d788c20add65efa99ac assets\trickster\models\item\astral_knot.json
 edec8170be553ecb287cd4f9e718988b201f58a9 assets\trickster\models\item\wand.json
 2a8749d4361b2691332bd1d021866d7f9106ca0e assets\trickster\blockstates\modular_spell_construct.json
 11f88e31ee80e48a4b56df7363c1dfd36659bd76 assets\trickster\models\item\scroll_and_quill_yellow.json

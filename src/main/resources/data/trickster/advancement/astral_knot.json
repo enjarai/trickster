@@ -1,26 +1,26 @@
 {
   "display": {
     "icon": {
-      "id": "trickster:cracked_echo_knot"
+      "id": "trickster:astral_knot"
     },
     "title": {
-      "text": "Broken and Alone"
+      "text": "Stellar Savings Account"
     },
     "description": {
-      "text": "Find a Cracked Echo Knot"
+      "text": "Obtain an Astral Knot"
     },
-    "frame": "task",
+    "frame": "challenge",
     "announce_to_chat": true,
     "hidden": true
   },
   "parent": "trickster:root",
   "criteria": {
-    "pickup_echo_knot": {
+    "pickup_astral_knot": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": "trickster:cracked_echo_knot"
+            "items": "trickster:astral_knot"
           }
         ]
       }
