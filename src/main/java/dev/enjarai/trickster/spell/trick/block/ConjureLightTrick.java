@@ -13,6 +13,7 @@ import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.type.Signature;
 import net.minecraft.block.BlockState;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.registry.tag.FluidTags;
 
 public class ConjureLightTrick extends Trick<ConjureLightTrick> {
     public ConjureLightTrick() {
@@ -26,8 +27,11 @@ public class ConjureLightTrick extends Trick<ConjureLightTrick> {
 
         BlockState state = world.getBlockState(blockPos);
         var waterlogged = state.getFluidState().getFluid() == Fluids.WATER;
+        var isWater = state.getFluidState().isIn(FluidTags.WATER);
+        var dry = state.getFluidState().getFluid() == Fluids.EMPTY;
 
-        if (!state.isReplaceable()) {
+        // Blunder if block can't be replaced or if it has a fluid that isn't water
+        if (!state.isReplaceable() || (!state.isAir() && !isWater && !dry)) {
             throw new BlockOccupiedBlunder(this, pos);
         }
 
