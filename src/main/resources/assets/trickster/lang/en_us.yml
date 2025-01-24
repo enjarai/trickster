@@ -35,6 +35,13 @@ trickster:
     collar_link: "Link: %s"
     unlinked: Unlinked
 
+  gandalf:
+    stored: "Stored: %s"
+  merlin:
+    idling: "Idle"
+    draining: "Draining: %.2f"
+    filling: "Charging: %.2f"
+
   item_group: Trickster
 
   scroll_hat: 'Selected slot: %d'
@@ -345,6 +352,7 @@ item.trickster:
   diamond_knot: Diamond Knot
   echo_knot: Echo Knot
   cracked_echo_knot: Cracked Echo Knot
+  astral_knot: Astral Knot
   command_knot: Command Knot
 
   spell_core: Spell Core

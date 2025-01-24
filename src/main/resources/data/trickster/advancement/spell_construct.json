@@ -13,7 +13,7 @@
     "announce_to_chat": true,
     "hidden": false
   },
-  "parent": "trickster:cast_spell",
+  "parent": "trickster:root",
   "criteria": {
     "craft_spell_circle": {
       "trigger": "minecraft:recipe_crafted",

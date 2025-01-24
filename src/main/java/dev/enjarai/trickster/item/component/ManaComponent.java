@@ -12,23 +12,18 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.LightType;
 
-public record ManaComponent(ManaPool pool, float naturalRechargeMultiplier, boolean rechargeable) {
+public record ManaComponent(ManaPool pool, float naturalRechargeMultiplier) {
     public static final Codec<ManaComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             EndecTomfoolery.toCodec(ManaPool.ENDEC).fieldOf("pool").forGetter(ManaComponent::pool),
-            Codec.FLOAT.fieldOf("natural_recharge_multiplier").forGetter(ManaComponent::naturalRechargeMultiplier),
-            Codec.BOOL.fieldOf("rechargable").forGetter(ManaComponent::rechargeable)
+            Codec.FLOAT.fieldOf("natural_recharge_multiplier").forGetter(ManaComponent::naturalRechargeMultiplier)
     ).apply(instance, ManaComponent::new));
 
     public ManaComponent(ManaPool pool) {
-        this(pool, 1, true);
-    }
-
-    public ManaComponent(ManaPool pool, float naturalRechargeMultiplier) {
-        this(pool, naturalRechargeMultiplier, true);
+        this(pool, 1);
     }
 
     public ManaComponent with(ManaPool pool) {
-        return new ManaComponent(pool, naturalRechargeMultiplier(), rechargeable());
+        return new ManaComponent(pool, naturalRechargeMultiplier());
     }
 
     public static float tryRecharge(ServerWorld world, Vec3d pos, ItemStack stack) {
