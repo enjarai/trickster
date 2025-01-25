@@ -3,8 +3,11 @@ package dev.enjarai.trickster.cca;
 import java.util.Optional;
 import java.util.Set;
 
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.sound.SoundEvents;
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
+import org.ladysnake.cca.api.v3.component.tick.ClientTickingComponent;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
 import dev.enjarai.trickster.EndecTomfoolery;
@@ -15,7 +18,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper.WrapperLookup;
 import net.minecraft.server.world.ServerWorld;
 
-public class DisplacementComponent implements ServerTickingComponent {
+public class DisplacementComponent implements ServerTickingComponent, ClientTickingComponent {
     private static final KeyedEndec<Optional<Vector3d>> OFFSET_ENDEC = EndecTomfoolery.<Double, Vector3d>vectorEndec(Endec.DOUBLE, Vector3d::new, Vector3dc::x, Vector3dc::y, Vector3dc::z)
             .optionalOf()
             .keyed("offset", Optional.empty());
@@ -47,6 +50,23 @@ public class DisplacementComponent implements ServerTickingComponent {
         });
     }
 
+    @Override
+    public void clientTick() {
+        if (ModEntityComponents.GRACE.get(entity).isInGrace("displacement")) {
+            for (int i = 0; i < 2; i++) {
+                entity.getWorld().addParticle(
+                        ParticleTypes.PORTAL,
+                        entity.getParticleX(0.5),
+                        entity.getRandomBodyY() - 0.25,
+                        entity.getParticleZ(0.5),
+                        (entity.getRandom().nextDouble() - 0.5) * 2.0,
+                        -entity.getRandom().nextDouble(),
+                        (entity.getRandom().nextDouble() - 0.5) * 2.0
+                );
+            }
+        }
+    }
+
     public void modify(Vector3dc vector) {
         if (offset.isPresent()) {
             offset.get().add(vector);
@@ -55,6 +75,7 @@ public class DisplacementComponent implements ServerTickingComponent {
         }
 
         ModEntityComponents.GRACE.get(entity).triggerGrace("displacement", 40);
+        entity.playSound(SoundEvents.BLOCK_PORTAL_TRIGGER, 1.0F, 1.0F);
     }
 
     public void clear() {
