@@ -1,8 +1,10 @@
 package dev.enjarai.trickster.mixin.client;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.enjarai.trickster.Trickster;
+import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.TrickHatItem;
 import dev.enjarai.trickster.pond.QuackingInGameHud;
@@ -36,6 +38,24 @@ public class InGameHudMixin implements QuackingInGameHud {
         ) {
             context.setShaderColor(0.4f, 0.4f, 0f, 1f);
         }
+    }
+
+    @ModifyExpressionValue(
+            method = "renderVignetteOverlay",
+            at = @At(
+                    value = "FIELD",
+                    target = "Lnet/minecraft/client/gui/hud/InGameHud;vignetteDarkness:F"
+            )
+    )
+    private float teleportationVignette(float original, @Local(argsOnly = true) Entity entity) {
+        if (entity == null) {
+            return original;
+        }
+
+        return MathHelper.lerp(
+                (40 - ModEntityComponents.GRACE.get(entity).getGraceState("displacement")) / 40f,
+                original, 1f
+        );
     }
 
     @Unique
