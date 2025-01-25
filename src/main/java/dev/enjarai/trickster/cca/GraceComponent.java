@@ -59,6 +59,10 @@ public class GraceComponent implements ServerTickingComponent, ClientTickingComp
         ModEntityComponents.GRACE.sync(entity);
     }
 
+    public int getGraceState(String grace) {
+        return graces.getInt(grace);
+    }
+
     @Override
     public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
         graces.clear();
