@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
@@ -44,8 +45,12 @@ public class DisplacementComponent implements ServerTickingComponent, ClientTick
     public void serverTick() {
         offset.ifPresent(xyz -> {
             if (!ModEntityComponents.GRACE.get(entity).isInGrace("displacement")) {
+                entity.getWorld().playSoundFromEntity(null, entity, SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1.0F, 1.0F);
+
                 entity.teleport((ServerWorld) entity.getWorld(), entity.getX() + xyz.x, entity.getY() + xyz.y, entity.getZ() + xyz.z, Set.of(), entity.getHeadYaw(), entity.getPitch());
                 offset = Optional.empty();
+
+                entity.getWorld().playSoundFromEntity(null, entity, SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1.0F, 1.0F);
             }
         });
     }
@@ -75,7 +80,7 @@ public class DisplacementComponent implements ServerTickingComponent, ClientTick
         }
 
         ModEntityComponents.GRACE.get(entity).triggerGrace("displacement", 40);
-        entity.playSound(SoundEvents.BLOCK_PORTAL_TRIGGER, 1.0F, 1.0F);
+        entity.getWorld().playSoundFromEntity(null, entity, SoundEvents.BLOCK_PORTAL_TRIGGER, SoundCategory.PLAYERS, 1.0F, 2.0F);
     }
 
     public void clear() {
