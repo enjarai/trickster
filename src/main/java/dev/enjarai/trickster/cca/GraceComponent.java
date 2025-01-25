@@ -59,6 +59,11 @@ public class GraceComponent implements ServerTickingComponent, ClientTickingComp
         ModEntityComponents.GRACE.sync(entity);
     }
 
+    public void cancelGrace(String grace) {
+        graces.removeInt(grace);
+        ModEntityComponents.GRACE.sync(entity);
+    }
+
     public int getGraceState(String grace) {
         return graces.getInt(grace);
     }

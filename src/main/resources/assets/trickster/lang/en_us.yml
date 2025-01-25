@@ -117,6 +117,7 @@ trickster:
     get_velocity: Movement Ingress
     add_velocity: Kinetic Ploy
     change_weight: Ploy of Featherweight
+    displace: Ploy of the Usurper
     store_entity: Containment Ploy
     release_entity: Extrication Ploy
 

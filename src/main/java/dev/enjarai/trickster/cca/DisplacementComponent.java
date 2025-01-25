@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.cca;
 
 import java.util.Optional;
+import java.util.Set;
 
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
@@ -12,6 +13,7 @@ import io.wispforest.endec.impl.KeyedEndec;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper.WrapperLookup;
+import net.minecraft.server.world.ServerWorld;
 
 public class DisplacementComponent implements ServerTickingComponent {
     private static final KeyedEndec<Optional<Vector3d>> OFFSET_ENDEC = EndecTomfoolery.<Double, Vector3d>vectorEndec(Endec.DOUBLE, Vector3d::new, Vector3dc::x, Vector3dc::y, Vector3dc::z)
@@ -37,11 +39,12 @@ public class DisplacementComponent implements ServerTickingComponent {
 
     @Override
     public void serverTick() {
-        if (offset.isPresent() && !ModEntityComponents.GRACE.get(entity).isInGrace("displacement")) {
-            //TODO: teleportttt
-
-            offset = Optional.empty();
-        }
+        offset.ifPresent(xyz -> {
+            if (!ModEntityComponents.GRACE.get(entity).isInGrace("displacement")) {
+                entity.teleport((ServerWorld) entity.getWorld(), entity.getX() + xyz.x, entity.getY() + xyz.y, entity.getZ() + xyz.z, Set.of(), entity.getHeadYaw(), entity.getPitch());
+                offset = Optional.empty();
+            }
+        });
     }
 
     public void modify(Vector3dc vector) {
@@ -56,5 +59,6 @@ public class DisplacementComponent implements ServerTickingComponent {
 
     public void clear() {
         offset = Optional.empty();
+        ModEntityComponents.GRACE.get(entity).cancelGrace("displacement");
     }
 }
