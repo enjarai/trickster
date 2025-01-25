@@ -1,6 +1,5 @@
 package dev.enjarai.trickster.mixin.client;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.enjarai.trickster.Trickster;
@@ -40,21 +39,25 @@ public class InGameHudMixin implements QuackingInGameHud {
         }
     }
 
-    @ModifyExpressionValue(
-            method = "renderVignetteOverlay",
-            at = @At(
-                    value = "FIELD",
-                    target = "Lnet/minecraft/client/gui/hud/InGameHud;vignetteDarkness:F"
-            )
-    )
-    private float teleportationVignette(float original, @Local(argsOnly = true) Entity entity) {
+    @Inject(method = "renderVignetteOverlay", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIFFIIII)V"))
+    private void teleportationVignette(DrawContext context, Entity entity, CallbackInfo ci) {
         if (entity == null) {
-            return original;
+            return;
         }
 
-        return MathHelper.lerp(
-                (40 - ModEntityComponents.GRACE.get(entity).getGraceState("displacement")) / 40f,
-                original, 1f
+        var grace = ModEntityComponents.GRACE.get(entity);
+        if (!grace.isInGrace("displacement")) {
+            return;
+        }
+
+        var progress = (40 - grace.getGraceState("displacement")) / 40f;
+        var color = RenderSystem.getShaderColor();
+
+        context.setShaderColor(
+                MathHelper.lerp(progress, color[0], 1f),
+                MathHelper.lerp(progress, color[0], 1f),
+                MathHelper.lerp(progress, color[0], 0f),
+                MathHelper.lerp(progress, color[0], 1f)
         );
     }
 
