@@ -23,6 +23,7 @@ public class DisplacementComponent implements ServerTickingComponent, ClientTick
     private static final KeyedEndec<Optional<Vector3d>> OFFSET_ENDEC = EndecTomfoolery.<Double, Vector3d>vectorEndec(Endec.DOUBLE, Vector3d::new, Vector3dc::x, Vector3dc::y, Vector3dc::z)
             .optionalOf()
             .keyed("offset", Optional.empty());
+    public static final int CHARGE_TICKS = 40;
 
     private final Entity entity;
     private Optional<Vector3d> offset = Optional.empty();
@@ -79,7 +80,7 @@ public class DisplacementComponent implements ServerTickingComponent, ClientTick
             offset = Optional.of(new Vector3d(vector));
         }
 
-        ModEntityComponents.GRACE.get(entity).triggerGrace("displacement", 40);
+        ModEntityComponents.GRACE.get(entity).triggerGrace("displacement", CHARGE_TICKS);
         entity.getWorld().playSoundFromEntity(null, entity, SoundEvents.BLOCK_PORTAL_TRIGGER, SoundCategory.PLAYERS, 1.0F, 2.0F);
     }
 

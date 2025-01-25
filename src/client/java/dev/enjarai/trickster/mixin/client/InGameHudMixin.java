@@ -3,6 +3,7 @@ package dev.enjarai.trickster.mixin.client;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.enjarai.trickster.Trickster;
+import dev.enjarai.trickster.cca.DisplacementComponent;
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.TrickHatItem;
@@ -50,14 +51,14 @@ public class InGameHudMixin implements QuackingInGameHud {
             return;
         }
 
-        var progress = (40 - grace.getGraceState("displacement")) / 40f;
+        var progress = (DisplacementComponent.CHARGE_TICKS - grace.getGraceState("displacement")) / (float) DisplacementComponent.CHARGE_TICKS;
         var color = RenderSystem.getShaderColor();
 
         context.setShaderColor(
                 MathHelper.lerp(progress, color[0], 1f),
-                MathHelper.lerp(progress, color[0], 1f),
-                MathHelper.lerp(progress, color[0], 0f),
-                MathHelper.lerp(progress, color[0], 1f)
+                MathHelper.lerp(progress, color[1], 1f),
+                MathHelper.lerp(progress, color[2], 0f),
+                MathHelper.lerp(progress, color[3], 1f)
         );
     }
 
