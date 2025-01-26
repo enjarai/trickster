@@ -17,6 +17,7 @@ import net.minecraft.util.math.random.LocalRandom;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 public class LevitatingBlockEntityRenderer extends EntityRenderer<LevitatingBlockEntity> {
     private final BlockRenderManager blockRenderManager;
@@ -35,15 +36,19 @@ public class LevitatingBlockEntityRenderer extends EntityRenderer<LevitatingBloc
             if (blockState.getRenderType() != BlockRenderType.INVISIBLE) {
                 var spinnyRandom = new LocalRandom(fallingBlockEntity.getUuid().getMostSignificantBits());
                 var totalAge = fallingBlockEntity.age + tickDelta;
+                var rotationAxis = new Vector3f(0, 1, 0)
+                        .rotateX((float) (spinnyRandom.nextFloat() * Math.PI * 2))
+                        .rotateY((float) (spinnyRandom.nextFloat() * Math.PI * 2))
+                        .rotateZ((float) (spinnyRandom.nextFloat() * Math.PI * 2));
 
                 matrixStack.push();
                 BlockPos blockPos = BlockPos.ofFloored(fallingBlockEntity.getX(), fallingBlockEntity.getBoundingBox().maxY, fallingBlockEntity.getZ());
                 matrixStack.translate(0, 0.5, 0);
-                matrixStack.multiply(new Quaternionf().rotationXYZ(
-                        totalAge * (spinnyRandom.nextFloat() - 0.5f),
-                        0, //totalAge * (spinnyRandom.nextFloat() - 0.5f),
-                        totalAge * (spinnyRandom.nextFloat() - 0.5f)
-                ));
+
+                if (!fallingBlockEntity.isOnGround()) {
+                    matrixStack.multiply(new Quaternionf().rotateAxis((float) (totalAge / 10 % (Math.PI * 2)), rotationAxis));
+                }
+
                 matrixStack.translate(-0.5, -0.5, -0.5);
                 this.blockRenderManager
                         .getModelRenderer()
