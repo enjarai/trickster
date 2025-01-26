@@ -57,10 +57,12 @@ public class SharedManaComponent implements AutoSyncedComponent {
     @Override
     public void writeSyncPacket(RegistryByteBuf buf, ServerPlayerEntity player) {
         var uuids = subscribers.get(player.getUuid());
-        buf.write(POOLS_ENDEC.endec(), pools.entrySet()
-                .stream()
-                .filter(entry -> uuids.contains(entry.getKey()))
-                .collect(Collectors.toMap(HashMap.Entry::getKey, HashMap.Entry::getValue)));
+        buf.write(
+                POOLS_ENDEC.endec(), pools.entrySet()
+                        .stream()
+                        .filter(entry -> uuids.contains(entry.getKey()))
+                        .collect(Collectors.toMap(HashMap.Entry::getKey, HashMap.Entry::getValue))
+        );
     }
 
     @Override
@@ -75,9 +77,9 @@ public class SharedManaComponent implements AutoSyncedComponent {
             final var finalPool = pool;
             pool = server.get().getOverworld().getPersistentStateManager().getOrCreate(
                     new PersistentState.Type<PoolState>(
-                        () -> new PoolState(finalPool),
-                        PoolState::readNbt,
-                        DataFixTypes.LEVEL
+                            () -> new PoolState(finalPool),
+                            PoolState::readNbt,
+                            DataFixTypes.LEVEL
                     ),
                     "trickster/shared_mana_pool/" + uuid
             ).getPool();
@@ -105,15 +107,17 @@ public class SharedManaComponent implements AutoSyncedComponent {
 
     public void subscribe(ServerPlayerEntity player, UUID uuid) {
         server.ifPresent(server -> {
-            var playerUuid = player.getUuid();
-            var subscriptions = subscribers.get(playerUuid);
+            if (get(uuid).isPresent()) {
+                var playerUuid = player.getUuid();
+                var subscriptions = subscribers.get(playerUuid);
 
-            if (subscriptions == null)
-                subscriptions = new ArrayList<>();
+                if (subscriptions == null)
+                    subscriptions = new ArrayList<>();
 
-            subscriptions.add(uuid);
-            subscribers.put(playerUuid, subscriptions);
-            ModGlobalComponents.SHARED_MANA.sync(provider);
+                subscriptions.add(uuid);
+                subscribers.put(playerUuid, subscriptions);
+                ModGlobalComponents.SHARED_MANA.sync(provider);
+            }
         });
     }
 
