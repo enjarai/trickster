@@ -5,7 +5,6 @@ import dev.enjarai.trickster.cca.ModEntityComponents;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.LandingBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -13,8 +12,8 @@ import net.minecraft.entity.MovementType;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
@@ -25,17 +24,18 @@ import net.minecraft.server.network.EntityTrackerEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
 public class LevitatingBlockEntity extends Entity {
     protected static final TrackedData<BlockPos> BLOCK_POS = DataTracker.registerData(LevitatingBlockEntity.class, TrackedDataHandlerRegistry.BLOCK_POS);
     protected static final TrackedData<Float> WEIGHT = DataTracker.registerData(LevitatingBlockEntity.class, TrackedDataHandlerRegistry.FLOAT);
+    protected static final TrackedData<NbtCompound> BLOCK_ENTITY_DATA = DataTracker.registerData(LevitatingBlockEntity.class, TrackedDataHandlerRegistry.NBT_COMPOUND);
 
     private BlockState blockState = Blocks.STONE.getDefaultState();
-    @Nullable
-    private NbtCompound blockEntityData;
+
+    public BlockEntity cachedBlockEntity;
 
     public LevitatingBlockEntity(EntityType<?> type, World world) {
         super(type, world);
@@ -45,37 +45,44 @@ public class LevitatingBlockEntity extends Entity {
     protected void initDataTracker(DataTracker.Builder builder) {
         builder.add(BLOCK_POS, BlockPos.ORIGIN);
         builder.add(WEIGHT, 1f);
+        builder.add(BLOCK_ENTITY_DATA, new NbtCompound());
     }
 
     @Override
     protected void readCustomDataFromNbt(NbtCompound nbt) {
         this.blockState = NbtHelper.toBlockState(this.getWorld().createCommandRegistryWrapper(RegistryKeys.BLOCK), nbt.getCompound("BlockState"));
-        if (nbt.contains("BlockEntityData", NbtElement.COMPOUND_TYPE)) {
-            this.blockEntityData = nbt.getCompound("BlockEntityData").copy();
-        }
+//        if (nbt.contains("BlockEntityData", NbtElement.COMPOUND_TYPE)) {
+//            this.blockEntityData = nbt.getCompound("BlockEntityData").copy();
+//        }
     }
 
     @Override
     protected void writeCustomDataToNbt(NbtCompound nbt) {
         nbt.put("BlockState", NbtHelper.fromBlockState(this.blockState));
-        if (this.blockEntityData != null) {
-            nbt.put("BlockEntityData", this.blockEntityData);
-        }
+//        if (this.blockEntityData != null) {
+//            nbt.put("BlockEntityData", this.blockEntityData);
+//        }
     }
 
     public static LevitatingBlockEntity spawnFromBlock(World world, BlockPos pos, BlockState state, float weight) {
         LevitatingBlockEntity fallingBlockEntity = new LevitatingBlockEntity(ModEntities.LEVITATING_BLOCK, world);
-        fallingBlockEntity.setPos(
+        fallingBlockEntity.setPosition(
                 pos.getX() + 0.5,
                 pos.getY(),
                 pos.getZ() + 0.5
         );
+        fallingBlockEntity.intersectionChecked = true;
+        fallingBlockEntity.setVelocity(Vec3d.ZERO);
+        fallingBlockEntity.prevX = fallingBlockEntity.getX();
+        fallingBlockEntity.prevY = fallingBlockEntity.getY();
+        fallingBlockEntity.prevZ = fallingBlockEntity.getZ();
         fallingBlockEntity.blockState = state.contains(Properties.WATERLOGGED) ? state.with(Properties.WATERLOGGED, false) : state;
         fallingBlockEntity.setFallingBlockPos(pos);
 
         var entity = world.getBlockEntity(pos);
         if (entity != null) {
-            fallingBlockEntity.blockEntityData = entity.createNbtWithId(world.getRegistryManager());
+            fallingBlockEntity.setBlockEntityData(entity.createNbtWithId(world.getRegistryManager()));
+            entity.read(new NbtCompound(), world.getRegistryManager());
         }
 
         fallingBlockEntity.setWeight(weight);
@@ -106,22 +113,27 @@ public class LevitatingBlockEntity extends Entity {
             if (!this.getWorld().isClient) {
                 BlockPos blockPos = this.getBlockPos();
 
-                if (this.getWeight() >= 1) {
-                    if (this.getWorld().setBlockState(blockPos, this.blockState, Block.NOTIFY_ALL)) {
+                if (this.getWeight() >= 1 && isOnGround() && getWorld().getBlockState(blockPos).isReplaceable()) {
+                    var isWater = getWorld().getFluidState(blockPos).isOf(Fluids.WATER);
+                    var isWaterLoggable = this.blockState.contains(Properties.WATERLOGGED);
+
+                    var blockState = isWater && isWaterLoggable ? this.blockState.with(Properties.WATERLOGGED, true) : this.blockState;
+
+                    if (this.getWorld().setBlockState(blockPos, blockState, Block.NOTIFY_ALL)) {
                         ((ServerWorld)this.getWorld())
                                 .getChunkManager()
                                 .chunkLoadingManager
                                 .sendToOtherNearbyPlayers(this, new BlockUpdateS2CPacket(blockPos, this.getWorld().getBlockState(blockPos)));
                         this.discard();
 
-                        if (this.blockEntityData != null && this.blockState.hasBlockEntity()) {
+                        if (!this.getBlockEntityData().isEmpty() && blockState.hasBlockEntity()) {
                             BlockEntity blockEntity = this.getWorld().getBlockEntity(blockPos);
                             if (blockEntity != null) {
                                 NbtCompound nbtCompound = blockEntity.createNbt(this.getWorld().getRegistryManager());
 
-                                for (String string : this.blockEntityData.getKeys()) {
+                                for (String string : this.getBlockEntityData().getKeys()) {
                                     //noinspection DataFlowIssue
-                                    nbtCompound.put(string, this.blockEntityData.get(string).copy());
+                                    nbtCompound.put(string, this.getBlockEntityData().get(string).copy());
                                 }
 
                                 try {
@@ -205,5 +217,13 @@ public class LevitatingBlockEntity extends Entity {
 
     public float getWeight() {
         return this.dataTracker.get(WEIGHT);
+    }
+
+    public void setBlockEntityData(NbtCompound compound) {
+        this.dataTracker.set(BLOCK_ENTITY_DATA, compound);
+    }
+
+    public NbtCompound getBlockEntityData() {
+        return this.dataTracker.get(BLOCK_ENTITY_DATA);
     }
 }

@@ -2,6 +2,7 @@ package dev.enjarai.trickster.spell.trick.entity;
 
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.entity.LevitatingBlockEntity;
+import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
@@ -70,6 +71,11 @@ public class ChangeWeightTrick extends Trick<ChangeWeightTrick> {
         var levitatingBlock = LevitatingBlockEntity.spawnFromBlock(
                 ctx.source().getWorld(), target.toBlockPos(), state, (float) weight);
         ModEntityComponents.GRACE.get(levitatingBlock).triggerGrace("weight", 20);
+
+        var particlePos = target.toBlockPos().toCenterPos();
+        ctx.source().getWorld().spawnParticles(
+                ModParticles.PROTECTED_BLOCK, particlePos.x, particlePos.y, particlePos.z,
+                1, 0, 0, 0, 0);
 
         return EntityFragment.from(levitatingBlock);
     }
