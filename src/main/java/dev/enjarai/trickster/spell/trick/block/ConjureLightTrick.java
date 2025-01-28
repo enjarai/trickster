@@ -11,6 +11,8 @@ import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlockOccupiedBlunder;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.type.Signature;
+import net.minecraft.block.BlockState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.registry.tag.FluidTags;
 
 public class ConjureLightTrick extends Trick<ConjureLightTrick> {
@@ -23,13 +25,14 @@ public class ConjureLightTrick extends Trick<ConjureLightTrick> {
         var world = ctx.source().getWorld();
         expectCanBuild(ctx, blockPos);
 
-        var waterlogged = false;
+        BlockState state = world.getBlockState(blockPos);
+        var waterlogged = state.getFluidState().getFluid() == Fluids.WATER;
+        var isWater = state.getFluidState().isIn(FluidTags.WATER);
+        var dry = state.getFluidState().getFluid() == Fluids.EMPTY;
 
-        if (!world.getBlockState(blockPos).isAir()) {
-            if (!world.getFluidState(blockPos).isIn(FluidTags.WATER)) {
-                throw new BlockOccupiedBlunder(this, pos);
-            }
-            waterlogged = true;
+        // Blunder if block can't be replaced or if it has a fluid that isn't water
+        if (!state.isReplaceable() || (!state.isAir() && !isWater && !dry)) {
+            throw new BlockOccupiedBlunder(this, pos);
         }
 
         ctx.useMana(this, 20);
