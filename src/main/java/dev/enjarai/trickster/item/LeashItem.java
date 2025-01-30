@@ -4,6 +4,7 @@ import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.component.CollarLinkComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.SpellPart;
+import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import io.wispforest.accessories.api.slot.SlotReference;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -61,7 +62,7 @@ public class LeashItem extends Item {
             }
 
             var component = new CollarLinkComponent(UUID.randomUUID());
-            stack.set(ModComponents.COLLAR_LINK, component);
+            user.getStackInHand(hand).set(ModComponents.COLLAR_LINK, component);
             collarStack = collarStack.copy();
             collarStack.set(ModComponents.COLLAR_LINK, component);
             slot.setStack(collarStack);
@@ -85,9 +86,9 @@ public class LeashItem extends Item {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         var stack = user.getStackInHand(hand);
-        var collarComponent = stack.get(ModComponents.COLLAR_LINK);
+        var linkComponent = stack.get(ModComponents.COLLAR_LINK);
 
-        if (collarComponent != null) {
+        if (linkComponent != null) {
             if (!world.isClient()) {
                 var players = world.getPlayers().stream().filter(p -> {
                     var collarStack = SlotReference.of(p, "necklace", 0).getStack();
@@ -96,17 +97,17 @@ public class LeashItem extends Item {
                     var component = collarStack.get(ModComponents.COLLAR_LINK);
                     if (component == null) return false;
 
-                    return component.uuid().equals(collarComponent.uuid());
+                    return component.uuid().equals(linkComponent.uuid());
                 }).toList();
 
                 if (players.size() == 0) {
                     user.sendMessage(Text.translatable("trickster.message.leash.not_online"), true);
                 } else {
-                    for (var player : players) {
-                        var component = stack.get(ModComponents.FRAGMENT);
-                        if (component != null) {
-                            var spell = component.value() instanceof SpellPart part ? part : new SpellPart(component.value());
-                            ModEntityComponents.CASTER.get(player).queueSpell(spell, List.of());
+                    var fragmentComponent = stack.get(ModComponents.FRAGMENT);
+                    if (fragmentComponent != null) {
+                        for (var player : players) {
+                            var spell = fragmentComponent.value() instanceof SpellPart part ? part : new SpellPart(fragmentComponent.value());
+                            ModEntityComponents.CASTER.get(player).queueSpell(spell, List.of(EntityFragment.from(user)));
                             ModEntityComponents.CASTER.get(user).playCastSound(0.8f, 0.1f);
                         }
                     }
