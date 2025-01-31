@@ -4,9 +4,9 @@ import dev.enjarai.trickster.cca.ModGlobalComponents;
 import dev.enjarai.trickster.item.component.ManaComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.mana.InfiniteManaPool;
+import dev.enjarai.trickster.spell.mana.SavingsManaPool;
 import dev.enjarai.trickster.spell.mana.SharedManaPool;
 import dev.enjarai.trickster.spell.mana.SimpleManaPool;
-import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -27,7 +27,7 @@ public abstract class KnotItem extends Item {
     public static class Amethyst extends KnotItem {
         public Amethyst() {
             super(new Settings()
-                    .component(ModComponents.MANA, new ManaComponent(SimpleManaPool.getSingleUse(128), 0, false)),
+                    .component(ModComponents.MANA, new ManaComponent(SimpleManaPool.getSingleUse(128), 0)),
                     0);
         }
     }
@@ -71,6 +71,14 @@ public abstract class KnotItem extends Item {
             super(new Settings()
                     .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(32768), 2 / 12f)),
                     Float.MAX_VALUE);
+        }
+    }
+
+    public static class Astral extends KnotItem {
+        public Astral() {
+            super(new Settings()
+                    .component(ModComponents.MANA, new ManaComponent(new SavingsManaPool(1048576, (float) Math.pow(2, -20)), 0)),
+                    524288);
         }
     }
 

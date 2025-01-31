@@ -4,6 +4,7 @@ import dev.enjarai.trickster.ModAttachments;
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.CrowMindAttachment;
+import dev.enjarai.trickster.spell.mana.PlayerManaPool;
 import net.minecraft.util.math.BlockPos;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.execution.SpellExecutionManager;
@@ -35,7 +36,7 @@ public class PlayerSpellSource implements SpellSource {
 
     public PlayerSpellSource(ServerPlayerEntity player) {
         this.player = player;
-        this.pool = new CachedInventoryManaPool(player.getInventory());
+        this.pool = new PlayerManaPool(player);
     }
 
     @Override
@@ -59,8 +60,10 @@ public class PlayerSpellSource implements SpellSource {
         return Optional
                 .ofNullable(player.getMainHandStack())
                 .filter(filter)
-                .or(() -> Optional.ofNullable(player.getOffHandStack())
-                        .filter(filter));
+                .or(
+                        () -> Optional.ofNullable(player.getOffHandStack())
+                                .filter(filter)
+                );
     }
 
     @Override

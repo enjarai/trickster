@@ -47,6 +47,7 @@ public class ModItems {
                     .component(ModComponents.FRAGMENT, new FragmentComponent(new SpellPart()))));
     public static final Item MACRO_RING = register("macro_ring",
             new Item(new Item.Settings().maxCount(1)));
+    public static final ManaAccessory AMETHYST_WHORL = register("amethyst_whorl", new ManaAccessory());
     public static final Item WARDING_CHARM = register("warding_charm",
             new Item(new Item.Settings().maxCount(1)));
     public static final SpellInkItem SPELL_INK = register("spell_ink",
@@ -69,11 +70,13 @@ public class ModItems {
     public static final BlockItem SPELL_CONSTRUCT_ITEM = register("spell_construct", new BlockItem(ModBlocks.SPELL_CONSTRUCT, new Item.Settings()));
     public static final BlockItem MODULAR_SPELL_CONSTRUCT_ITEM = register("modular_spell_construct", new BlockItem(ModBlocks.MODULAR_SPELL_CONSTRUCT, new Item.Settings()));
     public static final BlockItem SCROLL_SHELF_BLOCK_ITEM = register("scroll_shelf", new BlockItem(ModBlocks.SCROLL_SHELF, new Item.Settings()));
+    public static final BlockItem CHARGING_ARRAY_ITEM = register("charging_array", new BlockItem(ModBlocks.CHARGING_ARRAY, new Item.Settings()));
     public static final KnotItem.Amethyst AMETHYST_KNOT = register("amethyst_knot", new KnotItem.Amethyst());
     public static final KnotItem.Emerald EMERALD_KNOT = register("emerald_knot", new KnotItem.Emerald());
     public static final KnotItem.Diamond DIAMOND_KNOT = register("diamond_knot", new KnotItem.Diamond());
     public static final KnotItem.Echo ECHO_KNOT = register("echo_knot", new KnotItem.Echo());
     public static final KnotItem.CrackedEcho CRACKED_ECHO_KNOT = register("cracked_echo_knot", new KnotItem.CrackedEcho());
+    public static final KnotItem.Astral ASTRAL_KNOT = register("astral_knot", new KnotItem.Astral());
     public static final KnotItem.Command COMMAND_KNOT = register("command_knot", new KnotItem.Command());
 
     // Advancement icon
@@ -127,6 +130,7 @@ public class ModItems {
                 entries.add(WITCH_HAT);
                 entries.add(FEZ);
                 entries.add(WAND);
+                entries.add(AMETHYST_WHORL);
                 entries.add(WARDING_CHARM);
                 entries.add(MACRO_RING);
                 entries.add(SPELL_INK);
@@ -134,6 +138,7 @@ public class ModItems {
                 entries.add(SCROLL_SHELF_BLOCK_ITEM);
                 entries.add(SPELL_CONSTRUCT_ITEM);
                 entries.add(MODULAR_SPELL_CONSTRUCT_ITEM);
+                entries.add(CHARGING_ARRAY_ITEM);
                 entries.add(SPELL_CORE);
                 entries.add(RUSTED_SPELL_CORE);
                 entries.add(OMINOUS_SPELL_CORE);
@@ -142,6 +147,7 @@ public class ModItems {
                 entries.add(DIAMOND_KNOT);
                 entries.add(ECHO_KNOT);
                 entries.add(CRACKED_ECHO_KNOT);
+                entries.add(ASTRAL_KNOT);
                 entries.add(COMMAND_KNOT);
             })
             .build();

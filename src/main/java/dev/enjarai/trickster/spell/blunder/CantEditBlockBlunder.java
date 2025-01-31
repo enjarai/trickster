@@ -7,7 +7,7 @@ import net.minecraft.util.math.BlockPos;
 public class CantEditBlockBlunder extends TrickBlunderException {
     public final BlockPos pos;
 
-    public CantEditBlockBlunder(Trick source, BlockPos pos) {
+    public CantEditBlockBlunder(Trick<?> source, BlockPos pos) {
         super(source);
         this.pos = pos;
     }

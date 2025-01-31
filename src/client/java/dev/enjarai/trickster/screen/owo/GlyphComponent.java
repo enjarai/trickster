@@ -21,7 +21,7 @@ public class GlyphComponent extends BaseComponent {
     protected List<Integer> patternList;
     protected int size;
 
-    public GlyphComponent(Trick trick, int size) {
+    public GlyphComponent(Trick<?> trick, int size) {
         this(trick.getPattern(), size);
     }
 
@@ -94,8 +94,10 @@ public class GlyphComponent extends BaseComponent {
 
         var patternString = element.getAttributeNode("pattern").getTextContent();
 
-        var pattern = Pattern.from(Arrays.stream(patternString.split(","))
-                .map(s -> Byte.valueOf(s, 10)).toList());
+        var pattern = Pattern.from(
+                Arrays.stream(patternString.split(","))
+                        .map(s -> Byte.valueOf(s, 10)).toList()
+        );
 
         var size = UIParsing.parseUnsignedInt(element.getAttributeNode("size"));
 

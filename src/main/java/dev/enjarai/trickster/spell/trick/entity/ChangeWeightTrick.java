@@ -5,24 +5,23 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.*;
+import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
+import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.Signature;
 import net.minecraft.entity.LivingEntity;
 
-import java.util.List;
-
-public class ChangeWeightTrick extends Trick {
+public class ChangeWeightTrick extends Trick<ChangeWeightTrick> {
     public ChangeWeightTrick() {
-        super(Pattern.of(0, 3, 6, 7, 4, 1, 2, 5, 8));
+        super(Pattern.of(0, 3, 6, 7, 4, 1, 2, 5, 8), Signature.of(FragmentType.ENTITY.wardOf(), FragmentType.NUMBER, ChangeWeightTrick::change));
     }
 
-    @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var target = expectInput(fragments, FragmentType.ENTITY, 0);
+    public Fragment change(SpellContext ctx, EntityFragment target, NumberFragment number) throws BlunderException {
         var entity = target
                 .getEntity(ctx)
                 .orElseThrow(() -> new UnknownEntityBlunder(this));
-        var weight = expectInput(fragments, FragmentType.NUMBER, 1).number();
+        var weight = number.number();
 
         if (weight > 1) {
             throw new NumberTooLargeBlunder(this, 1);

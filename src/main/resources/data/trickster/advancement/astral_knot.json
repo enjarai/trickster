@@ -1,0 +1,29 @@
+{
+  "display": {
+    "icon": {
+      "id": "trickster:astral_knot"
+    },
+    "title": {
+      "text": "Stellar Savings Account"
+    },
+    "description": {
+      "text": "Obtain an Astral Knot"
+    },
+    "frame": "challenge",
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "trickster:root",
+  "criteria": {
+    "pickup_astral_knot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "trickster:astral_knot"
+          }
+        ]
+      }
+    }
+  }
+}

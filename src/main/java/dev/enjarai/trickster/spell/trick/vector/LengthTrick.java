@@ -5,20 +5,19 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
+import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.trick.DistortionTrick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.type.Signature;
 
 import java.util.List;
 
-public class LengthTrick extends DistortionTrick {
+public class LengthTrick extends DistortionTrick<LengthTrick> {
     public LengthTrick() {
-        super(Pattern.of(3, 4, 5, 2, 4, 1));
+        super(Pattern.of(3, 4, 5, 2, 4, 1), Signature.of(FragmentType.VECTOR, LengthTrick::math));
     }
 
-    @Override
-    public Fragment distort(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var vector = expectInput(fragments, FragmentType.VECTOR, 0);
-
-        return new NumberFragment(vector.vector().length());
+    public Fragment math(SpellContext ctx, VectorFragment vec) throws BlunderException {
+        return new NumberFragment(vec.vector().length());
     }
 }

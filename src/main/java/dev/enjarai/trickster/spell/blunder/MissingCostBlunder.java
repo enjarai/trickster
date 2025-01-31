@@ -4,7 +4,7 @@ import dev.enjarai.trickster.spell.trick.Trick;
 import net.minecraft.text.MutableText;
 
 public class MissingCostBlunder extends TrickBlunderException {
-    public MissingCostBlunder(Trick source) {
+    public MissingCostBlunder(Trick<?> source) {
         super(source);
     }
 

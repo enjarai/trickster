@@ -1,6 +1,6 @@
 package dev.enjarai.trickster.spell.trick.list;
 
-import java.util.List;
+import java.util.Optional;
 
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
@@ -12,18 +12,17 @@ import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.trick.DistortionTrick;
+import dev.enjarai.trickster.spell.type.Signature;
 
-public class ListTakeRangeTrick extends DistortionTrick {
+public class ListTakeRangeTrick extends DistortionTrick<ListTakeRangeTrick> {
     public ListTakeRangeTrick() {
-        super(Pattern.of(3, 6, 4, 0, 1, 2, 4, 8, 5));
+        super(Pattern.of(3, 6, 4, 0, 1, 2, 4, 8, 5), Signature.of(FragmentType.LIST, FragmentType.NUMBER, FragmentType.NUMBER.optionalOf(), ListTakeRangeTrick::take));
     }
 
-    @Override
-    public Fragment distort(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var list = expectInput(fragments, FragmentType.LIST, 0);
+    public Fragment take(SpellContext ctx, ListFragment list, NumberFragment startFragment, Optional<NumberFragment> endFragment) throws BlunderException {
         int listSize = list.fragments().size();
-        int start = expectInput(fragments, FragmentType.NUMBER, 1).asInt();
-        int end = supposeInput(fragments, FragmentType.NUMBER, 2)
+        int start = startFragment.asInt();
+        int end = endFragment
                 .map(NumberFragment::asInt)
                 .orElse(listSize);
 

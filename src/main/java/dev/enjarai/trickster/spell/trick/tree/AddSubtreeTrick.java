@@ -1,26 +1,23 @@
 package dev.enjarai.trickster.spell.trick.tree;
 
-import dev.enjarai.trickster.spell.*;
-import dev.enjarai.trickster.spell.fragment.ListFragment;
-import dev.enjarai.trickster.spell.blunder.AddressNotInTreeBlunder;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
-
 import java.util.List;
 
-public class AddSubtreeTrick extends AbstractMetaTrick {
+import dev.enjarai.trickster.spell.*;
+import dev.enjarai.trickster.spell.fragment.FragmentType;
+import dev.enjarai.trickster.spell.fragment.NumberFragment;
+import dev.enjarai.trickster.spell.blunder.AddressNotInTreeBlunder;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.type.Signature;
+
+public class AddSubtreeTrick extends AbstractMetaTrick<AddSubtreeTrick> {
     public AddSubtreeTrick() {
-        super(Pattern.of(2, 1, 0, 4, 8, 7, 6, 4, 2, 5, 8));
+        super(Pattern.of(2, 1, 0, 4, 8, 7, 6, 4, 2, 5, 8), Signature.of(FragmentType.SPELL_PART, ADDRESS, FragmentType.SPELL_PART, AddSubtreeTrick::add));
     }
 
-    @Override
-    public Fragment distort(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var spell = expectInput(fragments, SpellPart.class, 0);
-        var addressFragment = expectInput(fragments, ListFragment.class, 1);
-        var subtree = expectInput(fragments, SpellPart.class, 2);
-
+    public Fragment add(SpellContext ctx, SpellPart spell, List<NumberFragment> address, SpellPart subtree) throws BlunderException {
         var newSpell = spell.deepClone();
-        var node = findNode(newSpell, addressFragment)
-                .orElseThrow(() -> new AddressNotInTreeBlunder(this, addressFragment.sanitizeAddress(this)));
+        var node = findNode(newSpell, address)
+                .orElseThrow(() -> new AddressNotInTreeBlunder(this, address));
         node.subParts.add(subtree);
 
         return newSpell;

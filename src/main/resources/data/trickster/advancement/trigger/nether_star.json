@@ -1,0 +1,15 @@
+{
+  "parent": "trickster:trigger/root",
+  "criteria": {
+    "pickup_nether_star": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:nether_star"
+          }
+        ]
+      }
+    }
+  }
+}

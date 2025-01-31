@@ -7,18 +7,14 @@ import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.trick.DistortionTrick;
+import dev.enjarai.trickster.spell.type.Signature;
 
-import java.util.List;
-
-public class ArcTanTrick extends DistortionTrick {
+public class ArcTanTrick extends DistortionTrick<ArcTanTrick> {
     public ArcTanTrick() {
-        super(Pattern.of(0, 2, 8));
+        super(Pattern.of(0, 2, 8), Signature.of(FragmentType.NUMBER, ArcTanTrick::math));
     }
 
-    @Override
-    public Fragment distort(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var number = expectInput(fragments, FragmentType.NUMBER, 0);
-
+    public Fragment math(SpellContext ctx, NumberFragment number) throws BlunderException {
         return new NumberFragment(Math.atan(number.number()));
     }
 }

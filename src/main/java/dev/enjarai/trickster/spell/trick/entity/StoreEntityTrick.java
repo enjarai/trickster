@@ -7,24 +7,24 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.*;
+import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.Signature;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 
-import java.util.List;
 import java.util.Optional;
 
-public class StoreEntityTrick extends Trick {
+public class StoreEntityTrick extends Trick<StoreEntityTrick> {
     public StoreEntityTrick() {
-        super(Pattern.of(5, 2, 4, 3, 6, 7, 4));
+        super(Pattern.of(5, 2, 4, 3, 6, 7, 4), Signature.of(FragmentType.ENTITY, StoreEntityTrick::store));
     }
 
-    @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var target = expectInput(fragments, FragmentType.ENTITY, 0).getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this));
+    public Fragment store(SpellContext ctx, EntityFragment entity) throws BlunderException {
+        var target = entity.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this));
 
         if (target instanceof PlayerEntity)
             throw new EntityInvalidBlunder(this);

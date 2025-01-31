@@ -5,7 +5,7 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
 public class AtomicChunkTooLargeBlunder extends TrickBlunderException {
-    public AtomicChunkTooLargeBlunder(Trick source) {
+    public AtomicChunkTooLargeBlunder(Trick<?> source) {
         super(source);
     }
 
