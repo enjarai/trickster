@@ -2,6 +2,7 @@
   "conversions": [
     {
       "id": "minecraft:exposed_copper_grate",
+      "keepProperties": true,
       "properties": {
         "waterlogged": "false"
       },

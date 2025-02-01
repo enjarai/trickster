@@ -2,6 +2,7 @@
   "conversions": [
     {
       "id": "minecraft:oxidized_copper_grate",
+      "keepProperties": true,
       "properties": {
         "waterlogged": "false"
       },
