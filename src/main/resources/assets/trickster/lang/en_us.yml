@@ -26,6 +26,13 @@ trickster:
       .: Import this example spell?
       description: This will §loverwrite§r the Scroll and Quill in your other hand with the chosen example spell.
 
+  gandalf:
+    stored: "Stored: %s"
+  merlin:
+    idling: "Idle"
+    draining: "Draining: %.2f"
+    filling: "Charging: %.2f"
+
   item_group: Trickster
 
   scroll_hat: 'Selected slot: %d'
@@ -110,6 +117,7 @@ trickster:
     get_velocity: Movement Ingress
     add_velocity: Kinetic Ploy
     change_weight: Ploy of Featherweight
+    displace: Ploy of the Usurper
     store_entity: Containment Ploy
     release_entity: Extrication Ploy
 
@@ -153,6 +161,7 @@ trickster:
     list_remove: Expulsion Stratagem
     list_remove_element: Eviction Stratagem
     list_size: Tally Distortion
+    create_number_range: Interlude Distortion
 
     locate_glyph: Pinpoint Distortion
     locate_glyphs: Discovering Distortion
@@ -334,6 +343,7 @@ item.trickster:
   diamond_knot: Diamond Knot
   echo_knot: Echo Knot
   cracked_echo_knot: Cracked Echo Knot
+  astral_knot: Astral Knot
   command_knot: Command Knot
 
   spell_core: Spell Core
