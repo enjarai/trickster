@@ -88,7 +88,7 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
         playCastSound(0.5f, 0.1f);
     }
 
-    private void playCastSound(float startPitch, float pitchRange) {
+    public void playCastSound(float startPitch, float pitchRange) {
         if (player instanceof ServerPlayerEntity serverPlayer) {
             serverPlayer.getServerWorld().playSoundFromEntity(
                     null, serverPlayer, ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(startPitch, pitchRange)
