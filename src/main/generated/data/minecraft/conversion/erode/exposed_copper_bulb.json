@@ -2,6 +2,7 @@
   "conversions": [
     {
       "id": "minecraft:weathered_copper_bulb",
+      "keepProperties": true,
       "properties": {
         "lit": "false",
         "powered": "false"
