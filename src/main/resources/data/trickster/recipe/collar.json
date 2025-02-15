@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " W ",
+        "W W",
+        "GW "
+    ],
+    "key": {
+        "G": {
+            "item": "minecraft:gold_ingot"
+        },
+        "W": {
+            "item": "minecraft:pink_wool"
+        }
+    },
+    "result": {
+        "id": "trickster:collar",
+        "count": 1
+    }
+}
