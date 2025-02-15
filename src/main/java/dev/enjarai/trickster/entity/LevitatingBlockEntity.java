@@ -12,6 +12,7 @@ import net.minecraft.entity.MovementType;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
@@ -23,10 +24,12 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.network.EntityTrackerEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 public class LevitatingBlockEntity extends Entity {
     protected static final TrackedData<BlockPos> BLOCK_POS = DataTracker.registerData(LevitatingBlockEntity.class, TrackedDataHandlerRegistry.BLOCK_POS);
@@ -36,6 +39,7 @@ public class LevitatingBlockEntity extends Entity {
     private BlockState blockState = Blocks.STONE.getDefaultState();
 
     public BlockEntity cachedBlockEntity;
+    public boolean shouldRevertNow = false;
 
     public LevitatingBlockEntity(EntityType<?> type, World world) {
         super(type, world);
@@ -110,10 +114,12 @@ public class LevitatingBlockEntity extends Entity {
                 }
             }
 
-            if (!this.getWorld().isClient) {
-                BlockPos blockPos = this.getBlockPos();
+            this.tickCollisions();
 
-                if (this.getWeight() >= 1 && isOnGround() && getWorld().getBlockState(blockPos).isReplaceable()) {
+            if (!this.getWorld().isClient) {
+                BlockPos blockPos = BlockPos.ofFloored(this.getPos().add(0, 0.5, 0));
+
+                if (this.getWeight() >= 1 && (isOnGround() || shouldRevertNow) && getWorld().getBlockState(blockPos).isReplaceable()) {
                     var isWater = getWorld().getFluidState(blockPos).isOf(Fluids.WATER);
                     var isWaterLoggable = this.blockState.contains(Properties.WATERLOGGED);
 
@@ -157,6 +163,29 @@ public class LevitatingBlockEntity extends Entity {
                 }
             }
         }
+    }
+
+    public void tickCollisions() {
+        var velocity = this.getVelocity();
+        var currentPos = this.getPos();
+        var nextPos = currentPos.add(velocity);
+
+        var hit = getEntityCollision(currentPos, nextPos);
+        if (hit != null) {
+            hit.getEntity().setVelocity(hit.getEntity().getVelocity().add(velocity));
+            this.setVelocity(velocity.multiply(0.5));
+        }
+    }
+
+    protected boolean canHit(Entity entity) {
+        return entity.canBeHitByProjectile();
+    }
+
+    @Nullable
+    protected EntityHitResult getEntityCollision(Vec3d currentPosition, Vec3d nextPosition) {
+        return ProjectileUtil.getEntityCollision(
+                this.getWorld(), this, currentPosition, nextPosition, this.getBoundingBox().stretch(this.getVelocity()).expand(1.0), this::canHit
+        );
     }
 
     @Override
