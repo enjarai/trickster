@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.spell.trick.entity;
 
+import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.entity.LevitatingBlockEntity;
 import dev.enjarai.trickster.particle.ModParticles;
@@ -55,7 +56,9 @@ public class ChangeWeightTrick extends Trick<ChangeWeightTrick> {
     }
 
     public Fragment change(SpellContext ctx, VectorFragment target, NumberFragment number) throws BlunderException {
-        var state = ctx.source().getWorld().getBlockState(target.toBlockPos());
+        var world = ctx.source().getWorld();
+        var blockPos = target.toBlockPos();
+        var state = world.getBlockState(blockPos);
         var weight = number.number();
 
         if (weight > 1) {
@@ -64,20 +67,22 @@ public class ChangeWeightTrick extends Trick<ChangeWeightTrick> {
             throw new NumberTooSmallBlunder(this, 0);
         }
 
-        if (state.isAir()) {
+        if (state.isAir() || (!Trickster.CONFIG.allowSwapBedrock() && state.getHardness(world, blockPos) < 0)) {
             throw new BlockInvalidBlunder(this);
         }
 
         ctx.useMana(this, (float) (60 * (1 - weight)));
 
         var levitatingBlock = LevitatingBlockEntity.spawnFromBlock(
-                ctx.source().getWorld(), target.toBlockPos(), state, (float) weight);
+                ctx.source().getWorld(), target.toBlockPos(), state, (float) weight
+        );
         ModEntityComponents.GRACE.get(levitatingBlock).triggerGrace("weight", 20);
 
         var particlePos = target.toBlockPos().toCenterPos();
         ctx.source().getWorld().spawnParticles(
                 ModParticles.PROTECTED_BLOCK, particlePos.x, particlePos.y, particlePos.z,
-                1, 0, 0, 0, 0);
+                1, 0, 0, 0, 0
+        );
 
         return EntityFragment.from(levitatingBlock);
     }
