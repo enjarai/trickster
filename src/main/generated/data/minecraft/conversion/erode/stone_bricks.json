@@ -2,10 +2,12 @@
   "conversions": [
     {
       "id": "minecraft:mossy_stone_bricks",
+      "keepProperties": true,
       "weight": 1
     },
     {
       "id": "minecraft:cracked_stone_bricks",
+      "keepProperties": true,
       "weight": 1
     }
   ]

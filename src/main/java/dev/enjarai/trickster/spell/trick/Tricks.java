@@ -79,6 +79,7 @@ import dev.enjarai.trickster.spell.trick.func.KillThreadTrick;
 import dev.enjarai.trickster.spell.trick.func.LoadArgumentTrick;
 import dev.enjarai.trickster.spell.trick.func.SupplierTrick;
 import dev.enjarai.trickster.spell.trick.func.TryCatchTrick;
+import dev.enjarai.trickster.spell.trick.list.CreateNumberRangeTrick;
 import dev.enjarai.trickster.spell.trick.list.ListAddRangeTrick;
 import dev.enjarai.trickster.spell.trick.list.ListAddTrick;
 import dev.enjarai.trickster.spell.trick.list.ListCreateTrick;
@@ -310,6 +311,7 @@ public class Tricks {
     public static final ListRemoveElementTrick LIST_REMOVE_ELEMENT = register("list_remove_element", new ListRemoveElementTrick());
     public static final ListRemoveTrick LIST_REMOVE = register("list_remove", new ListRemoveTrick());
     public static final ListSizeTrick LIST_SIZE = register("list_size", new ListSizeTrick());
+    public static final CreateNumberRangeTrick CREATE_NUMBER_RANGE = register("create_number_range", new CreateNumberRangeTrick());
 
     // Map
     public static final MapGetTrick MAP_GET = register("map_get", new MapGetTrick());

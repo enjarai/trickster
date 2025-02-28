@@ -13,7 +13,8 @@
     "Extraction Distortion",
     "Locating Distortion",
     "Expulsion Stratagem",
-    "Eviction Stratagem"
+    "Eviction Stratagem",
+    "Interlude Distortion"
   ]
 }
 ```
@@ -122,3 +123,13 @@ any[], any... -> any[]
 ---
 
 Removes one or many elements from the given list by checking their equality with the set of given fragments.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:create_number_range,title=Interlude Distortion|>
+
+number, number -> number[]
+
+---
+
+Returns a list containing the range of integer numbers starting at the first given number and ending before the second.
