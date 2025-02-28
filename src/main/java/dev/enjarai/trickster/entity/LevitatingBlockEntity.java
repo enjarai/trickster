@@ -9,6 +9,8 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MovementType;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageSources;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -21,8 +23,11 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockUpdateS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.network.EntityTrackerEntry;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -106,6 +111,22 @@ public class LevitatingBlockEntity extends Entity {
             this.move(MovementType.SELF, this.getVelocity());
             this.tickPortalTeleportation();
 
+            if (this.getWorld().isClient()) {
+                if (this.isOnGround() && this.getVelocity().lengthSquared() > 0.3 * 0.3) {
+                    for (int i = 0; i < 10; i++) {
+                        this.spawnSprintingParticles();
+                    }
+
+                    BlockPos blockPos = this.getStepSoundPos(this.getSteppingPos());
+                    BlockState blockState = this.getWorld().getBlockState(blockPos);
+                    BlockSoundGroup blockSoundGroup = blockState.getSoundGroup();
+                    this.getWorld().playSound(
+                            getX(), getY(), getZ(), blockSoundGroup.getStepSound(), SoundCategory.BLOCKS,
+                            blockSoundGroup.getVolume(), blockSoundGroup.getPitch(), true //  * 0.15F
+                    );
+                }
+            }
+
             if (getWeight() != 1.0f && !ModEntityComponents.GRACE.get(this).isInGrace("weight")) {
                 if (getWeight() < 0.99f) {
                     setWeight(getWeight() + 0.01f);
@@ -116,8 +137,8 @@ public class LevitatingBlockEntity extends Entity {
 
             this.tickCollisions();
 
-            if (!this.getWorld().isClient) {
-                BlockPos blockPos = BlockPos.ofFloored(this.getPos().add(0, 0.5, 0));
+            if (!this.getWorld().isClient()) {
+                BlockPos blockPos = BlockPos.ofFloored(this.getPos().add(0, 0.49, 0));
 
                 if (this.getWeight() >= 1 && (isOnGround() || shouldRevertNow) && getWorld().getBlockState(blockPos).isReplaceable()) {
                     var isWater = getWorld().getFluidState(blockPos).isOf(Fluids.WATER);
@@ -165,6 +186,14 @@ public class LevitatingBlockEntity extends Entity {
         }
     }
 
+    @Override
+    protected float getVelocityMultiplier() {
+        if (isOnGround()) {
+            return super.getVelocityMultiplier() * 0.9f;
+        }
+        return super.getVelocityMultiplier();
+    }
+
     public void tickCollisions() {
         var velocity = this.getVelocity();
         var currentPos = this.getPos();
@@ -172,8 +201,11 @@ public class LevitatingBlockEntity extends Entity {
 
         var hit = getEntityCollision(currentPos, nextPos);
         if (hit != null) {
+            hit.getEntity().damage(getWorld().getDamageSources().fallingBlock(this),
+                    (float) hit.getEntity().getVelocity().add(velocity.negate()).length() * blockState.getHardness(getWorld(), getFallingBlockPos()));
+
             hit.getEntity().setVelocity(hit.getEntity().getVelocity().add(velocity));
-            this.setVelocity(velocity.multiply(0.5));
+            this.setVelocity(velocity.multiply(0.2));
         }
     }
 
