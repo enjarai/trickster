@@ -2,7 +2,7 @@
     "type": "minecraft:crafting_shaped",
     "pattern": [
         " W ",
-        "W W",
+        "WLW",
         "GW "
     ],
     "key": {
@@ -11,6 +11,9 @@
         },
         "W": {
             "item": "minecraft:pink_wool"
+        },
+        "L": {
+            "item": "minecraft:leather"
         }
     },
     "result": {
