@@ -9,8 +9,6 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MovementType;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.DamageSources;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -23,7 +21,6 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockUpdateS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.network.EntityTrackerEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.BlockSoundGroup;
@@ -45,6 +42,8 @@ public class LevitatingBlockEntity extends Entity {
 
     public BlockEntity cachedBlockEntity;
     public boolean shouldRevertNow = false;
+
+    public int onGroundTicks = 0;
 
     public LevitatingBlockEntity(EntityType<?> type, World world) {
         super(type, world);
@@ -125,6 +124,12 @@ public class LevitatingBlockEntity extends Entity {
                             blockSoundGroup.getVolume(), blockSoundGroup.getPitch(), true //  * 0.15F
                     );
                 }
+
+                if (this.isOnGround()) {
+                    this.onGroundTicks++;
+                } else {
+                    this.onGroundTicks = 0;
+                }
             }
 
             if (getWeight() != 1.0f && !ModEntityComponents.GRACE.get(this).isInGrace("weight")) {
@@ -140,7 +145,8 @@ public class LevitatingBlockEntity extends Entity {
             if (!this.getWorld().isClient()) {
                 BlockPos blockPos = BlockPos.ofFloored(this.getPos().add(0, 0.49, 0));
 
-                if (this.getWeight() >= 1 && (isOnGround() || shouldRevertNow) && getWorld().getBlockState(blockPos).isReplaceable()) {
+                if (this.getWeight() >= 1 && (isOnGround() || shouldRevertNow) &&
+                        this.getVelocity().lengthSquared() < 0.2 * 0.2 && getWorld().getBlockState(blockPos).isReplaceable()) {
                     var isWater = getWorld().getFluidState(blockPos).isOf(Fluids.WATER);
                     var isWaterLoggable = this.blockState.contains(Properties.WATERLOGGED);
 

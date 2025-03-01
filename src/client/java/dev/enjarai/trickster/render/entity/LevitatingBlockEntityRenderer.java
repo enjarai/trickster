@@ -4,14 +4,12 @@ import dev.enjarai.trickster.entity.LevitatingBlockEntity;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.render.block.BlockRenderManager;
-import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.texture.SpriteAtlasTexture;
@@ -47,7 +45,7 @@ public class LevitatingBlockEntityRenderer extends EntityRenderer<LevitatingBloc
         matrixStack.push();
         matrixStack.translate(0, 0.5, 0);
 
-        if (!fallingBlockEntity.isOnGround()) {
+        if (!fallingBlockEntity.isOnGround() || fallingBlockEntity.onGroundTicks < 2) {
             matrixStack.multiply(new Quaternionf().rotateAxis((float) (totalAge / 10 % (Math.PI * 2)), rotationAxis));
         }
 
