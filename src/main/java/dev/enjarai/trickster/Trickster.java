@@ -7,6 +7,7 @@ import dev.enjarai.trickster.compat.transmog.TransmogCompat;
 import dev.enjarai.trickster.config.TricksterConfig;
 import dev.enjarai.trickster.data.DataLoader;
 import dev.enjarai.trickster.effects.ModEffects;
+import dev.enjarai.trickster.entity.ModEntities;
 import dev.enjarai.trickster.fleck.FleckType;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.datagen.ModLoot;
@@ -74,6 +75,7 @@ public class Trickster implements ModInitializer, CicadaEntrypoint {
         ModDamageTypes.register();
         ModCriteria.register();
         ModLoot.register();
+        ModEntities.register();
         Tricks.register();
         FragmentType.register();
         ManaPoolType.register();
