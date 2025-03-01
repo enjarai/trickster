@@ -35,6 +35,11 @@ public class ModComponents {
                     .codec(ManaComponent.CODEC)
                     .cache()
     );
+    public static final ComponentType<CollarLinkComponent> COLLAR_LINK = register(
+            "collar_link", builder -> builder
+                    .endec(CollarLinkComponent.ENDEC)
+                    .cache()
+    );
 
     private static <T> ComponentType<T> register(String id, UnaryOperator<ComponentType.Builder<T>> builderOperator) {
         return Registry.register(Registries.DATA_COMPONENT_TYPE, Trickster.id(id), (builderOperator.apply(ComponentType.builder())).build());
