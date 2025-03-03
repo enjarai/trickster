@@ -38,7 +38,7 @@ public class ChangeWeightTrick extends Trick<ChangeWeightTrick> {
             ctx.useMana(this, (float) (60 * (1 - weight)));
 
             levitatingBlock.setWeight((float) weight);
-            levitatingBlock.shouldRevertNow = weight >= 1;
+            levitatingBlock.setShouldRevertNow(weight >= 1);
 
             ModEntityComponents.GRACE.get(entity).triggerGrace("weight", 20);
         } else {
