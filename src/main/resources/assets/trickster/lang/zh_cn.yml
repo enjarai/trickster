@@ -25,6 +25,15 @@ trickster:
     import_example:
       .: 是否要导入此示例法术？
       description: 这么做会将另一只手中卷轴与笔上的法术§l覆盖§r为该示例法术。
+    leash:
+      invalid_collar: "%s未佩戴无链接的缚环"
+      not_sneaking: "对%s使用捆索前必须让其潜行"
+      success: "捆索已连接到%s的缚环"
+      not_online: "未找到玩家"
+
+  tooltip:
+    collar_link: "链接：%s"
+    unlinked: 未链接
 
   gandalf:
     stored: "存有：%s"
@@ -337,6 +346,8 @@ item.trickster:
   wand: 魔杖
   macro_ring: 宏戒指
   amethyst_whorl: 紫水晶螺坠
+  collar: 侍者的缚环
+  leash: 法师的捆索
 
   amethyst_knot: 紫水晶晶结
   emerald_knot: 绿宝石晶结
