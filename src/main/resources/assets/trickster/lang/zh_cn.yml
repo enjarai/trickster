@@ -28,7 +28,7 @@ trickster:
     leash:
       invalid_collar: "%s未佩戴无链接的缚环"
       not_sneaking: "对%s使用捆索前必须让其潜行"
-      success: "捆索已连接到%s的缚环"
+      success: "捆索已链接到%s的缚环"
       not_online: "未找到玩家"
 
   tooltip:
