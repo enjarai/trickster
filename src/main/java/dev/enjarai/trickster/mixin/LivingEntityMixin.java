@@ -6,6 +6,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalDoubleRef;
 import dev.enjarai.trickster.ModAttachments;
 import dev.enjarai.trickster.cca.ModEntityComponents;
+import dev.enjarai.trickster.item.CollarItem;
 import dev.enjarai.trickster.spell.ItemTriggerHelper;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import net.minecraft.block.BlockState;
@@ -113,5 +114,14 @@ public abstract class LivingEntityMixin extends Entity {
     )
     private float modifySpeed(float original) {
         return (float) (original * ModEntityComponents.SCALE.get(this).getScale());
+    }
+
+    @Inject(
+            method = "jump",
+            at = @At("HEAD")
+    )
+    private void jump(CallbackInfo ci) {
+        LivingEntity entity = (LivingEntity) (Object) this;
+        CollarItem.playJingleQuestionMark(entity, false);
     }
 }
