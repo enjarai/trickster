@@ -33,20 +33,23 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 public class LevitatingBlockEntity extends Entity {
     protected static final TrackedData<BlockPos> BLOCK_POS = DataTracker.registerData(LevitatingBlockEntity.class, TrackedDataHandlerRegistry.BLOCK_POS);
     protected static final TrackedData<Float> WEIGHT = DataTracker.registerData(LevitatingBlockEntity.class, TrackedDataHandlerRegistry.FLOAT);
     protected static final TrackedData<NbtCompound> BLOCK_ENTITY_DATA = DataTracker.registerData(LevitatingBlockEntity.class, TrackedDataHandlerRegistry.NBT_COMPOUND);
+    protected static final TrackedData<Boolean> SHOULD_REVERT_NOW = DataTracker.registerData(LevitatingBlockEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 
     private BlockState blockState = Blocks.STONE.getDefaultState();
 
     public BlockEntity cachedBlockEntity;
-    public boolean shouldRevertNow = false;
 
     public int onGroundTicks = 0;
 
     public LevitatingBlockEntity(EntityType<?> type, World world) {
         super(type, world);
+        this.intersectionChecked = true;
     }
 
     @Override
@@ -54,6 +57,13 @@ public class LevitatingBlockEntity extends Entity {
         builder.add(BLOCK_POS, BlockPos.ORIGIN);
         builder.add(WEIGHT, 1f);
         builder.add(BLOCK_ENTITY_DATA, new NbtCompound());
+        builder.add(SHOULD_REVERT_NOW, false);
+    }
+
+    @Override
+    public void onDataTrackerUpdate(List<DataTracker.SerializedEntry<?>> entries) {
+        super.onDataTrackerUpdate(entries);
+        this.intersectionChecked = true;
     }
 
     @Override
@@ -141,52 +151,69 @@ public class LevitatingBlockEntity extends Entity {
             }
 
             this.tickCollisions();
+            this.trySolidify();
 
-            if (!this.getWorld().isClient()) {
-                BlockPos blockPos = BlockPos.ofFloored(this.getPos().add(0, 0.49, 0));
+            if (!this.getWorld().isClient() && (getBlockPos().getY() <= this.getWorld().getBottomY() || getBlockPos().getY() > this.getWorld().getTopY())) {
+                if (this.getWorld().getGameRules().getBoolean(GameRules.DO_ENTITY_DROPS)) {
+                    this.dropItem(block);
+                }
 
-                if (this.getWeight() >= 1 && (isOnGround() || shouldRevertNow) &&
-                        this.getVelocity().lengthSquared() < 0.2 * 0.2 && getWorld().getBlockState(blockPos).isReplaceable()) {
-                    var isWater = getWorld().getFluidState(blockPos).isOf(Fluids.WATER);
-                    var isWaterLoggable = this.blockState.contains(Properties.WATERLOGGED);
+                this.discard();
+            }
+        }
+    }
 
-                    var blockState = isWater && isWaterLoggable ? this.blockState.with(Properties.WATERLOGGED, true) : this.blockState;
+    protected void trySolidify() {
+        if (this.getWeight() >= 1 && (isOnGround() || getShouldRevertNow()) && supportingBlockPos.isPresent() &&
+                this.getVelocity().lengthSquared() < 0.2 * 0.2) {
+            var targetPos = getBlockY() > supportingBlockPos.get().getY() ? supportingBlockPos.get().up() : supportingBlockPos.get();
 
-                    if (this.getWorld().setBlockState(blockPos, blockState, Block.NOTIFY_ALL)) {
-                        ((ServerWorld)this.getWorld())
-                                .getChunkManager()
-                                .chunkLoadingManager
-                                .sendToOtherNearbyPlayers(this, new BlockUpdateS2CPacket(blockPos, this.getWorld().getBlockState(blockPos)));
-                        this.discard();
+            if (getWorld().getBlockState(targetPos).isReplaceable()) {
+                // At this point we start solidifying
 
-                        if (!this.getBlockEntityData().isEmpty() && blockState.hasBlockEntity()) {
-                            BlockEntity blockEntity = this.getWorld().getBlockEntity(blockPos);
-                            if (blockEntity != null) {
-                                NbtCompound nbtCompound = blockEntity.createNbt(this.getWorld().getRegistryManager());
+                if (this.getPos().squaredDistanceTo(targetPos.toBottomCenterPos()) < 0.05 * 0.05) {
+                    // If close enough to target position, solidify fully
+                    if (!this.getWorld().isClient()) {
+                        var isWater = getWorld().getFluidState(targetPos).isOf(Fluids.WATER);
+                        var isWaterLoggable = this.blockState.contains(Properties.WATERLOGGED);
 
-                                for (String string : this.getBlockEntityData().getKeys()) {
-                                    //noinspection DataFlowIssue
-                                    nbtCompound.put(string, this.getBlockEntityData().get(string).copy());
+                        var blockState = isWater && isWaterLoggable ? this.blockState.with(Properties.WATERLOGGED, true) : this.blockState;
+
+                        if (this.getWorld().setBlockState(targetPos, blockState, Block.NOTIFY_ALL)) {
+                            ((ServerWorld) this.getWorld())
+                                    .getChunkManager()
+                                    .chunkLoadingManager
+                                    .sendToOtherNearbyPlayers(this, new BlockUpdateS2CPacket(targetPos, this.getWorld().getBlockState(targetPos)));
+                            this.discard();
+
+                            if (!this.getBlockEntityData().isEmpty() && blockState.hasBlockEntity()) {
+                                BlockEntity blockEntity = this.getWorld().getBlockEntity(targetPos);
+                                if (blockEntity != null) {
+                                    NbtCompound nbtCompound = blockEntity.createNbt(this.getWorld().getRegistryManager());
+
+                                    for (String string : this.getBlockEntityData().getKeys()) {
+                                        //noinspection DataFlowIssue
+                                        nbtCompound.put(string, this.getBlockEntityData().get(string).copy());
+                                    }
+
+                                    try {
+                                        blockEntity.read(nbtCompound, this.getWorld().getRegistryManager());
+                                    } catch (Exception var15) {
+                                        Trickster.LOGGER.error("Failed to load block entity from levitating block", var15);
+                                    }
+
+                                    blockEntity.markDirty();
                                 }
-
-                                try {
-                                    blockEntity.read(nbtCompound, this.getWorld().getRegistryManager());
-                                } catch (Exception var15) {
-                                    Trickster.LOGGER.error("Failed to load block entity from levitating block", var15);
-                                }
-
-                                blockEntity.markDirty();
                             }
                         }
                     }
-                }
+                } else {
+                    // If not close enough, start moving towards the target
+                    var offset = targetPos.toBottomCenterPos().subtract(this.getPos());
+                    var distance = offset.length();
+                    var travelDistance = offset.normalize().multiply(Math.min(distance, 0.2));
 
-                if (blockPos.getY() <= this.getWorld().getBottomY() || blockPos.getY() > this.getWorld().getTopY()) {
-                    if (this.getWorld().getGameRules().getBoolean(GameRules.DO_ENTITY_DROPS)) {
-                        this.dropItem(block);
-                    }
-
-                    this.discard();
+                    this.setPosition(this.getPos().add(travelDistance));
                 }
             }
         }
@@ -292,5 +319,13 @@ public class LevitatingBlockEntity extends Entity {
 
     public NbtCompound getBlockEntityData() {
         return this.dataTracker.get(BLOCK_ENTITY_DATA);
+    }
+
+    public void setShouldRevertNow(boolean shouldRevertNow) {
+        this.dataTracker.set(SHOULD_REVERT_NOW, shouldRevertNow);
+    }
+
+    public boolean getShouldRevertNow() {
+        return this.dataTracker.get(SHOULD_REVERT_NOW);
     }
 }
