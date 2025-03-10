@@ -100,15 +100,23 @@ public class LeashItem extends Item {
                     return component.uuid().equals(linkComponent.uuid());
                 }).toList();
 
-                if (players.size() == 0) {
+                if (players.isEmpty()) {
                     user.sendMessage(Text.translatable("trickster.message.leash.not_online"), true);
                 } else {
-                    var fragmentComponent = stack.get(ModComponents.FRAGMENT);
-                    if (fragmentComponent != null) {
+                    if (user.isSneaking()) {
                         for (var player : players) {
-                            var spell = fragmentComponent.value() instanceof SpellPart part ? part : new SpellPart(fragmentComponent.value());
-                            ModEntityComponents.CASTER.get(player).queueSpell(spell, List.of(EntityFragment.from(user)));
-                            ModEntityComponents.CASTER.get(user).playCastSound(0.8f, 0.1f);
+                            ModEntityComponents.CASTER.get(player).killCollar();
+                            ModEntityComponents.CASTER.get(user).playCastSound(0.5f, 0.1f);
+                            ModEntityComponents.CASTER.get(player).playCastSound(0.5f, 0.1f);
+                        }
+                    } else {
+                        var fragmentComponent = stack.get(ModComponents.FRAGMENT);
+                        if (fragmentComponent != null) {
+                            for (var player : players) {
+                                var spell = fragmentComponent.value() instanceof SpellPart part ? part : new SpellPart(fragmentComponent.value());
+                                ModEntityComponents.CASTER.get(player).queueCollarSpell(spell, List.of(EntityFragment.from(user)));
+                                ModEntityComponents.CASTER.get(user).playCastSound(0.8f, 0.1f);
+                            }
                         }
                     }
                 }

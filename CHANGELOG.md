@@ -1,3 +1,7 @@
-- Added a model for the Acolyte's Bindings. (@enjarai)
-- Added a bell sound for the Acolyte's Bindings. (@enjarai)
-- Fixed a naming error. (@StellarWitch7)
+- Tweaked mechanics for the Acolyte's Bindings. (@enjarai)
+  - They now use a hidden sixth spell slot that can't be directly cancelled.
+- Fixed bugs. (@enjarai)
+  - Levitating blocks were dropping themselves as items when entering the void.
+  - Levitating blocks were losing data when unloaded.
+  - Levitating blocks could be created from fluids.
+  - Swap block and featherweight were dropping the contents of ungenerated loot table blocks.
