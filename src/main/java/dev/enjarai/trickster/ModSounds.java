@@ -10,6 +10,7 @@ public class ModSounds {
     public static final SoundEvent DRAW = register("draw");
     public static final SoundEvent COMPLETE = register("complete");
     public static final SoundEvent CAST = register("cast");
+    public static final SoundEvent COLLAR_BELL = register("collar_bell");
 
     private static SoundEvent register(String path) {
         var id = Trickster.id(path);

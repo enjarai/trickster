@@ -14,6 +14,7 @@ import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.Signature;
+import net.minecraft.block.FluidBlock;
 import net.minecraft.entity.LivingEntity;
 
 public class ChangeWeightTrick extends Trick<ChangeWeightTrick> {
@@ -67,7 +68,8 @@ public class ChangeWeightTrick extends Trick<ChangeWeightTrick> {
             throw new NumberTooSmallBlunder(this, 0);
         }
 
-        if (state.isAir() || (!Trickster.CONFIG.allowSwapBedrock() && state.getHardness(world, blockPos) < 0)) {
+        if (state.isAir() || state.getBlock() instanceof FluidBlock
+                || (!Trickster.CONFIG.allowSwapBedrock() && state.getHardness(world, blockPos) < 0)) {
             throw new BlockInvalidBlunder(this);
         }
 

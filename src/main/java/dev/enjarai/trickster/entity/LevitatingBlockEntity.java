@@ -2,6 +2,7 @@ package dev.enjarai.trickster.entity;
 
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.cca.ModEntityComponents;
+import dev.enjarai.trickster.util.Trolling;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -15,6 +16,7 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
@@ -69,17 +71,31 @@ public class LevitatingBlockEntity extends Entity {
     @Override
     protected void readCustomDataFromNbt(NbtCompound nbt) {
         this.blockState = NbtHelper.toBlockState(this.getWorld().createCommandRegistryWrapper(RegistryKeys.BLOCK), nbt.getCompound("BlockState"));
-//        if (nbt.contains("BlockEntityData", NbtElement.COMPOUND_TYPE)) {
-//            this.blockEntityData = nbt.getCompound("BlockEntityData").copy();
-//        }
+        if (nbt.contains("BlockEntityData", NbtElement.COMPOUND_TYPE)) {
+            this.setBlockEntityData(nbt.getCompound("BlockEntityData").copy());
+        } else {
+            this.setBlockEntityData(new NbtCompound());
+        }
+
+        if (nbt.contains("weight", NbtElement.FLOAT_TYPE)) {
+            this.setWeight(nbt.getFloat("weight"));
+        }
+        NbtHelper.toBlockPos(nbt, "fallingBlockPos").ifPresent(this::setFallingBlockPos);
+        if (nbt.contains("shouldRevertNow", NbtElement.BYTE_TYPE)) {
+            this.setShouldRevertNow(nbt.getBoolean("shouldRevertNow"));
+        }
     }
 
     @Override
     protected void writeCustomDataToNbt(NbtCompound nbt) {
         nbt.put("BlockState", NbtHelper.fromBlockState(this.blockState));
-//        if (this.blockEntityData != null) {
-//            nbt.put("BlockEntityData", this.blockEntityData);
-//        }
+        if (!this.getBlockEntityData().isEmpty()) {
+            nbt.put("BlockEntityData", this.getBlockEntityData());
+        }
+
+        nbt.putFloat("weight", this.getWeight());
+        nbt.put("fallingBlockPos", NbtHelper.fromBlockPos(this.getFallingBlockPos()));
+        nbt.putBoolean("shouldRevertNow", this.getShouldRevertNow());
     }
 
     public static LevitatingBlockEntity spawnFromBlock(World world, BlockPos pos, BlockState state, float weight) {
@@ -100,7 +116,7 @@ public class LevitatingBlockEntity extends Entity {
         var entity = world.getBlockEntity(pos);
         if (entity != null) {
             fallingBlockEntity.setBlockEntityData(entity.createNbtWithId(world.getRegistryManager()));
-            entity.read(new NbtCompound(), world.getRegistryManager());
+            Trolling.clearBlockEntityForDeletion(world, entity);
         }
 
         fallingBlockEntity.setWeight(weight);
@@ -115,7 +131,6 @@ public class LevitatingBlockEntity extends Entity {
         if (this.blockState.isAir()) {
             this.discard();
         } else {
-            Block block = this.blockState.getBlock();
             this.applyGravity();
             this.move(MovementType.SELF, this.getVelocity());
             this.tickPortalTeleportation();
@@ -153,11 +168,7 @@ public class LevitatingBlockEntity extends Entity {
             this.tickCollisions();
             this.trySolidify();
 
-            if (!this.getWorld().isClient() && (getBlockPos().getY() <= this.getWorld().getBottomY() || getBlockPos().getY() > this.getWorld().getTopY())) {
-                if (this.getWorld().getGameRules().getBoolean(GameRules.DO_ENTITY_DROPS)) {
-                    this.dropItem(block);
-                }
-
+            if (!this.getWorld().isClient() && getBlockPos().getY() <= this.getWorld().getBottomY() - 64) {
                 this.discard();
             }
         }

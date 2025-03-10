@@ -74,9 +74,9 @@ public class TricksterClient implements ClientModInitializer {
         AccessoriesRendererRegistry.registerRenderer(ModItems.TOP_HAT, HoldableHatRenderer::new);
         AccessoriesRendererRegistry.registerRenderer(ModItems.WITCH_HAT, HoldableHatRenderer::new);
         AccessoriesRendererRegistry.registerRenderer(ModItems.FEZ, HoldableHatRenderer::new);
+        AccessoriesRendererRegistry.registerRenderer(ModItems.COLLAR, CollarRenderer::new);
         AccessoriesRendererRegistry.registerNoRenderer(ModItems.MACRO_RING);
         AccessoriesRendererRegistry.registerNoRenderer(ModItems.AMETHYST_WHORL);
-        AccessoriesRendererRegistry.registerNoRenderer(ModItems.COLLAR);
 
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.SPELL_RESONATOR, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.LIGHT, RenderLayer.getTranslucent());

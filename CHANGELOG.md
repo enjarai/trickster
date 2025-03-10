@@ -1,24 +1,7 @@
-- Added Levitating Blocks. (@enjarai)
-  - A block can now be levitated by applying a Featherweight Ploy to it.
-  - These levitated blocks can be kept levitating by continually applying Featherweight Ploy.
-  - Levitated blocks can be moved around using Kinetic Ploy, as if they were normal entities.
-    - They may impart significant damage when striking living creatures at high velocity.
-  - A levitated block will revert to its normal form when on solid ground and no longer affected by Featherweight.
-    - It can be forced to convert back in midair by applying a Featherweight of 1 to it.
-    - If a levitated block is inside a block that isn't naturally replaceable, it will never revert.
-- Added Displacement. (@StellarWitch7 and @enjarai)
-  - Displacement is a delayed means of teleportation.
-  - When applying displacement to an entity, the mana cost scales exponentially with distance.
-  - After the displacement is applied, and a few seconds of delay, the target entity will teleport by the given offset.
-    - During the delay window, more displacements can be applied to the entity to modify its final destination.
-    - If the entity takes damage from any source, the displacement is cancelled.
-- Added Astral Knots. (@enjarai and @StellarWitch7)
-  - This type of Knot is made from a Nether Star.
-  - It does not regenerate mana from moonlight, but has a truly massive buffer, and has a unique mechanic associated with it.
-- Improved block conversions. (Heating, Cooling and Weathering) (@Awakened-Redstone)
-  - Fixed issues with waterlogging.
-  - Fixed issues with blockstates not being preserved.
-- Added the Acolyte's Bindings and the Archmage's Tether. (@StellarWitch7 and @enjarai)
-  - Thanks for the textures Crephan!
-- Improved Knot tooltips displaying merlin gain and drain. (@StellarWitch7)
-- Updated changelog. (@enjarai)
+- Tweaked mechanics for the Acolyte's Bindings. (@enjarai)
+  - They now use a hidden sixth spell slot that can't be directly cancelled.
+- Fixed bugs. (@enjarai)
+  - Levitating blocks were dropping themselves as items when entering the void.
+  - Levitating blocks were losing data when unloaded.
+  - Levitating blocks could be created from fluids.
+  - Swap block and featherweight were dropping the contents of ungenerated loot table blocks.
