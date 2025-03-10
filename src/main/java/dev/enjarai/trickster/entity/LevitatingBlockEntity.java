@@ -15,6 +15,7 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
@@ -69,17 +70,31 @@ public class LevitatingBlockEntity extends Entity {
     @Override
     protected void readCustomDataFromNbt(NbtCompound nbt) {
         this.blockState = NbtHelper.toBlockState(this.getWorld().createCommandRegistryWrapper(RegistryKeys.BLOCK), nbt.getCompound("BlockState"));
-//        if (nbt.contains("BlockEntityData", NbtElement.COMPOUND_TYPE)) {
-//            this.blockEntityData = nbt.getCompound("BlockEntityData").copy();
-//        }
+        if (nbt.contains("BlockEntityData", NbtElement.COMPOUND_TYPE)) {
+            this.setBlockEntityData(nbt.getCompound("BlockEntityData").copy());
+        } else {
+            this.setBlockEntityData(new NbtCompound());
+        }
+
+        if (nbt.contains("weight", NbtElement.FLOAT_TYPE)) {
+            this.setWeight(nbt.getFloat("weight"));
+        }
+        NbtHelper.toBlockPos(nbt, "fallingBlockPos").ifPresent(this::setFallingBlockPos);
+        if (nbt.contains("shouldRevertNow", NbtElement.BYTE_TYPE)) {
+            this.setShouldRevertNow(nbt.getBoolean("shouldRevertNow"));
+        }
     }
 
     @Override
     protected void writeCustomDataToNbt(NbtCompound nbt) {
         nbt.put("BlockState", NbtHelper.fromBlockState(this.blockState));
-//        if (this.blockEntityData != null) {
-//            nbt.put("BlockEntityData", this.blockEntityData);
-//        }
+        if (!this.getBlockEntityData().isEmpty()) {
+            nbt.put("BlockEntityData", this.getBlockEntityData());
+        }
+
+        nbt.putFloat("weight", this.getWeight());
+        nbt.put("fallingBlockPos", NbtHelper.fromBlockPos(this.getFallingBlockPos()));
+        nbt.putBoolean("shouldRevertNow", this.getShouldRevertNow());
     }
 
     public static LevitatingBlockEntity spawnFromBlock(World world, BlockPos pos, BlockState state, float weight) {
