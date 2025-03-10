@@ -115,7 +115,6 @@ public class LevitatingBlockEntity extends Entity {
         if (this.blockState.isAir()) {
             this.discard();
         } else {
-            Block block = this.blockState.getBlock();
             this.applyGravity();
             this.move(MovementType.SELF, this.getVelocity());
             this.tickPortalTeleportation();
@@ -153,11 +152,7 @@ public class LevitatingBlockEntity extends Entity {
             this.tickCollisions();
             this.trySolidify();
 
-            if (!this.getWorld().isClient() && (getBlockPos().getY() <= this.getWorld().getBottomY() || getBlockPos().getY() > this.getWorld().getTopY())) {
-                if (this.getWorld().getGameRules().getBoolean(GameRules.DO_ENTITY_DROPS)) {
-                    this.dropItem(block);
-                }
-
+            if (!this.getWorld().isClient() && getBlockPos().getY() <= this.getWorld().getBottomY() - 64) {
                 this.discard();
             }
         }
