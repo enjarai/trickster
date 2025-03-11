@@ -175,14 +175,16 @@ public class LevitatingBlockEntity extends Entity {
     }
 
     protected void trySolidify() {
-        if (this.getWeight() >= 1 && (isOnGround() || getShouldRevertNow()) && supportingBlockPos.isPresent() &&
+        if (this.getWeight() >= 1 && (isOnGround() || getShouldRevertNow()) &&
                 this.getVelocity().lengthSquared() < 0.2 * 0.2) {
-            var targetPos = getBlockY() > supportingBlockPos.get().getY() ? supportingBlockPos.get().up() : supportingBlockPos.get();
+            var targetPos = supportingBlockPos.isPresent() ?
+                    (getBlockY() > supportingBlockPos.get().getY() ? supportingBlockPos.get().up() : supportingBlockPos.get()) :
+                    BlockPos.ofFloored(getPos().add(0, 0.49, 0));
 
             if (getWorld().getBlockState(targetPos).isReplaceable()) {
                 // At this point we start solidifying
 
-                if (this.getPos().squaredDistanceTo(targetPos.toBottomCenterPos()) < 0.05 * 0.05) {
+                if (getShouldRevertNow() || this.getPos().squaredDistanceTo(targetPos.toBottomCenterPos()) < 0.05 * 0.05) {
                     // If close enough to target position, solidify fully
                     if (!this.getWorld().isClient()) {
                         var isWater = getWorld().getFluidState(targetPos).isOf(Fluids.WATER);

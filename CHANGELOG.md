@@ -1,1 +1,1 @@
-- Exposed vavr to dependents of trickster. (@StellarWitch7)
+- Fixed a featherweight of 1 not forcing levitating blocks to revert. (@enjarai)
