@@ -1,1 +1,1 @@
-- Exposed vavr to dependents of trickster. (@StellarWitch7)
+- Added a way to retrieve all arguments to a spell. (@StellarWitch7)
