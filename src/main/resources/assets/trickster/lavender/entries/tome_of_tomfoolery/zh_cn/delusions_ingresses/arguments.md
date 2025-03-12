@@ -22,7 +22,6 @@
 
 此类参数可在法术片段中直接通过特定图案获取，也可将所有参数组为列表获取。
 
-
 ;;;;;
 
 <|glyph@trickster:templates|trick-id=trickster:get_all_arguments,title=囤积者之错觉|>
