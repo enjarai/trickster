@@ -1,1 +1,2 @@
 - Added a way to retrieve all arguments to a spell. (@StellarWitch7)
+- Fixed crouching interact with a scroll and quill working when client config should disable it. (@StellarWitch7)
