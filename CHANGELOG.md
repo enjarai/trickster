@@ -1,1 +1,1 @@
-- Fixed a featherweight of 1 not forcing levitating blocks to revert. (@enjarai)
+- Added a way to retrieve all arguments to a spell. (@StellarWitch7)
