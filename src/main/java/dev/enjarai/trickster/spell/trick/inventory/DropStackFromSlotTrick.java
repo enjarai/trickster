@@ -22,15 +22,16 @@ public class DropStackFromSlotTrick extends Trick<DropStackFromSlotTrick> {
     }
 
     public Fragment run(SpellContext ctx, SlotFragment slot, VectorFragment pos, Optional<NumberFragment> optionalAmount) throws BlunderException {
-        var blockPos = pos.toBlockPos();
+        var vector = pos.vector();
         var amount = optionalAmount.orElse(new NumberFragment(1)).number();
 
         if (amount < 1)
             throw new NumberTooSmallBlunder(this, 1);
 
-        var stack = slot.move(this, ctx, (int) Math.round(amount), blockPos);
+        var stack = slot.move(this, ctx, (int) Math.round(amount), pos.toBlockPos());
         var world = ctx.source().getWorld();
-        var entity = new ItemEntity(world, blockPos.getX(), blockPos.getY(), blockPos.getZ(), stack);
+        var entity = new ItemEntity(world, vector.x(), vector.y(), vector.z(), stack);
+        entity.setPickupDelay(10);
 
         world.spawnEntity(entity);
         return new EntityFragment(entity.getUuid(), entity.getName());
