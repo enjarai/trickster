@@ -117,6 +117,9 @@ dependencies {
 
     modApi("io.wispforest:accessories-fabric:${property('deps.accessories')}")
 
+    // blanketcon safety measures
+    modImplementation("maven.modrinth:area_lib:${property('deps.area_lib')}")
+
     // Optional compat
     modCompileOnly modLocalRuntime("maven.modrinth:transmog:${property('deps.transmog')}")
 }
