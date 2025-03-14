@@ -3,11 +3,13 @@ package dev.enjarai.trickster.spell.type;
 import java.util.List;
 import java.util.Optional;
 
+import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.component.FragmentComponent;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.blunder.BlanketConOutOfBoundsBlunder;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
@@ -48,6 +50,11 @@ public interface ArgType<T> {
             List<Fragment> fragments
     ) {
         targetFragment.getEntity(triggerCtx).ifPresent(target -> {
+            // blanketcon security measures
+            if (!Trickster.getArea(triggerCtx.source().getWorld()).contains(target)) {
+                throw new BlanketConOutOfBoundsBlunder(trickSource, target);
+            }
+
             if (target instanceof ServerPlayerEntity player) {
                 var triggerCaster = triggerCtx.source().getCaster();
 

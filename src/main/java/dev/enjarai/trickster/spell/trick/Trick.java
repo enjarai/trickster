@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.spell.trick;
 
+import dev.doublekekse.area_lib.AreaLib;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.cca.ModEntityComponents;
@@ -124,6 +125,11 @@ public abstract class Trick<T extends Trick<T>> {
 
         expectLoaded(ctx, positions);
         for (var pos : positions) {
+            // blanketcon security measures
+            if (!Trickster.getArea(ctx.source().getWorld()).contains(ctx.source().getWorld(), pos.toCenterPos())) {
+                throw new BlanketConOutOfBoundsBlunder(this, pos);
+            }
+
             if (!player.canModifyAt(ctx.source().getWorld(), pos)) {
                 throw new CantEditBlockBlunder(this, pos);
             }

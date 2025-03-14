@@ -6,6 +6,7 @@ import java.util.UUID;
 import com.mojang.datafixers.util.Either;
 
 import dev.enjarai.trickster.EndecTomfoolery;
+import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.item.component.FragmentComponent;
 import dev.enjarai.trickster.pond.SlotHolderDuck;
 import dev.enjarai.trickster.spell.Fragment;
@@ -44,7 +45,7 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
                         slot,
                         source.map(either -> {
                             var mapped = either
-                                    .mapLeft(blockPos -> "(%d, %d, %d)".formatted(blockPos.getX(), blockPos.getY(), blockPos.getZ()))
+                                    .mapLeft(blockPos -> "%d, %d, %d".formatted(blockPos.getX(), blockPos.getY(), blockPos.getZ()))
                                     .mapRight(uuid -> uuid.toString());
                             return mapped.right().orElseGet(() -> mapped.left().get());
                         }).orElse("caster")
@@ -193,6 +194,12 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
         return source.map(s -> {
             if (s.left().isPresent()) {
                 var e = ctx.source().getWorld().getBlockEntity(s.left().get());
+
+                // blanketcon security measures
+                if (!Trickster.getArea(ctx.source().getWorld()).contains(ctx.source().getWorld(), s.left().get().toCenterPos())) {
+                    throw new BlanketConOutOfBoundsBlunder(trickSource, s.left().get());
+                }
+
                 if (e instanceof SlotHolderDuck holder)
                     return holder;
                 else if (e instanceof Inventory inv)
@@ -200,6 +207,12 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
                 else throw new BlockInvalidBlunder(trickSource);
             } else {
                 var e = ctx.source().getWorld().getEntity(s.right().get());
+
+                // blanketcon security measures
+                if (!Trickster.getArea(ctx.source().getWorld()).contains(e)) {
+                    throw new BlanketConOutOfBoundsBlunder(trickSource, e);
+                }
+
                 if (e instanceof SlotHolderDuck holder)
                     return holder;
                 else if (e instanceof Inventory inv)

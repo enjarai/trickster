@@ -1,5 +1,7 @@
 package dev.enjarai.trickster;
 
+import dev.doublekekse.area_lib.Area;
+import dev.doublekekse.area_lib.AreaLib;
 import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.block.ModBlocks;
 import dev.enjarai.trickster.compat.ModCompat;
@@ -33,14 +35,17 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.item.Item.TooltipContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.world.World;
 import nl.enjarai.cicada.api.conversation.ConversationManager;
 import nl.enjarai.cicada.api.util.CicadaEntrypoint;
 import nl.enjarai.cicada.api.util.JsonSource;
 import nl.enjarai.cicada.api.util.ProperLogger;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -114,6 +119,19 @@ public class Trickster implements ModInitializer, CicadaEntrypoint {
 
     public static Identifier id(String... path) {
         return Identifier.of(MOD_ID, String.join("/", path));
+    }
+
+    public static final Identifier AREA_ID = Trickster.id("playspace");
+    private static HashMap<RegistryKey<World>, Area> areaCache = new HashMap<>();
+
+    public static Area getArea(World world) {
+        var key = world.getRegistryKey();
+
+        if (!Trickster.areaCache.containsKey(key)) {
+            Trickster.areaCache.put(key, AreaLib.getSavedData(world).get(Trickster.AREA_ID));
+        }
+
+        return areaCache.get(key);
     }
 
     public interface TooltipAppender {
