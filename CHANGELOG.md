@@ -1,2 +1,3 @@
 - Updated to 1.21.1-exclusive for BlanketCon '25. (@StellarWitch7)
   - This is due to a dependency on Area Lib.
+- Added Area Lib integration, disabling all world-altering ploys outside of the designated area. (@StellarWitch7 and @enjarai)
