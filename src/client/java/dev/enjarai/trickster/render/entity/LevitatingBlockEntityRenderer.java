@@ -58,13 +58,16 @@ public class LevitatingBlockEntityRenderer extends EntityRenderer<LevitatingBloc
                         fallingBlockEntity.getBlockEntityData(), fallingBlockEntity.getWorld().getRegistryManager()
                 );
             }
-            var blockEntityRenderer = MinecraftClient.getInstance().getBlockEntityRenderDispatcher().get(fallingBlockEntity.cachedBlockEntity);
-            if (blockEntityRenderer != null) {
-                blockEntityRenderer.render(
-                        fallingBlockEntity.cachedBlockEntity, tickDelta, matrixStack, vertexConsumerProvider,
-                        WorldRenderer.getLightmapCoordinates(fallingBlockEntity.getWorld(), fallingBlockEntity.getBlockPos()),
-                        OverlayTexture.DEFAULT_UV
-                );
+
+            if (fallingBlockEntity.cachedBlockEntity != null) {
+                var blockEntityRenderer = MinecraftClient.getInstance().getBlockEntityRenderDispatcher().get(fallingBlockEntity.cachedBlockEntity);
+                if (blockEntityRenderer != null) {
+                    blockEntityRenderer.render(
+                            fallingBlockEntity.cachedBlockEntity, tickDelta, matrixStack, vertexConsumerProvider,
+                            WorldRenderer.getLightmapCoordinates(fallingBlockEntity.getWorld(), fallingBlockEntity.getBlockPos()),
+                            OverlayTexture.DEFAULT_UV
+                    );
+                }
             }
         }
 
