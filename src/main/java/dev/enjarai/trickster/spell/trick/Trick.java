@@ -10,6 +10,7 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.*;
+import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
@@ -126,7 +127,8 @@ public abstract class Trick<T extends Trick<T>> {
         expectLoaded(ctx, positions);
         for (var pos : positions) {
             // blanketcon security measures
-            if (!Trickster.getArea(ctx.source().getWorld()).contains(ctx.source().getWorld(), pos.toCenterPos())) {
+            if (ctx.source() instanceof PlayerSpellSource
+                    && !Trickster.getArea(ctx.source().getWorld()).contains(ctx.source().getWorld(), pos.toCenterPos())) {
                 throw new BlanketConOutOfBoundsBlunder(this, pos);
             }
 
