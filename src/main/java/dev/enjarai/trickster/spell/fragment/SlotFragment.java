@@ -12,6 +12,7 @@ import dev.enjarai.trickster.pond.SlotHolderDuck;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.*;
+import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
 import dev.enjarai.trickster.spell.trick.Trick;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
@@ -196,7 +197,8 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
                 var e = ctx.source().getWorld().getBlockEntity(s.left().get());
 
                 // blanketcon security measures
-                if (!Trickster.getArea(ctx.source().getWorld()).contains(ctx.source().getWorld(), s.left().get().toCenterPos())) {
+                if (ctx.source() instanceof PlayerSpellSource
+                        && !Trickster.getArea(ctx.source().getWorld()).contains(ctx.source().getWorld(), s.left().get().toCenterPos())) {
                     throw new BlanketConOutOfBoundsBlunder(trickSource, s.left().get());
                 }
 
@@ -209,7 +211,8 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
                 var e = ctx.source().getWorld().getEntity(s.right().get());
 
                 // blanketcon security measures
-                if (!Trickster.getArea(ctx.source().getWorld()).contains(e)) {
+                if (ctx.source() instanceof PlayerSpellSource
+                        && !Trickster.getArea(ctx.source().getWorld()).contains(e)) {
                     throw new BlanketConOutOfBoundsBlunder(trickSource, e);
                 }
 

@@ -73,6 +73,8 @@ public class ChangeWeightTrick extends Trick<ChangeWeightTrick> {
             throw new BlockInvalidBlunder(this);
         }
 
+        expectCanBuild(ctx, blockPos);
+
         ctx.useMana(this, (float) (60 * (1 - weight)));
 
         var levitatingBlock = LevitatingBlockEntity.spawnFromBlock(

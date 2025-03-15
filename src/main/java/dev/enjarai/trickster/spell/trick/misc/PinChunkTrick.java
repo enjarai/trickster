@@ -19,6 +19,8 @@ public class PinChunkTrick extends Trick<PinChunkTrick> {
     public Fragment run(SpellContext ctx, VectorFragment pos) throws BlunderException {
         var chunkPos = new ChunkPos(pos.toBlockPos());
 
+        expectCanBuild(ctx, pos.toBlockPos());
+
         ctx.useMana(this, 4);
         ModWorldComponents.PINNED_CHUNKS.get(ctx.source().getWorld()).pinChunk(chunkPos);
 

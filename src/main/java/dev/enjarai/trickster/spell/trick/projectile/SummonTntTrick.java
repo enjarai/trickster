@@ -24,6 +24,8 @@ public class SummonTntTrick extends Trick<SummonTntTrick> {
         var stack = ctx.getStack(this, optionalSlot, s -> s.isOf(Items.TNT)).orElseThrow(() -> new MissingItemBlunder(this));
         var world = ctx.source().getWorld();
 
+        expectCanBuild(ctx, pos.toBlockPos());
+
         try {
             ctx.useMana(this, cost(ctx.source().getPos().distance(pos.vector())));
 

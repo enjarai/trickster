@@ -20,7 +20,7 @@ import java.util.Optional;
 
 public class StoreEntityTrick extends Trick<StoreEntityTrick> {
     public StoreEntityTrick() {
-        super(Pattern.of(5, 2, 4, 3, 6, 7, 4), Signature.of(FragmentType.ENTITY, StoreEntityTrick::store));
+        super(Pattern.of(5, 2, 4, 3, 6, 7, 4), Signature.of(FragmentType.ENTITY.wardOf(), StoreEntityTrick::store));
     }
 
     public Fragment store(SpellContext ctx, EntityFragment entity) throws BlunderException {
