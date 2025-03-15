@@ -122,7 +122,7 @@ public class Trickster implements ModInitializer, CicadaEntrypoint {
     }
 
     public static final Identifier AREA_ID = Trickster.id("playspace");
-    private static HashMap<RegistryKey<World>, Area> areaCache = new HashMap<>();
+    public static final HashMap<RegistryKey<World>, Area> areaCache = new HashMap<>();
 
     public static Area getArea(World world) {
         var key = world.getRegistryKey();
