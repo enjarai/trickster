@@ -60,7 +60,7 @@ public class TricksterCommand {
                                 literal("weight")
                                         .requires(s -> s.hasPermissionLevel(2))
                                         .then(
-                                                argument("weight", DoubleArgumentType.doubleArg(0))
+                                                argument("weight", DoubleArgumentType.doubleArg(0, 1))
                                                         .executes(
                                                                 context -> TricksterCommand.setWeight(
                                                                         context,
@@ -84,7 +84,7 @@ public class TricksterCommand {
                                 literal("scale")
                                         .requires(s -> s.hasPermissionLevel(2))
                                         .then(
-                                                argument("scale", DoubleArgumentType.doubleArg(0))
+                                                argument("scale", DoubleArgumentType.doubleArg(0.0625, 8.0))
                                                         .executes(
                                                                 context -> TricksterCommand.setScale(
                                                                         context,

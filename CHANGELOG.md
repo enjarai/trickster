@@ -1,1 +1,1 @@
-- Fixed issues querying Area Lib without restarting the server. (@StellarWitch7)
+- Added appropriate bounds to command arguments for scale and weight. (@StellarWitch7)
