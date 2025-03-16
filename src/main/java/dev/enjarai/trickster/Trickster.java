@@ -2,6 +2,7 @@ package dev.enjarai.trickster;
 
 import dev.doublekekse.area_lib.Area;
 import dev.doublekekse.area_lib.AreaLib;
+import dev.doublekekse.area_lib.data.AreaSavedData;
 import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.block.ModBlocks;
 import dev.enjarai.trickster.compat.ModCompat;
@@ -37,6 +38,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
@@ -124,11 +126,14 @@ public class Trickster implements ModInitializer, CicadaEntrypoint {
     public static final Identifier AREA_ID = Trickster.id("playspace");
     public static final HashMap<RegistryKey<World>, Area> areaCache = new HashMap<>();
 
-    public static Area getArea(World world) {
+    public static Area getArea(ServerWorld world) {
         var key = world.getRegistryKey();
 
         if (!Trickster.areaCache.containsKey(key)) {
-            Trickster.areaCache.put(key, AreaLib.getSavedData(world).get(Trickster.AREA_ID));
+            var area = AreaSavedData.getServerData(world.getServer()).get(Trickster.AREA_ID);
+
+            if (area != null)
+                Trickster.areaCache.put(key, area);
         }
 
         return areaCache.get(key);
