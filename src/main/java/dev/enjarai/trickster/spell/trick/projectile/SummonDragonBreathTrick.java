@@ -27,12 +27,12 @@ public class SummonDragonBreathTrick extends Trick<SummonDragonBreathTrick> {
         var stack = ctx.getStack(this, optionalSlot, s -> s.isOf(Items.FIRE_CHARGE)).orElseThrow(() -> new MissingItemBlunder(this));
         var world = ctx.source().getWorld();
 
-        expectCanBuild(ctx, pos.toBlockPos());
-
         try {
             var stack2 = ctx.getStack(this, optionalSlot2, s -> s.isOf(Items.DRAGON_BREATH)).orElseThrow(() -> new MissingItemBlunder(this));
 
             try {
+                expectCanBuild(ctx, pos.toBlockPos());
+
                 ctx.useMana(this, cost(ctx.source().getPos().distance(pos.vector())));
 
                 var projectile = EntityType.DRAGON_FIREBALL.create(world);

@@ -27,9 +27,9 @@ public class SummonArrowTrick extends Trick<SummonArrowTrick> {
         var stack = ctx.getStack(this, optionalSlot, s -> s.isIn(ItemTags.ARROWS) && s.getItem() instanceof ProjectileItem).orElseThrow(() -> new MissingItemBlunder(this));
         var world = ctx.source().getWorld();
 
-        expectCanBuild(ctx, pos.toBlockPos());
-
         try {
+            expectCanBuild(ctx, pos.toBlockPos());
+
             ctx.useMana(this, cost(ctx.source().getPos().distance(pos.vector())));
 
             var projectile = ((ProjectileItem) stack.getItem()).createEntity(ctx.source().getWorld(), new Vec3d(0, 0, 0).fromVector3d(pos.vector()), stack, Direction.DOWN);
