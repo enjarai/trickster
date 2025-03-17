@@ -1,1 +1,1 @@
-- Added appropriate bounds to command arguments for scale and weight. (@StellarWitch7)
+- Removed unnecessary Area Lib cache. (@StellarWitch7)

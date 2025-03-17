@@ -124,19 +124,9 @@ public class Trickster implements ModInitializer, CicadaEntrypoint {
     }
 
     public static final Identifier AREA_ID = Trickster.id("playspace");
-    public static final HashMap<RegistryKey<World>, Area> areaCache = new HashMap<>();
 
     public static Area getArea(ServerWorld world) {
-        var key = world.getRegistryKey();
-
-        if (!Trickster.areaCache.containsKey(key)) {
-            var area = AreaSavedData.getServerData(world.getServer()).get(Trickster.AREA_ID);
-
-            if (area != null)
-                Trickster.areaCache.put(key, area);
-        }
-
-        return areaCache.get(key);
+        return AreaSavedData.getServerData(world.getServer()).get(Trickster.AREA_ID);
     }
 
     public interface TooltipAppender {

@@ -133,13 +133,6 @@ public class TricksterCommand {
                                         .requires(ServerCommandSource::isExecutedByPlayer)
                                         .executes(TricksterCommand::showAllSignatures)
                         )
-                        .then(
-                                literal("clearAreaCache")
-                                        .executes(context -> {
-                                            Trickster.areaCache.clear();
-                                            return 1;
-                                        })
-                        )
         );
     }
 
