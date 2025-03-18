@@ -66,23 +66,25 @@ public class LevitatingBlockEntityRenderer extends EntityRenderer<LevitatingBloc
                 );
             }
 
-            try {
-                var blockEntityRenderer = MinecraftClient.getInstance().getBlockEntityRenderDispatcher().get(fallingBlockEntity.cachedBlockEntity);
-                if (blockEntityRenderer != null) {
-                    blockEntityRenderer.render(
-                            fallingBlockEntity.cachedBlockEntity, tickDelta, matrixStack, vertexConsumerProvider,
-                            WorldRenderer.getLightmapCoordinates(fallingBlockEntity.getWorld(), fallingBlockEntity.getBlockPos()),
-                            OverlayTexture.DEFAULT_UV
-                    );
-                }
-            } catch (Exception e) {
-                if (fallingBlockEntity.cachedBlockEntity != null && fallingBlockEntity.cachedBlockEntity.getType().getRegistryEntry() != null) {
-                    var entityId = fallingBlockEntity.cachedBlockEntity.getType().getRegistryEntry().registryKey().getValue();
+            if (fallingBlockEntity.cachedBlockEntity != null) {
+                try {
+                    var blockEntityRenderer = MinecraftClient.getInstance().getBlockEntityRenderDispatcher().get(fallingBlockEntity.cachedBlockEntity);
+                    if (blockEntityRenderer != null) {
+                        blockEntityRenderer.render(
+                                fallingBlockEntity.cachedBlockEntity, tickDelta, matrixStack, vertexConsumerProvider,
+                                WorldRenderer.getLightmapCoordinates(fallingBlockEntity.getWorld(), fallingBlockEntity.getBlockPos()),
+                                OverlayTexture.DEFAULT_UV
+                        );
+                    }
+                } catch (Exception e) {
+                    if (fallingBlockEntity.cachedBlockEntity.getType().getRegistryEntry() != null) {
+                        var entityId = fallingBlockEntity.cachedBlockEntity.getType().getRegistryEntry().registryKey().getValue();
 
-                    if (!erroredBlockEntities.contains(entityId)) {
-                        Trickster.LOGGER.error("Failed to render block entity '{}' as levitating block. No further errors will be logged for this type.", entityId, e);
+                        if (!erroredBlockEntities.contains(entityId)) {
+                            Trickster.LOGGER.error("Failed to render block entity '{}' as levitating block. No further errors will be logged for this type.", entityId, e);
 
-                        erroredBlockEntities.add(entityId);
+                            erroredBlockEntities.add(entityId);
+                        }
                     }
                 }
             }
