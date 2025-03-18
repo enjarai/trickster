@@ -1,7 +1,7 @@
 package dev.enjarai.trickster;
 
 import dev.enjarai.trickster.aldayim.Dialogue;
-import dev.enjarai.trickster.aldayim.DialogueOption;
+import dev.enjarai.trickster.aldayim.Dialogue.Option;
 import dev.enjarai.trickster.aldayim.backend.ImGuiDialogueBackend;
 import dev.enjarai.trickster.block.ModBlocks;
 import dev.enjarai.trickster.entity.ModEntities;
@@ -134,22 +134,22 @@ public class TricksterClient implements ClientModInitializer {
         var end = Dialogue.of(Text.of("Test 3"))
                 .title(Text.of("Testst 222"))
                 .responses(
-                        new DialogueOption(Text.of("close"), Dialogue.of(Text.empty())
+                        Option.of(Text.of("close"), Dialogue.of(Text.empty())
                                 .onOpen((backend, newDialogue) -> null))
                 );
 
         var test2 = Dialogue.of(Text.of("Test 2"))
                 .title(Text.of("Testst"))
                 .responses(
-                        new DialogueOption(Text.of("next"), end)
+                        Option.of(Text.of("next"), end)
                 );
 
         dialogueBackend.start(
                 Dialogue.of(Text.of("Test HI"))
                         .title(Text.of("Meow"))
                         .responses(
-                                new DialogueOption(Text.of("Ok"), test2),
-                                new DialogueOption(Text.of("Bye"), Dialogue.of(Text.of("Test 2"))
+                                Option.of(Text.of("Ok"), test2),
+                                Option.of(Text.of("Bye"), Dialogue.of(Text.of("Test 2"))
                                         .title(Text.of("Testst"))
                                 )
                         )

@@ -4,17 +4,18 @@ import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 public interface Dialogue {
     @Nullable Dialogue open(DialogueBackend backend);
 
-    @Nullable Dialogue next(DialogueBackend backend, @Nullable DialogueOption option);
+    @Nullable Dialogue next(DialogueBackend backend, @Nullable Option option);
 
     Text getTitle();
 
     Text getPrompt();
 
-    List<DialogueOption> responses();
+    List<Option> responses();
 
     static Dialogue of(Text prompt) {
         return new Impl(prompt);
@@ -22,7 +23,7 @@ public interface Dialogue {
 
     Dialogue title(Text title);
 
-    Dialogue responses(DialogueOption... options);
+    Dialogue responses(Option... options);
 
     Dialogue onOpen(OpenHandler openHandler);
 
@@ -35,15 +36,15 @@ public interface Dialogue {
     }
 
     interface NextHandler {
-        @Nullable Dialogue onNext(DialogueBackend backend, Dialogue oldDialogue, @Nullable DialogueOption option);
+        @Nullable Dialogue onNext(DialogueBackend backend, Dialogue oldDialogue, @Nullable Option option);
     }
 
     class Impl implements Dialogue {
         private OpenHandler openHandler = (backend, newDialogue) -> newDialogue;
-        private NextHandler nextHandler = (backend, oldDialogue, option) -> option == null ? null : option.resultDialogue();
+        private NextHandler nextHandler = (backend, oldDialogue, option) -> option == null ? null : option.resultDialogue().get();
         private Text prompt;
         private Text title = Text.empty();
-        private List<DialogueOption> responses = List.of();
+        private List<Option> responses = List.of();
         private boolean resetsStack = false;
 
         public Impl(Text prompt) {
@@ -56,7 +57,7 @@ public interface Dialogue {
         }
 
         @Override
-        public @Nullable Dialogue next(DialogueBackend backend, @Nullable DialogueOption option) {
+        public @Nullable Dialogue next(DialogueBackend backend, @Nullable Option option) {
             if (resetsStack) {
                 backend.resetStack();
             }
@@ -74,7 +75,7 @@ public interface Dialogue {
         }
 
         @Override
-        public List<DialogueOption> responses() {
+        public List<Option> responses() {
             return responses;
         }
 
@@ -85,7 +86,7 @@ public interface Dialogue {
         }
 
         @Override
-        public Dialogue responses(DialogueOption... options) {
+        public Dialogue responses(Option... options) {
             this.responses = List.of(options);
             return this;
         }
@@ -104,6 +105,16 @@ public interface Dialogue {
 
         public void resetsStack() {
             resetsStack = true;
+        }
+    }
+
+    record Option(Text text, Supplier<Dialogue> resultDialogue) {
+        public static Option of(Text text, Supplier<Dialogue> resultDialogue) {
+            return new Option(text, resultDialogue);
+        }
+
+        public static Option of(Text text, Dialogue resultDialogue) {
+            return new Option(text, () -> resultDialogue);
         }
     }
 }
