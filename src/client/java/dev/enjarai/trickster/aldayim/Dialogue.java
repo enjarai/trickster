@@ -6,9 +6,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public interface Dialogue {
-    @Nullable Dialogue open();
+    @Nullable Dialogue open(DialogueBackend backend);
 
-    @Nullable Dialogue close(@Nullable DialogueOption option);
+    @Nullable Dialogue next(DialogueBackend backend, @Nullable DialogueOption option);
 
     Text getTitle();
 
@@ -26,35 +26,41 @@ public interface Dialogue {
 
     Dialogue onOpen(OpenHandler openHandler);
 
-    Dialogue onClose(CloseHandler closeHandler);
+    Dialogue onNext(NextHandler nextHandler);
+
+    void resetsStack();
 
     interface OpenHandler {
-        @Nullable Dialogue onOpen(Dialogue newDialogue);
+        @Nullable Dialogue onOpen(DialogueBackend backend, Dialogue newDialogue);
     }
 
-    interface CloseHandler {
-        @Nullable Dialogue onClose(Dialogue oldDialogue, @Nullable DialogueOption option);
+    interface NextHandler {
+        @Nullable Dialogue onNext(DialogueBackend backend, Dialogue oldDialogue, @Nullable DialogueOption option);
     }
 
     class Impl implements Dialogue {
-        private OpenHandler openHandler = newDialogue -> newDialogue;
-        private CloseHandler closeHandler = (oldDialogue, option) -> option == null ? null : option.resultDialogue();
+        private OpenHandler openHandler = (backend, newDialogue) -> newDialogue;
+        private NextHandler nextHandler = (backend, oldDialogue, option) -> option == null ? null : option.resultDialogue();
         private Text prompt;
         private Text title = Text.empty();
         private List<DialogueOption> responses = List.of();
+        private boolean resetsStack = false;
 
         public Impl(Text prompt) {
             this.prompt = prompt;
         }
 
         @Override
-        public @Nullable Dialogue open() {
-            return openHandler.onOpen(this);
+        public @Nullable Dialogue open(DialogueBackend backend) {
+            return openHandler.onOpen(backend, this);
         }
 
         @Override
-        public @Nullable Dialogue close(@Nullable DialogueOption option) {
-            return closeHandler.onClose(this, option);
+        public @Nullable Dialogue next(DialogueBackend backend, @Nullable DialogueOption option) {
+            if (resetsStack) {
+                backend.resetStack();
+            }
+            return nextHandler.onNext(backend, this, option);
         }
 
         @Override
@@ -91,9 +97,13 @@ public interface Dialogue {
         }
 
         @Override
-        public Dialogue onClose(CloseHandler closeHandler) {
-            this.closeHandler = closeHandler;
+        public Dialogue onNext(NextHandler nextHandler) {
+            this.nextHandler = nextHandler;
             return this;
+        }
+
+        public void resetsStack() {
+            resetsStack = true;
         }
     }
 }

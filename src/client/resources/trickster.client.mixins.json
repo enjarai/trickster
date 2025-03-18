@@ -12,7 +12,6 @@
     "InventoryScreenMixin",
     "MouseMixin",
     "PlayerRendererMixin",
-    "SillyHairsFeatureRendererMixin",
     "SubtitlesHudMixin",
     "WorldRendererAccessor",
     "animation.BipedEntityModelMixin",

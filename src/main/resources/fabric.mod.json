@@ -76,7 +76,7 @@
         "owo": "*",
         "lavender": "*",
         "accessories": ">=1.0.0-beta.11",
-        "cicada": ">=0.8.2"
+        "cicada": ">=0.11.0"
     },
     "breaks": {
         "optifabric": "*"

@@ -1,9 +1,6 @@
 package dev.enjarai.trickster;
 
 import dev.enjarai.trickster.advancement.criterion.ModCriteria;
-import dev.enjarai.trickster.aldayim.Dialogue;
-import dev.enjarai.trickster.aldayim.DialogueOption;
-import dev.enjarai.trickster.aldayim.backend.PopupBackend;
 import dev.enjarai.trickster.block.ModBlocks;
 import dev.enjarai.trickster.compat.ModCompat;
 import dev.enjarai.trickster.compat.transmog.TransmogCompat;

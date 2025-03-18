@@ -117,6 +117,14 @@ dependencies {
 
     modApi("io.wispforest:accessories-fabric:${property('deps.accessories')}")
 
+    include(implementation("io.github.spair:imgui-java-binding:${property('deps.imgui')}"))
+    include(implementation("io.github.spair:imgui-java-lwjgl3:${property('deps.imgui')}") {
+        exclude group: "org.lwjgl"
+    })
+    include(implementation("io.github.spair:imgui-java-natives-windows:${property('deps.imgui')}"))
+    include(implementation("io.github.spair:imgui-java-natives-linux:${property('deps.imgui')}"))
+    include(implementation("io.github.spair:imgui-java-natives-macos:${property('deps.imgui')}"))
+
     // Optional compat
     modCompileOnly modLocalRuntime("maven.modrinth:transmog:${property('deps.transmog')}")
 }

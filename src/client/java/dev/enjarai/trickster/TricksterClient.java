@@ -1,5 +1,8 @@
 package dev.enjarai.trickster;
 
+import dev.enjarai.trickster.aldayim.Dialogue;
+import dev.enjarai.trickster.aldayim.DialogueOption;
+import dev.enjarai.trickster.aldayim.backend.ImGuiDialogueBackend;
 import dev.enjarai.trickster.block.ModBlocks;
 import dev.enjarai.trickster.entity.ModEntities;
 import dev.enjarai.trickster.item.KnotItem;
@@ -36,10 +39,13 @@ import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
+import nl.enjarai.cicada.api.imgui.ImGuiThings;
 
 public class TricksterClient implements ClientModInitializer {
     public static final MerlinKeeperTracker merlinKeeperTracker = new MerlinKeeperTracker(5);
+    public static final ImGuiDialogueBackend dialogueBackend = new ImGuiDialogueBackend();
 
     @Override
     public void onInitializeClient() {
@@ -108,8 +114,8 @@ public class TricksterClient implements ClientModInitializer {
             float poolMax = manaComponent.pool().getMax(MinecraftClient.getInstance().world);
             return poolMax == 0 ? 0
                     : MathHelper.clamp(
-                            Math.round(manaComponent.pool().get(MinecraftClient.getInstance().world) * 13.0F / poolMax),
-                            0, 13);
+                    Math.round(manaComponent.pool().get(MinecraftClient.getInstance().world) * 13.0F / poolMax),
+                    0, 13);
         };
 
         WorldRenderEvents.AFTER_ENTITIES.register(FlecksRenderer::render);
@@ -121,5 +127,32 @@ public class TricksterClient implements ClientModInitializer {
                 ScrollShelfBlockEntityRenderer::getTexturedModelData);
         EntityModelLayerRegistry.registerModelLayer(ModularSpellConstructBlockEntityRenderer.MODEL_LAYER,
                 ModularSpellConstructBlockEntityRenderer::getTexturedModelData);
+
+        ImGuiThings.add(dialogueBackend);
+
+        // TODO remove tests
+        var end = Dialogue.of(Text.of("Test 3"))
+                .title(Text.of("Testst 222"))
+                .responses(
+                        new DialogueOption(Text.of("close"), Dialogue.of(Text.empty())
+                                .onOpen((backend, newDialogue) -> null))
+                );
+
+        var test2 = Dialogue.of(Text.of("Test 2"))
+                .title(Text.of("Testst"))
+                .responses(
+                        new DialogueOption(Text.of("next"), end)
+                );
+
+        dialogueBackend.start(
+                Dialogue.of(Text.of("Test HI"))
+                        .title(Text.of("Meow"))
+                        .responses(
+                                new DialogueOption(Text.of("Ok"), test2),
+                                new DialogueOption(Text.of("Bye"), Dialogue.of(Text.of("Test 2"))
+                                        .title(Text.of("Testst"))
+                                )
+                        )
+        );
     }
 }
