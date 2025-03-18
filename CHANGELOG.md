@@ -1,1 +1,1 @@
-- Removed unnecessary Area Lib cache. (@StellarWitch7)
+- Fixed crash bugs related to levitating blocks. (@enjarai)
