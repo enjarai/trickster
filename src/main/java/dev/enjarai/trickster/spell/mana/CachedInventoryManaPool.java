@@ -7,6 +7,7 @@ import dev.enjarai.trickster.item.component.ModComponents;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class CachedInventoryManaPool implements MutableManaPool {
     private final Inventory inventory;
@@ -31,10 +32,19 @@ public class CachedInventoryManaPool implements MutableManaPool {
     @Override
     public float get(World world) {
         float result = 0;
+        var identifiedKnots = new ArrayList<UUID>();
 
         for (var i : slots) {
             var comp = inventory.getStack(i).get(ModComponents.MANA);
-            result += comp != null ? comp.pool().get(world) : 0;
+            if (comp != null) {
+                if (comp.pool() instanceof SharedManaPool(UUID uuid)) {
+                    if (identifiedKnots.contains(uuid)) {
+                        continue;
+                    }
+                    identifiedKnots.add(uuid);
+                }
+                result += comp.pool().get(world);
+            }
         }
 
         return result;
@@ -43,10 +53,19 @@ public class CachedInventoryManaPool implements MutableManaPool {
     @Override
     public float getMax(World world) {
         float result = 0;
+        var identifiedKnots = new ArrayList<UUID>();
 
         for (var i : slots) {
             var comp = inventory.getStack(i).get(ModComponents.MANA);
-            result += comp != null ? comp.pool().getMax(world) : 0;
+            if (comp != null) {
+                if (comp.pool() instanceof SharedManaPool(UUID uuid)) {
+                    if (identifiedKnots.contains(uuid)) {
+                        continue;
+                    }
+                    identifiedKnots.add(uuid);
+                }
+                result += comp.pool().getMax(world);
+            }
         }
 
         return result;

@@ -44,7 +44,7 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
                         slot,
                         source.map(either -> {
                             var mapped = either
-                                    .mapLeft(blockPos -> "(%d, %d, %d)".formatted(blockPos.getX(), blockPos.getY(), blockPos.getZ()))
+                                    .mapLeft(blockPos -> "%d, %d, %d".formatted(blockPos.getX(), blockPos.getY(), blockPos.getZ()))
                                     .mapRight(uuid -> uuid.toString());
                             return mapped.right().orElseGet(() -> mapped.left().get());
                         }).orElse("caster")

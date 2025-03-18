@@ -4,7 +4,7 @@ import io.wispforest.endec.Endec;
 import io.wispforest.endec.impl.KeyedEndec;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.registry.RegistryWrapper;
@@ -17,14 +17,14 @@ import java.util.Map;
 import java.util.function.Function;
 
 public class GraceComponent implements ServerTickingComponent, ClientTickingComponent, AutoSyncedComponent {
-    private final LivingEntity entity;
+    private final Entity entity;
 
     private final Object2IntMap<String> graces = new Object2IntOpenHashMap<>();
 
     private final Endec<Map<String, Integer>> ENDEC = Endec.map(Function.identity(), Function.identity(), Endec.INT);
     private final KeyedEndec<Map<String, Integer>> KEYED_ENDEC = ENDEC.keyed("graces", Map.of());
 
-    public GraceComponent(LivingEntity entity) {
+    public GraceComponent(Entity entity) {
         this.entity = entity;
     }
 
@@ -39,7 +39,7 @@ public class GraceComponent implements ServerTickingComponent, ClientTickingComp
     }
 
     public void tick() {
-        for (var iterator = graces.object2IntEntrySet().iterator(); iterator.hasNext(); ) {
+        for (var iterator = graces.object2IntEntrySet().iterator(); iterator.hasNext();) {
             var entry = iterator.next();
             var value = entry.getIntValue();
             if (value > 0) {
@@ -57,6 +57,15 @@ public class GraceComponent implements ServerTickingComponent, ClientTickingComp
     public void triggerGrace(String grace, int ticks) {
         graces.put(grace, ticks);
         ModEntityComponents.GRACE.sync(entity);
+    }
+
+    public void cancelGrace(String grace) {
+        graces.removeInt(grace);
+        ModEntityComponents.GRACE.sync(entity);
+    }
+
+    public int getGraceState(String grace) {
+        return graces.getInt(grace);
     }
 
     @Override

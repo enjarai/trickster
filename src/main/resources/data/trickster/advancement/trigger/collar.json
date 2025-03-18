@@ -1,0 +1,15 @@
+{
+  "parent": "trickster:trigger/root",
+  "criteria": {
+    "pickup_collar": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "trickster:collar"
+          }
+        ]
+      }
+    }
+  }
+}

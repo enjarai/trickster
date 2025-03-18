@@ -7,7 +7,7 @@
       "text": "Great Magician"
     },
     "description": {
-      "text": "Expend 128mG in a single trick"
+      "text": "Expend 128MG in a single trick"
     },
     "frame": "challenge",
     "announce_to_chat": true,

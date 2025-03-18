@@ -1,1 +1,1 @@
-- Fix crash on startup with latest Accessories version.
+- Added appropriate bounds to command arguments for scale and weight. (@StellarWitch7)

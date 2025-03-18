@@ -31,11 +31,17 @@ import java.util.function.Predicate;
 @SuppressWarnings("UnstableApiUsage")
 public class PlayerSpellSource implements SpellSource {
     private final ServerPlayerEntity player;
+    private final SpellExecutionManager executionManager;
     private final CachedInventoryManaPool pool;
     private final EquipmentSlot slot = EquipmentSlot.MAINHAND;
 
     public PlayerSpellSource(ServerPlayerEntity player) {
+        this(player, ModEntityComponents.CASTER.get(player).getExecutionManager());
+    }
+
+    public PlayerSpellSource(ServerPlayerEntity player, SpellExecutionManager executionManager) {
         this.player = player;
+        this.executionManager = executionManager;
         this.pool = new PlayerManaPool(player);
     }
 
@@ -79,7 +85,7 @@ public class PlayerSpellSource implements SpellSource {
 
     @Override
     public Optional<SpellExecutionManager> getExecutionManager() {
-        return Optional.of(ModEntityComponents.CASTER.get(player).getExecutionManager());
+        return Optional.of(executionManager);
     }
 
     @Override

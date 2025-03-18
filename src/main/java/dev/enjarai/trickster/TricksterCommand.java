@@ -14,6 +14,7 @@ import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.trick.Tricks;
 import net.minecraft.command.argument.EntityArgumentType;
+import net.minecraft.command.argument.Vec3ArgumentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.server.command.ServerCommandSource;
@@ -21,6 +22,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.*;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.Collection;
 import java.util.List;
@@ -58,7 +60,7 @@ public class TricksterCommand {
                                 literal("weight")
                                         .requires(s -> s.hasPermissionLevel(2))
                                         .then(
-                                                argument("weight", DoubleArgumentType.doubleArg(0))
+                                                argument("weight", DoubleArgumentType.doubleArg(0, 1))
                                                         .executes(
                                                                 context -> TricksterCommand.setWeight(
                                                                         context,
@@ -82,7 +84,7 @@ public class TricksterCommand {
                                 literal("scale")
                                         .requires(s -> s.hasPermissionLevel(2))
                                         .then(
-                                                argument("scale", DoubleArgumentType.doubleArg(0))
+                                                argument("scale", DoubleArgumentType.doubleArg(0.0625, 8.0))
                                                         .executes(
                                                                 context -> TricksterCommand.setScale(
                                                                         context,
@@ -96,6 +98,30 @@ public class TricksterCommand {
                                                                                 context -> TricksterCommand.setScale(
                                                                                         context,
                                                                                         DoubleArgumentType.getDouble(context, "scale"),
+                                                                                        EntityArgumentType.getEntities(context, "target")
+                                                                                )
+                                                                        )
+                                                        )
+                                        )
+                        )
+                        .then(
+                                literal("teleport")
+                                        .requires(s -> s.hasPermissionLevel(2))
+                                        .then(
+                                                argument("offset", Vec3ArgumentType.vec3())
+                                                        .executes(
+                                                                context -> TricksterCommand.teleport(
+                                                                        context,
+                                                                        Vec3ArgumentType.getVec3(context, "offset"),
+                                                                        List.of(context.getSource().getEntityOrThrow())
+                                                                )
+                                                        )
+                                                        .then(
+                                                                argument("target", EntityArgumentType.entities())
+                                                                        .executes(
+                                                                                context -> TricksterCommand.teleport(
+                                                                                        context,
+                                                                                        Vec3ArgumentType.getVec3(context, "offset"),
                                                                                         EntityArgumentType.getEntities(context, "target")
                                                                                 )
                                                                         )
@@ -201,6 +227,14 @@ public class TricksterCommand {
                 ModEntityComponents.SCALE.get(targetEntity).setScale(scale);
                 ModEntityComponents.GRACE.get(targetEntity).triggerGrace("scale", 100);
             }
+        }
+
+        return 0;
+    }
+
+    private static int teleport(CommandContext<ServerCommandSource> context, Vec3d offset, Collection<? extends Entity> targets) throws CommandSyntaxException {
+        for (var targetEntity : targets) {
+            ModEntityComponents.DISPLACEMENT.get(targetEntity).modify(offset.toVector3d());
         }
 
         return 0;

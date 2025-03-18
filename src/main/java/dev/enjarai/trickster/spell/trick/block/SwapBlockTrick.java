@@ -14,6 +14,7 @@ import dev.enjarai.trickster.spell.blunder.BlockInvalidBlunder;
 import dev.enjarai.trickster.spell.blunder.BlockUnoccupiedBlunder;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.OverlapBlunder;
+import dev.enjarai.trickster.util.Trolling;
 import net.minecraft.nbt.NbtCompound;
 
 import java.util.List;
@@ -62,11 +63,11 @@ public class SwapBlockTrick extends Trick<SwapBlockTrick> {
         var blockEntity2 = world.getBlockEntity(blockPos2);
         if (blockEntity1 != null) {
             blockEntity1Nbt = blockEntity1.createNbt(world.getRegistryManager());
-            blockEntity1.read(new NbtCompound(), world.getRegistryManager());
+            Trolling.clearBlockEntityForDeletion(world, blockEntity1);
         }
         if (blockEntity2 != null) {
             blockEntity2Nbt = blockEntity2.createNbt(world.getRegistryManager());
-            blockEntity2.read(new NbtCompound(), world.getRegistryManager());
+            Trolling.clearBlockEntityForDeletion(world, blockEntity2);
         }
 
         world.setBlockState(blockPos1, state2);

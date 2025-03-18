@@ -2,6 +2,14 @@
   "values": [
     "minecraft:ender_dragon",
     "minecraft:wither",
-    "minecraft:warden"
+    "minecraft:warden",
+    "minecraft:block_display",
+    "minecraft:interaction",
+    "minecraft:item_display",
+    "minecraft:item_frame",
+    "minecraft:leash_knot",
+    "minecraft:marker",
+    "minecraft:painting",
+    "minecraft:text_display"
   ]
 }

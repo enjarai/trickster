@@ -74,11 +74,13 @@ import dev.enjarai.trickster.spell.trick.func.ExecuteTrick;
 import dev.enjarai.trickster.spell.trick.func.ExecuteWithinCurrentScopeTrick;
 import dev.enjarai.trickster.spell.trick.func.FoldTrick;
 import dev.enjarai.trickster.spell.trick.func.ForkTrick;
+import dev.enjarai.trickster.spell.trick.func.GetAllArgumentsTrick;
 import dev.enjarai.trickster.spell.trick.func.GetCurrentThreadTrick;
 import dev.enjarai.trickster.spell.trick.func.KillThreadTrick;
 import dev.enjarai.trickster.spell.trick.func.LoadArgumentTrick;
 import dev.enjarai.trickster.spell.trick.func.SupplierTrick;
 import dev.enjarai.trickster.spell.trick.func.TryCatchTrick;
+import dev.enjarai.trickster.spell.trick.list.CreateNumberRangeTrick;
 import dev.enjarai.trickster.spell.trick.list.ListAddRangeTrick;
 import dev.enjarai.trickster.spell.trick.list.ListAddTrick;
 import dev.enjarai.trickster.spell.trick.list.ListCreateTrick;
@@ -191,6 +193,7 @@ public class Tricks {
     public static final SupplierTrick SUPPLIER = register("supplier", new SupplierTrick());
     public static final KillThreadTrick KILL_THREAD = register("kill_thread", new KillThreadTrick());
     public static final GetCurrentThreadTrick CURRENT_THREAD = register("current_thread", new GetCurrentThreadTrick());
+    public static final GetAllArgumentsTrick GET_ALL_ARGUMENTS = register("get_all_arguments", new GetAllArgumentsTrick());
     public static final LoadArgumentTrick LOAD_ARGUMENT_1 = register("load_argument_1", new LoadArgumentTrick(Pattern.of(4, 1), 0));
     public static final LoadArgumentTrick LOAD_ARGUMENT_2 = register("load_argument_2", new LoadArgumentTrick(Pattern.of(4, 2), 1));
     public static final LoadArgumentTrick LOAD_ARGUMENT_3 = register("load_argument_3", new LoadArgumentTrick(Pattern.of(4, 5), 2));
@@ -238,6 +241,7 @@ public class Tricks {
     public static final RaycastBlockSideTrick RAYCAST_SIDE = register("raycast_side", new RaycastBlockSideTrick());
     public static final RaycastEntityTrick RAYCAST_ENTITY = register("raycast_entity", new RaycastEntityTrick());
     public static final AddVelocityTrick ADD_VELOCITY = register("add_velocity", new AddVelocityTrick());
+    public static final DisplaceEntityTrick DISPLACE = register("displace", new DisplaceEntityTrick());
     public static final ChangeWeightTrick CHANGE_WEIGHT = register("change_weight", new ChangeWeightTrick());
     public static final PolymorphTrick POLYMORPH = register("polymorph", new PolymorphTrick());
     public static final DispelPolymorphTrick DISPEL_POLYMORPH = register("dispel_polymorph", new DispelPolymorphTrick());
@@ -309,6 +313,7 @@ public class Tricks {
     public static final ListRemoveElementTrick LIST_REMOVE_ELEMENT = register("list_remove_element", new ListRemoveElementTrick());
     public static final ListRemoveTrick LIST_REMOVE = register("list_remove", new ListRemoveTrick());
     public static final ListSizeTrick LIST_SIZE = register("list_size", new ListSizeTrick());
+    public static final CreateNumberRangeTrick CREATE_NUMBER_RANGE = register("create_number_range", new CreateNumberRangeTrick());
 
     // Map
     public static final MapGetTrick MAP_GET = register("map_get", new MapGetTrick());

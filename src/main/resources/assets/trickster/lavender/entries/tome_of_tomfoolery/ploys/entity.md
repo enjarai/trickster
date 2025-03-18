@@ -6,6 +6,7 @@
   "additional_search_terms": [
     "Kinetic Ploy",
     "Ploy of Featherweight",
+    "Ploy of the Usurper",
     "Polymorph Ploy",
     "Dispel Polymorph Ploy",
     "Containment Ploy",
@@ -36,6 +37,16 @@ entity, number -> entity
 <|cost-rule@trickster:templates|formula=60kG * (1 - multiplier)|>
 
 Given a number between zero and one, multiplies the given entity's effective gravity by that number for one second, provided it is alive.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:displace,title=Ploy of the Usurper|>
+
+entity, vector -> entity
+
+<|cost-rule@trickster:templates|formula=20kG + 1.35^length|>
+
+Displaces the given entity by the given vector after two seconds.
 
 ;;;;;
 

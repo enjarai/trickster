@@ -41,6 +41,7 @@ public abstract class ItemMixin {
     private void addGarble(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType type, CallbackInfo ci) {
         var spellComponent = stack.get(ModComponents.FRAGMENT);
         var manaComponent = stack.get(ModComponents.MANA);
+        var collarComponent = stack.get(ModComponents.COLLAR_LINK);
 
         if (spellComponent != null) {
             if (spellComponent.closed()) {
@@ -55,6 +56,10 @@ public abstract class ItemMixin {
             if (Trickster.merlinTooltipAppender != null) {
                 Trickster.merlinTooltipAppender.appendTooltip(stack, context, tooltip, type);
             }
+        }
+
+        if (collarComponent != null) {
+            tooltip.add(Text.translatable("trickster.tooltip.collar_link", collarComponent.uuid()).withColor(0x775577));
         }
     }
 

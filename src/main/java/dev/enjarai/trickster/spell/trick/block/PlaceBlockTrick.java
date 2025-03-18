@@ -14,13 +14,14 @@ import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.Signature;
 import net.minecraft.entity.ItemEntity;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.state.property.Properties;
 import net.minecraft.world.event.GameEvent;
 
-import java.util.List;
 import java.util.Optional;
 
 public class PlaceBlockTrick extends Trick<PlaceBlockTrick> {
@@ -53,6 +54,10 @@ public class PlaceBlockTrick extends Trick<PlaceBlockTrick> {
 
             if (!world.getBlockState(blockPos).isReplaceable() || !state.canPlaceAt(world, blockPos)) {
                 throw new CannotPlaceBlockBlunder(this, state.getBlock(), pos);
+            }
+
+            if (state.contains(Properties.WATERLOGGED)) {
+                state = state.with(Properties.WATERLOGGED, world.getFluidState(blockPos).getFluid() == Fluids.WATER);
             }
 
             var dist = ctx.source().getPos().distance(pos.vector());
