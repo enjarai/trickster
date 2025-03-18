@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.render.entity;
 
+import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.entity.LevitatingBlockEntity;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -22,7 +23,13 @@ import net.minecraft.world.World;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 public class LevitatingBlockEntityRenderer extends EntityRenderer<LevitatingBlockEntity> {
+    private static final Set<Identifier> erroredBlockEntities = new HashSet<>();
+
     private final BlockRenderManager blockRenderManager;
 
     public LevitatingBlockEntityRenderer(EntityRendererFactory.Context context) {
@@ -59,7 +66,7 @@ public class LevitatingBlockEntityRenderer extends EntityRenderer<LevitatingBloc
                 );
             }
 
-            if (fallingBlockEntity.cachedBlockEntity != null) {
+            try {
                 var blockEntityRenderer = MinecraftClient.getInstance().getBlockEntityRenderDispatcher().get(fallingBlockEntity.cachedBlockEntity);
                 if (blockEntityRenderer != null) {
                     blockEntityRenderer.render(
@@ -67,6 +74,16 @@ public class LevitatingBlockEntityRenderer extends EntityRenderer<LevitatingBloc
                             WorldRenderer.getLightmapCoordinates(fallingBlockEntity.getWorld(), fallingBlockEntity.getBlockPos()),
                             OverlayTexture.DEFAULT_UV
                     );
+                }
+            } catch (Exception e) {
+                if (fallingBlockEntity.cachedBlockEntity != null && fallingBlockEntity.cachedBlockEntity.getType().getRegistryEntry() != null) {
+                    var entityId = fallingBlockEntity.cachedBlockEntity.getType().getRegistryEntry().registryKey().getValue();
+
+                    if (!erroredBlockEntities.contains(entityId)) {
+                        Trickster.LOGGER.error("Failed to render block entity '{}' as levitating block. No further errors will be logged for this type.", entityId, e);
+
+                        erroredBlockEntities.add(entityId);
+                    }
                 }
             }
         }
