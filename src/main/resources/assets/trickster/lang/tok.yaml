@@ -277,7 +277,7 @@ trickster:
       EntityTypeFragment: Entity Type
 
   blunder:
-    unknown_trick: Unknown trick
+    unknown_trick: mi sona ala e nimi ni
     unknown_event: Unknown event
     unknown_entity: Unknown entity
     address_not_in_tree: "Spell does not contain a circle at this address: %s"
