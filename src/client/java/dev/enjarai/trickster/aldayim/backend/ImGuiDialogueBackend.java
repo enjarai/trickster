@@ -26,7 +26,7 @@ public class ImGuiDialogueBackend implements DialogueBackend, ImGuiThing {
     public void render() {
         for (var dialogue : dialogueStack.stream().toList()) {
 
-            ImGui.begin(dialogue.getTitle().getString());
+            ImGui.begin(dialogue.getId());
             ImGui.text(dialogue.getPrompt().getString());
 
             ImGui.beginDisabled(dialogueStack.peek() != dialogue);

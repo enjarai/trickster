@@ -4,6 +4,7 @@ import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Supplier;
 
 public interface Dialogue {
@@ -13,7 +14,7 @@ public interface Dialogue {
     @Nullable
     Dialogue next(DialogueBackend backend, @Nullable Option option);
 
-    Text getTitle();
+    String getId();
 
     Text getPrompt();
 
@@ -26,8 +27,6 @@ public interface Dialogue {
     static Dialogue translatable(String key) {
         return new Impl(Text.translatable(key));
     }
-
-    Dialogue title(Text title);
 
     Dialogue responses(Option... options);
 
@@ -48,6 +47,7 @@ public interface Dialogue {
     }
 
     class Impl implements Dialogue {
+        private UUID id = UUID.randomUUID();
         private OpenHandler openHandler = (backend, newDialogue) -> newDialogue;
         private NextHandler nextHandler = (backend, oldDialogue, option) -> option == null ? null : option.resultDialogue().get();
         private Text prompt;
@@ -73,8 +73,8 @@ public interface Dialogue {
         }
 
         @Override
-        public Text getTitle() {
-            return title;
+        public String getId() {
+            return id.toString();
         }
 
         @Override
@@ -85,12 +85,6 @@ public interface Dialogue {
         @Override
         public List<Option> responses() {
             return responses;
-        }
-
-        @Override
-        public Dialogue title(Text title) {
-            this.title = title;
-            return this;
         }
 
         @Override

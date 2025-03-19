@@ -129,30 +129,5 @@ public class TricksterClient implements ClientModInitializer {
                 ModularSpellConstructBlockEntityRenderer::getTexturedModelData);
 
         ImGuiThings.add(dialogueBackend);
-
-        // TODO remove tests
-        var end = Dialogue.of(Text.of("Test 3"))
-                .title(Text.of("Testst 222"))
-                .responses(
-                        Option.of(Text.of("close"), Dialogue.of(Text.empty())
-                                .onOpen((backend, newDialogue) -> null))
-                );
-
-        var test2 = Dialogue.of(Text.of("Test 2"))
-                .title(Text.of("Testst"))
-                .responses(
-                        Option.of(Text.of("next"), end)
-                );
-
-        dialogueBackend.start(
-                Dialogue.of(Text.of("Test HI"))
-                        .title(Text.of("Meow"))
-                        .responses(
-                                Option.of(Text.of("Ok"), test2),
-                                Option.of(Text.of("Bye"), Dialogue.of(Text.of("Test 2"))
-                                        .title(Text.of("Testst"))
-                                )
-                        )
-        );
     }
 }
