@@ -1,7 +1,5 @@
 package dev.enjarai.trickster;
 
-import dev.enjarai.trickster.aldayim.Dialogue;
-import dev.enjarai.trickster.aldayim.Dialogue.Option;
 import dev.enjarai.trickster.aldayim.backend.ImGuiDialogueBackend;
 import dev.enjarai.trickster.block.ModBlocks;
 import dev.enjarai.trickster.entity.ModEntities;
@@ -31,6 +29,7 @@ import io.wispforest.owo.ui.parsing.UIParsing;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
@@ -39,7 +38,6 @@ import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
-import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import nl.enjarai.cicada.api.imgui.ImGuiThings;
 
@@ -61,8 +59,10 @@ public class TricksterClient implements ClientModInitializer {
         ModClientNetworking.register();
 
         BlockEntityRendererFactories.register(ModBlocks.SPELL_CONSTRUCT_ENTITY, SpellConstructBlockEntityRenderer::new);
-        BlockEntityRendererFactories.register(ModBlocks.MODULAR_SPELL_CONSTRUCT_ENTITY,
-                ModularSpellConstructBlockEntityRenderer::new);
+        BlockEntityRendererFactories.register(
+                ModBlocks.MODULAR_SPELL_CONSTRUCT_ENTITY,
+                ModularSpellConstructBlockEntityRenderer::new
+        );
         BlockEntityRendererFactories.register(ModBlocks.SCROLL_SHELF_ENTITY, ScrollShelfBlockEntityRenderer::new);
         BlockEntityRendererFactories.register(ModBlocks.CHARGING_ARRAY_ENTITY, ChargingArrayBlockEntityRenderer::new);
 
@@ -73,8 +73,10 @@ public class TricksterClient implements ClientModInitializer {
         UIParsing.registerFactory(Trickster.id("spell-preview"), SpellPreviewComponent::parse);
         UIParsing.registerFactory(Trickster.id("item-tag"), ItemTagComponent::parse);
 
-        ParticleFactoryRegistry.getInstance().register(ModParticles.PROTECTED_BLOCK,
-                ProtectedBlockParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(
+                ModParticles.PROTECTED_BLOCK,
+                ProtectedBlockParticle.Factory::new
+        );
         ParticleFactoryRegistry.getInstance().register(ModParticles.SPELL, SpellParticle.Factory::new);
 
         AccessoriesRendererRegistry.registerRenderer(ModItems.TOP_HAT, HoldableHatRenderer::new);
@@ -94,13 +96,21 @@ public class TricksterClient implements ClientModInitializer {
 
                 if (editing != serverEditing) {
                     ModNetworking.CHANNEL.clientHandle()
-                            .send(new IsEditingScrollPacket(editing, editing
-                                    ? ((ScrollAndQuillScreen) client.currentScreen).getScreenHandler().isOffhand()
-                                    : false));
+                            .send(
+                                    new IsEditingScrollPacket(
+                                            editing, editing
+                                                    ? ((ScrollAndQuillScreen) client.currentScreen).getScreenHandler().isOffhand()
+                                                    : false
+                                    )
+                            );
                 }
             }
         });
         ClientTickEvents.END_CLIENT_TICK.register(merlinKeeperTracker::tick);
+
+        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
+            dialogueBackend.resetStack();
+        });
 
         Trickster.merlinTooltipAppender = merlinKeeperTracker;
         KnotItem.barStepFunction = stack -> {
@@ -114,8 +124,9 @@ public class TricksterClient implements ClientModInitializer {
             float poolMax = manaComponent.pool().getMax(MinecraftClient.getInstance().world);
             return poolMax == 0 ? 0
                     : MathHelper.clamp(
-                    Math.round(manaComponent.pool().get(MinecraftClient.getInstance().world) * 13.0F / poolMax),
-                    0, 13);
+                            Math.round(manaComponent.pool().get(MinecraftClient.getInstance().world) * 13.0F / poolMax),
+                            0, 13
+                    );
         };
 
         WorldRenderEvents.AFTER_ENTITIES.register(FlecksRenderer::render);
@@ -123,10 +134,14 @@ public class TricksterClient implements ClientModInitializer {
         HudRenderCallback.EVENT.register(BarsRenderer::render);
         HudRenderCallback.EVENT.register(SpellConstructErrorRenderer::render);
 
-        EntityModelLayerRegistry.registerModelLayer(ScrollShelfBlockEntityRenderer.MODEL_LAYER,
-                ScrollShelfBlockEntityRenderer::getTexturedModelData);
-        EntityModelLayerRegistry.registerModelLayer(ModularSpellConstructBlockEntityRenderer.MODEL_LAYER,
-                ModularSpellConstructBlockEntityRenderer::getTexturedModelData);
+        EntityModelLayerRegistry.registerModelLayer(
+                ScrollShelfBlockEntityRenderer.MODEL_LAYER,
+                ScrollShelfBlockEntityRenderer::getTexturedModelData
+        );
+        EntityModelLayerRegistry.registerModelLayer(
+                ModularSpellConstructBlockEntityRenderer.MODEL_LAYER,
+                ModularSpellConstructBlockEntityRenderer::getTexturedModelData
+        );
 
         ImGuiThings.add(dialogueBackend);
     }

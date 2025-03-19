@@ -159,7 +159,7 @@ jar {
 
 yamlang {
     targetSourceSets = [sourceSets.main]
-    inputDir = "assets"
+    inputDir = "assets/trickster/lang" //TODO: add trickster_aldayim
 }
 
 // configure the maven publication
