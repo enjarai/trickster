@@ -1,0 +1,425 @@
+trickster:
+  screen:
+    scroll_container: poki lipu
+    scroll_and_quill: lipu en ilo sitelen
+    mirror_of_evaluation: ilo lukin pali
+    sign_scroll: lipu lukin
+    written_scroll: lipu pi jo sitelen
+
+  text:
+    misc:
+      value_truncated: namako li lon
+
+  widget:
+    scroll_name: nimi lipu...
+    enter_scroll_name: 'nimi lipu ni li:'
+    scroll_sign_note:
+      line0: sina pana e nimi sina la
+      line1: sina ken ala ante e ni
+    load_button: o pini e lipu
+
+  message:
+    missing_scroll: Hold a Scroll and Quill in your other hand to import example spells
+    immutable_scroll: "Invalid scroll: Can't be written to"
+    loaded_example: Example imported!
+    import_example:
+      .: Import this example spell?
+      description: This will §loverwrite§r the Scroll and Quill in your other hand with the chosen example spell.
+
+  item_group: Trickster
+
+  scroll_hat: 'poki nanpa lukin li %d'
+  scroll_executable: 'sina ken open pi wan taso e ni \n ni li jo e wawa %d'
+
+  unnamed_entity: %s (pi jo ala nimi)
+
+  trick.trickster:
+    add: Annexation Stratagem
+    subtract: Desertion Stratagem
+    multiply: Domination Stratagem
+    divide: Submission Stratagem
+    modulo: Distortion of Wholes
+    power: Distortion of Supremacy
+    max: Noble Stratagem
+    min: Insignificance Stratagem
+    ceil: Distortion of Grandeur
+    floor: Distortion of Humility
+    round: Distortion of Objectivity
+    sin: Primary Distortion of Geometry
+    cos: Secondary Distortion of Geometry
+    tan: Tertiary Distortion of Geometry
+    arcsin: Primary Inverse Distortion of Geometry
+    arccos: Secondary Inverse Distortion of Geometry
+    arctan: Tertiary Inverse Distortion of Geometry
+    arctan2: Cartesian Angle Distortion
+
+    if_else: Decision Distortion
+    equals: Parity Stratagem
+    not_equals: Disparity Stratagem
+    all: Stratagem Bar None
+    any: Stratagem In General
+    none: Stratagem In Absence
+    greater_than: Greater Distortion
+    lesser_than: Lesser Distortion
+
+    extract_x: Primary Distortion
+    extract_y: Secondary Distortion
+    extract_z: Tertiary Distortion
+    merge_vector: Absorption Distortion
+    dot_product: Alignment Distortion
+    cross_product: Perpendicular Distortion
+    normalize: Regularity Distortion
+    align_vector: Aligned Regularity Distortion
+    invert: Inversion Distortion
+    abs: Absolutist's Distortion
+    length: Magnitude Distortion
+
+    two: tu
+    read_spell: Notulist's Ingress
+    clear_spell: Alethophobe's Ploy
+    write_spell: Notulist's Ploy
+    write_closed_spell: Proprietary Notulist's Ploy
+    write_macro_ring: Macro Ploy
+    read_macro_ring: Macro Delusion
+    reveal: Showcase Stratagem
+    read_crow_mind: Crow Mind Delusion
+    write_crow_mind: Crow Mind Ploy
+    cost: Cost Ploy
+
+    reflection: Positioning Delusion
+    caster_reflection: Reflection Delusion
+    mana_reflection: Authority Delusion
+    max_mana_reflection: Crowning Delusion
+    facing_reflection: Directional Delusion
+    hotbar_reflection: Framed Delusion
+
+    height_reflection: Stature Ingress
+    sneaking_reflection: Alternative Ingress
+    sprinting_reflection: Trekking Ingress
+    blocking_reflection: Guard Ingress
+    raycast: Pinpoint Ingress
+    raycast_side: Bearing Ingress
+    raycast_entity: Mark Ingress
+    get_entity_type: Motive Verification Ingress
+    get_position: Locational Ingress
+    get_eye_position: Perspective Ingress
+    get_facing: Directional Ingress
+    get_max_health: Vigor Ingress
+    get_health: Fettle Ingress
+    get_armour: Bulwark Ingress
+    get_velocity: Movement Ingress
+    add_velocity: Kinetic Ploy
+    change_weight: Ploy of Featherweight
+    store_entity: Containment Ploy
+    release_entity: Extrication Ploy
+
+    polymorph: Polymorph Ploy
+    dispel_polymorph: Dispel Polymorph Ploy
+
+    summon_arrow: Ballista's Ploy
+    summon_fireball: Pyromancer's Ploy
+    summon_dragon_breath: Dragon's Ploy
+    summon_tnt: Demolitionist's Ploy
+
+    block_find_entity: Embracing Ingress
+    range_find_entity: Ingress of Shared Fate
+
+    execute: Grand Stratagem
+    execute_same_scope: Quiet Distortion
+    fork: Utensil Stratagem
+    fold: Folding Distortion
+    try_catch: Cautious Stratagem
+    closure: Closure Stratagem
+    supplier: Supply Distortion
+    kill_thread: Executioner's Ploy
+    current_thread: Delusion of Order
+    load_argument_1: Primary Delusion
+    load_argument_2: Secondary Delusion
+    load_argument_3: Tertiary Delusion
+    load_argument_4: Quaternary Delusion
+    load_argument_5: Quinary Delusion
+    load_argument_6: Senary Delusion
+    load_argument_7: Septenary Delusion
+    load_argument_8: Octonary Delusion
+
+    list_create: Catalogue Delusion
+    list_add: Expansion Stratagem
+    list_add_range: Collection Stratagem
+    list_take_range: Isolation Distortion
+    list_reverse: Counter Distortion
+    list_insert: Inflation Stratagem
+    list_get: Extraction Distortion
+    list_index_of: Locating Distortion
+    list_remove: Expulsion Stratagem
+    list_remove_element: Eviction Stratagem
+    list_size: Tally Distortion
+
+    locate_glyph: Pinpoint Distortion
+    locate_glyphs: Discovering Distortion
+    retrieve_glyph: Retrieval Distortion
+    set_glyph: Replacement Distortion
+    retrieve_subtree: Felling Distortion
+    set_subtree: Grafting Distortion
+    add_subtree: Branching Distortion
+    remove_subtree: Pruning Distortion
+    get_subparts: Bundle Distortion
+    escape_pattern: Interpretation Distortion
+
+    map_get: Navigator's Distortion
+    map_insert: Charting Stratagem
+    map_merge: Admiral's Stratagem
+    map_remove: Stratagem of Annulment
+
+    break_block: pakala leko
+    place_block: pali ma
+    swap_block: esun leko
+    conjure_flower: pali kule
+    conjure_water: pali telo
+    conjure_light: pali suno
+    drain_fluid: weka telo
+    power_resonator: pali wawa
+    heat: pali selo
+    cool: weka selo
+    erode: pakala ma
+
+    get_block_hardness: Ingress of Hardness
+    check_block: Ingress of Validation
+    can_place_block: Ingress of Suitability
+    check_resonator: Ingress of Resonance
+    get_redstone_power: Ingress of Logic
+
+    import: Assistance Stratagem
+    import_hat: Cranium Stratagem
+    check_hat: Cranium Delusion
+    set_hat: tawa pi len lawa
+    other_hand: Juggling Delusion
+    other_hand_slot: Catch Delusion
+    get_item_in_slot: Fence's Ingress
+    get_mana_in_slot: Ingress of Authority
+    get_count_in_slot: Ingress of Plenitude
+    get_max_mana_in_slot: Crowning Ingress
+    get_inventory_slot: Intrusive Ingress
+    drop_stack_from_slot: pali poki
+    swap_slot: esun poki
+    block_from_item: Placement Distortion
+    item_from_block: Pickup Distortion
+
+    type_fragment: Argumentative Distortion
+    hash_values: Decaying Distortion
+    delay_execution: awen tenpo
+    pin_chunk: awen ma
+    get_dimension: Dimensional Delusion
+    show_bar: pana pi linja nanpa
+    clear_bar: weka pi linja nanpa
+
+    highlight: Flourish Ploy
+
+    draw_spell: pana pi toki wawa
+    draw_line: pana linjA
+    get_flecks: Observer's Ingress
+
+    get_scale: Distortion of Occupation
+    set_scale: pali seli
+
+    transmog: Ploy of Transmogrification
+    hidden_transmog: Ploy of Subterfuge
+    remove_transmog: Ploy of Origin
+    get_transmog: Ingress of Transmogrification
+
+    battery_creation: pali pi sike wawa
+    push_mana: pana wawa
+    pull_mana: jo wawa
+
+    message_send: toki
+    message_listen: Ploy of Receipt
+
+  fragment:
+    trickster:
+      type: Type
+      number: Number
+      boolean: Boolean
+      vector: Vector
+      list: List
+      map: Map
+      void: Void
+      pattern: Pattern
+      pattern_literal: Pattern Literal
+      spell_part: Spell
+      entity: Entity
+      slot: Slot
+      zalgo: §kZalgo
+      item_type: Item
+      block_type: Block
+      entity_type: Entity Type
+    class:
+      Fragment: Any
+      AddableFragment: Addable
+      DivisibleFragment: Divisible
+      FoldableFragment: Foldable
+      MultiplicableFragment: Multiplicable
+      RoundableFragment: Roundable
+      SubtractableFragment: Subtractable
+      TypeFragment: Type
+      NumberFragment: Number
+      BooleanFragment: Boolean
+      VectorFragment: Vector
+      ListFragment: List
+      MapFragment: Map
+      VoidFragment: Void
+      PatternGlyph: Pattern
+      Pattern: Pattern Literal
+      SpellPart: Spell
+      EntityFragment: Entity
+      SlotFragment: Slot
+      ZalgoFragment: §kZalgo
+      ItemTypeFragment: Item
+      BlockTypeFragment: Block
+      EntityTypeFragment: Entity Type
+
+  blunder:
+    unknown_trick: Unknown trick
+    unknown_event: Unknown event
+    unknown_entity: Unknown entity
+    address_not_in_tree: "Spell does not contain a circle at this address: %s"
+    assertion: "Assertion failed for value: %s"
+    atomic_chunk_too_large: Atomic spell is too large to be run in a single tick
+    block_invalid:
+      block_supplied: Invalid block type. Did not expect %s
+      block_not_supplied: Invalid block type.
+    block_too_hard: Block cannot be broken by spells
+    block_occupied: Block at %s occupied
+    block_unoccupied: Block at %s unoccupied
+    cannot_place_block: Cannot place %s at %s
+    cannot_edit_block: "Cannot edit block %s, restricted by operator."
+    division_by_zero: Division by zero
+    entity_already_stored: There is already an entity stored in the offhand item
+    entity_cannot_be_stored: Cannot store %s
+    entity_invalid: Invalid entity
+    execution_limit_reached: Execution limit reached
+    illegal_operation_in_atomic: Illegal operation in atomic spell
+    immutable_item: "Item immutable, cannot write spell"
+    incompatible_source: Incompatible casting source
+    incompatible_types: Incompatible types
+    index_out_of_bounds: "Index out of bounds: %s"
+    invalid_entity: Invalid entity
+    invalid_inputs: "Invalid inputs, the following signatures are valid for this trick:"
+    invalid_item: Invalid item
+    missing_amethyst: Not enough amethyst in inventory
+    missing_item: Missing item
+    nan: Number must be a number
+    no_free_item_slot: No free item slot.
+    no_player : No player available
+    no_such_slot : Item slot does not exist
+    not_enough_mana: "Not enough mana, at least %s required"
+    number_too_large: "Number too large, expected %s or lesser"
+    number_too_small: "Number too small, expected %s or greater"
+    out_of_range: "Range out of bounds: %s is more than: %s"
+    overweight_fragment: Result fragment is overweight, result is %s
+    overlapping_positions: "Overlapping positions : %s, %s"
+
+item.trickster:
+  tome_of_tomfoolery: lipu musi
+  mirror_of_evaluation: ilo lukin pali
+
+  scroll_and_quill: lipu en ilo sitelen
+  scroll_and_quill_black: lipu pimeja en ilo sitelen
+  scroll_and_quill_blue: lipu pi laso telo en ilo sitelen
+  scroll_and_quill_brown: lipu pi kule ma en ilo sitelen
+  scroll_and_quill_cyan: lipu pi kule laso en ilo sitelen
+  scroll_and_quill_gray: lipu pi pimeja walo en ilo sitelen
+  scroll_and_quill_green: lipu pi kule kasi en ilo sitelen
+  scroll_and_quill_light_blue: lipu pi laso sewi en ilo sitelen
+  scroll_and_quill_light_gray: lipu pi walo pimeja en ilo sitelen
+  scroll_and_quill_lime: lipu pi laso jelo en ilo sitelen
+  scroll_and_quill_magenta: lipu pi loje laso en ilo sitelen
+  scroll_and_quill_orange: lipu pi loje selo en ilo sitelen
+  scroll_and_quill_pink: lipu pi loje walo en ilo sitelen
+  scroll_and_quill_purple: lipu pi laso loje en ilo sitelen
+  scroll_and_quill_red: lipu lajo en ilo sitelen
+  scroll_and_quill_white: lipu walo en ilo sitelen
+  scroll_and_quill_yellow: lipu jelo en ilo sitelen
+
+  written_scroll: lipu pi jo sitelen en ilo sitelen
+  written_scroll_black: lipu pi jo sitelen pimeja en ilo sitelen
+  written_scroll_blue: lipu pi laso telo pi jo sitelen en ilo sitelen
+  written_scroll_brown: lipu pi kule ma pi jo sitelen en ilo sitelen
+  written_scroll_cyan: lipu pi kule laso pi jo sitelen en ilo sitelen
+  written_scroll_gray: lipu pi pimeja walo pi jo sitelen en ilo sitelen
+  written_scroll_green: lipu pi kule kasi pi jo sitelen en ilo sitelen
+  written_scroll_light_blue: lipu pi laso sewi pi jo sitelen en ilo sitelen
+  written_scroll_light_gray: lipu pi walo pimeja pi jo sitelen en ilo sitelen
+  written_scroll_lime: lipu pi laso jelo pi jo sitelen en ilo sitelen
+  written_scroll_magenta: lipu pi loje laso pi jo sitelen en ilo sitelen
+  written_scroll_orange: lipu pi loje selo pi jo sitelen en ilo sitelen
+  written_scroll_pink: lipu pi loje walo pi jo sitelen en ilo sitelen
+  written_scroll_purple: lipu pi laso loje pi jo sitelen en ilo sitelen
+  written_scroll_red: lipu lajo pi jo sitelen en ilo sitelen
+  written_scroll_white: lipu walo pi jo sitelen en ilo sitelen
+  written_scroll_yellow: lipu jelo pi jo sitelen en ilo sitelen
+
+  warding_charm: oko pi weka ike
+  spell_ink: telo wawa
+  top_hat: len lawa wawa
+  witch_hat: len lawa usawi
+  fez: len lawa loje
+  wand: palisa wawa
+  macro_ring: sike lejo nimi
+
+  amethyst_knot: poki wawa pi kiwen kalama
+  emerald_knot: poki wawa pi kiwen esun
+  diamond_knot: poki wawa pi kiwen laso
+  echo_knot: poki wawa pi kalama sama
+
+  cracked_echo_knot: poki wawa pakala pi kalama sama
+  command_knot: poki pi wawa ale
+
+  spell_core: insa pi toki wawa
+  rusted_spell_core: insa seli pi toki wawa
+  ominous_spell_core: insa lili ike pi toki wawa
+
+block.trickster:
+  spell_resonator: kute pi sona kalama
+  spell_construct: leko pi toki insa
+  modular_spell_construct: leko pi toki insa pi kipisi mute
+  light: suno
+  scroll_shelf: poki pi lipu wawa
+
+effect.trickster:
+  mana_boost: Mana Hyperflux
+  mana_deficiency: Mana Hypoflux
+
+tag.item.trickster:
+  can_evaluate_dynamically: Can Evaluate Dynamically
+  holdable_hat: Holdable Hats
+  scrolls: Scrolls
+  spell_cost: Spell Cost
+
+death.attack:
+  mana_overflux: "%1$s's magic show has met an untimely end."
+  mana_overflux.player: "%2$s brought an end to %1$s's magic show."
+
+key:
+  categories:
+    trickster: Trickster
+
+  trickster:
+    take_hat: Take Hat
+    modify_spell: Modify Spell (Creative only)
+
+text.config.trickster-config:
+  title: Trickster Config
+  section:
+    client: Client
+    server: Server
+    aurora-client: Aurora's Personal Client Tweaks
+  option:
+    topHatInterceptScrolling: Offhand hat intercepts hotbar scrolling
+    invertTopHatScrolling: Invert hat scrolling
+    revealToHotbar: Write revealed values to action bar
+    maxExecutionsPerSpellPerTick: Max operations per tick per spell
+    allowSwapBedrock: Permit block swapping of bedrock
+    maxBlockBreakingHardness: Max hardness for Ploy of Destruction
+
+    dragDrawing: Draw by dragging
+    barsHorizontal: Show spell-created bars horizontally
+    disableOffhandScrollOpening: Require scroll in main hand to edit
