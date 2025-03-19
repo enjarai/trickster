@@ -1,5 +1,7 @@
 package dev.enjarai.trickster.net;
 
+import dev.enjarai.trickster.TricksterClient;
+import dev.enjarai.trickster.aldayim.dialogue.AldayimDialogue;
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.mixin.client.WorldRendererAccessor;
 import dev.enjarai.trickster.spell.Fragment;
@@ -15,14 +17,15 @@ public class ModClientNetworking {
         ModNetworking.CHANNEL.registerClientbound(RebuildChunkPacket.class, (message, access) -> {
             var pos = message.pos();
 
-            ChunkSectionPos.forEachChunkSectionAround(pos, chunk ->
-                    ((WorldRendererAccessor) access.runtime().worldRenderer)
+            ChunkSectionPos.forEachChunkSectionAround(
+                    pos, chunk -> ((WorldRendererAccessor) access.runtime().worldRenderer)
                             .trickster$scheduleChunkRender(
                                     ChunkSectionPos.unpackX(chunk),
                                     ChunkSectionPos.unpackY(chunk),
                                     ChunkSectionPos.unpackZ(chunk),
                                     true
-                            ));
+                            )
+            );
         });
         ModNetworking.CHANNEL.registerClientbound(GrabClipboardSpellPacket.class, (message, access) -> {
             var clipboard = access.runtime().keyboard.getClipboard();
@@ -48,5 +51,11 @@ public class ModClientNetworking {
                 ModEntityComponents.PLAYER_ANIMATION.get(player).hatTakeyNess = 1;
             }
         });
+        ModNetworking.CHANNEL.registerClientbound(
+                TskEveryoneThinksTheGraveDirtAndAnimatedDustWillBeEnoughAndTheyDontBotherToMakeTheOilNoOneTakesTheTimeToDoAProperJobOfThingsAsIfTheFortyHoursOfRefinementInTheAlembicCouldntBeProductivelyFilled.class,
+                (message, access) -> {
+                    TricksterClient.dialogueBackend.start(AldayimDialogue.INSTANCE);
+                }
+        );
     }
 }

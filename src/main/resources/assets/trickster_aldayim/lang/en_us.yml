@@ -1,0 +1,16 @@
+trickster_aldayim:
+  start_1: Who is there?
+  start_2: '"Okay?" Is that all you have to say? It has been so long...'
+  start_3: You have other options, you know...
+  start_4:
+    ok: Sigh... wait... you are not the same as before...
+    i_do: Yes, quite so... wait... you are not the same as before...
+  before_1: Before those of the underground ceased to call upon me... before they left me alone...
+  before_2: You are not of the underground. Curious...
+  who_are_you: I am Kon and a friend of mages
+
+  option:
+    ok: Okay
+    i_do: I do?
+    before: Before?
+    who_are_you: Who are you?

@@ -159,7 +159,7 @@ jar {
 
 yamlang {
     targetSourceSets = [sourceSets.main]
-    inputDir = "assets/trickster/lang"
+    inputDir = "assets"
 }
 
 // configure the maven publication

@@ -7,9 +7,11 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public interface Dialogue {
-    @Nullable Dialogue open(DialogueBackend backend);
+    @Nullable
+    Dialogue open(DialogueBackend backend);
 
-    @Nullable Dialogue next(DialogueBackend backend, @Nullable Option option);
+    @Nullable
+    Dialogue next(DialogueBackend backend, @Nullable Option option);
 
     Text getTitle();
 
@@ -19,6 +21,10 @@ public interface Dialogue {
 
     static Dialogue of(Text prompt) {
         return new Impl(prompt);
+    }
+
+    static Dialogue translatable(String key) {
+        return new Impl(Text.translatable(key));
     }
 
     Dialogue title(Text title);
@@ -32,11 +38,13 @@ public interface Dialogue {
     void resetsStack();
 
     interface OpenHandler {
-        @Nullable Dialogue onOpen(DialogueBackend backend, Dialogue newDialogue);
+        @Nullable
+        Dialogue onOpen(DialogueBackend backend, Dialogue newDialogue);
     }
 
     interface NextHandler {
-        @Nullable Dialogue onNext(DialogueBackend backend, Dialogue oldDialogue, @Nullable Option option);
+        @Nullable
+        Dialogue onNext(DialogueBackend backend, Dialogue oldDialogue, @Nullable Option option);
     }
 
     class Impl implements Dialogue {
@@ -114,7 +122,15 @@ public interface Dialogue {
         }
 
         public static Option of(Text text, Dialogue resultDialogue) {
-            return new Option(text, () -> resultDialogue);
+            return of(text, () -> resultDialogue);
+        }
+
+        public static Option translatable(String key, Supplier<Dialogue> resultDialogue) {
+            return of(Text.translatable(key), resultDialogue);
+        }
+
+        public static Option translatable(String key, Dialogue resultDialogue) {
+            return of(Text.translatable(key), resultDialogue);
         }
     }
 }

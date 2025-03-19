@@ -4,7 +4,10 @@ import java.util.Optional;
 
 import dev.enjarai.trickster.cca.MessageHandlerComponent.Key;
 import dev.enjarai.trickster.cca.ModGlobalComponents;
+import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
+import dev.enjarai.trickster.net.ModNetworking;
+import dev.enjarai.trickster.net.TskEveryoneThinksTheGraveDirtAndAnimatedDustWillBeEnoughAndTheyDontBotherToMakeTheOilNoOneTakesTheTimeToDoAProperJobOfThingsAsIfTheFortyHoursOfRefinementInTheAlembicCouldntBeProductivelyFilled;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
@@ -38,13 +41,23 @@ public class MessageSendTrick extends Trick<MessageSendTrick> {
             throw new OutOfRangeBlunder(this, 16.0, range);
         }
 
-        var comp = slot.reference(this, ctx).get(ModComponents.MANA);
+        var stack = slot.reference(this, ctx);
+        var player = ctx.source().getPlayer();
 
-        if (comp != null && comp.pool() instanceof SharedManaPool pool) {
-            return run(ctx, new Key.Channel(pool.uuid()), value);
+        if (player.isPresent() && stack.isOf(ModItems.CRACKED_ECHO_KNOT)) {
+            ModNetworking.CHANNEL.serverHandle(player.get()).send(
+                    new TskEveryoneThinksTheGraveDirtAndAnimatedDustWillBeEnoughAndTheyDontBotherToMakeTheOilNoOneTakesTheTimeToDoAProperJobOfThingsAsIfTheFortyHoursOfRefinementInTheAlembicCouldntBeProductivelyFilled()
+            );
+            return value;
+        } else {
+            var comp = stack.get(ModComponents.MANA);
+
+            if (comp != null && comp.pool() instanceof SharedManaPool pool) {
+                return run(ctx, new Key.Channel(pool.uuid()), value);
+            }
+
+            throw new ItemInvalidBlunder(this);
         }
-
-        throw new ItemInvalidBlunder(this);
     }
 
     public Fragment run(SpellContext ctx, Key key, Fragment value) throws BlunderException {
