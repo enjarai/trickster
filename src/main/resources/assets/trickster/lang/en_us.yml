@@ -398,6 +398,8 @@ text.config.trickster-config:
     server: Server
     aurora-client: Aurora's Personal Client Tweaks
   option:
+    whorlMaxMana: Whorl accesory maximum mana
+    whorlRechargeRate: Rate at which the whorl accesory generates mana in kM
     topHatInterceptScrolling: Offhand hat intercepts hotbar scrolling
     invertTopHatScrolling: Invert hat scrolling
     revealToHotbar: Write revealed values to action bar
