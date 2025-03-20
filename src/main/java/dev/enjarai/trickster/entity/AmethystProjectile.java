@@ -22,6 +22,7 @@ import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
@@ -44,10 +45,6 @@ public class AmethystProjectile extends PersistentProjectileEntity implements Ha
     private SpellPart spell;
 
     private static final TrackedData<State> STATE_TRACKED_DATA = DataTracker.registerData(AmethystProjectile.class, SPELL_DISPLAY_STATE);
-
-    public static float dimensions = 0.75F;
-    private static float lastChimeIntensity = 1.0f;
-    private static float lastChimeAge = 1.0f;
 
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
@@ -95,6 +92,11 @@ public class AmethystProjectile extends PersistentProjectileEntity implements Ha
     }
 
     @Override
+    protected SoundEvent getHitSound() {
+        return SoundEvents.BLOCK_AMETHYST_BLOCK_STEP;
+    }
+
+    @Override
     protected void age() {
         if (getRunningState().isRunning()) {
             return;
@@ -122,20 +124,6 @@ public class AmethystProjectile extends PersistentProjectileEntity implements Ha
     }
 
     @Override
-    protected void onCollision(HitResult hitResult) {
-        super.onCollision(hitResult);
-
-        if (hitResult.getType() != HitResult.Type.MISS) {
-            lastChimeIntensity *= (float) Math.pow(0.997, (this.age - lastChimeAge));
-            lastChimeIntensity = Math.min(1.0F, lastChimeIntensity + 0.07F);
-            float f = 0.5F + AmethystProjectile.lastChimeIntensity * getWorld().random.nextFloat() * 1.2F;
-            float g = 0.1F + lastChimeIntensity * 1.2F;
-            this.playSound(SoundEvents.BLOCK_AMETHYST_BLOCK_CHIME, g, f);
-            lastChimeAge = this.age;
-        }
-    }
-
-    @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
         var entity = entityHitResult.getEntity();
 
@@ -145,6 +133,12 @@ public class AmethystProjectile extends PersistentProjectileEntity implements Ha
         }
 
         super.onEntityHit(entityHitResult);
+
+        if (entity instanceof LivingEntity living) {
+            if (!this.getWorld().isClient && this.getPierceLevel() <= 0) {
+                living.setStuckArrowCount(living.getStuckArrowCount() - 1);
+            }
+        }
     }
 
     @Override

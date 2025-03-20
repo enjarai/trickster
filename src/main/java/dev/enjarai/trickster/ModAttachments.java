@@ -21,7 +21,6 @@ public class ModAttachments {
             .persistent(SpellRunningState.CODEC)
             .buildAndRegister(Trickster.id("spell_running_state"));
 
-
     public static void register() {
 
     }
