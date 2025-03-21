@@ -279,43 +279,43 @@ trickster:
   blunder:
     unknown_trick: mi sona ala e nimi ni
     unknown_event: Unknown event
-    unknown_entity: Unknown entity
-    address_not_in_tree: "Spell does not contain a circle at this address: %s"
+    unknown_entity: mi sona ala e soweli ni 
+    address_not_in_tree: "lon %s la sike li lon ala"
     assertion: "Assertion failed for value: %s"
-    atomic_chunk_too_large: Atomic spell is too large to be run in a single tick
+    atomic_chunk_too_large: toki wawa pi kipisi wan la o lili e toki ni  
     block_invalid:
-      block_supplied: Invalid block type. Did not expect %s
-      block_not_supplied: Invalid block type.
-    block_too_hard: Block cannot be broken by spells
-    block_occupied: Block at %s occupied
-    block_unoccupied: Block at %s unoccupied
-    cannot_place_block: Cannot place %s at %s
-    cannot_edit_block: "Cannot edit block %s, restricted by operator."
-    division_by_zero: Division by zero
-    entity_already_stored: There is already an entity stored in the offhand item
-    entity_cannot_be_stored: Cannot store %s
-    entity_invalid: Invalid entity
+      block_supplied: leko ni li ike. mi wile ala e %s
+      block_not_supplied: leko ni li ike.
+    block_too_hard: wawa li ken ala pakala e leko ni
+    block_occupied: lon %s la leko li lon 
+    block_unoccupied: lon %s la leko li lon ala 
+    cannot_place_block: wawa li ken ala kama e %s tawa leko %s
+    cannot_edit_block: "jan lawa la wawa ken ala ante e leko %s"
+    division_by_zero: 
+    entity_already_stored: ijo lupa ante insa la soweli li lon 
+    entity_cannot_be_stored: wawa ken la jo e %s 
+    entity_invalid: soweli ni li ike a!
     execution_limit_reached: Execution limit reached
-    illegal_operation_in_atomic: Illegal operation in atomic spell
-    immutable_item: "Item immutable, cannot write spell"
-    incompatible_source: Incompatible casting source
-    incompatible_types: Incompatible types
-    index_out_of_bounds: "Index out of bounds: %s"
-    invalid_entity: Invalid entity
-    invalid_inputs: "Invalid inputs, the following signatures are valid for this trick:"
-    invalid_item: Invalid item
-    missing_amethyst: Not enough amethyst in inventory
-    missing_item: Missing item
-    nan: Number must be a number
-    no_free_item_slot: No free item slot.
+    illegal_operation_in_atomic: Illegal ope rantion in atomic spell
+    immutable_item: ""
+    incompatible_source: tan wawa li ike.
+    incompatible_types: nasin ijo ni mute li ike tawa ona ante.
+    index_out_of_bounds: "nanpa %s li suli ike"
+    invalid_entity: soweli ni li ike.
+    invalid_inputs: "kipisi ni li ike. nasin ni li pona tawa nimi ni:"
+    invalid_item: ijo ni li ike.
+    missing_amethyst: sina jo ala e kiwen kalama.
+    missing_item: dina jo ala e ijo suli.
+    nan: ni li nanpa ala.
+    no_free_item_slot: poki li lon ala.
     no_player : No player available
-    no_such_slot : Item slot does not exist
-    not_enough_mana: "Not enough mana, at least %s required"
-    number_too_large: "Number too large, expected %s or lesser"
-    number_too_small: "Number too small, expected %s or greater"
-    out_of_range: "Range out of bounds: %s is more than: %s"
-    overweight_fragment: Result fragment is overweight, result is %s
-    overlapping_positions: "Overlapping positions : %s, %s"
+    no_such_slot : ijo li lon ala.
+    not_enough_mana: "sina jo ala e wawa mute. o jo e wawa %sd"
+    number_too_large: "nanpa ni li suli ike. o pana nanpa %s anu nanpa lili"
+    number_too_small: "nanpa ni li lili ike. o pana nanpa %s anu nanpa suli"
+    out_of_range: "nanpa %s li suli ike tan nanpa %s"
+    overweight_fragment: kipisi ni li suli. kipisi li %s
+    overlapping_positions: "leko %s en leko %s li sama"
 
 item.trickster:
   tome_of_tomfoolery: lipu musi
