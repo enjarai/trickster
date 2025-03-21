@@ -31,6 +31,14 @@ public class TricksterConfigModel {
     @Sync(Option.SyncMode.OVERRIDE_CLIENT)
     public boolean allowSwapBedrock = true;
 
+    @Sync(Option.SyncMode.OVERRIDE_CLIENT)
+    @PredicateConstraint("requirePositive")
+    public float whorlRechargeRate = 1.0f;
+
+    @Sync(Option.SyncMode.OVERRIDE_CLIENT)
+    @PredicateConstraint("requirePositive")
+    public float whorlMaxMana = 256.0f;
+
     @SectionHeader("aurora-client")
 
     public boolean dragDrawing = false;

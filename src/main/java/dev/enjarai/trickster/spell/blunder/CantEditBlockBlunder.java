@@ -1,7 +1,9 @@
 package dev.enjarai.trickster.spell.blunder;
 
+import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.trick.Trick;
 import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 
 public class CantEditBlockBlunder extends TrickBlunderException {
@@ -14,6 +16,6 @@ public class CantEditBlockBlunder extends TrickBlunderException {
 
     @Override
     public MutableText createMessage() {
-        return super.createMessage().append("Cannot edit block (" + pos.toShortString() + "), restricted by operator.");
+        return super.createMessage().append(Text.translatable(Trickster.MOD_ID + ".blunder.cannot_edit_block", pos.toShortString()));
     }
 }

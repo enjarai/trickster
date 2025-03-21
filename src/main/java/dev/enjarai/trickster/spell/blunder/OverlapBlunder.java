@@ -1,8 +1,10 @@
 package dev.enjarai.trickster.spell.blunder;
 
+import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
 
 public class OverlapBlunder extends TrickBlunderException {
     public final VectorFragment pos1;
@@ -16,7 +18,6 @@ public class OverlapBlunder extends TrickBlunderException {
 
     @Override
     public MutableText createMessage() {
-        return super.createMessage().append("Overlapping positions: ")
-                .append(pos1.asFormattedText()).append(", ").append(pos2.asFormattedText());
+        return super.createMessage().append(Text.translatable(Trickster.MOD_ID + ".blunder.overlapping_positions", pos1.asFormattedText(), pos2.asFormattedText()));
     }
 }

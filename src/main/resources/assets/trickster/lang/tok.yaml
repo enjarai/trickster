@@ -1,22 +1,22 @@
 trickster:
   screen:
-    scroll_container: Scroll Storage
-    scroll_and_quill: Scroll and Quill
-    mirror_of_evaluation: Mirror of Evaluation
-    sign_scroll: Sign Scroll
-    written_scroll: Written Scroll
+    scroll_container: poki lipu
+    scroll_and_quill: lipu en ilo sitelen
+    mirror_of_evaluation: ilo lukin pali
+    sign_scroll: lipu lukin
+    written_scroll: lipu pi jo sitelen
 
   text:
     misc:
-      value_truncated: Value truncated
+      value_truncated: namako li lon
 
   widget:
-    scroll_name: Scroll Name...
-    enter_scroll_name: 'Enter Scroll Name:'
+    scroll_name: nimi lipu...
+    enter_scroll_name: 'nimi lipu ni li:'
     scroll_sign_note:
-      line0: 'Note: When you sign the scroll,'
-      line1: it will no longer be editable.
-    load_button: Write to scroll
+      line0: sina pana e nimi sina la
+      line1: sina ken ala ante e ni
+    load_button: o pini e lipu
 
   message:
     missing_scroll: Hold a Scroll and Quill in your other hand to import example spells
@@ -25,29 +25,13 @@ trickster:
     import_example:
       .: Import this example spell?
       description: This will §loverwrite§r the Scroll and Quill in your other hand with the chosen example spell.
-    leash:
-      invalid_collar: "%s is not wearing untethered Bindings"
-      not_sneaking: "%s must be sneaking to tether them"
-      success: "Tether linked to %s's Bindings"
-      not_online: "Player not found"
-
-  tooltip:
-    collar_link: "Link: %s"
-    unlinked: Unlinked
-
-  gandalf:
-    stored: "Stored: %s"
-  merlin:
-    idling: "Idle"
-    draining: "Draining: %.2f"
-    filling: "Charging: %.2f"
 
   item_group: Trickster
 
-  scroll_hat: 'Selected slot: %d'
-  scroll_executable: Single-use (%f kiloGandalfs)
+  scroll_hat: 'poki nanpa lukin li %d'
+  scroll_executable: 'sina ken open pi wan taso e ni \n ni li jo e wawa %d'
 
-  unnamed_entity: Unnamed %s
+  unnamed_entity: %s (pi jo ala nimi)
 
   trick.trickster:
     add: Annexation Stratagem
@@ -90,11 +74,12 @@ trickster:
     abs: Absolutist's Distortion
     length: Magnitude Distortion
 
-    two: Foundational Delusion
-    read_spell: Notulist's Delusion
+    two: tu
+    read_spell: Notulist's Ingress
     clear_spell: Alethophobe's Ploy
     write_spell: Notulist's Ploy
     write_closed_spell: Proprietary Notulist's Ploy
+    write_macro_ring: Macro Ploy
     read_macro_ring: Macro Delusion
     reveal: Showcase Stratagem
     read_crow_mind: Crow Mind Delusion
@@ -111,7 +96,6 @@ trickster:
     height_reflection: Stature Ingress
     sneaking_reflection: Alternative Ingress
     sprinting_reflection: Trekking Ingress
-    burning_reflection: Hearth's Ingress
     blocking_reflection: Guard Ingress
     raycast: Pinpoint Ingress
     raycast_side: Bearing Ingress
@@ -126,7 +110,6 @@ trickster:
     get_velocity: Movement Ingress
     add_velocity: Kinetic Ploy
     change_weight: Ploy of Featherweight
-    displace: Ploy of the Usurper
     store_entity: Containment Ploy
     release_entity: Extrication Ploy
 
@@ -170,7 +153,6 @@ trickster:
     list_remove: Expulsion Stratagem
     list_remove_element: Eviction Stratagem
     list_size: Tally Distortion
-    create_number_range: Interlude Distortion
 
     locate_glyph: Pinpoint Distortion
     locate_glyphs: Discovering Distortion
@@ -188,16 +170,17 @@ trickster:
     map_merge: Admiral's Stratagem
     map_remove: Stratagem of Annulment
 
-    break_block: Ploy of Destruction
-    place_block: Ploy of Creation
-    swap_block: Ploy of Exchange
-    conjure_flower: Floral Ploy
-    conjure_water: Aquatic Ploy
-    conjure_light: Illumination Ploy
-    power_resonator: Resonance Ploy
-    heat: Ploy of Investiture
-    cool: Ploy of Divestiture
-    erode: Ploy of Attrition
+    break_block: pakala leko
+    place_block: pali ma
+    swap_block: esun leko
+    conjure_flower: pali kule
+    conjure_water: pali telo
+    conjure_light: pali suno
+    drain_fluid: weka telo
+    power_resonator: pali wawa
+    heat: pali selo
+    cool: weka selo
+    erode: pakala ma
 
     get_block_hardness: Ingress of Hardness
     check_block: Ingress of Validation
@@ -208,7 +191,7 @@ trickster:
     import: Assistance Stratagem
     import_hat: Cranium Stratagem
     check_hat: Cranium Delusion
-    set_hat: Cranial Shift Ploy
+    set_hat: tawa pi len lawa
     other_hand: Juggling Delusion
     other_hand_slot: Catch Delusion
     get_item_in_slot: Fence's Ingress
@@ -216,38 +199,38 @@ trickster:
     get_count_in_slot: Ingress of Plenitude
     get_max_mana_in_slot: Crowning Ingress
     get_inventory_slot: Intrusive Ingress
-    drop_stack_from_slot: Ploy of Offering
-    swap_slot: Swindler's Ploy
+    drop_stack_from_slot: pali poki
+    swap_slot: esun poki
     block_from_item: Placement Distortion
     item_from_block: Pickup Distortion
 
     type_fragment: Argumentative Distortion
     hash_values: Decaying Distortion
-    delay_execution: Ploy of Suspension
-    pin_chunk: Ploy of Celestial Pin
+    delay_execution: awen tenpo
+    pin_chunk: awen ma
     get_dimension: Dimensional Delusion
-    show_bar: Ploy of Clarity
-    clear_bar: Ploy of Obfuscation
+    show_bar: pana pi linja nanpa
+    clear_bar: weka pi linja nanpa
 
     highlight: Flourish Ploy
 
-    draw_spell: Marketer's Ploy
-    draw_line: Artist's Ploy
+    draw_spell: pana pi toki wawa
+    draw_line: pana linjA
     get_flecks: Observer's Ingress
 
     get_scale: Distortion of Occupation
-    set_scale: Ploy of Occupation
+    set_scale: pali seli
 
     transmog: Ploy of Transmogrification
     hidden_transmog: Ploy of Subterfuge
     remove_transmog: Ploy of Origin
     get_transmog: Ingress of Transmogrification
 
-    battery_creation: Ploy of the Moon Watcher
-    push_mana: Benevolent Conduit's Ploy
-    pull_mana: Malevolent Conduit's Ploy
+    battery_creation: pali pi sike wawa
+    push_mana: pana wawa
+    pull_mana: jo wawa
 
-    message_send: Dispatch Ploy
+    message_send: toki
     message_listen: Ploy of Receipt
 
   fragment:
@@ -268,7 +251,6 @@ trickster:
       item_type: Item
       block_type: Block
       entity_type: Entity Type
-      string: String
     class:
       Fragment: Any
       AddableFragment: Addable
@@ -295,79 +277,112 @@ trickster:
       EntityTypeFragment: Entity Type
 
   blunder:
+    unknown_trick: mi sona ala e nimi ni
+    unknown_event: Unknown event
+    unknown_entity: Unknown entity
+    address_not_in_tree: "Spell does not contain a circle at this address: %s"
+    assertion: "Assertion failed for value: %s"
+    atomic_chunk_too_large: Atomic spell is too large to be run in a single tick
+    block_invalid:
+      block_supplied: Invalid block type. Did not expect %s
+      block_not_supplied: Invalid block type.
+    block_too_hard: Block cannot be broken by spells
+    block_occupied: Block at %s occupied
+    block_unoccupied: Block at %s unoccupied
+    cannot_place_block: Cannot place %s at %s
+    cannot_edit_block: "Cannot edit block %s, restricted by operator."
+    division_by_zero: Division by zero
+    entity_already_stored: There is already an entity stored in the offhand item
+    entity_cannot_be_stored: Cannot store %s
+    entity_invalid: Invalid entity
+    execution_limit_reached: Execution limit reached
+    illegal_operation_in_atomic: Illegal operation in atomic spell
+    immutable_item: "Item immutable, cannot write spell"
+    incompatible_source: Incompatible casting source
+    incompatible_types: Incompatible types
+    index_out_of_bounds: "Index out of bounds: %s"
+    invalid_entity: Invalid entity
+    invalid_inputs: "Invalid inputs, the following signatures are valid for this trick:"
+    invalid_item: Invalid item
+    missing_amethyst: Not enough amethyst in inventory
+    missing_item: Missing item
+    nan: Number must be a number
+    no_free_item_slot: No free item slot.
+    no_player : No player available
+    no_such_slot : Item slot does not exist
+    not_enough_mana: "Not enough mana, at least %s required"
+    number_too_large: "Number too large, expected %s or lesser"
+    number_too_small: "Number too small, expected %s or greater"
+    out_of_range: "Range out of bounds: %s is more than: %s"
     overweight_fragment: Result fragment is overweight, result is %s
-    missing_fragment: Missing at index %d, expected %s
+    overlapping_positions: "Overlapping positions : %s, %s"
 
 item.trickster:
-  tome_of_tomfoolery: Tome of Tomfoolery
-  mirror_of_evaluation: Mirror of Evaluation
+  tome_of_tomfoolery: lipu musi
+  mirror_of_evaluation: ilo lukin pali
 
-  scroll_and_quill: Scroll and Quill
-  scroll_and_quill_black: Black Scroll and Quill
-  scroll_and_quill_blue: Blue Scroll and Quill
-  scroll_and_quill_brown: Brown Scroll and Quill
-  scroll_and_quill_cyan: Cyan Scroll and Quill
-  scroll_and_quill_gray: Gray Scroll and Quill
-  scroll_and_quill_green: Green Scroll and Quill
-  scroll_and_quill_light_blue: Light Blue Scroll and Quill
-  scroll_and_quill_light_gray: Light Gray Scroll and Quill
-  scroll_and_quill_lime: Lime Scroll and Quill
-  scroll_and_quill_magenta: Magenta Scroll and Quill
-  scroll_and_quill_orange: Orange Scroll and Quill
-  scroll_and_quill_pink: Pink Scroll and Quill
-  scroll_and_quill_purple: Purple Scroll and Quill
-  scroll_and_quill_red: Red Scroll and Quill
-  scroll_and_quill_white: White Scroll and Quill
-  scroll_and_quill_yellow: Yellow Scroll and Quill
+  scroll_and_quill: lipu en ilo sitelen
+  scroll_and_quill_black: lipu pimeja en ilo sitelen
+  scroll_and_quill_blue: lipu pi laso telo en ilo sitelen
+  scroll_and_quill_brown: lipu pi kule ma en ilo sitelen
+  scroll_and_quill_cyan: lipu pi kule laso en ilo sitelen
+  scroll_and_quill_gray: lipu pi pimeja walo en ilo sitelen
+  scroll_and_quill_green: lipu pi kule kasi en ilo sitelen
+  scroll_and_quill_light_blue: lipu pi laso sewi en ilo sitelen
+  scroll_and_quill_light_gray: lipu pi walo pimeja en ilo sitelen
+  scroll_and_quill_lime: lipu pi laso jelo en ilo sitelen
+  scroll_and_quill_magenta: lipu pi loje laso en ilo sitelen
+  scroll_and_quill_orange: lipu pi loje selo en ilo sitelen
+  scroll_and_quill_pink: lipu pi loje walo en ilo sitelen
+  scroll_and_quill_purple: lipu pi laso loje en ilo sitelen
+  scroll_and_quill_red: lipu lajo en ilo sitelen
+  scroll_and_quill_white: lipu walo en ilo sitelen
+  scroll_and_quill_yellow: lipu jelo en ilo sitelen
 
-  written_scroll: Written Scroll
-  written_scroll_black: Black Written Scroll
-  written_scroll_blue: Blue Written Scroll
-  written_scroll_brown: Brown Written Scroll
-  written_scroll_cyan: Cyan Written Scroll
-  written_scroll_gray: Gray Written Scroll
-  written_scroll_green: Green Written Scroll
-  written_scroll_light_blue: Light Blue Written Scroll
-  written_scroll_light_gray: Light Gray Written Scroll
-  written_scroll_lime: Lime Written Scroll
-  written_scroll_magenta: Magenta Written Scroll
-  written_scroll_orange: Orange Written Scroll
-  written_scroll_pink: Pink Written Scroll
-  written_scroll_purple: Purple Written Scroll
-  written_scroll_red: Red Written Scroll
-  written_scroll_white: White Written Scroll
-  written_scroll_yellow: Yellow Written Scroll
+  written_scroll: lipu pi jo sitelen en ilo sitelen
+  written_scroll_black: lipu pi jo sitelen pimeja en ilo sitelen
+  written_scroll_blue: lipu pi laso telo pi jo sitelen en ilo sitelen
+  written_scroll_brown: lipu pi kule ma pi jo sitelen en ilo sitelen
+  written_scroll_cyan: lipu pi kule laso pi jo sitelen en ilo sitelen
+  written_scroll_gray: lipu pi pimeja walo pi jo sitelen en ilo sitelen
+  written_scroll_green: lipu pi kule kasi pi jo sitelen en ilo sitelen
+  written_scroll_light_blue: lipu pi laso sewi pi jo sitelen en ilo sitelen
+  written_scroll_light_gray: lipu pi walo pimeja pi jo sitelen en ilo sitelen
+  written_scroll_lime: lipu pi laso jelo pi jo sitelen en ilo sitelen
+  written_scroll_magenta: lipu pi loje laso pi jo sitelen en ilo sitelen
+  written_scroll_orange: lipu pi loje selo pi jo sitelen en ilo sitelen
+  written_scroll_pink: lipu pi loje walo pi jo sitelen en ilo sitelen
+  written_scroll_purple: lipu pi laso loje pi jo sitelen en ilo sitelen
+  written_scroll_red: lipu lajo pi jo sitelen en ilo sitelen
+  written_scroll_white: lipu walo pi jo sitelen en ilo sitelen
+  written_scroll_yellow: lipu jelo pi jo sitelen en ilo sitelen
 
-  warding_charm: Warding Charm
-  spell_ink: Spell Ink
-  top_hat: Top Hat
-  witch_hat: Witch Hat
-  fez: Fez
-  wand: Wand
-  macro_ring: Macro Ring
-  amethyst_whorl: Amethyst Whorl
-  collar: Acolyte's Bindings
-  leash: Archmage's Tether
+  warding_charm: oko pi weka ike
+  spell_ink: telo wawa
+  top_hat: len lawa wawa
+  witch_hat: len lawa usawi
+  fez: len lawa loje
+  wand: palisa wawa
+  macro_ring: sike lejo nimi
 
-  amethyst_knot: Amethyst Knot
-  emerald_knot: Emerald Knot
-  diamond_knot: Diamond Knot
-  echo_knot: Echo Knot
-  cracked_echo_knot: Cracked Echo Knot
-  astral_knot: Astral Knot
-  command_knot: Command Knot
+  amethyst_knot: poki wawa pi kiwen kalama
+  emerald_knot: poki wawa pi kiwen esun
+  diamond_knot: poki wawa pi kiwen laso
+  echo_knot: poki wawa pi kalama sama
 
-  spell_core: Spell Core
-  rusted_spell_core: Rusted Spell Core
-  ominous_spell_core: Ominous Spell Core
+  cracked_echo_knot: poki wawa pakala pi kalama sama
+  command_knot: poki pi wawa ale
+
+  spell_core: insa pi toki wawa
+  rusted_spell_core: insa seli pi toki wawa
+  ominous_spell_core: insa lili ike pi toki wawa
 
 block.trickster:
-  spell_resonator: Spell Resonator
-  spell_construct: Spell Construct
-  modular_spell_construct: Modular Spell Construct
-  light: Light
-  scroll_shelf: Scroll Shelf
-  charging_array: Charging Array
+  spell_resonator: kute pi sona kalama
+  spell_construct: leko pi toki insa
+  modular_spell_construct: leko pi toki insa pi kipisi mute
+  light: suno
+  scroll_shelf: poki pi lipu wawa
 
 effect.trickster:
   mana_boost: Mana Hyperflux
@@ -398,8 +413,6 @@ text.config.trickster-config:
     server: Server
     aurora-client: Aurora's Personal Client Tweaks
   option:
-    whorlMaxMana: Whorl accesory maximum mana
-    whorlRechargeRate: Rate at which the whorl accesory generates mana in kM
     topHatInterceptScrolling: Offhand hat intercepts hotbar scrolling
     invertTopHatScrolling: Invert hat scrolling
     revealToHotbar: Write revealed values to action bar

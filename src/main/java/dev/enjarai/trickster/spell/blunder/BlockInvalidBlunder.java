@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.spell.blunder;
 
+import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.trick.Trick;
 import net.minecraft.block.Block;
 import net.minecraft.text.MutableText;
@@ -21,9 +22,9 @@ public class BlockInvalidBlunder extends TrickBlunderException {
     @Override
     public MutableText createMessage() {
         if (block != null) {
-            return super.createMessage().append("Invalid block type. Did not expect ").append(Text.translatable(block.getTranslationKey()));
+            return super.createMessage().append(Text.translatable(Trickster.MOD_ID + ".blunder.block_invalid.block_supplied", Text.translatable(block.getTranslationKey())));
         }
 
-        return super.createMessage().append("Invalid block type");
+        return super.createMessage().append(Text.translatable(Trickster.MOD_ID + ".blunder.block_invalid.block_not_supplied"));
     }
 }

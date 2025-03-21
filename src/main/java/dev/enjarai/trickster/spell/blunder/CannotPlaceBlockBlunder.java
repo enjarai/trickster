@@ -1,9 +1,11 @@
 package dev.enjarai.trickster.spell.blunder;
 
+import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import net.minecraft.block.Block;
 import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
 
 public class CannotPlaceBlockBlunder extends TrickBlunderException {
     public final Block block;
@@ -17,6 +19,6 @@ public class CannotPlaceBlockBlunder extends TrickBlunderException {
 
     @Override
     public MutableText createMessage() {
-        return super.createMessage().append("Cannot place ").append(block.getName()).append(" at ").append(pos.asFormattedText());
+        return super.createMessage().append(Text.translatable(Trickster.MOD_ID + ".blunder.cannot_place_block", block.getName(), pos.asFormattedText()));
     }
 }

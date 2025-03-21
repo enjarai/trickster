@@ -1,8 +1,10 @@
 package dev.enjarai.trickster.spell.blunder;
 
+import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
 
 public class BlockOccupiedBlunder extends TrickBlunderException {
     public final VectorFragment pos;
@@ -14,6 +16,6 @@ public class BlockOccupiedBlunder extends TrickBlunderException {
 
     @Override
     public MutableText createMessage() {
-        return super.createMessage().append("Block at ").append(pos.asFormattedText()).append(" occupied");
+        return super.createMessage().append(Text.translatable(Trickster.MOD_ID + ".blunder.block_occupied", pos.asFormattedText()));
     }
 }
