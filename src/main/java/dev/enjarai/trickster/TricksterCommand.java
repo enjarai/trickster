@@ -11,6 +11,7 @@ import dev.enjarai.trickster.item.component.FragmentComponent;
 import dev.enjarai.trickster.item.component.ManaComponent;
 import dev.enjarai.trickster.net.GrabClipboardSpellPacket;
 import dev.enjarai.trickster.net.ModNetworking;
+import dev.enjarai.trickster.net.TskEveryoneThinksTheGraveDirtAndAnimatedDustWillBeEnoughAndTheyDontBotherToMakeTheOilNoOneTakesTheTimeToDoAProperJobOfThingsAsIfTheFortyHoursOfRefinementInTheAlembicCouldntBeProductivelyFilled;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.trick.Tricks;
 import net.minecraft.command.argument.EntityArgumentType;
@@ -132,6 +133,15 @@ public class TricksterCommand {
                                 literal("allSignatures")
                                         .requires(ServerCommandSource::isExecutedByPlayer)
                                         .executes(TricksterCommand::showAllSignatures)
+                        )
+                        .then(
+                                literal("converse")
+                                        .requires(ServerCommandSource::isExecutedByPlayer)
+                                        .executes(context -> {
+                                            ModNetworking.CHANNEL.serverHandle(context.getSource().getPlayer()).send(
+                                                    new TskEveryoneThinksTheGraveDirtAndAnimatedDustWillBeEnoughAndTheyDontBotherToMakeTheOilNoOneTakesTheTimeToDoAProperJobOfThingsAsIfTheFortyHoursOfRefinementInTheAlembicCouldntBeProductivelyFilled());
+                                            return 0;
+                                        })
                         )
         );
     }

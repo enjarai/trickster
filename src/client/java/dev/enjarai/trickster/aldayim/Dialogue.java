@@ -1,6 +1,6 @@
 package dev.enjarai.trickster.aldayim;
 
-import net.minecraft.text.Text;
+import net.minecraft.client.resource.language.I18n;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -16,16 +16,16 @@ public interface Dialogue {
 
     String getId();
 
-    Text getPrompt();
+    String getPrompt();
 
     List<Option> responses();
 
-    static Dialogue of(Text prompt) {
+    static Dialogue of(String prompt) {
         return new Impl(prompt);
     }
 
-    static Dialogue translatable(String key) {
-        return new Impl(Text.translatable(key));
+    static Dialogue translatable(String prompt, Object... args) {
+        return new Impl(I18n.translate(prompt, args));
     }
 
     Dialogue responses(Option... options);
@@ -47,15 +47,14 @@ public interface Dialogue {
     }
 
     class Impl implements Dialogue {
-        private UUID id = UUID.randomUUID();
-        private OpenHandler openHandler = (backend, newDialogue) -> newDialogue;
-        private NextHandler nextHandler = (backend, oldDialogue, option) -> option == null ? null : option.resultDialogue().get();
-        private Text prompt;
-        private Text title = Text.empty();
-        private List<Option> responses = List.of();
-        private boolean resetsStack = false;
+        protected UUID id = UUID.randomUUID();
+        protected OpenHandler openHandler = (backend, newDialogue) -> newDialogue;
+        protected NextHandler nextHandler = (backend, oldDialogue, option) -> option == null ? null : option.resultDialogue().get();
+        protected String prompt;
+        protected List<Option> responses = List.of();
+        protected boolean resetsStack = false;
 
-        public Impl(Text prompt) {
+        public Impl(String prompt) {
             this.prompt = prompt;
         }
 
@@ -79,7 +78,7 @@ public interface Dialogue {
         }
 
         @Override
-        public Text getPrompt() {
+        public String getPrompt() {
             return prompt;
         }
 
@@ -111,21 +110,21 @@ public interface Dialogue {
         }
     }
 
-    record Option(Text text, Supplier<Dialogue> resultDialogue) {
-        public static Option of(Text text, Supplier<Dialogue> resultDialogue) {
+    record Option(String text, Supplier<Dialogue> resultDialogue) {
+        public static Option of(String text, Supplier<Dialogue> resultDialogue) {
             return new Option(text, resultDialogue);
         }
 
-        public static Option of(Text text, Dialogue resultDialogue) {
+        public static Option of(String text, Dialogue resultDialogue) {
             return of(text, () -> resultDialogue);
         }
 
-        public static Option translatable(String key, Supplier<Dialogue> resultDialogue) {
-            return of(Text.translatable(key), resultDialogue);
+        public static Option translatable(String text, Supplier<Dialogue> resultDialogue) {
+            return new Option(I18n.translate(text), resultDialogue);
         }
 
-        public static Option translatable(String key, Dialogue resultDialogue) {
-            return of(Text.translatable(key), resultDialogue);
+        public static Option translatable(String text, Dialogue resultDialogue) {
+            return of(I18n.translate(text), () -> resultDialogue);
         }
     }
 }

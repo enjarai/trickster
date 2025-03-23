@@ -5,6 +5,7 @@ import dev.enjarai.trickster.TricksterClient;
 import dev.enjarai.trickster.aldayim.Dialogue;
 import dev.enjarai.trickster.aldayim.Dialogue.Option;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Text;
 
 public class AldayimDialogue {
@@ -25,7 +26,7 @@ public class AldayimDialogue {
 
     private final Dialogue start2 = Dialogue.translatable("trickster_aldayim.welcome_back")
             .responses(
-                    Option.of(Text.literal("..."), menu)
+                    Option.of("...", menu)
             );
 
     private final Option before = Option.translatable(
@@ -33,7 +34,7 @@ public class AldayimDialogue {
             Dialogue.translatable("trickster_aldayim.before_1")
                     .responses(
                             Option.of(
-                                    Text.literal("..."),
+                                    "...",
                                     Dialogue.translatable("trickster_aldayim.before_2")
                                             .responses(
                                                     Option.translatable(
@@ -45,8 +46,8 @@ public class AldayimDialogue {
                                                                     })
                                                                     .responses(
                                                                             Option.of(
-                                                                                    Text.translatable("trickster_aldayim.option.pleasure_to_meet_you", playerName),
-                                                                                    Dialogue.of(Text.translatable("trickster_aldayim.pleasure_to_meet_you", playerName))
+                                                                                    I18n.translate("trickster_aldayim.option.pleasure_to_meet_you", playerName),
+                                                                                    Dialogue.of(I18n.translate("trickster_aldayim.pleasure_to_meet_you", playerName))
                                                                                             .onOpen((backend, self) -> {
                                                                                                 Trickster.CONFIG.konKnowsName(true);
                                                                                                 return self;
@@ -69,10 +70,10 @@ public class AldayimDialogue {
                     )
     );
 
-    private final Dialogue start1 = Dialogue.of(Text.literal("..."))
+    private final Dialogue start1 = Dialogue.of("...")
             .responses(
                     Option.of(
-                            Text.literal("..."),
+                            "...",
                             Dialogue.translatable("trickster_aldayim.start_1")
                                     .responses(
                                             Option.translatable(
