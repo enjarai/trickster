@@ -6,6 +6,7 @@ import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.mixin.client.WorldRendererAccessor;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellPart;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -54,7 +55,8 @@ public class ModClientNetworking {
         ModNetworking.CHANNEL.registerClientbound(
                 TskEveryoneThinksTheGraveDirtAndAnimatedDustWillBeEnoughAndTheyDontBotherToMakeTheOilNoOneTakesTheTimeToDoAProperJobOfThingsAsIfTheFortyHoursOfRefinementInTheAlembicCouldntBeProductivelyFilled.class,
                 (message, access) -> {
-                    AldayimDialogue.start();
+                    // Create a new class instance every time to ensure relevant variables get updated.
+                    new AldayimDialogue().start();
                 }
         );
     }
