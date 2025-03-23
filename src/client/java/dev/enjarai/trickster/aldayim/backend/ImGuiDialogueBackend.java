@@ -2,8 +2,10 @@ package dev.enjarai.trickster.aldayim.backend;
 
 import dev.enjarai.trickster.aldayim.Dialogue;
 import dev.enjarai.trickster.aldayim.DialogueBackend;
+import dev.enjarai.trickster.aldayim.TextEntryDialogue;
 import imgui.ImGui;
 import imgui.flag.ImGuiCond;
+import imgui.type.ImString;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.math.random.Random;
 import nl.enjarai.cicada.api.imgui.ImGuiThing;
@@ -13,13 +15,14 @@ import java.util.Stack;
 
 public class ImGuiDialogueBackend implements DialogueBackend, ImGuiThing {
     boolean active = false;
-    Stack<Dialogue> dialogueStack = new Stack<>();
+    Stack<Entry> dialogueStack = new Stack<>();
     Random random = Random.createLocal();
 
     @Override
     public void start(Dialogue dialogue) {
         active = true;
-        dialogueStack.push(dialogue.open(this));
+        var d = dialogue.open(this);
+        dialogueStack.push(new Entry(d, d instanceof TextEntryDialogue ? new ImString() : null));
     }
 
     @Override
@@ -29,12 +32,14 @@ public class ImGuiDialogueBackend implements DialogueBackend, ImGuiThing {
 
     @Override
     public void render() {
-        for (var dialogue : dialogueStack.stream().toList()) {
+        for (var entry : dialogueStack.stream().toList()) {
+            var dialogue = entry.dialogue();
+
             float responsesWidth = 0;
             for (Iterator<Dialogue.Option> it = dialogue.responses().iterator(); it.hasNext(); ) {
-                var option = it.next();
+                Dialogue.Option option = it.next();
                 responsesWidth += ImGui.calcTextSize(option.text()).x;
-                responsesWidth += ImGui.getStyle().getFramePaddingX() * 2.0f;
+                responsesWidth += ImGui.getStyle().getFramePaddingX() * 2;
 
                 if (it.hasNext()) {
                     responsesWidth += ImGui.getStyle().getItemSpacingX();
@@ -49,8 +54,8 @@ public class ImGuiDialogueBackend implements DialogueBackend, ImGuiThing {
                             responsesWidth
                     )
             );
-            var height = 100;
-            ImGui.setNextWindowSize(width, height, ImGuiCond.Appearing);
+            var height = entry.input() != null ? 150 : 100;
+            ImGui.setNextWindowSize(width + ImGui.getStyle().getWindowPaddingX() * 2, height, ImGuiCond.Appearing);
 
             var window = MinecraftClient.getInstance().getWindow();
             ImGui.setNextWindowPos(
@@ -69,7 +74,15 @@ public class ImGuiDialogueBackend implements DialogueBackend, ImGuiThing {
             }
             ImGui.textWrapped(dialogue.getPrompt());
 
-            ImGui.beginDisabled(dialogueStack.peek() != dialogue);
+            ImGui.beginDisabled(dialogueStack.peek() != entry);
+
+//            offset = (spaceAvailable - width) * 0.5f;
+//            if (offset > 0.0f) {
+//                ImGui.setCursorPosX(ImGui.getCursorPosX() + offset);
+//            }
+            if (entry.input() != null) {
+                ImGui.inputText("## input", entry.input());
+            }
 
             offset = (spaceAvailable - responsesWidth) * 0.5f;
             if (offset > 0.0f) {
@@ -78,6 +91,11 @@ public class ImGuiDialogueBackend implements DialogueBackend, ImGuiThing {
 
             for (var option : dialogue.responses()) {
                 if (ImGui.button(option.text())) {
+                    if (dialogue instanceof TextEntryDialogue textEntryDialogue) {
+                        //noinspection DataFlowIssue
+                        textEntryDialogue.submit(this, option, entry.input().get());
+                    }
+
                     var next = dialogue.next(this, option);
                     if (next == null) {
                         resetStack();
@@ -97,5 +115,9 @@ public class ImGuiDialogueBackend implements DialogueBackend, ImGuiThing {
 
             ImGui.end();
         }
+    }
+
+    public record Entry(Dialogue dialogue, ImString input) {
+
     }
 }

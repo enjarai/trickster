@@ -4,13 +4,14 @@ import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.TricksterClient;
 import dev.enjarai.trickster.aldayim.Dialogue;
 import dev.enjarai.trickster.aldayim.Dialogue.Option;
+import dev.enjarai.trickster.aldayim.TextEntryDialogue;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Text;
 
 public class AldayimDialogue {
     @SuppressWarnings("DataFlowIssue")
-    private final Text playerName = MinecraftClient.getInstance().player.getName();
+    private final String playerName = MinecraftClient.getInstance().player.getName().getString();
 
     private final Dialogue menu = Dialogue.translatable("trickster_aldayim.main_menu")
             .onOpen((backend, self) -> {
@@ -20,7 +21,12 @@ public class AldayimDialogue {
             .responses(
                     Option.translatable(
                             "trickster_aldayim.option.menu.import",
-                            Dialogue.translatable("trickster_aldayim.menu.import")
+                            TextEntryDialogue.translatable("trickster_aldayim.menu.import", (backend, chosenOption, input) -> {
+                                Trickster.LOGGER.warn(input);
+                            })
+                                    .responses(
+                                            Option.translatable("trickster_aldayim.option.ok", Dialogue.closer())
+                                    )
                     )
             );
 
@@ -72,8 +78,8 @@ public class AldayimDialogue {
 
     private final Dialogue start1 = Dialogue.of("...")
             .responses(
-                    Option.of(
-                            "...",
+                    Option.translatable(
+                            "trickster_aldayim.option.ok",
                             Dialogue.translatable("trickster_aldayim.start_1")
                                     .responses(
                                             Option.translatable(

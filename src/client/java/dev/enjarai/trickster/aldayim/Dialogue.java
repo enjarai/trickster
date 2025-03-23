@@ -28,6 +28,10 @@ public interface Dialogue {
         return new Impl(I18n.translate(prompt, args));
     }
 
+    static Dialogue closer() {
+        return new Impl("").onOpen((backend, newDialogue) -> null);
+    }
+
     Dialogue responses(Option... options);
 
     Dialogue onOpen(OpenHandler openHandler);
