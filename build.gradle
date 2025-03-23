@@ -1,7 +1,7 @@
 plugins {
     id 'fabric-loom' version '1.7-SNAPSHOT'
     id 'maven-publish'
-    id 'me.fallenbreath.yamlang' version '1.3.1'
+    id "dev.kikugie.postprocess.yamlang" version "2.1-beta.4"
     id "me.modmuss50.mod-publish-plugin" version "0.4.4"
 }
 
@@ -158,8 +158,12 @@ jar {
 }
 
 yamlang {
-    targetSourceSets = [sourceSets.main]
-    inputDir = "assets/trickster/lang" //TODO: add trickster_aldayim
+    sources sourceSets["main"]
+
+    languageDirectories = [
+        "assets/trickster/lang",
+        "assets/trickster_aldayim/lang"
+    ]
 }
 
 // configure the maven publication
