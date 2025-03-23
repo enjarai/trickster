@@ -59,6 +59,7 @@ public interface Dialogue {
             this.prompt = prompt;
         }
 
+        //TODO: @enjarai make this pick a random position for the dialogue, ideally
         @Override
         public @Nullable Dialogue open(DialogueBackend backend) {
             return openHandler.onOpen(backend, this);

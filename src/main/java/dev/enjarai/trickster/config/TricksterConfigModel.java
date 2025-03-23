@@ -2,6 +2,7 @@ package dev.enjarai.trickster.config;
 
 import io.wispforest.owo.config.Option;
 import io.wispforest.owo.config.annotation.Config;
+import io.wispforest.owo.config.annotation.ExcludeFromScreen;
 import io.wispforest.owo.config.annotation.Modmenu;
 import io.wispforest.owo.config.annotation.PredicateConstraint;
 import io.wispforest.owo.config.annotation.Sync;
@@ -18,6 +19,11 @@ public class TricksterConfigModel {
     @Sync(Option.SyncMode.INFORM_SERVER)
     public boolean revealToHotbar = true;
 
+    public boolean skipKonIntro = false;
+
+    @ExcludeFromScreen
+    public boolean konKnowsName = false;
+
     @SectionHeader("server")
 
     @Sync(Option.SyncMode.OVERRIDE_CLIENT)
@@ -27,7 +33,7 @@ public class TricksterConfigModel {
     @Sync(Option.SyncMode.OVERRIDE_CLIENT)
     @PredicateConstraint("requirePositive")
     public float maxBlockBreakingHardness = 55.5f;
-    
+
     @Sync(Option.SyncMode.OVERRIDE_CLIENT)
     public boolean allowSwapBedrock = true;
 

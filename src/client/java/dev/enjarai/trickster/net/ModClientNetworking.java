@@ -54,7 +54,7 @@ public class ModClientNetworking {
         ModNetworking.CHANNEL.registerClientbound(
                 TskEveryoneThinksTheGraveDirtAndAnimatedDustWillBeEnoughAndTheyDontBotherToMakeTheOilNoOneTakesTheTimeToDoAProperJobOfThingsAsIfTheFortyHoursOfRefinementInTheAlembicCouldntBeProductivelyFilled.class,
                 (message, access) -> {
-                    TricksterClient.dialogueBackend.start(AldayimDialogue.INSTANCE);
+                    AldayimDialogue.start();
                 }
         );
     }

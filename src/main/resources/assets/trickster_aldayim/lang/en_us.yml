@@ -6,11 +6,24 @@ trickster_aldayim:
     ok: Sigh... wait... you are not the same as before...
     i_do: Yes, quite so... wait... you are not the same as before...
   before_1: Before those of the underground ceased to call upon me... before they left me alone...
-  before_2: You are not of the underground. Curious...
+  before_2: But you are not of the underground. Curious...
   who_are_you: I am Kon and a friend of mages
+  pleasure_to_meet_you: It is a pleasure to meet you as well, %s. My services are at your disposal
+  okay_and: 'TODO: reluctant pathway'
+
+  main_menu: 'TODO: explain all the options'
+  menu:
+    import: Alright here's how you import (TODO)
 
   option:
     ok: Okay
     i_do: I do?
     before: Before?
     who_are_you: Who are you?
+    pleasure_to_meet_you: It is a pleasure to meet you, Kon. I am %s
+    okay_and: 'TODO: reluctant pathway'
+    menu_intrigued: Oh? And what services are those?
+    menu_reluctant: 'TODO: reluctant pathway'
+
+    menu:
+      import: I want to import a spell (TODO)
