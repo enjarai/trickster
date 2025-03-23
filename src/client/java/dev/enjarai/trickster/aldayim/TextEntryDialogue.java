@@ -1,16 +1,16 @@
 package dev.enjarai.trickster.aldayim;
 
-import net.minecraft.client.resource.language.I18n;
+import net.minecraft.text.Text;
 
 public interface TextEntryDialogue extends Dialogue {
     void submit(DialogueBackend backend, Option chosenOption, String input);
 
-    static Dialogue of(String prompt, SubmitHandler handler) {
+    static Dialogue of(Text prompt, SubmitHandler handler) {
         return new Impl(prompt, handler);
     }
 
-    static Dialogue translatable(String prompt, SubmitHandler handler) {
-        return new Impl(I18n.translate(prompt), handler);
+    static Dialogue translatable(String key, SubmitHandler handler) {
+        return of(Text.translatable(key), handler);
     }
 
     interface SubmitHandler {
@@ -20,7 +20,7 @@ public interface TextEntryDialogue extends Dialogue {
     class Impl extends Dialogue.Impl implements TextEntryDialogue {
         protected SubmitHandler submitHandler;
 
-        public Impl(String prompt, SubmitHandler handler) {
+        public Impl(Text prompt, SubmitHandler handler) {
             super(prompt);
             this.submitHandler = handler;
         }
