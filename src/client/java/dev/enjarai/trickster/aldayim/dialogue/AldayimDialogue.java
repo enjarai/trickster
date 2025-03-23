@@ -33,15 +33,15 @@ public class AldayimDialogue {
 
     private final Dialogue start2 = Dialogue.translatable("trickster_aldayim.welcome_back")
             .responses(
-                    Option.of("...", menu)
+                    Option.translatable("trickster_aldayim.option.continue", menu)
             );
 
     private final Option before = Option.translatable(
             "trickster_aldayim.option.before",
             Dialogue.translatable("trickster_aldayim.before_1")
                     .responses(
-                            Option.of(
-                                    "...",
+                            Option.translatable(
+                                    "trickster_aldayim.option.continue",
                                     Dialogue.translatable("trickster_aldayim.before_2")
                                             .responses(
                                                     Option.translatable(
@@ -77,7 +77,7 @@ public class AldayimDialogue {
                     )
     );
 
-    private final Dialogue start1 = Dialogue.of("...")
+    private final Dialogue start1 = Dialogue.translatable("trickster_aldayim.ellipses")
             .responses(
                     Option.translatable(
                             "trickster_aldayim.option.ok",
