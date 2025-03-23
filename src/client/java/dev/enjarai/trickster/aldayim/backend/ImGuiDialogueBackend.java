@@ -38,14 +38,16 @@ public class ImGuiDialogueBackend implements DialogueBackend, ImGuiThing {
             float responsesWidth = 0;
             for (Iterator<Dialogue.Option> it = dialogue.responses().iterator(); it.hasNext(); ) {
                 Dialogue.Option option = it.next();
-                responsesWidth += ImGui.calcTextSize(option.text()).x;
+                String text = option.text().getString();
+                responsesWidth += ImGui.calcTextSize(text).x;
                 responsesWidth += ImGui.getStyle().getFramePaddingX() * 2;
 
                 if (it.hasNext()) {
                     responsesWidth += ImGui.getStyle().getItemSpacingX();
                 }
             }
-            float promptWidth = ImGui.calcTextSize(dialogue.getPrompt()).x;
+            String promptText = dialogue.getPrompt().getString();
+            float promptWidth = ImGui.calcTextSize(promptText).x;
 
             var width = Math.max(
                     150,
@@ -72,7 +74,7 @@ public class ImGuiDialogueBackend implements DialogueBackend, ImGuiThing {
             if (offset > 0.0f) {
                 ImGui.setCursorPosX(ImGui.getCursorPosX() + offset);
             }
-            ImGui.textWrapped(dialogue.getPrompt());
+            ImGui.textWrapped(promptText);
 
             ImGui.beginDisabled(dialogueStack.peek() != entry);
 
@@ -90,7 +92,7 @@ public class ImGuiDialogueBackend implements DialogueBackend, ImGuiThing {
             }
 
             for (var option : dialogue.responses()) {
-                if (ImGui.button(option.text())) {
+                if (ImGui.button(option.text().getString())) {
                     if (dialogue instanceof TextEntryDialogue textEntryDialogue) {
                         //noinspection DataFlowIssue
                         textEntryDialogue.submit(this, option, entry.input().get());

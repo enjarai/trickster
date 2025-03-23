@@ -7,10 +7,9 @@ import dev.enjarai.trickster.aldayim.Dialogue.Option;
 import dev.enjarai.trickster.aldayim.TextEntryDialogue;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.resource.language.I18n;
-import net.minecraft.text.Text;
 
 public class AldayimDialogue {
-    @SuppressWarnings("DataFlowIssue")
+    @SuppressWarnings({ "DataFlowIssue", "resource" })
     private final String playerName = MinecraftClient.getInstance().player.getName().getString();
 
     private final Dialogue menu = Dialogue.translatable("trickster_aldayim.main_menu")
@@ -21,12 +20,14 @@ public class AldayimDialogue {
             .responses(
                     Option.translatable(
                             "trickster_aldayim.option.menu.import",
-                            TextEntryDialogue.translatable("trickster_aldayim.menu.import", (backend, chosenOption, input) -> {
-                                Trickster.LOGGER.warn(input);
-                            })
-                                    .responses(
-                                            Option.translatable("trickster_aldayim.option.ok", Dialogue.closer())
-                                    )
+                            TextEntryDialogue.translatable(
+                                    "trickster_aldayim.menu.import",
+                                    (backend, chosenOption, input) -> {
+                                        Trickster.LOGGER.warn(input);
+                                    }
+                            ).responses(
+                                    Option.translatable("trickster_aldayim.option.ok", Dialogue.closer())
+                            )
                     )
             );
 

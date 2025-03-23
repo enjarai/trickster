@@ -1,7 +1,8 @@
 package dev.enjarai.trickster.aldayim;
 
-import net.minecraft.client.resource.language.I18n;
 import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.text.Text;
 
 import java.util.List;
 import java.util.UUID;
@@ -16,20 +17,24 @@ public interface Dialogue {
 
     String getId();
 
-    String getPrompt();
+    Text getPrompt();
 
     List<Option> responses();
 
-    static Dialogue of(String prompt) {
+    static Dialogue of(Text prompt) {
         return new Impl(prompt);
     }
 
-    static Dialogue translatable(String prompt, Object... args) {
-        return new Impl(I18n.translate(prompt, args));
+    static Dialogue of(String prompt) {
+        return of(Text.literal(prompt));
+    }
+
+    static Dialogue translatable(String key, Object... args) {
+        return of(Text.translatable(key, args));
     }
 
     static Dialogue closer() {
-        return new Impl("").onOpen((backend, newDialogue) -> null);
+        return of(Text.empty()).onOpen((backend, newDialogue) -> null);
     }
 
     Dialogue responses(Option... options);
@@ -54,15 +59,14 @@ public interface Dialogue {
         protected UUID id = UUID.randomUUID();
         protected OpenHandler openHandler = (backend, newDialogue) -> newDialogue;
         protected NextHandler nextHandler = (backend, oldDialogue, option) -> option == null ? null : option.resultDialogue().get();
-        protected String prompt;
+        protected Text prompt;
         protected List<Option> responses = List.of();
         protected boolean resetsStack = false;
 
-        public Impl(String prompt) {
+        public Impl(Text prompt) {
             this.prompt = prompt;
         }
 
-        //TODO: @enjarai make this pick a random position for the dialogue, ideally
         @Override
         public @Nullable Dialogue open(DialogueBackend backend) {
             return openHandler.onOpen(backend, this);
@@ -82,7 +86,7 @@ public interface Dialogue {
         }
 
         @Override
-        public String getPrompt() {
+        public Text getPrompt() {
             return prompt;
         }
 
@@ -114,21 +118,29 @@ public interface Dialogue {
         }
     }
 
-    record Option(String text, Supplier<Dialogue> resultDialogue) {
-        public static Option of(String text, Supplier<Dialogue> resultDialogue) {
+    record Option(Text text, Supplier<Dialogue> resultDialogue) {
+        public static Option of(Text text, Supplier<Dialogue> resultDialogue) {
             return new Option(text, resultDialogue);
+        }
+
+        public static Option of(Text text, Dialogue resultDialogue) {
+            return of(text, () -> resultDialogue);
+        }
+
+        public static Option of(String text, Supplier<Dialogue> resultDialogue) {
+            return of(Text.literal(text), resultDialogue);
         }
 
         public static Option of(String text, Dialogue resultDialogue) {
             return of(text, () -> resultDialogue);
         }
 
-        public static Option translatable(String text, Supplier<Dialogue> resultDialogue) {
-            return new Option(I18n.translate(text), resultDialogue);
+        public static Option translatable(String key, Supplier<Dialogue> resultDialogue) {
+            return new Option(Text.translatable(key), resultDialogue);
         }
 
-        public static Option translatable(String text, Dialogue resultDialogue) {
-            return of(I18n.translate(text), () -> resultDialogue);
+        public static Option translatable(String key, Dialogue resultDialogue) {
+            return translatable(key, () -> resultDialogue);
         }
     }
 }
