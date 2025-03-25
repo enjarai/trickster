@@ -26,10 +26,10 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     public static final double PRECISION_OFFSET = Math.pow(2, 50);
 
     static final Byte[] RING_ORDER = {
-        (byte) 0, (byte) 1, (byte) 2, (byte) 5, (byte) 8, (byte) 7, (byte) 6, (byte) 3
+            (byte) 0, (byte) 1, (byte) 2, (byte) 5, (byte) 8, (byte) 7, (byte) 6, (byte) 3
     };
     static final Byte[] RING_INDICES = {
-        (byte) 0, (byte) 1, (byte) 2, (byte) 7, (byte) 0, (byte) 3, (byte) 6, (byte) 5, (byte) 4
+            (byte) 0, (byte) 1, (byte) 2, (byte) 7, (byte) 0, (byte) 3, (byte) 6, (byte) 5, (byte) 4
     };
 
     private SpellPart rootSpellPart;
@@ -374,13 +374,12 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             return false;
         } else {
             var i = RING_INDICES[a];
-            return
-                b == RING_ORDER[(i + 1) % 8] ||
-                b == RING_ORDER[i == 0 ? 7 : (i - 1) % 8];
+            return b == RING_ORDER[(i + 1) % 8] ||
+                    b == RING_ORDER[i == 0 ? 7 : (i - 1) % 8];
         }
     }
 
-    private boolean hasEdge(byte a, byte b) {
+    private boolean hasLine(byte a, byte b) {
         for (int i = 0; i < drawingPattern.size(); i++) {
             if (i < drawingPattern.size() - 1) {
                 var prev = drawingPattern.get(i);
@@ -404,16 +403,17 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
                 moves.put(i, move);
             }
         } else {
-            var last = drawingPattern.get(drawingPattern.size() - 1);
+            var last = drawingPattern.getLast();
             for (byte i = 0; i < 9; i++) {
                 if (i == last) {
                     continue;
                 }
-                if (!hasEdge(i, last)) {
+
+                if (!hasLine(i, last)) {
                     var move = new ArrayList<Byte>(drawingPattern);
                     // resolve the middle dot if we are going across
                     if (i == 8 - last) {
-                        if (hasEdge(i, (byte) 4) || hasEdge(last, (byte) 4)) {
+                        if (hasLine(i, (byte) 4) || hasLine(last, (byte) 4)) {
                             // we are already connected to the middle dot
                             // going across is impossible
                             continue;
@@ -425,7 +425,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
                     moves.put(i, move);
                 } else if (drawingPattern.size() >= 2 && drawingPattern.get(drawingPattern.size() - 2) == i) {
                     var move = new ArrayList<Byte>(drawingPattern);
-                    move.remove(drawingPattern.size() - 1);
+                    move.removeLast();
                     moves.put(i, move);
                 }
             }
