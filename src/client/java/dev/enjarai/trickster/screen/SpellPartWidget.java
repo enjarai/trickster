@@ -44,7 +44,6 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     private double amountDragged;
     private boolean isMutable = true;
 
-
     @Nullable
     private SpellPart toBeReplaced;
 
@@ -414,7 +413,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
                     var move = new ArrayList<Byte>(drawingPattern);
                     // resolve the middle dot if we are going across
                     if (i == 8 - last) {
-                        if (hasEdge(i, (byte) 4)) {
+                        if (hasEdge(i, (byte) 4) || hasEdge(last, (byte) 4)) {
                             // we are already connected to the middle dot
                             // going across is impossible
                             continue;
@@ -444,7 +443,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         var patternSize = size / PATTERN_TO_PART_RATIO;
         var pixelSize = patternSize / PART_PIXEL_RADIUS;
 
-        if (drawingPattern == null){
+        if (drawingPattern == null) {
             drawingPattern = new ArrayList<>();
         }
 
