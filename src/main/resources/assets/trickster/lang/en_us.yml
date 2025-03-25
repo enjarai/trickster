@@ -141,14 +141,13 @@ trickster:
     block_find_entity: Embracing Ingress
     range_find_entity: Ingress of Shared Fate
 
-    execute: Grand Stratagem
-    execute_same_scope: Quiet Distortion
-    fork: Utensil Stratagem
-    fold: Folding Distortion
-    try_catch: Cautious Stratagem
-    closure: Closure Stratagem
-    supplier: Supply Distortion
-    kill_thread: Executioner's Ploy
+    execute: Grand Deviation
+    execute_same_scope: Quiet Deviation
+    fork: Utensil Deviation
+    fold: Folding Deviation
+    try_catch: Cautious Deviation
+    delay_execution: Deviation of Suspension
+    kill_thread: Executioner's Deviation
     current_thread: Delusion of Order
     load_argument_1: Primary Delusion
     load_argument_2: Secondary Delusion
@@ -172,6 +171,8 @@ trickster:
     list_size: Tally Distortion
     create_number_range: Interlude Distortion
 
+    closure: Closure Distortion
+    supplier: Supply Distortion
     locate_glyph: Pinpoint Distortion
     locate_glyphs: Discovering Distortion
     retrieve_glyph: Retrieval Distortion
@@ -223,7 +224,6 @@ trickster:
 
     type_fragment: Argumentative Distortion
     hash_values: Decaying Distortion
-    delay_execution: Ploy of Suspension
     pin_chunk: Ploy of Celestial Pin
     get_dimension: Dimensional Delusion
     show_bar: Ploy of Clarity
