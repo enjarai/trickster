@@ -20,6 +20,7 @@ public class ModNetworking {
         CHANNEL.registerServerbound(KillSpellPacket.class, KillSpellPacket::handleServer);
         CHANNEL.registerServerbound(ClipBoardSpellResponsePacket.class, ClipBoardSpellResponsePacket.ENDEC, ClipBoardSpellResponsePacket::handleServer);
         CHANNEL.registerServerbound(LoadExampleSpellPacket.class, LoadExampleSpellPacket.ENDEC, LoadExampleSpellPacket::handleServer);
+        CHANNEL.registerServerbound(SummonEphemeralFragmentPacket.class, SummonEphemeralFragmentPacket.ENDEC, SummonEphemeralFragmentPacket::handleServer);
         CHANNEL.registerServerbound(SpellEditPacket.class, SpellEditPacket::handleServer);
         CHANNEL.registerServerbound(SubscribeToPoolPacket.class, SubscribeToPoolPacket::handleServer);
 

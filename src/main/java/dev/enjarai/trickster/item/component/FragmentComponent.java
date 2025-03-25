@@ -44,12 +44,12 @@ public record FragmentComponent(Fragment value, Optional<Text> name, boolean imm
     );
     public static final Endec<FragmentComponent> ENDEC = EndecTomfoolery.withAlternative(NEW_ENDEC, OLD_ENDEC);
 
-    public FragmentComponent(SpellPart spell) {
-        this(spell, Optional.empty(), false, false);
+    public FragmentComponent(Fragment value) {
+        this(value, Optional.empty(), false, false);
     }
 
-    public FragmentComponent(SpellPart spell, boolean immutable) {
-        this(spell, Optional.empty(), immutable, false);
+    public FragmentComponent(Fragment value, boolean immutable) {
+        this(value, Optional.empty(), immutable, false);
     }
 
     public FragmentComponent withClosed(Optional<Text> name) {
@@ -61,7 +61,7 @@ public record FragmentComponent(Fragment value, Optional<Text> name, boolean imm
                 .flatMap(value -> {
                     if (value instanceof SpellPart spell)
                         return Optional.of(spell);
-                    
+
                     return Optional.empty();
                 });
     }

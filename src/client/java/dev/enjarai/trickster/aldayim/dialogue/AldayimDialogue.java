@@ -5,12 +5,16 @@ import dev.enjarai.trickster.TricksterClient;
 import dev.enjarai.trickster.aldayim.Dialogue;
 import dev.enjarai.trickster.aldayim.Dialogue.Option;
 import dev.enjarai.trickster.aldayim.TextEntryDialogue;
+import dev.enjarai.trickster.net.ModNetworking;
+import dev.enjarai.trickster.net.SummonEphemeralFragmentPacket;
+import dev.enjarai.trickster.spell.Fragment;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.resource.language.I18n;
+import net.minecraft.text.Text;
 
 public class AldayimDialogue {
     @SuppressWarnings({ "DataFlowIssue", "resource" })
-    private final String playerName = MinecraftClient.getInstance().player.getName().getString();
+    private final MinecraftClient client = MinecraftClient.getInstance();
+    private final String playerName = client.player.getName().getString();
 
     private final Dialogue menu = Dialogue.translatable("trickster_aldayim.main_menu")
             .onOpen((backend, self) -> {
@@ -20,14 +24,15 @@ public class AldayimDialogue {
             .responses(
                     Option.translatable(
                             "trickster_aldayim.option.menu.import",
-                            TextEntryDialogue.translatable(
-                                    "trickster_aldayim.menu.import",
-                                    (backend, chosenOption, input) -> {
-                                        Trickster.LOGGER.warn(input);
-                                    }
-                            ).responses(
-                                    Option.translatable("trickster_aldayim.option.ok", Dialogue.closer())
-                            )
+                            Dialogue.translatable("trickster_aldayim.menu.import")
+                                    .onNext((backend, oldDialogue, option) -> {
+                                        var fragment = Fragment.fromBase64(client.keyboard.getClipboard()); //TODO: try-catch this?
+                                        ModNetworking.CHANNEL.clientHandle().send(new SummonEphemeralFragmentPacket(fragment));
+                                        return option.resultDialogue().get();
+                                    })
+                                    .responses(
+                                            Option.translatable("trickster_aldayim.option.ok", Dialogue.closer())
+                                    )
                     )
             );
 
@@ -53,8 +58,8 @@ public class AldayimDialogue {
                                                                     })
                                                                     .responses(
                                                                             Option.of(
-                                                                                    I18n.translate("trickster_aldayim.option.pleasure_to_meet_you", playerName),
-                                                                                    Dialogue.of(I18n.translate("trickster_aldayim.pleasure_to_meet_you", playerName))
+                                                                                    Text.translatable("trickster_aldayim.option.pleasure_to_meet_you", playerName),
+                                                                                    Dialogue.translatable("trickster_aldayim.pleasure_to_meet_you", playerName)
                                                                                             .onOpen((backend, self) -> {
                                                                                                 Trickster.CONFIG.konKnowsName(true);
                                                                                                 return self;
@@ -110,6 +115,10 @@ public class AldayimDialogue {
             );
 
     public void start() {
+        if (TricksterClient.dialogueBackend.isActive()) {
+            return;
+        }
+
         TricksterClient.dialogueBackend.start(Trickster.CONFIG.skipKonIntro() ? start2 : start1);
     }
 }

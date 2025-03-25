@@ -52,7 +52,7 @@ public interface Dialogue {
 
     interface NextHandler {
         @Nullable
-        Dialogue onNext(DialogueBackend backend, Dialogue oldDialogue, @Nullable Option option);
+        Dialogue onNext(DialogueBackend backend, Dialogue oldDialogue, Option option);
     }
 
     class Impl implements Dialogue {
@@ -73,7 +73,7 @@ public interface Dialogue {
         }
 
         @Override
-        public @Nullable Dialogue next(DialogueBackend backend, @Nullable Option option) {
+        public @Nullable Dialogue next(DialogueBackend backend, Option option) {
             if (resetsStack) {
                 backend.resetStack();
             }

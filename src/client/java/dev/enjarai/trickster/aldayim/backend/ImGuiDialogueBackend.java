@@ -19,8 +19,14 @@ public class ImGuiDialogueBackend implements DialogueBackend, ImGuiThing {
     Random random = Random.createLocal();
 
     @Override
-    public void start(Dialogue dialogue) {
-        active = true;
+    public void start(Dialogue dialogue) throws IllegalStateException {
+        if (!active) {
+            active = true;
+            next(dialogue);
+        } else throw new IllegalStateException("Cannot start a dialogue while one is already active");
+    }
+
+    private void next(Dialogue dialogue) {
         var d = dialogue.open(this);
         dialogueStack.push(new Entry(d, d instanceof TextEntryDialogue ? new ImString() : null));
     }
@@ -28,6 +34,12 @@ public class ImGuiDialogueBackend implements DialogueBackend, ImGuiThing {
     @Override
     public void resetStack() {
         dialogueStack.clear();
+        active = false;
+    }
+
+    @Override
+    public boolean isActive() {
+        return active;
     }
 
     @Override
@@ -106,7 +118,7 @@ public class ImGuiDialogueBackend implements DialogueBackend, ImGuiThing {
                         if (next == null) {
                             resetStack();
                         } else {
-                            start(next);
+                            next(next);
                         }
                     }
                 }

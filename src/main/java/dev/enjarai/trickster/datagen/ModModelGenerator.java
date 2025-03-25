@@ -89,6 +89,7 @@ public class ModModelGenerator extends FabricModelProvider {
         itemModelGenerator.register(ModItems.LEASH, Models.GENERATED);
         itemModelGenerator.register(ModItems.MACRO_RING, Models.GENERATED);
         itemModelGenerator.register(ModItems.SPELL_INK, Models.GENERATED);
+        itemModelGenerator.register(ModItems.EPHEMERAL_FRAGMENT, Models.GENERATED);
         itemModelGenerator.register(ModItems.SPELL_RESONATOR_ITEM, Models.GENERATED);
 
         // For the NaN advancement
