@@ -457,7 +457,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             if (!drawingPattern.isEmpty()) {
                 var last = drawingPattern.get(drawingPattern.size() - 1);
                 if (areAdjacent(last, i)) {
-                    _patternSize += pixelSize * 3.0;
+                    _patternSize += pixelSize * Trickster.CONFIG.adjacentPixelCollisionOffset() * 3;
                 }
             }
 
