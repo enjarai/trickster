@@ -25,6 +25,13 @@ import static dev.enjarai.trickster.render.SpellCircleRenderer.*;
 public class SpellPartWidget extends AbstractParentElement implements Drawable, Selectable {
     public static final double PRECISION_OFFSET = Math.pow(2, 50);
 
+    static final List<Byte> RING_ORDER = List.of(
+        (byte) 0, (byte) 1, (byte) 2, (byte) 5, (byte) 8, (byte) 7, (byte) 6, (byte) 3
+    );
+    static final List<Byte> RING_INDICES = List.of(
+        (byte) 0, (byte) 1, (byte) 2, (byte) 7, (byte) 0, (byte) 3, (byte) 6, (byte) 5, (byte) 4
+    );
+
     private SpellPart rootSpellPart;
     private SpellPart spellPart;
     private final Stack<SpellPart> parents = new Stack<>();
@@ -36,6 +43,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
     private double amountDragged;
     private boolean isMutable = true;
+
 
     @Nullable
     private SpellPart toBeReplaced;
@@ -362,6 +370,17 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         super.mouseMoved(mouseX, mouseY);
     }
 
+    private static boolean areAdjacent(byte a, byte b) {
+        if (a == 4 || b == 4) {
+            return false;
+        } else {
+            var i = RING_INDICES.get(a);
+            return
+                b == RING_ORDER.get((i + 1) % 8) ||
+                b == RING_ORDER.get(i == 0 ? 7 : (i - 1) % 8);
+        }
+    }
+
     private boolean hasEdge(byte a, byte b) {
         for (int i = 0; i < drawingPattern.size(); i++) {
             if (i < drawingPattern.size() - 1) {
@@ -432,9 +451,18 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         var moves = possibleMoves();
 
         for (byte i = 0; i < 9; i++) {
+            // if we are checking the closest neighboring dots on the ring
+            // translate the dots outward a bit by enlarging the radius
+            // this will make it easier to connect lines to the next neighbors on the ring
             var _patternSize = patternSize;
-            
-            var pos = getPatternDotPosition(x, y, i, patternSize);
+            if (!drawingPattern.isEmpty()) {
+                var last = drawingPattern.get(drawingPattern.size() - 1);
+                if (areAdjacent(last, i)) {
+                    _patternSize += pixelSize * 3.0;
+                }
+            }
+
+            var pos = getPatternDotPosition(x, y, i, _patternSize);
 
             if (isInsideHitbox(pos, pixelSize, mouseX, mouseY)) {
                 if (drawingPart == null) {
