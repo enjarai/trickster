@@ -408,3 +408,4 @@ text.config.trickster-config:
     dragDrawing: Draw by dragging
     barsHorizontal: Show spell-created bars horizontally
     disableOffhandScrollOpening: Require scroll in main hand to edit
+    adjacentPixelCollisionOffset: Offset factor of adjacent pixels
