@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2d;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.Stack;
@@ -23,6 +24,13 @@ import static dev.enjarai.trickster.render.SpellCircleRenderer.*;
 
 public class SpellPartWidget extends AbstractParentElement implements Drawable, Selectable {
     public static final double PRECISION_OFFSET = Math.pow(2, 50);
+
+    static final Byte[] RING_ORDER = {
+            (byte) 0, (byte) 1, (byte) 2, (byte) 5, (byte) 8, (byte) 7, (byte) 6, (byte) 3
+    };
+    static final Byte[] RING_INDICES = {
+            (byte) 0, (byte) 1, (byte) 2, (byte) 7, (byte) 0, (byte) 3, (byte) 6, (byte) 5, (byte) 4
+    };
 
     private SpellPart rootSpellPart;
     private SpellPart spellPart;
@@ -361,6 +369,70 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         super.mouseMoved(mouseX, mouseY);
     }
 
+    private static boolean areAdjacent(byte a, byte b) {
+        if (a == 4 || b == 4) {
+            return false;
+        } else {
+            var i = RING_INDICES[a];
+            return b == RING_ORDER[(i + 1) % 8] ||
+                    b == RING_ORDER[i == 0 ? 7 : (i - 1) % 8];
+        }
+    }
+
+    private boolean hasLine(byte a, byte b) {
+        for (int i = 0; i < drawingPattern.size(); i++) {
+            if (i < drawingPattern.size() - 1) {
+                var prev = drawingPattern.get(i);
+                var next = drawingPattern.get(i + 1);
+                if ((prev == a && next == b) || (prev == b && next == a)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    // generates all possible moves from the current drawingPattern
+    // assigns the target dot with the resulting next drawingPattern
+    private HashMap<Byte, List<Byte>> possibleMoves() {
+        var moves = new HashMap<Byte, List<Byte>>();
+        if (drawingPattern.isEmpty()) {
+            for (byte i = 0; i < 9; i++) {
+                var move = new ArrayList<Byte>();
+                move.add(i);
+                moves.put(i, move);
+            }
+        } else {
+            var last = drawingPattern.getLast();
+            for (byte i = 0; i < 9; i++) {
+                if (i == last) {
+                    continue;
+                }
+
+                if (!hasLine(i, last)) {
+                    var move = new ArrayList<Byte>(drawingPattern);
+                    // resolve the middle dot if we are going across
+                    if (i == 8 - last) {
+                        if (hasLine(i, (byte) 4) || hasLine(last, (byte) 4)) {
+                            // we are already connected to the middle dot
+                            // going across is impossible
+                            continue;
+                        } else {
+                            move.add((byte) 4);
+                        }
+                    }
+                    move.add(i);
+                    moves.put(i, move);
+                } else if (drawingPattern.size() >= 2 && drawingPattern.get(drawingPattern.size() - 2) == i) {
+                    var move = new ArrayList<Byte>(drawingPattern);
+                    move.removeLast();
+                    moves.put(i, move);
+                }
+            }
+        }
+        return moves;
+    }
+
     @SuppressWarnings("resource")
     protected boolean selectPattern(SpellPart part, float x, float y, float size, double mouseX, double mouseY) {
         if (drawingPart != null && drawingPart != part) {
@@ -371,44 +443,44 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         var patternSize = size / PATTERN_TO_PART_RATIO;
         var pixelSize = patternSize / PART_PIXEL_RADIUS;
 
-        for (int i = 0; i < 9; i++) {
-            var pos = getPatternDotPosition(x, y, i, patternSize);
+        if (drawingPattern == null) {
+            drawingPattern = new ArrayList<>();
+        }
+
+        var moves = possibleMoves();
+
+        for (byte i = 0; i < 9; i++) {
+            // if we are checking the closest neighboring dots on the ring
+            // translate the dots outward a bit by enlarging the radius
+            // this will make it easier to connect lines to the next neighbors on the ring
+            var _patternSize = patternSize;
+            if (!drawingPattern.isEmpty()) {
+                var last = drawingPattern.get(drawingPattern.size() - 1);
+                if (areAdjacent(last, i)) {
+                    _patternSize += pixelSize * Trickster.CONFIG.adjacentPixelCollisionOffset() * 3;
+                }
+            }
+
+            var pos = getPatternDotPosition(x, y, i, _patternSize);
 
             if (isInsideHitbox(pos, pixelSize, mouseX, mouseY)) {
                 if (drawingPart == null) {
                     drawingPart = part;
                     oldGlyph = part.glyph;
                     part.glyph = new PatternGlyph(List.of());
-                    drawingPattern = new ArrayList<>();
                 }
-
-                if (drawingPattern.size() >= 2 && drawingPattern.get(drawingPattern.size() - 2) == (byte) i) {
-                    drawingPattern.removeLast();
-                    MinecraftClient.getInstance().player.playSoundToPlayer(
-                            ModSounds.DRAW, SoundCategory.MASTER,
-                            1f, ModSounds.randomPitch(0.6f, 0.2f)
-                    );
-                } else if (
-                    drawingPattern.isEmpty() ||
-                            (drawingPattern.getLast() != (byte) i && !hasOverlappingLines(drawingPattern, drawingPattern.getLast(), (byte) i))
-                ) {
-                    drawingPattern.add((byte) i);
-
-                    //add middle point to path if connecting opposite corners
-                    if (drawingPattern.size() > 1 && drawingPattern.get(drawingPattern.size() - 2) == (byte) (8 - i))
-                        drawingPattern.add(drawingPattern.size() - 1, (byte) 4);
-
+                if (moves.get(i) != null) {
+                    boolean removing = drawingPattern.size() > moves.get(i).size();
+                    drawingPattern = moves.get(i);
                     // TODO click sound?
                     MinecraftClient.getInstance().player.playSoundToPlayer(
                             ModSounds.DRAW, SoundCategory.MASTER,
-                            1f, ModSounds.randomPitch(1f, 0.2f)
+                            1f, ModSounds.randomPitch(removing ? 0.6f : 1.0f, 0.2f)
                     );
                 }
-
                 return true;
             }
         }
-
         return false;
     }
 
@@ -486,20 +558,6 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
     public boolean isDrawing() {
         return drawingPart != null;
-    }
-
-    protected static boolean hasOverlappingLines(List<Byte> pattern, byte p1, byte p2) {
-        Byte first = null;
-
-        for (Byte second : pattern) {
-            if (first != null && (first == p1 && second == p2 || first == p2 && second == p1)) {
-                return true;
-            }
-
-            first = second;
-        }
-
-        return false;
     }
 
     protected boolean propagateMouseEvent(SpellPart part, double x, double y, double size, double startingAngle, double mouseX, double mouseY, MouseEventHandler callback) {
