@@ -25,12 +25,12 @@ import static dev.enjarai.trickster.render.SpellCircleRenderer.*;
 public class SpellPartWidget extends AbstractParentElement implements Drawable, Selectable {
     public static final double PRECISION_OFFSET = Math.pow(2, 50);
 
-    static final List<Byte> RING_ORDER = List.of(
+    static final Byte[] RING_ORDER = {
         (byte) 0, (byte) 1, (byte) 2, (byte) 5, (byte) 8, (byte) 7, (byte) 6, (byte) 3
-    );
-    static final List<Byte> RING_INDICES = List.of(
+    };
+    static final Byte[] RING_INDICES = {
         (byte) 0, (byte) 1, (byte) 2, (byte) 7, (byte) 0, (byte) 3, (byte) 6, (byte) 5, (byte) 4
-    );
+    };
 
     private SpellPart rootSpellPart;
     private SpellPart spellPart;
@@ -374,10 +374,10 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         if (a == 4 || b == 4) {
             return false;
         } else {
-            var i = RING_INDICES.get(a);
+            var i = RING_INDICES[a];
             return
-                b == RING_ORDER.get((i + 1) % 8) ||
-                b == RING_ORDER.get(i == 0 ? 7 : (i - 1) % 8);
+                b == RING_ORDER[(i + 1) % 8] ||
+                b == RING_ORDER[i == 0 ? 7 : (i - 1) % 8];
         }
     }
 
