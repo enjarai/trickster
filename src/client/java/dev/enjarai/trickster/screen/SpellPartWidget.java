@@ -220,16 +220,16 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         var result = parents.pop();
         angleOffsets.pop();
 
-        int partCount = result.subParts.size();
-        var parentSize = radius * 3;
+        int partCount = result.partCount();
+        var parentRadius = radius * 3;
         int i = 0;
 
         if (!(result.glyph instanceof SpellPart inner && inner == spellPart)) {
-            parentSize = Math.max(radius * 2, radius * (double) ((partCount + 1) / 2));
+            parentRadius = Math.max(radius * 2, radius * (double) ((partCount + 1) / 2));
 
             for (var child : result.subParts) {
                 if (child == spellPart) {
-                    var subPos = result.subPosition(i, parentSize, angleOffsets.peek());
+                    var subPos = result.subPosition(i, parentRadius, angleOffsets.peek());
                     position.sub(subPos);
                     break;
                 }
@@ -238,7 +238,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             }
         }
 
-        radius = parentSize;
+        radius = parentRadius;
         spellPart = result;
     }
 
