@@ -2,6 +2,7 @@ package dev.enjarai.trickster;
 
 import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.block.ModBlocks;
+import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.compat.ModCompat;
 import dev.enjarai.trickster.compat.transmog.TransmogCompat;
 import dev.enjarai.trickster.config.TricksterConfig;
@@ -28,6 +29,7 @@ import dev.enjarai.trickster.spell.trick.Tricks;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.item.Item.TooltipContext;
@@ -96,6 +98,11 @@ public class Trickster implements ModInitializer, CicadaEntrypoint {
 
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
             TricksterCommand.register(dispatcher);
+        });
+
+        ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register((player, origin, destination) -> {
+            ModEntityComponents.CASTER.sync(player);
+            ModEntityComponents.BARS.sync(player);
         });
 
         if (ModCompat.TRANSMOG_LOADED) {
