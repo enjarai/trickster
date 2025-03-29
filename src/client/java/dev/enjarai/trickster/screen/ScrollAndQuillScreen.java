@@ -2,8 +2,10 @@ package dev.enjarai.trickster.screen;
 
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.spell.SpellPart;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
+import net.minecraft.client.option.KeyBinding;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 
@@ -17,6 +19,10 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
     public SpellPartWidget partWidget;
 
     private boolean hasLoaded = false;
+
+    static final double ZOOM_SPEED = 1.0;
+
+    private double inputZ = 0;
 
     public ScrollAndQuillScreen(ScrollAndQuillScreenHandler handler, PlayerInventory playerInventory, Text title) {
         super(title);
@@ -88,6 +94,42 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
         if (this.isDragging()) this.setDragging(false);
         return super.mouseReleased(mouseX, mouseY, button);
+    }
+
+    @Override
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        super.render(context, mouseX, mouseY, delta);
+        
+        if (inputZ != 0.0) {
+            partWidget.mouseScrolled(mouseX, mouseY, 0.0, inputZ * ZOOM_SPEED * delta);
+        }
+    }
+   
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        if (this.client.options.inventoryKey.matchesKey(keyCode, scanCode)) {
+            this.close();
+            return true;
+        } else if (this.client.options.forwardKey.matchesKey(keyCode, scanCode)) {
+            inputZ = 1.0;
+            return true;
+        } else if (this.client.options.backKey.matchesKey(keyCode, scanCode)) {
+            inputZ = -1.0;
+            return true;
+        }
+        return super.keyPressed(keyCode, scanCode, modifiers);
+    }
+    
+    @Override
+    public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
+        if (this.client.options.forwardKey.matchesKey(keyCode, scanCode)) {
+            inputZ = 0.0;
+            return true;
+        } else if (this.client.options.backKey.matchesKey(keyCode, scanCode)) {
+            inputZ = 0.0;
+            return true;
+        }
+        return super.keyReleased(keyCode, scanCode, modifiers);
     }
 
     @Override
