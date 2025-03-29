@@ -1,6 +1,6 @@
-// 1.21	2025-03-18T23:19:26.817008744	Trickster/Model Definitions
-731c4a8f7b5d2845410c03b22e2521bcf41f969c assets/trickster/models/item/scroll_and_quill_red.json
+// 1.21	2025-03-29T16:55:04.633378522	Trickster/Model Definitions
 7cd9a2d7e13659094779ee999474bc85392fe900 assets/trickster/models/item/scroll_and_quill_white.json
+731c4a8f7b5d2845410c03b22e2521bcf41f969c assets/trickster/models/item/scroll_and_quill_red.json
 c995dc518d2d7134ffe57b13897fda67a0b0f815 assets/trickster/models/item/scroll_and_quill_pink.json
 1d20d3356c7098ceded88807637ed3ced7cb8d26 assets/trickster/models/item/cracked_echo_knot.json
 e622027802fd7ffb1c2e6f6d1733f17ed239e61d assets/trickster/models/item/tome_of_tomfoolery.json
@@ -12,6 +12,7 @@ d44eea2605a3263a62d123f63edc0cfbe3f30870 assets/trickster/models/item/charging_a
 ce371fd6383c178fd713cbe03828b8015df480d8 assets/trickster/models/item/scroll_and_quill_gray.json
 c29f71428dcd472e97e6574b8cb1f156ea3b9fcd assets/trickster/models/item/written_scroll_pink.json
 11f88e31ee80e48a4b56df7363c1dfd36659bd76 assets/trickster/models/item/scroll_and_quill_yellow.json
+a9c3423aa3ff412a7884135274df025e9392b91f assets/trickster/models/item/ephemeral_fragment.json
 0c24009d9f713f084ff55efcb5aedef3924fc3bf assets/trickster/models/item/written_scroll_white.json
 52ba2ed5a5d7f67675af14a56e11cad44857f53b assets/trickster/models/item/diamond_knot.json
 1b60d5962f38ecaf3e79d678b2f069057b1c69ab assets/trickster/models/item/scroll_and_quill_purple.json
@@ -19,8 +20,8 @@ b0c13ffb9082049c0ed38c75744d557504409e86 assets/trickster/models/item/written_sc
 1f778e1f2c30077615a7ea8b89c6da45b5c0631f assets/trickster/models/item/written_scroll_light_blue.json
 b2b1aaf26ce09fb4f7de2fbde84e56f568bc247d assets/trickster/models/item/scroll_and_quill_cyan.json
 1b9cef12c72abf3e20c0cb70743fb574e8d0cf04 assets/trickster/models/item/rusted_spell_core.json
-e5a42570471a60ff1e13197f121d3786ba39071c assets/trickster/models/item/spell_core.json
 f00b04573fa8a37423acbd2cfa58995b577acc9f assets/trickster/models/item/written_scroll_light_gray.json
+e5a42570471a60ff1e13197f121d3786ba39071c assets/trickster/models/item/spell_core.json
 274e1f4724884bcb7cc8337d4ffac31a3af801fe assets/trickster/models/item/written_scroll_black.json
 9485ad9be41799d6c5bd48cd6dead8464f65beb5 assets/trickster/models/item/scroll_and_quill_magenta.json
 68b6bc87e4d5e9b2709e30d6a6ca9b139c4f5fee assets/trickster/models/item/macro_ring.json
@@ -30,8 +31,8 @@ fe72cc051cf77ba7ea5b6ca82cabf06c56cb4503 assets/trickster/blockstates/spell_cons
 4320a21f02ba7db476a7dbf19eaa031ef40ca85c assets/trickster/models/item/scroll_and_quill_green.json
 d9c9e7c5a06cf74773b8918b63ba681e42630412 assets/trickster/models/item/collar.json
 2a8749d4361b2691332bd1d021866d7f9106ca0e assets/trickster/blockstates/modular_spell_construct.json
-9faf558d1aa0f4946cf100c91b4f2819b7a07538 assets/trickster/models/item/written_scroll_orange.json
 22ef3ac293ebe5b86928380e232bfaccc6202a28 assets/trickster/models/item/warding_charm.json
+9faf558d1aa0f4946cf100c91b4f2819b7a07538 assets/trickster/models/item/written_scroll_orange.json
 0af8ae55bca54e5baea1b840c12340690af85f5c assets/trickster/models/item/written_scroll_green.json
 1e5f52dedfd765cf5c0ab6579f32614beb368576 assets/trickster/models/item/nan.json
 85f44373cd91352eb424318c4f289ae4829b3f80 assets/trickster/models/item/scroll_shelf.json
