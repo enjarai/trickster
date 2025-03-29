@@ -32,7 +32,6 @@ public class SubtractTrick extends DistortionTrick<SubtractTrick> {
         return result;
     }
 
-
     public Fragment runForGlyphs(SpellContext ctx, List<PatternGlyph> patterns) throws BlunderException {
         PatternGlyph result = null;
 
