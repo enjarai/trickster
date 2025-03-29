@@ -24,6 +24,10 @@ import static dev.enjarai.trickster.render.SpellCircleRenderer.*;
 
 public class SpellPartWidget extends AbstractParentElement implements Drawable, Selectable {
     public static final double PRECISION_OFFSET = Math.pow(2, 50);
+    public static final double ZOOM_SPEED = 0.1;
+
+    static final Byte MIDDLE_DOT = 4;
+    static final Byte DOT_COUNT = 9;
 
     static final Byte[] RING_ORDER = {
             (byte) 0, (byte) 1, (byte) 2, (byte) 5, (byte) 8, (byte) 7, (byte) 6, (byte) 3
@@ -195,8 +199,8 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         }
 
         Vector2d scaledMouse = toScaledSpace(new Vector2d(mouseX, mouseY));
-        position.add(new Vector2d(position).sub(scaledMouse).mul(verticalAmount / 10));
-        radius += verticalAmount * radius / 10;
+        position.add(new Vector2d(position).sub(scaledMouse).mul(verticalAmount * ZOOM_SPEED));
+        radius += verticalAmount * radius * ZOOM_SPEED;
 
         var subRadius = toLocalSpace(spellPart.subRadius(radius));
         if(verticalAmount > 0) {
@@ -320,7 +324,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     }
 
     private static boolean areAdjacent(byte a, byte b) {
-        if (a == 4 || b == 4) {
+        if (a == MIDDLE_DOT || b == MIDDLE_DOT) {
             return false;
         } else {
             var i = RING_INDICES[a];
@@ -347,14 +351,14 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     private HashMap<Byte, List<Byte>> possibleMoves() {
         var moves = new HashMap<Byte, List<Byte>>();
         if (drawingPattern.isEmpty()) {
-            for (byte i = 0; i < 9; i++) {
+            for (byte i = 0; i < DOT_COUNT; i++) {
                 var move = new ArrayList<Byte>();
                 move.add(i);
                 moves.put(i, move);
             }
         } else {
             var last = drawingPattern.getLast();
-            for (byte i = 0; i < 9; i++) {
+            for (byte i = 0; i < DOT_COUNT; i++) {
                 if (i == last) {
                     continue;
                 }
@@ -363,12 +367,12 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
                     var move = new ArrayList<Byte>(drawingPattern);
                     // resolve the middle dot if we are going across
                     if (i == 8 - last) {
-                        if (hasLine(i, (byte) 4) || hasLine(last, (byte) 4)) {
+                        if (hasLine(i, MIDDLE_DOT) || hasLine(last, MIDDLE_DOT)) {
                             // we are already connected to the middle dot
                             // going across is impossible
                             continue;
                         } else {
-                            move.add((byte) 4);
+                            move.add(MIDDLE_DOT);
                         }
                     }
                     move.add(i);
@@ -399,7 +403,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
         var moves = possibleMoves();
 
-        for (byte i = 0; i < 9; i++) {
+        for (byte i = 0; i < DOT_COUNT; i++) {
             // if we are checking the closest neighboring dots on the ring
             // translate the dots outward a bit by enlarging the radius
             // this will make it easier to connect lines to the next neighbors on the ring
