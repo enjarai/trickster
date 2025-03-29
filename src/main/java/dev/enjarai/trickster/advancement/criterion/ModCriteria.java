@@ -15,6 +15,7 @@ public class ModCriteria {
     public static final UseMacroCriterion USE_MACRO = register("use_macro", new UseMacroCriterion());
     public static final TriggerWardCriterion TRIGGER_WARD = register("trigger_ward", new TriggerWardCriterion());
     public static final CreateEchoKnotCriterion CREATE_ECHO_KNOT = register("create_echo_knot", new CreateEchoKnotCriterion());
+    public static final UseCostPloyCriterion USE_COST_PLOY = register("use_cost_ploy", new UseCostPloyCriterion());
 
     private static <T extends Criterion<?>> T register(String name, T criterion) {
         return Registry.register(Registries.CRITERION, Trickster.id(name), criterion);

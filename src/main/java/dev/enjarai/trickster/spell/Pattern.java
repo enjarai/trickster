@@ -80,6 +80,14 @@ public record Pattern(List<PatternEntry> entries) implements Fragment {
         return result;
     }
 
+    public Pattern add(Pattern other) {
+        return Pattern.from(this.toInt() | other.toInt());
+    }
+
+    public Pattern subtract(Pattern other) {
+        return Pattern.from(this.toInt() & ~other.toInt());
+    }
+
     public boolean isEmpty() {
         return entries().isEmpty();
     }
