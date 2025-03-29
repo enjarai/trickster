@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.spell.trick.basic;
 
+import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
@@ -18,6 +19,8 @@ public class CostTrick extends Trick<CostTrick> {
 
     public Fragment run(SpellContext ctx) throws BlunderException {
         var player = ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this));
+        ModCriteria.USE_COST_PLOY.trigger(player);
+
         if (!player.getInventory().contains(ModItems.SPELL_COST)) {
             throw new MissingCostBlunder(this);
         }

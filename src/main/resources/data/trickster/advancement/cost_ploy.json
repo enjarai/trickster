@@ -1,0 +1,22 @@
+{
+  "display": {
+    "icon": {
+      "id": "minecraft:amethyst_shard"
+    },
+    "title": {
+      "text": "Tomfoolery Inc. Certified"
+    },
+    "description": {
+      "text": "Cast a spell which makes use of Tomfoolery Inc.'s Cost Ploy"
+    },
+    "frame": "task",
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "trickster:root",
+  "criteria": {
+    "use_cost_ploy": {
+      "trigger": "trickster:use_cost_ploy"
+    }
+  }
+}
