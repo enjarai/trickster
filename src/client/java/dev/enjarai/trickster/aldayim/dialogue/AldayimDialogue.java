@@ -8,11 +8,12 @@ import dev.enjarai.trickster.aldayim.TextEntryDialogue;
 import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.net.SummonEphemeralFragmentPacket;
 import dev.enjarai.trickster.spell.Fragment;
+import dev.enjarai.trickster.spell.fragment.StringFragment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 
 public class AldayimDialogue {
-    @SuppressWarnings({ "DataFlowIssue", "resource" })
+    @SuppressWarnings("DataFlowIssue")
     private final MinecraftClient client = MinecraftClient.getInstance();
     private final String playerName = client.player.getName().getString();
 
@@ -24,12 +25,27 @@ public class AldayimDialogue {
             .responses(
                     Option.translatable(
                             "trickster_aldayim.option.menu.import",
-                            Dialogue.translatable("trickster_aldayim.menu.import")
-                                    .onNext((backend, oldDialogue, option) -> {
-                                        var fragment = Fragment.fromBase64(client.keyboard.getClipboard()); //TODO: try-catch this?
-                                        ModNetworking.CHANNEL.clientHandle().send(new SummonEphemeralFragmentPacket(fragment));
-                                        return option.resultDialogue().get();
-                                    })
+                            TextEntryDialogue.translatable("trickster_aldayim.menu.import", (backend, chosenOption, input) -> {
+                                Fragment fragment;
+
+                                try {
+                                    fragment = Fragment.fromBase64(input);
+                                    ModNetworking.CHANNEL.clientHandle().send(new SummonEphemeralFragmentPacket(fragment));
+                                } catch (Throwable e) {
+                                    //TODO: error handling
+                                    Trickster.LOGGER.error("owo what the fucking hell happened here you fucking idiot");
+                                }
+                            })
+                                    .responses(
+                                            Option.translatable("trickster_aldayim.option.ok", Dialogue.closer())
+                                    )
+                    ),
+                    Option.translatable(
+                            "trickster_aldayim.option.menu.string_as_fragment",
+                            TextEntryDialogue.translatable("trickster_aldayim.menu.string_as_fragment", (backend, chosenOption, input) -> {
+                                var fragment = new StringFragment(input);
+                                ModNetworking.CHANNEL.clientHandle().send(new SummonEphemeralFragmentPacket(fragment));
+                            })
                                     .responses(
                                             Option.translatable("trickster_aldayim.option.ok", Dialogue.closer())
                                     )

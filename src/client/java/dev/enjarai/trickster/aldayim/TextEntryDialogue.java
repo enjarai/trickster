@@ -14,7 +14,7 @@ public interface TextEntryDialogue extends Dialogue {
     }
 
     interface SubmitHandler {
-        void onSubmit(DialogueBackend backend, int chosenOption, String input);
+        void onSubmit(DialogueBackend backend, Option chosenOption, String input);
     }
 
     class Impl extends Dialogue.Impl implements TextEntryDialogue {
@@ -27,7 +27,7 @@ public interface TextEntryDialogue extends Dialogue {
 
         @Override
         public void submit(DialogueBackend backend, Option chosenOption, String input) {
-            submitHandler.onSubmit(backend, responses.indexOf(chosenOption), input);
+            submitHandler.onSubmit(backend, chosenOption, input);
         }
     }
 }
