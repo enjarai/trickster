@@ -244,7 +244,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
     private void pushNewRoot(Vector2d scaledMouse) {
         double angle = angleOffsets.peek();
-        int closestIndex = spellPart.closestIndex(position, scaledMouse, radius, angle);
+        int closestIndex = closestIndex(spellPart, position, scaledMouse, radius, angle);
         if (closestIndex == -1) {
             this.radius = radius / 3;
             this.angleOffsets.push(angle);
@@ -321,6 +321,28 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         }
 
         super.mouseMoved(mouseX, mouseY);
+    }
+
+    // returns the index of the closest sub-circle from the mouse or -1 if the center is the closest
+    private static int closestIndex(SpellPart part, Vector2d position, Vector2d mouse, double radius, double angleOffset) {
+        int closest = -1;
+        double closestDistanceSquared = Double.MAX_VALUE;
+
+        if (part.glyph instanceof SpellPart) {
+            closestDistanceSquared = position.distanceSquared(mouse);
+        }
+
+        for (int i = 0; i < part.partCount(); i++) {
+            Vector2d subPos = part.subPosition(i, radius, angleOffset).add(position);
+            double distanceSquared = subPos.distanceSquared(mouse);
+
+            if (distanceSquared < closestDistanceSquared) {
+                closest = i;
+                closestDistanceSquared = distanceSquared;
+            }
+        }
+
+        return closest;
     }
 
     private static boolean areAdjacent(byte a, byte b) {
@@ -519,7 +541,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     }
     
     protected boolean propagateMouseEvent(SpellPart part, Vector2d pos, double radius, double startingAngle, Vector2d mouse, MouseEventHandler callback) {
-        int closestIndex = part.closestIndex(pos, mouse, radius, startingAngle);
+        int closestIndex = closestIndex(part, pos, mouse, radius, startingAngle);
         boolean centerAvailable =
             (isCircleClickable(toLocalSpace(radius)) && (drawingPart == null || drawingPart == part))
             || part.glyph instanceof SpellPart;

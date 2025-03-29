@@ -263,26 +263,4 @@ public final class SpellPart implements Fragment {
         double angle = this.subAngle(index, angleOffset);
         return new Vector2d(Math.cos(angle), Math.sin(angle)).mul(radius);
     }
-
-    // returns the index of the closest sub-circle from the mouse or -1 if the center is the closest
-    public int closestIndex(Vector2d position, Vector2d mouse, double radius, double angleOffset) {
-        int closest = -1;
-        double closestDistanceSquared = Double.MAX_VALUE;
-
-        if (this.glyph instanceof SpellPart) {
-            closestDistanceSquared = position.distanceSquared(mouse);
-        }
-
-        for (int i = 0; i < this.partCount(); i++) {
-            Vector2d subPos = this.subPosition(i, radius, angleOffset).add(position);
-            double distanceSquared = subPos.distanceSquared(mouse);
-
-            if (distanceSquared < closestDistanceSquared) {
-                closest = i;
-                closestDistanceSquared = distanceSquared;
-            }
-        }
-
-        return closest;
-    }
 }
