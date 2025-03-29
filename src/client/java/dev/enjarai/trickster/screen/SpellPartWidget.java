@@ -39,6 +39,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
     public Vector2d position;
     public double radius;
+    public double windowHeight = 600;
 
     private double amountDragged;
     private boolean isMutable = true;
@@ -148,10 +149,11 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
         //        context.getMatrices().push();
         //        context.getMatrices().scale((float) PRECISION_OFFSET, (float) PRECISION_OFFSET, (float) PRECISION_OFFSET);
+        windowHeight = context.getScaledWindowHeight();
         this.renderer.renderPart(
                 context.getMatrices(), context.getVertexConsumers(), spellPart,
                 position.x, position.y, radius, angleOffsets.peek(), delta,
-                radius -> (float) Math.clamp(1 / (radius / context.getScaledWindowHeight() * 3), 0.0, 0.8),
+                radius -> (float) Math.clamp(1 / (radius / windowHeight * 3), 0.0, 0.8),
                 new Vec3d(-1, 0, 0)
         );
         context.draw();
@@ -159,6 +161,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         //        context.getMatrices().pop();
     }
 
+    // TODO this still depends on the GUI scale, should be a ratio of the scaled window height of the context
     public static boolean isCircleClickable(double radius) {
         return radius >= 16 && radius <= 256;
     }
@@ -197,11 +200,11 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
         var subRadius = toLocalSpace(spellPart.subRadius(radius));
         if(verticalAmount > 0) {
-            if (subRadius > 600 && (spellPart.glyph instanceof SpellPart || spellPart.partCount() > 0)) {
+            if (subRadius > windowHeight && (spellPart.glyph instanceof SpellPart || spellPart.partCount() > 0)) {
                 pushNewRoot(scaledMouse);
             }
         } else {
-            if (subRadius < 300 && !parents.empty()) {
+            if (subRadius < windowHeight / 2 && !parents.empty()) {
                 popOldRoot();
             }
         }
