@@ -6,6 +6,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
+import org.joml.Vector2d;
 
 import java.util.ArrayList;
 
@@ -104,9 +105,8 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
     }
 
     record PositionMemory(int spellHash,
-                          double x,
-                          double y,
-                          double size,
+                          Vector2d position,
+                          double radius,
                           SpellPart rootSpellPart,
                           SpellPart spellPart,
                           ArrayList<SpellPart> parents,
