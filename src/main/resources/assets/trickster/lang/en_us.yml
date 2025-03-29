@@ -96,7 +96,7 @@ trickster:
     write_spell: Notulist's Ploy
     write_closed_spell: Proprietary Notulist's Ploy
     read_macro_ring: Macro Delusion
-    reveal: Showcase Stratagem
+    reveal: Showcase Ploy
     read_crow_mind: Crow Mind Delusion
     write_crow_mind: Crow Mind Ploy
     cost: Cost Ploy
@@ -140,6 +140,9 @@ trickster:
 
     block_find_entity: Embracing Ingress
     range_find_entity: Ingress of Shared Fate
+
+    import: Assistance Deviation
+    import_hat: Cranium Deviation
 
     execute: Grand Deviation
     execute_same_scope: Quiet Deviation
@@ -206,8 +209,6 @@ trickster:
     check_resonator: Ingress of Resonance
     get_redstone_power: Ingress of Logic
 
-    import: Assistance Stratagem
-    import_hat: Cranium Stratagem
     check_hat: Cranium Delusion
     set_hat: Cranial Shift Ploy
     other_hand: Juggling Delusion
@@ -235,7 +236,7 @@ trickster:
     draw_line: Artist's Ploy
     get_flecks: Observer's Ingress
 
-    get_scale: Distortion of Occupation
+    get_scale: Ingress of Occupation
     set_scale: Ploy of Occupation
 
     transmog: Ploy of Transmogrification
