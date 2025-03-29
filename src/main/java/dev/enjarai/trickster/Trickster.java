@@ -100,6 +100,7 @@ public class Trickster implements ModInitializer, CicadaEntrypoint {
             TricksterCommand.register(dispatcher);
         });
 
+        //TODO: too early?
         ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register((player, origin, destination) -> {
             ModEntityComponents.CASTER.sync(player);
             ModEntityComponents.BARS.sync(player);
