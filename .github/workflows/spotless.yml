@@ -2,13 +2,7 @@ name: spotless
 on: [pull_request]
 
 jobs:
-  build:
-    strategy:
-      matrix:
-        # Use these Java versions
-        java: [
-          21,    # Current Java LTS
-        ]
+  fix_formatting:
     runs-on: ubuntu-22.04
     steps:
       - name: checkout repository
@@ -17,14 +11,13 @@ jobs:
         run: git fetch origin master
       - name: validate gradle wrapper
         uses: gradle/wrapper-validation-action@v2
-      - name: setup jdk ${{ matrix.java }}
+      - name: setup jdk
         uses: actions/setup-java@v4
         with:
-          java-version: ${{ matrix.java }}
+          java-version: 21
           distribution: 'microsoft'
       - name: make gradle wrapper executable
         run: chmod +x ./gradlew
       - name: run spotless
         run: ./gradlew spotlessApply
-
       - uses: stefanzweifel/git-auto-commit-action@v5
