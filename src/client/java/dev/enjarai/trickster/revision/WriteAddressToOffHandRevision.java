@@ -22,7 +22,7 @@ public class WriteAddressToOffHandRevision implements Revision {
 
         if (address.isPresent()) {
             var addressFragment = new ListFragment(address.get().stream().map(num -> (Fragment) new NumberFragment(num)).toList());
-            ctx.updateOtherHandSpell(new SpellPart(addressFragment, List.of()));
+            ctx.updateOffHandSpell(new SpellPart(addressFragment, List.of()));
         }
 
         return root;

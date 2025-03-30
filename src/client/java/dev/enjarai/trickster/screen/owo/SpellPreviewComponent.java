@@ -39,7 +39,7 @@ public class SpellPreviewComponent extends BaseComponent {
             }
 
             @Override
-            public void updateOtherHandSpell(SpellPart sp) {
+            public void updateOffHandSpell(SpellPart sp) {
 
             }
 
