@@ -18,6 +18,8 @@ jobs:
     steps:
       - name: checkout repository
         uses: actions/checkout@v4
+      - name: Fetch refs
+        run: git fetch origin master
       - name: validate gradle wrapper
         uses: gradle/wrapper-validation-action@v2
       - name: setup jdk ${{ matrix.java }}
