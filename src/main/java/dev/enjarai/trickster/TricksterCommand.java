@@ -54,63 +54,51 @@ public class TricksterCommand {
                 .then(literal("weight")
                         .requires(s -> s.hasPermissionLevel(2))
                         .then(argument("weight", DoubleArgumentType.doubleArg(0, 1))
-                                .executes(
-                                        context -> TricksterCommand.setWeight(
+                                .executes(context -> TricksterCommand.setWeight(
+                                        context,
+                                        DoubleArgumentType.getDouble(context, "weight"),
+                                        List.of(context.getSource().getEntityOrThrow())
+                                ))
+                                .then(argument("target", EntityArgumentType.entities())
+                                        .executes(context -> TricksterCommand.setWeight(
                                                 context,
                                                 DoubleArgumentType.getDouble(context, "weight"),
-                                                List.of(context.getSource().getEntityOrThrow())
-                                        )
-                                )
-                                .then(argument("target", EntityArgumentType.entities())
-                                        .executes(
-                                                context -> TricksterCommand.setWeight(
-                                                        context,
-                                                        DoubleArgumentType.getDouble(context, "weight"),
-                                                        EntityArgumentType.getEntities(context, "target")
-                                                )
-                                        )
+                                                EntityArgumentType.getEntities(context, "target")
+                                        ))
                                 )
                         )
                 )
                 .then(literal("scale")
                         .requires(s -> s.hasPermissionLevel(2))
                         .then(argument("scale", DoubleArgumentType.doubleArg(0.0625, 8.0))
-                                .executes(
-                                        context -> TricksterCommand.setScale(
+                                .executes(context -> TricksterCommand.setScale(
+                                        context,
+                                        DoubleArgumentType.getDouble(context, "scale"),
+                                        List.of(context.getSource().getEntityOrThrow())
+                                ))
+                                .then(argument("target", EntityArgumentType.entities())
+                                        .executes(context -> TricksterCommand.setScale(
                                                 context,
                                                 DoubleArgumentType.getDouble(context, "scale"),
-                                                List.of(context.getSource().getEntityOrThrow())
-                                        )
-                                )
-                                .then(argument("target", EntityArgumentType.entities())
-                                        .executes(
-                                                context -> TricksterCommand.setScale(
-                                                        context,
-                                                        DoubleArgumentType.getDouble(context, "scale"),
-                                                        EntityArgumentType.getEntities(context, "target")
-                                                )
-                                        )
+                                                EntityArgumentType.getEntities(context, "target")
+                                        ))
                                 )
                         )
                 )
                 .then(literal("teleport")
                         .requires(s -> s.hasPermissionLevel(2))
                         .then(argument("offset", Vec3ArgumentType.vec3())
-                                .executes(
-                                        context -> TricksterCommand.teleport(
+                                .executes(context -> TricksterCommand.teleport(
+                                        context,
+                                        Vec3ArgumentType.getVec3(context, "offset"),
+                                        List.of(context.getSource().getEntityOrThrow())
+                                ))
+                                .then(argument("target", EntityArgumentType.entities())
+                                        .executes(context -> TricksterCommand.teleport(
                                                 context,
                                                 Vec3ArgumentType.getVec3(context, "offset"),
-                                                List.of(context.getSource().getEntityOrThrow())
-                                        )
-                                )
-                                .then(argument("target", EntityArgumentType.entities())
-                                        .executes(
-                                                context -> TricksterCommand.teleport(
-                                                        context,
-                                                        Vec3ArgumentType.getVec3(context, "offset"),
-                                                        EntityArgumentType.getEntities(context, "target")
-                                                )
-                                        )
+                                                EntityArgumentType.getEntities(context, "target")
+                                        ))
                                 )
                         )
                 )
