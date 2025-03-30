@@ -20,22 +20,15 @@ import net.minecraft.world.event.GameEvent;
 
 public class HeatTrick extends Trick<HeatTrick> {
     public HeatTrick() {
-        super(Pattern.of(3, 4, 5, 2, 3, 0, 5, 1, 3),
-                Signature.of(FragmentType.VECTOR, HeatTrick::heat));
+        super(Pattern.of(3, 4, 5, 2, 3, 0, 5, 1, 3), Signature.of(FragmentType.VECTOR, HeatTrick::heat));
     }
 
-    public Fragment heat(SpellContext ctx, VectorFragment pos)
-
-            throws BlunderException {
+    public Fragment heat(SpellContext ctx, VectorFragment pos) throws BlunderException {
         var blockPos = pos.toBlockPos();
         var world = ctx.source().getWorld();
-        expectCanBuild(ctx,
+        expectCanBuild(ctx, blockPos);
 
-                blockPos);
-
-        var blockState = world.getBlockState(blockPos
-
-        );
+        var blockState = world.getBlockState(blockPos);
 
         if (CampfireBlock.canBeLit(blockState) || CandleBlock.canBeLit(blockState) || CandleCakeBlock.canBeLit(blockState)) {
             ctx.useMana(this, 0.001f);
