@@ -18,8 +18,6 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.event.GameEvent;
 
-import java.util.List;
-
 public class HeatTrick extends Trick<HeatTrick> {
     public HeatTrick() {
         super(Pattern.of(3, 4, 5, 2, 3, 0, 5, 1, 3), Signature.of(FragmentType.VECTOR, HeatTrick::heat));
