@@ -4,6 +4,7 @@ import dev.enjarai.trickster.net.LoadExampleSpellPacket;
 import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.revision.RevisionContext;
 import dev.enjarai.trickster.screen.SpellPartWidget;
+import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellPart;
 import io.vavr.collection.HashMap;
 import io.wispforest.owo.ui.base.BaseComponent;
@@ -38,7 +39,7 @@ public class SpellPreviewComponent extends BaseComponent {
             }
 
             @Override
-            public void updateOtherHandSpell(SpellPart sp) {
+            public void updateOffHandSpell(SpellPart sp) {
 
             }
 
@@ -142,7 +143,7 @@ public class SpellPreviewComponent extends BaseComponent {
         var spellString = element.getAttributeNode("spell").getTextContent();
         SpellPart spell;
         try {
-            spell = SpellPart.fromBase64(spellString);
+            spell = (SpellPart) Fragment.fromBase64(spellString);
         } catch (Exception e) {
             throw new UIModelParsingException("Not a valid spell: " + spellString, e);
         }

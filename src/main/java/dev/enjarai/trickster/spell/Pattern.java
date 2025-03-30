@@ -80,6 +80,14 @@ public record Pattern(List<PatternEntry> entries) implements Fragment {
         return result;
     }
 
+    public Pattern add(Pattern other) {
+        return Pattern.from(this.toInt() | other.toInt());
+    }
+
+    public Pattern subtract(Pattern other) {
+        return Pattern.from(this.toInt() & ~other.toInt());
+    }
+
     public boolean isEmpty() {
         return entries().isEmpty();
     }
@@ -120,18 +128,13 @@ public record Pattern(List<PatternEntry> entries) implements Fragment {
     }
 
     @Override
-    public boolean asBoolean() {
-        return !isEmpty();
-    }
-
-    @Override
     public int getWeight() {
         return 32;
     }
 
     public record PatternEntry(byte p1, byte p2) implements Comparable<PatternEntry> {
         public static final Endec<PatternEntry> ENDEC = Endec.BYTES
-                .xmap(list -> new PatternEntry(list[0], list[1]), entry -> new byte[]{entry.p1, entry.p2});
+                .xmap(list -> new PatternEntry(list[0], list[1]), entry -> new byte[] { entry.p1, entry.p2 });
 
         @Override
         public int compareTo(@NotNull Pattern.PatternEntry o) {

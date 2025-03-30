@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.MapCodec;
@@ -14,13 +15,17 @@ import dev.enjarai.trickster.mixin.accessor.StateAccessor;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.resource.ResourceManager;
+import net.minecraft.state.property.Properties;
+import net.minecraft.state.property.Property;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.profiler.Profiler;
@@ -31,6 +36,7 @@ import nl.enjarai.cicada.api.util.random.RandomUtil;
 import nl.enjarai.cicada.api.util.random.Weighted;
 
 import java.util.*;
+import java.util.function.Function;
 
 public abstract class BlockConversionLoader extends CompleteJsonDataLoader implements IdentifiableResourceReloadListener {
     protected static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
@@ -76,9 +82,7 @@ public abstract class BlockConversionLoader extends CompleteJsonDataLoader imple
         });
 
         ImmutableMap.Builder<Block, List<WeightedValue>> builder = ImmutableMap.builder();
-        map.forEach((block, weightedValues) -> {
-            builder.put(block, List.copyOf(weightedValues));
-        });
+        map.forEach((block, weightedValues) -> builder.put(block, List.copyOf(weightedValues)));
 
         conversions = builder.build();
     }
@@ -99,6 +103,36 @@ public abstract class BlockConversionLoader extends CompleteJsonDataLoader imple
             world.syncWorldEvent(WorldEvents.BLOCK_BROKEN, pos, Block.getRawIdFromState(blockState));
         }
 
+        if (weightedValue.keepProperties.isPresent()) {
+            Either<List<String>, Boolean> either = weightedValue.keepProperties.get();
+            Function<String, Boolean> checker;
+            if (either.right().isPresent()) {
+                boolean shouldKeepAll = either.right().get();
+                checker = (name) -> shouldKeepAll;
+            } else {
+                List<String> toKeep = either.left().get();
+                checker = toKeep::contains;
+            }
+
+            BlockState oldState = world.getBlockState(pos);
+            for (Property<?> property : blockState.getEntries().keySet()) {
+                if (checker.apply(property.getName()) && oldState.contains(property)) {
+                    blockState = propertyFromOldBlock(blockState, oldState, property);
+                }
+            }
+        }
+
+        if (blockState.getFluidState().isOf(Fluids.WATER) && world.getDimension().ultrawarm()) {
+            if (blockState.isOf(Blocks.WATER)) {
+                blockState = Blocks.AIR.getDefaultState();
+            } else {
+                Optional<Boolean> perhapsWaterlogged = blockState.getOrEmpty(Properties.WATERLOGGED);
+                if (perhapsWaterlogged.isPresent() && perhapsWaterlogged.get()) {
+                    blockState = blockState.with(Properties.WATERLOGGED, false);
+                }
+            }
+        }
+
         if (!world.setBlockState(pos, blockState)) {
             return false;
         }
@@ -108,7 +142,12 @@ public abstract class BlockConversionLoader extends CompleteJsonDataLoader imple
         if (weightedValue.nbt().isPresent() && (blockEntity = world.getBlockEntity(pos)) != null) {
             blockEntity.read(weightedValue.nbt().get(), world.getRegistryManager());
         }
+
         return true;
+    }
+
+    private <T extends Comparable<T>> BlockState propertyFromOldBlock(BlockState newState, BlockState oldState, Property<T> property) {
+        return newState.with(property, oldState.get(property));
     }
 
     public record Replaceable(boolean replace, List<WeightedValue> conversions) {
@@ -120,7 +159,7 @@ public abstract class BlockConversionLoader extends CompleteJsonDataLoader imple
         );
     }
 
-    public record WeightedValue(BlockState state, Optional<NbtCompound> nbt, int weight) implements Weighted {
+    public record WeightedValue(BlockState state, Optional<Either<List<String>, Boolean>> keepProperties, Optional<NbtCompound> nbt, int weight) implements Weighted {
         public static final MapCodec<BlockState> BLOCK_STATE_CODEC = Registries.BLOCK.getCodec().dispatchMap("id", state -> ((StateAccessor) state).getOwner(), owner -> {
             BlockState state = owner.getDefaultState();
             if (state.getEntries().isEmpty()) {
@@ -132,6 +171,7 @@ public abstract class BlockConversionLoader extends CompleteJsonDataLoader imple
         public static final Codec<WeightedValue> CODEC = RecordCodecBuilder.create(instance ->
           instance.group(
             RecordCodecBuilder.of(WeightedValue::state, BLOCK_STATE_CODEC),
+            Codec.either(Codec.STRING.listOf(), Codec.BOOL).optionalFieldOf("keepProperties").forGetter(WeightedValue::keepProperties),
             NbtCompound.CODEC.optionalFieldOf("nbt").forGetter(WeightedValue::nbt),
             Codec.INT.fieldOf("weight").forGetter(WeightedValue::weight)
           ).apply(instance, WeightedValue::new)

@@ -1,8 +1,14 @@
 ```json
 {
-  "title": "Map Manipulation",
+  "title": "Maps",
   "icon": "minecraft:filled_map",
-  "category": "trickster:distortions"
+  "category": "trickster:distortions",
+  "additional_search_terms": [
+    "Charting Stratagem",
+    "Navigator's Distortion",
+    "Admiral's Stratagem",
+    "Stratagem of Annulment"
+  ]
 }
 ```
 
@@ -10,6 +16,8 @@ This chapter describes patterns that can be used to work with maps.
 Maps allow for an association between one fragment and another, 
 similarly to how a dictionary associates a word to a definition.
 
+
+To acquire an empty map constant, see the relevant [revision](^trickster:constants#4).
 
 ;;;;;
 

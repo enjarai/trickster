@@ -5,12 +5,14 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.network.ServerPlayerEntity;
+
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 
 public class IsEditingScrollComponent implements AutoSyncedComponent {
     private final PlayerEntity player;
 
-    private Boolean editing = false;
+    private boolean editing = false;
+    private boolean offhand = false;
 
     public IsEditingScrollComponent(PlayerEntity player) {
         this.player = player;
@@ -18,14 +20,25 @@ public class IsEditingScrollComponent implements AutoSyncedComponent {
 
     @Override
     public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
+        if (tag.contains("offhand")) {
+            offhand = tag.getBoolean("offhand");
+        } else {
+            offhand = false;
+        }
+
         if (tag.contains("editing")) {
-            setEditing(tag.getBoolean("editing"));
-        } else setEditing(false);
+            editing = tag.getBoolean("editing");
+        } else {
+            editing = false;
+        }
+
+        setEditing(editing, offhand);
     }
 
     @Override
     public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-        tag.putBoolean("editing", isEditing());
+        tag.putBoolean("offhand", offhand);
+        tag.putBoolean("editing", editing);
     }
 
     @Override
@@ -43,13 +56,17 @@ public class IsEditingScrollComponent implements AutoSyncedComponent {
         buf.writeBoolean(editing);
     }
 
-    public Boolean isEditing() {
+    public boolean isEditing() {
         return editing;
     }
 
-    public void setEditing(Boolean editing) {
-        this.editing = editing;
-        ModEntityComponents.IS_EDITING_SCROLL.sync(player);
+    public boolean isOffhand() {
+        return offhand;
     }
 
+    public void setEditing(boolean editing, boolean offhand) {
+        this.editing = editing;
+        this.offhand = offhand;
+        ModEntityComponents.IS_EDITING_SCROLL.sync(player);
+    }
 }

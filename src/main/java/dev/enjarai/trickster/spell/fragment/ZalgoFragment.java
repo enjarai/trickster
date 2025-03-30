@@ -57,8 +57,7 @@ public record ZalgoFragment(int index) implements Fragment {
             "get it??",
             "actually",
             "i probably have enough strings now",
-            "time to wrap this up"
-    );
+            "time to wrap this up");
 
     public ZalgoFragment() {
         this(RANDOM.nextInt(SILLIES.size()));
@@ -82,5 +81,15 @@ public record ZalgoFragment(int index) implements Fragment {
     @Override
     public int getWeight() {
         return 4;
+    }
+
+    @Override
+    public int hashCode() {
+        return RANDOM.nextInt();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return false;
     }
 }

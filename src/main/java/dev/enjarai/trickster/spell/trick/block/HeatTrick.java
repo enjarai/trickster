@@ -8,7 +8,9 @@ import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlockInvalidBlunder;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
+import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.Signature;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.particle.ParticleTypes;
@@ -18,19 +20,17 @@ import net.minecraft.world.event.GameEvent;
 
 import java.util.List;
 
-public class HeatTrick extends Trick {
+public class HeatTrick extends Trick<HeatTrick> {
     public HeatTrick() {
-        super(Pattern.of(3, 4, 5, 2, 3, 0, 5, 1, 3));
+        super(Pattern.of(3, 4, 5, 2, 3, 0, 5, 1, 3), Signature.of(FragmentType.VECTOR, HeatTrick::heat));
     }
 
-    @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var pos = expectInput(fragments, FragmentType.VECTOR, 0);
+    public Fragment heat(SpellContext ctx, VectorFragment pos) throws BlunderException {
         var blockPos = pos.toBlockPos();
         var world = ctx.source().getWorld();
-        var blockState = world.getBlockState(blockPos);
-
         expectCanBuild(ctx, blockPos);
+
+        var blockState = world.getBlockState(blockPos);
 
         if (CampfireBlock.canBeLit(blockState) || CandleBlock.canBeLit(blockState) || CandleCakeBlock.canBeLit(blockState)) {
             ctx.useMana(this, 0.001f);
@@ -46,7 +46,7 @@ public class HeatTrick extends Trick {
                 TntBlock.primeTnt(world, blockPos);
                 world.removeBlock(blockPos, false);
             } else if (blockState.getBlock() instanceof AbstractFurnaceBlock && world.getBlockEntity(blockPos) instanceof AbstractFurnaceBlockEntity furnace) {
-                ((FuelableFurnaceDuck) furnace).trickster$setFuelLevelAtLeast(1600);
+                ((FuelableFurnaceDuck) furnace).trickster$setFuelLevelAtLeast(1601);
             } else {
                 DataLoader.getHeatLoader().convert(blockState.getBlock(), world, blockPos);
             }

@@ -1,11 +1,13 @@
 package dev.enjarai.trickster.render;
 
 import dev.enjarai.trickster.ClientUtils;
-import dev.enjarai.trickster.Trickster.MerlinTooltipAppender;
+import dev.enjarai.trickster.Trickster.TooltipAppender;
+import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.item.component.ManaComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.mana.SharedManaPool;
 import dev.enjarai.trickster.util.ImGoingToStabWhoeverInventedTime;
+import dev.enjarai.trickster.util.Unit;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.client.MinecraftClient;
@@ -19,7 +21,7 @@ import net.minecraft.util.math.MathHelper;
 
 import java.util.List;
 
-public class MerlinKeeperTracker implements MerlinTooltipAppender {
+public class MerlinKeeperTracker implements TooltipAppender {
     private final Int2ObjectMap<MerlinUsage> stackMap = new Int2ObjectOpenHashMap<>();
     private final int tickSpan;
 
@@ -59,10 +61,22 @@ public class MerlinKeeperTracker implements MerlinTooltipAppender {
 
     @SuppressWarnings("resource")
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
-        var usage = getUsage(stack);
         var world = MinecraftClient.getInstance().world;
+        var usage = getUsage(stack);
 
-        tooltip.add(Text.literal("Current draw: %.2f kM".formatted(usage)).styled(s -> s.withColor(0xaaaabb)));
+        if (usage == 0) {
+            tooltip.add(Text.translatable(Trickster.MOD_ID + ".merlin.idling").styled(s -> s.withColor(0xaaaabb)));
+        } else {
+            var usageUnit = Unit.getMerlinUnit(usage);
+
+            tooltip.add(
+                    (usage > 0
+                            ? Text.translatable(Trickster.MOD_ID + ".merlin.draining", "%.2f ".formatted(usageUnit.correct(usage)) + usageUnit.shortName())
+                            : Text.translatable(Trickster.MOD_ID + ".merlin.filling", "%.2f ".formatted(usageUnit.correct(-usage)) + usageUnit.shortName()))
+                            .styled(s -> s.withColor(0xaaaabb))
+            );
+        }
+
         if (stack.get(ModComponents.MANA) instanceof ManaComponent component && world != null) {
             var pool = component.pool();
 
@@ -76,20 +90,37 @@ public class MerlinKeeperTracker implements MerlinTooltipAppender {
                     timeUntilDrained = (long) ((pool.get(world) - pool.getMax(world)) / usage) * 50;
                 }
 
-                tooltip.add(Text.literal(str.formatted(
-                        ImGoingToStabWhoeverInventedTime.howLongIsThisQuestionMark(timeUntilDrained)))
-                        .styled(s -> s.withColor(0xaaaabb)));
+                tooltip.add(
+                        Text.literal(
+                                str.formatted(
+                                        ImGoingToStabWhoeverInventedTime.howLongIsThisQuestionMark(timeUntilDrained)
+                                )
+                        )
+                                .styled(s -> s.withColor(0xaaaabb))
+                );
             }
 
             if (type.isAdvanced()) {
-                tooltip.add(Text.literal("Stored: ")
-                        .append("%.1f kG / %.1f kG".formatted(pool.get(world), pool.getMax(world)))
-                        .styled(s -> s.withColor(0xaaaabb)));
+                float current = pool.get(world);
+                float max = pool.getMax(world);
+                var currentUnit = Unit.getGandalfUnit(current);
+                var maxUnit = Unit.getGandalfUnit(max);
+
+                tooltip.add(
+                        Text.translatable(
+                                Trickster.MOD_ID + ".gandalf.stored",
+                                ("%.1f " + currentUnit.shortName() + " / %.1f " + maxUnit.shortName())
+                                        .formatted(currentUnit.correct(current), maxUnit.correct(max))
+                        )
+                                .styled(s -> s.withColor(0xaaaabb))
+                );
 
                 if (pool instanceof SharedManaPool shared && MinecraftClient.getInstance().world != null) {
-                    tooltip.add(Text
-                            .literal(shared.uuid().toString())
-                            .setStyle(Style.EMPTY.withFormatting(Formatting.LIGHT_PURPLE)));
+                    tooltip.add(
+                            Text
+                                    .literal(shared.uuid().toString())
+                                    .setStyle(Style.EMPTY.withFormatting(Formatting.LIGHT_PURPLE))
+                    );
                 }
             }
         }

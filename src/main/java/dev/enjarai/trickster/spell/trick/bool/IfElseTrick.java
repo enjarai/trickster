@@ -1,28 +1,29 @@
 package dev.enjarai.trickster.spell.trick.bool;
 
+import java.util.List;
+
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.trick.DistortionTrick;
+import dev.enjarai.trickster.spell.type.Signature;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 
-import java.util.List;
-
-public class IfElseTrick extends DistortionTrick {
+public class IfElseTrick extends DistortionTrick<IfElseTrick> {
     public IfElseTrick() {
-        super(Pattern.of(3, 4, 0, 2, 4, 5));
+        super(Pattern.of(3, 4, 0, 2, 4, 5), Signature.of(variadic(Fragment.class, Fragment.class), ANY, IfElseTrick::run));
     }
 
-    @Override
-    public Fragment distort(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var check = expectInput(fragments, 0);
-        var params1 = expectInput(fragments, 1);
-        var params2 = expectInput(fragments, 2);
+    public Fragment run(SpellContext ctx, List<Fragment> args, Fragment fallback) throws BlunderException {
+        Fragment result = null;
 
-        if (check.asBoolean()) {
-            return params1;
-        } else {
-            return params2;
+        for (int i = 0; i < args.size(); i += 2) {
+            if (args.get(i).asBoolean()) {
+                result = args.get(i + 1);
+                break;
+            }
         }
+
+        return result == null ? fallback : result;
     }
 }

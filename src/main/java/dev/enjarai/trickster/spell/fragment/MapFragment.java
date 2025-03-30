@@ -45,11 +45,6 @@ public record MapFragment(HashMap<Fragment, Fragment> map) implements FoldableFr
     }
 
     @Override
-    public boolean asBoolean() {
-        return !map.isEmpty();
-    }
-
-    @Override
     public int getWeight() {
         int weight = 16;
 

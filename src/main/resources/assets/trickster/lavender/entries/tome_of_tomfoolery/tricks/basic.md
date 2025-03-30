@@ -2,7 +2,16 @@
 {
   "title": "Basic Tricks",
   "icon": "minecraft:bricks",
-  "category": "trickster:tricks"
+  "category": "trickster:tricks",
+  "additional_search_terms": [
+    "Notulist's Delusion",
+    "Notulist's Ploy",
+    "Proprietary Notulist's Ploy",
+    "Alethophobe's Ploy",
+    "Showcase Ploy",
+    "Crow Mind Delusion",
+    "Crow Mind Ploy"
+  ]
 }
 ```
 
@@ -33,18 +42,18 @@ If not, returns void.
 
 <|glyph@trickster:templates|trick-id=trickster:write_spell,title=Notulist's Ploy|>
 
-[any] -> any
+any, [slot] -> any
 
 ---
 
-Inscribes a fragment onto the item held in the caster's other hand.
+Inscribes a fragment onto the item in the given slot or in the caster's offhand.
 Returns its input, after ephemeral decay.
 
 ;;;;;
 
 <|glyph@trickster:templates|trick-id=trickster:write_closed_spell,title=Proprietary Notulist's Ploy|>
 
-[any] -> any
+any, [slot] -> any
 
 ---
 
@@ -52,7 +61,17 @@ Same as Notulist's Ploy, but the fragment cannot be read by conventional means.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:reveal,title=Showcase Stratagem|>
+<|glyph@trickster:templates|trick-id=trickster:clear_spell,title=Alethophobe's Ploy|>
+
+[slot] -> 
+
+---
+
+Clears any fragment inscribed onto the item in the given slot or in the caster's offhand.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:reveal,title=Showcase Ploy|>
 
 any... -> any
 
@@ -88,22 +107,3 @@ any -> any
 ---
 
 Stores the supplied value in the caster's Crow Mind, overwriting any value that might already be present.
-
-;;;;;
-
-<|page-title@lavender:book_components|title=Note: Casting Cost|>After receiving multiple complaints at Tomfoolery Inc. HQ about the balance of this mod,
-we've decided to properly implement material spell casting costs.
-
-
-However, player freedom and choice is also very important to us.
-As such, this system operates on an opt-in basis.
-
-;;;;;
-
-<|glyph@trickster:templates|trick-id=trickster:cost,title=Cost Ploy|>
-
-->
-
----
-
-Consumes one amethyst shard from the caster's inventory. Will blunder if none are available.

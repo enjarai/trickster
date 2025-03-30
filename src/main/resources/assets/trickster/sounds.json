@@ -13,5 +13,13 @@
     "sounds": [
       "trickster:cast"
     ]
+  },
+  "collar_bell": {
+    "sounds": [
+      "trickster:collar_bell_1",
+      "trickster:collar_bell_2",
+      "trickster:collar_bell_3",
+      "trickster:collar_bell_4"
+    ]
   }
 }

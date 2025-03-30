@@ -7,6 +7,7 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.type.Signature;
 import io.wispforest.owo.config.ConfigSynchronizer;
 import io.wispforest.owo.config.Option;
 import net.minecraft.text.Text;
@@ -14,14 +15,13 @@ import net.minecraft.text.Text;
 import java.util.List;
 import java.util.Map;
 
-public class RevealTrick extends Trick {
+public class RevealTrick extends Trick<RevealTrick> {
     public RevealTrick() {
-        super(Pattern.of(3, 4, 5, 8, 7, 6, 3));
+        super(Pattern.of(3, 4, 5, 8, 7, 6, 3), Signature.of(variadic(Fragment.class), RevealTrick::reveal));
     }
 
-    @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var first = expectInput(fragments, 0);
+    public Fragment reveal(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+        var first = fragments.getFirst();
         var result = first.asFormattedText();
 
         if (fragments.size() > 1) {

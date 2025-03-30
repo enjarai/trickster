@@ -37,6 +37,17 @@ public class ScrollAndQuillItem extends Item {
         var slot = hand == Hand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
         var mergedMap = FragmentComponent.getUserMergedMap(user, "ring", HashMap::empty);
 
+        if (
+            hand == Hand.OFF_HAND
+                    && ModNetworking.clientOrDefault(
+                            user,
+                            Trickster.CONFIG.keys.disableOffhandScrollOpening,
+                            Trickster.CONFIG.disableOffhandScrollOpening()
+                    )
+        ) {
+            return TypedActionResult.pass(stack);
+        }
+
         var spell = stack.get(ModComponents.FRAGMENT);
         if (spell == null || spell.closed()) {
             return TypedActionResult.fail(stack);
@@ -47,13 +58,6 @@ public class ScrollAndQuillItem extends Item {
                 screenOpener.accept(Text.of("trickster.screen.sign_scroll"), hand);
             }
         } else {
-            if (hand == Hand.OFF_HAND
-                    && ModNetworking.clientOrDefault(user,
-                        Trickster.CONFIG.keys.disableOffhandScrollOpening,
-                        Trickster.CONFIG.disableOffhandScrollOpening())) {
-                return TypedActionResult.pass(stack);
-            }
-            
             user.openHandledScreen(new NamedScreenHandlerFactory() {
                 @Override
                 public Text getDisplayName() {

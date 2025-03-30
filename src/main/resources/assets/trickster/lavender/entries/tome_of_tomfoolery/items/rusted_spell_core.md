@@ -6,7 +6,7 @@
   "required_advancements": [
     "trickster:rusted_spell_core"
   ],
-  "secret": true
+  "ordinal": 120
 }
 ```
 

@@ -1,94 +1,43 @@
 package dev.enjarai.trickster.spell.trick.basic;
 
-import com.mojang.datafixers.util.Pair;
+import java.util.Optional;
 
-import dev.enjarai.trickster.advancement.criterion.ModCriteria;
-import dev.enjarai.trickster.item.component.ModComponents;
-import dev.enjarai.trickster.item.component.FragmentComponent;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.fragment.VoidFragment;
-import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
-import dev.enjarai.trickster.spell.blunder.ImmutableItemBlunder;
 import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.ItemEnchantmentsComponent;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.item.Items;
+import dev.enjarai.trickster.spell.blunder.OutOfRangeBlunder;
+import dev.enjarai.trickster.spell.fragment.FragmentType;
+import dev.enjarai.trickster.spell.fragment.SlotFragment;
+import dev.enjarai.trickster.spell.fragment.StringFragment;
+import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.Signature;
 
-import java.util.List;
-import java.util.Optional;
-
-public class WriteSpellTrick extends Trick {
+public class WriteSpellTrick extends Trick<WriteSpellTrick> {
     public WriteSpellTrick() {
-        super(Pattern.of(1, 4, 7, 8, 5, 4, 3, 6, 7));
+        super(Pattern.of(1, 4, 7, 8, 5, 4, 3, 6, 7), Signature.of(ANY, FragmentType.SLOT.optionalOf(), FragmentType.STRING.optionalOf(), WriteSpellTrick::run));
     }
 
-    @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        return activate(ctx, fragments, false);
+    public Fragment run(SpellContext ctx, Fragment input, Optional<SlotFragment> slot, Optional<StringFragment> name) throws BlunderException {
+        return run(this, ctx, input, slot, name, false);
     }
 
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments, boolean closed) throws BlunderException {
+    public static Fragment run(Trick<?> self, SpellContext ctx, Fragment input, Optional<SlotFragment> optionalSlot, Optional<StringFragment> optionalName, boolean closed) throws BlunderException {
+        input = input.applyEphemeral();
+
         var player = ctx.source().getPlayer();
-        var input = supposeInput(fragments, 0).map(Fragment::applyEphemeral);
+        var slot = optionalSlot.or(() -> ctx.source().getOtherHandSlot())
+                .orElseThrow(() -> new NoPlayerBlunder(self));
+        var name = optionalName.map(StringFragment::asText);
+        var range = slot.getSourcePos(self, ctx).toCenterPos().subtract(ctx.source().getBlockPos().toCenterPos())
+                .length();
 
-        return player.map(serverPlayerEntity -> Pair.of(serverPlayerEntity, serverPlayerEntity.getOffHandStack())).map(pair -> {
-            var serverPlayer = pair.getFirst();
-            var stack = pair.getSecond();
+        if (range > 16) {
+            throw new OutOfRangeBlunder(self, 16.0, range);
+        }
 
-            input.ifPresentOrElse(v -> {
-                var stack2 = stack;
-
-                if (stack2.isOf(Items.BOOK)) {
-                    serverPlayer.equipStack(EquipmentSlot.OFFHAND, stack2.withItem(Items.ENCHANTED_BOOK));
-                    stack2 = serverPlayer.getOffHandStack();
-                } else if (stack2.isOf(Items.ENCHANTED_BOOK)
-                        && (stack.get(DataComponentTypes.STORED_ENCHANTMENTS) instanceof ItemEnchantmentsComponent enchants)
-                        && enchants.isEmpty()) {
-                    serverPlayer.equipStack(EquipmentSlot.OFFHAND, stack2.withItem(Items.BOOK));
-                    stack2 = serverPlayer.getOffHandStack();
-                }
-
-                ModCriteria.INSCRIBE_SPELL.trigger(serverPlayer);
-
-                if (!FragmentComponent.setValue(stack2, v, supposeInput(fragments, FragmentType.STRING, 1).flatMap(str -> Optional.of(str.value())), closed)) {
-                    throw new ImmutableItemBlunder(this);
-                }
-            }, () -> {
-                var stack2 = stack;
-
-                if (stack2.isOf(Items.ENCHANTED_BOOK)
-                        && (stack.get(DataComponentTypes.STORED_ENCHANTMENTS) instanceof ItemEnchantmentsComponent enchants)
-                        && enchants.isEmpty()) {
-                    serverPlayer.equipStack(EquipmentSlot.OFFHAND, stack2.withItem(Items.BOOK));
-                    stack2 = serverPlayer.getOffHandStack();
-                }
-
-                if (!FragmentComponent.modifyReferencedStack(stack2, s -> {
-                    var component = s.get(ModComponents.FRAGMENT);
-
-                    if (component.immutable())
-                        return false;
-
-                    var itemDefault = s.getItem().getDefaultStack().get(ModComponents.FRAGMENT);
-
-                    if (itemDefault != null) {
-                        s.set(ModComponents.FRAGMENT, itemDefault);
-                    } else {
-                        s.remove(ModComponents.FRAGMENT);
-                    }
-
-                    return true;
-                })) {
-                    throw new ImmutableItemBlunder(this);
-                }
-            });
-
-            return input.orElse(VoidFragment.INSTANCE);
-        }).orElseThrow(() -> new NoPlayerBlunder(this));
+        slot.writeFragment(input, closed, name, player, self, ctx);
+        return input;
     }
 }

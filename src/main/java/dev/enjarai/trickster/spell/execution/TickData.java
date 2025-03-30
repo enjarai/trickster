@@ -16,7 +16,7 @@ public class TickData {
     private int executions = 0;
     private int slot = -1;
     private boolean killed = false;
-    
+
     public void incrementExecutions() {
         executions++;
     }

@@ -27,6 +27,7 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
+import net.minecraft.util.Hand;
 
 import java.util.List;
 import java.util.Optional;
@@ -75,7 +76,7 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
         this.isMutable.set(isMutable);
 
         addServerboundMessage(SpellMessage.class, SpellMessage.ENDEC, msg -> updateSpell(msg.spell()));
-        addServerboundMessage(OtherHandSpellMessage.class, OtherHandSpellMessage.ENDEC, msg -> updateOtherHandSpell(msg.spell()));
+        addServerboundMessage(OtherHandSpellMessage.class, OtherHandSpellMessage.ENDEC, msg -> updateOffHandSpell(msg.spell()));
         addServerboundMessage(UpdateSpellWithSpellMessage.class, UpdateSpellWithSpellMessage.ENDEC, msg -> updateSpellWithSpell(msg.drawingPart, msg.spell));
 
         addServerboundMessage(ExecuteOffhand.class, msg -> executeOffhand());
@@ -162,27 +163,30 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
                     });
                 }
             } else {
-//            var result = SpellPart.CODEC.encodeStart(JsonOps.INSTANCE, spell).result().get();
-//            Trickster.LOGGER.warn(result.toString());
                 sendMessage(new SpellMessage(spell));
             }
         }
     }
 
-    public void updateOtherHandSpell(SpellPart spell) {
-        if (isMutable.get()) {
-            if (otherHandStack != null) {
-                if (!otherHandStack.isEmpty()) {
-                    var server = player().getServer();
-                    if (server != null) {
-                        server.execute(() -> {
-                            FragmentComponent.setValue(otherHandStack, spell, Optional.empty(), false);
-                            otherHandSpell.set(spell);
-                        });
+    public void updateOffHandSpell(SpellPart spell) {
+        if (isOffhand()) {
+            updateSpell(spell); //TODO: doesn't appear to actually update, but at least doesn't delete the stack
+        } else {
+            if (isMutable.get()) {
+                if (otherHandStack != null) {
+                    if (!otherHandStack.isEmpty()) {
+                        var server = player().getServer();
+                        if (server != null) {
+                            server.execute(() -> {
+                                var updated = FragmentComponent.write(otherHandStack, spell);
+                                player().setStackInHand(Hand.OFF_HAND, updated.orElse(otherHandStack)); // does nothing on fail
+                                otherHandSpell.set(spell);
+                            });
+                        }
                     }
+                } else {
+                    sendMessage(new OtherHandSpellMessage(spell));
                 }
-            } else {
-                sendMessage(new OtherHandSpellMessage(spell));
             }
         }
     }
@@ -195,6 +199,10 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
     @Override
     public HashMap<Pattern, SpellPart> getMacros() {
         return macros.get();
+    }
+
+    public boolean isOffhand() {
+        return slot == EquipmentSlot.OFFHAND;
     }
 
     public void executeOffhand() {

@@ -1,0 +1,18 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "TST"
+    ],
+    "key": {
+        "S": {
+            "item": "minecraft:copper_ingot"
+        },
+        "T": {
+            "item": "minecraft:tuff"
+        }
+    },
+    "result": {
+        "id": "trickster:charging_array",
+        "count": 1
+    }
+}

@@ -2,7 +2,20 @@
 {
   "title": "Block Interaction",
   "icon": "minecraft:string",
-  "category": "trickster:ploys"
+  "category": "trickster:ploys",
+  "additional_search_terms": [
+    "Ploy of Destruction",
+    "Ploy of Creation",
+    "Ploy of Exchange",
+    "Ploy of Featherweight",
+    "Ploy of Investiture",
+    "Ploy of Divestiture",
+    "Ploy of Attrition",
+    "Floral Ploy",
+    "Aquatic Ploy",
+    "Illumination Ploy",
+    "Resonance Ploy"
+  ]
 }
 ```
 
@@ -29,6 +42,16 @@ vector, block -> vector
 <|cost-rule@trickster:templates|formula=max(distance * 1kG\, 8kG)|>
 
 Places the given block at the given position. Will consume its respective item. 
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:change_weight,title=Ploy of Featherweight|>
+
+vector, number -> vector
+
+<|cost-rule@trickster:templates|formula=60kG * (1 - multiplier)|>
+
+Given a number between zero and one, levitates the block at the given position, using the number as its gravity multiplier.
 
 ;;;;;
 

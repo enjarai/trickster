@@ -3,25 +3,20 @@ package dev.enjarai.trickster.spell.trick.entity.query;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.Signature;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
 
-import java.util.List;
-
-public class GetVelocityTrick extends Trick {
+public class GetVelocityTrick extends Trick<GetVelocityTrick> {
     public GetVelocityTrick() {
-        super(Pattern.of(1, 8, 3));
+        super(Pattern.of(1, 8, 3), Signature.of(FragmentType.ENTITY, GetVelocityTrick::run));
     }
 
-    @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        return new VectorFragment(expectInput(fragments, FragmentType.ENTITY, 0)
-                .getEntity(ctx)
-                .orElseThrow(() -> new UnknownEntityBlunder(this))
-                .getVelocity()
-                .toVector3d());
+    public Fragment run(SpellContext ctx, EntityFragment entity) throws BlunderException {
+        return new VectorFragment(entity.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this)).getVelocity().toVector3d());
     }
 }

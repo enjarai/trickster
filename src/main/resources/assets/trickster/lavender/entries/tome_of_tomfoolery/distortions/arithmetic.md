@@ -2,7 +2,30 @@
 {
   "title": "Arithmetic",
   "icon": "minecraft:copper_bulb",
-  "category": "trickster:distortions"
+  "category": "trickster:distortions",
+  "additional_search_terms": [
+    "Annexation Stratagem",
+    "Desertion Stratagem",
+    "Domination Stratagem",
+    "Submission Stratagem",
+    "Distortion of Wholes",
+    "Distortion of Supremacy",
+    "Noble Stratagem",
+    "Insignificance Stratagem",
+    "Distortion of Grandeur",
+    "Distortion of Humility",
+    "Distortion of Objectivity",
+    "Distortion of Decline",
+    "Negation Distortion",
+    "Absolutist's Distortion",
+    "Primary Distortion of Geometry",
+    "Secondary Distortion of Geometry",
+    "Tertiary Distortion of Geometry",
+    "Primary Inverse Distortion of Geometry",
+    "Secondary Inverse Distortion of Geometry",
+    "Tertiary Inverse Distortion of Geometry",
+    "Cartesian Angle Distortion"
+  ]
 }
 ```
 
@@ -64,6 +87,16 @@ number, number -> number
 ---
 
 Returns the remainder of dividing the first number by the second number.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:power,title=Distortion of Supremacy|>
+
+number, number -> number
+
+---
+
+Returns the first number raised to the power of the second.
 
 ;;;;;
 
@@ -134,6 +167,16 @@ number -> number | vec -> vec
 ---
 
 Inverts the given number or vector.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:abs,title=Absolutist's Distortion|>
+
+number -> number
+
+---
+
+If the given number is negative, returns its positive equivalent. Otherwise, does nothing.
 
 ;;;;;
 

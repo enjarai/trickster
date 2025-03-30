@@ -1,52 +1,43 @@
 package dev.enjarai.trickster.spell.trick.entity;
 
 import dev.enjarai.trickster.Trickster;
-import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
+import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.Signature;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
 import dev.enjarai.trickster.spell.execution.TickData;
-import net.minecraft.entity.player.PlayerEntity;
-import org.joml.Vector3d;
-
 import java.util.HashMap;
-import java.util.List;
 
-public class AddVelocityTrick extends Trick {
-    private static final TickData.Key<HashMap<EntityFragment, Float>> COMPOUND_LEN = new TickData.Key<>(Trickster.id("impulse_compound_len"), null);
+public class AddVelocityTrick extends Trick<AddVelocityTrick> {
+    private static final TickData.Key<HashMap<EntityFragment, Float>> COMPOUND_LEN = new TickData.Key<>(
+            Trickster.id("impulse_compound_len"), null
+    );
 
     public AddVelocityTrick() {
-        super(Pattern.of(4, 6, 0, 1, 2, 8, 4));
+        super(
+                Pattern.of(4, 6, 0, 1, 2, 8, 4),
+                Signature.of(FragmentType.ENTITY.wardOf(), FragmentType.VECTOR, AddVelocityTrick::run)
+        );
     }
 
-    @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var target = expectInput(fragments, FragmentType.ENTITY, 0);
+    public Fragment run(SpellContext ctx, EntityFragment target, VectorFragment v) throws BlunderException {
         var entity = target
                 .getEntity(ctx)
                 .orElseThrow(() -> new UnknownEntityBlunder(this));
-        var vector = expectInput(fragments, FragmentType.VECTOR, 1).vector();
-        tryWard(ctx, entity, fragments);
+        var vector = v.vector();
 
         var map = COMPOUND_LEN.set(ctx.data(), COMPOUND_LEN.get(ctx.data()).orElse(new HashMap<>()));
         var length = (float) vector.length() + map.getOrDefault(target, 0f);
         ctx.useMana(this, 3 + (float) Math.pow(length, 3) * 2);
         map.put(target, length);
 
-        if (entity instanceof PlayerEntity && ModEntityComponents.GRACE.get(entity).isInGrace("gravity")) {
-            vector = vector.add(0, -entity.getFinalGravity(), 0, new Vector3d());
-        }
-
         entity.addVelocity(vector.x(), vector.y(), vector.z());
         entity.limitFallDistance();
         entity.velocityModified = true;
-
-        if (entity instanceof PlayerEntity && vector.y() >= 0) {
-            ModEntityComponents.GRACE.get(entity).triggerGrace("gravity", 2);
-        }
 
         return target;
     }

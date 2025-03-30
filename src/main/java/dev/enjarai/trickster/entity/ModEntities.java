@@ -9,8 +9,9 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
 
 public class ModEntities {
-    public static final TagKey<EntityType<?>> IRREPRESSIBLE = TagKey.of(RegistryKeys.ENTITY_TYPE, Trickster.id("irrepressible"));
-
+    public static final EntityType<LevitatingBlockEntity> LEVITATING_BLOCK =
+            Registry.register(Registries.ENTITY_TYPE, Trickster.id("levitating_block"),
+                    EntityType.Builder.create(LevitatingBlockEntity::new, SpawnGroup.MISC).dimensions(1, 1).build());
     public static final EntityType<AmethystProjectile> AMETHYST_SHARD = Registry.register(
             Registries.ENTITY_TYPE,
             Trickster.id("amethyst_shard"),
@@ -20,6 +21,9 @@ public class ModEntities {
                     .build()
     );
 
-    public static void onInitialize() {
+    public static final TagKey<EntityType<?>> IRREPRESSIBLE = TagKey.of(RegistryKeys.ENTITY_TYPE, Trickster.id("irrepressible"));
+
+    public static void register() {
+
     }
 }

@@ -1,7 +1,11 @@
 package dev.enjarai.trickster.block;
 
+import java.util.List;
 import java.util.Optional;
 
+import dev.enjarai.trickster.spell.SpellPart;
+import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
+import io.wispforest.endec.impl.KeyedEndec;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
@@ -9,15 +13,14 @@ import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.SpellCoreItem;
 import dev.enjarai.trickster.item.component.ManaComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
-import dev.enjarai.trickster.item.component.SpellCoreComponent;
 import dev.enjarai.trickster.spell.CrowMind;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.execution.SpellExecutionManager;
 import dev.enjarai.trickster.spell.execution.TickData;
 import dev.enjarai.trickster.spell.execution.executor.ErroredSpellExecutor;
-import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.BlockSpellSource;
+import dev.enjarai.trickster.spell.SpellExecutor;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -40,6 +43,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
 public class ModularSpellConstructBlockEntity extends BlockEntity implements Inventory, CrowMind, SpellExecutionManager, SpellCastingBlockEntity {
+    public static final KeyedEndec<Fragment> CROW_MIND_ENDEC = Fragment.ENDEC.keyed("crow_mind", () -> VoidFragment.INSTANCE);
+    public static final KeyedEndec<List<Optional<SpellExecutor>>> EXECUTORS_ENDEC = SpellExecutor.ENDEC
+            .optionalOf().listOf().keyed("executors", () -> null);
+    public static final KeyedEndec<List<Optional<SpellExecutor>>> EXECUTORS_NET_ENDEC = SpellExecutor.NET_ENDEC
+            .optionalOf().listOf().keyed("executors", List.of());
+
+    public final DefaultedList<Optional<SpellExecutor>> executors = DefaultedList.ofSize(4, Optional.empty());
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(5, ItemStack.EMPTY);
     private Fragment crowMind = VoidFragment.INSTANCE;
     public int age;
@@ -47,16 +57,40 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
     public ModularSpellConstructBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlocks.MODULAR_SPELL_CONSTRUCT_ENTITY, pos, state);
     }
-    
+
     @Override
     protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         super.readNbt(nbt, registryLookup);
         this.inventory.clear();
         Inventories.readNbt(nbt, this.inventory, registryLookup);
+
+        crowMind = nbt.get(CROW_MIND_ENDEC);
+
+        executors.clear();
+        var newExecutors = nbt.get(EXECUTORS_ENDEC);
+        if (newExecutors == null) {
+            newExecutors = nbt.get(EXECUTORS_NET_ENDEC);
+        }
+        for (int i = 0; i < Math.min(newExecutors.size(), 4); i++) {
+            executors.set(i, newExecutors.get(i));
+        }
     }
 
     @Override
     protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        writeCommonNbt(nbt, registryLookup);
+
+        nbt.put(CROW_MIND_ENDEC, crowMind);
+        nbt.put(EXECUTORS_ENDEC, executors);
+    }
+
+    protected void writeNetNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        writeCommonNbt(nbt, registryLookup);
+
+        nbt.put(EXECUTORS_NET_ENDEC, executors);
+    }
+
+    protected void writeCommonNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         super.writeNbt(nbt, registryLookup);
         Inventories.writeNbt(nbt, this.inventory, true, registryLookup);
     }
@@ -70,29 +104,36 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
 
             for (int i = 0; i < inventory.size(); i++) {
                 var stack = inventory.get(i);
+                var executorSlot = i - 1;
 
-                if (stack.getItem() instanceof SpellCoreItem item && stack.contains(ModComponents.SPELL_CORE)) {
-                    var slot = stack.get(ModComponents.SPELL_CORE);
-                    var executor = slot.executor();
+                if (stack.getItem() instanceof SpellCoreItem item && executors.get(executorSlot).isPresent()) {
+                    var executor = executors.get(executorSlot).get();
                     var error = Optional.<Text>empty();
 
-                    if (slot.executor() instanceof ErroredSpellExecutor) {
+                    if (executor instanceof ErroredSpellExecutor) {
                         continue;
                     }
 
                     try {
                         if (executor.run(source, new TickData().withSlot(i).withBonusExecutions(item.getExecutionBonus())).isPresent()) {
-                            stack.remove(ModComponents.SPELL_CORE);
+                            executors.set(executorSlot, Optional.empty());
+                            updateClient = true;
                         }
                     } catch (BlunderException blunder) {
-                        error = Optional.of(blunder.createMessage()
-                                .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")"));
+                        error = Optional.of(
+                                blunder.createMessage()
+                                        .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")")
+                        );
                     } catch (Throwable e) {
-                        error = Optional.of(Text.literal("Uncaught exception in spell: " + e.getMessage())
-                                .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")"));
+                        error = Optional.of(
+                                Text.literal("Uncaught exception in spell: " + e.getMessage())
+                                        .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")")
+                        );
                     }
 
-                    error.ifPresent(e -> stack.set(ModComponents.SPELL_CORE, slot.fail(e)));
+                    error.ifPresent(e -> {
+                        executors.set(executorSlot, Optional.of(new ErroredSpellExecutor(executor.spell(), e)));
+                    });
                     if (error.isPresent()) {
                         playCastSound(serverWorld, getPos(), 0.5f, 0.1f);
                         updateClient = true;
@@ -102,13 +143,15 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
                 ManaComponent.tryRecharge(
                         serverWorld,
                         getPos()
-                            .toCenterPos()
-                            .add(
-                                new Vec3d(getCachedState()
-                                    .get(ModularSpellConstructBlock.FACING)
-                                    .getUnitVector()
-                                    .mul(0.3f, new Vector3f()))
-                            ),
+                                .toCenterPos()
+                                .add(
+                                        new Vec3d(
+                                                getCachedState()
+                                                        .get(ModularSpellConstructBlock.FACING)
+                                                        .getUnitVector()
+                                                        .mul(0.3f, new Vector3f())
+                                        )
+                                ),
                         stack
                 );
             }
@@ -129,7 +172,9 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
 
     @Override
     public NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup registryLookup) {
-        return createNbt(registryLookup);
+        var nbt = new NbtCompound();
+        writeNetNbt(nbt, registryLookup);
+        return nbt;
     }
 
     @Override
@@ -161,9 +206,13 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
             markDirtyAndUpdateClients();
 
             if (world instanceof ServerWorld world && itemStack.getItem() instanceof SpellCoreItem item) {
-                if (item.onRemoved(world, getPos(), itemStack)) {
+                var perhapsExecutor = executors.get(slot - 1);
+
+                if (item.onRemoved(world, getPos(), itemStack, perhapsExecutor)) {
                     return ItemStack.EMPTY;
                 }
+
+                executors.set(slot - 1, Optional.empty());
             }
 
             return itemStack;
@@ -179,12 +228,19 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
 
     @Override
     public void setStack(int slot, ItemStack stack) {
-        if (slot == 0
-                ? stack.isIn(ModItems.MANA_KNOTS)
-                : stack.getItem() instanceof SpellCoreItem) {
+        if (
+            slot == 0
+                    ? stack.isIn(ModItems.MANA_KNOTS)
+                    : stack.getItem() instanceof SpellCoreItem
+        ) {
             if (stack.getItem() instanceof SpellCoreItem) {
-                SpellCoreComponent.refresh(stack.getComponents(),
-                        component -> stack.set(ModComponents.SPELL_CORE, component));
+                var fragment = stack.get(ModComponents.FRAGMENT);
+
+                if (fragment != null && fragment.value() instanceof SpellPart spell) {
+                    SpellExecutor executor = new DefaultSpellExecutor(spell, List.of());
+
+                    executors.set(slot - 1, Optional.of(executor));
+                }
             }
 
             inventory.set(slot, stack);
@@ -236,14 +292,17 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
 
     @Override
     public int queue(SpellExecutor executor) {
-        for (int i = 0; i < inventory.size(); i++) {
+        for (int i = 1; i < inventory.size(); i++) {
             var stack = inventory.get(i);
 
-            if (stack.getItem() instanceof SpellCoreItem
-                    && (!stack.contains(ModComponents.SPELL_CORE)
-                        || stack.get(ModComponents.SPELL_CORE).executor() instanceof ErroredSpellExecutor)) {
-                stack.set(ModComponents.SPELL_CORE, new SpellCoreComponent(executor));
-                return i;
+            if (
+                stack.getItem() instanceof SpellCoreItem
+                        && (executors.get(i - 1).isEmpty()
+                                || executors.get(i - 1).get() instanceof ErroredSpellExecutor)
+            ) {
+                executors.set(i - 1, Optional.of(executor));
+                markDirtyAndUpdateClients();
+                return i - 1;
             }
         }
 
@@ -252,18 +311,13 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
 
     @Override
     public void killAll() {
-        for (var stack : inventory) {
-            if (stack.contains(ModComponents.SPELL_CORE))
-                stack.remove(ModComponents.SPELL_CORE);
-        }
+        executors.clear();
     }
 
     @Override
     public boolean kill(int index) {
-        var stack = getStack(index + 1);
-
-        if (stack.contains(ModComponents.SPELL_CORE)) {
-            stack.remove(ModComponents.SPELL_CORE);
+        if (executors.get(index).isPresent()) {
+            executors.set(index, Optional.empty());
             return true;
         }
 

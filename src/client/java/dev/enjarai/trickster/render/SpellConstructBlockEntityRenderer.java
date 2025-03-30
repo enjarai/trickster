@@ -69,10 +69,9 @@ public class SpellConstructBlockEntityRenderer implements BlockEntityRenderer<Sp
 
         var normal = new Vec3d(new Vector3f(0, 0, -1));
 
-        var component = entity.getComponents().get(ModComponents.SPELL_CORE);
-        if (component != null) {
+        if (entity.executor != null) {
             this.renderer.renderPart(
-                    matrices, vertexConsumers, component.executor().spell(),
+                    matrices, vertexConsumers, entity.executor.spell(),
                     0, 0, 0.5f, 0,
                     tickDelta, size -> 1f, normal
             );

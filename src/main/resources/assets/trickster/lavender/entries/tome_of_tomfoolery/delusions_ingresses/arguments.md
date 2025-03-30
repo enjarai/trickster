@@ -2,17 +2,35 @@
 {
   "title": "Arguments",
   "icon": "minecraft:map",
-  "category": "trickster:delusions_ingresses"
+  "category": "trickster:delusions_ingresses",
+  "additional_search_terms": [
+    "Hoarder's Delusion",
+    "Primary Delusion",
+    "Secondary Delusion",
+    "Tertiary Delusion",
+    "Quaternary Delusion",
+    "Quinary Delusion",
+    "Senary Delusion",
+    "Septenary Delusion",
+    "Octonary Delusion"
+  ]
 }
 ```
 
 Fragments can be passed into executed [spell fragments](^trickster:distortions/functions) as arguments.
 
 
-These fragments can be retrieved within the spell fragment using a set of specific glyphs.
+These fragments can be retrieved within the executed spell either directly or as a list of all arguments.
 
+;;;;;
 
-At a maximum, eight arguments can be passed into a spell fragment.
+<|glyph@trickster:templates|trick-id=trickster:get_all_arguments,title=Hoarder's Delusion|>
+
+-> any[]
+
+---
+
+Returns all arguments as a list.
 
 ;;;;;
 

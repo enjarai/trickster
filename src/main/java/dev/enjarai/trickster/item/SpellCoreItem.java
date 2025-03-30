@@ -1,10 +1,13 @@
 package dev.enjarai.trickster.item;
 
 import dev.enjarai.trickster.Trickster;
+import dev.enjarai.trickster.spell.SpellExecutor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+
+import java.util.Optional;
 
 public class SpellCoreItem extends Item {
     public SpellCoreItem() {
@@ -17,7 +20,7 @@ public class SpellCoreItem extends Item {
     }
 
     //TODO: add javadocs
-    public boolean onRemoved(ServerWorld world, BlockPos pos, ItemStack stack) {
+    public boolean onRemoved(ServerWorld world, BlockPos pos, ItemStack stack, Optional<SpellExecutor> executor) {
         return false;
     }
 }

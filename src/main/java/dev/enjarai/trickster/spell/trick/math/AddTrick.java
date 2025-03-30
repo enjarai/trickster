@@ -2,31 +2,26 @@ package dev.enjarai.trickster.spell.trick.math;
 
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.PatternGlyph;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.AddableFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.fragment.ListFragment;
 import dev.enjarai.trickster.spell.trick.DistortionTrick;
+import dev.enjarai.trickster.spell.type.Signature;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
-import dev.enjarai.trickster.spell.blunder.MissingInputsBlunder;
 
 import java.util.List;
 
-public class AddTrick extends DistortionTrick {
+public class AddTrick extends DistortionTrick<AddTrick> {
     public AddTrick() {
-        super(Pattern.of(7, 4, 0, 1, 2, 4));
+        super(Pattern.of(7, 4, 0, 1, 2, 4), Signature.of(variadic(AddableFragment.class).require().unpack(), AddTrick::run));
+        overload(Signature.of(variadic(FragmentType.PATTERN).require().unpack(), AddTrick::runForGlyphs));
     }
 
-    @Override
-    public Fragment distort(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        fragments = supposeInput(fragments, 0)
-           .flatMap(l -> supposeType(l, FragmentType.LIST))
-           .map(ListFragment::fragments)
-           .orElse(fragments);
-
+    public Fragment run(SpellContext ctx, List<AddableFragment> fragments) throws BlunderException {
         AddableFragment result = null;
-        for (int i = 0; i < fragments.size(); i++) {
-            var value = expectType(fragments.get(i), AddableFragment.class, i);
+
+        for (var value : fragments) {
             if (result == null) {
                 result = value;
             } else {
@@ -34,8 +29,18 @@ public class AddTrick extends DistortionTrick {
             }
         }
 
-        if (result == null) {
-            throw new MissingInputsBlunder(this);
+        return result;
+    }
+
+    public Fragment runForGlyphs(SpellContext ctx, List<PatternGlyph> patterns) throws BlunderException {
+        PatternGlyph result = null;
+
+        for (var value : patterns) {
+            if (result == null) {
+                result = value;
+            } else {
+                result = new PatternGlyph(result.pattern().add(value.pattern()));
+            }
         }
 
         return result;

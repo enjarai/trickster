@@ -1,10 +1,8 @@
 package dev.enjarai.trickster.mixin.client;
 
 import dev.enjarai.trickster.cca.ModEntityComponents;
-import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.render.SpellCircleRenderer;
-import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellPart;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
@@ -27,25 +25,44 @@ public abstract class PlayerRendererMixin {
     @Unique
     public SpellCircleRenderer trickster$renderer = new SpellCircleRenderer(false, 1);
 
-    @Inject(method = "render(Lnet/minecraft/client/network/AbstractClientPlayerEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At("HEAD"))
-    public void trickster$onRender(AbstractClientPlayerEntity player, float $$1, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int $$5, CallbackInfo ci) {
+    @SuppressWarnings("resource")
+    @Inject(
+            method = "render(Lnet/minecraft/client/network/AbstractClientPlayerEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At(
+                "HEAD"
+            )
+    )
+    public void trickster$onRender(
+            AbstractClientPlayerEntity player,
+            float $$1,
+            float tickDelta,
+            MatrixStack matrices,
+            VertexConsumerProvider vertexConsumers,
+            int $$5,
+            CallbackInfo ci
+    ) {
         var spell = trickster$get_spell(player);
-        if (spell.isPresent() && (player != MinecraftClient.getInstance().player || MinecraftClient.getInstance().gameRenderer.getCamera().isThirdPerson())) {
+        if (
+            spell.isPresent() && (player != MinecraftClient.getInstance().player
+                    || MinecraftClient.getInstance().gameRenderer.getCamera().isThirdPerson())
+        ) {
             matrices.push();
-            //translate to be at eye level
+            // translate to be at eye level
             matrices.translate(0f, player.getEyeHeight(player.getPose()), 0f);
 
-            //rotate to match direction player is facing
+            // rotate to match direction player is facing
             matrices.multiply(RotationAxis.NEGATIVE_Y.rotationDegrees(player.getYaw(tickDelta)));
             matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(player.getPitch(tickDelta)));
             matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(180));
 
-            //push forward from eyes a bit
+            // push forward from eyes a bit
             matrices.translate(0f, 0f, 1f);
 
             var rot = new Vec3d(-1, -1, player.getRotationVector().y);;
 
-            this.trickster$renderer.renderPart(matrices, vertexConsumers, spell.get(), 0, 0, 0.5f, 0, tickDelta, size -> 1f, rot);
+            this.trickster$renderer.renderPart(
+                    matrices, vertexConsumers, spell.get(), 0, 0, 0.5f, 0, tickDelta,
+                    size -> 1f, rot
+            );
             matrices.pop();
         }
     }
@@ -57,11 +74,12 @@ public abstract class PlayerRendererMixin {
 
         var mainHandSpell = mainHandStack.get(ModComponents.FRAGMENT);
         var offHandSpell = offHandStack.get(ModComponents.FRAGMENT);
+        var component = entity.getComponent(ModEntityComponents.IS_EDITING_SCROLL);
 
-        if (entity.getComponent(ModEntityComponents.IS_EDITING_SCROLL).isEditing()) {
-            if (mainHandStack.isIn(ModItems.SCROLLS) && mainHandStack.get(ModComponents.FRAGMENT) != null && mainHandSpell != null) {
+        if (component.isEditing()) {
+            if (!component.isOffhand() && mainHandSpell != null) {
                 return Optional.of(mainHandSpell.value()).filter(v -> v instanceof SpellPart).map(n -> (SpellPart) n);
-            } else if (offHandStack.isIn(ModItems.SCROLLS) && offHandStack.get(ModComponents.FRAGMENT) != null && offHandSpell != null) {
+            } else if (offHandSpell != null) {
                 return Optional.of(offHandSpell.value()).filter(v -> v instanceof SpellPart).map(n -> (SpellPart) n);
             }
         }

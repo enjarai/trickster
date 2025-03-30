@@ -1,6 +1,15 @@
 package dev.enjarai.trickster.datagen.provider;
 
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+
 import com.google.common.collect.Maps;
+
+import com.mojang.datafixers.util.Either;
 import dev.enjarai.trickster.data.conversion.BlockConversionLoader;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.block.Block;
@@ -10,13 +19,8 @@ import net.minecraft.data.DataProvider;
 import net.minecraft.data.DataWriter;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.Identifier;
-
-import java.nio.file.Path;
-import java.util.*;
-import java.util.concurrent.CompletableFuture;
 
 public abstract class BlockConversionProvider implements DataProvider {
     protected final DataOutput.PathResolver pathResolver;
@@ -35,22 +39,22 @@ public abstract class BlockConversionProvider implements DataProvider {
     @Override
     public CompletableFuture<?> run(DataWriter writer) {
         return this.getRegistryLookupFuture()
-          .thenCompose(wrapperLookup -> {
-              return CompletableFuture.allOf(
-                this.builders
-                  .entrySet()
-                  .stream()
-                  .map(
-                    entry -> {
-                        Identifier identifier = entry.getKey();
-                        List<BlockConversionLoader.WeightedValue> values = entry.getValue().build();
-                        Path path = this.pathResolver.resolveJson(identifier);
-                        return DataProvider.writeCodecToPath(writer, wrapperLookup, BlockConversionLoader.Replaceable.CODEC, new BlockConversionLoader.Replaceable(false, values), path);
-                    }
-                  )
-                  .toArray(CompletableFuture[]::new)
-              );
-          });
+          .thenCompose(wrapperLookup ->
+            CompletableFuture.allOf(
+              this.builders
+                .entrySet()
+                .stream()
+                .map(
+                  entry -> {
+                      Identifier identifier = entry.getKey();
+                      List<BlockConversionLoader.WeightedValue> values = entry.getValue().build();
+                      Path path = this.pathResolver.resolveJson(identifier);
+                      return DataProvider
+                        .writeCodecToPath(writer, wrapperLookup, BlockConversionLoader.Replaceable.CODEC, new BlockConversionLoader.Replaceable(false, values), path);
+                  }
+                )
+                .toArray(CompletableFuture[]::new)
+            ));
     }
 
     protected CompletableFuture<RegistryWrapper.WrapperLookup> getRegistryLookupFuture() {
@@ -71,7 +75,7 @@ public abstract class BlockConversionProvider implements DataProvider {
         return "Block Conversion (" + type + ")";
     }
 
-    //TODO: Change this so you can provide blocks from other mods from their Identifier
+    // Maybe make this generated?
     public static class Builder {
         private final List<BlockConversionLoader.WeightedValue> entries = new ArrayList<>();
 
@@ -84,22 +88,59 @@ public abstract class BlockConversionProvider implements DataProvider {
         }
 
         public Builder add(Block block, int weight) {
-            this.entries.add(new BlockConversionLoader.WeightedValue(block.getDefaultState(), Optional.empty(), weight));
+            add(block.getDefaultState(), weight);
             return this;
         }
 
         public Builder add(BlockState state, int weight) {
-            this.entries.add(new BlockConversionLoader.WeightedValue(state, Optional.empty(), weight));
+            this.entries.add(new BlockConversionLoader.WeightedValue(state, Optional.empty(), Optional.empty(), weight));
+            return this;
+        }
+
+        public Builder add(Block block, List<String> keepProperties, int weight) {
+            add(block.getDefaultState(), keepProperties, weight);
+            return this;
+        }
+
+        public Builder add(BlockState state, List<String> keepProperties, int weight) {
+            this.entries.add(new BlockConversionLoader.WeightedValue(state, Optional.of(Either.left(keepProperties)), Optional.empty(), weight));
+            return this;
+        }
+
+        public Builder add(Block block, boolean keepProperties, int weight) {
+            add(block.getDefaultState(), keepProperties, weight);
+            return this;
+        }
+
+        public Builder add(BlockState state, boolean keepProperties, int weight) {
+            this.entries.add(new BlockConversionLoader.WeightedValue(state, Optional.of(Either.right(keepProperties)), Optional.empty(), weight));
             return this;
         }
 
         public Builder add(Block block, NbtCompound nbt, int weight) {
-            this.entries.add(new BlockConversionLoader.WeightedValue(block.getDefaultState(), Optional.ofNullable(nbt), weight));
-            return this;
+            return add(block.getDefaultState(), nbt, weight);
         }
 
         public Builder add(BlockState state, NbtCompound nbt, int weight) {
-            this.entries.add(new BlockConversionLoader.WeightedValue(state, Optional.ofNullable(nbt), weight));
+            this.entries.add(new BlockConversionLoader.WeightedValue(state, Optional.empty(), Optional.ofNullable(nbt), weight));
+            return this;
+        }
+
+        public Builder add(Block block, List<String> keepProperties, NbtCompound nbt, int weight) {
+            return add(block.getDefaultState(), keepProperties, nbt, weight);
+        }
+
+        public Builder add(BlockState state, List<String> keepProperties, NbtCompound nbt, int weight) {
+            this.entries.add(new BlockConversionLoader.WeightedValue(state, Optional.of(Either.left(keepProperties)), Optional.ofNullable(nbt), weight));
+            return this;
+        }
+
+        public Builder add(Block block, boolean keepProperties, NbtCompound nbt, int weight) {
+            return add(block.getDefaultState(), keepProperties, nbt, weight);
+        }
+
+        public Builder add(BlockState state, boolean keepProperties, NbtCompound nbt, int weight) {
+            this.entries.add(new BlockConversionLoader.WeightedValue(state, Optional.of(Either.right(keepProperties)), Optional.ofNullable(nbt), weight));
             return this;
         }
     }

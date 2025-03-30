@@ -37,8 +37,7 @@ public class SpellTooltipErrorRenderer {
                     y += 3;
                 }
 
-                if (construct.getComponents().get(ModComponents.SPELL_CORE) instanceof SpellCoreComponent component
-                        && component.executor() instanceof ErroredSpellExecutor executor) {
+                if (construct.executor instanceof ErroredSpellExecutor executor) {
                     draw(client, context, executor.errorMessage(), y);
                 }
             }
@@ -53,9 +52,12 @@ public class SpellTooltipErrorRenderer {
                         y += 3;
                     }
 
-                    if (stack.get(ModComponents.SPELL_CORE) instanceof SpellCoreComponent component
-                            && component.executor() instanceof ErroredSpellExecutor executor) {
-                        draw(client, context, executor.errorMessage(), y);
+                    if (i > 0) {
+                        var executor = modularConstruct.executors.get(i - 1);
+                        if (executor.isPresent()
+                                && executor.get() instanceof ErroredSpellExecutor errored) {
+                            draw(client, context, errored.errorMessage(), y);
+                        }
                     }
                 });
             }

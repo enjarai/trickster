@@ -3,6 +3,7 @@ package dev.enjarai.trickster.block;
 import dev.enjarai.trickster.item.component.ManaComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.*;
+import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.execution.executor.ErroredSpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.BlockSpellSource;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
@@ -10,7 +11,6 @@ import dev.enjarai.trickster.spell.blunder.BlunderException;
 import io.wispforest.endec.impl.KeyedEndec;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.component.ComponentMap;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -23,6 +23,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.jetbrains.annotations.Nullable;
@@ -30,12 +31,17 @@ import org.jetbrains.annotations.Nullable;
 public class SpellConstructBlockEntity extends BlockEntity implements SpellColoredBlockEntity, Inventory, CrowMind, SpellCastingBlockEntity {
     public static final KeyedEndec<Fragment> CROW_MIND_ENDEC =
             Fragment.ENDEC.keyed("crow_mind", () -> VoidFragment.INSTANCE);
+    public static final KeyedEndec<SpellExecutor> EXECUTOR_ENDEC =
+            SpellExecutor.ENDEC.nullableOf().keyed("executor", () -> null);
+    public static final KeyedEndec<SpellExecutor> EXECUTOR_NET_ENDEC =
+            SpellExecutor.NET_ENDEC.nullableOf().keyed("executor", () -> null);
 
     public int age;
     public Fragment crowMind = VoidFragment.INSTANCE;
-    public int[] colors = new int[]{0xffffff};
+    public int[] colors = new int[] { 0xffffff };
 
     private ItemStack stack = ItemStack.EMPTY;
+    public SpellExecutor executor = null;
 
     public SpellConstructBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlocks.SPELL_CONSTRUCT_ENTITY, pos, state);
@@ -54,20 +60,35 @@ public class SpellConstructBlockEntity extends BlockEntity implements SpellColor
         crowMind = nbt.get(CROW_MIND_ENDEC);
         colors = nbt.getIntArray("colors");
 
+        executor = nbt.getBoolean("net") ? nbt.get(EXECUTOR_NET_ENDEC) : nbt.get(EXECUTOR_ENDEC);
+
         if (colors.length == 0) {
-            colors = new int[]{0xffffff};
+            colors = new int[] { 0xffffff };
         }
     }
 
     @Override
     protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        writeCommonNbt(nbt, registryLookup);
+
+        nbt.put(CROW_MIND_ENDEC, crowMind);
+        nbt.put(EXECUTOR_ENDEC, executor);
+    }
+
+    protected void writeNetNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        writeCommonNbt(nbt, registryLookup);
+
+        nbt.putBoolean("net", true);
+        nbt.put(EXECUTOR_NET_ENDEC, executor);
+    }
+
+    protected void writeCommonNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         super.writeNbt(nbt, registryLookup);
 
         if (!stack.isEmpty()) {
             nbt.put("stack", stack.encode(registryLookup, new NbtCompound()));
         }
 
-        nbt.put(CROW_MIND_ENDEC, crowMind);
         nbt.putIntArray("colors", colors);
     }
 
@@ -76,30 +97,31 @@ public class SpellConstructBlockEntity extends BlockEntity implements SpellColor
         boolean updateClient = false;
 
         if (getWorld() instanceof ServerWorld serverWorld) {
-            var coreComponent = getComponents().get(ModComponents.SPELL_CORE);
-
-            if (coreComponent != null) {
+            if (executor != null) {
                 var source = new BlockSpellSource<>(serverWorld, getPos(), this);
-                var executor = coreComponent.executor();
 
                 if (!(executor instanceof ErroredSpellExecutor)) {
                     var error = Optional.<Text>empty();
 
                     try {
                         if (executor.run(source).isPresent()) {
-                            setComponents(getComponents().filtered(type -> !ModComponents.SPELL_CORE.equals(type)));
+                            executor = null;
+                            updateClient = true;
                         }
                     } catch (BlunderException blunder) {
-                        error = Optional.of(blunder.createMessage()
-                                .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")"));
+                        error = Optional.of(
+                                blunder.createMessage()
+                                        .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")")
+                        );
                     } catch (Exception e) {
-                        error = Optional.of(Text.literal("Uncaught exception in spell: " + e.getMessage())
-                                .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")"));
+                        error = Optional.of(
+                                Text.literal("Uncaught exception in spell: " + e.getMessage())
+                                        .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")")
+                        );
                     }
 
                     error.ifPresent(e -> {
-                        setComponents(ComponentMap.builder()
-                                .addAll(getComponents()).add(ModComponents.SPELL_CORE, coreComponent.fail(e)).build());
+                        executor = new ErroredSpellExecutor(executor.spell(), e);
                         playCastSound(serverWorld, getPos(), 0.5f, 0.1f);
                     });
 
@@ -117,6 +139,23 @@ public class SpellConstructBlockEntity extends BlockEntity implements SpellColor
         }
     }
 
+    public void refreshExecutor() {
+        if (getComponents().contains(ModComponents.FRAGMENT)) {
+            var fragment = getComponents().get(ModComponents.FRAGMENT).value();
+
+            if (fragment instanceof SpellPart spell) {
+                if (
+                    executor == null
+                            || !spell.equals(executor.spell())
+                            || executor instanceof ErroredSpellExecutor
+                ) {
+                    executor = new DefaultSpellExecutor(spell, List.of());
+                    markDirtyAndUpdateClients();
+                }
+            }
+        }
+    }
+
     @Nullable
     @Override
     public Packet<ClientPlayPacketListener> toUpdatePacket() {
@@ -125,7 +164,9 @@ public class SpellConstructBlockEntity extends BlockEntity implements SpellColor
 
     @Override
     public NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup registryLookup) {
-        return createNbt(registryLookup);
+        var nbt = new NbtCompound();
+        writeNetNbt(nbt, registryLookup);
+        return nbt;
     }
 
     @Override

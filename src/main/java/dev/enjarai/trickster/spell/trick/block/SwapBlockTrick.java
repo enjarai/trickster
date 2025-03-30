@@ -6,25 +6,26 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
+import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.Signature;
 import dev.enjarai.trickster.spell.blunder.BlockInvalidBlunder;
 import dev.enjarai.trickster.spell.blunder.BlockUnoccupiedBlunder;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.OverlapBlunder;
+import dev.enjarai.trickster.util.Trolling;
 import net.minecraft.nbt.NbtCompound;
 
 import java.util.List;
 
-public class SwapBlockTrick extends Trick {
+public class SwapBlockTrick extends Trick<SwapBlockTrick> {
     public SwapBlockTrick() {
-        super(Pattern.of(3, 4, 5, 8, 4, 0, 3, 6, 4, 2, 5));
+        super(Pattern.of(3, 4, 5, 8, 4, 0, 3, 6, 4, 2, 5),
+                Signature.of(FragmentType.VECTOR, FragmentType.VECTOR, SwapBlockTrick::run));
     }
 
-    @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var pos1 = expectInput(fragments, FragmentType.VECTOR, 0);
-        var pos2 = expectInput(fragments, FragmentType.VECTOR, 1);
+    public Fragment run(SpellContext ctx, VectorFragment pos1, VectorFragment pos2) throws BlunderException {
         var blockPos1 = pos1.toBlockPos();
         var blockPos2 = pos2.toBlockPos();
         var world = ctx.source().getWorld();
@@ -54,7 +55,7 @@ public class SwapBlockTrick extends Trick {
             }
         }
 
-        ctx.useMana(this, (float)(60 + (pos1.vector().distance(pos2.vector()))));
+        ctx.useMana(this, (float) (60 + (pos1.vector().distance(pos2.vector()))));
 
         NbtCompound blockEntity1Nbt = null;
         NbtCompound blockEntity2Nbt = null;
@@ -62,11 +63,11 @@ public class SwapBlockTrick extends Trick {
         var blockEntity2 = world.getBlockEntity(blockPos2);
         if (blockEntity1 != null) {
             blockEntity1Nbt = blockEntity1.createNbt(world.getRegistryManager());
-            blockEntity1.read(new NbtCompound(), world.getRegistryManager());
+            Trolling.clearBlockEntityForDeletion(world, blockEntity1);
         }
         if (blockEntity2 != null) {
             blockEntity2Nbt = blockEntity2.createNbt(world.getRegistryManager());
-            blockEntity2.read(new NbtCompound(), world.getRegistryManager());
+            Trolling.clearBlockEntityForDeletion(world, blockEntity2);
         }
 
         world.setBlockState(blockPos1, state2);
@@ -83,12 +84,10 @@ public class SwapBlockTrick extends Trick {
         var particlePos2 = blockPos2.toCenterPos();
         world.spawnParticles(
                 ModParticles.PROTECTED_BLOCK, particlePos1.x, particlePos1.y, particlePos1.z,
-                1, 0, 0, 0, 0
-        );
+                1, 0, 0, 0, 0);
         world.spawnParticles(
                 ModParticles.PROTECTED_BLOCK, particlePos2.x, particlePos2.y, particlePos2.z,
-                1, 0, 0, 0, 0
-        );
+                1, 0, 0, 0, 0);
 
         return VoidFragment.INSTANCE;
     }

@@ -13,7 +13,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.Optional;
 
 public class RaycastEntityTrick extends AbstractRaycastTrick {
@@ -22,7 +21,7 @@ public class RaycastEntityTrick extends AbstractRaycastTrick {
     }
 
     @Override
-    public Fragment activate(List<Fragment> fragments, SpellContext ctx, Optional<Entity> entity, Vec3d position, Vec3d direction) throws BlunderException {
+    public Fragment run(SpellContext ctx, Optional<Entity> entity, Vec3d position, Vec3d direction, Optional<Fragment> bool) throws BlunderException {
         var multipliedDirection = position.add(direction.multiply(64d));
         var hit = raycast(ctx.source().getWorld(), entity, position, multipliedDirection, new Box(position, multipliedDirection), 64 * 64);
         return hit == null ? VoidFragment.INSTANCE : EntityFragment.from(hit.getEntity());

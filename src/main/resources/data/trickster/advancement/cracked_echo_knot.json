@@ -13,7 +13,7 @@
     "announce_to_chat": true,
     "hidden": true
   },
-  "parent": "trickster:cast_spell",
+  "parent": "trickster:root",
   "criteria": {
     "pickup_echo_knot": {
       "trigger": "minecraft:inventory_changed",

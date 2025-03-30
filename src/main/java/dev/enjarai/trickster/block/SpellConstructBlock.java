@@ -3,13 +3,10 @@ package dev.enjarai.trickster.block;
 import com.mojang.serialization.MapCodec;
 
 import dev.enjarai.trickster.item.ModItems;
-import dev.enjarai.trickster.item.component.ModComponents;
-import dev.enjarai.trickster.item.component.SpellCoreComponent;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.component.ComponentMap;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
@@ -103,9 +100,7 @@ public class SpellConstructBlock extends BlockWithEntity {
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if (world.getBlockEntity(pos) instanceof SpellConstructBlockEntity blockEntity) {
             if (player.isSneaking()) {
-                SpellCoreComponent.refresh(blockEntity.getComponents(), component -> blockEntity.setComponents(ComponentMap.builder()
-                        .addAll(blockEntity.getComponents()).add(ModComponents.SPELL_CORE, component).build()));
-                blockEntity.markDirtyAndUpdateClients();
+                blockEntity.refreshExecutor();
             } else {
                 var slotStack = blockEntity.getStack(0);
 
@@ -145,9 +140,7 @@ public class SpellConstructBlock extends BlockWithEntity {
     public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
         var blockEntity = world.getBlockEntity(pos);
         if (blockEntity instanceof SpellConstructBlockEntity circle) {
-            SpellCoreComponent.refresh(circle.getComponents(), component -> circle.setComponents(ComponentMap.builder()
-                    .addAll(circle.getComponents()).add(ModComponents.SPELL_CORE, component).build()));
-            circle.markDirtyAndUpdateClients();
+            circle.refreshExecutor();
         }
 
         super.onPlaced(world, pos, state, placer, itemStack);

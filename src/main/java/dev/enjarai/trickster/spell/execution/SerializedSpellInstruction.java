@@ -15,7 +15,7 @@ import java.util.Optional;
 public record SerializedSpellInstruction(SpellInstructionType type, @Nullable Fragment fragment) {
     public static final StructEndec<SerializedSpellInstruction> ENDEC = StructEndecBuilder.of(
             Endec.INT.fieldOf("instruction_id", s -> s.type.getId()),
-            EndecTomfoolery.safeOptionalOf(Fragment.ENDEC).optionalFieldOf("fragment", s -> Optional.ofNullable(s.fragment), Optional.empty()),
+            EndecTomfoolery.forcedSafeOptionalOf(Fragment.ENDEC).fieldOf("fragment", s -> Optional.ofNullable(s.fragment)),
             (id, optionalFragment) -> new SerializedSpellInstruction(SpellInstructionType.fromId(id), optionalFragment.orElse(null))
     );
 
@@ -29,3 +29,4 @@ public record SerializedSpellInstruction(SpellInstructionType type, @Nullable Fr
     }
 
 }
+

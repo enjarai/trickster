@@ -1,6 +1,7 @@
 package dev.enjarai.trickster;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.enjarai.trickster.cca.ModEntityComponents;
@@ -11,35 +12,127 @@ import dev.enjarai.trickster.item.component.ManaComponent;
 import dev.enjarai.trickster.net.GrabClipboardSpellPacket;
 import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.spell.SpellPart;
+import dev.enjarai.trickster.spell.trick.Tricks;
+import net.minecraft.command.argument.EntityArgumentType;
+import net.minecraft.command.argument.Vec3ArgumentType;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.*;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.Vec3d;
 
+import java.util.Collection;
+import java.util.List;
+
+import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
 public class TricksterCommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
-        dispatcher.register(literal("trickster")
-                .then(literal("killSpells")
-                        .requires(ServerCommandSource::isExecutedByPlayer)
-                        .executes(TricksterCommand::killSpells)
-                )
-                .then(literal("exportSpell")
-                        .requires(ServerCommandSource::isExecutedByPlayer)
-                        .executes(TricksterCommand::exportSpell)
-                )
-                .then(literal("importSpell")
-                        .requires(ServerCommandSource::isExecutedByPlayer)
-                        .requires(s -> s.hasPermissionLevel(2))
-                        .executes(TricksterCommand::importSpell)
-                )
-                .then(literal("fillKnot")
-                        .requires(ServerCommandSource::isExecutedByPlayer)
-                        .requires(s -> s.hasPermissionLevel(2))
-                        .executes(TricksterCommand::fillKnot)
-                )
+        dispatcher.register(
+                literal("trickster")
+                        .then(
+                                literal("killSpells")
+                                        .requires(ServerCommandSource::isExecutedByPlayer)
+                                        .executes(TricksterCommand::killSpells)
+                        )
+                        .then(
+                                literal("exportSpell")
+                                        .requires(ServerCommandSource::isExecutedByPlayer)
+                                        .executes(TricksterCommand::exportSpell)
+                        )
+                        .then(
+                                literal("importSpell")
+                                        .requires(ServerCommandSource::isExecutedByPlayer)
+                                        .requires(s -> s.hasPermissionLevel(2))
+                                        .executes(TricksterCommand::importSpell)
+                        )
+                        .then(
+                                literal("fillKnot")
+                                        .requires(ServerCommandSource::isExecutedByPlayer)
+                                        .requires(s -> s.hasPermissionLevel(2))
+                                        .executes(TricksterCommand::fillKnot)
+                        )
+                        .then(
+                                literal("weight")
+                                        .requires(s -> s.hasPermissionLevel(2))
+                                        .then(
+                                                argument("weight", DoubleArgumentType.doubleArg(0, 1))
+                                                        .executes(
+                                                                context -> TricksterCommand.setWeight(
+                                                                        context,
+                                                                        DoubleArgumentType.getDouble(context, "weight"),
+                                                                        List.of(context.getSource().getEntityOrThrow())
+                                                                )
+                                                        )
+                                                        .then(
+                                                                argument("target", EntityArgumentType.entities())
+                                                                        .executes(
+                                                                                context -> TricksterCommand.setWeight(
+                                                                                        context,
+                                                                                        DoubleArgumentType.getDouble(context, "weight"),
+                                                                                        EntityArgumentType.getEntities(context, "target")
+                                                                                )
+                                                                        )
+                                                        )
+                                        )
+                        )
+                        .then(
+                                literal("scale")
+                                        .requires(s -> s.hasPermissionLevel(2))
+                                        .then(
+                                                argument("scale", DoubleArgumentType.doubleArg(0.0625, 8.0))
+                                                        .executes(
+                                                                context -> TricksterCommand.setScale(
+                                                                        context,
+                                                                        DoubleArgumentType.getDouble(context, "scale"),
+                                                                        List.of(context.getSource().getEntityOrThrow())
+                                                                )
+                                                        )
+                                                        .then(
+                                                                argument("target", EntityArgumentType.entities())
+                                                                        .executes(
+                                                                                context -> TricksterCommand.setScale(
+                                                                                        context,
+                                                                                        DoubleArgumentType.getDouble(context, "scale"),
+                                                                                        EntityArgumentType.getEntities(context, "target")
+                                                                                )
+                                                                        )
+                                                        )
+                                        )
+                        )
+                        .then(
+                                literal("teleport")
+                                        .requires(s -> s.hasPermissionLevel(2))
+                                        .then(
+                                                argument("offset", Vec3ArgumentType.vec3())
+                                                        .executes(
+                                                                context -> TricksterCommand.teleport(
+                                                                        context,
+                                                                        Vec3ArgumentType.getVec3(context, "offset"),
+                                                                        List.of(context.getSource().getEntityOrThrow())
+                                                                )
+                                                        )
+                                                        .then(
+                                                                argument("target", EntityArgumentType.entities())
+                                                                        .executes(
+                                                                                context -> TricksterCommand.teleport(
+                                                                                        context,
+                                                                                        Vec3ArgumentType.getVec3(context, "offset"),
+                                                                                        EntityArgumentType.getEntities(context, "target")
+                                                                                )
+                                                                        )
+                                                        )
+                                        )
+                        )
+                        .then(
+                                literal("allSignatures")
+                                        .requires(ServerCommandSource::isExecutedByPlayer)
+                                        .executes(TricksterCommand::showAllSignatures)
+                        )
         );
     }
 
@@ -50,15 +143,20 @@ public class TricksterCommand {
             var spell = FragmentComponent.getSpellPart(stack);
             if (spell.isPresent()) {
                 var string = spell.get().toBase64();
-                context.getSource().sendFeedback(() -> Text.literal("Base64 spell string: ")
-                        .append(Text.literal(string)
-                                .fillStyle(Style.EMPTY
-                                        .withUnderline(true)
-                                        .withColor(Formatting.GREEN)
-                                        .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Click to copy")))
-                                        .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, string))
-                                )
-                        ), false);
+                context.getSource().sendFeedback(
+                        () -> Text.literal("Base64 spell string: ")
+                                .append(
+                                        Text.literal(string)
+                                                .fillStyle(
+                                                        Style.EMPTY
+                                                                .withUnderline(true)
+                                                                .withColor(Formatting.GREEN)
+                                                                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Click to copy")))
+                                                                .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, string))
+                                                )
+                                ),
+                        false
+                );
 
                 return 1;
             }
@@ -109,6 +207,46 @@ public class TricksterCommand {
         }
 
         context.getSource().sendError(Text.literal("Must be holding an item capable of storing mana."));
+        return 0;
+    }
+
+    private static int setWeight(CommandContext<ServerCommandSource> context, double weight, Collection<? extends Entity> targets) throws CommandSyntaxException {
+        for (var targetEntity : targets) {
+            if (targetEntity instanceof LivingEntity) {
+                ModEntityComponents.WEIGHT.get(targetEntity).setWeight(weight);
+                ModEntityComponents.GRACE.get(targetEntity).triggerGrace("weight", 100);
+            }
+        }
+
+        return 0;
+    }
+
+    private static int setScale(CommandContext<ServerCommandSource> context, double scale, Collection<? extends Entity> targets) throws CommandSyntaxException {
+        for (var targetEntity : targets) {
+            if (targetEntity instanceof LivingEntity) {
+                ModEntityComponents.SCALE.get(targetEntity).setScale(scale);
+                ModEntityComponents.GRACE.get(targetEntity).triggerGrace("scale", 100);
+            }
+        }
+
+        return 0;
+    }
+
+    private static int teleport(CommandContext<ServerCommandSource> context, Vec3d offset, Collection<? extends Entity> targets) throws CommandSyntaxException {
+        for (var targetEntity : targets) {
+            ModEntityComponents.DISPLACEMENT.get(targetEntity).modify(offset.toVector3d());
+        }
+
+        return 0;
+    }
+
+    private static int showAllSignatures(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+        Tricks.REGISTRY.stream().forEach(t -> {
+            t.getSignatures().forEach(h -> {
+                context.getSource().sendFeedback(() -> t.getName().append(": ").append(h.asText()), false);
+            });
+        });
+
         return 0;
     }
 }

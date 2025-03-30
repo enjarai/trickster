@@ -6,25 +6,24 @@ import dev.enjarai.trickster.item.component.SelectedSlotComponent;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.fragment.BooleanFragment;
-import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
+import dev.enjarai.trickster.spell.fragment.BooleanFragment;
+import dev.enjarai.trickster.spell.fragment.FragmentType;
+import dev.enjarai.trickster.spell.fragment.NumberFragment;
+import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.Signature;
 import io.wispforest.accessories.api.slot.SlotReference;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 
-import java.util.List;
-
-public class SetHatTrick extends Trick {
+public class SetHatTrick extends Trick<SetHatTrick> {
     public SetHatTrick() {
-        super(Pattern.of(1, 3, 7, 5, 2, 0, 3, 6, 8, 5, 1, 4, 7));
+        super(Pattern.of(1, 3, 7, 5, 2, 0, 3, 6, 8, 5, 1, 4, 7), Signature.of(FragmentType.NUMBER, SetHatTrick::run));
     }
 
-    @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        var newSlot = expectInput(fragments, FragmentType.NUMBER, 0).number();
+    public Fragment run(SpellContext ctx, NumberFragment number) throws BlunderException {
+        var newSlot = number.number();
 
         var player = ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this));
         ItemStack hatStack;
@@ -41,11 +40,13 @@ public class SetHatTrick extends Trick {
             return BooleanFragment.FALSE;
         }
 
-
         var slot = hatStack.get(ModComponents.SELECTED_SLOT);
         if (slot != null) {
-            hatStack.set(ModComponents.SELECTED_SLOT, new SelectedSlotComponent(
-                    ((int) Math.floor(Math.abs(newSlot))) % slot.maxSlot(), slot.maxSlot()));
+            hatStack.set(
+                    ModComponents.SELECTED_SLOT, new SelectedSlotComponent(
+                            ((int) Math.floor(Math.abs(newSlot))) % slot.maxSlot(), slot.maxSlot()
+                    )
+            );
             return BooleanFragment.TRUE;
         }
 

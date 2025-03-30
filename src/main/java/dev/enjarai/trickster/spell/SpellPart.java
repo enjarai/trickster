@@ -1,44 +1,45 @@
 package dev.enjarai.trickster.spell;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Stack;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import dev.enjarai.trickster.EndecTomfoolery;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
-import dev.enjarai.trickster.spell.execution.executor.SpellExecutor;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.util.SpellUtils;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
-import io.netty.buffer.Unpooled;
+import io.netty.buffer.ByteBuf;
 import io.wispforest.endec.SerializationContext;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.format.bytebuf.ByteBufDeserializer;
-import io.wispforest.endec.format.bytebuf.ByteBufSerializer;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import net.minecraft.text.Text;
-import org.apache.commons.lang3.ArrayUtils;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
+import org.joml.Vector2d;
 
 public final class SpellPart implements Fragment {
-    public static final StructEndec<SpellPart> ENDEC = EndecTomfoolery.recursive(self -> StructEndecBuilder.of(
-            Fragment.ENDEC.fieldOf("glyph", SpellPart::getGlyph),
-            EndecTomfoolery.protocolVersionAlternatives(
-                    Map.of(
-                            (byte) 1, self.listOf()
-                    ),
-                    EndecTomfoolery.withAlternative(SpellInstruction.STACK_ENDEC.xmap(
-                            instructions -> SpellUtils.decodeInstructions(instructions, new Stack<>(), new Stack<>(), Optional.empty()),
-                            SpellUtils::flattenNode
-                    ), self).listOf()
-            ).fieldOf("sub_parts", SpellPart::getSubParts),
-            SpellPart::new
-    ));
+    public static final StructEndec<SpellPart> ENDEC = EndecTomfoolery.recursive(
+            self -> StructEndecBuilder.of(
+                    Fragment.ENDEC.fieldOf("glyph", SpellPart::getGlyph),
+                    EndecTomfoolery.protocolVersionAlternatives(
+                            Map.of(
+                                    (byte) 1, self.listOf()
+                            ),
+                            EndecTomfoolery.withAlternative(
+                                    SpellInstruction.STACK_ENDEC.xmap(
+                                            instructions -> SpellUtils.decodeInstructions(instructions, new Stack<>(), new Stack<>(), Optional.empty()),
+                                            SpellUtils::flattenNode
+                                    ), self
+                            ).listOf()
+                    ).fieldOf("sub_parts", SpellPart::getSubParts),
+                    SpellPart::new
+            )
+    );
 
     public Fragment glyph;
     public List<SpellPart> subParts;
@@ -57,22 +58,12 @@ public final class SpellPart implements Fragment {
     }
 
     @Override
-    public Fragment activateAsGlyph(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    public EvaluationResult activateAsGlyph(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         if (fragments.isEmpty()) {
             return Fragment.super.activateAsGlyph(ctx, fragments);
         } else {
-            return makeFork(ctx, fragments).singleTickRun(ctx);
+            return new DefaultSpellExecutor(this, ctx.state().recurseOrThrow(fragments));
         }
-    }
-
-    @Override
-    public boolean forks(SpellContext ctx, List<Fragment> args) {
-        return !args.isEmpty();
-    }
-
-    @Override
-    public SpellExecutor makeFork(SpellContext ctx, List<Fragment> args) throws BlunderException {
-        return new DefaultSpellExecutor(this, ctx.state().recurseOrThrow(args));
     }
 
     /**
@@ -80,8 +71,10 @@ public final class SpellPart implements Fragment {
      */
     @Override
     public SpellPart applyEphemeral() {
-        return new SpellPart(glyph.applyEphemeral(), subParts.stream()
-                .map(SpellPart::applyEphemeral).toList());
+        return new SpellPart(
+                glyph.applyEphemeral(), subParts.stream()
+                        .map(SpellPart::applyEphemeral).toList()
+        );
     }
 
     @Override
@@ -103,7 +96,16 @@ public final class SpellPart implements Fragment {
             arguments.add(subpart.destructiveRun(ctx));
         }
 
-        var value = glyph.activateAsGlyph(ctx, arguments);
+        var result = glyph.activateAsGlyph(ctx, arguments);
+        Fragment value;
+
+        if (result instanceof SpellExecutor executor) {
+            value = executor.singleTickRun(ctx); //TODO: should account for ticks so far
+        } else if (result instanceof Fragment fragment) {
+            value = fragment;
+        } else {
+            throw new UnsupportedOperationException();
+        }
 
         if (!value.equals(VoidFragment.INSTANCE)) {
             if (glyph != value) {
@@ -116,7 +118,7 @@ public final class SpellPart implements Fragment {
         return value;
     }
 
-    public void buildClosure(io.vavr.collection.Map<Fragment, Fragment> replacements) {
+    public SpellPart buildClosure(io.vavr.collection.Map<Fragment, Fragment> replacements) {
         subParts.forEach(part -> part.buildClosure(replacements));
 
         if (glyph instanceof SpellPart spellPart) {
@@ -124,6 +126,8 @@ public final class SpellPart implements Fragment {
         } else if (replacements.containsKey(glyph)) {
             glyph = replacements.get(glyph).get();
         }
+
+        return this;
     }
 
     public boolean setSubPartInTree(Function<SpellPart, SpellPart> replace, SpellPart current, boolean targetIsInner) {
@@ -217,67 +221,16 @@ public final class SpellPart implements Fragment {
         return asText();
     }
 
-    @Override
-    public boolean asBoolean() {
-        return glyph.asBoolean() || !subParts.isEmpty();
-    }
-
     public SpellPart deepClone() {
         var glyph = this.glyph instanceof SpellPart spell ? spell.deepClone() : this.glyph;
 
-        return new SpellPart(glyph, subParts.stream()
-                .map(SpellPart::deepClone).collect(Collectors.toList()));
-    }
-
-    private static final byte[] base64Header = new byte[]{0x1f, (byte) 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, (byte) 0xff};
-
-    //TODO: add encoding from any fragment
-    public String toBase64() {
-        var buf = Unpooled.buffer();
-        buf.writeByte(2); // Protocol version
-        ENDEC.encode(
-                SerializationContext.empty().withAttributes(EndecTomfoolery.UBER_COMPACT_ATTRIBUTE),
-                ByteBufSerializer.of(buf), this
+        return new SpellPart(
+                glyph, subParts.stream()
+                        .map(SpellPart::deepClone).collect(Collectors.toList())
         );
-
-        var byteStream = new ByteArrayOutputStream(buf.writerIndex());
-        try (byteStream) {
-            try (GZIPOutputStream zipStream = new GZIPOutputStream(byteStream)) {
-                buf.readBytes(zipStream, buf.writerIndex());
-            }
-        } catch (IOException e) {
-            buf.release();
-            throw new RuntimeException("Spell encoding broke. what.");
-        }
-
-        var bytes = byteStream.toByteArray();
-        String result;
-        try {
-            result = Base64.getEncoder().encodeToString(Arrays.copyOfRange(bytes, 10, bytes.length));
-        } catch (Throwable e) {
-            buf.release();
-            throw e;
-        }
-
-        buf.release();
-        return result;
     }
 
-    //TODO: add decoding to any fragment
-    public static SpellPart fromBase64(String string) {
-        var buf = Unpooled.buffer();
-
-        var byteStream = new ByteArrayInputStream(ArrayUtils.addAll(base64Header, Base64.getDecoder().decode(string.strip())));
-        try (byteStream) {
-            try (GZIPInputStream zipStream = new GZIPInputStream(byteStream)) {
-                buf.writeBytes(zipStream.readAllBytes());
-            }
-        } catch (IOException e) {
-            buf.release();
-            throw new RuntimeException("Spell decoding broke. what.");
-        }
-
-        var protocolVersion = buf.readByte();
+    public static SpellPart fromBytesOld(byte protocolVersion, ByteBuf buf) {
         SpellPart result;
         try {
             result = ENDEC.decode(
@@ -287,12 +240,27 @@ public final class SpellPart implements Fragment {
                     ),
                     ByteBufDeserializer.of(buf)
             );
-        } catch (Throwable e) {
+        } finally {
             buf.release();
-            throw e;
         }
 
-        buf.release();
         return result;
+    }
+
+    public int partCount() {
+        return subParts.size();
+    }
+
+    public double subRadius(double radius) {
+        return Math.min(radius / 2, radius / (double) ((this.partCount() + 1) / 2));
+    }
+
+    public double subAngle(int index, double angleOffset) {
+        return angleOffset + (2 * Math.PI) / this.partCount() * index - (Math.PI / 2);
+    }
+
+    public Vector2d subPosition(int index, double radius, double angleOffset) {
+        double angle = this.subAngle(index, angleOffset);
+        return new Vector2d(Math.cos(angle), Math.sin(angle)).mul(radius);
     }
 }

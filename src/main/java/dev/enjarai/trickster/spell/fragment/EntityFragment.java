@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.spell.fragment;
 
 import dev.enjarai.trickster.EndecTomfoolery;
+import dev.enjarai.trickster.mixin.accessor.WorldAccessor;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
 import io.wispforest.endec.StructEndec;
@@ -11,6 +12,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextCodecs;
+import net.minecraft.world.World;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -38,9 +40,10 @@ public record EntityFragment(UUID uuid, Text name) implements Fragment {
                 .filter(EntityFragment::isValidEntity);
     }
 
-    @Override
-    public boolean asBoolean() {
-        return true;
+    public Optional<Entity> getEntity(World world, boolean client) {
+        return Optional
+                .ofNullable(((WorldAccessor) world).callGetEntityLookup().get(uuid))
+                .filter(e -> client || isValidEntity(e));
     }
 
     @Override
@@ -62,7 +65,6 @@ public record EntityFragment(UUID uuid, Text name) implements Fragment {
         return new EntityFragment(entity.getUuid(), name);
     }
 
-    @SuppressWarnings("resource")
     public static boolean isValidEntity(Entity entity) {
         if (entity.getWorld() instanceof ServerWorld serverWorld) {
             return serverWorld.getChunkManager().chunkLoadingManager.getTicketManager()

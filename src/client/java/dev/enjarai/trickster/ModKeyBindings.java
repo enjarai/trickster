@@ -6,6 +6,7 @@ import dev.enjarai.trickster.net.MladyPacket;
 import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.net.ScrollHatPacket;
 import dev.enjarai.trickster.net.SpellEditPacket;
+import dev.enjarai.trickster.pond.QuackingInGameHud;
 import io.wispforest.accessories.api.slot.SlotReference;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -57,7 +58,11 @@ public class ModKeyBindings {
                     || (player.isSneaking()
                         && player.getMainHandStack().contains(ModComponents.SELECTED_SLOT)))
         ) {
-            ModNetworking.CHANNEL.clientHandle().send(new ScrollHatPacket(Trickster.CONFIG.invertTopHatScrolling() ? amount : -amount, true));
+            var delta = Trickster.CONFIG.invertTopHatScrolling() ? amount : -amount;
+            var packet = new ScrollHatPacket(delta, true);
+            packet.handleCommon(player);
+            ModNetworking.CHANNEL.clientHandle().send(packet);
+            ((QuackingInGameHud) MinecraftClient.getInstance().inGameHud).trickster$scrollTheHat((int) delta);
             return true;
         }
         return false;
