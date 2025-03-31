@@ -128,6 +128,7 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
         return move(trickSource, ctx, amount, ctx.source().getBlockPos());
     }
 
+    //TODO: this shouldn't use BlockPos tbh
     public ItemStack move(Trick<?> trickSource, SpellContext ctx, int amount, BlockPos pos) throws BlunderException {
         var stack = getStack(trickSource, ctx);
 
@@ -214,7 +215,7 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
     }
 
     private float getMoveCost(Trick<?> trickSource, SpellContext ctx, BlockPos pos, int amount) throws BlunderException {
-        return source.map(s -> {
+        var sourcePos = source.map(s -> {
             if (s.left().isPresent()) {
                 return s.left().get().toCenterPos();
             } else {
@@ -222,7 +223,9 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
                     return entity.getBlockPos().toCenterPos();
                 else throw new EntityInvalidBlunder(trickSource);
             }
-        }).map(blockPos -> 8 + (float) (pos.toCenterPos().distanceTo(blockPos) * amount * 0.5)).orElse(0f);
+        }).orElseGet(() -> ctx.source().getBlockPos().toCenterPos());
+
+        return 8 + (float) (pos.toCenterPos().distanceTo(sourcePos) * amount * 0.5);
     }
 
     private class BridgedSlotHolder implements SlotHolderDuck {

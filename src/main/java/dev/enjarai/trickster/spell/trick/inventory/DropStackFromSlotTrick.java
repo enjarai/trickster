@@ -25,8 +25,9 @@ public class DropStackFromSlotTrick extends Trick<DropStackFromSlotTrick> {
         var vector = pos.vector();
         var amount = optionalAmount.orElse(new NumberFragment(1)).number();
 
-        if (amount < 1)
+        if (amount < 1) {
             throw new NumberTooSmallBlunder(this, 1);
+        }
 
         var stack = slot.move(this, ctx, (int) Math.round(amount), pos.toBlockPos());
         var world = ctx.source().getWorld();
