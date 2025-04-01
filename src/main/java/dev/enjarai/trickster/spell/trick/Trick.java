@@ -1,6 +1,5 @@
 package dev.enjarai.trickster.spell.trick;
 
-import dev.doublekekse.area_lib.AreaLib;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.cca.ModEntityComponents;

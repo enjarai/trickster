@@ -1,7 +1,6 @@
 package dev.enjarai.trickster;
 
 import dev.doublekekse.area_lib.Area;
-import dev.doublekekse.area_lib.AreaLib;
 import dev.doublekekse.area_lib.data.AreaSavedData;
 import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.block.ModBlocks;
@@ -38,18 +37,15 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.item.Item.TooltipContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.world.World;
 import nl.enjarai.cicada.api.conversation.ConversationManager;
 import nl.enjarai.cicada.api.util.CicadaEntrypoint;
 import nl.enjarai.cicada.api.util.JsonSource;
 import nl.enjarai.cicada.api.util.ProperLogger;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.slf4j.Logger;
