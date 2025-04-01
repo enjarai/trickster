@@ -11,7 +11,7 @@ public class WriteBranchToOffHandRevision implements Revision {
 
     @Override
     public SpellPart apply(RevisionContext ctx, SpellPart root, SpellPart drawingPart) {
-        ctx.updateOtherHandSpell(drawingPart);
+        ctx.updateOffHandSpell(drawingPart);
         return root;
     }
 }

@@ -3,6 +3,7 @@ plugins {
     id 'maven-publish'
     id 'me.fallenbreath.yamlang' version '1.3.1'
     id "me.modmuss50.mod-publish-plugin" version "0.4.4"
+    id "com.diffplug.spotless" version "7.0.2"
 }
 
 version = project.mod_version
@@ -155,6 +156,26 @@ jar {
 yamlang {
     targetSourceSets = [sourceSets.main]
     inputDir = "assets/trickster/lang"
+}
+
+compileJava.dependsOn 'spotlessApply'
+spotless {
+    ratchetFrom 'origin/master'
+    encoding 'UTF-8'
+
+    format 'misc', {
+        target '*.gradle', '.gitattributes', '.gitignore', 'shell.nix'
+
+        trimTrailingWhitespace()
+        leadingTabsToSpaces()
+        endWithNewline()
+    }
+
+    java {
+        toggleOffOn()
+        removeUnusedImports()
+        eclipse('4.26').configFile('eclipse-prefs.properties')
+    }
 }
 
 // configure the maven publication
