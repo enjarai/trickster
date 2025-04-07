@@ -8,7 +8,6 @@ import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.TrickHatItem;
 import dev.enjarai.trickster.pond.QuackingInGameHud;
-import dev.enjarai.trickster.render.FunnyStaticFrameBufferThing;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
@@ -73,7 +72,6 @@ public class InGameHudMixin implements QuackingInGameHud {
     private void renderHatHud(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci, @Local PlayerEntity player) {
         var hatStack = player.getOffHandStack();
         if (hatStack.isIn(ModItems.HOLDABLE_HAT)) {
-            FunnyStaticFrameBufferThing.updateSize(MinecraftClient.getInstance());
             var deltaAnimationOffset = MathHelper.lerp(
                     tickCounter.getTickDelta(false),
                     animationOffset, animationOffset - animationOffset / 4
@@ -88,6 +86,8 @@ public class InGameHudMixin implements QuackingInGameHud {
             var x = player.getMainArm() == Arm.RIGHT ? middle - 109 - 8 : middle + 109 - 8;
             var y = context.getScaledWindowHeight() - 40;
 
+            RenderSystem.enableBlend();
+            RenderSystem.defaultBlendFunc();
             for (int i = 0; i < 5; i++) {
                 var offset = i - 2 - roundedAnimationOffset;
                 var offsetOffset = offset + deltaAnimationOffset;
@@ -98,19 +98,16 @@ public class InGameHudMixin implements QuackingInGameHud {
 
                 var brightness = MathHelper.lerp(Math.clamp(Math.abs(offsetOffset / 2), 0, 1), 1f, 0.0f);
 
-                var buf = FunnyStaticFrameBufferThing.THING.get();
-                buf.clear(MinecraftClient.IS_SYSTEM_MAC);
-                buf.beginWrite(false);
+                RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, brightness);
                 context.drawItem(scrollStack, (int) (x + offsetOffset * 8), y);
                 context.draw();
                 MinecraftClient.getInstance().getFramebuffer().beginWrite(false);
-
-                FunnyStaticFrameBufferThing.drawFunnily(matrices, brightness, brightness, brightness, brightness);
 
                 matrices.pop();
             }
 
             RenderSystem.setShaderColor(1, 1, 1, 1);
+            RenderSystem.disableBlend();
             matrices.pop();
         }
     }
