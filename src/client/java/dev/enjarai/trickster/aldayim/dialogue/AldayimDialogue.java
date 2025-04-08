@@ -42,7 +42,8 @@ public class AldayimDialogue {
                     ),
                     Option.translatable(
                             "trickster_aldayim.option.menu.string_as_fragment",
-                            TextEntryDialogue.translatable("trickster_aldayim.menu.string_as_fragment", (backend, chosenOption, input) -> {
+                            TextEntryDialogue.translatable("trickster_aldayim.menu.string_as_fragment",
+                            (backend, chosenOption, input) -> {
                                 var fragment = new StringFragment(input);
                                 ModNetworking.CHANNEL.clientHandle().send(new SummonEphemeralFragmentPacket(fragment));
                             })
