@@ -17,6 +17,8 @@
     "animation.BipedEntityModelMixin",
     "animation.PlayerEntityModelMixin",
     "figura.AvatarManagerMixin",
+    "imgui.MinecraftClientMixin",
+    "imgui.RenderSystemMixin",
     "tooltip.TooltipComponentMixin"
   ],
   "injectors": {
