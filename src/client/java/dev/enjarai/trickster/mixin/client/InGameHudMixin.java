@@ -73,6 +73,7 @@ public class InGameHudMixin implements QuackingInGameHud {
     private void renderHatHud(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci, @Local PlayerEntity player) {
         var hatStack = player.getOffHandStack();
         if (hatStack.isIn(ModItems.HOLDABLE_HAT)) {
+            FunnyStaticFrameBufferThing.updateSize(MinecraftClient.getInstance());
             var deltaAnimationOffset = MathHelper.lerp(
                     tickCounter.getTickDelta(false),
                     animationOffset, animationOffset - animationOffset / 4
