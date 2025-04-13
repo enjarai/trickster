@@ -31,6 +31,8 @@ public class ReleaseEntityTrick extends Trick<ReleaseEntityTrick> {
         var offhand = player.getOffHandStack();
         var entityStorage = offhand.get(ModComponents.ENTITY_STORAGE);
 
+        expectCanBuild(ctx, vector.toBlockPos());
+
         if (entityStorage == null)
             return VoidFragment.INSTANCE;
 

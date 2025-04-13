@@ -243,8 +243,8 @@ public class Tricks {
     public static final AddVelocityTrick ADD_VELOCITY = register("add_velocity", new AddVelocityTrick());
     public static final DisplaceEntityTrick DISPLACE = register("displace", new DisplaceEntityTrick());
     public static final ChangeWeightTrick CHANGE_WEIGHT = register("change_weight", new ChangeWeightTrick());
-    public static final PolymorphTrick POLYMORPH = register("polymorph", new PolymorphTrick());
-    public static final DispelPolymorphTrick DISPEL_POLYMORPH = register("dispel_polymorph", new DispelPolymorphTrick());
+//    public static final PolymorphTrick POLYMORPH = register("polymorph", new PolymorphTrick());
+//    public static final DispelPolymorphTrick DISPEL_POLYMORPH = register("dispel_polymorph", new DispelPolymorphTrick());
     public static final StoreEntityTrick STORE_ENTITY = register("store_entity", new StoreEntityTrick());
     public static final ReleaseEntityTrick RELEASE_ENTITY = register("release_entity", new ReleaseEntityTrick());
     public static final GetScaleTrick GET_SCALE = register("get_scale", new GetScaleTrick());

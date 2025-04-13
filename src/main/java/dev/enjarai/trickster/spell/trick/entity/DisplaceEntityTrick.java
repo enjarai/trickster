@@ -33,6 +33,8 @@ public class DisplaceEntityTrick extends Trick<DisplaceEntityTrick> {
                 .orElseThrow(() -> new UnknownEntityBlunder(this));
         var vector = v.vector();
 
+        expectCanBuild(ctx, entity.getBlockPos());
+
         if (entity.getType().isIn(ModEntities.IRREPRESSIBLE))
             throw new EntityCannotBeDisplacedBlunder(this, entity);
 

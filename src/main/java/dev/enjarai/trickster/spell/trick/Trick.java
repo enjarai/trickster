@@ -119,9 +119,10 @@ public abstract class Trick<T extends Trick<T>> {
 
         var player = ctx.source().getPlayer().get();
 
-        if (player.interactionManager.getGameMode().isBlockBreakingRestricted()) {
-            throw new CantEditBlockBlunder(this, positions[0]);
-        }
+        // Disabled since all players will be in adventure mode, and we want to allow editing the playspace
+//        if (player.interactionManager.getGameMode().isBlockBreakingRestricted()) {
+//            throw new CantEditBlockBlunder(this, positions[0]);
+//        }
 
         expectLoaded(ctx, positions);
         for (var pos : positions) {

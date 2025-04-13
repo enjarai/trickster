@@ -35,6 +35,8 @@ public class ChangeWeightTrick extends Trick<ChangeWeightTrick> {
             throw new NumberTooSmallBlunder(this, 0);
         }
 
+        expectCanBuild(ctx, entity.getBlockPos());
+
         if (entity instanceof LevitatingBlockEntity levitatingBlock) {
             ctx.useMana(this, (float) (60 * (1 - weight)));
 

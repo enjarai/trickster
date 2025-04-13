@@ -23,7 +23,7 @@ public class SetScaleTrick extends Trick<SetScaleTrick> {
     public Fragment set(SpellContext ctx, EntityFragment entity, NumberFragment scaleFragment) throws BlunderException {
         var target = entity.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this));
 
-        var scale = MathHelper.clamp(scaleFragment.number(), 0.0625, 8.0);
+        var scale = MathHelper.clamp(scaleFragment.number(), 0.0625, 2.0);
         if (!(target instanceof LivingEntity livingEntity)) {
             throw new InvalidEntityBlunder(this);
         }

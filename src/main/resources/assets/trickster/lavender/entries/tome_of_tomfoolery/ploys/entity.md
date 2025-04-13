@@ -50,26 +50,6 @@ Displaces the given entity by the given vector after two seconds.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:polymorph,title=Polymorph Ploy|>
-
-entity, entity ->
-
-<|cost-rule@trickster:templates|formula=8000kG|>
-
-Polymorphs the first entity to appear to be the second in every way. **Currently only works with players.**
-
-;;;;;
-
-<|glyph@trickster:templates|trick-id=trickster:dispel_polymorph,title=Dispel Polymorph Ploy|>
-
-entity -> entity
-
-<|cost-rule@trickster:templates|formula=1000kG|>
-
-Dispels any polymorph on the given entity.
-
-;;;;;
-
 <|glyph@trickster:templates|trick-id=trickster:store_entity,title=Containment Ploy|>
 
 entity ->
@@ -98,4 +78,4 @@ entity, number -> entity
 
 <|cost-rule@trickster:templates|formula=abs(currentScale - newScale)^2 * 100kG + newScale * 50kG|>
 
-Changes the scale of the given entity. Entities cannot be scaled below 0.0625 or above 8 times their usual size.
+Changes the scale of the given entity. Entities cannot be scaled below 0.0625 or above 2 times their usual size.
