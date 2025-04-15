@@ -112,6 +112,12 @@ public abstract class Trick<T extends Trick<T>> {
         return new TypeMapArgType<>(keyType, valueType);
     }
 
+    protected void expectCanEntity(SpellContext ctx, Entity entity) {
+        if (ctx.source().getCaster().map(c -> c != entity).orElse(false)) {
+            expectCanBuild(ctx, entity.getBlockPos());
+        }
+    }
+
     protected void expectCanBuild(SpellContext ctx, BlockPos... positions) {
         if (ctx.source().getPlayer().isEmpty()) {
             return;
@@ -120,15 +126,15 @@ public abstract class Trick<T extends Trick<T>> {
         var player = ctx.source().getPlayer().get();
 
         // Disabled since all players will be in adventure mode, and we want to allow editing the playspace
-//        if (player.interactionManager.getGameMode().isBlockBreakingRestricted()) {
-//            throw new CantEditBlockBlunder(this, positions[0]);
-//        }
+        //        if (player.interactionManager.getGameMode().isBlockBreakingRestricted()) {
+        //            throw new CantEditBlockBlunder(this, positions[0]);
+        //        }
 
         expectLoaded(ctx, positions);
         for (var pos : positions) {
             // blanketcon security measures
             if (ctx.source() instanceof PlayerSpellSource
-                    && !Trickster.getArea(ctx.source().getWorld()).contains(ctx.source().getWorld(), pos.toCenterPos())) {
+                    && !Trickster.getAreaContains(ctx.source().getWorld(), pos.toCenterPos())) {
                 throw new BlanketConOutOfBoundsBlunder(this, pos);
             }
 

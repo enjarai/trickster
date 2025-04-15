@@ -1,9 +1,6 @@
 package dev.enjarai.trickster.mixin;
 
-import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ManaComponent;
-import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.pond.SlotHolderDuck;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -39,20 +36,20 @@ public abstract class ItemEntityMixin extends Entity implements SlotHolderDuck {
             ManaComponent.tryRecharge(world, getPos(), getStack());
     }
 
-    @WrapWithCondition(
-            method = "tick", at = @At(
-                    value = "INVOKE", target = "Lnet/minecraft/entity/ItemEntity;discard()V", ordinal = 1
-            )
-    )
-    private boolean cancelDespawn(ItemEntity instance) {
-        if (getStack().isIn(ModItems.CANT_DESPAWN))
-            return false;
-
-        if (getStack().get(ModComponents.MANA) instanceof ManaComponent mana && mana.naturalRechargeMultiplier() != 0)
-            return false;
-
-        return true;
-    }
+    //    @WrapWithCondition(
+    //            method = "tick", at = @At(
+    //                    value = "INVOKE", target = "Lnet/minecraft/entity/ItemEntity;discard()V", ordinal = 1
+    //            )
+    //    )
+    //    private boolean cancelDespawn(ItemEntity instance) {
+    //        if (getStack().isIn(ModItems.CANT_DESPAWN))
+    //            return false;
+    //
+    //        if (getStack().get(ModComponents.MANA) instanceof ManaComponent mana && mana.naturalRechargeMultiplier() != 0)
+    //            return false;
+    //
+    //        return true;
+    //    }
 
     @Override
     public int trickster$slot_holder$size() {

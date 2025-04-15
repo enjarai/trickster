@@ -52,7 +52,7 @@ public interface ArgType<T> {
         targetFragment.getEntity(triggerCtx).ifPresent(target -> {
             // blanketcon security measures
             if (triggerCtx.source().getPlayer().map(p -> p != target).orElse(false) &&
-                    !Trickster.getArea(triggerCtx.source().getWorld()).contains(target)) {
+                    !Trickster.getAreaContains(triggerCtx.source().getWorld(), target.getPos())) {
                 throw new BlanketConOutOfBoundsBlunder(trickSource, target);
             }
 

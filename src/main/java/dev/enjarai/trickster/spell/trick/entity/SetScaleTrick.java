@@ -28,6 +28,8 @@ public class SetScaleTrick extends Trick<SetScaleTrick> {
             throw new InvalidEntityBlunder(this);
         }
 
+        expectCanEntity(ctx, target);
+
         var scaleComponent = ModEntityComponents.SCALE.get(target);
         var currentScale = scaleComponent.getScale();
 

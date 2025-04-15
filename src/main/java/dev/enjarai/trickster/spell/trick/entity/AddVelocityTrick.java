@@ -30,7 +30,7 @@ public class AddVelocityTrick extends Trick<AddVelocityTrick> {
                 .orElseThrow(() -> new UnknownEntityBlunder(this));
         var vector = v.vector();
 
-        expectCanBuild(ctx, entity.getBlockPos());
+        expectCanEntity(ctx, entity);
 
         var map = COMPOUND_LEN.set(ctx.data(), COMPOUND_LEN.get(ctx.data()).orElse(new HashMap<>()));
         var length = (float) vector.length() + map.getOrDefault(target, 0f);

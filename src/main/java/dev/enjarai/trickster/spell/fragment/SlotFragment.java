@@ -199,7 +199,7 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
 
                 // blanketcon security measures
                 if (ctx.source() instanceof PlayerSpellSource
-                        && !Trickster.getArea(ctx.source().getWorld()).contains(ctx.source().getWorld(), s.left().get().toCenterPos())) {
+                        && !Trickster.getAreaContains(ctx.source().getWorld(), s.left().get().toCenterPos())) {
                     throw new BlanketConOutOfBoundsBlunder(trickSource, s.left().get());
                 }
 
@@ -211,9 +211,13 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
             } else {
                 var e = ctx.source().getWorld().getEntity(s.right().get());
 
+                if (e == null) {
+                    throw new EntityInvalidBlunder(trickSource);
+                }
+
                 // blanketcon security measures
                 if (ctx.source() instanceof PlayerSpellSource
-                        && !Trickster.getArea(ctx.source().getWorld()).contains(e)) {
+                        && !Trickster.getAreaContains(ctx.source().getWorld(), e.getPos())) {
                     throw new BlanketConOutOfBoundsBlunder(trickSource, e);
                 }
 

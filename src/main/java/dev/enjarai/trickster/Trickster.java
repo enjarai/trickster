@@ -1,6 +1,5 @@
 package dev.enjarai.trickster;
 
-import dev.doublekekse.area_lib.Area;
 import dev.doublekekse.area_lib.data.AreaSavedData;
 import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.block.ModBlocks;
@@ -41,6 +40,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Vec3d;
 import nl.enjarai.cicada.api.conversation.ConversationManager;
 import nl.enjarai.cicada.api.util.CicadaEntrypoint;
 import nl.enjarai.cicada.api.util.JsonSource;
@@ -129,8 +129,14 @@ public class Trickster implements ModInitializer, CicadaEntrypoint {
 
     public static final Identifier AREA_ID = Trickster.id("playspace");
 
-    public static Area getArea(ServerWorld world) {
-        return AreaSavedData.getServerData(world.getServer()).get(Trickster.AREA_ID);
+    public static boolean getAreaContains(ServerWorld world, Vec3d pos) {
+        var area = AreaSavedData.getServerData(world.getServer()).get(Trickster.AREA_ID);
+
+        if (area != null) {
+            return area.contains(world, pos);
+        }
+
+        return false;
     }
 
     public interface TooltipAppender {

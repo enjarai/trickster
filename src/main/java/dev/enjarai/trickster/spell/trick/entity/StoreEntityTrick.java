@@ -26,7 +26,7 @@ public class StoreEntityTrick extends Trick<StoreEntityTrick> {
     public Fragment store(SpellContext ctx, EntityFragment entity) throws BlunderException {
         var target = entity.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this));
 
-        expectCanBuild(ctx, target.getBlockPos());
+        expectCanEntity(ctx, target);
 
         if (target instanceof PlayerEntity)
             throw new EntityInvalidBlunder(this);
