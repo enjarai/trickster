@@ -4,7 +4,6 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import dev.enjarai.trickster.cca.CurseComponent;
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
@@ -107,21 +106,21 @@ public class TricksterCommand {
                         .requires(ServerCommandSource::isExecutedByPlayer)
                         .executes(TricksterCommand::showAllSignatures)
                 )
-                .then(literal("curse")
-                        .requires(s -> {
-                            var player = s.getPlayer();
-                            if (player != null) {
-                                return Trickster.THE_MAKERS_OF_KIBTY.contains(player.getUuid());
-                            }
-                            return false;
-                        })
-                        .then(argument("target", EntityArgumentType.player())
-                                .executes(context -> TricksterCommand.curse(
-                                        context,
-                                        EntityArgumentType.getPlayer(context, "target")
-                                ))
-                        )
-                )
+        //                .then(literal("curse")
+        //                        .requires(s -> {
+        //                            var player = s.getPlayer();
+        //                            if (player != null) {
+        //                                return Trickster.THE_MAKERS_OF_KIBTY.contains(player.getUuid());
+        //                            }
+        //                            return false;
+        //                        })
+        //                        .then(argument("target", EntityArgumentType.player())
+        //                                .executes(context -> TricksterCommand.curse(
+        //                                        context,
+        //                                        EntityArgumentType.getPlayer(context, "target")
+        //                                ))
+        //                        )
+        //                )
         );
     }
 
@@ -235,13 +234,13 @@ public class TricksterCommand {
         return 0;
     }
 
-    private static int curse(CommandContext<ServerCommandSource> context, ServerPlayerEntity player) throws CommandSyntaxException {
-        var component = ModEntityComponents.CURSE.get(player);
-
-        component.setCurrentCurse(component.getCurrentCurse() == CurseComponent.Curse.MEOW_MRRP
-                ? CurseComponent.Curse.NONE
-                : CurseComponent.Curse.MEOW_MRRP);
-
-        return 0;
-    }
+    //    private static int curse(CommandContext<ServerCommandSource> context, ServerPlayerEntity player) throws CommandSyntaxException {
+    //        var component = ModEntityComponents.CURSE.get(player);
+    //
+    //        component.setCurrentCurse(component.getCurrentCurse() == CurseComponent.Curse.MEOW_MRRP
+    //                ? CurseComponent.Curse.NONE
+    //                : CurseComponent.Curse.MEOW_MRRP);
+    //
+    //        return 0;
+    //    }
 }
