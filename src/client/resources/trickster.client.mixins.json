@@ -17,6 +17,9 @@
     "WorldRendererAccessor",
     "animation.BipedEntityModelMixin",
     "animation.PlayerEntityModelMixin",
+    "curse.EntityRenderDispatcherMixin",
+    "curse.MeowMrrp",
+    "curse.PlayerEntityRendererMixin",
     "figura.AvatarManagerMixin",
     "tooltip.TooltipComponentMixin"
   ],
