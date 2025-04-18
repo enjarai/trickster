@@ -164,12 +164,12 @@ public class TricksterCommand {
         var player = context.getSource().getPlayerOrThrow();
         for (var hand : Hand.values()) {
             var stack = player.getStackInHand(hand);
-            var comp = stack.get(ModComponents.MANA);
+            var component = stack.get(ModComponents.MANA);
 
-            if (comp != null) {
-                var pool = comp.pool().makeClone(context.getSource().getWorld());
+            if (component != null) {
+                var pool = component.pool().makeClone(context.getSource().getWorld());
                 pool.refill(pool.getMax(context.getSource().getWorld()), context.getSource().getWorld());
-                stack.set(ModComponents.MANA, new ManaComponent(pool));
+                stack.set(ModComponents.MANA, component.with(pool));
                 player.sendMessage(Text.literal("Mana refilled"));
                 return 0;
             }

@@ -19,7 +19,7 @@ public record ManaComponent(ManaPool pool, float naturalRechargeMultiplier) {
     ).apply(instance, ManaComponent::new));
 
     public ManaComponent(ManaPool pool) {
-        this(pool, 1);
+        this(pool, 0);
     }
 
     public ManaComponent with(ManaPool pool) {
