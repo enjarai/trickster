@@ -78,25 +78,6 @@
         }
       ]
     },
-    "trickster:math": {
-      "priority": {
-        "priority": 100
-      },
-      "lines": [
-        {
-          "order": 0,
-          "text": "I really hope you did your math homework!"
-        },
-        {
-          "order": 10,
-          "text": "Specifically vector math, you're gonna need it!!"
-        },
-        {
-          "order": 20,
-          "text": ">:3"
-        }
-      ]
-    },
 
     "cicada:christmas": {
       "lines": [

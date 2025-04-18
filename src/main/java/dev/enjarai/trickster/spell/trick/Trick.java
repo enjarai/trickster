@@ -29,10 +29,9 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkSectionPos;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public abstract class Trick<T extends Trick<T>> {
     public static final Identifier TRICK_RANDOM = Trickster.id("trick");
@@ -156,6 +155,10 @@ public abstract class Trick<T extends Trick<T>> {
             var caster = ModEntityComponents.CASTER.get(player);
             spell.peek(s -> caster.queueSpellAndCast(s, List.of(sourceFragment, new ListFragment(fragments)), Optional.empty()));
         }
+    }
+
+    public @Nullable Set<UUID> restricted() {
+        return null;
     }
 
     public MutableText getName() {
