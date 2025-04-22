@@ -20,7 +20,7 @@ public record StringFragment(List<CharFragment> chars) implements Fragment {
         return new StringFragment(builder.build());
     }
 
-    public static void extractFromText(ImmutableList.Builder<CharFragment> builder, Text value) {
+    public static void extractFromText(ImmutableList.Builder<? super CharFragment> builder, Text value) {
         value.asOrderedText().accept((index, style, codePoint) -> {
             var color = 0xffffff;
             if (style.getColor() != null) {

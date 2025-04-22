@@ -15,7 +15,7 @@ import java.util.List;
 
 public class ComposeStringTrick extends Trick<ComposeStringTrick> {
     public ComposeStringTrick() {
-        super(Pattern.of(4, 6, 8, 5, 2, 0, 4, 5), Signature.of(variadic(Fragment.class), ComposeStringTrick::compose));
+        super(Pattern.of(4, 6, 8, 5, 2, 0, 4, 5), Signature.of(ANY_VARIADIC, ComposeStringTrick::compose));
     }
 
     public Fragment compose(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
