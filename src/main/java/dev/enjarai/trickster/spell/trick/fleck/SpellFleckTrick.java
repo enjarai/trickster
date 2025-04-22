@@ -21,11 +21,18 @@ public class SpellFleckTrick extends AbstractFleckTrick<SpellFleckTrick> {
     public SpellFleckTrick() {
         super(
                 Pattern.of(3, 4, 5, 8, 7, 6, 3, 0, 1, 2, 5),
-                Signature.of(FragmentType.NUMBER, FragmentType.VECTOR, FragmentType.VECTOR, FragmentType.SPELL_PART, variadic(FragmentType.ENTITY).unpack().optionalOf(), SpellFleckTrick::run)
+                Signature.of(FragmentType.NUMBER, FragmentType.VECTOR, FragmentType.VECTOR, FragmentType.SPELL_PART, FragmentType.NUMBER.optionalOf(),
+                        variadic(FragmentType.ENTITY).unpack().optionalOf(), SpellFleckTrick::run)
         );
     }
 
-    public Fragment run(SpellContext ctx, NumberFragment id, VectorFragment position, VectorFragment facing, SpellPart spell, Optional<List<EntityFragment>> targets) throws BlunderException {
-        return display(ctx, id, new SpellFleck(position.vector().get(new Vector3f()), facing.vector().get(new Vector3f()), spell), targets);
+    public Fragment run(SpellContext ctx, NumberFragment id, VectorFragment position, VectorFragment facing, SpellPart spell, Optional<NumberFragment> size, Optional<List<EntityFragment>> targets)
+            throws BlunderException {
+        return display(ctx, id, new SpellFleck(
+                position.vector().get(new Vector3f()),
+                facing.vector().get(new Vector3f()),
+                spell,
+                size.map(NumberFragment::number).orElse(1.0).floatValue()
+        ), targets);
     }
 }
