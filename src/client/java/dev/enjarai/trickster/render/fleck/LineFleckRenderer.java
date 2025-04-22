@@ -13,11 +13,10 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 
-
 public class LineFleckRenderer implements FleckRenderer<LineFleck> {
     static final Identifier LINE_TEXTURE = Trickster.id("textures/flecks/line.png");
-    private static final float LINE_SEGMENT_WIDTH = 0.05f;
-    private static final float LINE_SEGMENT_LENGTH = (float) Math.sqrt(2); //todo its not noticable, but it does stretch, probably because of the uv manip.
+    private static final float LINE_SEGMENT_WIDTH = 0.1f;
+    private static final float LINE_SEGMENT_LENGTH = (float) Math.sqrt(1); //todo its not noticable, but it does stretch, probably because of the uv manip.
     private static final int LINE_ALPHA = 180;
 
     @Override
@@ -49,7 +48,7 @@ public class LineFleckRenderer implements FleckRenderer<LineFleck> {
             cur.add(step);
         }
 
-        drawSegment(prev, pos2, LINE_SEGMENT_WIDTH, matrices, buffer, argb, LightmapTextureManager.MAX_LIGHT_COORDINATE, camPos, prev.distance(pos2)/LINE_SEGMENT_LENGTH);
+        drawSegment(prev, pos2, LINE_SEGMENT_WIDTH, matrices, buffer, argb, LightmapTextureManager.MAX_LIGHT_COORDINATE, camPos, prev.distance(pos2) / LINE_SEGMENT_LENGTH);
     }
 
     private static void drawSegment(Vector3fc start, Vector3fc end, float width, MatrixStack matrices, VertexConsumer buffer, int argb, int light, Vector3f camPos, float uvfactor) {
@@ -67,7 +66,7 @@ public class LineFleckRenderer implements FleckRenderer<LineFleck> {
         var cornerOffset = 3.0f / 16.0f;
         //distance from the corner of the texture to the corner of the part we tile. 3/16 = 3 pixels
         //if you change the line texture, make sure to change this.
-        
+
         //                                     bottom left corner                  top left corner
         var topLeftUV = new Vector2f(0, cornerOffset).lerp(new Vector2f(1 - cornerOffset, 1), uvfactor);
         //                                     bottom right corner                 top right corner
@@ -77,28 +76,28 @@ public class LineFleckRenderer implements FleckRenderer<LineFleck> {
                 .color(argb)
                 .texture(cornerOffset, 0)
                 .overlay(OverlayTexture.DEFAULT_UV)
-                .light(light)
+                .light(LightmapTextureManager.MAX_LIGHT_COORDINATE)
                 .normal(top, 0, 1, 0);
 
         buffer.vertex(positionMatrix, width, -distance, 0) //top right
                 .color(argb)
                 .texture(topRightUV.x, topRightUV.y)
                 .overlay(OverlayTexture.DEFAULT_UV)
-                .light(light)
+                .light(LightmapTextureManager.MAX_LIGHT_COORDINATE)
                 .normal(top, 0, 1, 0);
 
         buffer.vertex(positionMatrix, -width, -distance, 0) //bottom right
                 .color(argb)
                 .texture(topLeftUV.x, topLeftUV.y)
                 .overlay(OverlayTexture.DEFAULT_UV)
-                .light(light)
+                .light(LightmapTextureManager.MAX_LIGHT_COORDINATE)
                 .normal(top, 0, 1, 0);
 
         buffer.vertex(positionMatrix, -width, 0, 0)//bottom left
                 .color(argb)
                 .texture(0, cornerOffset)
                 .overlay(OverlayTexture.DEFAULT_UV)
-                .light(light)
+                .light(LightmapTextureManager.MAX_LIGHT_COORDINATE)
                 .normal(top, 0, 1, 0);
 
         matrices.pop();
