@@ -39,7 +39,7 @@ import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.util.math.MathHelper;
 
 public class TricksterClient implements ClientModInitializer {
-    public static final MerlinKeeperTracker merlinKeeperTracker = new MerlinKeeperTracker(5);
+    public static final MerlinKeeperTracker merlinKeeperTracker = new MerlinKeeperTracker(100);
 
     @Override
     public void onInitializeClient() {

@@ -15,7 +15,7 @@ public abstract class BlunderException extends RuntimeException {
     }
 
     protected Text formatFloat(float number) {
-        return Text.literal(String.format("%f", number)).withColor(FragmentType.NUMBER.color().getAsInt());
+        return Text.literal(String.format("%.2f", number)).withColor(FragmentType.NUMBER.color().getAsInt());
     }
 
     protected Text formatAddress(List<NumberFragment> address) {
