@@ -77,35 +77,25 @@ public record FragmentType<T extends Fragment>(StructEndec<T> endec, OptionalInt
     public static final FragmentType<ListFragment> LIST = register("list", ListFragment.ENDEC);
     public static final FragmentType<VoidFragment> VOID = register("void", VoidFragment.ENDEC, 0x4400aa);
     public static final FragmentType<PatternGlyph> PATTERN = register("pattern", PatternGlyph.ENDEC, 0x6644aa);
-    public static final FragmentType<Pattern> PATTERN_LITERAL = register(
-            "pattern_literal",
-            EndecTomfoolery.funnyFieldOf(Pattern.ENDEC, "pattern"), 0xbbbbaa
-    );
+    public static final FragmentType<Pattern> PATTERN_LITERAL = register("pattern_literal", EndecTomfoolery.funnyFieldOf(Pattern.ENDEC, "pattern"), 0xbbbbaa);
     public static final FragmentType<SpellPart> SPELL_PART = register("spell_part", SpellPart.ENDEC, 0xaa44aa);
     public static final FragmentType<EntityFragment> ENTITY = register("entity", EntityFragment.ENDEC, 0x338888);
     public static final FragmentType<ZalgoFragment> ZALGO = register("zalgo", ZalgoFragment.ENDEC, 0x444444);
-    public static final FragmentType<ItemTypeFragment> ITEM_TYPE = register(
-            "item_type", ItemTypeFragment.ENDEC,
-            0x2266aa
-    );
+    public static final FragmentType<ItemTypeFragment> ITEM_TYPE = register("item_type", ItemTypeFragment.ENDEC, 0x2266aa);
     public static final FragmentType<SlotFragment> SLOT = register("slot", SlotFragment.ENDEC, 0x77aaee);
-    public static final FragmentType<BlockTypeFragment> BLOCK_TYPE = register(
-            "block_type", BlockTypeFragment.ENDEC,
-            0x44aa33
-    );
-    public static final FragmentType<EntityTypeFragment> ENTITY_TYPE = register(
-            "entity_type", EntityTypeFragment.ENDEC,
-            0x8877bb
-    );
-    public static final FragmentType<DimensionFragment> DIMENSION = register(
-            "dimension", DimensionFragment.ENDEC,
-            0xdd55bb
-    );
-    public static final FragmentType<StringFragment> STRING = register("string", StringFragment.ENDEC, 0xaabb77);
+    public static final FragmentType<BlockTypeFragment> BLOCK_TYPE = register("block_type", BlockTypeFragment.ENDEC, 0x44aa33);
+    public static final FragmentType<EntityTypeFragment> ENTITY_TYPE = register("entity_type", EntityTypeFragment.ENDEC, 0x8877bb);
+    public static final FragmentType<DimensionFragment> DIMENSION = register("dimension", DimensionFragment.ENDEC, 0xdd55bb);
+    public static final FragmentType<CharFragment> CHAR = register("char", CharFragment.ENDEC, OptionalInt.empty());
+    public static final FragmentType<StringFragment> STRING = register("string", StringFragment.ENDEC, OptionalInt.empty());
     public static final FragmentType<MapFragment> MAP = register("map", MapFragment.ENDEC);
 
     private static <T extends Fragment> FragmentType<T> register(String name, StructEndec<T> codec, int color) {
         return Registry.register(REGISTRY, Trickster.id(name), new FragmentType<>(codec, OptionalInt.of(color)));
+    }
+
+    private static <T extends Fragment> FragmentType<T> register(String name, StructEndec<T> codec, OptionalInt color) {
+        return Registry.register(REGISTRY, Trickster.id(name), new FragmentType<>(codec, color));
     }
 
     private static <T extends Fragment> FragmentType<T> register(String name, StructEndec<T> codec) {
@@ -158,12 +148,12 @@ public record FragmentType<T extends Fragment>(StructEndec<T> endec, OptionalInt
     @Override
     @SuppressWarnings("unchecked")
     public T compose(Trick<?> trick, SpellContext ctx, List<Fragment> fragments) {
-        return (T) fragments.get(0);
+        return (T) fragments.getFirst();
     }
 
     @Override
     public boolean match(List<Fragment> fragments) {
-        return fragments.get(0).type() == this;
+        return fragments.getFirst().type() == this;
     }
 
     @Override
