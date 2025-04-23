@@ -397,12 +397,15 @@ text.config.trickster-config:
   section:
     client: Client
     server: Server
+    accessibility: Accessibility
     aurora-client: Aurora's Personal Client Tweaks
   option:
     whorlMaxMana: Whorl maximum mana in kG
     whorlRechargeRate: Whorl recharge rate in kG
     topHatInterceptScrolling: Offhand hat intercepts hotbar scrolling
     invertTopHatScrolling: Invert hat scrolling
+    dotEmphasis: Terminal dot emphasis
+    dotEmphasisColor: Terminal dot color
     revealToHotbar: Write revealed values to action bar
     maxExecutionsPerSpellPerTick: Max operations per tick per spell
     allowSwapBedrock: Permit block swapping of bedrock

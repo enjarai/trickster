@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.screen.owo;
 
+import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.trick.Tricks;
@@ -41,18 +42,30 @@ public class GlyphComponent extends BaseComponent {
     public void draw(OwoUIDrawContext context, int mouseX, int mouseY, float partialTicks, float delta) {
         var patternSize = size / 2;
 
+        boolean[] dotTerminalStatus = pattern.dotTerminalStatus();
+
         for (int i = 0; i < 9; i++) {
             var pos = getPatternDotPosition(x + patternSize + 4, y + patternSize + 4, i, patternSize);
 
             var isLinked = patternList.contains(i);
             var dotSize = 1;
 
+            var r = 0f;
+            var g = 0f;
+            var b = 0f;
+
+            if (dotTerminalStatus[i] && Trickster.CONFIG.dotEmphasis()) {
+                r = 1.0f * Trickster.CONFIG.dotEmphasisColor().red();
+                g = 0.4f * Trickster.CONFIG.dotEmphasisColor().green();
+                b = 0.8f * Trickster.CONFIG.dotEmphasisColor().blue();
+            }
+
             drawFlatPolygon(context.getMatrices(), context.getVertexConsumers(),
                     pos.x - dotSize, pos.y - dotSize,
                     pos.x - dotSize, pos.y + dotSize,
                     pos.x + dotSize, pos.y + dotSize,
                     pos.x + dotSize, pos.y - dotSize,
-                    0, 0, 0, 0, isLinked ? 0.9f : 0.5f);
+                    0, r, g, b, isLinked ? 0.9f : 0.5f);
         }
 
         for (var line : pattern.entries()) {

@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.config;
 
+import io.wispforest.owo.ui.core.Color;
 import io.wispforest.owo.config.Option;
 import io.wispforest.owo.config.annotation.Config;
 import io.wispforest.owo.config.annotation.Modmenu;
@@ -18,6 +19,12 @@ public class TricksterConfigModel {
 
     @Sync(Option.SyncMode.INFORM_SERVER)
     public boolean revealToHotbar = true;
+
+    @SectionHeader("accessibility")
+
+    public boolean dotEmphasis = false;
+
+    public Color dotEmphasisColor = new Color(0.5f, 0.2f, 0.4f, 1.0f);
 
     @SectionHeader("server")
 
