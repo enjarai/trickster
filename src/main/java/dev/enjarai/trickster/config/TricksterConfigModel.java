@@ -12,6 +12,11 @@ import io.wispforest.owo.config.annotation.SectionHeader;
 @Modmenu(modId = "trickster")
 @Config(name = "trickster-config", wrapperName = "TricksterConfig")
 public class TricksterConfigModel {
+    @SectionHeader("accessibility")
+
+    public boolean dotEmphasis = false;
+    public Color dotEmphasisColor = new Color(0.5f, 0.2f, 0.4f, 1.0f);
+
     @SectionHeader("client")
 
     public boolean topHatInterceptScrolling = false;
@@ -19,12 +24,6 @@ public class TricksterConfigModel {
 
     @Sync(Option.SyncMode.INFORM_SERVER)
     public boolean revealToHotbar = true;
-
-    @SectionHeader("accessibility")
-
-    public boolean dotEmphasis = false;
-
-    public Color dotEmphasisColor = new Color(0.5f, 0.2f, 0.4f, 1.0f);
 
     @SectionHeader("server")
 
