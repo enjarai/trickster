@@ -55,9 +55,9 @@ public class GlyphComponent extends BaseComponent {
             var b = 0f;
 
             if (dotTerminalStatus[i] && Trickster.CONFIG.dotEmphasis()) {
-                r = 1.0f * Trickster.CONFIG.dotEmphasisColor().red();
-                g = 0.4f * Trickster.CONFIG.dotEmphasisColor().green();
-                b = 0.8f * Trickster.CONFIG.dotEmphasisColor().blue();
+                r = Trickster.CONFIG.dotEmphasisColor().red();
+                g = Trickster.CONFIG.dotEmphasisColor().green();
+                b = Trickster.CONFIG.dotEmphasisColor().blue();
             }
 
             drawFlatPolygon(context.getMatrices(), context.getVertexConsumers(),
