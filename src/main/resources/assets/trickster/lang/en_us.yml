@@ -395,10 +395,13 @@ key:
 text.config.trickster-config:
   title: Trickster Config
   section:
+    accessibility: Accessibility
     client: Client
     server: Server
     aurora-client: Aurora's Personal Client Tweaks
   option:
+    dotEmphasis: Terminal dot emphasis
+    dotEmphasisColor: Terminal dot color
     whorlMaxMana: Whorl maximum mana in kG
     whorlRechargeRate: Whorl recharge rate in kG
     topHatInterceptScrolling: Offhand hat intercepts hotbar scrolling

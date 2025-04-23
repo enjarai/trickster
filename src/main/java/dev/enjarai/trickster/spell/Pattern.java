@@ -132,6 +132,15 @@ public record Pattern(List<PatternEntry> entries) implements Fragment {
         return 32;
     }
 
+    public boolean[] dotTerminalStatus() {
+        boolean[] dots = new boolean[9];
+        for (var entry : this.entries()) {
+            dots[entry.p1] = !dots[entry.p1];
+            dots[entry.p2] = !dots[entry.p2];
+        }
+        return dots;
+    }
+
     public record PatternEntry(byte p1, byte p2) implements Comparable<PatternEntry> {
         public static final Endec<PatternEntry> ENDEC = Endec.BYTES
                 .xmap(list -> new PatternEntry(list[0], list[1]), entry -> new byte[] { entry.p1, entry.p2 });
