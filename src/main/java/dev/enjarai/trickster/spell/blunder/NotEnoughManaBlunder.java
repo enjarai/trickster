@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.spell.blunder;
 
 import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.util.Unit;
 import net.minecraft.text.MutableText;
 
 public class NotEnoughManaBlunder extends TrickBlunderException {
@@ -13,7 +14,13 @@ public class NotEnoughManaBlunder extends TrickBlunderException {
 
     @Override
     public MutableText createMessage() {
-        return super.createMessage().append("Not enough mana, at least ")
-                .append(formatFloat(required)).append(" kilogandalfs are required.");
+        var unit = Unit.getGandalfUnit(required);
+
+        return super.createMessage()
+                .append("Not enough mana, at least ")
+                .append(formatFloat(unit.correct(required)))
+                .append(" ")
+                .append(unit.shortName())
+                .append(" are required.");
     }
 }

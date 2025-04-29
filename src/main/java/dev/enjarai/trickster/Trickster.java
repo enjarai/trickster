@@ -2,6 +2,7 @@ package dev.enjarai.trickster;
 
 import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.block.ModBlocks;
+import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.compat.ModCompat;
 import dev.enjarai.trickster.compat.transmog.TransmogCompat;
 import dev.enjarai.trickster.config.TricksterConfig;
@@ -28,6 +29,7 @@ import dev.enjarai.trickster.spell.trick.Tricks;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.item.Item.TooltipContext;
@@ -42,12 +44,20 @@ import nl.enjarai.cicada.api.util.JsonSource;
 import nl.enjarai.cicada.api.util.ProperLogger;
 
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 
 public class Trickster implements ModInitializer, CicadaEntrypoint {
     public static final String MOD_ID = "trickster";
     public static final Logger LOGGER = ProperLogger.getLogger(MOD_ID);
+
+    public static final Set<UUID> THE_MAKERS_OF_KIBTY = Set.of(
+            UUID.fromString("ffa85ed0-9178-4b48-9b96-73b13d6f258e"),
+            UUID.fromString("7ae9dffd-5669-4922-b6d6-f2d7d0045fc7"),
+            UUID.fromString("5421f63a-e698-4391-a18e-412a390b002c")
+    );
 
     public static final Identifier SPELL_CIRCLE_ATTRIBUTE = id("spell_circle");
     public static final EntityAttributeModifier NEGATE_ATTRIBUTE = new EntityAttributeModifier(Trickster.SPELL_CIRCLE_ATTRIBUTE, -1d, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
@@ -96,6 +106,12 @@ public class Trickster implements ModInitializer, CicadaEntrypoint {
 
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
             TricksterCommand.register(dispatcher);
+        });
+
+        //TODO: too early?
+        ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register((player, origin, destination) -> {
+            ModEntityComponents.CASTER.sync(player);
+            ModEntityComponents.BARS.sync(player);
         });
 
         if (ModCompat.TRANSMOG_LOADED) {

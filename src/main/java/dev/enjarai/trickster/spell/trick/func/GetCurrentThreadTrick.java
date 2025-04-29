@@ -7,6 +7,7 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
+import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 
 public class GetCurrentThreadTrick extends Trick<GetCurrentThreadTrick> {
@@ -16,6 +17,6 @@ public class GetCurrentThreadTrick extends Trick<GetCurrentThreadTrick> {
 
     @Override
     public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        return new NumberFragment(ctx.data().getSlot());
+        return ctx.data().getSlot().<Fragment>map(i -> new NumberFragment(i)).orElse(VoidFragment.INSTANCE);
     }
 }

@@ -44,6 +44,11 @@ public record PatternGlyph(Pattern pattern) implements Fragment {
             throw new UnknownTrickBlunder();
         }
 
+        var restricted = trick.restricted();
+        if (restricted != null && ctx.source().getPlayer().map(p -> !restricted.contains(p.getUuid())).orElse(true)) {
+            throw new UnknownTrickBlunder();
+        }
+
         var result = trick.activate(ctx, fragments);
 
         if (result instanceof Fragment fragment && fragment.getWeight() > Fragment.MAX_WEIGHT) {

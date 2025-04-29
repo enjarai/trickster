@@ -16,6 +16,9 @@
     "chunk_pinning.MinecraftServerMixin",
     "chunk_pinning.ServerChunkLoadingManagerMixin",
     "chunk_pinning.ServerWorldMixin",
+    "curse.EntityMixin",
+    "curse.LimbAnimatorMixin",
+    "curse.LivingEntityMixin",
     "event.ServerPlayerEntityMixin",
     "event.ServerPlayerInteractionManagerMixin"
   ],

@@ -6,7 +6,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import dev.enjarai.trickster.item.component.ManaComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContext;
@@ -28,10 +27,11 @@ public record RandomManaLootFunction(float fractionalMinimum, float fractionalMa
 
     @Override
     public ItemStack apply(ItemStack stack, LootContext lootContext) {
-        var pool = stack.get(ModComponents.MANA).pool().makeClone(lootContext.getWorld());
+        var component = stack.get(ModComponents.MANA);
+        var pool = component.pool().makeClone(lootContext.getWorld());
 
         pool.set(pool.getMax(lootContext.getWorld()) * (random.nextFloat() * (fractionalMaximum - fractionalMinimum) + fractionalMinimum), lootContext.getWorld());
-        stack.set(ModComponents.MANA, new ManaComponent(pool));
+        stack.set(ModComponents.MANA, component.with(pool));
 
         return stack;
     }

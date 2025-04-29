@@ -15,7 +15,7 @@ import dev.enjarai.trickster.spell.type.Signature;
 
 public class GetManaInSlotTrick extends Trick<GetManaInSlotTrick> {
     public GetManaInSlotTrick() {
-        super(Pattern.of(3, 4, 5, 2, 4, 0, 3, 6, 8, 5), Signature.of(variadic(FragmentType.SLOT), GetManaInSlotTrick::run));
+        super(Pattern.of(3, 4, 5, 2, 4, 0, 3, 6, 8, 5), Signature.of(variadic(FragmentType.SLOT).unpack(), GetManaInSlotTrick::run));
     }
 
     public Fragment run(SpellContext ctx, List<SlotFragment> slots) throws BlunderException {

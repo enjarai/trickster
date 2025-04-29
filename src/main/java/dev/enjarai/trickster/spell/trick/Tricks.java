@@ -249,6 +249,7 @@ public class Tricks {
     public static final ReleaseEntityTrick RELEASE_ENTITY = register("release_entity", new ReleaseEntityTrick());
     public static final GetScaleTrick GET_SCALE = register("get_scale", new GetScaleTrick());
     public static final SetScaleTrick SET_SCALE = register("set_scale", new SetScaleTrick());
+    public static final CatCurseTrick CAT_CURSE = register("cat_curse", new CatCurseTrick());
 
     // Entity Locating
     public static final BlockFindEntityTrick BLOCK_FIND_ENTITY = register("block_find_entity", new BlockFindEntityTrick());

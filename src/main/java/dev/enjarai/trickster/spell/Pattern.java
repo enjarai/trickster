@@ -80,6 +80,14 @@ public record Pattern(List<PatternEntry> entries) implements Fragment {
         return result;
     }
 
+    public Pattern add(Pattern other) {
+        return Pattern.from(this.toInt() | other.toInt());
+    }
+
+    public Pattern subtract(Pattern other) {
+        return Pattern.from(this.toInt() & ~other.toInt());
+    }
+
     public boolean isEmpty() {
         return entries().isEmpty();
     }
@@ -122,6 +130,15 @@ public record Pattern(List<PatternEntry> entries) implements Fragment {
     @Override
     public int getWeight() {
         return 32;
+    }
+
+    public boolean[] dotTerminalStatus() {
+        boolean[] dots = new boolean[9];
+        for (var entry : this.entries()) {
+            dots[entry.p1] = !dots[entry.p1];
+            dots[entry.p2] = !dots[entry.p2];
+        }
+        return dots;
     }
 
     public record PatternEntry(byte p1, byte p2) implements Comparable<PatternEntry> {

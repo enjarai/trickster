@@ -115,7 +115,7 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
                     }
 
                     try {
-                        if (executor.run(source, new TickData().withSlot(i).withBonusExecutions(item.getExecutionBonus())).isPresent()) {
+                        if (executor.run(source, new TickData().withSlot(executorSlot).withBonusExecutions(item.getExecutionBonus())).isPresent()) {
                             executors.set(executorSlot, Optional.empty());
                             updateClient = true;
                         }

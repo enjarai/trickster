@@ -58,7 +58,8 @@
             "trickster:player_animation",
             "trickster:weight",
             "trickster:scale",
-            "trickster:displacement"
+            "trickster:displacement",
+            "trickster:curse"
         ]
     },
     "mixins": [

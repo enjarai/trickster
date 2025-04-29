@@ -13,7 +13,7 @@ public class TickData {
     private Map<Key<?>, Object> map = new HashMap<>();
     private int executionLimit = Trickster.CONFIG.maxExecutionsPerSpellPerTick();
     private int executions = 0;
-    private int slot = -1;
+    private Optional<Integer> slot = Optional.empty();
     private boolean killed = false;
 
     public void incrementExecutions() {
@@ -28,7 +28,7 @@ public class TickData {
         return executionLimit;
     }
 
-    public int getSlot() {
+    public Optional<Integer> getSlot() {
         return slot;
     }
 
@@ -37,7 +37,7 @@ public class TickData {
     }
 
     public TickData withSlot(int slot) {
-        this.slot = slot;
+        this.slot = Optional.of(slot);
         return this;
     }
 

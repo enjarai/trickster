@@ -20,6 +20,7 @@ import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.format.bytebuf.ByteBufDeserializer;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import net.minecraft.text.Text;
+import org.joml.Vector2d;
 
 public final class SpellPart implements Fragment {
     public static final StructEndec<SpellPart> ENDEC = EndecTomfoolery.recursive(
@@ -244,5 +245,22 @@ public final class SpellPart implements Fragment {
         }
 
         return result;
+    }
+
+    public int partCount() {
+        return subParts.size();
+    }
+
+    public double subRadius(double radius) {
+        return Math.min(radius / 2, radius / (double) ((this.partCount() + 1) / 2));
+    }
+
+    public double subAngle(int index, double angleOffset) {
+        return angleOffset + (2 * Math.PI) / this.partCount() * index - (Math.PI / 2);
+    }
+
+    public Vector2d subPosition(int index, double radius, double angleOffset) {
+        double angle = this.subAngle(index, angleOffset);
+        return new Vector2d(Math.cos(angle), Math.sin(angle)).mul(radius);
     }
 }

@@ -26,8 +26,7 @@ import org.joml.Vector3f;
 import org.joml.Vector3fc;
 
 public class EndecTomfoolery {
-    public static final Endec<BlockPos> ALWAYS_READABLE_BLOCK_POS =
-            vectorEndec(Endec.INT, BlockPos::new, BlockPos::getX, BlockPos::getY, BlockPos::getZ);
+    public static final Endec<BlockPos> ALWAYS_READABLE_BLOCK_POS = vectorEndec(Endec.INT, BlockPos::new, BlockPos::getX, BlockPos::getY, BlockPos::getZ);
     public static final Endec<UUID> UUID = Endec.STRING.xmap(UndashedUuid::fromStringLenient, java.util.UUID::toString);
     public static final SerializationAttribute.Marker UBER_COMPACT_ATTRIBUTE = SerializationAttribute.marker("uber_compact");
     public static final SerializationAttribute.WithValue<Byte> PROTOCOL_VERSION_ATTRIBUTE = SerializationAttribute.withValue("protocol_version");
@@ -45,15 +44,15 @@ public class EndecTomfoolery {
                 vector -> List.of(xGetter.apply(vector), yGetter.apply(vector), zGetter.apply(vector))
         );
     }
-    
+
     public static <T, A extends T> Endec<T> withAlternative(Endec<T> primary, Endec<A> alternative) {
         return new EitherEndec<T, A>(
-            primary,
-            alternative,
-            false
+                primary,
+                alternative,
+                false
         ).xmap(
-            Either::unwrap,
-            Either::left
+                Either::unwrap,
+                Either::left
         );
     }
 

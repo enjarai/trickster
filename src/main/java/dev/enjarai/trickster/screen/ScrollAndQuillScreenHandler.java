@@ -76,7 +76,7 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
         this.isMutable.set(isMutable);
 
         addServerboundMessage(SpellMessage.class, SpellMessage.ENDEC, msg -> updateSpell(msg.spell()));
-        addServerboundMessage(OtherHandSpellMessage.class, OtherHandSpellMessage.ENDEC, msg -> updateOtherHandSpell(msg.spell()));
+        addServerboundMessage(OtherHandSpellMessage.class, OtherHandSpellMessage.ENDEC, msg -> updateOffHandSpell(msg.spell()));
         addServerboundMessage(UpdateSpellWithSpellMessage.class, UpdateSpellWithSpellMessage.ENDEC, msg -> updateSpellWithSpell(msg.drawingPart, msg.spell));
 
         addServerboundMessage(ExecuteOffhand.class, msg -> executeOffhand());
@@ -168,21 +168,25 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
         }
     }
 
-    public void updateOtherHandSpell(SpellPart spell) {
-        if (isMutable.get()) {
-            if (otherHandStack != null) {
-                if (!otherHandStack.isEmpty()) {
-                    var server = player().getServer();
-                    if (server != null) {
-                        server.execute(() -> {
-                            var updated = FragmentComponent.write(otherHandStack, spell);
-                            player().setStackInHand(Hand.OFF_HAND, updated.orElse(otherHandStack)); // does nothing on fail
-                            otherHandSpell.set(spell);
-                        });
+    public void updateOffHandSpell(SpellPart spell) {
+        if (isOffhand()) {
+            updateSpell(spell); //TODO: doesn't appear to actually update, but at least doesn't delete the stack
+        } else {
+            if (isMutable.get()) {
+                if (otherHandStack != null) {
+                    if (!otherHandStack.isEmpty()) {
+                        var server = player().getServer();
+                        if (server != null) {
+                            server.execute(() -> {
+                                var updated = FragmentComponent.write(otherHandStack, spell);
+                                player().setStackInHand(Hand.OFF_HAND, updated.orElse(otherHandStack)); // does nothing on fail
+                                otherHandSpell.set(spell);
+                            });
+                        }
                     }
+                } else {
+                    sendMessage(new OtherHandSpellMessage(spell));
                 }
-            } else {
-                sendMessage(new OtherHandSpellMessage(spell));
             }
         }
     }
