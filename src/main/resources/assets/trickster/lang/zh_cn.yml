@@ -96,7 +96,7 @@ trickster:
     write_spell: 记事员之技巧
     write_closed_spell: 禁文记事员之技巧
     read_macro_ring: 宏之错觉
-    reveal: 展示之谋略
+    reveal: 展示之技巧
     read_crow_mind: 乌鸦灵思之错觉
     write_crow_mind: 乌鸦灵思之技巧
     cost: 消耗之技巧
@@ -141,14 +141,16 @@ trickster:
     block_find_entity: 怀抱之辑流
     range_find_entity: 同命之辑流
 
-    execute: 宏伟之谋略
-    execute_same_scope: 静默之曲变
-    fork: 器具之谋略
-    fold: 折叠之曲变
-    try_catch: 谨慎之谋略
-    closure: 闭包之谋略
-    supplier: 供给之曲变
-    kill_thread: 行刑者之技巧
+    import: 协助之转离
+    import_hat: 颅骨之转离
+
+    execute: 宏伟之转离
+    execute_same_scope: 静默之转离
+    fork: 器具之转离
+    fold: 折叠之转离
+    try_catch: 谨慎之转离
+    delay_execution: 挂起之转离
+    kill_thread: 行刑者之转离
     current_thread: 序数之错觉
     load_argument_1: 甲参之错觉
     load_argument_2: 乙参之错觉
@@ -172,6 +174,8 @@ trickster:
     list_size: 计量之曲变
     create_number_range: 间奏之曲变
 
+    closure: 闭包之谋略
+    supplier: 供给之曲变
     locate_glyph: 定址之曲变
     locate_glyphs: 发现之曲变
     retrieve_glyph: 检索之曲变
@@ -205,8 +209,6 @@ trickster:
     check_resonator: 谐振之辑流
     get_redstone_power: 逻辑之辑流
 
-    import: 协助之谋略
-    import_hat: 颅骨之谋略
     check_hat: 颅骨之错觉
     set_hat: 颅骨挪移之技巧
     other_hand: 杂耍之错觉
@@ -223,7 +225,6 @@ trickster:
 
     type_fragment: 参量之曲变
     hash_values: 衰朽之曲变
-    delay_execution: 挂起之技巧
     pin_chunk: 天钉之技巧
     get_dimension: 维度之错觉
     show_bar: 清晰之技巧
@@ -235,7 +236,7 @@ trickster:
     draw_line: 艺术家之技巧
     get_flecks: 观察者之辑流
 
-    get_scale: 居形之曲变
+    get_scale: 居形之辑流
     set_scale: 居形之技巧
 
     transmog: 幻化之技巧
@@ -394,10 +395,15 @@ key:
 text.config.trickster-config:
   title: 戏法师（Trickster）配置
   section:
+    accessibility: 辅助功能
     client: 客户端
     server: 服务端
     aurora-client: Aurora的专属客户端微调
   option:
+    dotEmphasis: 界面中着重强调点
+    dotEmphasisColor: 界面中点的强调色
+    whorlMaxMana: 螺坠最大魔力，以kG计
+    whorlRechargeRate: 螺坠充能速度，以kG计
     topHatInterceptScrolling: 副手持帽子时拦截快捷栏滚选
     invertTopHatScrolling: 反转帽子滚选方向
     revealToHotbar: 展示的值显示到动作栏中
@@ -408,3 +414,4 @@ text.config.trickster-config:
     dragDrawing: 拖动绘制
     barsHorizontal: 条栏水平显示
     disableOffhandScrollOpening: 主手持有卷轴才可修改
+    adjacentPixelCollisionOffset: 相邻像素的偏移因数
