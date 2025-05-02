@@ -1,2 +1,3 @@
 - Added appropriate bounds to command arguments for scale and weight. (@aurakle)
 - Special-cased spell fragments in Closure Stratagem to be able to replace full branches of spells. (@enjarai)
+- Fixed spell constructs being washed away by water. (@enjarai)
