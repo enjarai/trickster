@@ -1,1 +1,2 @@
-- Added appropriate bounds to command arguments for scale and weight. (@StellarWitch7)
+- Added appropriate bounds to command arguments for scale and weight. (@aurakle)
+- Special-cased spell fragments in Closure Stratagem to be able to replace full branches of spells. (@enjarai)
