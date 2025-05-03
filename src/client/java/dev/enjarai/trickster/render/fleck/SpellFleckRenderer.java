@@ -6,6 +6,7 @@ import net.minecraft.client.render.*;
 import dev.enjarai.trickster.fleck.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
 import org.joml.Vector3f;
@@ -23,13 +24,16 @@ public class SpellFleckRenderer implements FleckRenderer<SpellFleck> {
         var position = fleck.pos();
         var facing = fleck.facing();
         var spell = fleck.spell();
+        var size = fleck.size();
 
         var oldPosition = fleck.pos();
         var oldFacing = fleck.facing();
+        var oldSize = fleck.size();
 
         if (lastFleck != null) {
             oldPosition = lastFleck.pos();
             oldFacing = lastFleck.facing();
+            oldSize = lastFleck.size();
         }
 
         //only lerp if change is small?
@@ -37,6 +41,7 @@ public class SpellFleckRenderer implements FleckRenderer<SpellFleck> {
 
         var targetPosition = oldPosition.lerp(position, tickDelta, new Vector3f()).sub(context.camera().getPos().toVector3f());
         var targetFacing = oldFacing.lerp(facing, tickDelta, new Vector3f()).normalize();
+        var targetSize = MathHelper.lerp(tickDelta, oldSize, size);
 
         var yaw = (float) Math.atan2(targetFacing.x(), targetFacing.z());
         var pitch = (float) (Math.asin(-targetFacing.y()) + Math.PI);
@@ -53,10 +58,10 @@ public class SpellFleckRenderer implements FleckRenderer<SpellFleck> {
                 spell,
                 0,
                 0,
-                0.5,
+                targetSize / 2,
                 0,
                 tickDelta,
-                size -> 1.0f,
+                size1 -> 1.0f,
                 new Vec3d(facing.x(), facing.y(), facing.z())
         );
 
