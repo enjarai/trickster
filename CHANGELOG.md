@@ -20,4 +20,4 @@
 - Fixed slot moving being free in some strange cases. (@aurakle)
 - Fixed Amethyst Whorls recharging under the moonlight. (@aurakle)
 - Fixed Delusion of Order being weird. (@aurakle)
-- Fixed Plagiarists Revision being a hungry girl and eating items sometimes. (@aurakle)
+- Fixed Plagiarist's Revision being a hungry girl and eating items sometimes. (@aurakle)
