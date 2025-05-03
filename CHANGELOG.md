@@ -3,6 +3,7 @@
 - Slightly improved line fleck rendering. (@enjarai)
 - Special-cased spell fragments in Closure Stratagem to be able to replace full branches of spells. (@enjarai)
 - Added a new trick category, Deviations, and moved many existing tricks to it. (@aurakle)
+- Made Marketers Ploy able to accept a scale argument. (@enjarai)
 - Added limited keyboard navigation to the editor screen. (@unlessgames)
 - Improved glyph drawing and editor view to be more stable and feel better to use. (@unlessgames)
 - Made merlin tracking on knots track over a longer timespan. (@enjarai)
