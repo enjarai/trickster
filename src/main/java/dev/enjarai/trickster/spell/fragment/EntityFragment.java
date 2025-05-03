@@ -66,6 +66,9 @@ public record EntityFragment(UUID uuid, Text name) implements Fragment {
     }
 
     public static boolean isValidEntity(Entity entity) {
+        if (entity instanceof PlayerEntity player && player.isSpectator()) {
+            return false;
+        }
         if (entity.getWorld() instanceof ServerWorld serverWorld) {
             return serverWorld.getChunkManager().chunkLoadingManager.getTicketManager()
                     .shouldTickEntities(entity.getChunkPos().toLong());
