@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import net.minecraft.text.MutableText;
 
@@ -26,12 +27,20 @@ public class OptionalArgType<T> implements ArgType<Optional<T>> {
             return Optional.empty();
         }
 
+        if (fragments.getFirst() == VoidFragment.INSTANCE) {
+            return Optional.empty();
+        }
+
         return Optional.of(type.compose(trick, ctx, fragments));
     }
 
     @Override
     public boolean match(List<Fragment> fragments) {
         if (argc(fragments) == 0) {
+            return true;
+        }
+
+        if (fragments.getFirst() == VoidFragment.INSTANCE) {
             return true;
         }
 

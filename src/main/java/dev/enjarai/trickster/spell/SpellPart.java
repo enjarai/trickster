@@ -119,7 +119,11 @@ public final class SpellPart implements Fragment {
     }
 
     public SpellPart buildClosure(io.vavr.collection.Map<Fragment, Fragment> replacements) {
-        subParts.forEach(part -> part.buildClosure(replacements));
+        if (replacements.containsKey(this) && replacements.get(this).get() instanceof SpellPart spellPart) {
+            return spellPart;
+        }
+
+        subParts = new ArrayList<>(subParts.stream().map(part -> part.buildClosure(replacements)).toList());
 
         if (glyph instanceof SpellPart spellPart) {
             spellPart.buildClosure(replacements);
