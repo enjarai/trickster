@@ -7,6 +7,8 @@ import dev.enjarai.trickster.spell.trick.basic.*;
 import dev.enjarai.trickster.spell.trick.block.*;
 import dev.enjarai.trickster.spell.trick.entity.*;
 import dev.enjarai.trickster.spell.trick.inventory.*;
+import dev.enjarai.trickster.spell.trick.string.ComposeStringTrick;
+import dev.enjarai.trickster.spell.trick.string.DecomposeStringTrick;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
@@ -396,6 +398,10 @@ public class Tricks {
     public static final BatteryCreationTrick BATTERY_CREATION = register("battery_creation", new BatteryCreationTrick());
     public static final PushManaTrick PUSH_MANA = register("push_mana", new PushManaTrick());
     public static final PullManaTrick PULL_MANA = register("pull_mana", new PullManaTrick());
+
+    // String
+    public static final ComposeStringTrick COMPOSE_STRING = register("compose_string", new ComposeStringTrick());
+    public static final DecomposeStringTrick DECOMPOSE_STRING = register("decompose_string", new DecomposeStringTrick());
 
     @ApiStatus.Internal
     public static <T extends Trick<?>> T register(String path, T trick) {
