@@ -6,13 +6,13 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
-import dev.enjarai.trickster.spell.trick.entity.query.AbstractLivingEntityQueryTrick;
+import dev.enjarai.trickster.spell.trick.entity.query.AbstractEntityQueryTrick;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-public class DispelPolymorphTrick extends AbstractLivingEntityQueryTrick {
+public class DispelPolymorphTrick extends AbstractEntityQueryTrick<LivingEntity> {
     public DispelPolymorphTrick() {
-        super(Pattern.of(1, 0, 4, 8, 7));
+        super(Pattern.of(1, 0, 4, 8, 7), LivingEntity.class);
     }
 
     @Override

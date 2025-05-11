@@ -126,12 +126,28 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         this.angleOffsets.addAll(new ArrayList<>(newAngleOffsets));
     }
 
-    public ScrollAndQuillScreen.PositionMemory save() {
+    public boolean cancelDrawing() {
+        if (drawingPart != null) {
+            drawingPart.glyph = oldGlyph;
+            drawingPart = null;
+            drawingPattern = null;
+            revisionContext.updateSpell(rootSpellPart);
+
+            MinecraftClient.getInstance().player.playSoundToPlayer(
+                    ModSounds.COMPLETE, SoundCategory.MASTER,
+                    1f, 0.6f
+            );
+            return true;
+        }
+        return false;
+    }
+
+    public ScrollAndQuillScreen.PositionMemory saveAndClose() {
         return new ScrollAndQuillScreen.PositionMemory(
-            rootSpellPart.hashCode(),
-            position, radius,
-            rootSpellPart, spellPart,
-            new ArrayList<>(parents), new ArrayList<>(angleOffsets));
+                rootSpellPart.hashCode(),
+                position, radius,
+                rootSpellPart, spellPart,
+                new ArrayList<>(parents), new ArrayList<>(angleOffsets));
     }
 
     public void load(ScrollAndQuillScreen.PositionMemory memory) {
@@ -198,12 +214,17 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             return true;
         }
 
+        var minZoom = toScaledSpace(windowHeight * 0.1);
+
         Vector2d scaledMouse = toScaledSpace(new Vector2d(mouseX, mouseY));
-        position.add(new Vector2d(position).sub(scaledMouse).mul(verticalAmount * ZOOM_SPEED));
-        radius += verticalAmount * radius * ZOOM_SPEED;
+        radius = Math.max(radius + verticalAmount * radius * ZOOM_SPEED, minZoom);
+
+        if (radius > minZoom) {
+            position.add(new Vector2d(position).sub(scaledMouse).mul(verticalAmount * ZOOM_SPEED));
+        }
 
         var subRadius = toLocalSpace(spellPart.subRadius(radius));
-        if(verticalAmount > 0) {
+        if (verticalAmount > 0) {
             if (subRadius > windowHeight && (spellPart.glyph instanceof SpellPart || spellPart.partCount() > 0)) {
                 pushNewRoot(scaledMouse);
             }
@@ -409,7 +430,6 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         return moves;
     }
 
-    @SuppressWarnings("resource")
     protected boolean selectPattern(SpellPart part, Vector2d position, float radius, Vector2d mouse) {
         if (drawingPart != null && drawingPart != part) {
             // Cancel early if we're already drawing in another part
@@ -431,7 +451,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             // this will make it easier to connect lines to the next neighbors on the ring
             var _patternRadius = patternRadius;
             if (!drawingPattern.isEmpty()) {
-                var last = drawingPattern.get(drawingPattern.size() - 1);
+                var last = drawingPattern.getLast();
                 if (areAdjacent(last, i)) {
                     _patternRadius += pixelSize * Trickster.CONFIG.adjacentPixelCollisionOffset() * 3;
                 }
@@ -460,7 +480,6 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         return false;
     }
 
-    @SuppressWarnings("resource")
     protected void stopDrawing() {
         var compiled = Pattern.from(drawingPattern);
         var patternSize = drawingPattern.size();
@@ -539,19 +558,18 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     protected boolean propagateMouseEvent(double mouseX, double mouseY, MouseEventHandler callback) {
         return propagateMouseEvent(spellPart, position, radius, angleOffsets.peek(), toScaledSpace(new Vector2d(mouseX, mouseY)), callback);
     }
-    
+
     protected boolean propagateMouseEvent(SpellPart part, Vector2d pos, double radius, double startingAngle, Vector2d mouse, MouseEventHandler callback) {
         int closestIndex = closestIndex(part, pos, mouse, radius, startingAngle);
-        boolean centerAvailable =
-            (isCircleClickable(toLocalSpace(radius)) && (drawingPart == null || drawingPart == part))
-            || part.glyph instanceof SpellPart;
+        boolean centerAvailable = (isCircleClickable(toLocalSpace(radius)) && (drawingPart == null || drawingPart == part))
+                || part.glyph instanceof SpellPart;
 
         SpellPart closest = part;
         double closestDistanceSquared = Double.MAX_VALUE;
         Vector2d closestPosition = pos;
         double closestRadius = radius;
         double closestAngle = startingAngle;
-        
+
         if (closestIndex > -1) {
             closest = part.subParts.get(closestIndex);
             closestPosition = part.subPosition(closestIndex, radius, startingAngle).add(pos);

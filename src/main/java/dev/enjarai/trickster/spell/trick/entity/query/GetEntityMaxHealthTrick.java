@@ -7,9 +7,9 @@ import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import net.minecraft.entity.LivingEntity;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 
-public class GetEntityMaxHealthTrick extends AbstractLivingEntityQueryTrick {
+public class GetEntityMaxHealthTrick extends AbstractEntityQueryTrick<LivingEntity> {
     public GetEntityMaxHealthTrick() {
-        super(Pattern.of(1, 6, 8, 1, 4, 0, 3, 7, 5, 2, 4));
+        super(Pattern.of(1, 6, 8, 1, 4, 0, 3, 7, 5, 2, 4), LivingEntity.class);
     }
 
     @Override

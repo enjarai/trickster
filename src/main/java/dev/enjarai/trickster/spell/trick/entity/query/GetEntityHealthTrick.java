@@ -7,9 +7,9 @@ import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import net.minecraft.entity.LivingEntity;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 
-public class GetEntityHealthTrick extends AbstractLivingEntityQueryTrick {
+public class GetEntityHealthTrick extends AbstractEntityQueryTrick<LivingEntity> {
     public GetEntityHealthTrick() {
-        super(Pattern.of(4, 0, 3, 7, 5, 2, 4));
+        super(Pattern.of(4, 0, 3, 7, 5, 2, 4), LivingEntity.class);
     }
 
     @Override

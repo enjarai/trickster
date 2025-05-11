@@ -5,7 +5,6 @@ import dev.enjarai.trickster.spell.SpellPart;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
-import net.minecraft.client.option.KeyBinding;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import org.joml.Vector2d;
@@ -42,13 +41,14 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
         this.handler.spell.observe(spell -> {
             var spellHash = spell.hashCode();
 
-            if (!hasLoaded)
+            if (!hasLoaded) {
                 for (var position : storedPositions) {
                     if (position.spellHash == spellHash) {
                         partWidget.load(position);
                         break;
                     }
                 }
+            }
 
             partWidget.setSpell(spell);
             hasLoaded = true;
@@ -58,7 +58,12 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
 
     @Override
     public void close() {
-        var saved = partWidget.save();
+        // First cancel drawing a pattern if applicable
+        if (partWidget.cancelDrawing()) {
+            return;
+        }
+
+        var saved = partWidget.saveAndClose();
         storedPositions.removeIf(position -> position.spellHash == saved.spellHash);
         storedPositions.add(saved);
         if (storedPositions.size() >= 5) {
@@ -100,12 +105,12 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
-        
+
         if (inputZ != 0.0) {
             partWidget.mouseScrolled(mouseX, mouseY, 0.0, inputZ * ZOOM_SPEED * delta);
         }
     }
-   
+
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if (this.client.options.inventoryKey.matchesKey(keyCode, scanCode)) {
@@ -120,7 +125,7 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
         }
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
-    
+
     @Override
     public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
         if (this.client.options.forwardKey.matchesKey(keyCode, scanCode)) {
@@ -146,11 +151,12 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
         }
     }
 
-    record PositionMemory(int spellHash,
-                          Vector2d position,
-                          double radius,
-                          SpellPart rootSpellPart,
-                          SpellPart spellPart,
-                          ArrayList<SpellPart> parents,
-                          ArrayList<Double> angleOffsets) { }
+    public record PositionMemory(int spellHash,
+            Vector2d position,
+            double radius,
+            SpellPart rootSpellPart,
+            SpellPart spellPart,
+            ArrayList<SpellPart> parents,
+            ArrayList<Double> angleOffsets) {
+    }
 }
