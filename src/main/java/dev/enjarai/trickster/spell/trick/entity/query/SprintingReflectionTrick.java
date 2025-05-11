@@ -7,9 +7,9 @@ import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import net.minecraft.entity.LivingEntity;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 
-public class SprintingReflectionTrick extends AbstractLivingEntityQueryTrick {
+public class SprintingReflectionTrick extends AbstractEntityQueryTrick<LivingEntity> {
     public SprintingReflectionTrick() {
-        super(Pattern.of(6, 8, 4, 5));
+        super(Pattern.of(6, 8, 4, 5), LivingEntity.class);
     }
 
     @Override

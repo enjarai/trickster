@@ -123,6 +123,8 @@ trickster:
     get_max_health: Vigor Ingress
     get_health: Fettle Ingress
     get_armour: Bulwark Ingress
+    get_player_food: Ingress of Appetite
+    get_player_saturation: Ingress of Fulfilment
     get_velocity: Movement Ingress
     add_velocity: Kinetic Ploy
     change_weight: Ploy of Featherweight
