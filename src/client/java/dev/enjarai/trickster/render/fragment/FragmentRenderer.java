@@ -24,6 +24,8 @@ public interface FragmentRenderer<T extends Fragment> {
     ItemTypeRenderer ITEM_TYPE = register(FragmentType.ITEM_TYPE, new ItemTypeRenderer());
     BlockTypeRenderer BLOCK_TYPE = register(FragmentType.BLOCK_TYPE, new BlockTypeRenderer());
     // EntityRenderer ENTITY = register(FragmentType.ENTITY, new EntityRenderer());
+    ListRenderer LIST = register(FragmentType.LIST, new ListRenderer());
+    MapRenderer MAP = register(FragmentType.MAP, new MapRenderer());
 
     static <T extends FragmentRenderer<F>, F extends Fragment> T register(FragmentType<F> type, T renderer) {
         return Registry.register(REGISTRY, FragmentType.REGISTRY.getId(type), renderer);
