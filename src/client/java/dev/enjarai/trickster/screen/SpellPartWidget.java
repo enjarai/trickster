@@ -126,7 +126,23 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         this.angleOffsets.addAll(new ArrayList<>(newAngleOffsets));
     }
 
-    public ScrollAndQuillScreen.PositionMemory save() {
+    public boolean cancelDrawing() {
+        if (drawingPart != null) {
+            drawingPart.glyph = oldGlyph;
+            drawingPart = null;
+            drawingPattern = null;
+            revisionContext.updateSpell(rootSpellPart);
+
+            MinecraftClient.getInstance().player.playSoundToPlayer(
+                    ModSounds.COMPLETE, SoundCategory.MASTER,
+                    1f, 0.6f
+            );
+            return true;
+        }
+        return false;
+    }
+
+    public ScrollAndQuillScreen.PositionMemory saveAndClose() {
         return new ScrollAndQuillScreen.PositionMemory(
                 rootSpellPart.hashCode(),
                 position, radius,
@@ -414,7 +430,6 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         return moves;
     }
 
-    @SuppressWarnings("resource")
     protected boolean selectPattern(SpellPart part, Vector2d position, float radius, Vector2d mouse) {
         if (drawingPart != null && drawingPart != part) {
             // Cancel early if we're already drawing in another part
@@ -436,7 +451,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             // this will make it easier to connect lines to the next neighbors on the ring
             var _patternRadius = patternRadius;
             if (!drawingPattern.isEmpty()) {
-                var last = drawingPattern.get(drawingPattern.size() - 1);
+                var last = drawingPattern.getLast();
                 if (areAdjacent(last, i)) {
                     _patternRadius += pixelSize * Trickster.CONFIG.adjacentPixelCollisionOffset() * 3;
                 }
@@ -465,7 +480,6 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         return false;
     }
 
-    @SuppressWarnings("resource")
     protected void stopDrawing() {
         var compiled = Pattern.from(drawingPattern);
         var patternSize = drawingPattern.size();

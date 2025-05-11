@@ -58,7 +58,12 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
 
     @Override
     public void close() {
-        var saved = partWidget.save();
+        // First cancel drawing a pattern if applicable
+        if (partWidget.cancelDrawing()) {
+            return;
+        }
+
+        var saved = partWidget.saveAndClose();
         storedPositions.removeIf(position -> position.spellHash == saved.spellHash);
         storedPositions.add(saved);
         if (storedPositions.size() >= 5) {
@@ -146,7 +151,7 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
         }
     }
 
-    record PositionMemory(int spellHash,
+    public record PositionMemory(int spellHash,
             Vector2d position,
             double radius,
             SpellPart rootSpellPart,
