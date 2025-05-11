@@ -1,3 +1,4 @@
 - Significantly improved list and map rendering inside of circles. (@enjarai)
 - Added hunger querying ingresses. (@enjarai)
 - Fixed multiple issues with the spell editor screen. (@enjarai)
+- Made entity targeting ingresses accept multiple entity types. (@aurakle)
