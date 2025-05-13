@@ -54,6 +54,8 @@ import dev.enjarai.trickster.spell.trick.bool.LesserThanTrick;
 import dev.enjarai.trickster.spell.trick.bool.NoneTrick;
 import dev.enjarai.trickster.spell.trick.bool.NotEqualsTrick;
 import dev.enjarai.trickster.spell.trick.dimension.GetDimensionTrick;
+import dev.enjarai.trickster.spell.trick.dimension.GetTimeTrick;
+import dev.enjarai.trickster.spell.trick.dimension.GetMoonPhaseTrick;
 import dev.enjarai.trickster.spell.trick.fleck.GetFlecksTrick;
 import dev.enjarai.trickster.spell.trick.fleck.LineFleckTrick;
 import dev.enjarai.trickster.spell.trick.fleck.SpellFleckTrick;
@@ -113,7 +115,6 @@ import dev.enjarai.trickster.spell.trick.misc.DelayExecutionTrick;
 import dev.enjarai.trickster.spell.trick.misc.HashValuesTrick;
 import dev.enjarai.trickster.spell.trick.misc.MessageListenTrick;
 import dev.enjarai.trickster.spell.trick.misc.MessageSendTrick;
-import dev.enjarai.trickster.spell.trick.dimension.GetTimeTrick;
 import dev.enjarai.trickster.spell.trick.misc.PinChunkTrick;
 import dev.enjarai.trickster.spell.trick.misc.ShowBarTrick;
 import dev.enjarai.trickster.spell.trick.misc.TypeFragmentTrick;
@@ -369,6 +370,8 @@ public class Tricks {
 
     // Dimension
     public static final GetDimensionTrick GET_DIMENSION = register("get_dimension", new GetDimensionTrick());
+    public static final GetTimeTrick GET_TICK = register("get_tick", new GetTimeTrick());
+    public static final GetMoonPhaseTrick GET_MOON_PHASE = register("get_moon_phase", new GetMoonPhaseTrick());
 
     // Flecks
     public static final LineFleckTrick DRAW_LINE = register("draw_line", new LineFleckTrick());
@@ -381,7 +384,6 @@ public class Tricks {
     public static final DelayExecutionTrick DELAY_EXECUTION = register("delay_execution", new DelayExecutionTrick());
     public static final PinChunkTrick PIN_CHUNK = register("pin_chunk", new PinChunkTrick());
     public static final ShowBarTrick SHOW_BAR = register("show_bar", new ShowBarTrick());
-    public static final GetTimeTrick GET_TICK = register("get_tick", new GetTimeTrick());
     public static final ClearBarTrick CLEAR_BAR = register("clear_bar", new ClearBarTrick());
     public static final MessageSendTrick MESSAGE_SEND = register("message_send", new MessageSendTrick());
     public static final MessageListenTrick MESSAGE_LISTEN = register("message_listen", new MessageListenTrick());
