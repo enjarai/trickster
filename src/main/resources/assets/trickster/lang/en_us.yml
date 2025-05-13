@@ -41,6 +41,8 @@ trickster:
     idling: "Idle"
     draining: "Draining: %.2f"
     filling: "Charging: %.2f"
+  chronus:
+    time: "Sync Tick: %s"
 
   item_group: Trickster
 
@@ -353,6 +355,7 @@ item.trickster:
   leash: Archmage's Tether
 
   amethyst_knot: Amethyst Knot
+  quartz_knot: Quartz Knot
   emerald_knot: Emerald Knot
   diamond_knot: Diamond Knot
   echo_knot: Echo Knot

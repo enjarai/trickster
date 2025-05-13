@@ -3,6 +3,7 @@ package dev.enjarai.trickster.item;
 import dev.enjarai.trickster.cca.ModGlobalComponents;
 import dev.enjarai.trickster.item.component.ManaComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
+import dev.enjarai.trickster.item.component.TickTrackerComponent;
 import dev.enjarai.trickster.spell.mana.InfiniteManaPool;
 import dev.enjarai.trickster.spell.mana.SavingsManaPool;
 import dev.enjarai.trickster.spell.mana.SharedManaPool;
@@ -34,8 +35,16 @@ public abstract class KnotItem extends Item {
     public static class Quartz extends KnotItem {
         public Quartz() {
             super(new Settings()
-                    .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(128), 1 / 96f)),
+                    .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(128), 1 / 96f))
+                    .component(ModComponents.TICK_CREATED, new TickTrackerComponent(0)),
                     0);
+        }
+
+        public ItemStack createStack(World world) {
+            System.out.println("Generated Quartz Knot");
+            var stack = getDefaultStack();
+            stack.set(ModComponents.TICK_CREATED, new TickTrackerComponent(world.getTime()));
+            return stack;
         }
     }
 

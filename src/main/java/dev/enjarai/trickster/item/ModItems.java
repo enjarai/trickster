@@ -149,6 +149,7 @@ public class ModItems {
                 entries.add(RUSTED_SPELL_CORE);
                 entries.add(OMINOUS_SPELL_CORE);
                 entries.add(AMETHYST_KNOT);
+                entries.add(QUARTZ_KNOT);
                 entries.add(EMERALD_KNOT);
                 entries.add(DIAMOND_KNOT);
                 entries.add(ECHO_KNOT);

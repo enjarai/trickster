@@ -172,7 +172,7 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
                 );
     }
 
-    private ItemStack getStack(Trick<?> trickSource, SpellContext ctx) throws BlunderException {
+    public ItemStack getStack(Trick<?> trickSource, SpellContext ctx) throws BlunderException {
         SlotHolderDuck inventory = getInventory(trickSource, ctx);
 
         if (slot < 0 || slot >= inventory.trickster$slot_holder$size())

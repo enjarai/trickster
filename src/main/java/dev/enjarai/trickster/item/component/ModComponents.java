@@ -41,6 +41,12 @@ public class ModComponents {
                     .cache()
     );
 
+    public static final ComponentType<TickTrackerComponent> TICK_CREATED = register(
+            "tick_created", builder -> builder
+                    .codec(TickTrackerComponent.CODEC)
+                    .cache()
+    );
+
     private static <T> ComponentType<T> register(String id, UnaryOperator<ComponentType.Builder<T>> builderOperator) {
         return Registry.register(Registries.DATA_COMPONENT_TYPE, Trickster.id(id), (builderOperator.apply(ComponentType.builder())).build());
     }

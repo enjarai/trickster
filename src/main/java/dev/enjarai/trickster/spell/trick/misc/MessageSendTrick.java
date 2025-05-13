@@ -4,7 +4,9 @@ import java.util.Optional;
 
 import dev.enjarai.trickster.cca.MessageHandlerComponent.Key;
 import dev.enjarai.trickster.cca.ModGlobalComponents;
+import dev.enjarai.trickster.item.KnotItem;
 import dev.enjarai.trickster.item.component.ModComponents;
+import dev.enjarai.trickster.item.component.TickTrackerComponent;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
@@ -42,6 +44,11 @@ public class MessageSendTrick extends Trick<MessageSendTrick> {
 
         if (comp != null && comp.pool() instanceof SharedManaPool pool) {
             return run(ctx, new Key.Channel(pool.uuid()), value);
+        } else if (slot.getItem(this, ctx) instanceof KnotItem.Quartz && value instanceof NumberFragment) {
+            var itemStack = slot.getStack(this, ctx);
+            var tick = itemStack.get(ModComponents.TICK_CREATED).getTick(ctx.source().getWorld());
+            itemStack.set(ModComponents.TICK_CREATED, new TickTrackerComponent((long) (ctx.source().getWorld().getTime() - tick + ((NumberFragment) value).number())));
+            return value;
         }
 
         throw new ItemInvalidBlunder(this);

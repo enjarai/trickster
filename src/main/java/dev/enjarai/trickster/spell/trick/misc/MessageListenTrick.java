@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.spell.trick.misc;
 
 import java.util.Optional;
+import java.util.OptionalLong;
 
 import dev.enjarai.trickster.cca.MessageHandlerComponent.Key;
 import dev.enjarai.trickster.item.component.ModComponents;
@@ -26,8 +27,21 @@ public class MessageListenTrick extends Trick<MessageListenTrick> {
 
     //TODO: how should we stop this from running in single-tick mode
     public EvaluationResult run(SpellContext ctx, NumberFragment timeout, Optional<SlotFragment> slot) throws BlunderException {
-        if (slot.isPresent() && slot.get().getItem(this, ctx) instanceof KnotItem.Quartz) {
-            return new NumberFragment(ctx.source().getWorld().getTime());
+        OptionalLong knot_tick = slot.map(s -> {
+            var range = s.getSourcePos(this, ctx).toCenterPos().subtract(ctx.source().getBlockPos().toCenterPos()).length();
+
+            if (range > 16) {
+                throw new OutOfRangeBlunder(this, 16.0, range);
+            }
+
+            if (s.getItem(this, ctx) instanceof KnotItem.Quartz)
+                return OptionalLong.of(s.getStack(this, ctx).getComponents().get(ModComponents.TICK_CREATED).getTick(ctx.source().getWorld()));
+
+            return OptionalLong.empty();
+        }).orElse(OptionalLong.empty());
+
+        if (knot_tick.isPresent()) {
+            return new NumberFragment(knot_tick.getAsLong());
         }
 
         var channel = slot.map(s -> {
