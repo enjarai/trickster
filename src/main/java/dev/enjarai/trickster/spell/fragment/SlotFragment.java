@@ -225,7 +225,7 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
             }
         }).orElseGet(() -> ctx.source().getBlockPos().toCenterPos());
 
-        return 8 + (float) (pos.toCenterPos().distanceTo(sourcePos) * amount * 0.5);
+        return (float) (pos.toCenterPos().distanceTo(sourcePos) * amount * 0.5);
     }
 
     private class BridgedSlotHolder implements SlotHolderDuck {
