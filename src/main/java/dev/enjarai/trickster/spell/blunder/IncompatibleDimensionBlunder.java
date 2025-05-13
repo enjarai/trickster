@@ -11,6 +11,6 @@ public class IncompatibleDimensionBlunder extends TrickBlunderException {
 
     @Override
     public MutableText createMessage() {
-        return super.createMessage().append("Incompatible Dimension");
+        return super.createMessage().append("Incompatible dimension");
     }
 }
