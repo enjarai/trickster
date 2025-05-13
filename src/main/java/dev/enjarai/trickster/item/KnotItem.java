@@ -13,7 +13,6 @@ import net.minecraft.world.World;
 
 import java.util.function.ToIntFunction;
 
-
 public abstract class KnotItem extends Item {
     public static ToIntFunction<ItemStack> barStepFunction = i -> 0;
 
@@ -28,6 +27,14 @@ public abstract class KnotItem extends Item {
         public Amethyst() {
             super(new Settings()
                     .component(ModComponents.MANA, new ManaComponent(SimpleManaPool.getSingleUse(128), 0)),
+                    0);
+        }
+    }
+
+    public static class Quartz extends KnotItem {
+        public Quartz() {
+            super(new Settings()
+                    .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(128), 1 / 96f)),
                     0);
         }
     }

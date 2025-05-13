@@ -4,13 +4,14 @@ import java.util.Optional;
 
 import dev.enjarai.trickster.cca.MessageHandlerComponent.Key;
 import dev.enjarai.trickster.item.component.ModComponents;
+import dev.enjarai.trickster.item.KnotItem;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.ItemInvalidBlunder;
 import dev.enjarai.trickster.spell.blunder.OutOfRangeBlunder;
+import dev.enjarai.trickster.spell.EvaluationResult;
 import dev.enjarai.trickster.spell.execution.executor.MessageListenerSpellExecutor;
-import dev.enjarai.trickster.spell.SpellExecutor;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.fragment.SlotFragment;
@@ -24,7 +25,11 @@ public class MessageListenTrick extends Trick<MessageListenTrick> {
     }
 
     //TODO: how should we stop this from running in single-tick mode
-    public SpellExecutor run(SpellContext ctx, NumberFragment timeout, Optional<SlotFragment> slot) throws BlunderException {
+    public EvaluationResult run(SpellContext ctx, NumberFragment timeout, Optional<SlotFragment> slot) throws BlunderException {
+        if (slot.isPresent() && slot.get().getItem(this, ctx) instanceof KnotItem.Quartz) {
+            return new NumberFragment(ctx.source().getWorld().getTime());
+        }
+
         var channel = slot.map(s -> {
             var range = s.getSourcePos(this, ctx).toCenterPos().subtract(ctx.source().getBlockPos().toCenterPos()).length();
 

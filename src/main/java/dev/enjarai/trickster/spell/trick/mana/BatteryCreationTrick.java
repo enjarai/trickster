@@ -24,6 +24,7 @@ import java.util.Optional;
 public class BatteryCreationTrick extends Trick<BatteryCreationTrick> {
     private final Map<Item, KnotItem> types = Map.of(
             Items.AMETHYST_SHARD, ModItems.AMETHYST_KNOT,
+            Items.QUARTZ, ModItems.QUARTZ_KNOT,
             Items.EMERALD, ModItems.EMERALD_KNOT,
             Items.DIAMOND, ModItems.DIAMOND_KNOT,
             Items.ECHO_SHARD, ModItems.ECHO_KNOT,
