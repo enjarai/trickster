@@ -1,4 +1,5 @@
 - Significantly improved list and map rendering inside of circles. (@enjarai)
+- Updated Ploy of Creation to be able to place any kind of block correctly, and have options for facing. (@enjarai)
 - Added hunger querying ingresses. (@enjarai)
 - Fixed multiple issues with the spell editor screen. (@enjarai)
 - Made entity targeting ingresses accept multiple entity types. (@aurakle)
