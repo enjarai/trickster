@@ -4,9 +4,7 @@ import java.util.Optional;
 
 import dev.enjarai.trickster.cca.MessageHandlerComponent.Key;
 import dev.enjarai.trickster.cca.ModGlobalComponents;
-import dev.enjarai.trickster.item.KnotItem;
-import dev.enjarai.trickster.item.component.ModComponents;
-import dev.enjarai.trickster.item.component.TickTrackerComponent;
+import dev.enjarai.trickster.item.ChannelItem;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
@@ -16,7 +14,6 @@ import dev.enjarai.trickster.spell.blunder.OutOfRangeBlunder;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.fragment.SlotFragment;
-import dev.enjarai.trickster.spell.mana.SharedManaPool;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.Signature;
 
@@ -34,21 +31,16 @@ public class MessageSendTrick extends Trick<MessageSendTrick> {
     }
 
     public Fragment channel(SpellContext ctx, Fragment value, SlotFragment slot) throws BlunderException {
+        var itemStack = slot.reference(this, ctx);
         var range = slot.getSourcePos(this, ctx).toCenterPos().subtract(ctx.source().getBlockPos().toCenterPos()).length();
+        var item = slot.getItem(this, ctx);
 
-        if (range > 16) {
-            throw new OutOfRangeBlunder(this, 16.0, range);
-        }
+        if (item instanceof ChannelItem channelItem) {
+            if (range > channelItem.getRange()) {
+                throw new OutOfRangeBlunder(this, channelItem.getRange(), range);
+            }
 
-        var comp = slot.reference(this, ctx).get(ModComponents.MANA);
-
-        if (comp != null && comp.pool() instanceof SharedManaPool pool) {
-            return run(ctx, new Key.Channel(pool.uuid()), value);
-        } else if (slot.getItem(this, ctx) instanceof KnotItem.Quartz && value instanceof NumberFragment) {
-            var itemStack = slot.getStack(this, ctx);
-            var tick = itemStack.get(ModComponents.TICK_CREATED).getTick(ctx.source().getWorld());
-            itemStack.set(ModComponents.TICK_CREATED, new TickTrackerComponent((long) (ctx.source().getWorld().getTime() - tick + ((NumberFragment) value).number())));
-            return value;
+            return channelItem.messageSendBehavior(this, ctx, itemStack, value);
         }
 
         throw new ItemInvalidBlunder(this);

@@ -1,11 +1,8 @@
 package dev.enjarai.trickster.spell.trick.misc;
 
 import java.util.Optional;
-import java.util.OptionalLong;
 
-import dev.enjarai.trickster.cca.MessageHandlerComponent.Key;
-import dev.enjarai.trickster.item.component.ModComponents;
-import dev.enjarai.trickster.item.KnotItem;
+import dev.enjarai.trickster.item.ChannelItem;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
@@ -16,50 +13,35 @@ import dev.enjarai.trickster.spell.execution.executor.MessageListenerSpellExecut
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.fragment.SlotFragment;
-import dev.enjarai.trickster.spell.mana.SharedManaPool;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.Signature;
 
 public class MessageListenTrick extends Trick<MessageListenTrick> {
     public MessageListenTrick() {
-        super(Pattern.of(4, 0, 7, 2, 4), Signature.of(FragmentType.NUMBER, FragmentType.SLOT.optionalOf(), MessageListenTrick::run));
+        super(Pattern.of(4, 0, 7, 2, 4), Signature.of(FragmentType.NUMBER, MessageListenTrick::run));
+        overload(Signature.of(FragmentType.NUMBER, FragmentType.SLOT, MessageListenTrick::runWithChannel));
     }
 
     //TODO: how should we stop this from running in single-tick mode
-    public EvaluationResult run(SpellContext ctx, NumberFragment timeout, Optional<SlotFragment> slot) throws BlunderException {
-        OptionalLong knot_tick = slot.map(s -> {
-            var range = s.getSourcePos(this, ctx).toCenterPos().subtract(ctx.source().getBlockPos().toCenterPos()).length();
+    public EvaluationResult run(SpellContext ctx, NumberFragment timeout) throws BlunderException {
 
-            if (range > 16) {
-                throw new OutOfRangeBlunder(this, 16.0, range);
+        return new MessageListenerSpellExecutor(ctx.state(), timeout.asInt(), Optional.empty());
+    }
+
+    public EvaluationResult runWithChannel(SpellContext ctx, NumberFragment timeout, SlotFragment slot) throws BlunderException {
+        var itemStack = slot.reference(this, ctx);
+        var range = slot.getSourcePos(this, ctx).toCenterPos().subtract(ctx.source().getBlockPos().toCenterPos()).length();
+        var item = slot.getItem(this, ctx);
+
+        if (item instanceof ChannelItem channelItem) {
+            if (range > channelItem.getRange()) {
+                throw new OutOfRangeBlunder(this, channelItem.getRange(), range);
             }
 
-            if (s.getItem(this, ctx) instanceof KnotItem.Quartz)
-                return OptionalLong.of(s.getStack(this, ctx).getComponents().get(ModComponents.TICK_CREATED).getTick(ctx.source().getWorld()));
-
-            return OptionalLong.empty();
-        }).orElse(OptionalLong.empty());
-
-        if (knot_tick.isPresent()) {
-            return new NumberFragment(knot_tick.getAsLong());
+            return channelItem.messageListenBehavior(this, ctx, itemStack, timeout.asInt());
         }
 
-        var channel = slot.map(s -> {
-            var range = s.getSourcePos(this, ctx).toCenterPos().subtract(ctx.source().getBlockPos().toCenterPos()).length();
-
-            if (range > 16) {
-                throw new OutOfRangeBlunder(this, 16.0, range);
-            }
-
-            var comp = s.reference(this, ctx).get(ModComponents.MANA);
-
-            if (comp != null && comp.pool() instanceof SharedManaPool pool) {
-                return new Key.Channel(pool.uuid());
-            }
-
-            throw new ItemInvalidBlunder(this);
-        });
-
-        return new MessageListenerSpellExecutor(ctx.state(), timeout.asInt(), channel);
+        throw new ItemInvalidBlunder(this);
     }
+
 }
