@@ -10,7 +10,7 @@ import dev.enjarai.trickster.spell.blunder.BlunderException;
 
 public class GetTimeTrick extends Trick<GetTimeTrick> {
     public GetTimeTrick() {
-        super(Pattern.of(4, 1, 2, 5, 8, 7, 6, 3, 0, 1), Signature.of(GetTimeTrick::run));
+        super(Pattern.of(4, 6, 3, 0, 1, 2, 5, 8, 6), Signature.of(GetTimeTrick::run));
     }
 
     public Fragment run(SpellContext ctx) throws BlunderException {
