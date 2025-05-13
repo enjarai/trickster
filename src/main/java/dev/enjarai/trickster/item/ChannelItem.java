@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 public interface ChannelItem {
     EvaluationResult messageListenBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, int timeout);
 
-    Fragment messageSendBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, Fragment value);
+    void messageSendBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, Fragment value);
 
     int getRange();
 }

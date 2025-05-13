@@ -31,16 +31,17 @@ public class MessageSendTrick extends Trick<MessageSendTrick> {
     }
 
     public Fragment channel(SpellContext ctx, Fragment value, SlotFragment slot) throws BlunderException {
-        var itemStack = slot.reference(this, ctx);
+        var stack = slot.reference(this, ctx);
         var range = slot.getSourcePos(this, ctx).toCenterPos().subtract(ctx.source().getBlockPos().toCenterPos()).length();
-        var item = slot.getItem(this, ctx);
+        var item = stack.getItem();
 
         if (item instanceof ChannelItem channelItem) {
             if (range > channelItem.getRange()) {
                 throw new OutOfRangeBlunder(this, channelItem.getRange(), range);
             }
 
-            return channelItem.messageSendBehavior(this, ctx, itemStack, value);
+            channelItem.messageSendBehavior(this, ctx, stack, value);
+            return value;
         }
 
         throw new ItemInvalidBlunder(this);

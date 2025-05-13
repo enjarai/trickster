@@ -43,8 +43,6 @@ public abstract class KnotItem extends Item {
     }
 
     public static class Quartz extends KnotItem implements ChannelItem {
-        private final int range = 16;
-
         public Quartz() {
             super(new Settings()
                     .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(128), 1 / 96f))
@@ -59,24 +57,22 @@ public abstract class KnotItem extends Item {
         }
 
         public EvaluationResult messageListenBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, int timeout) throws TrickBlunderException {
-            if (stack.getItem() instanceof Quartz) {
-                return new NumberFragment(stack
-                        .getComponents()
-                        .get(ModComponents.TICK_CREATED)
-                        .getTick(ctx.source().getWorld()));
+            return new NumberFragment(stack
+                    .get(ModComponents.TICK_CREATED)
+                    .getTick(ctx.source().getWorld()));
+        }
+
+        public void messageSendBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, Fragment value) {
+            if (value instanceof NumberFragment number) {
+                var tick = stack.get(ModComponents.TICK_CREATED).tick();
+                stack.set(ModComponents.TICK_CREATED, new TickTrackerComponent(tick + number.asInt()));
             }
 
             throw new ItemInvalidBlunder(trickSource);
         }
 
-        public Fragment messageSendBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, Fragment value) {
-            var tick = stack.get(ModComponents.TICK_CREATED).tick();
-            stack.set(ModComponents.TICK_CREATED, new TickTrackerComponent((long) tick + ((NumberFragment) value).asInt()));
-            return value;
-        }
-
         public int getRange() {
-            return this.range;
+            return 16;
         }
     }
 
@@ -97,8 +93,6 @@ public abstract class KnotItem extends Item {
     }
 
     public static class Echo extends KnotItem implements ChannelItem {
-        private final int range = 16;
-
         public Echo() {
             super(new Settings()
                     .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(32768), 1)),
@@ -116,32 +110,21 @@ public abstract class KnotItem extends Item {
         }
 
         public EvaluationResult messageListenBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, int timeout) throws TrickBlunderException {
-            if (stack.getItem() instanceof Echo) {
-                var comp = stack.get(ModComponents.MANA);
-
-                if (comp != null && comp.pool() instanceof SharedManaPool pool) {
-                    return new MessageListenerSpellExecutor(ctx.state(), timeout, Optional.of(new Key.Channel(pool.uuid())));
-                }
+            if (stack.get(ModComponents.MANA).pool() instanceof SharedManaPool pool) {
+                return new MessageListenerSpellExecutor(ctx.state(), timeout, Optional.of(new Key.Channel(pool.uuid())));
             }
 
             throw new ItemInvalidBlunder(trickSource);
         }
 
-        public Fragment messageSendBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, Fragment value) {
-            if (stack.getItem() instanceof Echo) {
-                var comp = stack.get(ModComponents.MANA);
-
-                if (comp != null && comp.pool() instanceof SharedManaPool pool) {
-                    ModGlobalComponents.MESSAGE_HANDLER.get(ctx.source().getWorld().getScoreboard()).send(new Key.Channel(pool.uuid()), value);
-                    return value;
-                }
+        public void messageSendBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, Fragment value) {
+            if (stack.get(ModComponents.MANA).pool() instanceof SharedManaPool pool) {
+                ModGlobalComponents.MESSAGE_HANDLER.get(ctx.source().getWorld().getScoreboard()).send(new Key.Channel(pool.uuid()), value);
             }
-
-            throw new ItemInvalidBlunder(trickSource);
         }
 
         public int getRange() {
-            return this.range;
+            return 16;
         }
 
     }

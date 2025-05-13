@@ -5,6 +5,7 @@ import java.util.Optional;
 import dev.enjarai.trickster.item.ChannelItem;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.SpellExecutor;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.ItemInvalidBlunder;
 import dev.enjarai.trickster.spell.blunder.OutOfRangeBlunder;
@@ -23,22 +24,21 @@ public class MessageListenTrick extends Trick<MessageListenTrick> {
     }
 
     //TODO: how should we stop this from running in single-tick mode
-    public EvaluationResult run(SpellContext ctx, NumberFragment timeout) throws BlunderException {
-
+    public SpellExecutor run(SpellContext ctx, NumberFragment timeout) throws BlunderException {
         return new MessageListenerSpellExecutor(ctx.state(), timeout.asInt(), Optional.empty());
     }
 
     public EvaluationResult runWithChannel(SpellContext ctx, NumberFragment timeout, SlotFragment slot) throws BlunderException {
-        var itemStack = slot.reference(this, ctx);
+        var stack = slot.reference(this, ctx);
         var range = slot.getSourcePos(this, ctx).toCenterPos().subtract(ctx.source().getBlockPos().toCenterPos()).length();
-        var item = slot.getItem(this, ctx);
+        var item = stack.getItem();
 
         if (item instanceof ChannelItem channelItem) {
             if (range > channelItem.getRange()) {
                 throw new OutOfRangeBlunder(this, channelItem.getRange(), range);
             }
 
-            return channelItem.messageListenBehavior(this, ctx, itemStack, timeout.asInt());
+            return channelItem.messageListenBehavior(this, ctx, stack, timeout.asInt());
         }
 
         throw new ItemInvalidBlunder(this);
