@@ -128,11 +128,13 @@ public abstract class KnotItem extends Item {
         }
 
         public Fragment messageSendBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, Fragment value) {
-            var comp = stack.get(ModComponents.MANA);
+            if (stack.getItem() instanceof Echo) {
+                var comp = stack.get(ModComponents.MANA);
 
-            if (comp != null && comp.pool() instanceof SharedManaPool pool) {
-                ModGlobalComponents.MESSAGE_HANDLER.get(ctx.source().getWorld().getScoreboard()).send(new Key.Channel(pool.uuid()), value);
-                return value;
+                if (comp != null && comp.pool() instanceof SharedManaPool pool) {
+                    ModGlobalComponents.MESSAGE_HANDLER.get(ctx.source().getWorld().getScoreboard()).send(new Key.Channel(pool.uuid()), value);
+                    return value;
+                }
             }
 
             throw new ItemInvalidBlunder(trickSource);

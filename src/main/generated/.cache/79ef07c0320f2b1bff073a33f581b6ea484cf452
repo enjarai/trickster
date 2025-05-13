@@ -1,4 +1,4 @@
-// 1.21	2025-05-13T10:15:21.164398467	Trickster/Block Conversion (erode)
+// 1.21	2025-05-13T12:25:30.109897229	Trickster/Block Conversion (erode)
 ecd2f8103d6558aac9dc1a62883acb34f1eb3099 data/minecraft/conversion/erode/chipped_anvil.json
 5a83b7fd24d759d203a939e3068d38867e351899 data/minecraft/conversion/erode/cobblestone_wall.json
 f0a7b7a9833a193e9839e0b8e311083b32f3e07e data/minecraft/conversion/erode/exposed_cut_copper_slab.json
@@ -41,8 +41,8 @@ e72c1d143db45cebcac581d8299e35d9e051bbdb data/minecraft/conversion/erode/copper_
 420674605490fcf1d9a3f90ed2c1745a69be51dc data/minecraft/conversion/erode/polished_blackstone_bricks.json
 576201c522570d4a4145933fe82c02ade00cce5c data/minecraft/conversion/erode/exposed_copper_trapdoor.json
 3b5e4fc1c62e7c88e28e0ebb2c000ed04cfadc6f data/minecraft/conversion/erode/exposed_copper_bulb.json
-4ac09d15b60d0ac8481ed4f88cafb81de5dc895e data/minecraft/conversion/erode/stone_brick_stairs.json
 266dfaf60482253e0b9945677cfc93c03e38a7d9 data/minecraft/conversion/erode/infested_stone_bricks.json
+4ac09d15b60d0ac8481ed4f88cafb81de5dc895e data/minecraft/conversion/erode/stone_brick_stairs.json
 ae98698c6fc310d107ceb5ef04569a3df18ba1ec data/minecraft/conversion/erode/cut_copper_stairs.json
 868d6c7f7e817b9bcc9e34c0a554ef6949518995 data/minecraft/conversion/erode/weathered_copper.json
 d31e4a0e0537f48fb3cc480f03368962f3b035e5 data/minecraft/conversion/erode/stone_brick_wall.json
