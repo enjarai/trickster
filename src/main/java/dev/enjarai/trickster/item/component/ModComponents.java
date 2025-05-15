@@ -40,7 +40,6 @@ public class ModComponents {
                     .endec(CollarLinkComponent.ENDEC)
                     .cache()
     );
-
     public static final ComponentType<TickTrackerComponent> TICK_CREATED = register(
             "tick_created", builder -> builder
                     .codec(TickTrackerComponent.CODEC)

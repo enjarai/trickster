@@ -54,7 +54,6 @@ import dev.enjarai.trickster.spell.trick.bool.LesserThanTrick;
 import dev.enjarai.trickster.spell.trick.bool.NoneTrick;
 import dev.enjarai.trickster.spell.trick.bool.NotEqualsTrick;
 import dev.enjarai.trickster.spell.trick.dimension.GetDimensionTrick;
-import dev.enjarai.trickster.spell.trick.dimension.GetMoonPhaseTrick;
 import dev.enjarai.trickster.spell.trick.fleck.GetFlecksTrick;
 import dev.enjarai.trickster.spell.trick.fleck.LineFleckTrick;
 import dev.enjarai.trickster.spell.trick.fleck.SpellFleckTrick;
@@ -369,7 +368,8 @@ public class Tricks {
 
     // Dimension
     public static final GetDimensionTrick GET_DIMENSION = register("get_dimension", new GetDimensionTrick());
-    public static final GetMoonPhaseTrick GET_MOON_PHASE = register("get_moon_phase", new GetMoonPhaseTrick());
+    // TODO decide if we want this
+    //    public static final GetMoonPhaseTrick GET_MOON_PHASE = register("get_moon_phase", new GetMoonPhaseTrick());
 
     // Flecks
     public static final LineFleckTrick DRAW_LINE = register("draw_line", new LineFleckTrick());

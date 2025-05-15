@@ -41,8 +41,6 @@ trickster:
     idling: "Idle"
     draining: "Draining: %.2f"
     filling: "Charging: %.2f"
-  chronus:
-    time: "Sync Tick: %s"
 
   item_group: Trickster
 
@@ -212,6 +210,7 @@ trickster:
     can_place_block: Ingress of Suitability
     check_resonator: Ingress of Resonance
     get_redstone_power: Ingress of Logic
+    light_level: Ingress of Luminance
 
     check_hat: Cranium Delusion
     set_hat: Cranial Shift Ploy

@@ -57,18 +57,20 @@ public abstract class KnotItem extends Item {
         }
 
         public EvaluationResult messageListenBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, int timeout) throws TrickBlunderException {
-            return new NumberFragment(stack
-                    .get(ModComponents.TICK_CREATED)
-                    .getTick(ctx.source().getWorld()));
-        }
-
-        public void messageSendBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, Fragment value) {
-            if (value instanceof NumberFragment number) {
-                var tick = stack.get(ModComponents.TICK_CREATED).tick();
-                stack.set(ModComponents.TICK_CREATED, new TickTrackerComponent(tick + number.asInt()));
+            var component = stack.get(ModComponents.TICK_CREATED);
+            if (component != null) {
+                return new NumberFragment(component.getTick(ctx.source().getWorld()));
             }
 
             throw new ItemInvalidBlunder(trickSource);
+        }
+
+        public void messageSendBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, Fragment value) {
+            var component = stack.get(ModComponents.TICK_CREATED);
+            if (value instanceof NumberFragment number && component != null) {
+                var tick = component.tick();
+                stack.set(ModComponents.TICK_CREATED, new TickTrackerComponent(tick - number.asInt()));
+            }
         }
 
         public int getRange() {
