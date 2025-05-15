@@ -341,12 +341,29 @@ item.trickster:
   written_scroll_white: White Written Scroll
   written_scroll_yellow: Yellow Written Scroll
 
+  wand: Wand
+  wand_black: Black Wand
+  wand_blue: Blue Wand
+  wand_brown: Brown Wand
+  wand_cyan: Cyan Wand
+  wand_gray: Gray Wand
+  wand_green: Green Wand
+  wand_light_blue: Light Blue Wand
+  wand_light_gray: Light Gray Wand
+  wand_lime: Lime Wand
+  wand_magenta: Magenta Wand
+  wand_orange: Orange Wand
+  wand_pink: Pink Wand
+  wand_purple: Purple Wand
+  wand_red: Red Wand
+  wand_white: White Wand
+  wand_yellow: Yellow Wand
+
   warding_charm: Warding Charm
   spell_ink: Spell Ink
   top_hat: Top Hat
   witch_hat: Witch Hat
   fez: Fez
-  wand: Wand
   macro_ring: Macro Ring
   amethyst_whorl: Amethyst Whorl
   collar: Acolyte's Bindings
