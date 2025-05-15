@@ -40,6 +40,7 @@ import dev.enjarai.trickster.spell.trick.block.CoolTrick;
 import dev.enjarai.trickster.spell.trick.block.ErodeTrick;
 import dev.enjarai.trickster.spell.trick.block.GetBlockHardnessTrick;
 import dev.enjarai.trickster.spell.trick.block.GetRedstonePowerTrick;
+import dev.enjarai.trickster.spell.trick.block.GetLightLevelTrick;
 import dev.enjarai.trickster.spell.trick.block.HeatTrick;
 import dev.enjarai.trickster.spell.trick.block.PlaceBlockTrick;
 import dev.enjarai.trickster.spell.trick.block.PowerResonatorTrick;
@@ -334,6 +335,7 @@ public class Tricks {
     public static final CheckBlockTrick CHECK_BLOCK = register("check_block", new CheckBlockTrick());
     public static final CanPlaceTrick CAN_PLACE_BLOCK = register("can_place_block", new CanPlaceTrick());
     public static final GetBlockHardnessTrick GET_BLOCK_HARDNESS = register("get_block_hardness", new GetBlockHardnessTrick());
+    public static final GetLightLevelTrick GET_LIGHT_LEVEL = register("light_level", new GetLightLevelTrick());
     public static final PowerResonatorTrick POWER_RESONATOR = register("power_resonator", new PowerResonatorTrick());
     public static final CheckResonatorTrick CHECK_RESONATOR = register("check_resonator", new CheckResonatorTrick());
     public static final GetRedstonePowerTrick GET_REDSTONE_POWER = register("get_redstone_power", new GetRedstonePowerTrick());
@@ -366,6 +368,8 @@ public class Tricks {
 
     // Dimension
     public static final GetDimensionTrick GET_DIMENSION = register("get_dimension", new GetDimensionTrick());
+    // TODO decide if we want this
+    //    public static final GetMoonPhaseTrick GET_MOON_PHASE = register("get_moon_phase", new GetMoonPhaseTrick());
 
     // Flecks
     public static final LineFleckTrick DRAW_LINE = register("draw_line", new LineFleckTrick());
