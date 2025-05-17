@@ -37,7 +37,7 @@ public class EndecTomfoolery {
     public static <C, V> Endec<V> vectorEndec(Endec<C> componentEndec, Function3<C, C, C, V> constructor, Function<V, C> xGetter, Function<V, C> yGetter, Function<V, C> zGetter) {
         return componentEndec.listOf().validate(ints -> {
             if (ints.size() != 3) {
-                throw new IllegalStateException("vector array must have three elements");
+                throw new IllegalStateException("Vector array must have three elements");
             }
         }).xmap(
                 components -> constructor.apply(components.get(0), components.get(1), components.get(2)),
