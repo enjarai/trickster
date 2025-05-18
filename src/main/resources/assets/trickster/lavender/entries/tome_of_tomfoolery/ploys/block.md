@@ -56,7 +56,7 @@ Some blocks may change their facing or other properties based on these values.
 
 <|glyph@trickster:templates|trick-id=trickster:change_weight,title=Ploy of Featherweight|>
 
-vector, number -> vector
+vector, number -> entity
 
 <|cost-rule@trickster:templates|formula=60kG * (1 - multiplier)|>
 
