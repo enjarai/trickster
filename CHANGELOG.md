@@ -2,5 +2,7 @@
 - Updated Ploy of Creation to be able to place any kind of block correctly, and have options for facing. (@enjarai)
 - Added hunger querying ingresses. (@enjarai)
 - Fixed multiple issues with the spell editor screen. (@enjarai)
+- Fixed a bug that would sometimes stop running spells on players and constructs after reloading them from disk. (@enjarai)
+- Fixed Ploy of Featherweight's signature in book to be accurate. (@aurakle)
 - Made entity targeting ingresses accept multiple entity types. (@aurakle)
 - Updated the entry for the Notulist's Delusion to Notulist's Ingress. (@aurakle)
