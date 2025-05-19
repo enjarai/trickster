@@ -4,7 +4,7 @@
       "id": "trickster:quartz_knot"
     },
     "title": {
-      "text": "Tick Tock Goes The Clock"
+      "text": "Tick-Tock Goes the Clock"
     },
     "description": {
       "text": "Create a Quartz Knot"
@@ -15,14 +15,10 @@
   },
   "parent": "trickster:cast_spell",
   "criteria": {
-    "pickup_quartz_knot": {
-      "trigger": "minecraft:inventory_changed",
+    "create_knot": {
+      "trigger": "trickster:create_knot",
       "conditions": {
-        "items": [
-          {
-            "items": "trickster:quartz_knot"
-          }
-        ]
+        "item": "trickster:quartz_knot"
       }
     }
   }

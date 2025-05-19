@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import com.mojang.serialization.Lifecycle;
 
 import dev.enjarai.trickster.Trickster;
+import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.trick.basic.CasterReflectionTrick;
 import dev.enjarai.trickster.spell.trick.basic.CostTrick;
@@ -145,6 +146,7 @@ import dev.enjarai.trickster.spell.trick.vector.LengthTrick;
 import dev.enjarai.trickster.spell.trick.vector.MergeVectorTrick;
 import dev.enjarai.trickster.spell.trick.vector.NormalizeTrick;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
+import net.minecraft.item.Items;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.SimpleRegistry;
@@ -403,5 +405,12 @@ public class Tricks {
 
     public static void register() {
         // init the class :brombeere:
+
+        BATTERY_CREATION.registerKnot(Items.AMETHYST_SHARD, ModItems.AMETHYST_KNOT);
+        BATTERY_CREATION.registerKnot(Items.QUARTZ, ModItems.QUARTZ_KNOT);
+        BATTERY_CREATION.registerKnot(Items.EMERALD, ModItems.EMERALD_KNOT);
+        BATTERY_CREATION.registerKnot(Items.DIAMOND, ModItems.DIAMOND_KNOT);
+        BATTERY_CREATION.registerKnot(Items.ECHO_SHARD, ModItems.ECHO_KNOT);
+        BATTERY_CREATION.registerKnot(Items.NETHER_STAR, ModItems.ASTRAL_KNOT);
     }
 }

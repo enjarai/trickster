@@ -15,8 +15,11 @@
   },
   "parent": "trickster:cast_spell",
   "criteria": {
-    "create_echo_knot": {
-      "trigger": "trickster:create_echo_knot"
+    "create_knot": {
+      "trigger": "trickster:create_knot",
+      "conditions": {
+        "item": "trickster:echo_knot"
+      }
     }
   }
 }
