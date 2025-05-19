@@ -10,16 +10,16 @@
 }
 ```
 
-Aha, a Knot based on Nether Quartz crystals! It seems more than just gems can be turned into mana containers.
+Aha, a [Knot](^trickster:items/knots) based on Nether Quartz crystals! It seems more than just gems can be turned into mana containers.
 
 
 This one however, has a rather abysmal capacity, on par with its Amethyst sibling.
-Its natural recharge rate is also barely at the levels of an Emerald Knot. Not terrible, but definitely not great.
+Its natural recharge rate is also pitifully at the levels of an Emerald Knot of its same capacity. Not terrible, but definitely not great.
 
 ;;;;;
 
 It seems to have one redeeming quality though. 
-Augmenting a [Ploy of Receipt](!trickster:ploys/message#3) with a slot as a second argument, it is possible to listen
+Augmenting a [Ploy of Receipt](^trickster:ploys/message#3) with a slot as a second argument, it is possible to listen
 for messages from an item.
 
 
@@ -36,4 +36,10 @@ and offset its counter by a given number.
 
 ;;;;;
 
-The applications for this are certain to be numerous...
+If one listens closely, the faint ticking of a clock can be heard coming from within the Quartz Knot...
+
+
+Yet, the Knot contains no moving parts...
+
+
+What a strange object...
