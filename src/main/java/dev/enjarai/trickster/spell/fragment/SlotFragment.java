@@ -3,6 +3,8 @@ package dev.enjarai.trickster.spell.fragment;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.joml.Vector3dc;
+
 import com.mojang.datafixers.util.Either;
 
 import dev.enjarai.trickster.EndecTomfoolery;
@@ -125,11 +127,10 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
     }
 
     public ItemStack move(Trick<?> trickSource, SpellContext ctx, int amount) {
-        return move(trickSource, ctx, amount, ctx.source().getBlockPos());
+        return move(trickSource, ctx, amount, ctx.source().getPos());
     }
 
-    //TODO: this shouldn't use BlockPos tbh
-    public ItemStack move(Trick<?> trickSource, SpellContext ctx, int amount, BlockPos pos) throws BlunderException {
+    public ItemStack move(Trick<?> trickSource, SpellContext ctx, int amount, Vector3dc pos) throws BlunderException {
         var stack = getStack(trickSource, ctx);
 
         if (stack.getCount() < amount)
@@ -150,26 +151,21 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
         return getStack(trickSource, ctx).getItem();
     }
 
-    public BlockPos getSourcePos(Trick<?> trickSource, SpellContext ctx) {
+    public Vector3dc getSourcePos(Trick<?> trickSource, SpellContext ctx) {
         return source
-                .map(
-                        either -> Either.unwrap(
-                                either
-                                        .mapRight(
-                                                uuid -> new EntityFragment(uuid, Text.literal(""))
-                                                        .getEntity(ctx)
-                                                        .orElseThrow(() -> new UnknownEntityBlunder(trickSource))
-                                                        .getBlockPos()
-                                        )
-                        )
-                )
-                .orElseGet(
-                        () -> ctx
-                                .source()
-                                .getPlayer()
-                                .orElseThrow(() -> new NoPlayerBlunder(trickSource))
-                                .getBlockPos()
-                );
+                .map(either -> Either.unwrap(
+                        either
+                                .mapLeft(blockPos -> blockPos.toCenterPos())
+                                .mapRight(uuid -> new EntityFragment(uuid, Text.literal(""))
+                                        .getEntity(ctx)
+                                        .orElseThrow(() -> new UnknownEntityBlunder(trickSource))
+                                        .getPos())))
+                .orElseGet(() -> ctx
+                        .source()
+                        .getPlayer()
+                        .orElseThrow(() -> new NoPlayerBlunder(trickSource))
+                        .getPos())
+                .toVector3d();
     }
 
     private ItemStack getStack(Trick<?> trickSource, SpellContext ctx) throws BlunderException {
@@ -214,7 +210,7 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
         );
     }
 
-    private float getMoveCost(Trick<?> trickSource, SpellContext ctx, BlockPos pos, int amount) throws BlunderException {
+    private float getMoveCost(Trick<?> trickSource, SpellContext ctx, Vector3dc pos, int amount) throws BlunderException {
         var sourcePos = source.map(s -> {
             if (s.left().isPresent()) {
                 return s.left().get().toCenterPos();
@@ -223,9 +219,9 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
                     return entity.getBlockPos().toCenterPos();
                 else throw new EntityInvalidBlunder(trickSource);
             }
-        }).orElseGet(() -> ctx.source().getBlockPos().toCenterPos());
+        }).orElseGet(() -> ctx.source().getBlockPos().toCenterPos()).toVector3d();
 
-        return (float) (pos.toCenterPos().distanceTo(sourcePos) * amount * 0.5);
+        return (float) (pos.distance(sourcePos) * amount * 0.5);
     }
 
     private class BridgedSlotHolder implements SlotHolderDuck {

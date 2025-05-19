@@ -21,7 +21,7 @@ public class ClearSpellTrick extends Trick<ClearSpellTrick> {
 
     public Fragment run(SpellContext ctx, Optional<SlotFragment> optionalSlot) throws BlunderException {
         var slot = optionalSlot.or(() -> ctx.source().getOtherHandSlot()).orElseThrow(() -> new NoPlayerBlunder(this));
-        var range = slot.getSourcePos(this, ctx).toCenterPos().subtract(ctx.source().getBlockPos().toCenterPos()).length();
+        var range = ctx.source().getPos().distance(slot.getSourcePos(this, ctx));
 
         if (range > 16) {
             throw new OutOfRangeBlunder(this, 16.0, range);

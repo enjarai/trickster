@@ -26,7 +26,7 @@ public class MessageListenTrick extends Trick<MessageListenTrick> {
     //TODO: how should we stop this from running in single-tick mode
     public SpellExecutor run(SpellContext ctx, NumberFragment timeout, Optional<SlotFragment> slot) throws BlunderException {
         var channel = slot.map(s -> {
-            var range = s.getSourcePos(this, ctx).toCenterPos().subtract(ctx.source().getBlockPos().toCenterPos()).length();
+            var range = ctx.source().getPos().distance(s.getSourcePos(this, ctx));
 
             if (range > 16) {
                 throw new OutOfRangeBlunder(this, 16.0, range);
