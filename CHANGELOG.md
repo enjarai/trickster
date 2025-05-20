@@ -8,3 +8,4 @@
 - Updated the entry for the Notulist's Delusion to Notulist's Ingress. (@aurakle)
 - Added a tax to the Conduit's Ploy. (@aurakle)
 - Made slot move cost more precise. (@aurakle)
+- Generalized Notulist's item conversions. (@aurakle)

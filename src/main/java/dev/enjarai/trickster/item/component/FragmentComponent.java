@@ -1,22 +1,23 @@
 package dev.enjarai.trickster.item.component;
 
 import dev.enjarai.trickster.EndecTomfoolery;
+import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.fragment.MapFragment;
+import io.vavr.Function1;
 import io.vavr.collection.HashMap;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import io.wispforest.owo.serialization.CodecUtils;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ContainerComponent;
-import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextCodecs;
@@ -27,6 +28,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public record FragmentComponent(Fragment value, Optional<Text> name, boolean immutable, boolean closed) {
+
     private static final Endec<FragmentComponent> OLD_ENDEC = StructEndecBuilder.of(
             SpellPart.ENDEC.fieldOf("spell", comp -> {
                 throw new IllegalStateException("Serializing as a spell is no longer supported");
@@ -61,7 +63,7 @@ public record FragmentComponent(Fragment value, Optional<Text> name, boolean imm
                 .flatMap(value -> {
                     if (value instanceof SpellPart spell)
                         return Optional.of(spell);
-                    
+
                     return Optional.empty();
                 });
     }
@@ -74,6 +76,8 @@ public record FragmentComponent(Fragment value, Optional<Text> name, boolean imm
     public static Optional<ItemStack> write(ItemStack stack, Fragment fragment) {
         return write(stack, fragment, false, Optional.empty(), Optional.empty());
     }
+
+    private static java.util.HashMap<Item, Function1<ItemStack, ItemStack>> customWriteBehaviors = new java.util.HashMap<>();
 
     /**
      * Writes a fragment to an item stack.
@@ -89,13 +93,16 @@ public record FragmentComponent(Fragment value, Optional<Text> name, boolean imm
             return Optional.empty();
         }
 
-        if (stack.isOf(Items.BOOK)) {
-            stack = stack.withItem(Items.ENCHANTED_BOOK);
+        var behavior = customWriteBehaviors.get(stack.getItem());
+        if (behavior != null) {
+            stack = behavior.apply(stack);
         }
 
         player.ifPresent(ModCriteria.INSCRIBE_SPELL::trigger);
         return Optional.of(stack);
     }
+
+    private static java.util.HashMap<Item, Function1<ItemStack, ItemStack>> customResetBehaviors = new java.util.HashMap<>();
 
     /**
      * Resets an item stack to its default fragment value.
@@ -133,10 +140,9 @@ public record FragmentComponent(Fragment value, Optional<Text> name, boolean imm
             return Optional.empty();
         }
 
-        if (stack.isOf(Items.ENCHANTED_BOOK)
-                && (stack.get(DataComponentTypes.STORED_ENCHANTMENTS) instanceof ItemEnchantmentsComponent enchants)
-                && enchants.isEmpty()) {
-            return Optional.of(stack.withItem(Items.BOOK));
+        var behavior = customResetBehaviors.get(stack.getItem());
+        if (behavior != null) {
+            stack = behavior.apply(stack);
         }
 
         return Optional.of(stack);
@@ -235,5 +241,21 @@ public record FragmentComponent(Fragment value, Optional<Text> name, boolean imm
 
     public static HashMap<Pattern, SpellPart> getUserMergedMap(PlayerEntity user, String type, Supplier<HashMap<Pattern, SpellPart>> otherwise) {
         return getUserMergedMap(user, type).orElseGet(otherwise);
+    }
+
+    public static void registerWriteConversion(Item type, Function1<ItemStack, ItemStack> onWrite) {
+        var old = customWriteBehaviors.put(type, onWrite);
+        if (old != null) {
+            //TODO: this could be improved, translations aren't loaded for modded items
+            Trickster.LOGGER.warn("Fragment write conversion for \"{}\" has been overriden", type.getName().getString());
+        }
+    }
+
+    public static void registerResetConversion(Item type, Function1<ItemStack, ItemStack> onReset) {
+        var old = customResetBehaviors.put(type, onReset);
+        if (old != null) {
+            //TODO: this could be improved, translations aren't loaded for modded items
+            Trickster.LOGGER.warn("Fragment reset conversion for \"{}\" has been overriden", type.getName().getString());
+        }
     }
 }
