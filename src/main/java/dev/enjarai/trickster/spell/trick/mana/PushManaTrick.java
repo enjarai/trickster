@@ -11,7 +11,7 @@ public class PushManaTrick extends AbstractConduitTrick {
     }
 
     @Override
-    protected float affect(SpellContext ctx, ItemStack stack, float limit) {
+    protected float affect(SpellContext ctx, ItemStack stack, float limit, double taxPercentage) {
         var comp = stack.get(ModComponents.MANA);
 
         if (comp == null)
@@ -20,6 +20,7 @@ public class PushManaTrick extends AbstractConduitTrick {
         var world = ctx.source().getWorld();
         var self = ctx.source().getManaPool();
         var result = limit - self.use(limit, world);
+        result -= result * taxPercentage;
         comp = stack.get(ModComponents.MANA);
         var target = comp.pool().makeClone(world);
         var leftover = target.refill(result, world);

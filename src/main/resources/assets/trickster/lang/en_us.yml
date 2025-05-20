@@ -406,6 +406,7 @@ text.config.trickster-config:
   option:
     dotEmphasis: Terminal dot emphasis
     dotEmphasisColor: Terminal dot color
+    manaTransferEfficiency: Efficiency of the Conduit's Ploys
     whorlMaxMana: Whorl maximum mana in kG
     whorlRechargeRate: Whorl recharge rate in kG
     topHatInterceptScrolling: Offhand hat intercepts hotbar scrolling

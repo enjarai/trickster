@@ -29,6 +29,17 @@ public record SpellContext(ExecutionState state, SpellSource source, TickData da
         source.getPlayer().ifPresent((player) -> ModCriteria.MANA_USED.trigger(player, amount));
     }
 
+    public void checkMana(Trick<?> trickSource, float amount) throws BlunderException {
+        if (Float.isNaN(amount)) {
+            throw new IllegalStateException("Internal error: Mana used is NaN");
+        }
+
+        if (source.getManaPool().get(source.getWorld()) < amount) {
+            source.getPlayer().ifPresent(ModCriteria.MANA_OVERFLUX::trigger);
+            throw new NotEnoughManaBlunder(trickSource, amount);
+        }
+    }
+
     public MutableManaPool getManaPool() {
         return state().tryOverridePool(source.getManaPool());
     }

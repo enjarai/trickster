@@ -12,6 +12,7 @@ import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
 import dev.enjarai.trickster.spell.execution.PlayerSpellExecutionManager;
 import dev.enjarai.trickster.spell.mana.MutableManaPool;
 import io.wispforest.endec.Endec;
+import io.wispforest.endec.SerializationContext;
 import io.wispforest.endec.impl.KeyedEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import io.wispforest.owo.serialization.endec.MinecraftEndecs;
@@ -109,15 +110,15 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
 
     @Override
     public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-        executionManager = tag.get(EXECUTION_MANAGER_ENDEC);
-        collarExecutionManager = tag.get(COLLAR_EXECUTION_MANAGER_ENDEC);
+        executionManager = tag.get(SerializationContext.attributes(EndecTomfoolery.CODEC_SAFE), EXECUTION_MANAGER_ENDEC);
+        collarExecutionManager = tag.get(SerializationContext.attributes(EndecTomfoolery.CODEC_SAFE), COLLAR_EXECUTION_MANAGER_ENDEC);
         waitTicks(20);
     }
 
     @Override
     public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-        tag.put(EXECUTION_MANAGER_ENDEC, executionManager);
-        tag.put(COLLAR_EXECUTION_MANAGER_ENDEC, collarExecutionManager);
+        tag.put(SerializationContext.attributes(EndecTomfoolery.CODEC_SAFE), EXECUTION_MANAGER_ENDEC, executionManager);
+        tag.put(SerializationContext.attributes(EndecTomfoolery.CODEC_SAFE), COLLAR_EXECUTION_MANAGER_ENDEC, collarExecutionManager);
     }
 
     @Override
@@ -160,7 +161,7 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
 
     public void killAll() {
         executionManager.killAll();
-//        collarExecutionManager.killAll();
+        //        collarExecutionManager.killAll();
     }
 
     public void kill(int index) {
