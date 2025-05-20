@@ -1,4 +1,6 @@
 - Significantly improved list and map rendering inside of circles. (@enjarai)
+- Added an ingress to check light level. (@Nicknakin)
+- Added the Quartz Knot, which behaves as a timer. (@Nicknakin and @enjarai)
 - Updated Ploy of Creation to be able to place any kind of block correctly, and have options for facing. (@enjarai)
 - Added hunger querying ingresses. (@enjarai)
 - Fixed multiple issues with the spell editor screen. (@enjarai)
