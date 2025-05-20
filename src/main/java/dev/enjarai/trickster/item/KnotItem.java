@@ -1,18 +1,28 @@
 package dev.enjarai.trickster.item;
 
+import dev.enjarai.trickster.cca.MessageHandlerComponent.Key;
 import dev.enjarai.trickster.cca.ModGlobalComponents;
 import dev.enjarai.trickster.item.component.ManaComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
+import dev.enjarai.trickster.item.component.TickTrackerComponent;
+import dev.enjarai.trickster.spell.EvaluationResult;
+import dev.enjarai.trickster.spell.Fragment;
+import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.blunder.ItemInvalidBlunder;
+import dev.enjarai.trickster.spell.blunder.TrickBlunderException;
+import dev.enjarai.trickster.spell.execution.executor.MessageListenerSpellExecutor;
+import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.mana.InfiniteManaPool;
 import dev.enjarai.trickster.spell.mana.SavingsManaPool;
 import dev.enjarai.trickster.spell.mana.SharedManaPool;
 import dev.enjarai.trickster.spell.mana.SimpleManaPool;
+import dev.enjarai.trickster.spell.trick.Trick;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import java.util.Optional;
 import java.util.function.ToIntFunction;
-
 
 public abstract class KnotItem extends Item {
     public static ToIntFunction<ItemStack> barStepFunction = i -> 0;
@@ -32,6 +42,35 @@ public abstract class KnotItem extends Item {
         }
     }
 
+    public static class Quartz extends KnotItem implements ChannelItem {
+        public Quartz() {
+            super(new Settings()
+                    .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(128), 1 / 96f))
+                    .component(ModComponents.TICK_CREATED, new TickTrackerComponent(0)),
+                    0);
+        }
+
+        public ItemStack createStack(World world) {
+            var stack = getDefaultStack();
+            stack.set(ModComponents.TICK_CREATED, new TickTrackerComponent(world.getTime()));
+            return stack;
+        }
+
+        public EvaluationResult messageListenBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, int timeout) throws TrickBlunderException {
+            return new NumberFragment(stack.get(ModComponents.TICK_CREATED).getTick(ctx.source().getWorld()));
+        }
+
+        public void messageSendBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, Fragment value) {
+            if (value instanceof NumberFragment number) {
+                stack.set(ModComponents.TICK_CREATED, new TickTrackerComponent(stack.get(ModComponents.TICK_CREATED).tick() - number.asInt()));
+            }
+        }
+
+        public int getRange() {
+            return 16;
+        }
+    }
+
     public static class Emerald extends KnotItem {
         public Emerald() {
             super(new Settings()
@@ -48,7 +87,7 @@ public abstract class KnotItem extends Item {
         }
     }
 
-    public static class Echo extends KnotItem {
+    public static class Echo extends KnotItem implements ChannelItem {
         public Echo() {
             super(new Settings()
                     .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(32768), 1)),
@@ -64,6 +103,25 @@ public abstract class KnotItem extends Item {
             stack.increment(1);
             return stack;
         }
+
+        public EvaluationResult messageListenBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, int timeout) throws TrickBlunderException {
+            if (stack.get(ModComponents.MANA).pool() instanceof SharedManaPool pool) {
+                return new MessageListenerSpellExecutor(ctx.state(), timeout, Optional.of(new Key.Channel(pool.uuid())));
+            }
+
+            throw new ItemInvalidBlunder(trickSource);
+        }
+
+        public void messageSendBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, Fragment value) {
+            if (stack.get(ModComponents.MANA).pool() instanceof SharedManaPool pool) {
+                ModGlobalComponents.MESSAGE_HANDLER.get(ctx.source().getWorld().getScoreboard()).send(new Key.Channel(pool.uuid()), value);
+            }
+        }
+
+        public int getRange() {
+            return 16;
+        }
+
     }
 
     public static class CrackedEcho extends KnotItem {
