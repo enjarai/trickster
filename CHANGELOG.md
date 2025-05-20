@@ -8,6 +8,7 @@
 - Fixed Ploy of Featherweight's signature in book to be accurate. (@aurakle)
 - Made entity targeting ingresses accept multiple entity types. (@aurakle)
 - Updated the entry for the Notulist's Delusion to Notulist's Ingress. (@aurakle)
+- Added the ability to import and export fragments using a Cracked Echo Knot. (@aurakle)
 - Added a tax to the Conduit's Ploy. (@aurakle)
 - Made slot move cost more precise. (@aurakle)
 - Generalized Notulist's item conversions. (@aurakle)
