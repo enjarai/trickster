@@ -36,6 +36,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 
 public class TricksterClient implements ClientModInitializer {
@@ -95,6 +96,13 @@ public class TricksterClient implements ClientModInitializer {
             }
         });
         ClientTickEvents.END_CLIENT_TICK.register(merlinKeeperTracker::tick);
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            if (client.world != null && client.world.getTime() % 20 == 0
+                    && client.player != null
+                    && (client.player.getMainHandStack().isOf(ModItems.QUARTZ_KNOT) || client.player.getOffHandStack().isOf(ModItems.QUARTZ_KNOT))) {
+                client.player.playSound(SoundEvents.BLOCK_COMPARATOR_CLICK, 0.1f, client.world.getTime() % 40 == 0 ? 2 : 1.7f);
+            }
+        });
 
         Trickster.merlinTooltipAppender = merlinKeeperTracker;
         KnotItem.barStepFunction = stack -> {
