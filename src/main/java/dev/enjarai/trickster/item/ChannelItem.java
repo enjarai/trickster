@@ -8,9 +8,9 @@ import dev.enjarai.trickster.spell.trick.Trick;
 import net.minecraft.item.ItemStack;
 
 public interface ChannelItem {
-    EvaluationResult messageListenBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, int timeout) throws BlunderException;
+    EvaluationResult messageListenBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, int timeout);
 
-    void messageSendBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, Fragment value) throws BlunderException;
+    void messageSendBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, Fragment value);
 
     int getRange();
 }

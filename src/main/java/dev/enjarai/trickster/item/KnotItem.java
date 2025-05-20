@@ -12,8 +12,6 @@ import dev.enjarai.trickster.spell.EvaluationResult;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
-import dev.enjarai.trickster.spell.blunder.ItemInvalidBlunder;
-import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
 import dev.enjarai.trickster.spell.execution.executor.MessageListenerSpellExecutor;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.mana.InfiniteManaPool;
@@ -61,11 +59,11 @@ public abstract class KnotItem extends Item {
             return stack;
         }
 
-        public EvaluationResult messageListenBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, int timeout) throws BlunderException {
+        public EvaluationResult messageListenBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, int timeout) {
             return new NumberFragment(stack.get(ModComponents.TICK_CREATED).getTick(ctx.source().getWorld()));
         }
 
-        public void messageSendBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, Fragment value) throws BlunderException {
+        public void messageSendBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, Fragment value) {
             if (value instanceof NumberFragment number) {
                 stack.set(ModComponents.TICK_CREATED, new TickTrackerComponent(stack.get(ModComponents.TICK_CREATED).tick() - number.asInt()));
             }
@@ -109,15 +107,12 @@ public abstract class KnotItem extends Item {
             return stack;
         }
 
-        public EvaluationResult messageListenBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, int timeout) throws BlunderException {
-            if (stack.get(ModComponents.MANA).pool() instanceof SharedManaPool pool) {
-                return new MessageListenerSpellExecutor(ctx.state(), timeout, Optional.of(new Key.Channel(pool.uuid())));
-            }
-
-            throw new ItemInvalidBlunder(trickSource);
+        public EvaluationResult messageListenBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, int timeout) {
+            var uuid = stack.get(ModComponents.MANA).pool() instanceof SharedManaPool pool ? pool.uuid() : UUID.randomUUID();
+            return new MessageListenerSpellExecutor(ctx.state(), timeout, Optional.of(new Key.Channel(uuid)));
         }
 
-        public void messageSendBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, Fragment value) throws BlunderException {
+        public void messageSendBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, Fragment value) {
             if (stack.get(ModComponents.MANA).pool() instanceof SharedManaPool pool) {
                 ModGlobalComponents.MESSAGE_HANDLER.get(ctx.source().getWorld().getScoreboard()).send(new Key.Channel(pool.uuid()), value);
             }
@@ -137,15 +132,15 @@ public abstract class KnotItem extends Item {
         }
 
         @Override
-        public EvaluationResult messageListenBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, int timeout) throws BlunderException {
+        public EvaluationResult messageListenBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, int timeout) {
             var uuid = UUID.randomUUID();
-            ModNetworking.CHANNEL.serverHandle(ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(trickSource))).send(new EchoGrabClipboardPacket(uuid));
+            ctx.source().getPlayer().ifPresent(player -> ModNetworking.CHANNEL.serverHandle(player).send(new EchoGrabClipboardPacket(uuid)));
             return new MessageListenerSpellExecutor(ctx.state(), timeout, Optional.of(new Key.Channel(uuid)));
         }
 
         @Override
-        public void messageSendBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, Fragment value) throws BlunderException {
-            ModNetworking.CHANNEL.serverHandle(ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(trickSource))).send(new EchoSetClipboardPacket(value));
+        public void messageSendBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, Fragment value) {
+            ctx.source().getPlayer().ifPresent(player -> ModNetworking.CHANNEL.serverHandle(player).send(new EchoSetClipboardPacket(value)));
         }
 
         @Override

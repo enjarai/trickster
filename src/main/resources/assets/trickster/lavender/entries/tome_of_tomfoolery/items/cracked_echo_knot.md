@@ -23,4 +23,4 @@ it behaves rather queerly. Similarly, doing the same with a [Dispatch Ploy](^tri
 
 
 It is uncertain how exactly these two ploys interact with the Cracked Echo Knot. 
-However, any attempt to make use of these oddities beyond the context of a player caster fails immediately.
+However, any attempt to make use of these oddities beyond the context of a player caster yields no results.
