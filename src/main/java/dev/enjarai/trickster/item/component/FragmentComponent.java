@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.item.component;
 
 import dev.enjarai.trickster.EndecTomfoolery;
+import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.spell.Fragment;
@@ -242,13 +243,19 @@ public record FragmentComponent(Fragment value, Optional<Text> name, boolean imm
         return getUserMergedMap(user, type).orElseGet(otherwise);
     }
 
-    public static void registerNotulistWriteConversion(Item type, Function1<ItemStack, ItemStack> onWrite) {
-        customWriteBehaviors.put(type, onWrite);
-        //TODO: override warning?
+    public static void registerWriteConversion(Item type, Function1<ItemStack, ItemStack> onWrite) {
+        var old = customWriteBehaviors.put(type, onWrite);
+        if (old != null) {
+            //TODO: this could be improved, translations aren't loaded for modded items
+            Trickster.LOGGER.warn("Fragment write conversion for \"{}\" has been overriden", type.getName().getString());
+        }
     }
 
-    public static void registerNotulistResetConversion(Item type, Function1<ItemStack, ItemStack> onReset) {
-        customResetBehaviors.put(type, onReset);
-        //TODO: override warning?
+    public static void registerResetConversion(Item type, Function1<ItemStack, ItemStack> onReset) {
+        var old = customResetBehaviors.put(type, onReset);
+        if (old != null) {
+            //TODO: this could be improved, translations aren't loaded for modded items
+            Trickster.LOGGER.warn("Fragment reset conversion for \"{}\" has been overriden", type.getName().getString());
+        }
     }
 }
