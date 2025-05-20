@@ -5,11 +5,15 @@ import dev.enjarai.trickster.cca.ModGlobalComponents;
 import dev.enjarai.trickster.item.component.ManaComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.TickTrackerComponent;
+import dev.enjarai.trickster.net.EchoGrabClipboardPacket;
+import dev.enjarai.trickster.net.EchoSetClipboardPacket;
+import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.spell.EvaluationResult;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.ItemInvalidBlunder;
-import dev.enjarai.trickster.spell.blunder.TrickBlunderException;
+import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
 import dev.enjarai.trickster.spell.execution.executor.MessageListenerSpellExecutor;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.mana.InfiniteManaPool;
@@ -22,6 +26,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 import java.util.Optional;
+import java.util.UUID;
 import java.util.function.ToIntFunction;
 
 public abstract class KnotItem extends Item {
@@ -56,11 +61,11 @@ public abstract class KnotItem extends Item {
             return stack;
         }
 
-        public EvaluationResult messageListenBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, int timeout) throws TrickBlunderException {
+        public EvaluationResult messageListenBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, int timeout) throws BlunderException {
             return new NumberFragment(stack.get(ModComponents.TICK_CREATED).getTick(ctx.source().getWorld()));
         }
 
-        public void messageSendBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, Fragment value) {
+        public void messageSendBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, Fragment value) throws BlunderException {
             if (value instanceof NumberFragment number) {
                 stack.set(ModComponents.TICK_CREATED, new TickTrackerComponent(stack.get(ModComponents.TICK_CREATED).tick() - number.asInt()));
             }
@@ -104,7 +109,7 @@ public abstract class KnotItem extends Item {
             return stack;
         }
 
-        public EvaluationResult messageListenBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, int timeout) throws TrickBlunderException {
+        public EvaluationResult messageListenBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, int timeout) throws BlunderException {
             if (stack.get(ModComponents.MANA).pool() instanceof SharedManaPool pool) {
                 return new MessageListenerSpellExecutor(ctx.state(), timeout, Optional.of(new Key.Channel(pool.uuid())));
             }
@@ -112,7 +117,7 @@ public abstract class KnotItem extends Item {
             throw new ItemInvalidBlunder(trickSource);
         }
 
-        public void messageSendBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, Fragment value) {
+        public void messageSendBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, Fragment value) throws BlunderException {
             if (stack.get(ModComponents.MANA).pool() instanceof SharedManaPool pool) {
                 ModGlobalComponents.MESSAGE_HANDLER.get(ctx.source().getWorld().getScoreboard()).send(new Key.Channel(pool.uuid()), value);
             }
@@ -132,15 +137,15 @@ public abstract class KnotItem extends Item {
         }
 
         @Override
-        public EvaluationResult messageListenBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, int timeout) {
-            // TODO Auto-generated method stub
-            throw new UnsupportedOperationException("Unimplemented method 'messageListenBehavior'");
+        public EvaluationResult messageListenBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, int timeout) throws BlunderException {
+            var uuid = UUID.randomUUID();
+            ModNetworking.CHANNEL.serverHandle(ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(trickSource))).send(new EchoGrabClipboardPacket(uuid));
+            return new MessageListenerSpellExecutor(ctx.state(), timeout, Optional.of(new Key.Channel(uuid)));
         }
 
         @Override
-        public void messageSendBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, Fragment value) {
-            // TODO Auto-generated method stub
-            throw new UnsupportedOperationException("Unimplemented method 'messageSendBehavior'");
+        public void messageSendBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, Fragment value) throws BlunderException {
+            ModNetworking.CHANNEL.serverHandle(ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(trickSource))).send(new EchoSetClipboardPacket(value));
         }
 
         @Override

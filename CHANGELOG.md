@@ -3,3 +3,4 @@
 - Fixed multiple issues with the spell editor screen. (@enjarai)
 - Made entity targeting ingresses accept multiple entity types. (@aurakle)
 - Updated the entry for the Notulist's Delusion to Notulist's Ingress. (@aurakle)
+- Added the ability to import and export fragments using a Cracked Echo Knot. (@aurakle)
