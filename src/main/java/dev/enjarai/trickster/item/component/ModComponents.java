@@ -3,6 +3,9 @@ package dev.enjarai.trickster.item.component;
 import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.Trickster;
 import net.minecraft.component.ComponentType;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ItemEnchantmentsComponent;
+import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 
@@ -51,6 +54,13 @@ public class ModComponents {
     }
 
     public static void register() {
-
+        FragmentComponent.registerWriteConversion(Items.BOOK,
+                stack -> stack.withItem(Items.ENCHANTED_BOOK)
+        );
+        FragmentComponent.registerResetConversion(Items.ENCHANTED_BOOK,
+                stack -> stack.get(DataComponentTypes.STORED_ENCHANTMENTS) instanceof ItemEnchantmentsComponent enchants && enchants.isEmpty()
+                        ? stack.withItem(Items.BOOK)
+                        : stack
+        );
     }
 }
