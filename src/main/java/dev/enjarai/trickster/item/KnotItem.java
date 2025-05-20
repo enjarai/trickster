@@ -124,11 +124,28 @@ public abstract class KnotItem extends Item {
 
     }
 
-    public static class CrackedEcho extends KnotItem {
+    public static class CrackedEcho extends KnotItem implements ChannelItem {
         public CrackedEcho() {
             super(new Settings()
                     .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(32768), 2 / 12f)),
                     Float.MAX_VALUE);
+        }
+
+        @Override
+        public EvaluationResult messageListenBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, int timeout) {
+            // TODO Auto-generated method stub
+            throw new UnsupportedOperationException("Unimplemented method 'messageListenBehavior'");
+        }
+
+        @Override
+        public void messageSendBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, Fragment value) {
+            // TODO Auto-generated method stub
+            throw new UnsupportedOperationException("Unimplemented method 'messageSendBehavior'");
+        }
+
+        @Override
+        public int getRange() {
+            return 16;
         }
     }
 
