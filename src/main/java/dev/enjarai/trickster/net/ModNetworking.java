@@ -26,6 +26,8 @@ public class ModNetworking {
 
         CHANNEL.registerClientboundDeferred(RebuildChunkPacket.class);
         CHANNEL.registerClientboundDeferred(GrabClipboardSpellPacket.class);
+        CHANNEL.registerClientboundDeferred(EchoGrabClipboardPacket.class);
+        CHANNEL.registerClientboundDeferred(EchoSetClipboardPacket.class);
         CHANNEL.registerClientboundDeferred(MladyAnimationPacket.class);
     }
 
