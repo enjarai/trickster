@@ -1,1 +1,1 @@
-- Fix packet registration issue. (@aurakle)
+- Changed the Quartz Knot channel behaviour to match that of other channels. (@aurakle)
