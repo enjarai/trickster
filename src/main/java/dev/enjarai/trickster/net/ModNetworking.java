@@ -19,12 +19,15 @@ public class ModNetworking {
         CHANNEL.registerServerbound(SignScrollPacket.class, SignScrollPacket::handleServer);
         CHANNEL.registerServerbound(KillSpellPacket.class, KillSpellPacket::handleServer);
         CHANNEL.registerServerbound(ClipBoardSpellResponsePacket.class, ClipBoardSpellResponsePacket.ENDEC, ClipBoardSpellResponsePacket::handleServer);
+        CHANNEL.registerServerbound(EchoSendClipboardPacket.class, EchoSendClipboardPacket.ENDEC, EchoSendClipboardPacket::handleServer);
         CHANNEL.registerServerbound(LoadExampleSpellPacket.class, LoadExampleSpellPacket.ENDEC, LoadExampleSpellPacket::handleServer);
         CHANNEL.registerServerbound(SpellEditPacket.class, SpellEditPacket::handleServer);
         CHANNEL.registerServerbound(SubscribeToPoolPacket.class, SubscribeToPoolPacket::handleServer);
 
         CHANNEL.registerClientboundDeferred(RebuildChunkPacket.class);
         CHANNEL.registerClientboundDeferred(GrabClipboardSpellPacket.class);
+        CHANNEL.registerClientboundDeferred(EchoGrabClipboardPacket.class);
+        CHANNEL.registerClientboundDeferred(EchoSetClipboardPacket.class, EchoSetClipboardPacket.ENDEC);
         CHANNEL.registerClientboundDeferred(MladyAnimationPacket.class);
     }
 
@@ -32,8 +35,8 @@ public class ModNetworking {
     public static <T> T clientOrDefault(PlayerEntity player, Option.Key key, T defaultValue) {
         if (player instanceof ServerPlayerEntity serverPlayer)
             return ConfigSynchronizer.getClientOptions(serverPlayer, Trickster.CONFIG.name()) instanceof Map<Option.Key, ?> map
-                ? (T) map.get(key)
-                : defaultValue;
+                    ? (T) map.get(key)
+                    : defaultValue;
         else return defaultValue;
     }
 }

@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import dev.enjarai.trickster.cca.MessageHandlerComponent.Key;
 import dev.enjarai.trickster.cca.ModGlobalComponents;
-import dev.enjarai.trickster.item.component.ModComponents;
+import dev.enjarai.trickster.item.ChannelItem;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
@@ -14,7 +14,6 @@ import dev.enjarai.trickster.spell.blunder.OutOfRangeBlunder;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.fragment.SlotFragment;
-import dev.enjarai.trickster.spell.mana.SharedManaPool;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.Signature;
 
@@ -32,16 +31,17 @@ public class MessageSendTrick extends Trick<MessageSendTrick> {
     }
 
     public Fragment channel(SpellContext ctx, Fragment value, SlotFragment slot) throws BlunderException {
+        var stack = slot.reference(this, ctx);
         var range = ctx.source().getPos().distance(slot.getSourcePos(this, ctx));
+        var item = stack.getItem();
 
-        if (range > 16) {
-            throw new OutOfRangeBlunder(this, 16.0, range);
-        }
+        if (item instanceof ChannelItem channelItem) {
+            if (range > channelItem.getRange()) {
+                throw new OutOfRangeBlunder(this, channelItem.getRange(), range);
+            }
 
-        var comp = slot.reference(this, ctx).get(ModComponents.MANA);
-
-        if (comp != null && comp.pool() instanceof SharedManaPool pool) {
-            return run(ctx, new Key.Channel(pool.uuid()), value);
+            channelItem.messageSendBehavior(this, ctx, stack, value);
+            return value;
         }
 
         throw new ItemInvalidBlunder(this);

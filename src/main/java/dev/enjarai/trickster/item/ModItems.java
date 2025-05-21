@@ -74,6 +74,7 @@ public class ModItems {
     public static final BlockItem SCROLL_SHELF_BLOCK_ITEM = register("scroll_shelf", new BlockItem(ModBlocks.SCROLL_SHELF, new Item.Settings()));
     public static final BlockItem CHARGING_ARRAY_ITEM = register("charging_array", new BlockItem(ModBlocks.CHARGING_ARRAY, new Item.Settings()));
     public static final KnotItem.Amethyst AMETHYST_KNOT = register("amethyst_knot", new KnotItem.Amethyst());
+    public static final KnotItem.Quartz QUARTZ_KNOT = register("quartz_knot", new KnotItem.Quartz());
     public static final KnotItem.Emerald EMERALD_KNOT = register("emerald_knot", new KnotItem.Emerald());
     public static final KnotItem.Diamond DIAMOND_KNOT = register("diamond_knot", new KnotItem.Diamond());
     public static final KnotItem.Echo ECHO_KNOT = register("echo_knot", new KnotItem.Echo());
@@ -148,6 +149,7 @@ public class ModItems {
                 entries.add(RUSTED_SPELL_CORE);
                 entries.add(OMINOUS_SPELL_CORE);
                 entries.add(AMETHYST_KNOT);
+                entries.add(QUARTZ_KNOT);
                 entries.add(EMERALD_KNOT);
                 entries.add(DIAMOND_KNOT);
                 entries.add(ECHO_KNOT);
@@ -165,5 +167,6 @@ public class ModItems {
         Registry.register(Registries.ITEM_GROUP, Trickster.id("trickster"), ITEM_GROUP);
     }
 
-    public record DyedVariant(Item original, Item variant, DyeColor color) {}
+    public record DyedVariant(Item original, Item variant, DyeColor color) {
+    }
 }
