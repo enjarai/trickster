@@ -1,2 +1,1 @@
-- Fix a critical networking issue with dedicated servers. (@enjarai)
-- Remove all blunders from channel item behaviours. (@aurakle)
+- Fix packet registration issue. (@aurakle)
