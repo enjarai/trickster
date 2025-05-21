@@ -46,6 +46,10 @@ public class TricksterConfigModel {
     @PredicateConstraint("requirePositive")
     public float whorlMaxMana = 256.0f;
 
+    @Sync(Option.SyncMode.OVERRIDE_CLIENT)
+    @PredicateConstraint("requirePositive")
+    public float manaTransferEfficiency = 100.0f;
+
     @SectionHeader("aurora-client")
 
     public boolean dragDrawing = false;

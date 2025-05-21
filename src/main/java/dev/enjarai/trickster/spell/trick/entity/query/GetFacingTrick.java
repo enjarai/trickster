@@ -8,9 +8,9 @@ import net.minecraft.entity.LivingEntity;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import org.joml.Vector3d;
 
-public class GetFacingTrick extends AbstractLivingEntityQueryTrick {
+public class GetFacingTrick extends AbstractEntityQueryTrick<LivingEntity> {
     public GetFacingTrick() {
-        super(Pattern.of(3, 2, 7));
+        super(Pattern.of(3, 2, 7), LivingEntity.class);
     }
 
     @Override

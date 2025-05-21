@@ -3,6 +3,9 @@ package dev.enjarai.trickster.item.component;
 import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.Trickster;
 import net.minecraft.component.ComponentType;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ItemEnchantmentsComponent;
+import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 
@@ -40,12 +43,24 @@ public class ModComponents {
                     .endec(CollarLinkComponent.ENDEC)
                     .cache()
     );
+    public static final ComponentType<TickTrackerComponent> TICK_CREATED = register(
+            "tick_created", builder -> builder
+                    .codec(TickTrackerComponent.CODEC)
+                    .cache()
+    );
 
     private static <T> ComponentType<T> register(String id, UnaryOperator<ComponentType.Builder<T>> builderOperator) {
         return Registry.register(Registries.DATA_COMPONENT_TYPE, Trickster.id(id), (builderOperator.apply(ComponentType.builder())).build());
     }
 
     public static void register() {
-
+        FragmentComponent.registerWriteConversion(Items.BOOK,
+                stack -> stack.withItem(Items.ENCHANTED_BOOK)
+        );
+        FragmentComponent.registerResetConversion(Items.ENCHANTED_BOOK,
+                stack -> stack.get(DataComponentTypes.STORED_ENCHANTMENTS) instanceof ItemEnchantmentsComponent enchants && enchants.isEmpty()
+                        ? stack.withItem(Items.BOOK)
+                        : stack
+        );
     }
 }

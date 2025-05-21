@@ -29,7 +29,7 @@ public class DropStackFromSlotTrick extends Trick<DropStackFromSlotTrick> {
             throw new NumberTooSmallBlunder(this, 1);
         }
 
-        var stack = slot.move(this, ctx, (int) Math.round(amount), pos.toBlockPos());
+        var stack = slot.move(this, ctx, (int) Math.round(amount), vector);
         var world = ctx.source().getWorld();
         var entity = new ItemEntity(world, vector.x(), vector.y(), vector.z(), stack);
         entity.setPickupDelay(10);

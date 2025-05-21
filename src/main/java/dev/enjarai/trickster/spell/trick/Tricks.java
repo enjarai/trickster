@@ -6,6 +6,7 @@ import java.util.Map;
 import dev.enjarai.trickster.spell.trick.basic.*;
 import dev.enjarai.trickster.spell.trick.block.*;
 import dev.enjarai.trickster.spell.trick.entity.*;
+import dev.enjarai.trickster.spell.trick.entity.query.*;
 import dev.enjarai.trickster.spell.trick.inventory.*;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
@@ -13,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import com.mojang.serialization.Lifecycle;
 
 import dev.enjarai.trickster.Trickster;
+import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.trick.basic.CasterReflectionTrick;
 import dev.enjarai.trickster.spell.trick.basic.CostTrick;
@@ -39,6 +41,7 @@ import dev.enjarai.trickster.spell.trick.block.CoolTrick;
 import dev.enjarai.trickster.spell.trick.block.ErodeTrick;
 import dev.enjarai.trickster.spell.trick.block.GetBlockHardnessTrick;
 import dev.enjarai.trickster.spell.trick.block.GetRedstonePowerTrick;
+import dev.enjarai.trickster.spell.trick.block.GetLightLevelTrick;
 import dev.enjarai.trickster.spell.trick.block.HeatTrick;
 import dev.enjarai.trickster.spell.trick.block.PlaceBlockTrick;
 import dev.enjarai.trickster.spell.trick.block.PowerResonatorTrick;
@@ -52,19 +55,6 @@ import dev.enjarai.trickster.spell.trick.bool.LesserThanTrick;
 import dev.enjarai.trickster.spell.trick.bool.NoneTrick;
 import dev.enjarai.trickster.spell.trick.bool.NotEqualsTrick;
 import dev.enjarai.trickster.spell.trick.dimension.GetDimensionTrick;
-import dev.enjarai.trickster.spell.trick.entity.query.BlockingReflectionTrick;
-import dev.enjarai.trickster.spell.trick.entity.query.GetEntityArmourTrick;
-import dev.enjarai.trickster.spell.trick.entity.query.BurningReflectionTrick;
-import dev.enjarai.trickster.spell.trick.entity.query.GetEntityHealthTrick;
-import dev.enjarai.trickster.spell.trick.entity.query.GetEntityMaxHealthTrick;
-import dev.enjarai.trickster.spell.trick.entity.query.GetEntityTypeTrick;
-import dev.enjarai.trickster.spell.trick.entity.query.GetEyePositionTrick;
-import dev.enjarai.trickster.spell.trick.entity.query.GetFacingTrick;
-import dev.enjarai.trickster.spell.trick.entity.query.GetPositionTrick;
-import dev.enjarai.trickster.spell.trick.entity.query.GetVelocityTrick;
-import dev.enjarai.trickster.spell.trick.entity.query.HeightReflectionTrick;
-import dev.enjarai.trickster.spell.trick.entity.query.SneakingReflectionTrick;
-import dev.enjarai.trickster.spell.trick.entity.query.SprintingReflectionTrick;
 import dev.enjarai.trickster.spell.trick.fleck.GetFlecksTrick;
 import dev.enjarai.trickster.spell.trick.fleck.LineFleckTrick;
 import dev.enjarai.trickster.spell.trick.fleck.SpellFleckTrick;
@@ -156,6 +146,7 @@ import dev.enjarai.trickster.spell.trick.vector.LengthTrick;
 import dev.enjarai.trickster.spell.trick.vector.MergeVectorTrick;
 import dev.enjarai.trickster.spell.trick.vector.NormalizeTrick;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
+import net.minecraft.item.Items;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.SimpleRegistry;
@@ -237,6 +228,8 @@ public class Tricks {
     public static final SprintingReflectionTrick SPRINTING_REFLECTION = register("sprinting_reflection", new SprintingReflectionTrick());
     public static final BurningReflectionTrick BURNING_REFLECTION = register("burning_reflection", new BurningReflectionTrick());
     public static final BlockingReflectionTrick BLOCKING_REFLECTION = register("blocking_reflection", new BlockingReflectionTrick());
+    public static final GetPlayerFoodTrick GET_PLAYER_FOOD = register("get_player_food", new GetPlayerFoodTrick());
+    public static final GetPlayerSaturationTrick GET_PLAYER_SATURATION = register("get_player_saturation", new GetPlayerSaturationTrick());
     public static final RaycastBlockPosTrick RAYCAST = register("raycast", new RaycastBlockPosTrick());
     public static final RaycastBlockSideTrick RAYCAST_SIDE = register("raycast_side", new RaycastBlockSideTrick());
     public static final RaycastEntityTrick RAYCAST_ENTITY = register("raycast_entity", new RaycastEntityTrick());
@@ -344,6 +337,7 @@ public class Tricks {
     public static final CheckBlockTrick CHECK_BLOCK = register("check_block", new CheckBlockTrick());
     public static final CanPlaceTrick CAN_PLACE_BLOCK = register("can_place_block", new CanPlaceTrick());
     public static final GetBlockHardnessTrick GET_BLOCK_HARDNESS = register("get_block_hardness", new GetBlockHardnessTrick());
+    public static final GetLightLevelTrick GET_LIGHT_LEVEL = register("light_level", new GetLightLevelTrick());
     public static final PowerResonatorTrick POWER_RESONATOR = register("power_resonator", new PowerResonatorTrick());
     public static final CheckResonatorTrick CHECK_RESONATOR = register("check_resonator", new CheckResonatorTrick());
     public static final GetRedstonePowerTrick GET_REDSTONE_POWER = register("get_redstone_power", new GetRedstonePowerTrick());
@@ -376,6 +370,8 @@ public class Tricks {
 
     // Dimension
     public static final GetDimensionTrick GET_DIMENSION = register("get_dimension", new GetDimensionTrick());
+    // TODO decide if we want this
+    //    public static final GetMoonPhaseTrick GET_MOON_PHASE = register("get_moon_phase", new GetMoonPhaseTrick());
 
     // Flecks
     public static final LineFleckTrick DRAW_LINE = register("draw_line", new LineFleckTrick());
@@ -409,5 +405,12 @@ public class Tricks {
 
     public static void register() {
         // init the class :brombeere:
+
+        BATTERY_CREATION.registerKnot(Items.AMETHYST_SHARD, ModItems.AMETHYST_KNOT);
+        BATTERY_CREATION.registerKnot(Items.QUARTZ, ModItems.QUARTZ_KNOT);
+        BATTERY_CREATION.registerKnot(Items.EMERALD, ModItems.EMERALD_KNOT);
+        BATTERY_CREATION.registerKnot(Items.DIAMOND, ModItems.DIAMOND_KNOT);
+        BATTERY_CREATION.registerKnot(Items.ECHO_SHARD, ModItems.ECHO_KNOT);
+        BATTERY_CREATION.registerKnot(Items.NETHER_STAR, ModItems.ASTRAL_KNOT);
     }
 }

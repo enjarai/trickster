@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "id": "trickster:quartz_knot"
+    },
+    "title": {
+      "text": "Tick-Tock Goes the Clock"
+    },
+    "description": {
+      "text": "Create a Quartz Knot"
+    },
+    "frame": "task",
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "trickster:cast_spell",
+  "criteria": {
+    "create_knot": {
+      "trigger": "trickster:create_knot",
+      "conditions": {
+        "item": "trickster:quartz_knot"
+      }
+    }
+  }
+}

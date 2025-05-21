@@ -67,6 +67,19 @@ For the more programming-minded, the spellcasting system in this mod can be desc
 
 This combines with other functional paradigms to create a very clean, but powerful scripting language.
 
+## Contributing
+
+We are very happy to accept contributions to this mod, so long as they fit within our design vision. 
+If you plan to make a contribution more complex than a simple bugfix or flat improvement, 
+please discuss it with us beforehand in the `#trickster` channel in [Discord](https://discord.enjarai.dev/) or create an issue here on Github.
+
+Before creating a PR, please consider running the `spotlessApply` gradle task to ensure your formatting conforms with the rest of the code.
+
+If your potential contribution isn't something we want to accept into the main mod, 
+you're always free to [create an addon](https://github.com/enjarai/trickster/wiki/Addon-Setup) and upload it independently!
+Providing tools for addon creation is one of our primary goals for development,
+so if any API you require is missing, please let us know.
+
 ## Credits
 
 Some of the item textures are courtesy of @midnightcartridge on Discord.
