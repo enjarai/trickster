@@ -91,7 +91,7 @@ trickster:
     length: 模长之曲变
 
     two: 基础之错觉
-    read_spell: 记事员之错觉
+    read_spell: 记事员之辑流
     clear_spell: 畏真者之技巧
     write_spell: 记事员之技巧
     write_closed_spell: 禁文记事员之技巧
@@ -123,6 +123,8 @@ trickster:
     get_max_health: 活力之辑流
     get_health: 体健之辑流
     get_armour: 垒墙之辑流
+    get_player_food: 食欲之辑流
+    get_player_saturation: 饱足之辑流
     get_velocity: 运动之辑流
     add_velocity: 动能之技巧
     change_weight: 轻羽之技巧
@@ -208,6 +210,7 @@ trickster:
     can_place_block: 适用之辑流
     check_resonator: 谐振之辑流
     get_redstone_power: 逻辑之辑流
+    light_level: 光辉之辑流
 
     check_hat: 颅骨之错觉
     set_hat: 颅骨挪移之技巧
@@ -351,6 +354,7 @@ item.trickster:
   leash: 法师的捆索
 
   amethyst_knot: 紫水晶晶结
+  quartz_knot: 石英晶结
   emerald_knot: 绿宝石晶结
   diamond_knot: 钻石晶结
   echo_knot: 回响晶结
@@ -402,6 +406,7 @@ text.config.trickster-config:
   option:
     dotEmphasis: 界面中着重强调点
     dotEmphasisColor: 界面中点的强调色
+    manaTransferEfficiency: 善流之技巧与恶流之技巧的效率
     whorlMaxMana: 螺坠最大魔力，以kG计
     whorlRechargeRate: 螺坠充能速度，以kG计
     topHatInterceptScrolling: 副手持帽子时拦截快捷栏滚选
