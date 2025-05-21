@@ -11,14 +11,14 @@ public class DataLoader {
     private static HeatConversionLoader heatLoader;
     private static CoolConversionLoader coolLoader;
     private static ErodeConversionLoader erodeLoader;
-    private static BlockToManaConversionLoader blockToManaConversionLoader;
+    private static StateToManaConversionLoader stateToManaConversionLoader;
 
     public static void registerLoaders() {
         ResourceManagerHelper resourceManagerHelper = ResourceManagerHelper.get(ResourceType.SERVER_DATA);
         resourceManagerHelper.registerReloadListener(Trickster.id("conversion", "heat"), wrapperLookup -> heatLoader = new HeatConversionLoader(wrapperLookup));
         resourceManagerHelper.registerReloadListener(Trickster.id("conversion", "cool"), wrapperLookup -> coolLoader = new CoolConversionLoader(wrapperLookup));
         resourceManagerHelper.registerReloadListener(Trickster.id("conversion", "erode"), wrapperLookup -> erodeLoader = new ErodeConversionLoader(wrapperLookup));
-        resourceManagerHelper.registerReloadListener(Trickster.id("conversion", "state_to_mana"), wrapperLookup -> blockToManaConversionLoader = new BlockToManaConversionLoader(wrapperLookup));
+        resourceManagerHelper.registerReloadListener(Trickster.id("conversion", "state_to_mana"), wrapperLookup -> stateToManaConversionLoader = new StateToManaConversionLoader(wrapperLookup));
     }
 
     public static HeatConversionLoader getHeatLoader() {
@@ -33,7 +33,7 @@ public class DataLoader {
         return erodeLoader;
     }
 
-    public static BlockToManaConversionLoader getBlockToManaConversionLoader() {
-        return blockToManaConversionLoader;
+    public static StateToManaConversionLoader getStateToManaConversionLoader() {
+        return stateToManaConversionLoader;
     }
 }

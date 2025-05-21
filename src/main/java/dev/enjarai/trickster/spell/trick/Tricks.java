@@ -83,6 +83,7 @@ import dev.enjarai.trickster.spell.trick.list.ListReverseTrick;
 import dev.enjarai.trickster.spell.trick.list.ListSizeTrick;
 import dev.enjarai.trickster.spell.trick.list.ListTakeRangeTrick;
 import dev.enjarai.trickster.spell.trick.mana.BatteryCreationTrick;
+import dev.enjarai.trickster.spell.trick.mana.DrainMatterTrick;
 import dev.enjarai.trickster.spell.trick.mana.PullManaTrick;
 import dev.enjarai.trickster.spell.trick.mana.PushManaTrick;
 import dev.enjarai.trickster.spell.trick.map.MapGetTrick;
@@ -392,6 +393,7 @@ public class Tricks {
     public static final BatteryCreationTrick BATTERY_CREATION = register("battery_creation", new BatteryCreationTrick());
     public static final PushManaTrick PUSH_MANA = register("push_mana", new PushManaTrick());
     public static final PullManaTrick PULL_MANA = register("pull_mana", new PullManaTrick());
+    public static final DrainMatterTrick DRAIN_MATTER = register("drain_matter", new DrainMatterTrick());
 
     @ApiStatus.Internal
     public static <T extends Trick<?>> T register(String path, T trick) {
