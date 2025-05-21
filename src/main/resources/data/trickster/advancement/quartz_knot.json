@@ -1,15 +1,15 @@
 {
   "display": {
     "icon": {
-      "id": "trickster:astral_knot"
+      "id": "trickster:quartz_knot"
     },
     "title": {
-      "text": "Stellar Savings Account"
+      "text": "Tick-Tock Goes the Clock"
     },
     "description": {
-      "text": "Create an Astral Knot"
+      "text": "Create a Quartz Knot"
     },
-    "frame": "challenge",
+    "frame": "task",
     "announce_to_chat": true,
     "hidden": true
   },
@@ -18,7 +18,7 @@
     "create_knot": {
       "trigger": "trickster:create_knot",
       "conditions": {
-        "item": "trickster:astral_knot"
+        "item": "trickster:quartz_knot"
       }
     }
   }

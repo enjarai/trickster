@@ -1,18 +1,33 @@
 package dev.enjarai.trickster.item;
 
+import dev.enjarai.trickster.cca.MessageHandlerComponent.Key;
 import dev.enjarai.trickster.cca.ModGlobalComponents;
 import dev.enjarai.trickster.item.component.ManaComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
+import dev.enjarai.trickster.item.component.TickTrackerComponent;
+import dev.enjarai.trickster.net.EchoGrabClipboardPacket;
+import dev.enjarai.trickster.net.EchoSetClipboardPacket;
+import dev.enjarai.trickster.net.ModNetworking;
+import dev.enjarai.trickster.spell.EvaluationResult;
+import dev.enjarai.trickster.spell.Fragment;
+import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.execution.executor.MessageListenerSpellExecutor;
+import dev.enjarai.trickster.spell.fragment.ListFragment;
+import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.mana.InfiniteManaPool;
 import dev.enjarai.trickster.spell.mana.SavingsManaPool;
 import dev.enjarai.trickster.spell.mana.SharedManaPool;
 import dev.enjarai.trickster.spell.mana.SimpleManaPool;
+import dev.enjarai.trickster.spell.trick.Trick;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.function.ToIntFunction;
-
 
 public abstract class KnotItem extends Item {
     public static ToIntFunction<ItemStack> barStepFunction = i -> 0;
@@ -32,6 +47,35 @@ public abstract class KnotItem extends Item {
         }
     }
 
+    public static class Quartz extends KnotItem implements ChannelItem {
+        public Quartz() {
+            super(new Settings()
+                    .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(128), 1 / 96f))
+                    .component(ModComponents.TICK_CREATED, new TickTrackerComponent(0)),
+                    0);
+        }
+
+        public ItemStack createStack(World world) {
+            var stack = getDefaultStack();
+            stack.set(ModComponents.TICK_CREATED, new TickTrackerComponent(world.getTime()));
+            return stack;
+        }
+
+        public EvaluationResult messageListenBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, int timeout) {
+            return new ListFragment(List.of(new NumberFragment(stack.get(ModComponents.TICK_CREATED).getTick(ctx.source().getWorld()))));
+        }
+
+        public void messageSendBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, Fragment value) {
+            if (value instanceof NumberFragment number) {
+                stack.set(ModComponents.TICK_CREATED, new TickTrackerComponent(stack.get(ModComponents.TICK_CREATED).tick() - number.asInt()));
+            }
+        }
+
+        public int getRange() {
+            return 16;
+        }
+    }
+
     public static class Emerald extends KnotItem {
         public Emerald() {
             super(new Settings()
@@ -48,7 +92,7 @@ public abstract class KnotItem extends Item {
         }
     }
 
-    public static class Echo extends KnotItem {
+    public static class Echo extends KnotItem implements ChannelItem {
         public Echo() {
             super(new Settings()
                     .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(32768), 1)),
@@ -64,13 +108,46 @@ public abstract class KnotItem extends Item {
             stack.increment(1);
             return stack;
         }
+
+        public EvaluationResult messageListenBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, int timeout) {
+            var uuid = stack.get(ModComponents.MANA).pool() instanceof SharedManaPool pool ? pool.uuid() : UUID.randomUUID();
+            return new MessageListenerSpellExecutor(ctx.state(), timeout, Optional.of(new Key.Channel(uuid)));
+        }
+
+        public void messageSendBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, Fragment value) {
+            if (stack.get(ModComponents.MANA).pool() instanceof SharedManaPool pool) {
+                ModGlobalComponents.MESSAGE_HANDLER.get(ctx.source().getWorld().getScoreboard()).send(new Key.Channel(pool.uuid()), value);
+            }
+        }
+
+        public int getRange() {
+            return 16;
+        }
+
     }
 
-    public static class CrackedEcho extends KnotItem {
+    public static class CrackedEcho extends KnotItem implements ChannelItem {
         public CrackedEcho() {
             super(new Settings()
                     .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(32768), 2 / 12f)),
                     Float.MAX_VALUE);
+        }
+
+        @Override
+        public EvaluationResult messageListenBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, int timeout) {
+            var uuid = UUID.randomUUID();
+            ctx.source().getPlayer().ifPresent(player -> ModNetworking.CHANNEL.serverHandle(player).send(new EchoGrabClipboardPacket(uuid)));
+            return new MessageListenerSpellExecutor(ctx.state(), timeout, Optional.of(new Key.Channel(uuid)));
+        }
+
+        @Override
+        public void messageSendBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, Fragment value) {
+            ctx.source().getPlayer().ifPresent(player -> ModNetworking.CHANNEL.serverHandle(player).send(new EchoSetClipboardPacket(value)));
+        }
+
+        @Override
+        public int getRange() {
+            return 16;
         }
     }
 
