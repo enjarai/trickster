@@ -23,7 +23,8 @@ public class DrainMatterTrick extends Trick<DrainMatterTrick> {
         var world = ctx.source().getWorld();
         var blockPos = pos.toBlockPos();
         var state = world.getBlockState(blockPos);
-        float amount = DataLoader.getStateToManaConversionLoader()
+        float amount = DataLoader
+                .getStateToManaConversionLoader()
                 .convert(state)
                 .orElseThrow(() -> new BlockInvalidBlunder(this, state.getBlock()));
 
