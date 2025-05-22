@@ -13,41 +13,19 @@ import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.execution.ExecutionState;
 import dev.enjarai.trickster.spell.execution.TickData;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
-import dev.enjarai.trickster.spell.fragment.ListFragment;
-import dev.enjarai.trickster.spell.fragment.NumberFragment;
-import dev.enjarai.trickster.util.BackwardCompatibleStructEndec;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 
 public class FoldingSpellExecutor implements SpellExecutor {
-    public static final StructEndec<FoldingSpellExecutor> ENDEC = new BackwardCompatibleStructEndec<>(
-            StructEndecBuilder.of(
-                    ExecutionState.ENDEC.fieldOf("state", e -> e.state),
-                    SpellPart.ENDEC.fieldOf("executable", e -> e.executable),
-                    Fragment.ENDEC.fieldOf("last_result", e -> e.lastResult),
-                    EndecTomfoolery.stackOf(Fragment.ENDEC).fieldOf("values", e -> e.values),
-                    EndecTomfoolery.stackOf(Fragment.ENDEC).fieldOf("keys", e -> e.keys),
-                    Fragment.ENDEC.fieldOf("previous", e -> e.previous),
-                    EndecTomfoolery.forcedSafeOptionalOf(SpellExecutor.ENDEC).fieldOf("child", e -> e.child),
-                    FoldingSpellExecutor::new
-            ),
-            StructEndecBuilder.of(
-                    // <=2.0.0-beta.1 compat
-                    ExecutionState.ENDEC.fieldOf("state", e -> e.state),
-                    SpellPart.ENDEC.fieldOf("executable", e -> e.executable),
-                    ListFragment.ENDEC.fieldOf("list", e -> (ListFragment) e.previous),
-                    EndecTomfoolery.stackOf(Fragment.ENDEC).fieldOf("elements", executor -> executor.values),
-                    EndecTomfoolery.forcedSafeOptionalOf(SpellExecutor.ENDEC).fieldOf("child", executor -> executor.child),
-                    Fragment.ENDEC.fieldOf("last", executor -> executor.lastResult),
-                    (state, executable, list, elements, child, last) -> {
-                        var keys = new Stack<Fragment>();
-
-                        for (int i = list.fragments().size() - 1; i >= list.fragments().size() - elements.size(); i--)
-                            keys.push(new NumberFragment(i));
-
-                        return new FoldingSpellExecutor(state, executable, last, elements, keys, list, child);
-                    }
-            )
+    public static final StructEndec<FoldingSpellExecutor> ENDEC = StructEndecBuilder.of(
+            ExecutionState.ENDEC.fieldOf("state", e -> e.state),
+            SpellPart.ENDEC.fieldOf("executable", e -> e.executable),
+            Fragment.ENDEC.fieldOf("last_result", e -> e.lastResult),
+            EndecTomfoolery.stackOf(Fragment.ENDEC).fieldOf("values", e -> e.values),
+            EndecTomfoolery.stackOf(Fragment.ENDEC).fieldOf("keys", e -> e.keys),
+            Fragment.ENDEC.fieldOf("previous", e -> e.previous),
+            EndecTomfoolery.forcedSafeOptionalOf(SpellExecutor.INTERNAL_ENDEC).fieldOf("child", e -> e.child),
+            FoldingSpellExecutor::new
     );
 
     private final ExecutionState state;

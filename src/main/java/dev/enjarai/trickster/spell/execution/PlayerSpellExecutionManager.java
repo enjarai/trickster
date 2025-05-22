@@ -14,7 +14,6 @@ import dev.enjarai.trickster.spell.blunder.NaNBlunder;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
-import it.unimi.dsi.fastutil.ints.AbstractInt2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.text.Text;
@@ -109,16 +108,11 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
     /**
      * Attempts to run the given entry's SpellExecutor.
      * 
-     * @param source
-     *                         TODO
-     * @param entry
-     *                         TODO
-     * @param tickCallback
-     *                         TODO
-     * @param completeCallback
-     *                         TODO
-     * @param errorCallback
-     *                         TODO
+     * @param source TODO
+     * @param entry TODO
+     * @param tickCallback TODO
+     * @param completeCallback TODO
+     * @param errorCallback TODO
      * @return whether the spell has finished running or not. Blunders and normal completion return true, otherwise returns false.
      */
     private boolean tryRun(SpellSource source, int key, SpellExecutor executor, ExecutorCallback tickCallback, ExecutorCallback completeCallback, ExecutorCallback errorCallback) {
