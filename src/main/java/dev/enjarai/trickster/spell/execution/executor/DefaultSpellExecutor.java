@@ -24,7 +24,7 @@ public final class DefaultSpellExecutor implements SpellExecutor {
             Fragment.ENDEC.listOf().fieldOf("inputs", e -> e.inputs),
             Endec.INT.listOf().fieldOf("scope", e -> e.scope),
             ExecutionState.ENDEC.fieldOf("state", e -> e.state),
-            EndecTomfoolery.forcedSafeOptionalOf(SpellExecutor.ENDEC).fieldOf("child", e -> e.child),
+            EndecTomfoolery.forcedSafeOptionalOf(SpellExecutor.INTERNAL_ENDEC).fieldOf("child", e -> e.child),
             EndecTomfoolery.forcedSafeOptionalOf(Fragment.ENDEC).fieldOf("override_return_value", e -> e.overrideReturnValue),
             DefaultSpellExecutor::new
     );

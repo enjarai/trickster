@@ -6,8 +6,11 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Function3;
 import com.mojang.serialization.Codec;
 import com.mojang.util.UndashedUuid;
+import io.netty.buffer.Unpooled;
 import io.vavr.collection.HashMap;
 import io.wispforest.endec.*;
+import io.wispforest.endec.format.bytebuf.ByteBufDeserializer;
+import io.wispforest.endec.format.bytebuf.ByteBufSerializer;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import io.wispforest.owo.serialization.CodecUtils;
 import io.wispforest.owo.serialization.endec.EitherEndec;
@@ -15,13 +18,13 @@ import net.minecraft.util.math.BlockPos;
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Stack;
-import java.util.UUID;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.util.*;
 import java.util.function.Function;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
+
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 
@@ -96,15 +99,84 @@ public class EndecTomfoolery {
         );
     }
 
+    public static <T> Endec<T> asBytes(Endec<T> endec) {
+        return Endec.of(
+                (ctx, serializer, value) -> {
+                    var buf = Unpooled.buffer();
+                    endec.encode(
+                            SerializationContext.empty().withAttributes(EndecTomfoolery.UBER_COMPACT_ATTRIBUTE),
+                            ByteBufSerializer.of(buf), value
+                    );
+
+                    var byteStream = new ByteArrayOutputStream(buf.writerIndex());
+                    try (byteStream) {
+                        try (GZIPOutputStream zipStream = new GZIPOutputStream(byteStream)) {
+                            buf.readBytes(zipStream, buf.writerIndex());
+                        }
+                    } catch (Exception e) {
+                        throw new RuntimeException("Failed to encode endec as bytes", e);
+                    } finally {
+                        buf.release();
+                    }
+
+                    var bytes = byteStream.toByteArray();
+                    serializer.writeBytes(ctx, bytes);
+                },
+                (ctx, serializer) -> {
+                    var buf = Unpooled.buffer();
+
+                    var bytes = serializer.readBytes(ctx);
+                    try (var byteStream = new ByteArrayInputStream(bytes);) {
+                        try (var zipStream = new GZIPInputStream(byteStream)) {
+                            buf.writeBytes(zipStream.readAllBytes());
+                        }
+                    } catch (Exception e) {
+                        buf.release();
+                        throw new RuntimeException("Failed to decode endec as bytes", e);
+                    }
+
+                    try {
+                        return endec.decode(
+                                SerializationContext.empty().withAttributes(EndecTomfoolery.UBER_COMPACT_ATTRIBUTE),
+                                ByteBufDeserializer.of(buf)
+                        );
+                    } finally {
+                        buf.release();
+                    }
+                }
+        );
+    }
+
+    public static <T> Endec<T> withFallback(Endec<T> endec, Supplier<T> fallback) {
+        return Endec.of(
+                endec::encode,
+                (ctx, serializer) -> {
+                    try {
+                        return endec.decode(ctx, serializer);
+                    } catch (Exception e) {
+                        return fallback.get();
+                    }
+                }
+        );
+    }
+
     public static <T> Codec<T> toCodec(Endec<T> endec) {
         return CodecUtils.toCodec(endec, SerializationContext.attributes(CODEC_SAFE));
     }
 
-    public static <T> StructEndec<T> recursive(Function<StructEndec<T>, StructEndec<T>> wrapped) {
+    public static <T> StructEndec<T> recursiveStruct(Function<StructEndec<T>, StructEndec<T>> wrapped) {
         return new RecursiveStructEndec<>(wrapped);
     }
 
-    public static <T> StructEndec<T> lazy(Supplier<StructEndec<T>> supplier) {
+    public static <T> StructEndec<T> lazyStruct(Supplier<StructEndec<T>> supplier) {
+        return recursiveStruct(e -> supplier.get());
+    }
+
+    public static <T> Endec<T> recursive(Function<Endec<T>, Endec<T>> wrapped) {
+        return new RecursiveEndec<>(wrapped);
+    }
+
+    public static <T> Endec<T> lazy(Supplier<Endec<T>> supplier) {
         return recursive(e -> supplier.get());
     }
 
@@ -170,6 +242,24 @@ public class EndecTomfoolery {
                 return protocol.decode(ctx, deserializer);
             }
         };
+    }
+
+    private static class RecursiveEndec<T> implements Endec<T> {
+        private final Supplier<Endec<T>> wrapped;
+
+        RecursiveEndec(Function<Endec<T>, Endec<T>> wrapped) {
+            this.wrapped = Suppliers.memoize(() -> wrapped.apply(this));
+        }
+
+        @Override
+        public void encode(SerializationContext ctx, Serializer<?> serializer, T value) {
+            wrapped.get().encode(ctx, serializer, value);
+        }
+
+        @Override
+        public T decode(SerializationContext ctx, Deserializer<?> deserializer) {
+            return wrapped.get().decode(ctx, deserializer);
+        }
     }
 
     private static class RecursiveStructEndec<T> implements StructEndec<T> {

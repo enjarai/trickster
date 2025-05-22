@@ -8,7 +8,7 @@ import io.wispforest.owo.serialization.endec.MinecraftEndecs;
 import net.minecraft.text.Text;
 
 public record TypeFragment(FragmentType<?> typeType) implements Fragment {
-    public static final StructEndec<TypeFragment> ENDEC = EndecTomfoolery.lazy(
+    public static final StructEndec<TypeFragment> ENDEC = EndecTomfoolery.lazyStruct(
             () -> StructEndecBuilder.of(
                     MinecraftEndecs.ofRegistry(FragmentType.REGISTRY).fieldOf("of_type", TypeFragment::typeType),
                     TypeFragment::new

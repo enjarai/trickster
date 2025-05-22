@@ -23,7 +23,7 @@ import net.minecraft.text.Text;
 import org.joml.Vector2d;
 
 public final class SpellPart implements Fragment {
-    public static final StructEndec<SpellPart> ENDEC = EndecTomfoolery.recursive(
+    public static final StructEndec<SpellPart> ENDEC = EndecTomfoolery.recursiveStruct(
             self -> StructEndecBuilder.of(
                     Fragment.ENDEC.fieldOf("glyph", SpellPart::getGlyph),
                     EndecTomfoolery.protocolVersionAlternatives(

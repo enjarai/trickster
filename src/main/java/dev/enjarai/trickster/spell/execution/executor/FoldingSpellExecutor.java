@@ -28,7 +28,7 @@ public class FoldingSpellExecutor implements SpellExecutor {
                     EndecTomfoolery.stackOf(Fragment.ENDEC).fieldOf("values", e -> e.values),
                     EndecTomfoolery.stackOf(Fragment.ENDEC).fieldOf("keys", e -> e.keys),
                     Fragment.ENDEC.fieldOf("previous", e -> e.previous),
-                    EndecTomfoolery.forcedSafeOptionalOf(SpellExecutor.ENDEC).fieldOf("child", e -> e.child),
+                    EndecTomfoolery.forcedSafeOptionalOf(SpellExecutor.INTERNAL_ENDEC).fieldOf("child", e -> e.child),
                     FoldingSpellExecutor::new
             ),
             StructEndecBuilder.of(
@@ -37,7 +37,7 @@ public class FoldingSpellExecutor implements SpellExecutor {
                     SpellPart.ENDEC.fieldOf("executable", e -> e.executable),
                     ListFragment.ENDEC.fieldOf("list", e -> (ListFragment) e.previous),
                     EndecTomfoolery.stackOf(Fragment.ENDEC).fieldOf("elements", executor -> executor.values),
-                    EndecTomfoolery.forcedSafeOptionalOf(SpellExecutor.ENDEC).fieldOf("child", executor -> executor.child),
+                    EndecTomfoolery.forcedSafeOptionalOf(SpellExecutor.INTERNAL_ENDEC).fieldOf("child", executor -> executor.child),
                     Fragment.ENDEC.fieldOf("last", executor -> executor.lastResult),
                     (state, executable, list, elements, child, last) -> {
                         var keys = new Stack<Fragment>();

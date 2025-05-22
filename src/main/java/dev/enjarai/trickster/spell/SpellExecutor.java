@@ -15,13 +15,19 @@ import java.util.Optional;
 
 public non-sealed interface SpellExecutor extends EvaluationResult {
     @SuppressWarnings("unchecked")
-    StructEndec<SpellExecutor> ENDEC = EndecTomfoolery.lazy(
+    StructEndec<SpellExecutor> INTERNAL_ENDEC = EndecTomfoolery.lazyStruct(
             () -> (StructEndec<SpellExecutor>) Endec.dispatchedStruct(
                     SpellExecutorType::endec, SpellExecutor::type, MinecraftEndecs.ofRegistry(SpellExecutorType.REGISTRY)
             )
     );
+    Endec<SpellExecutor> ENDEC = EndecTomfoolery.lazy(
+            () -> EndecTomfoolery.withAlternative(
+                    EndecTomfoolery.asBytes(INTERNAL_ENDEC),
+                    INTERNAL_ENDEC
+            )
+    );
     @SuppressWarnings("unchecked")
-    StructEndec<SpellExecutor> NET_ENDEC = EndecTomfoolery.lazy(
+    StructEndec<SpellExecutor> NET_ENDEC = EndecTomfoolery.lazyStruct(
             () -> (StructEndec<SpellExecutor>) Endec.dispatchedStruct(
                     SpellExecutorType::netEndec, SpellExecutor::type, MinecraftEndecs.ofRegistry(SpellExecutorType.REGISTRY)
             )

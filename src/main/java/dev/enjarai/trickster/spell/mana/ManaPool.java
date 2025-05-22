@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 public interface ManaPool {
     @SuppressWarnings("unchecked")
-    StructEndec<ManaPool> ENDEC = EndecTomfoolery.lazy(() -> (StructEndec<ManaPool>) Endec.dispatchedStruct(ManaPoolType::endec, pool -> {
+    StructEndec<ManaPool> ENDEC = EndecTomfoolery.lazyStruct(() -> (StructEndec<ManaPool>) Endec.dispatchedStruct(ManaPoolType::endec, pool -> {
         var type = pool.type();
 
         if (type == null) {
