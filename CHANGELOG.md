@@ -1,1 +1,2 @@
 - Changed the Quartz Knot channel behaviour to match that of other channels. (@aurakle)
+- Fixed spell to spell closures not working on the root of inner circles. (@aurakle)

@@ -126,7 +126,7 @@ public final class SpellPart implements Fragment {
         subParts = new ArrayList<>(subParts.stream().map(part -> part.buildClosure(replacements)).toList());
 
         if (glyph instanceof SpellPart spellPart) {
-            spellPart.buildClosure(replacements);
+            glyph = spellPart.buildClosure(replacements);
         } else if (replacements.containsKey(glyph)) {
             glyph = replacements.get(glyph).get();
         }
