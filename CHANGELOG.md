@@ -1,2 +1,1 @@
-- Changed the Quartz Knot channel behaviour to match that of other channels. (@aurakle)
-- Fixed spell to spell closures not working on the root of inner circles. (@aurakle)
+- Changed the serialization format of spell executors to be significantly more compact. This should hopefully prevent a multitude of errors resulting from overweight nbt elements and memory issues. (@enjarai)
