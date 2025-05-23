@@ -5,8 +5,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.Decoder;
-import com.mojang.serialization.Encoder;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.enjarai.trickster.Trickster;
@@ -105,7 +103,7 @@ public class StateToManaConversionLoader extends CompleteJsonDataLoader implemen
         /**
          * The codec does not take a list in for properties, it is a map.</br>
          * For example, you will provide:</br>
-         * 
+         *
          * <pre>
          * {@code
          * {
@@ -116,7 +114,7 @@ public class StateToManaConversionLoader extends CompleteJsonDataLoader implemen
          * }
          * }
          * </pre>
-         * 
+         * <p>
          * Omitting the properties key or providing an empty one will match any block state.</br>
          * The example above matches any state that is waterlogged, independent of other properties.
          */
@@ -129,8 +127,16 @@ public class StateToManaConversionLoader extends CompleteJsonDataLoader implemen
             }
 
             Codec<Map<String, Property.Value<?>>> propertyNamePropertyCodec = Codec.dispatchedMap(Codec.STRING, propertyCodecs::get);
-            Decoder<Collection<Property.Value<?>>> decoder = propertyNamePropertyCodec.map(Map::values);
-            Codec<Collection<Property.Value<?>>> propertyCodec = Codec.of(Encoder.error("Can not encode"), decoder);
+            Codec<Collection<Property.Value<?>>> propertyCodec = propertyNamePropertyCodec.xmap(
+                    Map::values,
+                    values -> {
+                        HashMap<String, Property.Value<?>> map = HashMap.newHashMap(values.size());
+                        for (Property.Value<?> value : values) {
+                            map.put(value.property().getName(), value);
+                        }
+
+                        return map;
+                    });
 
             return RecordCodecBuilder.create(instance -> instance.group(
                     propertyCodec.optionalFieldOf("properties", List.of()).forGetter(ConversionRule::properties),
