@@ -13,6 +13,7 @@ import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.Signature;
 import net.minecraft.block.Blocks;
+import net.minecraft.fluid.Fluids;
 
 public class DrainMatterTrick extends Trick<DrainMatterTrick> {
     public DrainMatterTrick() {
@@ -32,7 +33,13 @@ public class DrainMatterTrick extends Trick<DrainMatterTrick> {
         world.spawnParticles(
                 ModParticles.PROTECTED_BLOCK, particlePos.x, particlePos.y, particlePos.z,
                 1, 0, 0, 0, 0);
-        world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
+
+        if (world.getFluidState(blockPos).isOf(Fluids.WATER)) {
+            world.setBlockState(blockPos, Blocks.WATER.getDefaultState());
+        } else {
+            world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
+        }
+
         return new NumberFragment(ctx.source().getManaPool().refill(amount, world));
     }
 }
