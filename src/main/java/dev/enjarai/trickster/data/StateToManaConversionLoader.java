@@ -94,9 +94,9 @@ public class StateToManaConversionLoader extends CompleteJsonDataLoader implemen
 
     public record Replaceable(boolean replace, List<ConversionRule> conversions) {
         public static final Function<Block, Codec<Replaceable>> CODEC = Util.memoize(block -> RecordCodecBuilder.create(instance -> instance.group(
-                Codec.BOOL.optionalFieldOf("replace", false).forGetter(Replaceable::replace),
-                ConversionRule.CODEC.apply(block).listOf().fieldOf("rules").forGetter(Replaceable::conversions)
-        ).apply(instance, Replaceable::new)
+            Codec.BOOL.optionalFieldOf("replace", false).forGetter(Replaceable::replace),
+            ConversionRule.CODEC.apply(block).listOf().fieldOf("rules").forGetter(Replaceable::conversions)
+          ).apply(instance, Replaceable::new)
         ));
     }
 
@@ -105,7 +105,7 @@ public class StateToManaConversionLoader extends CompleteJsonDataLoader implemen
         /**
          * The codec does not take a list in for properties, it is a map.</br>
          * For example, you will provide:</br>
-         * 
+         *
          * <pre>
          * {@code
          * {
@@ -116,7 +116,7 @@ public class StateToManaConversionLoader extends CompleteJsonDataLoader implemen
          * }
          * }
          * </pre>
-         * 
+         * <p>
          * Omitting the properties key or providing an empty one will match any block state.</br>
          * The example above matches any state that is waterlogged, independent of other properties.
          */
@@ -129,13 +129,21 @@ public class StateToManaConversionLoader extends CompleteJsonDataLoader implemen
             }
 
             Codec<Map<String, Property.Value<?>>> propertyNamePropertyCodec = Codec.dispatchedMap(Codec.STRING, propertyCodecs::get);
-            Decoder<Collection<Property.Value<?>>> decoder = propertyNamePropertyCodec.map(Map::values);
-            Codec<Collection<Property.Value<?>>> propertyCodec = Codec.of(Encoder.error("Can not encode"), decoder);
+            Codec<Collection<Property.Value<?>>> propertyCodec = propertyNamePropertyCodec.xmap(
+              Map::values,
+              values -> {
+                  HashMap<String, Property.Value<?>> map = HashMap.newHashMap(values.size());
+                  for (Property.Value<?> value : values) {
+                      map.put(value.property().getName(), value);
+                  }
+
+                  return map;
+              });
 
             return RecordCodecBuilder.create(instance -> instance.group(
-                    propertyCodec.optionalFieldOf("properties", List.of()).forGetter(ConversionRule::properties),
-                    Codec.FLOAT.fieldOf("mana").forGetter(ConversionRule::mana)
-            ).apply(instance, ConversionRule::new)
+                propertyCodec.optionalFieldOf("properties", List.of()).forGetter(ConversionRule::properties),
+                Codec.FLOAT.fieldOf("mana").forGetter(ConversionRule::mana)
+              ).apply(instance, ConversionRule::new)
             );
         });
     }
