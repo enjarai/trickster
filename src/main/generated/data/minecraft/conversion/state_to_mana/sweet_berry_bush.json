@@ -1,0 +1,28 @@
+{
+  "rules": [
+    {
+      "mana": 0.0,
+      "properties": {
+        "age": "0"
+      }
+    },
+    {
+      "mana": 4.0,
+      "properties": {
+        "age": "1"
+      }
+    },
+    {
+      "mana": 12.0,
+      "properties": {
+        "age": "2"
+      }
+    },
+    {
+      "mana": 16.0,
+      "properties": {
+        "age": "3"
+      }
+    }
+  ]
+}

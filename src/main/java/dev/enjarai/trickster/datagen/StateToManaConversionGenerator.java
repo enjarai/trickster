@@ -8,8 +8,11 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CropBlock;
+import net.minecraft.block.FlowerbedBlock;
+import net.minecraft.block.SeaPickleBlock;
 import net.minecraft.registry.RegistryWrapper.WrapperLookup;
 import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.state.property.Property.Value;
 
@@ -38,11 +41,6 @@ public class StateToManaConversionGenerator extends StateToManaConversionProvide
         copyOrCreateConversion(Blocks.CACTUS).add(24);
         copyOrCreateConversion(Blocks.KELP).add(2);
         copyOrCreateConversion(Blocks.KELP_PLANT).add(2);
-        copyOrCreateConversion(Blocks.SWEET_BERRY_BUSH)
-            .add(0, new Value<>(Properties.AGE_3, 0))
-            .add(4, new Value<>(Properties.AGE_3, 1))
-            .add(12, new Value<>(Properties.AGE_3, 2))
-            .add(16, new Value<>(Properties.AGE_3, 3));
         copyOrCreateConversion(Blocks.BROWN_MUSHROOM).add(8);
         copyOrCreateConversion(Blocks.RED_MUSHROOM).add(8);
         copyOrCreateConversion(Blocks.BROWN_MUSHROOM_BLOCK).add(24);
@@ -56,12 +54,29 @@ public class StateToManaConversionGenerator extends StateToManaConversionProvide
         copyOrCreateConversion(Blocks.TALL_GRASS).add(2);
         copyOrCreateConversion(Blocks.SEAGRASS).add(2);
         copyOrCreateConversion(Blocks.TALL_SEAGRASS).add(2);
+        copyOrCreateConversion(Blocks.SWEET_BERRY_BUSH)
+                .add(0, new Value<>(Properties.AGE_3, 0))
+                .add(4, new Value<>(Properties.AGE_3, 1))
+                .add(12, new Value<>(Properties.AGE_3, 2))
+                .add(16, new Value<>(Properties.AGE_3, 3));
+
+        //region Clustered
+        configureClustered(Blocks.PINK_PETALS, FlowerbedBlock.FLOWER_AMOUNT, 4, 1);
+        configureClustered(Blocks.SEA_PICKLE, SeaPickleBlock.PICKLES, 4, 1);
 
         //region Crops
         configureCrop(Blocks.CARROTS);
         configureCrop(Blocks.POTATOES);
         configureCrop(Blocks.WHEAT);
         configureCrop(Blocks.BEETROOTS);
+    }
+
+    private void configureClustered(Block block, IntProperty property, int max, float value) {
+        var builder = copyOrCreateConversion(block);
+
+        for (int i = 1; i <= max; i++) {
+            builder.add(i * value, new Value<>(property, i));
+        }
     }
 
     private void configureCrop(Block block) {

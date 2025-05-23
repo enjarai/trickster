@@ -1,0 +1,28 @@
+{
+  "rules": [
+    {
+      "mana": 1.0,
+      "properties": {
+        "flower_amount": "1"
+      }
+    },
+    {
+      "mana": 2.0,
+      "properties": {
+        "flower_amount": "2"
+      }
+    },
+    {
+      "mana": 3.0,
+      "properties": {
+        "flower_amount": "3"
+      }
+    },
+    {
+      "mana": 4.0,
+      "properties": {
+        "flower_amount": "4"
+      }
+    }
+  ]
+}
