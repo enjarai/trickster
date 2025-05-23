@@ -11,6 +11,7 @@
     "ItemFrameEntityMixin",
     "ItemMixin",
     "LivingEntityMixin",
+    "accessor.CropBlockAccessor",
     "accessor.StateAccessor",
     "accessor.WorldAccessor",
     "chunk_pinning.MinecraftServerMixin",

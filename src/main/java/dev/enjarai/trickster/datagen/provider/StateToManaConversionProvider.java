@@ -1,3 +1,4 @@
+
 package dev.enjarai.trickster.datagen.provider;
 
 import com.google.common.collect.Maps;
@@ -9,6 +10,9 @@ import net.minecraft.data.DataProvider;
 import net.minecraft.data.DataWriter;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.entry.RegistryEntryList;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.state.property.Property;
 import net.minecraft.util.Identifier;
 
@@ -68,6 +72,22 @@ public abstract class StateToManaConversionProvider implements DataProvider {
         return this.builders.computeIfAbsent(block, identifier -> Builder.create());
     }
 
+    protected Builder copyOrCreateConversion(Block block) {
+        return this.builders.compute(block, (block1, builder) -> builder != null ? builder.copy() : Builder.create());
+    }
+
+    // I'm too lazy to add a get to this
+    protected Builder createConversion(TagKey<Block> tag) {
+        RegistryEntryList.Named<Block> blocks = Registries.BLOCK.getOrCreateEntryList(tag);
+        Builder sharedBuilder = Builder.create();
+
+        for (RegistryEntry<Block> entry : blocks) {
+            this.builders.computeIfAbsent(entry.value(), identifier -> sharedBuilder);
+        }
+
+        return sharedBuilder;
+    }
+
     @Override
     public String getName() {
         return "State to Mana Conversion";
@@ -87,6 +107,12 @@ public abstract class StateToManaConversionProvider implements DataProvider {
         public Builder add(float mana, Property.Value<?>... properties) {
             this.entries.add(new StateToManaConversionLoader.ConversionRule(List.of(properties), mana));
             return this;
+        }
+
+        public Builder copy() {
+            Builder newBuilder = create();
+            newBuilder.entries.addAll(entries);
+            return newBuilder;
         }
     }
 }

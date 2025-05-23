@@ -1,0 +1,10 @@
+// 1.21	2025-05-23T16:43:04.846371555	Trickster/State to Mana Conversion
+32e5f0ddc44ddba6b4296107b379be1f1b695255 data/minecraft/conversion/state_to_mana/carved_pumpkin.json
+d8491654de50b5d6c6d4aad76db50e00ed907238 data/minecraft/conversion/state_to_mana/pumpkin_stem.json
+8b765da2b9014a0daf2662eb974beaee9f3eea3f data/minecraft/conversion/state_to_mana/melon.json
+3611a78ecb14b6b88f16d62899b0868c83a6033f data/minecraft/conversion/state_to_mana/carrots.json
+d8491654de50b5d6c6d4aad76db50e00ed907238 data/minecraft/conversion/state_to_mana/melon_stem.json
+3611a78ecb14b6b88f16d62899b0868c83a6033f data/minecraft/conversion/state_to_mana/wheat.json
+8b765da2b9014a0daf2662eb974beaee9f3eea3f data/minecraft/conversion/state_to_mana/pumpkin.json
+d84bfc71019a8518962d1cfab9452246f0996002 data/minecraft/conversion/state_to_mana/beetroots.json
+3611a78ecb14b6b88f16d62899b0868c83a6033f data/minecraft/conversion/state_to_mana/potatoes.json
