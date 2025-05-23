@@ -36,10 +36,10 @@ public class StateToManaConversionGenerator extends StateToManaConversionProvide
         copyOrCreateConversion(Blocks.KELP).add(2);
         copyOrCreateConversion(Blocks.KELP_PLANT).add(2); //TODO: fix waterlogged losing water
         copyOrCreateConversion(Blocks.SWEET_BERRY_BUSH)
-            .add(0, new Value<>(Properties.AGE_3, 0))
-            .add(4, new Value<>(Properties.AGE_3, 1))
-            .add(8, new Value<>(Properties.AGE_3, 2))
-            .add(16, new Value<>(Properties.AGE_3, 3))
+                .add(0, new Value<>(Properties.AGE_3, 0))
+                .add(4, new Value<>(Properties.AGE_3, 1))
+                .add(8, new Value<>(Properties.AGE_3, 2))
+                .add(16, new Value<>(Properties.AGE_3, 3));
 
         //region Crops
         configureCrop(Blocks.CARROTS);
