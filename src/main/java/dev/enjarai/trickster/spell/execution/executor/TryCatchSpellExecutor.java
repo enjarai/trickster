@@ -17,8 +17,8 @@ import java.util.Optional;
 
 public class TryCatchSpellExecutor implements SpellExecutor {
     public static final StructEndec<TryCatchSpellExecutor> ENDEC = StructEndecBuilder.of(
-            SpellExecutor.ENDEC.fieldOf("try", e -> e.trySpell),
-            SpellExecutor.ENDEC.fieldOf("catch", e -> e.catchSpell),
+            SpellExecutor.INTERNAL_ENDEC.fieldOf("try", e -> e.trySpell),
+            SpellExecutor.INTERNAL_ENDEC.fieldOf("catch", e -> e.catchSpell),
             Endec.BOOLEAN.fieldOf("catching", e -> e.catching),
             TryCatchSpellExecutor::new
     );

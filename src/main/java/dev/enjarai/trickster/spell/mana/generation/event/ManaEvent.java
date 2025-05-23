@@ -7,7 +7,8 @@ import io.wispforest.owo.serialization.endec.MinecraftEndecs;
 
 public interface ManaEvent {
     @SuppressWarnings("unchecked")
-    StructEndec<ManaEvent> ENDEC = EndecTomfoolery.lazy(() -> (StructEndec<ManaEvent>) Endec.dispatchedStruct(ManaEventType::endec, ManaEvent::type, MinecraftEndecs.ofRegistry(ManaEventType.REGISTRY)));
+    StructEndec<ManaEvent> ENDEC = EndecTomfoolery
+            .lazyStruct(() -> (StructEndec<ManaEvent>) Endec.dispatchedStruct(ManaEventType::endec, ManaEvent::type, MinecraftEndecs.ofRegistry(ManaEventType.REGISTRY)));
 
     ManaEventType<?> type();
 
