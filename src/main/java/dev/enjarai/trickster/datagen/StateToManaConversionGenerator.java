@@ -56,7 +56,6 @@ public class StateToManaConversionGenerator extends StateToManaConversionProvide
         copyOrCreateConversion(Blocks.TALL_GRASS).add(2);
         copyOrCreateConversion(Blocks.SEAGRASS).add(2);
         copyOrCreateConversion(Blocks.TALL_SEAGRASS).add(2);
-        copyOrCreateConversion(Blocks. awawawawa)
 
         //region Crops
         configureCrop(Blocks.CARROTS);
