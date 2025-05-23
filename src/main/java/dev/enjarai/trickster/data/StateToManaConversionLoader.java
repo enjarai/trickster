@@ -5,8 +5,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.Decoder;
-import com.mojang.serialization.Encoder;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.enjarai.trickster.Trickster;
@@ -94,9 +92,9 @@ public class StateToManaConversionLoader extends CompleteJsonDataLoader implemen
 
     public record Replaceable(boolean replace, List<ConversionRule> conversions) {
         public static final Function<Block, Codec<Replaceable>> CODEC = Util.memoize(block -> RecordCodecBuilder.create(instance -> instance.group(
-            Codec.BOOL.optionalFieldOf("replace", false).forGetter(Replaceable::replace),
-            ConversionRule.CODEC.apply(block).listOf().fieldOf("rules").forGetter(Replaceable::conversions)
-          ).apply(instance, Replaceable::new)
+                Codec.BOOL.optionalFieldOf("replace", false).forGetter(Replaceable::replace),
+                ConversionRule.CODEC.apply(block).listOf().fieldOf("rules").forGetter(Replaceable::conversions)
+        ).apply(instance, Replaceable::new)
         ));
     }
 
@@ -130,20 +128,20 @@ public class StateToManaConversionLoader extends CompleteJsonDataLoader implemen
 
             Codec<Map<String, Property.Value<?>>> propertyNamePropertyCodec = Codec.dispatchedMap(Codec.STRING, propertyCodecs::get);
             Codec<Collection<Property.Value<?>>> propertyCodec = propertyNamePropertyCodec.xmap(
-              Map::values,
-              values -> {
-                  HashMap<String, Property.Value<?>> map = HashMap.newHashMap(values.size());
-                  for (Property.Value<?> value : values) {
-                      map.put(value.property().getName(), value);
-                  }
+                    Map::values,
+                    values -> {
+                        HashMap<String, Property.Value<?>> map = HashMap.newHashMap(values.size());
+                        for (Property.Value<?> value : values) {
+                            map.put(value.property().getName(), value);
+                        }
 
-                  return map;
-              });
+                        return map;
+                    });
 
             return RecordCodecBuilder.create(instance -> instance.group(
-                propertyCodec.optionalFieldOf("properties", List.of()).forGetter(ConversionRule::properties),
-                Codec.FLOAT.fieldOf("mana").forGetter(ConversionRule::mana)
-              ).apply(instance, ConversionRule::new)
+                    propertyCodec.optionalFieldOf("properties", List.of()).forGetter(ConversionRule::properties),
+                    Codec.FLOAT.fieldOf("mana").forGetter(ConversionRule::mana)
+            ).apply(instance, ConversionRule::new)
             );
         });
     }

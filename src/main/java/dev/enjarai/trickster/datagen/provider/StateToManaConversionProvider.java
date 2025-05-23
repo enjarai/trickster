@@ -33,28 +33,27 @@ public abstract class StateToManaConversionProvider implements DataProvider {
     @Override
     public CompletableFuture<?> run(DataWriter writer) {
         return this.getRegistryLookupFuture()
-          .thenCompose(wrapperLookup ->
-            CompletableFuture.allOf(
-              this.builders
-                .entrySet()
-                .stream()
-                .map(
-                  entry -> {
-                      Identifier identifier = Registries.BLOCK.getId(entry.getKey());
-                      List<StateToManaConversionLoader.ConversionRule> values = entry.getValue().build();
-                      Path path = this.pathResolver.resolveJson(identifier);
-                      return DataProvider
-                        .writeCodecToPath(
-                          writer,
-                          wrapperLookup,
-                          StateToManaConversionLoader.Replaceable.CODEC.apply(entry.getKey()),
-                          new StateToManaConversionLoader.Replaceable(false, values),
-                          path
-                        );
-                  }
-                )
-                .toArray(CompletableFuture[]::new)
-            ));
+                .thenCompose(wrapperLookup -> CompletableFuture.allOf(
+                        this.builders
+                                .entrySet()
+                                .stream()
+                                .map(
+                                        entry -> {
+                                            Identifier identifier = Registries.BLOCK.getId(entry.getKey());
+                                            List<StateToManaConversionLoader.ConversionRule> values = entry.getValue().build();
+                                            Path path = this.pathResolver.resolveJson(identifier);
+                                            return DataProvider
+                                                    .writeCodecToPath(
+                                                            writer,
+                                                            wrapperLookup,
+                                                            StateToManaConversionLoader.Replaceable.CODEC.apply(entry.getKey()),
+                                                            new StateToManaConversionLoader.Replaceable(false, values),
+                                                            path
+                                                    );
+                                        }
+                                )
+                                .toArray(CompletableFuture[]::new)
+                ));
     }
 
     protected CompletableFuture<RegistryWrapper.WrapperLookup> getRegistryLookupFuture() {
@@ -85,7 +84,7 @@ public abstract class StateToManaConversionProvider implements DataProvider {
             return List.copyOf(this.entries);
         }
 
-        public Builder add(float mana, Property.Value<?> ...properties) {
+        public Builder add(float mana, Property.Value<?>... properties) {
             this.entries.add(new StateToManaConversionLoader.ConversionRule(List.of(properties), mana));
             return this;
         }
