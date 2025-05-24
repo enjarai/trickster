@@ -24,5 +24,6 @@
         "age": "3"
       }
     }
-  ]
+  ],
+  "target": "minecraft:sweet_berry_bush"
 }

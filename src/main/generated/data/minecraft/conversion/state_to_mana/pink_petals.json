@@ -24,5 +24,6 @@
         "flower_amount": "4"
       }
     }
-  ]
+  ],
+  "target": "minecraft:pink_petals"
 }

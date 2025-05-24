@@ -1,0 +1,9 @@
+{
+  "block": "minecraft:rose_bush",
+  "rules": [
+    {
+      "mana": 8.0
+    }
+  ],
+  "target": "#minecraft:tall_flowers"
+}

@@ -24,5 +24,6 @@
         "pickles": "4"
       }
     }
-  ]
+  ],
+  "target": "minecraft:sea_pickle"
 }

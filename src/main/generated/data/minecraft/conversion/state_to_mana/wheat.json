@@ -48,5 +48,6 @@
         "age": "7"
       }
     }
-  ]
+  ],
+  "target": "minecraft:wheat"
 }

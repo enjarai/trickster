@@ -3,5 +3,6 @@
     {
       "mana": 24.0
     }
-  ]
+  ],
+  "target": "minecraft:pumpkin"
 }

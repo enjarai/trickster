@@ -3,5 +3,6 @@
     {
       "mana": 12.0
     }
-  ]
+  ],
+  "target": "minecraft:sugar_cane"
 }

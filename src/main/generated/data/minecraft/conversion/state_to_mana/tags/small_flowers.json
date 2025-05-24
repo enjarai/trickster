@@ -1,0 +1,9 @@
+{
+  "block": "minecraft:poppy",
+  "rules": [
+    {
+      "mana": 4.0
+    }
+  ],
+  "target": "#minecraft:small_flowers"
+}
