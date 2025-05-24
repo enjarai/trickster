@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.mojang.serialization.*;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.enjarai.trickster.Trickster;
@@ -67,7 +68,10 @@ public class StateToManaConversionLoader extends CompleteJsonDataLoader implemen
         prepared.forEach((identifier, jsonElements) -> {
             for (JsonElement jsonElement : jsonElements) {
                 // Add identifier to the json so the codec can see it
-                jsonElement.getAsJsonObject().addProperty("identifier", identifier.toString());
+                JsonObject jsonObject = jsonElement.getAsJsonObject();
+                if (!jsonObject.has("target")) {
+                    jsonElement.getAsJsonObject().addProperty("target", identifier.toString());
+                }
 
                 ConversionData conversionData = ConversionData.CODEC.parse(JsonOps.INSTANCE, jsonElement).getOrThrow();
 
@@ -154,18 +158,12 @@ public class StateToManaConversionLoader extends CompleteJsonDataLoader implemen
                     replace = Codec.BOOL.parse(ops, input.get("replace")).getOrThrow();
                 }
 
-                Identifier identifier = Identifier.CODEC.parse(ops, input.get("identifier")).getOrThrow();
-
-                TagEntry target;
-                Identifier block = identifier;
-                T targetOp = input.get("target");
-                if (targetOp != null) {
-                    target = TagEntry.CODEC.parse(ops, targetOp).getOrThrow();
-                    if (((TagEntryAccessor) target).isTag()) {
-                        block = Identifier.CODEC.parse(ops, input.get("block")).getOrThrow();
-                    }
+                Identifier block;
+                TagEntry target = TagEntry.CODEC.parse(ops, input.get("target")).getOrThrow();
+                if (((TagEntryAccessor) target).isTag()) {
+                    block = Identifier.CODEC.parse(ops, input.get("block")).getOrThrow();
                 } else {
-                    target = TagEntry.create(identifier);
+                    block = ((TagEntryAccessor) target).getId();
                 }
 
                 Block reference = Registries.BLOCK.get(block);
