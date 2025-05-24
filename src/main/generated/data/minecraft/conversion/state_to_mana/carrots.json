@@ -1,0 +1,54 @@
+{
+  "replace": false,
+  "rules": [
+    {
+      "mana": 0.0,
+      "properties": {
+        "age": "0"
+      }
+    },
+    {
+      "mana": 2.0,
+      "properties": {
+        "age": "1"
+      }
+    },
+    {
+      "mana": 4.0,
+      "properties": {
+        "age": "2"
+      }
+    },
+    {
+      "mana": 6.0,
+      "properties": {
+        "age": "3"
+      }
+    },
+    {
+      "mana": 8.0,
+      "properties": {
+        "age": "4"
+      }
+    },
+    {
+      "mana": 10.0,
+      "properties": {
+        "age": "5"
+      }
+    },
+    {
+      "mana": 12.0,
+      "properties": {
+        "age": "6"
+      }
+    },
+    {
+      "mana": 32.0,
+      "properties": {
+        "age": "7"
+      }
+    }
+  ],
+  "target": "minecraft:carrots"
+}

@@ -1,0 +1,30 @@
+{
+  "replace": false,
+  "rules": [
+    {
+      "mana": 0.0,
+      "properties": {
+        "age": "0"
+      }
+    },
+    {
+      "mana": 2.0,
+      "properties": {
+        "age": "1"
+      }
+    },
+    {
+      "mana": 4.0,
+      "properties": {
+        "age": "2"
+      }
+    },
+    {
+      "mana": 32.0,
+      "properties": {
+        "age": "3"
+      }
+    }
+  ],
+  "target": "minecraft:beetroots"
+}
