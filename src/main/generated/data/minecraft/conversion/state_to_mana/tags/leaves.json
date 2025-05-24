@@ -1,0 +1,9 @@
+{
+  "block": "minecraft:acacia_leaves",
+  "rules": [
+    {
+      "mana": 7.12
+    }
+  ],
+  "target": "#minecraft:leaves"
+}

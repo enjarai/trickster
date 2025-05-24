@@ -3,5 +3,6 @@
     {
       "mana": 0.0
     }
-  ]
+  ],
+  "target": "minecraft:bamboo_sapling"
 }

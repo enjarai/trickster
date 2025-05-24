@@ -4,34 +4,42 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.JsonOps;
+import com.mojang.serialization.*;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.enjarai.trickster.Trickster;
+import dev.enjarai.trickster.mixin.accessor.DataPackContentsAccessor;
+import dev.enjarai.trickster.mixin.accessor.TagEntryAccessor;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.tag.TagEntry;
+import net.minecraft.registry.tag.TagManagerLoader;
 import net.minecraft.resource.ResourceManager;
+import net.minecraft.server.DataPackContents;
 import net.minecraft.state.property.Property;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.util.profiler.Profiler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 public class StateToManaConversionLoader extends CompleteJsonDataLoader implements IdentifiableResourceReloadListener {
+    public static final Logger LOGGER = LoggerFactory.getLogger(StateToManaConversionLoader.class);
     protected static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+    public static DataPackContents dataPackContents;
     protected final RegistryWrapper.WrapperLookup registryLookup;
     protected ImmutableMap<Block, List<ConversionRule>> conversions = ImmutableMap.of();
 
     public StateToManaConversionLoader(RegistryWrapper.WrapperLookup registryLookup) {
-        // This uses CODEC in a future version
-        // The inline commented code is for easier porting for future versions, as mojang changed this to use codecs
-        super(GSON/*Replaceable.CODEC*/, "conversion/state_to_mana");
+        super(GSON, "conversion/state_to_mana");
         this.registryLookup = registryLookup;
     }
 
@@ -41,27 +49,63 @@ public class StateToManaConversionLoader extends CompleteJsonDataLoader implemen
     }
 
     @Override
-    // The inline commented code is for easier porting for future versions, as mojang changed this to use codecs
-    protected void apply(Map<Identifier, List<JsonElement/*Replaceable*/>> prepared, ResourceManager manager, Profiler profiler) {
-        RegistryWrapper.Impl<Block> lookup = registryLookup.getWrapperOrThrow(RegistryKeys.BLOCK);
+    protected void apply(Map<Identifier, List<JsonElement>> prepared, ResourceManager manager, Profiler profiler) {
         Map<Block, List<ConversionRule>> map = new HashMap<>();
 
+        var perhapsTagMap = ((DataPackContentsAccessor) dataPackContents)
+                .getRegistryTagManager().getRegistryTags().stream()
+                .filter(registryTags -> registryTags.key().equals(RegistryKeys.BLOCK))
+                .map(TagManagerLoader.RegistryTags::tags).findFirst();
+
+        if (perhapsTagMap.isEmpty()) {
+            throw new IllegalStateException("Failed to get tag data, unable modify components for the tag items");
+        }
+
+        //noinspection unchecked,rawtypes
+        Map<Identifier, Collection<RegistryEntry<Block>>> tagMap = (Map) perhapsTagMap.get();
+
         prepared.forEach((identifier, jsonElements) -> {
-            Block source = lookup.getOrThrow(RegistryKey.of(RegistryKeys.BLOCK, identifier)).value();
-            map.compute(source, (block, weightedValues) -> {
-                List<ConversionRule> values = Objects.requireNonNullElseGet(weightedValues, ArrayList::new);
+            for (JsonElement jsonElement : jsonElements) {
+                // Add identifier to the json so the codec can see it
+                jsonElement.getAsJsonObject().addProperty("identifier", identifier.toString());
 
-                for (JsonElement jsonElement : jsonElements) {
-                    Replaceable replaceable = Replaceable.CODEC.apply(source).parse(JsonOps.INSTANCE, jsonElement).getOrThrow();
-                    if (replaceable.replace) {
-                        values.clear();
+                ConversionData conversionData = ConversionData.CODEC.parse(JsonOps.INSTANCE, jsonElement).getOrThrow();
+
+                TagEntryAccessor accessor = (TagEntryAccessor) conversionData.target;
+                if (accessor.isTag()) {
+                    Optional<Collection<RegistryEntry<Block>>> optional = Optional.ofNullable(tagMap.get(accessor.getId()));
+
+                    if (optional.isPresent()) {
+                        for (RegistryEntry<Block> entry : optional.get()) {
+                            if (conversionData.replace) {
+                                map.put(entry.value(), conversionData.rules);
+                            } else {
+                                map.merge(entry.value(), conversionData.rules, (rules1, rules2) -> {
+                                    List<ConversionRule> concatenatedList = new ArrayList<>();
+                                    concatenatedList.addAll(rules1);
+                                    concatenatedList.addAll(rules2);
+                                    return concatenatedList;
+                                });
+                            }
+                        }
+                    } else {
+                        LOGGER.warn("Failed to find tag {}, skipping", accessor.getId());
                     }
+                } else {
+                    Block block = Registries.BLOCK.get(accessor.getId());
 
-                    values.addAll(replaceable.conversions);
+                    if (conversionData.replace) {
+                        map.put(block, conversionData.rules);
+                    } else {
+                        map.merge(block, conversionData.rules, (rules1, rules2) -> {
+                            List<ConversionRule> concatenatedList = new ArrayList<>();
+                            concatenatedList.addAll(rules1);
+                            concatenatedList.addAll(rules2);
+                            return concatenatedList;
+                        });
+                    }
                 }
-
-                return values;
-            });
+            }
         });
 
         ImmutableMap.Builder<Block, List<ConversionRule>> builder = ImmutableMap.builder();
@@ -90,12 +134,66 @@ public class StateToManaConversionLoader extends CompleteJsonDataLoader implemen
         return Optional.empty();
     }
 
-    public record Replaceable(boolean replace, List<ConversionRule> conversions) {
-        public static final Function<Block, Codec<Replaceable>> CODEC = Util.memoize(block -> RecordCodecBuilder.create(instance -> instance.group(
-                Codec.BOOL.optionalFieldOf("replace", false).forGetter(Replaceable::replace),
-                ConversionRule.CODEC.apply(block).listOf().fieldOf("rules").forGetter(Replaceable::conversions)
-        ).apply(instance, Replaceable::new)
-        ));
+    public record ConversionData(boolean replace, TagEntry target, Block reference, List<ConversionRule> rules) {
+        public static final MapDecoder<ConversionData> CODEC_DECODER = new MapDecoder.Implementation<>() {
+
+            @Override
+            public <T> Stream<T> keys(DynamicOps<T> ops) {
+                return Stream.of(
+                        ops.createString("target"),
+                        ops.createString("block"),
+                        ops.createString("rules")
+                );
+            }
+
+            @Override
+            public <T> DataResult<ConversionData> decode(DynamicOps<T> ops, MapLike<T> input) {
+                boolean replace = Codec.BOOL.parse(ops, input.get("replace")).getOrThrow();
+                Identifier identifier = Identifier.CODEC.parse(ops, input.get("identifier")).getOrThrow();
+
+                TagEntry target;
+                Identifier block = identifier;
+                T targetOp = input.get("target");
+                if (targetOp != null) {
+                    target = TagEntry.CODEC.parse(ops, targetOp).getOrThrow();
+                    if (((TagEntryAccessor) target).isTag()) {
+                        block = Identifier.CODEC.parse(ops, input.get("block")).getOrThrow();
+                    }
+                } else {
+                    target = TagEntry.create(identifier);
+                }
+
+                Block reference = Registries.BLOCK.get(block);
+
+                List<ConversionRule> rules = ConversionRule.CODEC.apply(reference).listOf().parse(ops, input.get("rules")).getOrThrow();
+
+                return DataResult.success(new ConversionData(replace, target, reference, rules));
+            }
+        };
+        public static final MapEncoder<ConversionData> CODEC_ENCODER = new MapEncoder.Implementation<>() {
+
+            @Override
+            public <T> Stream<T> keys(DynamicOps<T> ops) {
+                return Stream.of(
+                        ops.createString("target"),
+                        ops.createString("block"),
+                        ops.createString("rules")
+                );
+            }
+
+            @Override
+            public <T> RecordBuilder<T> encode(ConversionData input, DynamicOps<T> ops, RecordBuilder<T> prefix) {
+                Identifier block = Registries.BLOCK.getId(input.reference);
+                prefix.add("target", TagEntry.CODEC.encodeStart(ops, input.target));
+                if (((TagEntryAccessor) input.target).isTag()) {
+                    prefix.add("block", Identifier.CODEC.encodeStart(ops, block));
+                }
+                prefix.add("rules", ConversionRule.CODEC.apply(input.reference).listOf().encodeStart(ops, input.rules));
+
+                return prefix;
+            }
+        };
+        public static final Codec<ConversionData> CODEC = Codec.of(CODEC_ENCODER, CODEC_DECODER).codec();
     }
 
     // The properties is an OR list, it is compared in order and the first match for all listed properties is used

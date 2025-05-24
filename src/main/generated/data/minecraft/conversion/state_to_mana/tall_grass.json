@@ -3,5 +3,6 @@
     {
       "mana": 2.0
     }
-  ]
+  ],
+  "target": "minecraft:tall_grass"
 }

@@ -3,5 +3,6 @@
     {
       "mana": 8.0
     }
-  ]
+  ],
+  "target": "minecraft:moss_block"
 }

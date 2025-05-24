@@ -1,8 +1,8 @@
-
 package dev.enjarai.trickster.datagen.provider;
 
 import com.google.common.collect.Maps;
 import dev.enjarai.trickster.data.StateToManaConversionLoader;
+import dev.enjarai.trickster.mixin.accessor.TagEntryAccessor;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.block.Block;
 import net.minecraft.data.DataOutput;
@@ -10,8 +10,7 @@ import net.minecraft.data.DataProvider;
 import net.minecraft.data.DataWriter;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.entry.RegistryEntryList;
+import net.minecraft.registry.tag.TagEntry;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.state.property.Property;
 import net.minecraft.util.Identifier;
@@ -25,7 +24,7 @@ import java.util.concurrent.CompletableFuture;
 public abstract class StateToManaConversionProvider implements DataProvider {
     protected final DataOutput.PathResolver pathResolver;
     private final CompletableFuture<RegistryWrapper.WrapperLookup> registryLookupFuture;
-    private final Map<Block, Builder> builders = Maps.newLinkedHashMap();
+    private final Map<TagEntry, Builder> builders = Maps.newLinkedHashMap();
 
     public StateToManaConversionProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookupFuture) {
         this.pathResolver = output.getResolver(DataOutput.OutputType.DATA_PACK, "conversion/state_to_mana");
@@ -43,15 +42,15 @@ public abstract class StateToManaConversionProvider implements DataProvider {
                                 .stream()
                                 .map(
                                         entry -> {
-                                            Identifier identifier = Registries.BLOCK.getId(entry.getKey());
-                                            List<StateToManaConversionLoader.ConversionRule> values = entry.getValue().build();
+                                            TagEntryAccessor accessor = (TagEntryAccessor) entry.getKey();
+                                            Identifier identifier = accessor.isTag() ? accessor.getId().withPrefixedPath("tags/") : accessor.getId();
                                             Path path = this.pathResolver.resolveJson(identifier);
                                             return DataProvider
                                                     .writeCodecToPath(
                                                             writer,
                                                             wrapperLookup,
-                                                            StateToManaConversionLoader.Replaceable.CODEC.apply(entry.getKey()),
-                                                            new StateToManaConversionLoader.Replaceable(false, values),
+                                                            StateToManaConversionLoader.ConversionData.CODEC,
+                                                            entry.getValue().build(),
                                                             path
                                                     );
                                         }
@@ -69,23 +68,13 @@ public abstract class StateToManaConversionProvider implements DataProvider {
     }
 
     protected Builder getOrCreateConversion(Block block) {
-        return this.builders.computeIfAbsent(block, identifier -> Builder.create());
+        TagEntry tagEntry = TagEntry.create(Registries.BLOCK.getId(block));
+        return this.builders.computeIfAbsent(tagEntry, identifier -> Builder.create(tagEntry, block));
     }
 
-    protected Builder copyOrCreateConversion(Block block) {
-        return this.builders.compute(block, (block1, builder) -> builder != null ? builder.copy() : Builder.create());
-    }
-
-    // I'm too lazy to add a get to this
-    protected Builder createConversion(TagKey<Block> tag) {
-        RegistryEntryList.Named<Block> blocks = Registries.BLOCK.getOrCreateEntryList(tag);
-        Builder sharedBuilder = Builder.create();
-
-        for (RegistryEntry<Block> entry : blocks) {
-            this.builders.computeIfAbsent(entry.value(), identifier -> sharedBuilder);
-        }
-
-        return sharedBuilder;
+    protected Builder getOrCreateConversion(TagKey<Block> tag, Block reference) {
+        TagEntry tagEntry = TagEntry.createTag(tag.id());
+        return this.builders.computeIfAbsent(tagEntry, identifier -> Builder.create(tagEntry, reference));
     }
 
     @Override
@@ -94,25 +83,26 @@ public abstract class StateToManaConversionProvider implements DataProvider {
     }
 
     public static class Builder {
+        private final TagEntry tag;
+        private final Block block;
         private final List<StateToManaConversionLoader.ConversionRule> entries = new ArrayList<>();
 
-        public static Builder create() {
-            return new Builder();
+        public Builder(TagEntry tag, Block block) {
+            this.tag = tag;
+            this.block = block;
         }
 
-        public List<StateToManaConversionLoader.ConversionRule> build() {
-            return List.copyOf(this.entries);
+        public static Builder create(TagEntry tag, Block reference) {
+            return new Builder(tag, reference);
+        }
+
+        public StateToManaConversionLoader.ConversionData build() {
+            return new StateToManaConversionLoader.ConversionData(false, tag, block, List.copyOf(this.entries));
         }
 
         public Builder add(float mana, Property.Value<?>... properties) {
             this.entries.add(new StateToManaConversionLoader.ConversionRule(List.of(properties), mana));
             return this;
-        }
-
-        public Builder copy() {
-            Builder newBuilder = create();
-            newBuilder.entries.addAll(entries);
-            return newBuilder;
         }
     }
 }
