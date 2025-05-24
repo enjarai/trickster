@@ -58,7 +58,7 @@ public class StateToManaConversionLoader extends CompleteJsonDataLoader implemen
                 .map(TagManagerLoader.RegistryTags::tags).findFirst();
 
         if (perhapsTagMap.isEmpty()) {
-            throw new IllegalStateException("Failed to get tag data, unable modify components for the tag items");
+            throw new IllegalStateException("Failed to get tag data, aborting data loading");
         }
 
         //noinspection unchecked,rawtypes
