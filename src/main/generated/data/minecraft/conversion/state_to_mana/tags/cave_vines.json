@@ -1,0 +1,15 @@
+{
+  "block": "minecraft:cave_vines_plant",
+  "rules": [
+    {
+      "mana": 16.0,
+      "properties": {
+        "berries": "true"
+      }
+    },
+    {
+      "mana": 4.0
+    }
+  ],
+  "target": "#minecraft:cave_vines"
+}

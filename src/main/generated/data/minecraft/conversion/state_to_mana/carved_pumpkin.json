@@ -1,0 +1,8 @@
+{
+  "rules": [
+    {
+      "mana": 16.0
+    }
+  ],
+  "target": "minecraft:carved_pumpkin"
+}

@@ -1,0 +1,8 @@
+{
+  "rules": [
+    {
+      "mana": 2.0
+    }
+  ],
+  "target": "minecraft:short_grass"
+}

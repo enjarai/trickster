@@ -1,0 +1,8 @@
+{
+  "rules": [
+    {
+      "mana": 8.0
+    }
+  ],
+  "target": "minecraft:red_mushroom"
+}
