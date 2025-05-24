@@ -189,6 +189,7 @@ public class StateToManaConversionLoader extends CompleteJsonDataLoader implemen
             @Override
             public <T> RecordBuilder<T> encode(ConversionData input, DynamicOps<T> ops, RecordBuilder<T> prefix) {
                 Identifier block = Registries.BLOCK.getId(input.reference);
+                prefix.add("replace", Codec.BOOL.encodeStart(ops, input.replace));
                 prefix.add("target", TagEntry.CODEC.encodeStart(ops, input.target));
                 if (((TagEntryAccessor) input.target).isTag()) {
                     prefix.add("block", Identifier.CODEC.encodeStart(ops, block));
