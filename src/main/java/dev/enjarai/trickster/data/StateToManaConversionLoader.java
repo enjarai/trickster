@@ -148,7 +148,12 @@ public class StateToManaConversionLoader extends CompleteJsonDataLoader implemen
 
             @Override
             public <T> DataResult<ConversionData> decode(DynamicOps<T> ops, MapLike<T> input) {
-                boolean replace = Codec.BOOL.parse(ops, input.get("replace")).getOrThrow();
+                T replaceOp = input.get("replace");
+                boolean replace = false;
+                if (replaceOp != null) {
+                    replace = Codec.BOOL.parse(ops, input.get("replace")).getOrThrow();
+                }
+
                 Identifier identifier = Identifier.CODEC.parse(ops, input.get("identifier")).getOrThrow();
 
                 TagEntry target;
