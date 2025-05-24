@@ -1,5 +1,6 @@
 {
   "block": "minecraft:cave_vines_plant",
+  "replace": false,
   "rules": [
     {
       "mana": 16.0,

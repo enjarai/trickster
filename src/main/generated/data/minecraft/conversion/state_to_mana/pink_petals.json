@@ -1,4 +1,5 @@
 {
+  "replace": false,
   "rules": [
     {
       "mana": 1.0,

@@ -1,5 +1,6 @@
 {
   "block": "minecraft:rose_bush",
+  "replace": false,
   "rules": [
     {
       "mana": 8.0

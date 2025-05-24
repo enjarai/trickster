@@ -1,5 +1,6 @@
 {
   "block": "minecraft:acacia_leaves",
+  "replace": false,
   "rules": [
     {
       "mana": 7.12
