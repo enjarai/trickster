@@ -251,6 +251,8 @@ trickster:
     push_mana: 善流之技巧
     pull_mana: 恶流之技巧
 
+    drain_matter: 栽培师之技巧
+
     message_send: 派遣之技巧
     message_listen: 收据之技巧
 
