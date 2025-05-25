@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "rules": [
+    {
+      "mana": 4.0
+    }
+  ],
+  "target": "minecraft:pumpkin_stem"
+}

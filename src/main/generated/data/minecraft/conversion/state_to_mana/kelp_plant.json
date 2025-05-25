@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "rules": [
+    {
+      "mana": 2.0
+    }
+  ],
+  "target": "minecraft:kelp_plant"
+}

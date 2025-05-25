@@ -1,1 +1,1 @@
-- Changed the serialization format of spell executors to be significantly more compact. This should hopefully prevent a multitude of errors resulting from overweight nbt elements and memory issues. (@enjarai)
+- Added a method of actively generating mana. (@aurakle and @Awakened-Redstone and @enjarai)

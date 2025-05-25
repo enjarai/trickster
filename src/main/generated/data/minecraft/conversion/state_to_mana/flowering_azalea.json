@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "rules": [
+    {
+      "mana": 6.1
+    }
+  ],
+  "target": "minecraft:flowering_azalea"
+}
