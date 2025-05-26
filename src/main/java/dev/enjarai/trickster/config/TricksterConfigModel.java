@@ -40,11 +40,11 @@ public class TricksterConfigModel {
 
     @Sync(Option.SyncMode.OVERRIDE_CLIENT)
     @PredicateConstraint("requirePositive")
-    public float whorlRechargeRate = 1.0f;
+    public float whorlRechargeRate = 0.5f;
 
     @Sync(Option.SyncMode.OVERRIDE_CLIENT)
     @PredicateConstraint("requirePositive")
-    public float whorlMaxMana = 256.0f;
+    public float whorlMaxMana = 512.0f;
 
     @Sync(Option.SyncMode.OVERRIDE_CLIENT)
     @PredicateConstraint("requirePositive")

@@ -1,1 +1,2 @@
 - Fixed Knot creation always requiring a small amount of mana. (@enjarai)
+- Nerfed Amethyst Whorl significantly. (@enjarai)
