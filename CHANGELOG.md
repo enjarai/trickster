@@ -3,6 +3,7 @@
 - Fixed Knot creation always requiring a small amount of mana. (@enjarai)
 - Added the ability to access block casters' inventories using a "caster" slot reference. (@aurakle)
 - Nerfed Amethyst Whorl significantly. (@enjarai)
+- Set mana capacity tooltip to always show regardless of settings. (@enjarai)
 - "Fixed" small issues with Zalgo fragments. (@enjarai)
 - Fixed spell slots and bars disappearing when changing dimensions. (@enjarai)
 - Fixed boots spell sound being annoying, this is pending a better refactor though. (@enjarai)
