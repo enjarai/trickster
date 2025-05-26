@@ -23,7 +23,7 @@ public class TricksterConfigModel {
     public boolean invertTopHatScrolling = false;
 
     @Sync(Option.SyncMode.INFORM_SERVER)
-    public boolean revealToHotbar = true;
+    public boolean revealToHotbar = false;
 
     @SectionHeader("server")
 

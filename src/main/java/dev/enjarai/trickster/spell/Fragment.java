@@ -2,6 +2,9 @@ package dev.enjarai.trickster.spell;
 
 import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.Trickster;
+import dev.enjarai.trickster.item.ModItems;
+import dev.enjarai.trickster.item.component.FragmentComponent;
+import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.execution.SerializedSpellInstruction;
 import dev.enjarai.trickster.spell.execution.SpellInstructionType;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
@@ -13,6 +16,7 @@ import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.format.bytebuf.ByteBufDeserializer;
 import io.wispforest.endec.format.bytebuf.ByteBufSerializer;
 import io.wispforest.owo.serialization.endec.MinecraftEndecs;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.text.HoverEvent;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
@@ -64,6 +68,15 @@ public non-sealed interface Fragment extends EvaluationResult, SpellInstruction 
 
     default Text asFormattedText() {
         var text = type().color().isPresent() ? asText().copy().withColor(type().color().getAsInt()) : asText().copy();
+
+        var hoverStack = ModItems.SCROLL_AND_QUILL.getDefaultStack();
+        hoverStack.set(DataComponentTypes.ITEM_NAME, text.copy());
+        hoverStack.set(ModComponents.FRAGMENT, new FragmentComponent(new SpellPart(this)));
+        text.styled(s -> s.withHoverEvent(new HoverEvent(
+                HoverEvent.Action.SHOW_ITEM,
+                new HoverEvent.ItemStackContent(hoverStack)
+        )));
+
         var siblings = text.getSiblings();
         var size = siblings.size();
         var newSiblings = new ArrayList<>(siblings).subList(0, Math.min(size, 100));

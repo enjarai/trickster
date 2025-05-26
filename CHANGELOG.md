@@ -1,3 +1,5 @@
+- Made fragments rendered as text display their full render when hovered. (@enjarai)
+- Made spells with no subcircles render bigger in tooltips. (@enjarai)
 - Fixed Knot creation always requiring a small amount of mana. (@enjarai)
 - Added the ability to access block casters' inventories using a "caster" slot reference. (@aurakle)
 - Nerfed Amethyst Whorl significantly. (@enjarai)
