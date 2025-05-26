@@ -85,7 +85,7 @@ public record ZalgoFragment(int index) implements Fragment {
 
     @Override
     public int hashCode() {
-        return RANDOM.nextInt();
+        return SILLIES.get(index).hashCode();
     }
 
     @Override

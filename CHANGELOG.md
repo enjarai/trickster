@@ -1,2 +1,4 @@
 - Fixed Knot creation always requiring a small amount of mana. (@enjarai)
 - Nerfed Amethyst Whorl significantly. (@enjarai)
+- "Fixed" small issues with Zalgo fragments. (@enjarai)
+- Fixed spell slots and bars disappearing when changing dimensions. (@enjarai)

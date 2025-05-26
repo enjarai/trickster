@@ -21,10 +21,12 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
+import net.minecraft.world.World;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
@@ -37,8 +39,9 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
     private final PlayerEntity player;
     private PlayerSpellExecutionManager executionManager;
     private PlayerSpellExecutionManager collarExecutionManager;
-    private Int2ObjectMap<RunningSpellData> runningSpellData = new Int2ObjectOpenHashMap<>();
+    private final Int2ObjectMap<RunningSpellData> runningSpellData = new Int2ObjectOpenHashMap<>();
     private int lastSentSpellDataHash;
+    private RegistryKey<World> lastPlayerWorld;
     private int wait;
 
     public static final Endec<Map<Integer, RunningSpellData>> SPELL_DATA_ENDEC = Endec.map(
@@ -126,8 +129,10 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
         if (player != this.player) return false;
 
         var hash = runningSpellData.hashCode();
-        if (hash != lastSentSpellDataHash) {
+        var worldKey = player.getWorld().getRegistryKey();
+        if (hash != lastSentSpellDataHash || worldKey != lastPlayerWorld) {
             lastSentSpellDataHash = hash;
+            lastPlayerWorld = worldKey;
             return true;
         }
         return false;
