@@ -164,6 +164,10 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
         return executionManager.queueAndCast(new PlayerSpellSource((ServerPlayerEntity) player, executionManager), spell, arguments, poolOverride);
     }
 
+    public SpellQueueResult queueSpellAndCastSilently(SpellPart spell, List<Fragment> arguments, Optional<MutableManaPool> poolOverride) {
+        return executionManager.queueAndCast(new PlayerSpellSource((ServerPlayerEntity) player, executionManager), spell, arguments, poolOverride);
+    }
+
     public void killAll() {
         executionManager.killAll();
         //        collarExecutionManager.killAll();

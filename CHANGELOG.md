@@ -2,3 +2,4 @@
 - Nerfed Amethyst Whorl significantly. (@enjarai)
 - "Fixed" small issues with Zalgo fragments. (@enjarai)
 - Fixed spell slots and bars disappearing when changing dimensions. (@enjarai)
+- Fixed boots spell sound being annoying, this is pending a better refactor though. (@enjarai)
