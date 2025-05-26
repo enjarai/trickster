@@ -97,6 +97,10 @@ public non-sealed interface Fragment extends EvaluationResult, SpellInstruction 
         return equals(other);
     }
 
+    default int fuzzyHash() {
+        return hashCode();
+    }
+
     default EvaluationResult activateAsGlyph(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         return this;
     }

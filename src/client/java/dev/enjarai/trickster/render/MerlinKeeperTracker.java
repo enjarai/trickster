@@ -98,28 +98,26 @@ public class MerlinKeeperTracker implements TooltipAppender {
                 );
             }
 
-            if (type.isAdvanced()) {
-                float current = pool.get(world);
-                float max = pool.getMax(world);
-                var currentUnit = Unit.getGandalfUnit(current);
-                var maxUnit = Unit.getGandalfUnit(max);
+            float current = pool.get(world);
+            float max = pool.getMax(world);
+            var currentUnit = Unit.getGandalfUnit(current);
+            var maxUnit = Unit.getGandalfUnit(max);
 
+            tooltip.add(
+                    Text.translatable(
+                            Trickster.MOD_ID + ".gandalf.stored",
+                            ("%.1f " + currentUnit.shortName() + " / %.1f " + maxUnit.shortName())
+                                    .formatted(currentUnit.correct(current), maxUnit.correct(max))
+                    )
+                            .styled(s -> s.withColor(0xaaaabb))
+            );
+
+            if (pool instanceof SharedManaPool shared && MinecraftClient.getInstance().world != null) {
                 tooltip.add(
-                        Text.translatable(
-                                Trickster.MOD_ID + ".gandalf.stored",
-                                ("%.1f " + currentUnit.shortName() + " / %.1f " + maxUnit.shortName())
-                                        .formatted(currentUnit.correct(current), maxUnit.correct(max))
-                        )
-                                .styled(s -> s.withColor(0xaaaabb))
+                        Text
+                                .literal(shared.uuid().toString())
+                                .setStyle(Style.EMPTY.withFormatting(Formatting.LIGHT_PURPLE))
                 );
-
-                if (pool instanceof SharedManaPool shared && MinecraftClient.getInstance().world != null) {
-                    tooltip.add(
-                            Text
-                                    .literal(shared.uuid().toString())
-                                    .setStyle(Style.EMPTY.withFormatting(Formatting.LIGHT_PURPLE))
-                    );
-                }
             }
         }
     }

@@ -13,6 +13,7 @@ import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
+import dev.enjarai.trickster.util.FuzzyUtils;
 import dev.enjarai.trickster.util.SpellUtils;
 import io.netty.buffer.ByteBuf;
 import io.wispforest.endec.SerializationContext;
@@ -183,15 +184,35 @@ public final class SpellPart implements Fragment {
     @Override
     public boolean equals(Object obj) {
         if (obj == this) return true;
-        if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (SpellPart) obj;
-        return Objects.equals(this.glyph, that.glyph) &&
-                Objects.equals(this.subParts, that.subParts);
+
+        if (obj instanceof SpellPart that) {
+            return Objects.equals(this.glyph, that.glyph)
+                    && Objects.equals(this.subParts, that.subParts);
+        }
+
+        return false;
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(glyph, subParts);
+    }
+
+    @Override
+    public boolean fuzzyEquals(Fragment other) {
+        if (other == this) return true;
+
+        if (other instanceof SpellPart that) {
+            return this.glyph.fuzzyEquals(that.glyph)
+                    && FuzzyUtils.fuzzyEquals(this.subParts, that.subParts);
+        }
+
+        return false;
+    }
+
+    @Override
+    public int fuzzyHash() {
+        return Objects.hash(this.glyph.fuzzyHash(), FuzzyUtils.fuzzyHash(this.subParts));
     }
 
     @Override

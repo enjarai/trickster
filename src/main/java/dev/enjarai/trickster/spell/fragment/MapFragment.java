@@ -8,6 +8,7 @@ import dev.enjarai.trickster.spell.PatternGlyph;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.execution.executor.FoldingSpellExecutor;
+import dev.enjarai.trickster.util.FuzzyUtils;
 import io.vavr.Tuple2;
 import io.vavr.collection.HashMap;
 import io.wispforest.endec.Endec;
@@ -61,10 +62,18 @@ public record MapFragment(HashMap<Fragment, Fragment> map) implements FoldableFr
         return new MapFragment(map.map((key, value) -> new Tuple2<>(key.applyEphemeral(), value.applyEphemeral())));
     }
 
-    public HashMap<Pattern, SpellPart> getMacroMap() {
-        return map.filter((key, value) -> key instanceof PatternGlyph && value instanceof SpellPart)
-                .mapKeys(k -> ((PatternGlyph) k).pattern())
-                .mapValues(SpellPart.class::cast);
+    @Override
+    public boolean fuzzyEquals(Fragment other) {
+        if (other instanceof MapFragment that) {
+            return FuzzyUtils.fuzzyEquals(this.map, that.map);
+        }
+
+        return false;
+    }
+
+    @Override
+    public int fuzzyHash() {
+        return FuzzyUtils.fuzzyHash(map);
     }
 
     @Override
@@ -82,5 +91,11 @@ public record MapFragment(HashMap<Fragment, Fragment> map) implements FoldableFr
 
     public MapFragment mergeWith(MapFragment other) {
         return new MapFragment(map.merge(other.map));
+    }
+
+    public HashMap<Pattern, SpellPart> getMacroMap() {
+        return map.filter((key, value) -> key instanceof PatternGlyph && value instanceof SpellPart)
+                .mapKeys(k -> ((PatternGlyph) k).pattern())
+                .mapValues(SpellPart.class::cast);
     }
 }
