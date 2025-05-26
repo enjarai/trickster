@@ -27,7 +27,7 @@ public class StateToManaConversionGenerator extends StateToManaConversionProvide
         getOrCreateConversion(BlockTags.LEAVES, Blocks.ACACIA_LEAVES).add(7.12f); // this is for the sake of Evelyn's suffering
         getOrCreateConversion(BlockTags.CAVE_VINES, Blocks.CAVE_VINES_PLANT).add(16, new Value<>(Properties.BERRIES, true)).add(4);
         getOrCreateConversion(BlockTags.SMALL_FLOWERS, Blocks.POPPY).add(4);
-        getOrCreateConversion(BlockTags.TALL_FLOWERS, Blocks.ROSE_BUSH).add(8);
+        //        getOrCreateConversion(BlockTags.TALL_FLOWERS, Blocks.ROSE_BUSH).add(8);
 
         //region Misc
         getOrCreateConversion(Blocks.MELON).add(24);
