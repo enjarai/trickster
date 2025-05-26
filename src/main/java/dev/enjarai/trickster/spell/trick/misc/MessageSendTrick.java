@@ -32,7 +32,7 @@ public class MessageSendTrick extends Trick<MessageSendTrick> {
 
     public Fragment channel(SpellContext ctx, Fragment value, SlotFragment slot) throws BlunderException {
         var stack = slot.reference(this, ctx);
-        var range = ctx.source().getPos().distance(slot.getSourcePos(this, ctx));
+        var range = ctx.source().getPos().distance(slot.getSourceOrCasterPos(this, ctx));
         var item = stack.getItem();
 
         if (item instanceof ChannelItem channelItem) {

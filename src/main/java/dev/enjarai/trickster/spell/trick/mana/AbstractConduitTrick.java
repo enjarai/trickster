@@ -24,7 +24,7 @@ public abstract class AbstractConduitTrick extends Trick<AbstractConduitTrick> {
         float result = 0;
 
         for (var slot : slots) {
-            var distance = ctx.source().getPos().distance(slot.getSourcePos(this, ctx));
+            var distance = ctx.source().getPos().distance(slot.getSourceOrCasterPos(this, ctx));
             float r = Trickster.CONFIG.manaTransferEfficiency();
             double tax = Math.max(0, 1 - r / (distance + r - 16));
             result += affect(ctx, slot.reference(this, ctx), (float) limit, tax);

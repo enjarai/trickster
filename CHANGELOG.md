@@ -1,4 +1,5 @@
 - Fixed Knot creation always requiring a small amount of mana. (@enjarai)
+- Added the ability to access block casters' inventories using a "caster" slot reference. (@aurakle)
 - Nerfed Amethyst Whorl significantly. (@enjarai)
 - "Fixed" small issues with Zalgo fragments. (@enjarai)
 - Fixed spell slots and bars disappearing when changing dimensions. (@enjarai)

@@ -6,6 +6,7 @@ import dev.enjarai.trickster.spell.fragment.SlotFragment;
 import dev.enjarai.trickster.spell.mana.MutableManaPool;
 import dev.enjarai.trickster.spell.mana.generation.ManaHandler;
 import net.minecraft.entity.Entity;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -23,6 +24,10 @@ public interface SpellSource {
     }
 
     default Optional<Entity> getCaster() {
+        return Optional.empty();
+    }
+
+    default Optional<Inventory> getInventory() {
         return Optional.empty();
     }
 
