@@ -47,7 +47,7 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
                         source.map(either -> {
                             var mapped = either
                                     .mapLeft(blockPos -> "%d, %d, %d".formatted(blockPos.getX(), blockPos.getY(), blockPos.getZ()))
-                                    .mapRight(uuid -> uuid.toString());
+                                    .mapRight(UUID::toString);
                             return mapped.right().orElseGet(() -> mapped.left().get());
                         }).orElse("caster")
                 )
@@ -211,26 +211,21 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
     }
 
     private float getMoveCost(Trick<?> trickSource, SpellContext ctx, Vector3dc pos, int amount) throws BlunderException {
-        var sourcePos = source.map(s -> {
-            if (s.left().isPresent()) {
-                return s.left().get().toCenterPos();
-            } else {
-                if (ctx.source().getWorld().getEntity(s.right().get()) instanceof Entity entity)
-                    return entity.getBlockPos().toCenterPos();
-                else throw new EntityInvalidBlunder(trickSource);
-            }
-        }).orElseGet(() -> ctx.source().getBlockPos().toCenterPos()).toVector3d();
-
-        return (float) (pos.distance(sourcePos) * amount * 0.5);
+        return source
+                .map(s -> {
+                    if (s.left().isPresent()) {
+                        return s.left().get().toCenterPos();
+                    } else {
+                        if (ctx.source().getWorld().getEntity(s.right().get()) instanceof Entity entity)
+                            return entity.getBlockPos().toCenterPos();
+                        else throw new EntityInvalidBlunder(trickSource);
+                    }
+                })
+                .map(sourcePos -> (float) (pos.distance(sourcePos.toVector3d()) * amount * 0.5))
+                .orElse(0f);
     }
 
-    private class BridgedSlotHolder implements SlotHolderDuck {
-        private Inventory inv;
-
-        public BridgedSlotHolder(Inventory inv) {
-            this.inv = inv;
-        }
-
+    private record BridgedSlotHolder(Inventory inv) implements SlotHolderDuck {
         @Override
         public int trickster$slot_holder$size() {
             return inv.size();

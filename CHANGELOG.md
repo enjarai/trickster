@@ -1,1 +1,1 @@
-- Added a method of actively generating mana. (@aurakle and @Awakened-Redstone and @enjarai)
+- Fixed Knot creation always requiring a small amount of mana. (@enjarai)
