@@ -1,3 +1,5 @@
+- Made fragments rendered as text display their full render when hovered. (@enjarai)
+- Made spells with no subcircles render bigger in tooltips. (@enjarai)
 - Fixed Knot creation always requiring a small amount of mana. (@enjarai)
 - Nerfed Amethyst Whorl significantly. (@enjarai)
 - "Fixed" small issues with Zalgo fragments. (@enjarai)

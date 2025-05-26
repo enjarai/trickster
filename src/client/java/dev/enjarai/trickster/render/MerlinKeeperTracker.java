@@ -45,7 +45,6 @@ public class MerlinKeeperTracker implements TooltipAppender {
         }
     }
 
-    @SuppressWarnings("resource")
     public float getUsage(ItemStack stack) {
         if (MinecraftClient.getInstance().player != null) {
             var inventory = MinecraftClient.getInstance().player.getInventory();
@@ -59,7 +58,6 @@ public class MerlinKeeperTracker implements TooltipAppender {
         return 0;
     }
 
-    @SuppressWarnings("resource")
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         var world = MinecraftClient.getInstance().world;
         var usage = getUsage(stack);
