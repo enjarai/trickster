@@ -5,6 +5,6 @@
 - Nerfed Amethyst Whorl significantly. (@enjarai)
 - Fixed filters being required for entity targeting ingresses. (@aurakle)
 - Set mana capacity tooltip to always show regardless of settings. (@enjarai)
-- "Fixed" small issues with Zalgo fragments. (@enjarai)
+- Fixed issues with zalgo fragments. (@aurakle)
 - Fixed spell slots and bars disappearing when changing dimensions. (@enjarai)
 - Fixed boots spell sound being annoying, this is pending a better refactor though. (@enjarai)

@@ -13,8 +13,14 @@ public class FuzzyUtils {
         return true;
     }
 
-    public static <T1 extends Fragment, T2 extends Fragment, T3 extends Fragment, T4 extends Fragment> boolean fuzzyEquals(io.vavr.collection.HashMap<T1, T2> a, io.vavr.collection.HashMap<T3, T4> b) {
-        return a.equals(b); //TODO: implement
+    public static <K extends Fragment, V extends Fragment> boolean fuzzyEquals(io.vavr.collection.HashMap<K, V> a, io.vavr.collection.HashMap<K, V> b) {
+        if (a.size() != b.size()) return false;
+
+        for (var kv : a) {
+            if (!b.get(kv._1).map(v -> kv._2.fuzzyEquals(v)).getOrElse(() -> false)) return false;
+        }
+
+        return true;
     }
 
     public static <T extends Fragment> int fuzzyHash(java.util.List<T> items) {
@@ -28,6 +34,12 @@ public class FuzzyUtils {
     }
 
     public static <T1 extends Fragment, T2 extends Fragment> int fuzzyHash(io.vavr.collection.HashMap<T1, T2> map) {
-        return map.hashCode(); //TODO: implement
+        int result = 0;
+
+        for (var kv : map) {
+            result += kv._1.fuzzyHash() + kv._2.fuzzyHash();
+        }
+
+        return result;
     }
 }
