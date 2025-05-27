@@ -1,2 +1,1 @@
-- Fixed Echo Knots creating excessive packet spam. (@enjarai)
-- Fixed a silly mana dupe. (@enjarai)
+- Removed chat tooltips due to stability issues. (@aurakle)

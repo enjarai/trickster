@@ -69,13 +69,13 @@ public non-sealed interface Fragment extends EvaluationResult, SpellInstruction 
     default Text asFormattedText() {
         var text = type().color().isPresent() ? asText().copy().withColor(type().color().getAsInt()) : asText().copy();
 
-        var hoverStack = ModItems.SCROLL_AND_QUILL.getDefaultStack();
-        hoverStack.set(DataComponentTypes.ITEM_NAME, text.copy());
-        hoverStack.set(ModComponents.FRAGMENT, new FragmentComponent(new SpellPart(this)));
-        text.styled(s -> s.withHoverEvent(new HoverEvent(
-                HoverEvent.Action.SHOW_ITEM,
-                new HoverEvent.ItemStackContent(hoverStack)
-        )));
+        // var hoverStack = ModItems.SCROLL_AND_QUILL.getDefaultStack();
+        // hoverStack.set(DataComponentTypes.ITEM_NAME, text.copy());
+        // hoverStack.set(ModComponents.FRAGMENT, new FragmentComponent(new SpellPart(this)));
+        // text.styled(s -> s.withHoverEvent(new HoverEvent(
+        //         HoverEvent.Action.SHOW_ITEM,
+        //         new HoverEvent.ItemStackContent(hoverStack)
+        // )));
 
         var siblings = text.getSiblings();
         var size = siblings.size();
