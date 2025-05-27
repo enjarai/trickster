@@ -98,6 +98,7 @@ public class ModItems {
 
     public static final WrittenScrollItem[] COLORED_WRITTEN_SCROLLS = new WrittenScrollItem[DyeColor.values().length];
     public static final ScrollAndQuillItem[] COLORED_SCROLLS_AND_QUILLS = new ScrollAndQuillItem[DyeColor.values().length];
+    public static final WandItem[] COLORED_WANDS = new WandItem[DyeColor.values().length];
     public static final List<DyedVariant> DYED_VARIANTS;
 
     static {
@@ -118,6 +119,13 @@ public class ModItems {
                             .component(ModComponents.FRAGMENT, new FragmentComponent(new SpellPart())), writtenScroll));
             list.add(new DyedVariant(SCROLL_AND_QUILL, scrollAndQuill, color));
             COLORED_SCROLLS_AND_QUILLS[i] = scrollAndQuill;
+
+            var wand = register("wand_" + color.getName(),
+                    new WandItem(new Item.Settings().maxCount(1)
+                            .component(ModComponents.FRAGMENT, new FragmentComponent(new SpellPart()))));
+            list.add(new DyedVariant(WAND, wand, color));
+            COLORED_WANDS[i] = wand;
+
         }
         DYED_VARIANTS = list.build();
     }
@@ -134,6 +142,7 @@ public class ModItems {
                 entries.add(WITCH_HAT);
                 entries.add(FEZ);
                 entries.add(WAND);
+                entries.addAll(Arrays.stream(COLORED_WANDS).map(ItemStack::new).toList());
                 entries.add(AMETHYST_WHORL);
                 entries.add(COLLAR);
                 entries.add(LEASH);
