@@ -238,6 +238,7 @@ trickster:
     draw_spell: Marketer's Ploy
     draw_line: Artist's Ploy
     get_flecks: Observer's Ingress
+    delete_fleck: Orwell's Ploy
 
     get_scale: Ingress of Occupation
     set_scale: Ploy of Occupation

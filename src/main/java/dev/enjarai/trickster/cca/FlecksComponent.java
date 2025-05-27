@@ -48,8 +48,14 @@ public class FlecksComponent implements ServerTickingComponent, ClientTickingCom
     }
 
     @Override
+    public boolean shouldSyncWith(ServerPlayerEntity player) {
+        return player == this.player;
+    }
+
+    @Override
     public void applySyncPacket(RegistryByteBuf buf) {
         var map = buf.read(FLECKS_ENDEC);
+        flecks.clear();
         flecks.putAll(map);
     }
 
@@ -62,12 +68,21 @@ public class FlecksComponent implements ServerTickingComponent, ClientTickingCom
         markDirty();
     }
 
+    public void removeFleck(int id) {
+        flecks.remove(id);
+        markDirty();
+    }
+
     public List<FleckPair> getRenderFlecks() {
-       return clientFlecks.int2ObjectEntrySet().stream().map(e -> {
-           var current = e.getValue();
-           var old = prevClientFlecks.get(e.getIntKey());
-           return new FleckPair(e.getIntKey(), current.fleck(), old == null ? null : old.fleck());
-       }).toList();
+        return clientFlecks.int2ObjectEntrySet().stream().map(e -> {
+            var current = e.getValue();
+            var old = prevClientFlecks.get(e.getIntKey());
+            return new FleckPair(e.getIntKey(), current.fleck(), old == null ? null : old.fleck());
+        }).toList();
+    }
+
+    public Int2ObjectMap<FleckEntry> getFlecks() {
+        return flecks;
     }
 
     private void markDirty() {
@@ -85,7 +100,7 @@ public class FlecksComponent implements ServerTickingComponent, ClientTickingCom
     }
 
     private void commonTick() {
-        for (var iterator = flecks.int2ObjectEntrySet().iterator(); iterator.hasNext(); ) {
+        for (var iterator = flecks.int2ObjectEntrySet().iterator(); iterator.hasNext();) {
             var entry = iterator.next();
             var life = entry.getValue().life();
             var fleck = entry.getValue().fleck;
@@ -107,7 +122,7 @@ public class FlecksComponent implements ServerTickingComponent, ClientTickingCom
         commonTick();
     }
 
-    private record FleckEntry(Fleck fleck, int life) {
+    public record FleckEntry(Fleck fleck, int life) {
         public static final Endec<FleckEntry> ENDEC = StructEndecBuilder.of(
                 Fleck.ENDEC.fieldOf("fleck", FleckEntry::fleck),
                 Endec.INT.fieldOf("life", FleckEntry::life),
@@ -115,6 +130,6 @@ public class FlecksComponent implements ServerTickingComponent, ClientTickingCom
         );
     }
 
-    public record FleckPair(int id, Fleck current, @Nullable Fleck old) {}
+    public record FleckPair(int id, Fleck current, @Nullable Fleck old) {
+    }
 }
-

@@ -33,7 +33,14 @@ public abstract class AbstractFleckTrick<T extends AbstractFleckTrick<T>> extend
     }
 
     protected Fragment display(SpellContext ctx, NumberFragment id, Fleck fleck, Optional<List<EntityFragment>> targets) {
-        var players = targets
+        var players = getPlayersInRangeOrTargets(ctx, targets);
+
+        players.forEach(player -> player.getComponent(ModEntityComponents.FLECKS).addFleck(id.asInt(), fleck));
+        return id;
+    }
+
+    protected Stream<PlayerEntity> getPlayersInRangeOrTargets(SpellContext ctx, Optional<List<EntityFragment>> targets) {
+        return targets
                 .map(List::stream)
                 .map(
                         stream -> stream
@@ -45,8 +52,7 @@ public abstract class AbstractFleckTrick<T extends AbstractFleckTrick<T>> extend
                 )
                 .orElseGet(() -> {
                     var pos = ctx.source().getPos();
-
-                    ArrayList<PlayerEntity> entities = new ArrayList<>();
+                    var entities = new ArrayList<PlayerEntity>();
                     ctx.source().getWorld().collectEntitiesByType(
                             EntityType.PLAYER, new Box(
                                     pos.x() - 64, pos.y() - 64, pos.z() - 64,
@@ -54,11 +60,7 @@ public abstract class AbstractFleckTrick<T extends AbstractFleckTrick<T>> extend
                             ),
                             e -> e.getPos().squaredDistanceTo(pos.x(), pos.y(), pos.z()) <= 64 * 64, entities
                     ); //find all the players within a 64 block sphere
-
                     return entities.stream();
                 });
-
-        players.forEach(player -> player.getComponent(ModEntityComponents.FLECKS).addFleck(id.asInt(), fleck));
-        return id;
     }
 }
