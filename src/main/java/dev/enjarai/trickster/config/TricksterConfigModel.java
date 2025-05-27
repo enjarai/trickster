@@ -21,6 +21,8 @@ public class TricksterConfigModel {
 
     public boolean topHatInterceptScrolling = false;
     public boolean invertTopHatScrolling = false;
+    public boolean allowScrollInSpellScreen = true;
+    public double keyZoomSpeed = 1.0;
 
     @Sync(Option.SyncMode.INFORM_SERVER)
     public boolean revealToHotbar = false;

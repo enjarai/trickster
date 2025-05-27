@@ -78,7 +78,6 @@ public class SpellPreviewComponent extends BaseComponent {
     public void mount(ParentComponent parent, int x, int y) {
         super.mount(parent, x, y);
 
-
         var loadButton = parent.childById(ButtonComponent.class, "load-button");
         if (loadButton != null) {
             loadButton.onPress(this::loadSpellToGame);
@@ -104,7 +103,8 @@ public class SpellPreviewComponent extends BaseComponent {
 
     @Override
     public boolean onMouseScroll(double mouseX, double mouseY, double amount) {
-        return wrapped.mouseScrolled(mouseX - width / 2d, mouseY - height / 2d, 0, amount);
+        wrapped.zoom(mouseX - width / 2d, mouseY - height / 2d, amount);
+        return true;
     }
 
     @Override

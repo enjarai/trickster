@@ -413,6 +413,8 @@ text.config.trickster-config:
     whorlRechargeRate: Whorl recharge rate in kG
     topHatInterceptScrolling: Offhand hat intercepts hotbar scrolling
     invertTopHatScrolling: Invert hat scrolling
+    allowScrollInSpellScreen: Allow scrolling to zoom while editing
+    keyZoomSpeed: Editor key zoom speed
     revealToHotbar: Write revealed values to action bar
     maxExecutionsPerSpellPerTick: Max operations per tick per spell
     allowSwapBedrock: Permit block swapping of bedrock
