@@ -8,7 +8,6 @@ import dev.enjarai.trickster.spell.mana.SharedManaPool;
 import net.minecraft.client.MinecraftClient;
 
 public class ClientUtils {
-    @SuppressWarnings("resource")
     public static void trySubscribe(ManaComponent manaComponent) {
         if (manaComponent.pool() instanceof SharedManaPool sharedPool &&
                 MinecraftClient.getInstance().world != null &&

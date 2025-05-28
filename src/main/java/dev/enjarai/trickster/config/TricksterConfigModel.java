@@ -21,9 +21,11 @@ public class TricksterConfigModel {
 
     public boolean topHatInterceptScrolling = false;
     public boolean invertTopHatScrolling = false;
+    public boolean allowScrollInSpellScreen = true;
+    public double keyZoomSpeed = 1.0;
 
     @Sync(Option.SyncMode.INFORM_SERVER)
-    public boolean revealToHotbar = true;
+    public boolean revealToHotbar = false;
 
     @SectionHeader("server")
 
@@ -40,11 +42,11 @@ public class TricksterConfigModel {
 
     @Sync(Option.SyncMode.OVERRIDE_CLIENT)
     @PredicateConstraint("requirePositive")
-    public float whorlRechargeRate = 1.0f;
+    public float whorlRechargeRate = 0.5f;
 
     @Sync(Option.SyncMode.OVERRIDE_CLIENT)
     @PredicateConstraint("requirePositive")
-    public float whorlMaxMana = 256.0f;
+    public float whorlMaxMana = 512.0f;
 
     @Sync(Option.SyncMode.OVERRIDE_CLIENT)
     @PredicateConstraint("requirePositive")

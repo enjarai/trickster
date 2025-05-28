@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.screen;
 
+import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.spell.SpellPart;
 import net.minecraft.client.gui.DrawContext;
@@ -19,8 +20,6 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
     public SpellPartWidget partWidget;
 
     private boolean hasLoaded = false;
-
-    static final double ZOOM_SPEED = 1.0;
 
     private double inputZ = 0;
 
@@ -107,7 +106,7 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
         super.render(context, mouseX, mouseY, delta);
 
         if (inputZ != 0.0) {
-            partWidget.mouseScrolled(mouseX, mouseY, 0.0, inputZ * ZOOM_SPEED * delta);
+            partWidget.zoom(mouseX, mouseY, inputZ * Trickster.CONFIG.keyZoomSpeed() * delta);
         }
     }
 

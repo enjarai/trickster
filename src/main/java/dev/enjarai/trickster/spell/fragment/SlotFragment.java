@@ -18,7 +18,6 @@ import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import io.wispforest.owo.serialization.endec.EitherEndec;
-import net.minecraft.entity.Entity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -47,7 +46,7 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
                         source.map(either -> {
                             var mapped = either
                                     .mapLeft(blockPos -> "%d, %d, %d".formatted(blockPos.getX(), blockPos.getY(), blockPos.getZ()))
-                                    .mapRight(uuid -> uuid.toString());
+                                    .mapRight(UUID::toString);
                             return mapped.right().orElseGet(() -> mapped.left().get());
                         }).orElse("caster")
                 )
@@ -91,11 +90,11 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
             var otherStack = other.getStack(trickSource, ctx);
             var stack = getStack(trickSource, ctx);
 
-            var movedOtherStack = other.move(trickSource, ctx, otherStack.getCount(), getSourcePos(trickSource, ctx));
+            var movedOtherStack = other.move(trickSource, ctx, otherStack.getCount(), getSourceOrCasterPos(trickSource, ctx));
             ItemStack movedStack;
 
             try {
-                movedStack = move(trickSource, ctx, stack.getCount(), other.getSourcePos(trickSource, ctx));
+                movedStack = move(trickSource, ctx, stack.getCount(), other.getSourceOrCasterPos(trickSource, ctx));
             } catch (Exception e) {
                 ctx.source().offerOrDropItem(movedOtherStack);
                 throw e;
@@ -151,7 +150,7 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
         return getStack(trickSource, ctx).getItem();
     }
 
-    public Vector3dc getSourcePos(Trick<?> trickSource, SpellContext ctx) {
+    public Optional<Vector3dc> getSourcePos(Trick<?> trickSource, SpellContext ctx) {
         return source
                 .map(either -> Either.unwrap(
                         either
@@ -160,12 +159,11 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
                                         .getEntity(ctx)
                                         .orElseThrow(() -> new UnknownEntityBlunder(trickSource))
                                         .getPos())))
-                .orElseGet(() -> ctx
-                        .source()
-                        .getPlayer()
-                        .orElseThrow(() -> new NoPlayerBlunder(trickSource))
-                        .getPos())
-                .toVector3d();
+                .map(v -> v.toVector3d());
+    }
+
+    public Vector3dc getSourceOrCasterPos(Trick<?> trickSource, SpellContext ctx) {
+        return getSourcePos(trickSource, ctx).orElseGet(() -> ctx.source().getPos());
     }
 
     private ItemStack getStack(Trick<?> trickSource, SpellContext ctx) throws BlunderException {
@@ -204,33 +202,19 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
                 else throw new EntityInvalidBlunder(trickSource);
             }
         }).orElseGet(
-                () -> ctx.source().getPlayer()
-                        .map(player -> new BridgedSlotHolder(player.getInventory()))
-                        .orElseThrow(() -> new NoPlayerBlunder(trickSource))
+                () -> ctx.source().getInventory()
+                        .map(inv -> new BridgedSlotHolder(inv))
+                        .orElseThrow(() -> new NoInventoryBlunder(trickSource))
         );
     }
 
     private float getMoveCost(Trick<?> trickSource, SpellContext ctx, Vector3dc pos, int amount) throws BlunderException {
-        var sourcePos = source.map(s -> {
-            if (s.left().isPresent()) {
-                return s.left().get().toCenterPos();
-            } else {
-                if (ctx.source().getWorld().getEntity(s.right().get()) instanceof Entity entity)
-                    return entity.getBlockPos().toCenterPos();
-                else throw new EntityInvalidBlunder(trickSource);
-            }
-        }).orElseGet(() -> ctx.source().getBlockPos().toCenterPos()).toVector3d();
-
-        return (float) (pos.distance(sourcePos) * amount * 0.5);
+        return getSourcePos(trickSource, ctx)
+                .map(sourcePos -> (float) (pos.distance(sourcePos) * amount * 0.5))
+                .orElse(0f);
     }
 
-    private class BridgedSlotHolder implements SlotHolderDuck {
-        private Inventory inv;
-
-        public BridgedSlotHolder(Inventory inv) {
-            this.inv = inv;
-        }
-
+    private record BridgedSlotHolder(Inventory inv) implements SlotHolderDuck {
         @Override
         public int trickster$slot_holder$size() {
             return inv.size();

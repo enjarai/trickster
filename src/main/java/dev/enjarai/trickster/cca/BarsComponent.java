@@ -7,8 +7,10 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.world.World;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
@@ -21,6 +23,7 @@ public class BarsComponent implements ServerTickingComponent, AutoSyncedComponen
     private final PlayerEntity player;
     private final Int2ObjectMap<Bar> bars = new Int2ObjectOpenHashMap<>();
     private int lastBarsHashcode;
+    private RegistryKey<World> lastPlayerWorld;
 
     public BarsComponent(PlayerEntity player) {
         this.player = player;
@@ -28,7 +31,7 @@ public class BarsComponent implements ServerTickingComponent, AutoSyncedComponen
 
     @Override
     public void serverTick() {
-        for (var iterator = bars.int2ObjectEntrySet().iterator(); iterator.hasNext(); ) {
+        for (var iterator = bars.int2ObjectEntrySet().iterator(); iterator.hasNext();) {
             var entry = iterator.next();
 
             if (entry.getValue().age >= STAY_FOR_TICKS) {
@@ -70,8 +73,10 @@ public class BarsComponent implements ServerTickingComponent, AutoSyncedComponen
         if (player != this.player) return false;
 
         var hash = bars.hashCode();
-        if (hash != lastBarsHashcode) {
+        var worldKey = player.getWorld().getRegistryKey();
+        if (hash != lastBarsHashcode || worldKey != lastPlayerWorld) {
             lastBarsHashcode = hash;
+            lastPlayerWorld = worldKey;
             return true;
         }
         return false;

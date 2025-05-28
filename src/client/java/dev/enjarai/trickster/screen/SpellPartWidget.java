@@ -210,21 +210,27 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
-        if (super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount)) {
+        if (super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount) || !Trickster.CONFIG.allowScrollInSpellScreen()) {
             return true;
         }
 
+        zoom(mouseX, mouseY, verticalAmount);
+
+        return true;
+    }
+
+    public void zoom(double mouseX, double mouseY, double amount) {
         var minZoom = toScaledSpace(windowHeight * 0.1);
 
         Vector2d scaledMouse = toScaledSpace(new Vector2d(mouseX, mouseY));
-        radius = Math.max(radius + verticalAmount * radius * ZOOM_SPEED, minZoom);
+        radius = Math.max(radius + amount * radius * ZOOM_SPEED, minZoom);
 
         if (radius > minZoom) {
-            position.add(new Vector2d(position).sub(scaledMouse).mul(verticalAmount * ZOOM_SPEED));
+            position.add(new Vector2d(position).sub(scaledMouse).mul(amount * ZOOM_SPEED));
         }
 
         var subRadius = toLocalSpace(spellPart.subRadius(radius));
-        if (verticalAmount > 0) {
+        if (amount > 0) {
             if (subRadius > windowHeight && (spellPart.glyph instanceof SpellPart || spellPart.partCount() > 0)) {
                 pushNewRoot(scaledMouse);
             }
@@ -233,8 +239,6 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
                 popOldRoot();
             }
         }
-
-        return true;
     }
 
     private void popOldRoot() {

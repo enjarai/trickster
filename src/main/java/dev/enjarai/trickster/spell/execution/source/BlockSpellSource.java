@@ -77,6 +77,11 @@ public class BlockSpellSource<T extends BlockEntity & Inventory & CrowMind> impl
     }
 
     @Override
+    public Optional<Inventory> getInventory() {
+        return Optional.of(blockEntity);
+    }
+
+    @Override
     public Fragment getCrowMind() {
         return blockEntity.getCrowMind();
     }

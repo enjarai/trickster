@@ -1,15 +1,11 @@
 package dev.enjarai.trickster.cca;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.Nullable;
+import org.ladysnake.cca.api.v3.component.ComponentProvider;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 
 import dev.enjarai.trickster.EndecTomfoolery;
@@ -25,14 +21,16 @@ import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.PersistentState;
+import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
-public class SharedManaComponent implements AutoSyncedComponent {
+public class SharedManaComponent implements AutoSyncedComponent, ServerTickingComponent {
     private static final KeyedEndec<Map<UUID, SimpleManaPool>> POOLS_ENDEC = new KeyedEndec<>("pools", Endec.map(EndecTomfoolery.UUID, SimpleManaPool.ENDEC), new HashMap<>());
 
     private final Map<UUID, SimpleManaPool> pools = new HashMap<>();
-    private final Map<UUID, List<UUID>> subscribers = new HashMap<>();
+    private final Map<UUID, Set<UUID>> subscribers = new HashMap<>();
     private final Scoreboard provider;
     private final Optional<MinecraftServer> server;
+    private final Set<UUID> syncWith = new HashSet<>();
 
     public SharedManaComponent(Scoreboard provider, @Nullable MinecraftServer server) {
         this.provider = provider;
@@ -51,12 +49,12 @@ public class SharedManaComponent implements AutoSyncedComponent {
 
     @Override
     public boolean shouldSyncWith(ServerPlayerEntity player) {
-        return subscribers.containsKey(player.getUuid()) && !subscribers.get(player.getUuid()).isEmpty();
+        return true; // subscribers.containsKey(player.getUuid()) && !subscribers.get(player.getUuid()).isEmpty();
     }
 
     @Override
     public void writeSyncPacket(RegistryByteBuf buf, ServerPlayerEntity player) {
-        var uuids = subscribers.get(player.getUuid());
+        var uuids = subscribers.getOrDefault(player.getUuid(), Set.of());
         buf.write(
                 POOLS_ENDEC.endec(), pools.entrySet()
                         .stream()
@@ -67,6 +65,7 @@ public class SharedManaComponent implements AutoSyncedComponent {
 
     @Override
     public void applySyncPacket(RegistryByteBuf buf) {
+        pools.clear();
         pools.putAll(buf.read(POOLS_ENDEC.endec()));
     }
 
@@ -76,7 +75,7 @@ public class SharedManaComponent implements AutoSyncedComponent {
         if (server.isPresent()) {
             final var finalPool = pool;
             pool = server.get().getOverworld().getPersistentStateManager().getOrCreate(
-                    new PersistentState.Type<PoolState>(
+                    new PersistentState.Type<>(
                             () -> new PoolState(finalPool),
                             PoolState::readNbt,
                             DataFixTypes.LEVEL
@@ -112,11 +111,39 @@ public class SharedManaComponent implements AutoSyncedComponent {
                 var subscriptions = subscribers.get(playerUuid);
 
                 if (subscriptions == null)
-                    subscriptions = new ArrayList<>();
+                    subscriptions = new HashSet<>();
 
                 subscriptions.add(uuid);
                 subscribers.put(playerUuid, subscriptions);
-                ModGlobalComponents.SHARED_MANA.sync(provider);
+                //noinspection UnstableApiUsage
+                ModGlobalComponents.SHARED_MANA.syncWith(player, (ComponentProvider) provider);
+            }
+        });
+    }
+
+    @Override
+    public void serverTick() {
+        //noinspection OptionalGetWithoutIsPresent
+        if (server.get().getOverworld().getTime() % 200 == 0) {
+            syncWith.addAll(subscribers.keySet());
+            subscribers.clear();
+        }
+
+        var playerManager = server.get().getPlayerManager();
+        for (var player : syncWith) {
+            var playerEntity = playerManager.getPlayer(player);
+            if (playerEntity != null) {
+                //noinspection UnstableApiUsage
+                ModGlobalComponents.SHARED_MANA.syncWith(playerEntity, (ComponentProvider) provider);
+            }
+        }
+        syncWith.clear();
+    }
+
+    public void markDirty(UUID knotUuid) {
+        subscribers.forEach((player, subscriptions) -> {
+            if (subscriptions.contains(knotUuid)) {
+                syncWith.add(player);
             }
         });
     }

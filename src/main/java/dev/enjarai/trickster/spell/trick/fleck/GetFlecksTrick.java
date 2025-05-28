@@ -28,9 +28,10 @@ public class GetFlecksTrick extends Trick<GetFlecksTrick> {
                                 .map(fragment -> fragment.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this)))
                                 .orElseGet(() -> ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this)))
                 )
-                        .getRenderFlecks()
-                        .stream()
-                        .<Fragment>map(fleck -> new NumberFragment(fleck.id()))
+                        .getFlecks()
+                        .keySet()
+                        .intStream()
+                        .<Fragment>mapToObj(NumberFragment::new)
                         .toList()
         );
     }

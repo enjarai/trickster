@@ -7,6 +7,7 @@ import dev.enjarai.trickster.spell.trick.basic.*;
 import dev.enjarai.trickster.spell.trick.block.*;
 import dev.enjarai.trickster.spell.trick.entity.*;
 import dev.enjarai.trickster.spell.trick.entity.query.*;
+import dev.enjarai.trickster.spell.trick.fleck.DeleteFleckTrick;
 import dev.enjarai.trickster.spell.trick.inventory.*;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
@@ -378,6 +379,7 @@ public class Tricks {
     public static final LineFleckTrick DRAW_LINE = register("draw_line", new LineFleckTrick());
     public static final SpellFleckTrick DRAW_SPELL = register("draw_spell", new SpellFleckTrick());
     public static final GetFlecksTrick GET_FLECKS = register("get_flecks", new GetFlecksTrick());
+    public static final DeleteFleckTrick DELETE_FLECK = register("delete_fleck", new DeleteFleckTrick());
 
     // Misc
     public static final TypeFragmentTrick TYPE_FRAGMENT = register("type_fragment", new TypeFragmentTrick());

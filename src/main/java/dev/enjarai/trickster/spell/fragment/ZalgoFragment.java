@@ -84,12 +84,26 @@ public record ZalgoFragment(int index) implements Fragment {
     }
 
     @Override
-    public int hashCode() {
-        return RANDOM.nextInt();
+    public boolean equals(Object obj) {
+        if (obj instanceof ZalgoFragment that) {
+            return this.index == that.index;
+        }
+
+        return false;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        return false;
+    public int hashCode() {
+        return SILLIES.get(index).hashCode();
+    }
+
+    @Override
+    public boolean fuzzyEquals(Fragment other) {
+        return other instanceof ZalgoFragment;
+    }
+
+    @Override
+    public int fuzzyHash() {
+        return RANDOM.nextInt();
     }
 }

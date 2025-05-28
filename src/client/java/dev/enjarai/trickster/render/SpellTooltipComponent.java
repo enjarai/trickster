@@ -40,7 +40,7 @@ public class SpellTooltipComponent implements TooltipComponent {
         var matrices = context.getMatrices();
         var vertexConsumers = context.getVertexConsumers();
         var delta = 0;
-        var size = 30f;
+        var size = spell.subParts.isEmpty() ? 50f : 30f;
 
         matrices.push();
         renderer.renderPart(

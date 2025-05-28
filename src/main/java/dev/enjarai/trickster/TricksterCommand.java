@@ -8,7 +8,6 @@ import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.FragmentComponent;
-import dev.enjarai.trickster.item.component.ManaComponent;
 import dev.enjarai.trickster.net.GrabClipboardSpellPacket;
 import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.spell.SpellPart;
@@ -39,6 +38,7 @@ public class TricksterCommand {
                 )
                 .then(literal("exportSpell")
                         .requires(ServerCommandSource::isExecutedByPlayer)
+                        .requires(s -> s.hasPermissionLevel(2))
                         .executes(TricksterCommand::exportSpell)
                 )
                 .then(literal("importSpell")
@@ -51,76 +51,63 @@ public class TricksterCommand {
                         .requires(s -> s.hasPermissionLevel(2))
                         .executes(TricksterCommand::fillKnot)
                 )
-                .then(literal("weight")
-                        .requires(s -> s.hasPermissionLevel(2))
-                        .then(argument("weight", DoubleArgumentType.doubleArg(0, 1))
-                                .executes(context -> TricksterCommand.setWeight(
-                                        context,
-                                        DoubleArgumentType.getDouble(context, "weight"),
-                                        List.of(context.getSource().getEntityOrThrow())
-                                ))
-                                .then(argument("target", EntityArgumentType.entities())
+                .then(literal("debug")
+                        .then(literal("weight")
+                                .requires(s -> s.hasPermissionLevel(2))
+                                .then(argument("weight", DoubleArgumentType.doubleArg(0, 1))
                                         .executes(context -> TricksterCommand.setWeight(
                                                 context,
                                                 DoubleArgumentType.getDouble(context, "weight"),
-                                                EntityArgumentType.getEntities(context, "target")
+                                                List.of(context.getSource().getEntityOrThrow())
                                         ))
+                                        .then(argument("target", EntityArgumentType.entities())
+                                                .executes(context -> TricksterCommand.setWeight(
+                                                        context,
+                                                        DoubleArgumentType.getDouble(context, "weight"),
+                                                        EntityArgumentType.getEntities(context, "target")
+                                                ))
+                                        )
                                 )
                         )
-                )
-                .then(literal("scale")
-                        .requires(s -> s.hasPermissionLevel(2))
-                        .then(argument("scale", DoubleArgumentType.doubleArg(0.0625, 8.0))
-                                .executes(context -> TricksterCommand.setScale(
-                                        context,
-                                        DoubleArgumentType.getDouble(context, "scale"),
-                                        List.of(context.getSource().getEntityOrThrow())
-                                ))
-                                .then(argument("target", EntityArgumentType.entities())
+                        .then(literal("scale")
+                                .requires(s -> s.hasPermissionLevel(2))
+                                .then(argument("scale", DoubleArgumentType.doubleArg(0.0625, 8.0))
                                         .executes(context -> TricksterCommand.setScale(
                                                 context,
                                                 DoubleArgumentType.getDouble(context, "scale"),
-                                                EntityArgumentType.getEntities(context, "target")
+                                                List.of(context.getSource().getEntityOrThrow())
                                         ))
+                                        .then(argument("target", EntityArgumentType.entities())
+                                                .executes(context -> TricksterCommand.setScale(
+                                                        context,
+                                                        DoubleArgumentType.getDouble(context, "scale"),
+                                                        EntityArgumentType.getEntities(context, "target")
+                                                ))
+                                        )
                                 )
                         )
-                )
-                .then(literal("teleport")
-                        .requires(s -> s.hasPermissionLevel(2))
-                        .then(argument("offset", Vec3ArgumentType.vec3())
-                                .executes(context -> TricksterCommand.teleport(
-                                        context,
-                                        Vec3ArgumentType.getVec3(context, "offset"),
-                                        List.of(context.getSource().getEntityOrThrow())
-                                ))
-                                .then(argument("target", EntityArgumentType.entities())
+                        .then(literal("teleport")
+                                .requires(s -> s.hasPermissionLevel(2))
+                                .then(argument("offset", Vec3ArgumentType.vec3())
                                         .executes(context -> TricksterCommand.teleport(
                                                 context,
                                                 Vec3ArgumentType.getVec3(context, "offset"),
-                                                EntityArgumentType.getEntities(context, "target")
+                                                List.of(context.getSource().getEntityOrThrow())
                                         ))
+                                        .then(argument("target", EntityArgumentType.entities())
+                                                .executes(context -> TricksterCommand.teleport(
+                                                        context,
+                                                        Vec3ArgumentType.getVec3(context, "offset"),
+                                                        EntityArgumentType.getEntities(context, "target")
+                                                ))
+                                        )
                                 )
                         )
+                        .then(literal("allSignatures")
+                                .requires(ServerCommandSource::isExecutedByPlayer)
+                                .executes(TricksterCommand::showAllSignatures)
+                        )
                 )
-                .then(literal("allSignatures")
-                        .requires(ServerCommandSource::isExecutedByPlayer)
-                        .executes(TricksterCommand::showAllSignatures)
-                )
-        //                .then(literal("curse")
-        //                        .requires(s -> {
-        //                            var player = s.getPlayer();
-        //                            if (player != null) {
-        //                                return Trickster.THE_MAKERS_OF_KIBTY.contains(player.getUuid());
-        //                            }
-        //                            return false;
-        //                        })
-        //                        .then(argument("target", EntityArgumentType.player())
-        //                                .executes(context -> TricksterCommand.curse(
-        //                                        context,
-        //                                        EntityArgumentType.getPlayer(context, "target")
-        //                                ))
-        //                        )
-        //                )
         );
     }
 

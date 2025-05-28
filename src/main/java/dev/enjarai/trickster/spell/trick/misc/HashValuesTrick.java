@@ -19,8 +19,7 @@ public class HashValuesTrick extends Trick<HashValuesTrick> {
     public Fragment run(SpellContext ctx, List<Fragment> args) throws BlunderException {
         return new NumberFragment(args.stream()
                 .map(Fragment::applyEphemeral)
-                .map(Fragment::hashCode)
+                .map(Fragment::fuzzyHash)
                 .reduce(0, Objects::hash));
     }
-
 }

@@ -17,6 +17,7 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import dev.enjarai.trickster.spell.mana.CachedInventoryManaPool;
@@ -53,6 +54,11 @@ public class PlayerSpellSource implements SpellSource {
     @Override
     public Optional<Entity> getCaster() {
         return Optional.of(player);
+    }
+
+    @Override
+    public Optional<Inventory> getInventory() {
+        return Optional.of(player.getInventory());
     }
 
     @Override

@@ -1,18 +1,16 @@
 package dev.enjarai.trickster.spell.fragment;
 
 import com.google.common.collect.ImmutableList;
-import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.SpellPart;
-import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.util.FuzzyUtils;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.execution.executor.FoldingSpellExecutor;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import net.minecraft.text.Text;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
@@ -58,8 +56,18 @@ public record ListFragment(List<Fragment> fragments) implements FoldableFragment
         return weight;
     }
 
-    public ListFragment addRange(ListFragment other) throws BlunderException {
-        return new ListFragment(ImmutableList.<Fragment>builder().addAll(fragments).addAll(other.fragments).build());
+    @Override
+    public boolean fuzzyEquals(Fragment other) {
+        if (other instanceof ListFragment that) {
+            return FuzzyUtils.fuzzyEquals(this.fragments, that.fragments);
+        }
+
+        return false;
+    }
+
+    @Override
+    public int fuzzyHash() {
+        return FuzzyUtils.fuzzyHash(fragments);
     }
 
     @Override
@@ -72,5 +80,9 @@ public record ListFragment(List<Fragment> fragments) implements FoldableFragment
 
         values.addAll(fragments.reversed());
         return new FoldingSpellExecutor(ctx, executable, identity, values, keys, this);
+    }
+
+    public ListFragment addRange(ListFragment other) throws BlunderException {
+        return new ListFragment(ImmutableList.<Fragment>builder().addAll(fragments).addAll(other.fragments).build());
     }
 }

@@ -29,12 +29,9 @@ import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
 
 public class SpellConstructBlockEntity extends BlockEntity implements SpellColoredBlockEntity, Inventory, CrowMind, SpellCastingBlockEntity {
-    public static final KeyedEndec<Fragment> CROW_MIND_ENDEC =
-            Fragment.ENDEC.keyed("crow_mind", () -> VoidFragment.INSTANCE);
-    public static final KeyedEndec<SpellExecutor> EXECUTOR_ENDEC =
-            SpellExecutor.ENDEC.nullableOf().keyed("executor", () -> null);
-    public static final KeyedEndec<SpellExecutor> EXECUTOR_NET_ENDEC =
-            SpellExecutor.NET_ENDEC.nullableOf().keyed("executor", () -> null);
+    public static final KeyedEndec<Fragment> CROW_MIND_ENDEC = Fragment.ENDEC.keyed("crow_mind", () -> VoidFragment.INSTANCE);
+    public static final KeyedEndec<SpellExecutor> EXECUTOR_ENDEC = SpellExecutor.ENDEC.nullableOf().keyed("executor", () -> null);
+    public static final KeyedEndec<SpellExecutor> EXECUTOR_NET_ENDEC = SpellExecutor.NET_ENDEC.nullableOf().keyed("executor", () -> null);
 
     public int age;
     public Fragment crowMind = VoidFragment.INSTANCE;
@@ -243,7 +240,7 @@ public class SpellConstructBlockEntity extends BlockEntity implements SpellColor
     @Override
     public void setCrowMind(Fragment fragment) {
         crowMind = fragment;
-        markDirtyAndUpdateClients();
+        markDirty();
     }
 
     @Override

@@ -42,7 +42,7 @@ public class ItemTriggerHelper {
 
         if (component != null) {
             var spell = component.value() instanceof SpellPart part ? part : new SpellPart(component.value());
-            ModEntityComponents.CASTER.get(player).queueSpellAndCast(spell, arguments, Optional.empty());
+            ModEntityComponents.CASTER.get(player).queueSpellAndCastSilently(spell, arguments, Optional.empty());
         }
     }
 }
