@@ -1,1 +1,4 @@
-- Possibly fixed a race condition that may or may not exist. (@aurakle)
+- Added additional config options to help prevent repetitive strain. (@enjarai)
+- Added a trick to delete flecks. (@enjarai)
+- Fixed the trick that lists all flecks to actually work. (@enjarai)
+- Made the `exportSpell` subcommand operator-only, since Cracked Echo Knots can now emulate its behaviour. (@enjarai)

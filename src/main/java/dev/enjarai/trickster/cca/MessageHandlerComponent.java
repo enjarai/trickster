@@ -40,25 +40,6 @@ public class MessageHandlerComponent implements ServerTickingComponent {
 
     @Override
     public void serverTick() {
-        // for (var listener : listeners) {
-        //     var result = new ArrayList<Fragment>();
-        //
-        //     for (var message : messages) {
-        //         if (message.key.match(listener.key)) {
-        //             result.add(message.value);
-        //         }
-        //     }
-        //
-        //     if (result.size() > 0) {
-        //         listener.consumer.accept(new ListFragment(result));
-        //     }
-        // }
-        //
-        // listeners.clear();
-        // messages.clear();
-    }
-
-    public void endTick() {
         for (var listener : listeners) {
             var result = new ArrayList<Fragment>();
 
