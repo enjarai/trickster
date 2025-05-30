@@ -89,6 +89,8 @@ public record FragmentComponent(Fragment value, Optional<Text> name, boolean imm
      * @return the new item stack, or empty if the item's fragment is immutable.
      */
     public static Optional<ItemStack> write(ItemStack stack, Fragment fragment, boolean closed, Optional<ServerPlayerEntity> player, Optional<Text> name) {
+        fragment = fragment.applyEphemeral();
+
         if (!FragmentComponent.setValue(stack, fragment, name, closed)) {
             return Optional.empty();
         }
