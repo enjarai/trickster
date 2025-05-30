@@ -101,6 +101,7 @@ import dev.enjarai.trickster.spell.trick.math.CeilTrick;
 import dev.enjarai.trickster.spell.trick.math.CosTrick;
 import dev.enjarai.trickster.spell.trick.math.DivideTrick;
 import dev.enjarai.trickster.spell.trick.math.FloorTrick;
+import dev.enjarai.trickster.spell.trick.math.LogTrick;
 import dev.enjarai.trickster.spell.trick.math.MaxTrick;
 import dev.enjarai.trickster.spell.trick.math.MinTrick;
 import dev.enjarai.trickster.spell.trick.math.ModuloTrick;
@@ -265,6 +266,7 @@ public class Tricks {
     public static final MaxTrick MAX = register("max", new MaxTrick());
     public static final MinTrick MIN = register("min", new MinTrick());
     public static final PowerTrick POWER = register("power", new PowerTrick());
+    public static final LogTrick LOG = register("ln", new LogTrick());
     public static final SqrtTrick SQRT = register("sqrt", new SqrtTrick());
     public static final SinTrick SIN = register("sin", new SinTrick());
     public static final CosTrick COS = register("cos", new CosTrick());
