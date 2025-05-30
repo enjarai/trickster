@@ -40,6 +40,25 @@ public class MessageHandlerComponent implements ServerTickingComponent {
 
     @Override
     public void serverTick() {
+        // for (var listener : listeners) {
+        //     var result = new ArrayList<Fragment>();
+        //
+        //     for (var message : messages) {
+        //         if (message.key.match(listener.key)) {
+        //             result.add(message.value);
+        //         }
+        //     }
+        //
+        //     if (result.size() > 0) {
+        //         listener.consumer.accept(new ListFragment(result));
+        //     }
+        // }
+        //
+        // listeners.clear();
+        // messages.clear();
+    }
+
+    public void endTick() {
         for (var listener : listeners) {
             var result = new ArrayList<Fragment>();
 
@@ -74,7 +93,7 @@ public class MessageHandlerComponent implements ServerTickingComponent {
 
     public static interface Key {
         boolean match(Key other);
-        
+
         public static record Channel(UUID uuid) implements Key {
             @Override
             public boolean match(Key other) {
