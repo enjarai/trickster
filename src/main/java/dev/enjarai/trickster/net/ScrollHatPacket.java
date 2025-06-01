@@ -32,11 +32,9 @@ public record ScrollHatPacket(float amount, boolean inGame) {
 
                 //noinspection DataFlowIssue
                 var name = container.stream().skip(newSlot).findFirst().filter(s -> !s.isEmpty());
-                var message = Text.translatable("trickster.scroll_hat", newSlot);
-
-                if (name.isPresent()) {
-                    message = message.append(" [").append(name.get().getName()).append("]");
-                }
+                Text message = name
+                  .map(item -> Text.translatable("trickster.scroll_hat.named", newSlot, item.getName()))
+                  .orElseGet(() -> Text.translatable("trickster.scroll_hat.unnamed", newSlot));
 
                 player.sendMessage(message, true);
             }
