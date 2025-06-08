@@ -38,7 +38,6 @@ public class TricksterCommand {
                 )
                 .then(literal("exportSpell")
                         .requires(ServerCommandSource::isExecutedByPlayer)
-                        .requires(s -> s.hasPermissionLevel(2))
                         .executes(TricksterCommand::exportSpell)
                 )
                 .then(literal("importSpell")
