@@ -19,11 +19,11 @@ import net.minecraft.entity.LivingEntity;
 
 public class ChangeWeightTrick extends Trick<ChangeWeightTrick> {
     public ChangeWeightTrick() {
-        super(Pattern.of(0, 3, 6, 7, 4, 1, 2, 5, 8), Signature.of(FragmentType.ENTITY.wardOf(), FragmentType.NUMBER, ChangeWeightTrick::change));
-        overload(Signature.of(FragmentType.VECTOR, FragmentType.NUMBER, ChangeWeightTrick::change));
+        super(Pattern.of(0, 3, 6, 7, 4, 1, 2, 5, 8), Signature.of(FragmentType.ENTITY.wardOf(), FragmentType.NUMBER, ChangeWeightTrick::change, FragmentType.ENTITY));
+        overload(Signature.of(FragmentType.VECTOR, FragmentType.NUMBER, ChangeWeightTrick::change, FragmentType.ENTITY));
     }
 
-    public Fragment change(SpellContext ctx, EntityFragment target, NumberFragment number) throws BlunderException {
+    public EntityFragment change(SpellContext ctx, EntityFragment target, NumberFragment number) throws BlunderException {
         var entity = target
                 .getEntity(ctx)
                 .orElseThrow(() -> new UnknownEntityBlunder(this));
@@ -56,7 +56,7 @@ public class ChangeWeightTrick extends Trick<ChangeWeightTrick> {
         return target;
     }
 
-    public Fragment change(SpellContext ctx, VectorFragment target, NumberFragment number) throws BlunderException {
+    public EntityFragment change(SpellContext ctx, VectorFragment target, NumberFragment number) throws BlunderException {
         var world = ctx.source().getWorld();
         var blockPos = target.toBlockPos();
         var state = world.getBlockState(blockPos);

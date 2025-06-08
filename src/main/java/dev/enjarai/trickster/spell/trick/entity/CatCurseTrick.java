@@ -24,11 +24,11 @@ public class CatCurseTrick extends Trick<CatCurseTrick> {
     public CatCurseTrick() {
         super(
                 Pattern.of(7, 4, 0, 3, 6, 7, 8, 5, 2, 4),
-                Signature.of(FragmentType.ENTITY, CatCurseTrick::curse)
+                Signature.of(FragmentType.ENTITY, CatCurseTrick::curse, FragmentType.ENTITY)
         );
     }
 
-    public Fragment curse(SpellContext ctx, EntityFragment target) throws BlunderException {
+    public EntityFragment curse(SpellContext ctx, EntityFragment target) throws BlunderException {
         var entity = target.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this));
 
         if (!(entity instanceof ServerPlayerEntity)) {
@@ -41,7 +41,7 @@ public class CatCurseTrick extends Trick<CatCurseTrick> {
                 ? CurseComponent.Curse.NONE
                 : CurseComponent.Curse.MEOW_MRRP);
 
-        return VoidFragment.INSTANCE;
+        return target;
     }
 
     @Override

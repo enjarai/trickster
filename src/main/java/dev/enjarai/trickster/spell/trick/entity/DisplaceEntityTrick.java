@@ -23,11 +23,11 @@ public class DisplaceEntityTrick extends Trick<DisplaceEntityTrick> {
     public DisplaceEntityTrick() {
         super(
                 Pattern.of(1, 5, 7, 3, 1, 8, 3, 2, 7, 0, 5, 6, 1),
-                Signature.of(FragmentType.ENTITY.wardOf(), FragmentType.VECTOR, DisplaceEntityTrick::run)
+                Signature.of(FragmentType.ENTITY.wardOf(), FragmentType.VECTOR, DisplaceEntityTrick::run, FragmentType.ENTITY)
         );
     }
 
-    public Fragment run(SpellContext ctx, EntityFragment target, VectorFragment v) throws BlunderException {
+    public EntityFragment run(SpellContext ctx, EntityFragment target, VectorFragment v) throws BlunderException {
         var entity = target
                 .getEntity(ctx)
                 .orElseThrow(() -> new UnknownEntityBlunder(this));

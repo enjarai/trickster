@@ -17,10 +17,10 @@ import net.minecraft.util.math.MathHelper;
 
 public class SetScaleTrick extends Trick<SetScaleTrick> {
     public SetScaleTrick() {
-        super(Pattern.of(7, 6, 0, 1, 2, 8, 7, 4), Signature.of(FragmentType.ENTITY.wardOf(), FragmentType.NUMBER, SetScaleTrick::set));
+        super(Pattern.of(7, 6, 0, 1, 2, 8, 7, 4), Signature.of(FragmentType.ENTITY.wardOf(), FragmentType.NUMBER, SetScaleTrick::set, FragmentType.ENTITY));
     }
 
-    public Fragment set(SpellContext ctx, EntityFragment entity, NumberFragment scaleFragment) throws BlunderException {
+    public EntityFragment set(SpellContext ctx, EntityFragment entity, NumberFragment scaleFragment) throws BlunderException {
         var target = entity.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this));
 
         var scale = MathHelper.clamp(scaleFragment.number(), 0.0625, 8.0);

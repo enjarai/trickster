@@ -14,13 +14,14 @@ import net.minecraft.util.math.Box;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class BlockFindEntityTrick extends Trick<BlockFindEntityTrick> {
     public BlockFindEntityTrick() {
-        super(Pattern.of(2, 8, 6, 0, 2, 5, 4, 1, 2), Signature.of(FragmentType.VECTOR, variadic(FragmentType.ENTITY_TYPE).unpack(), BlockFindEntityTrick::find));
+        super(Pattern.of(2, 8, 6, 0, 2, 5, 4, 1, 2), Signature.of(FragmentType.VECTOR, variadic(FragmentType.ENTITY_TYPE).unpack(), BlockFindEntityTrick::find, FragmentType.ENTITY.maybe()));
     }
 
-    public Fragment find(SpellContext ctx, VectorFragment pos, List<EntityTypeFragment> typeFragments) throws BlunderException {
+    public Optional<EntityFragment> find(SpellContext ctx, VectorFragment pos, List<EntityTypeFragment> typeFragments) throws BlunderException {
         var world = ctx.source().getWorld();
         var blockPos = pos.toBlockPos();
         var types = new ArrayList<EntityType<?>>(typeFragments.size());
@@ -36,7 +37,6 @@ public class BlockFindEntityTrick extends Trick<BlockFindEntityTrick> {
 
         return entities.stream().findFirst()
                 .filter(EntityFragment::isValidEntity)
-                .<Fragment>map(EntityFragment::from)
-                .orElse(VoidFragment.INSTANCE);
+                .map(EntityFragment::from);
     }
 }

@@ -16,10 +16,10 @@ import net.minecraft.entity.LivingEntity;
 
 public class GetScaleTrick extends Trick<GetScaleTrick> {
     public GetScaleTrick() {
-        super(Pattern.of(7, 6, 0, 1, 2, 8, 7), Signature.of(FragmentType.ENTITY, GetScaleTrick::get));
+        super(Pattern.of(7, 6, 0, 1, 2, 8, 7), Signature.of(FragmentType.ENTITY, GetScaleTrick::get, FragmentType.NUMBER));
     }
 
-    public Fragment get(SpellContext ctx, EntityFragment entity) throws BlunderException {
+    public NumberFragment get(SpellContext ctx, EntityFragment entity) throws BlunderException {
         var target = entity.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this));
 
         if (!(target instanceof LivingEntity)) {

@@ -22,17 +22,17 @@ import java.util.Optional;
 
 public class ReleaseEntityTrick extends Trick<ReleaseEntityTrick> {
     public ReleaseEntityTrick() {
-        super(Pattern.of(4, 3, 6, 7, 4, 8, 2), Signature.of(FragmentType.VECTOR, ReleaseEntityTrick::release));
+        super(Pattern.of(4, 3, 6, 7, 4, 8, 2), Signature.of(FragmentType.VECTOR, ReleaseEntityTrick::release, FragmentType.ENTITY.maybe()));
     }
 
-    public Fragment release(SpellContext ctx, VectorFragment vector) throws BlunderException {
+    public Optional<EntityFragment> release(SpellContext ctx, VectorFragment vector) throws BlunderException {
         var pos = vector.vector();
         var player = ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this));
         var offhand = player.getOffHandStack();
         var entityStorage = offhand.get(ModComponents.ENTITY_STORAGE);
 
         if (entityStorage == null)
-            return VoidFragment.INSTANCE;
+            return Optional.empty();
 
         if (entityStorage.nbt().isPresent()) {
             var dist = player.getPos().distanceTo(new Vec3d(pos.x(), pos.y(), pos.z()));
@@ -46,11 +46,11 @@ public class ReleaseEntityTrick extends Trick<ReleaseEntityTrick> {
                 if (!ctx.source().getWorld().spawnEntity(entity.get())) {
                     throw new EntityInvalidBlunder(this);
                 }
-                return EntityFragment.from(entity.get());
+                return Optional.of(EntityFragment.from(entity.get()));
             } else {
                 Trickster.LOGGER.warn("Failed to read entity from offhand due to invalid NBT, entity storage component has been cleared");
-                return VoidFragment.INSTANCE;
+                return Optional.empty();
             }
-        } else return VoidFragment.INSTANCE;
+        } else return Optional.empty();
     }
 }
