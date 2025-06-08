@@ -3,6 +3,7 @@ package dev.enjarai.trickster.spell.fragment;
 import com.mojang.serialization.Lifecycle;
 import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.Trickster;
+import dev.enjarai.trickster.spell.EvaluationResult;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.PatternGlyph;
@@ -10,6 +11,7 @@ import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.ArgType;
+import dev.enjarai.trickster.spell.type.RetType;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -27,7 +29,7 @@ import net.minecraft.util.Identifier;
 import java.util.List;
 import java.util.OptionalInt;
 
-public record FragmentType<T extends Fragment>(StructEndec<T> endec, OptionalInt color) implements ArgType<T> {
+public record FragmentType<T extends Fragment>(StructEndec<T> endec, OptionalInt color) implements RetType<T>, ArgType<T> {
     public static final RegistryKey<Registry<FragmentType<?>>> REGISTRY_KEY = RegistryKey.ofRegistry(Trickster.id("fragment_type"));
     public static final Int2ObjectMap<Identifier> INT_ID_FALLBACK = new Int2ObjectOpenHashMap<>() {
         {
@@ -131,6 +133,11 @@ public record FragmentType<T extends Fragment>(StructEndec<T> endec, OptionalInt
     @Override
     public MutableText asText() {
         return getName();
+    }
+
+    @Override
+    public EvaluationResult into(T result) {
+        return result;
     }
 
     public static FragmentType<?> getFromInt(int intId) {
