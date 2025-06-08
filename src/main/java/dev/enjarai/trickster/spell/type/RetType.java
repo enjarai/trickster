@@ -6,6 +6,7 @@ import dev.enjarai.trickster.spell.EvaluationResult;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
+import dev.enjarai.trickster.spell.fragment.MapFragment;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -43,11 +44,45 @@ public interface RetType<T> {
         return new RetType<>() {
             @Override
             public MutableText asText() {
-                return Text.literal("[").append(RetType.this.asText()).append("]");
+                return Text.literal("[")
+                        .append(RetType.this.asText())
+                        .append("]");
             }
 
             @Override
             public EvaluationResult into(ListFragment result) {
+                return result;
+            }
+        };
+    }
+
+    default <O> RetType<MapFragment> mappedTo(RetType<O> other) {
+        return new RetType<>() {
+            @Override
+            public MutableText asText() {
+                return Text.literal("{ ")
+                        .append(RetType.this.asText())
+                        .append(": ")
+                        .append(other.asText())
+                        .append(" }");
+            }
+
+            @Override
+            public EvaluationResult into(MapFragment result) {
+                return result;
+            }
+        };
+    }
+
+    default RetType<EvaluationResult> thisFunctionExistsSolelyForMessageListeningOnItemsBecauseWeAlreadyHadAnAbstractionForItAndWeReallyDontWantToReworkItSoThisWillHaveToDoHonestly() {
+        return new RetType<>() {
+            @Override
+            public MutableText asText() {
+                return RetType.this.asText();
+            }
+
+            @Override
+            public EvaluationResult into(EvaluationResult result) {
                 return result;
             }
         };

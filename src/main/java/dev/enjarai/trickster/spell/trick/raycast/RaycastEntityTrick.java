@@ -4,7 +4,7 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
-import dev.enjarai.trickster.spell.fragment.VoidFragment;
+import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.hit.EntityHitResult;
@@ -15,16 +15,16 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public class RaycastEntityTrick extends AbstractRaycastTrick {
+public class RaycastEntityTrick extends AbstractRaycastTrick<EntityFragment> {
     public RaycastEntityTrick() {
-        super(Pattern.of(3, 4, 5, 8, 4));
+        super(Pattern.of(3, 4, 5, 8, 4), FragmentType.ENTITY);
     }
 
     @Override
-    public Fragment run(SpellContext ctx, Optional<Entity> entity, Vec3d position, Vec3d direction, Optional<Fragment> bool) throws BlunderException {
+    public Optional<EntityFragment> run(SpellContext ctx, Optional<Entity> entity, Vec3d position, Vec3d direction, Optional<Fragment> bool) throws BlunderException {
         var multipliedDirection = position.add(direction.multiply(64d));
         var hit = raycast(ctx.source().getWorld(), entity, position, multipliedDirection, new Box(position, multipliedDirection), 64 * 64);
-        return hit == null ? VoidFragment.INSTANCE : EntityFragment.from(hit.getEntity());
+        return hit == null ? Optional.empty() : Optional.of(EntityFragment.from(hit.getEntity()));
     }
 
     // I needed some changes from ProjectileUtil's impl -- Aurora

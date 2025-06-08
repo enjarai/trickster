@@ -1,6 +1,5 @@
 package dev.enjarai.trickster.spell.trick.math;
 
-import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
@@ -13,13 +12,13 @@ import java.util.List;
 
 public class MaxTrick extends DistortionTrick<MaxTrick> {
     public MaxTrick() {
-        super(Pattern.of(3, 1, 5), Signature.of(variadic(FragmentType.NUMBER).require().unpack(), MaxTrick::run));
+        super(Pattern.of(3, 1, 5), Signature.of(variadic(FragmentType.NUMBER).require().unpack(), MaxTrick::run, FragmentType.NUMBER));
     }
 
-    public Fragment run(SpellContext ctx, List<NumberFragment> numbers) throws BlunderException {
+    public NumberFragment run(SpellContext ctx, List<NumberFragment> numbers) throws BlunderException {
         return new NumberFragment(
                 numbers.stream()
-                        .mapToDouble(num -> num.number())
+                        .mapToDouble(NumberFragment::number)
                         .max()
                         .orElseThrow(() -> new UnsupportedOperationException("MaxTrick somehow got an empty list of arguments"))
         );

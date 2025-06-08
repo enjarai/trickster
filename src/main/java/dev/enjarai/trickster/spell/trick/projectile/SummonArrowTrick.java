@@ -20,10 +20,10 @@ import net.minecraft.util.math.Vec3d;
 
 public class SummonArrowTrick extends Trick<SummonArrowTrick> {
     public SummonArrowTrick() {
-        super(Pattern.of(2, 5, 1, 2, 4, 3, 6, 4, 7, 6), Signature.of(FragmentType.VECTOR, FragmentType.SLOT.optionalOf(), SummonArrowTrick::run));
+        super(Pattern.of(2, 5, 1, 2, 4, 3, 6, 4, 7, 6), Signature.of(FragmentType.VECTOR, FragmentType.SLOT.optionalOf(), SummonArrowTrick::run, FragmentType.ENTITY));
     }
 
-    public Fragment run(SpellContext ctx, VectorFragment pos, Optional<SlotFragment> optionalSlot) throws BlunderException {
+    public EntityFragment run(SpellContext ctx, VectorFragment pos, Optional<SlotFragment> optionalSlot) throws BlunderException {
         var stack = ctx.getStack(this, optionalSlot, s -> s.isIn(ItemTags.ARROWS) && s.getItem() instanceof ProjectileItem).orElseThrow(() -> new MissingItemBlunder(this));
         var world = ctx.source().getWorld();
 

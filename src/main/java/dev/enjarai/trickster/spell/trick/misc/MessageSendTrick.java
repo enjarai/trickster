@@ -15,14 +15,15 @@ import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.fragment.SlotFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.RetType;
 import dev.enjarai.trickster.spell.type.Signature;
 
 public class MessageSendTrick extends Trick<MessageSendTrick> {
     public static final NumberFragment DEFAULT_RANGE = new NumberFragment(16);
 
     public MessageSendTrick() {
-        super(Pattern.of(4, 8, 1, 6, 4), Signature.of(ANY, FragmentType.NUMBER.optionalOf(), MessageSendTrick::broadcast));
-        overload(Signature.of(ANY, FragmentType.SLOT, MessageSendTrick::channel));
+        super(Pattern.of(4, 8, 1, 6, 4), Signature.of(ANY, FragmentType.NUMBER.optionalOf(), MessageSendTrick::broadcast, RetType.ANY));
+        overload(Signature.of(ANY, FragmentType.SLOT, MessageSendTrick::channel, RetType.ANY));
     }
 
     public Fragment broadcast(SpellContext ctx, Fragment value, Optional<NumberFragment> range) throws BlunderException {
