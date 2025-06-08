@@ -6,12 +6,15 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.trick.DistortionTrick;
+import dev.enjarai.trickster.spell.type.RetType;
 import dev.enjarai.trickster.spell.type.Signature;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.fragment.BooleanFragment;
+import dev.enjarai.trickster.spell.fragment.FragmentType;
 
 public class IfElseTrick extends DistortionTrick<IfElseTrick> {
     public IfElseTrick() {
-        super(Pattern.of(3, 4, 0, 2, 4, 5), Signature.of(variadic(Fragment.class, Fragment.class), ANY, IfElseTrick::run));
+        super(Pattern.of(3, 4, 0, 2, 4, 5), Signature.of(variadic(Fragment.class, Fragment.class), ANY, IfElseTrick::run, RetType.ANY));
     }
 
     public Fragment run(SpellContext ctx, List<Fragment> args, Fragment fallback) throws BlunderException {

@@ -12,10 +12,10 @@ import dev.enjarai.trickster.spell.blunder.BlunderException;
 
 public class LesserThanTrick extends DistortionTrick<LesserThanTrick> {
     public LesserThanTrick() {
-        super(Pattern.of(1, 3, 7), Signature.of(FragmentType.NUMBER, FragmentType.NUMBER, LesserThanTrick::run));
+        super(Pattern.of(1, 3, 7), Signature.of(FragmentType.NUMBER, FragmentType.NUMBER, LesserThanTrick::run, FragmentType.BOOLEAN));
     }
 
-    public Fragment run(SpellContext ctx, NumberFragment left, NumberFragment right) throws BlunderException {
+    public BooleanFragment run(SpellContext ctx, NumberFragment left, NumberFragment right) throws BlunderException {
         return BooleanFragment.of(left.number() < right.number());
     }
 }
