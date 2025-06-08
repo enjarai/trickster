@@ -16,18 +16,17 @@ import java.util.*;
 
 public class LocateGlyphTrick extends AbstractMetaTrick<LocateGlyphTrick> {
     public LocateGlyphTrick() {
-        super(Pattern.of(6, 7, 8, 2, 1, 0, 4, 8, 5), Signature.of(FragmentType.SPELL_PART, ANY, LocateGlyphTrick::locate));
+        super(Pattern.of(6, 7, 8, 2, 1, 0, 4, 8, 5), Signature.of(FragmentType.SPELL_PART, ANY, LocateGlyphTrick::locate, FragmentType.NUMBER.listOf().maybe()));
     }
 
-    public Fragment locate(SpellContext ctx, SpellPart spell, Fragment glyph) throws BlunderException {
+    public Optional<ListFragment> locate(SpellContext ctx, SpellPart spell, Fragment glyph) throws BlunderException {
         var address = search(spell, glyph);
 
-
-        if (address == null)
-            return VoidFragment.INSTANCE;
-        else
-            return new ListFragment(address.stream().map(num -> (Fragment) new NumberFragment(num)).toList());
-
+        if (address == null) {
+            return Optional.empty();
+        } else {
+            return Optional.of(new ListFragment(address.stream().map(num -> (Fragment) new NumberFragment(num)).toList()));
+        }
     }
 
     //todo: improve memory efficiency

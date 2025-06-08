@@ -11,10 +11,10 @@ import dev.enjarai.trickster.spell.type.Signature;
 
 public class GetSubPartsTrick extends AbstractMetaTrick<GetSubPartsTrick> {
     public GetSubPartsTrick() {
-        super(Pattern.of(6, 4, 2, 5, 8, 4, 0, 3, 6, 8), Signature.of(FragmentType.SPELL_PART, GetSubPartsTrick::get));
+        super(Pattern.of(6, 4, 2, 5, 8, 4, 0, 3, 6, 8), Signature.of(FragmentType.SPELL_PART, GetSubPartsTrick::get, FragmentType.SPELL_PART.listOf()));
     }
 
-    public Fragment get(SpellContext ctx, SpellPart spell) throws BlunderException {
+    public ListFragment get(SpellContext ctx, SpellPart spell) throws BlunderException {
         return new ListFragment(spell.subParts.stream().<Fragment>map(n -> n).toList());
     }
 }

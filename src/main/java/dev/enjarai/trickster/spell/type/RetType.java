@@ -5,12 +5,13 @@ import java.util.Optional;
 import dev.enjarai.trickster.spell.EvaluationResult;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
+import dev.enjarai.trickster.spell.fragment.ListFragment;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
 public interface RetType<T> {
-    static final RetType<Fragment> ANY = simple(Fragment.class);
+    RetType<Fragment> ANY = simple(Fragment.class);
 
     MutableText asText();
 
@@ -33,7 +34,21 @@ public interface RetType<T> {
 
             @Override
             public EvaluationResult into(Optional<T> result) {
-                return result.map(r -> RetType.this.into(r)).orElse(VoidFragment.INSTANCE);
+                return result.map(RetType.this::into).orElse(VoidFragment.INSTANCE);
+            }
+        };
+    }
+
+    default RetType<ListFragment> listOf() {
+        return new RetType<>() {
+            @Override
+            public MutableText asText() {
+                return Text.literal("[").append(RetType.this.asText()).append("]");
+            }
+
+            @Override
+            public EvaluationResult into(ListFragment result) {
+                return result;
             }
         };
     }

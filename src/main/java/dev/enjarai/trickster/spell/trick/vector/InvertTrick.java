@@ -1,6 +1,5 @@
 package dev.enjarai.trickster.spell.trick.vector;
 
-import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
@@ -16,16 +15,16 @@ import java.util.List;
 public class InvertTrick extends DistortionTrick<InvertTrick> {
     public InvertTrick() {
         super(Pattern.of(3, 4, 5, 2, 3), List.of(
-                Signature.of(FragmentType.NUMBER, InvertTrick::invert),
-                Signature.of(FragmentType.VECTOR, InvertTrick::invert)
+                Signature.of(FragmentType.NUMBER, InvertTrick::invert, FragmentType.NUMBER),
+                Signature.of(FragmentType.VECTOR, InvertTrick::invert, FragmentType.VECTOR)
         ));
     }
 
-    public Fragment invert(SpellContext ctx, NumberFragment number) throws BlunderException {
+    public NumberFragment invert(SpellContext ctx, NumberFragment number) throws BlunderException {
         return new NumberFragment(-number.number());
     }
 
-    public Fragment invert(SpellContext ctx, VectorFragment vec) throws BlunderException {
+    public VectorFragment invert(SpellContext ctx, VectorFragment vec) throws BlunderException {
         return new VectorFragment(vec.vector().mul(-1, new Vector3d()));
     }
 }

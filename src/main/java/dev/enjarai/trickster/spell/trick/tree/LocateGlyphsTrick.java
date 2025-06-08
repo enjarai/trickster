@@ -15,17 +15,15 @@ import java.util.*;
 
 public class LocateGlyphsTrick extends AbstractMetaTrick<LocateGlyphsTrick> {
     public LocateGlyphsTrick() {
-        super(Pattern.of(6, 7, 8, 2, 1, 0, 4, 8, 5, 2), Signature.of(FragmentType.SPELL_PART, ANY, LocateGlyphsTrick::locate));
+        super(Pattern.of(6, 7, 8, 2, 1, 0, 4, 8, 5, 2), Signature.of(FragmentType.SPELL_PART, ANY, LocateGlyphsTrick::locate, FragmentType.NUMBER.listOf().listOf()));
     }
 
-    public Fragment locate(SpellContext ctx, SpellPart spell, Fragment glyph) throws BlunderException {
+    public ListFragment locate(SpellContext ctx, SpellPart spell, Fragment glyph) throws BlunderException {
         var addresses = new ArrayList<List<Integer>>();
         search(spell, glyph, addresses);
 
-
         return new ListFragment(addresses.stream()
                 .map(address -> (Fragment) new ListFragment(address.stream().map(num -> (Fragment) new NumberFragment(num)).toList())).toList());
-
     }
 
     private void search(SpellPart spell, Fragment target, List<List<Integer>> addresses) {

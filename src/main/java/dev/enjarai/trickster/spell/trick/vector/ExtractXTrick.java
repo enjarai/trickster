@@ -1,6 +1,5 @@
 package dev.enjarai.trickster.spell.trick.vector;
 
-import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
@@ -12,10 +11,10 @@ import dev.enjarai.trickster.spell.type.Signature;
 
 public class ExtractXTrick extends DistortionTrick<ExtractXTrick> {
     public ExtractXTrick() {
-        super(Pattern.of(0, 3, 6), Signature.of(FragmentType.VECTOR, ExtractXTrick::extract));
+        super(Pattern.of(0, 3, 6), Signature.of(FragmentType.VECTOR, ExtractXTrick::extract, FragmentType.NUMBER));
     }
 
-    public Fragment extract(SpellContext ctx, VectorFragment vec) throws BlunderException {
+    public NumberFragment extract(SpellContext ctx, VectorFragment vec) throws BlunderException {
         return new NumberFragment(vec.vector().x());
     }
 }

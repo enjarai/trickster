@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.spell.trick.tree;
 
 import java.util.List;
+import java.util.Optional;
 
 import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
@@ -12,10 +13,10 @@ import dev.enjarai.trickster.spell.type.Signature;
 
 public class RemoveSubtreeTrick extends AbstractMetaTrick<RemoveSubtreeTrick> {
     public RemoveSubtreeTrick() {
-        super(Pattern.of(6, 3, 0, 4, 8, 5, 2, 4, 6, 7, 8), Signature.of(FragmentType.SPELL_PART, ADDRESS, RemoveSubtreeTrick::remove));
+        super(Pattern.of(6, 3, 0, 4, 8, 5, 2, 4, 6, 7, 8), Signature.of(FragmentType.SPELL_PART, ADDRESS, RemoveSubtreeTrick::remove, FragmentType.SPELL_PART.maybe()));
     }
 
-    public Fragment remove(SpellContext ctx, SpellPart spell, List<NumberFragment> address) throws BlunderException {
+    public Optional<SpellPart> remove(SpellContext ctx, SpellPart spell, List<NumberFragment> address) throws BlunderException {
         var newSpell = spell.deepClone();
 
         SpellPart prev = null;
@@ -31,10 +32,10 @@ public class RemoveSubtreeTrick extends AbstractMetaTrick<RemoveSubtreeTrick> {
             }
         }
         if (prev == null) {
-            return VoidFragment.INSTANCE;
+            return Optional.empty();
         } else {
             prev.subParts.remove(address.getLast().asInt());
-            return newSpell;
+            return Optional.of(newSpell);
         }
     }
 }
