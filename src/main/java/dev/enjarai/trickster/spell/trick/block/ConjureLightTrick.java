@@ -17,10 +17,10 @@ import net.minecraft.registry.tag.FluidTags;
 
 public class ConjureLightTrick extends Trick<ConjureLightTrick> {
     public ConjureLightTrick() {
-        super(Pattern.of(8, 4, 0, 1, 2, 0), Signature.of(FragmentType.VECTOR, ConjureLightTrick::conjure));
+        super(Pattern.of(8, 4, 0, 1, 2, 0), Signature.of(FragmentType.VECTOR, ConjureLightTrick::conjure, FragmentType.VECTOR));
     }
 
-    public Fragment conjure(SpellContext ctx, VectorFragment pos) throws BlunderException {
+    public VectorFragment conjure(SpellContext ctx, VectorFragment pos) throws BlunderException {
         var blockPos = pos.toBlockPos();
         var world = ctx.source().getWorld();
         expectCanBuild(ctx, blockPos);

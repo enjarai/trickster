@@ -14,10 +14,10 @@ import java.util.List;
 
 public class GetBlockHardnessTrick extends Trick<GetBlockHardnessTrick> {
     public GetBlockHardnessTrick() {
-        super(Pattern.of(1, 2, 8, 6, 0, 4, 2, 0, 1), Signature.of(FragmentType.VECTOR, GetBlockHardnessTrick::get));
+        super(Pattern.of(1, 2, 8, 6, 0, 4, 2, 0, 1), Signature.of(FragmentType.VECTOR, GetBlockHardnessTrick::get, FragmentType.NUMBER));
     }
 
-    public Fragment get(SpellContext ctx, VectorFragment pos) throws BlunderException {
+    public NumberFragment get(SpellContext ctx, VectorFragment pos) throws BlunderException {
         var blockPos = pos.toBlockPos();
         expectLoaded(ctx, blockPos);
 

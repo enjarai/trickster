@@ -15,10 +15,10 @@ import java.util.List;
 
 public class GetRedstonePowerTrick extends Trick<GetRedstonePowerTrick> {
     public GetRedstonePowerTrick() {
-        super(Pattern.of(1, 4, 7, 2, 0, 7), Signature.of(FragmentType.VECTOR, GetRedstonePowerTrick::get));
+        super(Pattern.of(1, 4, 7, 2, 0, 7), Signature.of(FragmentType.VECTOR, GetRedstonePowerTrick::get, FragmentType.NUMBER));
     }
 
-    public Fragment get(SpellContext ctx, VectorFragment pos) throws BlunderException {
+    public NumberFragment get(SpellContext ctx, VectorFragment pos) throws BlunderException {
         expectLoaded(ctx, pos.toBlockPos());
         return new NumberFragment(ctx.source().getWorld().getReceivedRedstonePower(pos.toBlockPos()));
     }

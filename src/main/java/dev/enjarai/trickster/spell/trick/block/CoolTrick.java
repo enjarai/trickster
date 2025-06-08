@@ -20,10 +20,10 @@ import java.util.List;
 
 public class CoolTrick extends Trick<CoolTrick> {
     public CoolTrick() {
-        super(Pattern.of(3, 4, 5, 8, 3, 6, 5, 7, 3), Signature.of(FragmentType.VECTOR, CoolTrick::cool));
+        super(Pattern.of(3, 4, 5, 8, 3, 6, 5, 7, 3), Signature.of(FragmentType.VECTOR, CoolTrick::cool, FragmentType.VECTOR));
     }
 
-    public Fragment cool(SpellContext ctx, VectorFragment pos) throws BlunderException {
+    public VectorFragment cool(SpellContext ctx, VectorFragment pos) throws BlunderException {
         var blockPos = pos.toBlockPos();
         var world = ctx.source().getWorld();
         expectCanBuild(ctx, blockPos);

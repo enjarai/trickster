@@ -18,10 +18,10 @@ import java.util.List;
 
 public class DrainFluidTrick extends Trick<DrainFluidTrick> {
     public DrainFluidTrick() {
-        super(Pattern.of(3, 0, 4, 2, 5, 8, 1, 6, 3), Signature.of(FragmentType.VECTOR, DrainFluidTrick::drain));
+        super(Pattern.of(3, 0, 4, 2, 5, 8, 1, 6, 3), Signature.of(FragmentType.VECTOR, DrainFluidTrick::drain, FragmentType.VECTOR));
     }
 
-    public Fragment drain(SpellContext ctx, VectorFragment pos) throws BlunderException {
+    public VectorFragment drain(SpellContext ctx, VectorFragment pos) throws BlunderException {
         var blockPos = pos.toBlockPos();
         var world = ctx.source().getWorld();
         expectCanBuild(ctx, blockPos);

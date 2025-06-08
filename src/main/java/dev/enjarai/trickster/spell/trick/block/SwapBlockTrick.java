@@ -22,10 +22,10 @@ import java.util.List;
 public class SwapBlockTrick extends Trick<SwapBlockTrick> {
     public SwapBlockTrick() {
         super(Pattern.of(3, 4, 5, 8, 4, 0, 3, 6, 4, 2, 5),
-                Signature.of(FragmentType.VECTOR, FragmentType.VECTOR, SwapBlockTrick::run));
+                Signature.of(FragmentType.VECTOR, FragmentType.VECTOR, SwapBlockTrick::run, FragmentType.VOID));
     }
 
-    public Fragment run(SpellContext ctx, VectorFragment pos1, VectorFragment pos2) throws BlunderException {
+    public VoidFragment run(SpellContext ctx, VectorFragment pos1, VectorFragment pos2) throws BlunderException {
         var blockPos1 = pos1.toBlockPos();
         var blockPos2 = pos2.toBlockPos();
         var world = ctx.source().getWorld();

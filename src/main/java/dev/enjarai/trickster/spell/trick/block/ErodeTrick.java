@@ -20,10 +20,10 @@ import java.util.List;
 
 public class ErodeTrick extends Trick<ErodeTrick> {
     public ErodeTrick() {
-        super(Pattern.of(0, 4, 6, 7, 8, 4, 2), Signature.of(FragmentType.VECTOR, FragmentType.VECTOR, ErodeTrick::erode));
+        super(Pattern.of(0, 4, 6, 7, 8, 4, 2), Signature.of(FragmentType.VECTOR, FragmentType.VECTOR, ErodeTrick::erode, FragmentType.VECTOR));
     }
 
-    public Fragment erode(SpellContext ctx, VectorFragment weatheringPosFragment, VectorFragment waterPosFragment) throws BlunderException {
+    public VectorFragment erode(SpellContext ctx, VectorFragment weatheringPosFragment, VectorFragment waterPosFragment) throws BlunderException {
         var weatheringPos = weatheringPosFragment.toBlockPos();
         var waterPos = waterPosFragment.toBlockPos();
 

@@ -31,10 +31,10 @@ import java.util.List;
 
 public class ConjureWaterTrick extends Trick<ConjureWaterTrick> {
     public ConjureWaterTrick() {
-        super(Pattern.of(3, 0, 4, 2, 5), Signature.of(FragmentType.VECTOR, ConjureWaterTrick::conjure));
+        super(Pattern.of(3, 0, 4, 2, 5), Signature.of(FragmentType.VECTOR, ConjureWaterTrick::conjure, FragmentType.VECTOR));
     }
 
-    public Fragment conjure(SpellContext ctx, VectorFragment pos) throws BlunderException {
+    public VectorFragment conjure(SpellContext ctx, VectorFragment pos) throws BlunderException {
         var blockPos = pos.toBlockPos();
         var bucket = Items.WATER_BUCKET;
         var world = ctx.source().getWorld();

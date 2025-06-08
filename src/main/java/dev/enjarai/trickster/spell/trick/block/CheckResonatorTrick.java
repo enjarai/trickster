@@ -16,10 +16,10 @@ import java.util.List;
 
 public class CheckResonatorTrick extends Trick<CheckResonatorTrick> {
     public CheckResonatorTrick() {
-        super(Pattern.of(7, 8, 6, 7, 2, 1, 0, 7, 4), Signature.of(FragmentType.VECTOR, CheckResonatorTrick::check));
+        super(Pattern.of(7, 8, 6, 7, 2, 1, 0, 7, 4), Signature.of(FragmentType.VECTOR, CheckResonatorTrick::check, FragmentType.NUMBER));
     }
 
-    public Fragment check(SpellContext ctx, VectorFragment pos) throws BlunderException {
+    public NumberFragment check(SpellContext ctx, VectorFragment pos) throws BlunderException {
         var blockPos = pos.toBlockPos();
         var world = ctx.source().getWorld();
 

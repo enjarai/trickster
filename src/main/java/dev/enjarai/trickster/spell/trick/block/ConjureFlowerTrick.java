@@ -19,10 +19,10 @@ import java.util.List;
 
 public class ConjureFlowerTrick extends Trick<ConjureFlowerTrick> {
     public ConjureFlowerTrick() {
-        super(Pattern.of(4, 0, 1, 4, 2, 5, 4, 8, 7, 4, 6, 3, 4), Signature.of(FragmentType.VECTOR, ConjureFlowerTrick::conjure));
+        super(Pattern.of(4, 0, 1, 4, 2, 5, 4, 8, 7, 4, 6, 3, 4), Signature.of(FragmentType.VECTOR, ConjureFlowerTrick::conjure, FragmentType.VECTOR));
     }
 
-    public Fragment conjure(SpellContext ctx, VectorFragment pos) throws BlunderException {
+    public VectorFragment conjure(SpellContext ctx, VectorFragment pos) throws BlunderException {
         var blockPos = pos.toBlockPos();
         var world = ctx.source().getWorld();
         expectCanBuild(ctx, blockPos);
