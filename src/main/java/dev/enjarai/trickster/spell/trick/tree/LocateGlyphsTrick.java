@@ -29,7 +29,7 @@ public class LocateGlyphsTrick extends AbstractMetaTrick<LocateGlyphsTrick> {
     private void search(SpellPart spell, Fragment target, List<List<Integer>> addresses) {
         Queue<Pair<Integer[], SpellPart>> queue = new LinkedList<>();
 
-        queue.add(new Pair<>(new Integer[]{}, spell));
+        queue.add(new Pair<>(new Integer[] {}, spell));
         while (!queue.isEmpty()) {
 
             var temp = queue.poll();

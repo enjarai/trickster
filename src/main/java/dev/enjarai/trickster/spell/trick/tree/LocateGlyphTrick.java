@@ -7,7 +7,6 @@ import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
-import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.type.Signature;
 import oshi.util.tuples.Pair;
@@ -33,7 +32,7 @@ public class LocateGlyphTrick extends AbstractMetaTrick<LocateGlyphTrick> {
     private List<Integer> search(SpellPart spell, Fragment target) {
         Queue<Pair<Integer[], SpellPart>> queue = new LinkedList<>();
 
-        queue.add(new Pair<>(new Integer[]{}, spell));
+        queue.add(new Pair<>(new Integer[] {}, spell));
         while (!queue.isEmpty()) {
 
             var temp = queue.poll();
