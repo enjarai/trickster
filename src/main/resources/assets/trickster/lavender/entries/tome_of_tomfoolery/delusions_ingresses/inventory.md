@@ -20,21 +20,13 @@ Tricks that pull information from the caster's inventory.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:get_item_in_slot,title=Fence's Ingress|>
-
-slot -> item
-
----
+<|trick@trickster:templates|trick-id=trickster:get_item_in_slot|>
 
 Returns the type of item that the given slot contains.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:other_hand,title=Juggling Delusion|>
-
--> item
-
----
+<|trick@trickster:templates|trick-id=trickster:other_hand|>
 
 Returns the type of item in the caster's other hand.
 
@@ -46,60 +38,36 @@ This cost is equivalent to (distance * amount * 0.5kG). Slot references will alw
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:other_hand_slot,title=Catch Delusion|>
-
--> slot
-
----
+<|trick@trickster:templates|trick-id=trickster:other_hand_slot|>
 
 Returns a slot reference of the caster's other hand.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:get_inventory_slot,title=Intrusive Ingress|>
-
-number, [vector | entity] -> slot
-
----
+<|trick@trickster:templates|trick-id=trickster:get_inventory_slot|>
 
 Constructs a slot from an index and an inventory source, using the caster by default.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:check_hat,title=Cranium Delusion|>
-
--> number | void
-
----
+<|trick@trickster:templates|trick-id=trickster:check_hat|>
 
 Returns the selected slot in the caster's [Top Hat](^trickster:items/top_hat).
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:get_mana_in_slot,title=Ingress of Authority|>
-
-slot... -> number
-
----
+<|trick@trickster:templates|trick-id=trickster:get_mana_in_slot|>
 
 Returns the amount of mana in the given slots.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:get_max_mana_in_slot,title=Crowning Ingress|>
-
-slot... -> number
-
----
+<|trick@trickster:templates|trick-id=trickster:get_max_mana_in_slot|>
 
 Returns the maximum amount of mana which may be stored in the given slots.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:get_count_in_slot,title=Ingress of Plenitude|>
-
-slot -> number
-
----
+<|trick@trickster:templates|trick-id=trickster:get_count_in_slot|>
 
 Returns the amount of items stored in the given slot.

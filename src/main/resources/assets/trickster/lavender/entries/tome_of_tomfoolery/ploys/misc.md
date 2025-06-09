@@ -15,11 +15,7 @@ A few miscellaneous ploys that don't fit into any other category.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:pin_chunk,title=Ploy of Celestial Pin|>
-
-vector -> vector
-
-<|cost-rule@trickster:templates|formula=4kG|>
+<|ploy@trickster:templates|trick-id=trickster:pin_chunk,cost=4kG|>
 
 Fully loads the chunk containing the given position for exactly 4 seconds.
 
@@ -41,20 +37,12 @@ It also always returns the given value to its parent circle when updated, allowi
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:show_bar,title=Ploy of Clarity|>
-
-number, number, [number] -> number
-
----
+<|trick@trickster:templates|trick-id=trickster:show_bar|>
 
 Shows a bar on the caster's screen identified by the first number displaying the second number.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:clear_bar,title=Ploy of Obfuscation|>
-
-number -> number
-
----
+<|trick@trickster:templates|trick-id=trickster:clear_bar|>
 
 Immediately clears a bar from the caster's screen identified by the given number.

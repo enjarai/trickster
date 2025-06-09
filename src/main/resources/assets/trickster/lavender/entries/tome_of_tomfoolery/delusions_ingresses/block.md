@@ -17,61 +17,37 @@ This entry contains tricks that query or inspect blocks in the world.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:check_block,title=Ingress of Validation|>
-
-vector -> block
-
----
+<|trick@trickster:templates|trick-id=trickster:check_block|>
 
 Returns the block type at the given position.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:get_block_hardness,title=Ingress of Hardness|>
-
-vector -> number
-
----
+<|trick@trickster:templates|trick-id=trickster:get_block_hardness|>
 
 Returns the hardness of the block at the given position.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:can_place_block,title=Ingress of Suitability|>
-
-vector, [block] -> boolean
-
----
+<|trick@trickster:templates|trick-id=trickster:can_place_block|>
 
 Returns whether the given block can be placed at the given position. If no block is given, returns whether the position is replaceable.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:get_redstone_power,title=Ingress of Logic|>
-
-vector -> number
-
----
+<|trick@trickster:templates|trick-id=trickster:get_redstone_power|>
 
 Returns the redstone power level inputted into the given block position.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:check_resonator,title=Ingress of Resonance|>
-
-vector -> number
-
----
+<|trick@trickster:templates|trick-id=trickster:check_resonator|>
 
 Returns the power level of the [Spell Resonator](^trickster:items/spell_resonator) at the given position.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:light_level,title=Ingress of Luminance|>
-
-vector, [boolean] -> number
-
----
+<|trick@trickster:templates|trick-id=trickster:light_level|>
 
 Returns the light level at the given position. 
 A boolean can be specified to check only sky light (if true) or block light (if false).

@@ -17,97 +17,61 @@
 }
 ```
 
-Fragments can be passed into executed [spell fragments](^trickster:distortions/functions) as arguments.
+Fragments can be passed into most [Deviations](^trickster:tricks/functions) as arguments.
 
 
-These fragments can be retrieved within the executed spell either directly or as a list of all arguments.
+These fragments can then be retrieved within the executed spell either directly or as a list of all arguments.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:get_all_arguments,title=Hoarder's Delusion|>
-
--> any[]
-
----
+<|trick@trickster:templates|trick-id=trickster:get_all_arguments|>
 
 Returns all arguments as a list.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:load_argument_1,title=Primary Delusion|>
-
--> any
-
----
+<|trick@trickster:templates|trick-id=trickster:load_argument_1|>
 
 Returns the first argument passed, if available.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:load_argument_2,title=Secondary Delusion|>
-
--> any
-
----
+<|trick@trickster:templates|trick-id=trickster:load_argument_2|>
 
 Returns the second argument passed, if available.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:load_argument_3,title=Tertiary Delusion|>
-
--> any
-
----
+<|trick@trickster:templates|trick-id=trickster:load_argument_3|>
 
 Returns the third argument passed, if available.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:load_argument_4,title=Quaternary Delusion|>
-
--> any
-
----
+<|trick@trickster:templates|trick-id=trickster:load_argument_4|>
 
 Returns the fourth argument passed, if available.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:load_argument_5,title=Quinary Delusion|>
-
--> any
-
----
+<|trick@trickster:templates|trick-id=trickster:load_argument_5|>
 
 Returns the fifth argument passed, if available.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:load_argument_6,title=Senary Delusion|>
-
--> any
-
----
+<|trick@trickster:templates|trick-id=trickster:load_argument_6|>
 
 Returns the sixth argument passed, if available.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:load_argument_7,title=Septenary Delusion|>
-
--> any
-
----
+<|trick@trickster:templates|trick-id=trickster:load_argument_7|>
 
 Returns the seventh argument passed, if available.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:load_argument_8,title=Octonary Delusion|>
-
--> any
-
----
+<|trick@trickster:templates|trick-id=trickster:load_argument_8|>
 
 Returns the eighth argument passed, if available.

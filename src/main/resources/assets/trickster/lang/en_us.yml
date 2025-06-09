@@ -86,6 +86,7 @@ trickster:
     cross_product: Perpendicular Distortion
     normalize: Regularity Distortion
     align_vector: Aligned Regularity Distortion
+    sqrt: Distortion of Decline
     invert: Inversion Distortion
     abs: Absolutist's Distortion
     length: Magnitude Distortion
@@ -154,6 +155,7 @@ trickster:
     delay_execution: Deviation of Suspension
     kill_thread: Executioner's Deviation
     current_thread: Delusion of Order
+    get_all_arguments: Hoarder's Delusion
     load_argument_1: Primary Delusion
     load_argument_2: Secondary Delusion
     load_argument_3: Tertiary Delusion
