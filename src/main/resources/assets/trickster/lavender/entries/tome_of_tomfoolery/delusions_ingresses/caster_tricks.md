@@ -17,13 +17,13 @@
 }
 ```
 
-<|glyph@trickster:templates|trick-id=trickster:reflection,title=Positioning Delusion|>
-
--> vector
-
----
+<|trick@trickster:templates|trick-id=trickster:reflection|>
 
 Returns the location the spell is being cast from.
+
+;;;;;
+
+<|ploy@trickster:templates|trick-id=trickster:change_weight,cost=meowmeow*2|>
 
 ;;;;;
 
