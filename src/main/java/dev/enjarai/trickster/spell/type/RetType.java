@@ -32,7 +32,11 @@ public interface RetType<T> {
         return new EitherRetType<>(this, other);
     }
 
-    default RetType<Optional<T>> maybe() {
+    default RetType<T> retType() {
+        return this;
+    }
+
+    default RetType<Optional<T>> optionalOfRet() {
         return new RetType<>() {
             @Override
             public MutableText asText() {
@@ -46,7 +50,7 @@ public interface RetType<T> {
         };
     }
 
-    default RetType<List<T>> listOf() {
+    default RetType<List<T>> listOfRet() {
         return new RetType<>() {
             @Override
             public MutableText asText() {

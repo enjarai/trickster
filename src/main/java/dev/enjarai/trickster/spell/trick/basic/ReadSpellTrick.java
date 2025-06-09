@@ -17,7 +17,7 @@ import java.util.Optional;
 
 public class ReadSpellTrick extends Trick<ReadSpellTrick> {
     public ReadSpellTrick() {
-        super(Pattern.of(7, 4, 1, 0, 3, 4, 5, 2, 1), Signature.of(FragmentType.SLOT.optionalOf(), ReadSpellTrick::run, RetType.ANY.maybe()));
+        super(Pattern.of(7, 4, 1, 0, 3, 4, 5, 2, 1), Signature.of(FragmentType.SLOT.optionalOfArg(), ReadSpellTrick::run, RetType.ANY.optionalOfRet()));
     }
 
     public Optional<Fragment> run(SpellContext ctx, Optional<SlotFragment> optionalSlot) throws BlunderException {

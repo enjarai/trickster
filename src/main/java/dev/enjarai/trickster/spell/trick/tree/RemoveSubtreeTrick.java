@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public class RemoveSubtreeTrick extends AbstractMetaTrick<RemoveSubtreeTrick> {
     public RemoveSubtreeTrick() {
-        super(Pattern.of(6, 3, 0, 4, 8, 5, 2, 4, 6, 7, 8), Signature.of(FragmentType.SPELL_PART, ADDRESS, RemoveSubtreeTrick::remove, FragmentType.SPELL_PART.maybe()));
+        super(Pattern.of(6, 3, 0, 4, 8, 5, 2, 4, 6, 7, 8), Signature.of(FragmentType.SPELL_PART, ADDRESS, RemoveSubtreeTrick::remove, FragmentType.SPELL_PART.optionalOfRet()));
     }
 
     public Optional<SpellPart> remove(SpellContext ctx, SpellPart spell, List<NumberFragment> address) throws BlunderException {

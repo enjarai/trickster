@@ -15,7 +15,7 @@ import java.util.Optional;
 
 public class RetrieveGlyphTrick extends AbstractMetaTrick<RetrieveGlyphTrick> {
     public RetrieveGlyphTrick() {
-        super(Pattern.of(2, 1, 0, 4, 6, 7, 8), Signature.of(FragmentType.SPELL_PART, ADDRESS, RetrieveGlyphTrick::retrieve, RetType.ANY.maybe()));
+        super(Pattern.of(2, 1, 0, 4, 6, 7, 8), Signature.of(FragmentType.SPELL_PART, ADDRESS, RetrieveGlyphTrick::retrieve, RetType.ANY.optionalOfRet()));
     }
 
     public Optional<Fragment> retrieve(SpellContext ctx, SpellPart spell, List<NumberFragment> address) throws BlunderException {

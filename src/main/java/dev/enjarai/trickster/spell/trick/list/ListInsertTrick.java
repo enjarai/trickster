@@ -9,6 +9,7 @@ import dev.enjarai.trickster.spell.blunder.IndexOutOfBoundsBlunder;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.trick.DistortionTrick;
+import dev.enjarai.trickster.spell.type.ArgType;
 import dev.enjarai.trickster.spell.type.RetType;
 import dev.enjarai.trickster.spell.type.Signature;
 import net.minecraft.util.math.MathHelper;
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class ListInsertTrick extends DistortionTrick<ListInsertTrick> {
     public ListInsertTrick() {
-        super(Pattern.of(6, 3, 0, 4, 2, 5, 8), Signature.of(list(Fragment.class), FragmentType.NUMBER, variadic(Fragment.class), ListInsertTrick::run, RetType.ANY.listOf()));
+        super(Pattern.of(6, 3, 0, 4, 2, 5, 8), Signature.of(ArgType.ANY.listOfArg(), FragmentType.NUMBER, ArgType.ANY.variadicOfArg(), ListInsertTrick::run, RetType.ANY.listOfRet()));
     }
 
     public List<Fragment> run(SpellContext ctx, List<Fragment> list, NumberFragment index, List<Fragment> toAdd) throws BlunderException {

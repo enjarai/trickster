@@ -7,6 +7,7 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.ArgType;
 import dev.enjarai.trickster.spell.type.RetType;
 import dev.enjarai.trickster.spell.type.Signature;
 import net.minecraft.text.Text;
@@ -15,7 +16,7 @@ import java.util.List;
 
 public class RevealTrick extends Trick<RevealTrick> {
     public RevealTrick() {
-        super(Pattern.of(3, 4, 5, 8, 7, 6, 3), Signature.of(variadic(Fragment.class), RevealTrick::reveal, RetType.ANY));
+        super(Pattern.of(3, 4, 5, 8, 7, 6, 3), Signature.of(ArgType.ANY.variadicOfArg(), RevealTrick::reveal, RetType.ANY));
     }
 
     public Fragment reveal(SpellContext ctx, List<Fragment> fragments) throws BlunderException {

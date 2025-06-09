@@ -27,9 +27,10 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.OptionalInt;
 
-public record FragmentType<T extends Fragment>(StructEndec<T> endec, OptionalInt color) implements RetType<T>, ArgType<T> {
+public class FragmentType<T extends Fragment> implements RetType<T>, ArgType<T> {
     public static final RegistryKey<Registry<FragmentType<?>>> REGISTRY_KEY = RegistryKey.ofRegistry(Trickster.id("fragment_type"));
     public static final Int2ObjectMap<Identifier> INT_ID_FALLBACK = new Int2ObjectOpenHashMap<>() {
         {
@@ -74,7 +75,7 @@ public record FragmentType<T extends Fragment>(StructEndec<T> endec, OptionalInt
 
     public static final FragmentType<TypeFragment> TYPE = register("type", TypeFragment.ENDEC, 0x66cc00);
     public static final FragmentType<NumberFragment> NUMBER = register("number", NumberFragment.ENDEC, 0xddaa00);
-    public static final FragmentType<BooleanFragment> BOOLEAN = register("boolean", BooleanFragment.ENDEC, 0xaa3355);
+    public static final FragmentType<BooleanFragment> BOOLEAN = Registry.register(REGISTRY, Trickster.id("boolean"), new FragmentType<>(BooleanFragment.ENDEC, OptionalInt.of(0xaa3355)));
     public static final FragmentType<VectorFragment> VECTOR = register("vector", VectorFragment.ENDEC, 0xaa7711);
     public static final FragmentType<ListFragment> LIST = register("list", ListFragment.ENDEC);
     public static final FragmentType<VoidFragment> VOID = register("void", VoidFragment.ENDEC, 0x4400aa);
@@ -105,6 +106,14 @@ public record FragmentType<T extends Fragment>(StructEndec<T> endec, OptionalInt
     );
     public static final FragmentType<StringFragment> STRING = register("string", StringFragment.ENDEC, 0xaabb77);
     public static final FragmentType<MapFragment> MAP = register("map", MapFragment.ENDEC);
+
+    private final StructEndec<T> endec;
+    private final OptionalInt color;
+
+    public FragmentType(StructEndec<T> endec, OptionalInt color) {
+        this.endec = endec;
+        this.color = color;
+    }
 
     private static <T extends Fragment> FragmentType<T> register(String name, StructEndec<T> codec, int color) {
         return Registry.register(REGISTRY, Trickster.id(name), new FragmentType<>(codec, OptionalInt.of(color)));
@@ -165,12 +174,12 @@ public record FragmentType<T extends Fragment>(StructEndec<T> endec, OptionalInt
     @Override
     @SuppressWarnings("unchecked")
     public T compose(Trick<?> trick, SpellContext ctx, List<Fragment> fragments) {
-        return (T) fragments.get(0);
+        return (T) fragments.getFirst();
     }
 
     @Override
     public boolean match(List<Fragment> fragments) {
-        return fragments.get(0).type() == this;
+        return fragments.getFirst().type() == this;
     }
 
     @Override
@@ -207,5 +216,50 @@ public record FragmentType<T extends Fragment>(StructEndec<T> endec, OptionalInt
                 return FragmentType.this.asText();
             }
         };
+    }
+
+    public StructEndec<T> endec() {
+        return endec;
+    }
+
+    public OptionalInt color() {
+        return color;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null || obj.getClass() != this.getClass()) return false;
+        var that = (FragmentType) obj;
+        return Objects.equals(this.endec, that.endec) &&
+                Objects.equals(this.color, that.color);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(endec, color);
+    }
+
+    @Override
+    public String toString() {
+        return "FragmentType[" +
+                "endec=" + endec + ", " +
+                "color=" + color + ']';
+    }
+
+    public static class Boolean extends FragmentType<BooleanFragment> {
+        public Boolean(StructEndec<BooleanFragment> endec, OptionalInt color) {
+            super(endec, color);
+        }
+
+        @Override
+        public BooleanFragment compose(Trick<?> trick, SpellContext ctx, List<Fragment> fragments) {
+            return BooleanFragment.of(fragments.getFirst().asBoolean());
+        }
+
+        @Override
+        public boolean match(List<Fragment> fragments) {
+            return true;
+        }
     }
 }

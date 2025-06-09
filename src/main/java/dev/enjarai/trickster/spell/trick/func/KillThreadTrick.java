@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public class KillThreadTrick extends Trick<KillThreadTrick> {
     public KillThreadTrick() {
-        super(Pattern.of(6, 3, 1, 4, 3, 7, 5, 4, 7, 6), Signature.of(FragmentType.NUMBER.optionalOf(), KillThreadTrick::run, FragmentType.BOOLEAN));
+        super(Pattern.of(6, 3, 1, 4, 3, 7, 5, 4, 7, 6), Signature.of(FragmentType.NUMBER.optionalOfArg(), KillThreadTrick::run, FragmentType.BOOLEAN));
     }
 
     public BooleanFragment run(SpellContext ctx, Optional<NumberFragment> index) throws BlunderException {

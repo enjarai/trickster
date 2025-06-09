@@ -14,7 +14,7 @@ import java.util.List;
 
 public class GetMaxManaInSlotTrick extends Trick<GetMaxManaInSlotTrick> {
     public GetMaxManaInSlotTrick() {
-        super(Pattern.of(0, 2, 3, 0, 4, 3, 6, 8, 5, 4, 2, 1, 5, 2), Signature.of(variadic(FragmentType.SLOT).unpack(), GetMaxManaInSlotTrick::run, FragmentType.NUMBER));
+        super(Pattern.of(0, 2, 3, 0, 4, 3, 6, 8, 5, 4, 2, 1, 5, 2), Signature.of(FragmentType.SLOT.variadicOfArg().unpack(), GetMaxManaInSlotTrick::run, FragmentType.NUMBER));
     }
 
     public NumberFragment run(SpellContext ctx, List<SlotFragment> slots) throws BlunderException {

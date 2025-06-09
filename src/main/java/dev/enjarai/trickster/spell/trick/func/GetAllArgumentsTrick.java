@@ -11,7 +11,7 @@ import java.util.List;
 
 public class GetAllArgumentsTrick extends Trick<GetAllArgumentsTrick> {
     public GetAllArgumentsTrick() {
-        super(Pattern.of(3, 4, 5, 2, 0, 3, 6, 8, 5), Signature.of(GetAllArgumentsTrick::run, RetType.ANY.listOf()));
+        super(Pattern.of(3, 4, 5, 2, 0, 3, 6, 8, 5), Signature.of(GetAllArgumentsTrick::run, RetType.ANY.listOfRet()));
     }
 
     public List<Fragment> run(SpellContext ctx) {

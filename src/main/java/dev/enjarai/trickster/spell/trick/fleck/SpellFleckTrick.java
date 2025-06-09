@@ -19,8 +19,8 @@ public class SpellFleckTrick extends AbstractFleckTrick<SpellFleckTrick> {
     public SpellFleckTrick() {
         super(
                 Pattern.of(3, 4, 5, 8, 7, 6, 3, 0, 1, 2, 5),
-                Signature.of(FragmentType.NUMBER, FragmentType.VECTOR, FragmentType.VECTOR, FragmentType.SPELL_PART, FragmentType.NUMBER.optionalOf(),
-                        variadic(FragmentType.ENTITY).unpack().optionalOf(), SpellFleckTrick::run, FragmentType.NUMBER)
+                Signature.of(FragmentType.NUMBER, FragmentType.VECTOR, FragmentType.VECTOR, FragmentType.SPELL_PART, FragmentType.NUMBER.optionalOfArg(),
+                        FragmentType.ENTITY.variadicOfArg().unpack().optionalOfArg(), SpellFleckTrick::run, FragmentType.NUMBER)
         );
     }
 

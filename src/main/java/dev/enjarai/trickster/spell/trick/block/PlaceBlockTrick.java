@@ -23,8 +23,8 @@ import java.util.Optional;
 public class PlaceBlockTrick extends Trick<PlaceBlockTrick> {
     public PlaceBlockTrick() {
         super(Pattern.of(0, 2, 8, 6, 0),
-                Signature.of(FragmentType.VECTOR, FragmentType.SLOT, FragmentType.VECTOR.optionalOf(), FragmentType.VECTOR.optionalOf(), PlaceBlockTrick::placeSlot, FragmentType.VECTOR));
-        overload(Signature.of(FragmentType.VECTOR, FragmentType.BLOCK_TYPE, FragmentType.VECTOR.optionalOf(), FragmentType.VECTOR.optionalOf(), PlaceBlockTrick::placeType, FragmentType.VECTOR));
+                Signature.of(FragmentType.VECTOR, FragmentType.SLOT, FragmentType.VECTOR.optionalOfArg(), FragmentType.VECTOR.optionalOfArg(), PlaceBlockTrick::placeSlot, FragmentType.VECTOR));
+        overload(Signature.of(FragmentType.VECTOR, FragmentType.BLOCK_TYPE, FragmentType.VECTOR.optionalOfArg(), FragmentType.VECTOR.optionalOfArg(), PlaceBlockTrick::placeType, FragmentType.VECTOR));
     }
 
     public VectorFragment placeSlot(SpellContext ctx, VectorFragment pos, SlotFragment slot, Optional<VectorFragment> facing, Optional<VectorFragment> side) throws BlunderException {

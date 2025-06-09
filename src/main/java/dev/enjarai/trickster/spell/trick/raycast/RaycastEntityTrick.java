@@ -1,9 +1,9 @@
 package dev.enjarai.trickster.spell.trick.raycast;
 
-import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import net.minecraft.entity.Entity;
@@ -21,7 +21,7 @@ public class RaycastEntityTrick extends AbstractRaycastTrick<EntityFragment> {
     }
 
     @Override
-    public Optional<EntityFragment> run(SpellContext ctx, Optional<Entity> entity, Vec3d position, Vec3d direction, Optional<Fragment> bool) throws BlunderException {
+    public Optional<EntityFragment> run(SpellContext ctx, Optional<Entity> entity, Vec3d position, Vec3d direction, Optional<BooleanFragment> bool) throws BlunderException {
         var multipliedDirection = position.add(direction.multiply(64d));
         var hit = raycast(ctx.source().getWorld(), entity, position, multipliedDirection, new Box(position, multipliedDirection), 64 * 64);
         return hit == null ? Optional.empty() : Optional.of(EntityFragment.from(hit.getEntity()));

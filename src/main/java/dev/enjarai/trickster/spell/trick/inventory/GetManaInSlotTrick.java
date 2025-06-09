@@ -17,7 +17,7 @@ import java.util.UUID;
 
 public class GetManaInSlotTrick extends Trick<GetManaInSlotTrick> {
     public GetManaInSlotTrick() {
-        super(Pattern.of(3, 4, 5, 2, 4, 0, 3, 6, 8, 5), Signature.of(variadic(FragmentType.SLOT).unpack(), GetManaInSlotTrick::run, FragmentType.NUMBER));
+        super(Pattern.of(3, 4, 5, 2, 4, 0, 3, 6, 8, 5), Signature.of(FragmentType.SLOT.variadicOfArg().unpack(), GetManaInSlotTrick::run, FragmentType.NUMBER));
     }
 
     public NumberFragment run(SpellContext ctx, List<SlotFragment> slots) throws BlunderException {

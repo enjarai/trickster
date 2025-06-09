@@ -17,7 +17,7 @@ import java.util.Optional;
 
 public class ReadMacroRing extends Trick<ReadMacroRing> {
     public ReadMacroRing() {
-        super(Pattern.of(1, 2, 5, 8, 7, 6, 3, 0, 1, 5, 7, 3, 1, 4, 7), Signature.of(ReadMacroRing::run, FragmentType.PATTERN.mappedTo(FragmentType.SPELL_PART).maybe()));
+        super(Pattern.of(1, 2, 5, 8, 7, 6, 3, 0, 1, 5, 7, 3, 1, 4, 7), Signature.of(ReadMacroRing::run, FragmentType.PATTERN.mappedTo(FragmentType.SPELL_PART.retType()).optionalOfRet()));
     }
 
     public Optional<HashMap<PatternGlyph, SpellPart>> run(SpellContext ctx) throws BlunderException {

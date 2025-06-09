@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public class BlockFromItemTrick extends Trick<BlockFromItemTrick> {
     public BlockFromItemTrick() {
-        super(Pattern.of(4, 3, 6, 8, 5, 4, 1), Signature.of(FragmentType.ITEM_TYPE, BlockFromItemTrick::run, FragmentType.BLOCK_TYPE.maybe()));
+        super(Pattern.of(4, 3, 6, 8, 5, 4, 1), Signature.of(FragmentType.ITEM_TYPE, BlockFromItemTrick::run, FragmentType.BLOCK_TYPE.optionalOfRet()));
     }
 
     public Optional<BlockTypeFragment> run(SpellContext ctx, ItemTypeFragment itemType) throws BlunderException {

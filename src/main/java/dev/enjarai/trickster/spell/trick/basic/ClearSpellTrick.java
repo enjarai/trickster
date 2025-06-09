@@ -15,7 +15,7 @@ import java.util.Optional;
 
 public class ClearSpellTrick extends Trick<ClearSpellTrick> {
     public ClearSpellTrick() {
-        super(Pattern.of(1, 4, 5, 8, 7, 6, 3, 4), Signature.of(FragmentType.SLOT.optionalOf(), ClearSpellTrick::run, FragmentType.VOID));
+        super(Pattern.of(1, 4, 5, 8, 7, 6, 3, 4), Signature.of(FragmentType.SLOT.optionalOfArg(), ClearSpellTrick::run, FragmentType.VOID));
     }
 
     public VoidFragment run(SpellContext ctx, Optional<SlotFragment> optionalSlot) throws BlunderException {

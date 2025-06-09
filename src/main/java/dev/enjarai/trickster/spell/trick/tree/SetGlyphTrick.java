@@ -8,13 +8,14 @@ import dev.enjarai.trickster.spell.blunder.AddressNotInTreeBlunder;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
+import dev.enjarai.trickster.spell.type.ArgType;
 import dev.enjarai.trickster.spell.type.Signature;
 
 import java.util.List;
 
 public class SetGlyphTrick extends AbstractMetaTrick<SetGlyphTrick> {
     public SetGlyphTrick() {
-        super(Pattern.of(0, 1, 2, 4, 8, 7, 6), Signature.of(FragmentType.SPELL_PART, ADDRESS, ANY, SetGlyphTrick::set, FragmentType.SPELL_PART));
+        super(Pattern.of(0, 1, 2, 4, 8, 7, 6), Signature.of(FragmentType.SPELL_PART, ADDRESS, ArgType.ANY, SetGlyphTrick::set, FragmentType.SPELL_PART));
     }
 
     public SpellPart set(SpellContext ctx, SpellPart spell, List<NumberFragment> address, Fragment glyph) throws BlunderException {

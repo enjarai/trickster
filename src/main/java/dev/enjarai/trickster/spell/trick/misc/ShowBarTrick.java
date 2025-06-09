@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public class ShowBarTrick extends Trick<ShowBarTrick> {
     public ShowBarTrick() {
-        super(Pattern.of(3, 0, 6, 3, 4, 5, 2, 8, 5), Signature.of(FragmentType.NUMBER, FragmentType.NUMBER, FragmentType.NUMBER.optionalOf(), ShowBarTrick::run, FragmentType.NUMBER));
+        super(Pattern.of(3, 0, 6, 3, 4, 5, 2, 8, 5), Signature.of(FragmentType.NUMBER, FragmentType.NUMBER, FragmentType.NUMBER.optionalOfArg(), ShowBarTrick::run, FragmentType.NUMBER));
     }
 
     public NumberFragment run(SpellContext ctx, NumberFragment id, NumberFragment value, Optional<NumberFragment> optionalMaxValue) throws BlunderException {

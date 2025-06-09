@@ -19,7 +19,7 @@ import java.util.Optional;
 
 public class SummonArrowTrick extends Trick<SummonArrowTrick> {
     public SummonArrowTrick() {
-        super(Pattern.of(2, 5, 1, 2, 4, 3, 6, 4, 7, 6), Signature.of(FragmentType.VECTOR, FragmentType.SLOT.optionalOf(), SummonArrowTrick::run, FragmentType.ENTITY));
+        super(Pattern.of(2, 5, 1, 2, 4, 3, 6, 4, 7, 6), Signature.of(FragmentType.VECTOR, FragmentType.SLOT.optionalOfArg(), SummonArrowTrick::run, FragmentType.ENTITY));
     }
 
     public EntityFragment run(SpellContext ctx, VectorFragment pos, Optional<SlotFragment> optionalSlot) throws BlunderException {

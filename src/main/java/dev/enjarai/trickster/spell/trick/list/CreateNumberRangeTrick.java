@@ -12,7 +12,7 @@ import java.util.stream.IntStream;
 
 public class CreateNumberRangeTrick extends Trick<CreateNumberRangeTrick> {
     public CreateNumberRangeTrick() {
-        super(Pattern.of(1, 2, 0, 1, 4, 7, 8, 6, 7), Signature.of(FragmentType.NUMBER, FragmentType.NUMBER, CreateNumberRangeTrick::run, FragmentType.NUMBER.listOf()));
+        super(Pattern.of(1, 2, 0, 1, 4, 7, 8, 6, 7), Signature.of(FragmentType.NUMBER, FragmentType.NUMBER, CreateNumberRangeTrick::run, FragmentType.NUMBER.listOfRet()));
     }
 
     public List<NumberFragment> run(SpellContext ctx, NumberFragment start, NumberFragment end) {

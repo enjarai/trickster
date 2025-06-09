@@ -22,7 +22,7 @@ public class MessageSendTrick extends Trick<MessageSendTrick> {
     public static final NumberFragment DEFAULT_RANGE = new NumberFragment(16);
 
     public MessageSendTrick() {
-        super(Pattern.of(4, 8, 1, 6, 4), Signature.of(ANY, FragmentType.NUMBER.optionalOf(), MessageSendTrick::broadcast, RetType.ANY));
+        super(Pattern.of(4, 8, 1, 6, 4), Signature.of(ANY, FragmentType.NUMBER.optionalOfArg(), MessageSendTrick::broadcast, RetType.ANY));
         overload(Signature.of(ANY, FragmentType.SLOT, MessageSendTrick::channel, RetType.ANY));
     }
 

@@ -8,6 +8,7 @@ import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.ArgType;
 import dev.enjarai.trickster.spell.type.RetType;
 import dev.enjarai.trickster.spell.type.Signature;
 import io.wispforest.accessories.api.slot.SlotReference;
@@ -19,7 +20,7 @@ import java.util.List;
 
 public class ImportHatTrick extends Trick<ImportHatTrick> {
     public ImportHatTrick() {
-        super(Pattern.of(3, 0, 5, 6, 3, 2, 5, 8, 3, 1, 5, 7, 3), Signature.of(FragmentType.NUMBER, ANY_VARIADIC, ImportHatTrick::run, RetType.ANY.executor()));
+        super(Pattern.of(3, 0, 5, 6, 3, 2, 5, 8, 3, 1, 5, 7, 3), Signature.of(FragmentType.NUMBER, ArgType.ANY.variadicOfArg(), ImportHatTrick::run, RetType.ANY.executor()));
     }
 
     public SpellExecutor run(SpellContext ctx, NumberFragment index, List<Fragment> args) throws BlunderException {

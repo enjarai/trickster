@@ -11,7 +11,7 @@ import java.util.List;
 
 public class GetSubPartsTrick extends AbstractMetaTrick<GetSubPartsTrick> {
     public GetSubPartsTrick() {
-        super(Pattern.of(6, 4, 2, 5, 8, 4, 0, 3, 6, 8), Signature.of(FragmentType.SPELL_PART, GetSubPartsTrick::get, FragmentType.SPELL_PART.listOf()));
+        super(Pattern.of(6, 4, 2, 5, 8, 4, 0, 3, 6, 8), Signature.of(FragmentType.SPELL_PART, GetSubPartsTrick::get, FragmentType.SPELL_PART.listOfRet()));
     }
 
     public List<SpellPart> get(SpellContext ctx, SpellPart spell) throws BlunderException {

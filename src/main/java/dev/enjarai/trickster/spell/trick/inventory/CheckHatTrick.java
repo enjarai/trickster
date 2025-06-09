@@ -18,7 +18,7 @@ import java.util.Optional;
 
 public class CheckHatTrick extends Trick<CheckHatTrick> {
     public CheckHatTrick() {
-        super(Pattern.of(3, 0, 2, 5, 8, 6, 3, 1, 5, 7, 3), Signature.of(CheckHatTrick::run, FragmentType.NUMBER.maybe()));
+        super(Pattern.of(3, 0, 2, 5, 8, 6, 3, 1, 5, 7, 3), Signature.of(CheckHatTrick::run, FragmentType.NUMBER.optionalOfRet()));
     }
 
     public Optional<NumberFragment> run(SpellContext ctx) throws BlunderException {

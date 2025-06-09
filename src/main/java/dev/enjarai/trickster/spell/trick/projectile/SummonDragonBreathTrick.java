@@ -19,7 +19,7 @@ public class SummonDragonBreathTrick extends Trick<SummonDragonBreathTrick> {
     public SummonDragonBreathTrick() {
         super(
                 Pattern.of(1, 0, 3, 6, 7, 8, 5, 2, 1, 6, 8, 1, 4, 7, 0, 2, 7),
-                Signature.of(FragmentType.VECTOR, FragmentType.SLOT.optionalOf(), FragmentType.SLOT.optionalOf(), SummonDragonBreathTrick::run, FragmentType.ENTITY)
+                Signature.of(FragmentType.VECTOR, FragmentType.SLOT.optionalOfArg(), FragmentType.SLOT.optionalOfArg(), SummonDragonBreathTrick::run, FragmentType.ENTITY)
         );
     }
 

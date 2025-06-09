@@ -15,7 +15,7 @@ import java.util.List;
 
 public abstract class AbstractConduitTrick extends Trick<AbstractConduitTrick> {
     public AbstractConduitTrick(Pattern pattern) {
-        super(pattern, Signature.of(FragmentType.NUMBER, variadic(FragmentType.SLOT).require().unpack(), AbstractConduitTrick::run, FragmentType.NUMBER));
+        super(pattern, Signature.of(FragmentType.NUMBER, FragmentType.SLOT.variadicOfArg().require().unpack(), AbstractConduitTrick::run, FragmentType.NUMBER));
     }
 
     public NumberFragment run(SpellContext ctx, NumberFragment n, List<SlotFragment> slots) throws BlunderException {

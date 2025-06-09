@@ -17,7 +17,7 @@ import java.util.Optional;
 
 public class SummonFireballTrick extends Trick<SummonFireballTrick> {
     public SummonFireballTrick() {
-        super(Pattern.of(1, 4, 0, 3, 6, 7, 8, 5, 2, 1, 5, 4, 8, 6, 4, 3), Signature.of(FragmentType.VECTOR, FragmentType.SLOT.optionalOf(), SummonFireballTrick::run, FragmentType.ENTITY));
+        super(Pattern.of(1, 4, 0, 3, 6, 7, 8, 5, 2, 1, 5, 4, 8, 6, 4, 3), Signature.of(FragmentType.VECTOR, FragmentType.SLOT.optionalOfArg(), SummonFireballTrick::run, FragmentType.ENTITY));
     }
 
     public EntityFragment run(SpellContext ctx, VectorFragment pos, Optional<SlotFragment> optionalSlot) throws BlunderException {

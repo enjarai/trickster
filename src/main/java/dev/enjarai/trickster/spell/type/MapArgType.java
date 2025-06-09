@@ -11,11 +11,11 @@ import io.vavr.collection.HashMap;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
-public abstract class AbstractMapArgType<K extends Fragment, V extends Fragment, KT extends T, VT extends T, T> implements ArgType<HashMap<K, V>> {
-    protected final KT keyType;
-    protected final VT valueType;
+public class MapArgType<K, V> implements ArgType<HashMap<K, V>> {
+    protected final ArgType<K> keyType;
+    protected final ArgType<V> valueType;
 
-    public AbstractMapArgType(KT keyType, VT valueType) {
+    public MapArgType(ArgType<K> keyType, ArgType<V> valueType) {
         this.keyType = keyType;
         this.valueType = valueType;
     }
@@ -25,14 +25,16 @@ public abstract class AbstractMapArgType<K extends Fragment, V extends Fragment,
         return FragmentType.MAP.argc(fragments);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public HashMap<K, V> compose(Trick<?> trick, SpellContext ctx, List<Fragment> fragments) {
         var map = FragmentType.MAP.compose(trick, ctx, fragments);
         var result = HashMap.<K, V>empty();
 
         for (var entry : map.map()) {
-            result = result.put((K) entry._1, (V) entry._2);
+            result = result.put(
+                    keyType.compose(trick, ctx, List.of(entry._1)),
+                    valueType.compose(trick, ctx, List.of(entry._2))
+            );
         }
 
         return result;
@@ -44,14 +46,21 @@ public abstract class AbstractMapArgType<K extends Fragment, V extends Fragment,
             return false;
         }
 
-        var map = (MapFragment) fragments.get(0);
+        var map = (MapFragment) fragments.getFirst();
+
+        var argcKey = keyType.argc(fragments);
+        var argcValue = valueType.argc(fragments);
+
+        if (argcKey != 1 || argcValue != 1) {
+            return false;
+        }
 
         for (var entry : map.map()) {
-            if (!matchType(keyType, entry._1)) {
+            if (!keyType.match(List.of(entry._1))) {
                 return false;
             }
 
-            if (!matchType(valueType, entry._2)) {
+            if (!valueType.match(List.of(entry._2))) {
                 return false;
             }
         }
@@ -59,16 +68,17 @@ public abstract class AbstractMapArgType<K extends Fragment, V extends Fragment,
         return true;
     }
 
-    protected abstract boolean matchType(T type, Fragment fragment);
+    @Override
+    public ArgType<HashMap<K, V>> wardOf() {
+        return new MapArgType<>(keyType.wardOf(), valueType.wardOf());
+    }
 
     @Override
     public MutableText asText() {
-        return Text.literal("{ ")
-                .append(typeAsText(keyType))
+        return Text.literal("{")
+                .append(keyType.asText())
                 .append(": ")
-                .append(typeAsText(valueType))
-                .append(" }");
+                .append(valueType.asText())
+                .append("}");
     }
-
-    protected abstract MutableText typeAsText(T type);
 }

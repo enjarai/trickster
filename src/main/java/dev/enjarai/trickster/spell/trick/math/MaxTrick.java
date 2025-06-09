@@ -12,7 +12,7 @@ import java.util.List;
 
 public class MaxTrick extends DistortionTrick<MaxTrick> {
     public MaxTrick() {
-        super(Pattern.of(3, 1, 5), Signature.of(variadic(FragmentType.NUMBER).require().unpack(), MaxTrick::run, FragmentType.NUMBER));
+        super(Pattern.of(3, 1, 5), Signature.of(FragmentType.NUMBER.variadicOfArg().require().unpack(), MaxTrick::run, FragmentType.NUMBER));
     }
 
     public NumberFragment run(SpellContext ctx, List<NumberFragment> numbers) throws BlunderException {

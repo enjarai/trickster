@@ -17,7 +17,7 @@ import java.util.Optional;
 public class LineFleckTrick extends AbstractFleckTrick<LineFleckTrick> {
     public LineFleckTrick() {
         super(Pattern.of(2, 5, 7, 4, 3, 1, 2),
-                Signature.of(FragmentType.NUMBER, FragmentType.VECTOR, FragmentType.VECTOR, variadic(FragmentType.ENTITY).unpack().optionalOf(), LineFleckTrick::run, FragmentType.NUMBER));
+                Signature.of(FragmentType.NUMBER, FragmentType.VECTOR, FragmentType.VECTOR, FragmentType.ENTITY.variadicOfArg().unpack().optionalOfArg(), LineFleckTrick::run, FragmentType.NUMBER));
     }
 
     public NumberFragment run(SpellContext ctx, NumberFragment id, VectorFragment pos1, VectorFragment pos2, Optional<List<EntityFragment>> targets) throws BlunderException {

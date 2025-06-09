@@ -20,9 +20,9 @@ import java.util.Optional;
 
 public class MessageListenTrick extends Trick<MessageListenTrick> {
     public MessageListenTrick() {
-        super(Pattern.of(4, 0, 7, 2, 4), Signature.of(FragmentType.NUMBER, MessageListenTrick::run, RetType.ANY.listOf().executor()));
+        super(Pattern.of(4, 0, 7, 2, 4), Signature.of(FragmentType.NUMBER, MessageListenTrick::run, RetType.ANY.listOfRet().executor()));
         overload(Signature.of(FragmentType.NUMBER, FragmentType.SLOT, MessageListenTrick::runWithChannel,
-                RetType.ANY.listOf().thisFunctionExistsSolelyForMessageListeningOnItemsBecauseWeAlreadyHadAnAbstractionForItAndWeReallyDontWantToReworkItSoThisWillHaveToDoHonestly()));
+                RetType.ANY.listOfRet().thisFunctionExistsSolelyForMessageListeningOnItemsBecauseWeAlreadyHadAnAbstractionForItAndWeReallyDontWantToReworkItSoThisWillHaveToDoHonestly()));
     }
 
     //TODO: how should we stop this from running in single-tick mode

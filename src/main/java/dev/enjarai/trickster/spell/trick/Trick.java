@@ -32,9 +32,6 @@ import java.util.*;
 public abstract class Trick<T extends Trick<T>> {
     public static final Identifier TRICK_RANDOM = Trickster.id("trick");
 
-    protected static final SimpleArgType<Fragment> ANY = simple(Fragment.class);
-    protected static final ClassVariadicArgType<Fragment> ANY_VARIADIC = variadic(Fragment.class);
-
     protected final Pattern pattern;
     private final List<Signature<T>> handlers;
 
@@ -72,38 +69,6 @@ public abstract class Trick<T extends Trick<T>> {
         }
 
         throw new InvalidInputsBlunder(this, fragments);
-    }
-
-    protected static <T extends Fragment> SimpleArgType<T> simple(Class<T> type) {
-        return new SimpleArgType<T>(type);
-    }
-
-    @SafeVarargs
-    protected static <T extends Fragment> ClassVariadicArgType<T> variadic(Class<T>... types) {
-        return new ClassVariadicArgType<>(types);
-    }
-
-    @SafeVarargs
-    protected static <T extends Fragment> TypeVariadicArgType<T> variadic(FragmentType<T>... types) {
-        return new TypeVariadicArgType<>(types);
-    }
-
-    @SafeVarargs
-    protected static <T extends Fragment> ClassListArgType<T> list(Class<T>... types) {
-        return new ClassListArgType<>(types);
-    }
-
-    @SafeVarargs
-    protected static <T extends Fragment> TypeListArgType<T> list(FragmentType<T>... types) {
-        return new TypeListArgType<>(types);
-    }
-
-    protected static <K extends Fragment, V extends Fragment> ClassMapArgType<K, V> map(Class<K> keyType, Class<V> valueType) {
-        return new ClassMapArgType<>(keyType, valueType);
-    }
-
-    protected static <K extends Fragment, V extends Fragment> TypeMapArgType<K, V> map(FragmentType<K> keyType, FragmentType<V> valueType) {
-        return new TypeMapArgType<>(keyType, valueType);
     }
 
     protected void expectCanBuild(SpellContext ctx, BlockPos... positions) {

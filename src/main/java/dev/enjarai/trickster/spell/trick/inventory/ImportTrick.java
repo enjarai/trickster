@@ -8,6 +8,7 @@ import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.ItemTypeFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.ArgType;
 import dev.enjarai.trickster.spell.type.RetType;
 import dev.enjarai.trickster.spell.type.Signature;
 
@@ -16,7 +17,7 @@ import java.util.Optional;
 
 public class ImportTrick extends Trick<ImportTrick> {
     public ImportTrick() {
-        super(Pattern.of(3, 0, 5, 6, 3, 2, 5, 8, 3), Signature.of(FragmentType.ITEM_TYPE, ANY_VARIADIC, ImportTrick::run, RetType.ANY.executor()));
+        super(Pattern.of(3, 0, 5, 6, 3, 2, 5, 8, 3), Signature.of(FragmentType.ITEM_TYPE, ArgType.ANY.variadicOfArg(), ImportTrick::run, RetType.ANY.executor()));
     }
 
     public SpellExecutor run(SpellContext ctx, ItemTypeFragment itemType, List<Fragment> args) throws BlunderException {

@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public class DelayExecutionTrick extends Trick<DelayExecutionTrick> {
     public DelayExecutionTrick() {
-        super(Pattern.of(0, 2, 4, 6, 8, 4, 0), Signature.of(FragmentType.NUMBER.optionalOf(), DelayExecutionTrick::run, FragmentType.NUMBER));
+        super(Pattern.of(0, 2, 4, 6, 8, 4, 0), Signature.of(FragmentType.NUMBER.optionalOfArg(), DelayExecutionTrick::run, FragmentType.NUMBER));
     }
 
     public NumberFragment run(SpellContext ctx, Optional<NumberFragment> number) throws BlunderException {

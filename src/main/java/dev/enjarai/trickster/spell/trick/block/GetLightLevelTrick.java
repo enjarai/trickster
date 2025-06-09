@@ -15,7 +15,7 @@ import java.util.Optional;
 
 public class GetLightLevelTrick extends Trick<GetLightLevelTrick> {
     public GetLightLevelTrick() {
-        super(Pattern.of(8, 4, 0, 1, 2, 0, 6, 8, 2), Signature.of(FragmentType.VECTOR, FragmentType.BOOLEAN.optionalOf(), GetLightLevelTrick::get, FragmentType.NUMBER));
+        super(Pattern.of(8, 4, 0, 1, 2, 0, 6, 8, 2), Signature.of(FragmentType.VECTOR, FragmentType.BOOLEAN.optionalOfArg(), GetLightLevelTrick::get, FragmentType.NUMBER));
     }
 
     public NumberFragment get(SpellContext ctx, VectorFragment pos, Optional<BooleanFragment> sky) throws BlunderException {

@@ -9,6 +9,7 @@ import dev.enjarai.trickster.spell.blunder.IndexOutOfBoundsBlunder;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.trick.DistortionTrick;
+import dev.enjarai.trickster.spell.type.ArgType;
 import dev.enjarai.trickster.spell.type.RetType;
 import dev.enjarai.trickster.spell.type.Signature;
 import net.minecraft.util.math.MathHelper;
@@ -19,7 +20,7 @@ import java.util.Objects;
 
 public class ListRemoveTrick extends DistortionTrick<ListRemoveTrick> {
     public ListRemoveTrick() {
-        super(Pattern.of(6, 3, 0, 4, 8, 5, 2), Signature.of(list(Fragment.class), variadic(FragmentType.NUMBER), ListRemoveTrick::remove, RetType.ANY.listOf()));
+        super(Pattern.of(6, 3, 0, 4, 8, 5, 2), Signature.of(ArgType.ANY.listOfArg(), FragmentType.NUMBER.variadicOfArg().unpack(), ListRemoveTrick::remove, RetType.ANY.listOfRet()));
     }
 
     public List<Fragment> remove(SpellContext ctx, List<Fragment> list, List<NumberFragment> indexes) throws BlunderException {

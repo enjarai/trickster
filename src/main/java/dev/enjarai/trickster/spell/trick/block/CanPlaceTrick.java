@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public class CanPlaceTrick extends Trick<CanPlaceTrick> {
     public CanPlaceTrick() {
-        super(Pattern.of(0, 2, 8, 5, 2, 4, 6, 8, 4, 0, 6, 3, 0), Signature.of(FragmentType.VECTOR, FragmentType.BLOCK_TYPE.optionalOf(), CanPlaceTrick::check, FragmentType.BOOLEAN));
+        super(Pattern.of(0, 2, 8, 5, 2, 4, 6, 8, 4, 0, 6, 3, 0), Signature.of(FragmentType.VECTOR, FragmentType.BLOCK_TYPE.optionalOfArg(), CanPlaceTrick::check, FragmentType.BOOLEAN));
     }
 
     public BooleanFragment check(SpellContext ctx, VectorFragment pos, Optional<BlockTypeFragment> blockType) throws BlunderException {

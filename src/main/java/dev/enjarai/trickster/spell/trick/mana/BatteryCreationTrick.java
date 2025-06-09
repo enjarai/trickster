@@ -25,8 +25,8 @@ public class BatteryCreationTrick extends Trick<BatteryCreationTrick> {
     private Map<Item, KnotItem> types = new HashMap<>();
 
     public BatteryCreationTrick() {
-        super(Pattern.of(6, 8, 5, 2, 1, 8, 7, 6, 1, 0, 3, 6), Signature.of(FragmentType.SLOT.optionalOf(),
-                FragmentType.SLOT.optionalOf(), BatteryCreationTrick::run, FragmentType.VOID));
+        super(Pattern.of(6, 8, 5, 2, 1, 8, 7, 6, 1, 0, 3, 6), Signature.of(FragmentType.SLOT.optionalOfArg(),
+                FragmentType.SLOT.optionalOfArg(), BatteryCreationTrick::run, FragmentType.VOID));
     }
 
     public VoidFragment run(SpellContext ctx, Optional<SlotFragment> slot1, Optional<SlotFragment> slot2)

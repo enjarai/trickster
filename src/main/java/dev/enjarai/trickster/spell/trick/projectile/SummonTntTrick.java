@@ -17,7 +17,7 @@ import java.util.Optional;
 
 public class SummonTntTrick extends Trick<SummonTntTrick> {
     public SummonTntTrick() {
-        super(Pattern.of(0, 2, 8, 6, 0, 1, 4, 7, 8, 5, 4, 3, 0, 4, 8), Signature.of(FragmentType.VECTOR, FragmentType.SLOT.optionalOf(), SummonTntTrick::run, FragmentType.ENTITY));
+        super(Pattern.of(0, 2, 8, 6, 0, 1, 4, 7, 8, 5, 4, 3, 0, 4, 8), Signature.of(FragmentType.VECTOR, FragmentType.SLOT.optionalOfArg(), SummonTntTrick::run, FragmentType.ENTITY));
     }
 
     public EntityFragment run(SpellContext ctx, VectorFragment pos, Optional<SlotFragment> optionalSlot) throws BlunderException {

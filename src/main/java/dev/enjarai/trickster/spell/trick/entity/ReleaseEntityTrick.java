@@ -20,7 +20,7 @@ import java.util.Optional;
 
 public class ReleaseEntityTrick extends Trick<ReleaseEntityTrick> {
     public ReleaseEntityTrick() {
-        super(Pattern.of(4, 3, 6, 7, 4, 8, 2), Signature.of(FragmentType.VECTOR, ReleaseEntityTrick::release, FragmentType.ENTITY.maybe()));
+        super(Pattern.of(4, 3, 6, 7, 4, 8, 2), Signature.of(FragmentType.VECTOR, ReleaseEntityTrick::release, FragmentType.ENTITY.optionalOfArg()));
     }
 
     public Optional<EntityFragment> release(SpellContext ctx, VectorFragment vector) throws BlunderException {

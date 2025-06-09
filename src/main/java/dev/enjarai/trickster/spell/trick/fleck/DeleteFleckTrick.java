@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public class DeleteFleckTrick extends AbstractFleckTrick<DeleteFleckTrick> {
     public DeleteFleckTrick() {
-        super(Pattern.of(7, 0, 3, 6, 7, 8, 5, 2, 7), Signature.of(FragmentType.NUMBER, variadic(FragmentType.ENTITY).unpack().optionalOf(), DeleteFleckTrick::deleteFleck, FragmentType.NUMBER));
+        super(Pattern.of(7, 0, 3, 6, 7, 8, 5, 2, 7), Signature.of(FragmentType.NUMBER, FragmentType.ENTITY.variadicOfArg().unpack().optionalOfArg(), DeleteFleckTrick::deleteFleck, FragmentType.NUMBER));
     }
 
     public NumberFragment deleteFleck(SpellContext ctx, NumberFragment id, Optional<List<EntityFragment>> targets) throws BlunderException {

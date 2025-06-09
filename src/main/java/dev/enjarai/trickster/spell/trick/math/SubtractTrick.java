@@ -7,6 +7,7 @@ import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.SubtractableFragment;
 import dev.enjarai.trickster.spell.trick.DistortionTrick;
+import dev.enjarai.trickster.spell.type.ArgType;
 import dev.enjarai.trickster.spell.type.RetType;
 import dev.enjarai.trickster.spell.type.Signature;
 
@@ -14,8 +15,8 @@ import java.util.List;
 
 public class SubtractTrick extends DistortionTrick<SubtractTrick> {
     public SubtractTrick() {
-        super(Pattern.of(1, 4, 8, 7, 6, 4), Signature.of(variadic(SubtractableFragment.class).require().unpack(), SubtractTrick::run, RetType.simple(SubtractableFragment.class)));
-        overload(Signature.of(variadic(FragmentType.PATTERN).require().unpack(), SubtractTrick::runForGlyphs, FragmentType.PATTERN));
+        super(Pattern.of(1, 4, 8, 7, 6, 4), Signature.of(ArgType.simple(SubtractableFragment.class).variadicOfArg().require().unpack(), SubtractTrick::run, RetType.simple(SubtractableFragment.class)));
+        overload(Signature.of(FragmentType.PATTERN.variadicOfArg().require().unpack(), SubtractTrick::runForGlyphs, FragmentType.PATTERN));
     }
 
     public SubtractableFragment run(SpellContext ctx, List<SubtractableFragment> fragments) throws BlunderException {

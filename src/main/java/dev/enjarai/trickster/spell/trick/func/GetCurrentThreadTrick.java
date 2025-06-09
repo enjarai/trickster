@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public class GetCurrentThreadTrick extends Trick<GetCurrentThreadTrick> {
     public GetCurrentThreadTrick() {
-        super(Pattern.of(1, 2, 7, 0, 1, 8, 7, 6, 1), Signature.of(GetCurrentThreadTrick::get, FragmentType.NUMBER.maybe()));
+        super(Pattern.of(1, 2, 7, 0, 1, 8, 7, 6, 1), Signature.of(GetCurrentThreadTrick::get, FragmentType.NUMBER.optionalOfArg()));
     }
 
     public Optional<NumberFragment> get(SpellContext ctx) throws BlunderException {

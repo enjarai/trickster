@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public class DropStackFromSlotTrick extends Trick<DropStackFromSlotTrick> {
     public DropStackFromSlotTrick() {
-        super(Pattern.of(1, 4, 7, 3, 4, 5, 7), Signature.of(FragmentType.SLOT, FragmentType.VECTOR, FragmentType.NUMBER.optionalOf(), DropStackFromSlotTrick::run, FragmentType.ENTITY));
+        super(Pattern.of(1, 4, 7, 3, 4, 5, 7), Signature.of(FragmentType.SLOT, FragmentType.VECTOR, FragmentType.NUMBER.optionalOfArg(), DropStackFromSlotTrick::run, FragmentType.ENTITY));
     }
 
     public EntityFragment run(SpellContext ctx, SlotFragment slot, VectorFragment pos, Optional<NumberFragment> optionalAmount) throws BlunderException {

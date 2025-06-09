@@ -1,6 +1,5 @@
 package dev.enjarai.trickster.spell.trick.raycast;
 
-import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
@@ -20,7 +19,7 @@ public abstract class AbstractRaycastBlockTrick extends AbstractRaycastTrick<Vec
         super(pattern, FragmentType.VECTOR);
     }
 
-    public Optional<VectorFragment> run(SpellContext ctx, Optional<Entity> entity, Vec3d position, Vec3d direction, Optional<Fragment> bool) throws BlunderException {
+    public Optional<VectorFragment> run(SpellContext ctx, Optional<Entity> entity, Vec3d position, Vec3d direction, Optional<BooleanFragment> bool) throws BlunderException {
         boolean includeFluids = bool.orElse(BooleanFragment.FALSE).asBoolean();
 
         return activate(

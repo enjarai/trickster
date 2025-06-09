@@ -17,7 +17,7 @@ import java.util.Optional;
 
 public class GetFlecksTrick extends Trick<GetFlecksTrick> {
     public GetFlecksTrick() {
-        super(Pattern.of(0, 4, 8, 7, 4, 1, 2, 4, 6), Signature.of(FragmentType.ENTITY.optionalOf(), GetFlecksTrick::run, FragmentType.NUMBER.listOf())); // bluetooth symbol
+        super(Pattern.of(0, 4, 8, 7, 4, 1, 2, 4, 6), Signature.of(FragmentType.ENTITY.optionalOfArg(), GetFlecksTrick::run, FragmentType.NUMBER.listOfRet())); // bluetooth symbol
     }
 
     public List<NumberFragment> run(SpellContext ctx, Optional<EntityFragment> entity) throws BlunderException {
