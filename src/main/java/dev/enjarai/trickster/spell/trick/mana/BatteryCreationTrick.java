@@ -1,8 +1,8 @@
 package dev.enjarai.trickster.spell.trick.mana;
 
+import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.item.KnotItem;
-import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
@@ -14,7 +14,6 @@ import dev.enjarai.trickster.spell.fragment.SlotFragment;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.Signature;
-import dev.enjarai.trickster.Trickster;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 
@@ -27,10 +26,10 @@ public class BatteryCreationTrick extends Trick<BatteryCreationTrick> {
 
     public BatteryCreationTrick() {
         super(Pattern.of(6, 8, 5, 2, 1, 8, 7, 6, 1, 0, 3, 6), Signature.of(FragmentType.SLOT.optionalOf(),
-                FragmentType.SLOT.optionalOf(), BatteryCreationTrick::run));
+                FragmentType.SLOT.optionalOf(), BatteryCreationTrick::run, FragmentType.VOID));
     }
 
-    public Fragment run(SpellContext ctx, Optional<SlotFragment> slot1, Optional<SlotFragment> slot2)
+    public VoidFragment run(SpellContext ctx, Optional<SlotFragment> slot1, Optional<SlotFragment> slot2)
             throws BlunderException {
         var sourceSlot = slot1
                 .orElseGet(() -> {

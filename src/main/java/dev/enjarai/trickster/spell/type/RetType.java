@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.spell.type;
 
+import java.util.List;
 import java.util.Optional;
 
 import dev.enjarai.trickster.spell.EvaluationResult;
@@ -8,6 +9,7 @@ import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
 import dev.enjarai.trickster.spell.fragment.MapFragment;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
+import io.vavr.collection.HashMap;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
@@ -17,6 +19,10 @@ public interface RetType<T> {
     MutableText asText();
 
     EvaluationResult into(T result);
+
+    default Fragment intoFragment(T result) {
+        return (Fragment) into(result);
+    }
 
     default ExecutorRetType<T> executor() {
         return new ExecutorRetType<>(this);
@@ -40,7 +46,7 @@ public interface RetType<T> {
         };
     }
 
-    default RetType<ListFragment> listOf() {
+    default RetType<List<T>> listOf() {
         return new RetType<>() {
             @Override
             public MutableText asText() {
@@ -50,13 +56,13 @@ public interface RetType<T> {
             }
 
             @Override
-            public EvaluationResult into(ListFragment result) {
-                return result;
+            public EvaluationResult into(List<T> result) {
+                return new ListFragment(result.stream().map(RetType.this::intoFragment).toList());
             }
         };
     }
 
-    default <O> RetType<MapFragment> mappedTo(RetType<O> other) {
+    default <O> RetType<HashMap<T, O>> mappedTo(RetType<O> other) {
         return new RetType<>() {
             @Override
             public MutableText asText() {
@@ -68,8 +74,10 @@ public interface RetType<T> {
             }
 
             @Override
-            public EvaluationResult into(MapFragment result) {
-                return result;
+            public EvaluationResult into(HashMap<T, O> result) {
+                return new MapFragment(result
+                        .mapKeys(RetType.this::intoFragment)
+                        .mapValues(other::intoFragment));
             }
         };
     }

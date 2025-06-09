@@ -4,7 +4,6 @@ import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.entity.LevitatingBlockEntity;
 import dev.enjarai.trickster.particle.ModParticles;
-import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.*;

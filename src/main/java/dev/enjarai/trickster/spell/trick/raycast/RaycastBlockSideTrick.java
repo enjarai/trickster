@@ -1,8 +1,8 @@
 package dev.enjarai.trickster.spell.trick.raycast;
 
 import dev.enjarai.trickster.spell.Pattern;
-import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 

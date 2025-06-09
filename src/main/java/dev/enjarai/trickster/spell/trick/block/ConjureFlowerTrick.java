@@ -2,20 +2,17 @@ package dev.enjarai.trickster.spell.trick.block;
 
 import dev.enjarai.trickster.block.ModBlocks;
 import dev.enjarai.trickster.particle.ModParticles;
-import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.fragment.VectorFragment;
-import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlockOccupiedBlunder;
 import dev.enjarai.trickster.spell.blunder.BlockUnoccupiedBlunder;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.fragment.FragmentType;
+import dev.enjarai.trickster.spell.fragment.VectorFragment;
+import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.Signature;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.math.Direction;
-
-import java.util.List;
 
 public class ConjureFlowerTrick extends Trick<ConjureFlowerTrick> {
     public ConjureFlowerTrick() {

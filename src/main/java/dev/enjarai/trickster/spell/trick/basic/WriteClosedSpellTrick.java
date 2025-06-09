@@ -1,7 +1,5 @@
 package dev.enjarai.trickster.spell.trick.basic;
 
-import java.util.Optional;
-
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
@@ -12,6 +10,8 @@ import dev.enjarai.trickster.spell.fragment.StringFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.RetType;
 import dev.enjarai.trickster.spell.type.Signature;
+
+import java.util.Optional;
 
 public class WriteClosedSpellTrick extends Trick<WriteClosedSpellTrick> {
     public WriteClosedSpellTrick() {

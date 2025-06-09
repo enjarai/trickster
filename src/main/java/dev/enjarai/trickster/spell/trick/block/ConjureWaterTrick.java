@@ -1,15 +1,13 @@
 package dev.enjarai.trickster.spell.trick.block;
 
 import dev.enjarai.trickster.particle.ModParticles;
-import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.fragment.VectorFragment;
-import dev.enjarai.trickster.spell.fragment.VoidFragment;
-import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlockOccupiedBlunder;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.fragment.FragmentType;
+import dev.enjarai.trickster.spell.fragment.VectorFragment;
+import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.Signature;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
@@ -26,8 +24,6 @@ import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
-
-import java.util.List;
 
 public class ConjureWaterTrick extends Trick<ConjureWaterTrick> {
     public ConjureWaterTrick() {

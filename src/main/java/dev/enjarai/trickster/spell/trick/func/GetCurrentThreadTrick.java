@@ -1,22 +1,21 @@
 package dev.enjarai.trickster.spell.trick.func;
 
-import java.util.List;
-
-import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
-import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.Signature;
+
+import java.util.Optional;
 
 public class GetCurrentThreadTrick extends Trick<GetCurrentThreadTrick> {
     public GetCurrentThreadTrick() {
-        super(Pattern.of(1, 2, 7, 0, 1, 8, 7, 6, 1));
+        super(Pattern.of(1, 2, 7, 0, 1, 8, 7, 6, 1), Signature.of(GetCurrentThreadTrick::get, FragmentType.NUMBER.maybe()));
     }
 
-    @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        return ctx.data().getSlot().<Fragment>map(i -> new NumberFragment(i)).orElse(VoidFragment.INSTANCE);
+    public Optional<NumberFragment> get(SpellContext ctx) throws BlunderException {
+        return ctx.data().getSlot().map(NumberFragment::new);
     }
 }

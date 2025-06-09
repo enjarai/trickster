@@ -3,7 +3,6 @@ package dev.enjarai.trickster.spell.trick.entity;
 import dev.enjarai.trickster.entity.ModEntities;
 import dev.enjarai.trickster.item.component.EntityStorageComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
-import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.*;

@@ -2,7 +2,6 @@ package dev.enjarai.trickster.spell.trick.block;
 
 import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.block.SpellControlledRedstoneBlock;
-import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlockInvalidBlunder;

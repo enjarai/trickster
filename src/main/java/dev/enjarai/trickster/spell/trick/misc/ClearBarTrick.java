@@ -3,12 +3,12 @@ package dev.enjarai.trickster.spell.trick.misc;
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.Signature;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
-import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
 
 public class ClearBarTrick extends Trick<ClearBarTrick> {
     public ClearBarTrick() {

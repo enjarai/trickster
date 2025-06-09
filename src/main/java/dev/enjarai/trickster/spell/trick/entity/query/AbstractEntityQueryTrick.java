@@ -1,16 +1,15 @@
 package dev.enjarai.trickster.spell.trick.entity.query;
 
-import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.EntityInvalidBlunder;
+import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.RetType;
 import dev.enjarai.trickster.spell.type.Signature;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
-import dev.enjarai.trickster.spell.blunder.EntityInvalidBlunder;
-import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
 import net.minecraft.entity.Entity;
 
 public abstract class AbstractEntityQueryTrick<T extends Entity, R> extends Trick<AbstractEntityQueryTrick<T, R>> {

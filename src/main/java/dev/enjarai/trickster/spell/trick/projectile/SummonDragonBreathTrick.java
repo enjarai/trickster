@@ -2,16 +2,17 @@ package dev.enjarai.trickster.spell.trick.projectile;
 
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.MissingItemBlunder;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.SlotFragment;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.Signature;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
-import dev.enjarai.trickster.spell.blunder.MissingItemBlunder;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Items;
+
 import java.util.Optional;
 
 public class SummonDragonBreathTrick extends Trick<SummonDragonBreathTrick> {

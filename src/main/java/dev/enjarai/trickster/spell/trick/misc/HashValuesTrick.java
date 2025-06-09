@@ -1,8 +1,5 @@
 package dev.enjarai.trickster.spell.trick.misc;
 
-import java.util.List;
-import java.util.Objects;
-
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
@@ -11,6 +8,9 @@ import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.Signature;
+
+import java.util.List;
+import java.util.Objects;
 
 public class HashValuesTrick extends Trick<HashValuesTrick> {
     public HashValuesTrick() {

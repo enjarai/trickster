@@ -3,11 +3,10 @@ package dev.enjarai.trickster.spell.trick.map;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.fragment.MapFragment;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.RetType;
 import dev.enjarai.trickster.spell.type.Signature;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import io.vavr.collection.HashMap;
 
 import java.util.List;
@@ -18,11 +17,11 @@ public class MapRemoveTrick extends Trick<MapRemoveTrick> {
         super(Pattern.of(0, 3, 6, 4, 2, 5, 8), Signature.of(map(Fragment.class, Fragment.class), variadic(Fragment.class), MapRemoveTrick::run, RetType.ANY.mappedTo(RetType.ANY)));
     }
 
-    public MapFragment run(SpellContext ctx, HashMap<Fragment, Fragment> map, List<Fragment> keys) throws BlunderException {
+    public HashMap<Fragment, Fragment> run(SpellContext ctx, HashMap<Fragment, Fragment> map, List<Fragment> keys) throws BlunderException {
         for (var key : keys) {
             map = map.remove(key);
         }
 
-        return new MapFragment(map);
+        return map;
     }
 }

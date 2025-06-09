@@ -12,6 +12,7 @@ import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.Signature;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Items;
+
 import java.util.Optional;
 
 public class SummonFireballTrick extends Trick<SummonFireballTrick> {

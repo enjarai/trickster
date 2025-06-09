@@ -4,13 +4,13 @@ import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.MissingCostBlunder;
+import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.Signature;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
-import dev.enjarai.trickster.spell.blunder.MissingCostBlunder;
-import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
 
 public class CostTrick extends Trick<CostTrick> {
     public CostTrick() {

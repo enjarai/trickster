@@ -17,10 +17,6 @@
 }
 ```
 
-This entry contains delusion tricks that retrieve context about the casting entity or block.
-
-;;;;;
-
 <|glyph@trickster:templates|trick-id=trickster:reflection,title=Positioning Delusion|>
 
 -> vector
@@ -63,11 +59,19 @@ Returns the dimension which the caster is in.
 
 <|glyph@trickster:templates|trick-id=trickster:mana_reflection,title=Authority Delusion|>
 
--> number
+{#808080}->{} {#ddaa00}number{}
 
 ---
 
 Returns the amount of mana directly available to the spell.
+
+;;;;;
+
+This trick counts the amount of mana in all mana-carrying items the caster is holding or wearing, 
+including [Knots]() and [Whorls]().
+
+
+When cast from a [Spell Construct](), only the mana in the Construct's one Knot slot is counted.
 
 ;;;;;
 

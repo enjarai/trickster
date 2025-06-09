@@ -1,15 +1,15 @@
 package dev.enjarai.trickster.spell.trick.tree;
 
-import java.util.List;
-import java.util.Optional;
-
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.SpellPart;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.type.Signature;
+
+import java.util.List;
+import java.util.Optional;
 
 public class RetrieveSubtreeTrick extends AbstractMetaTrick<RetrieveSubtreeTrick> {
     public RetrieveSubtreeTrick() {

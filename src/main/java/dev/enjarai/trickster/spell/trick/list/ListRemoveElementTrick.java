@@ -4,24 +4,23 @@ import com.google.common.collect.ImmutableList;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.fragment.ListFragment;
-import dev.enjarai.trickster.spell.trick.DistortionTrick;
-import dev.enjarai.trickster.spell.type.Signature;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.trick.DistortionTrick;
+import dev.enjarai.trickster.spell.type.RetType;
+import dev.enjarai.trickster.spell.type.Signature;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ListRemoveElementTrick extends DistortionTrick<ListRemoveElementTrick> {
     public ListRemoveElementTrick() {
-        super(Pattern.of(4, 6, 3, 0, 4, 8, 5, 2), Signature.of(FragmentType.LIST, ANY_VARIADIC, ListRemoveElementTrick::run));
+        super(Pattern.of(4, 6, 3, 0, 4, 8, 5, 2), Signature.of(list(Fragment.class), ANY_VARIADIC, ListRemoveElementTrick::run, RetType.ANY.listOf()));
     }
 
-    public Fragment run(SpellContext ctx, ListFragment list, List<Fragment> toRemove) throws BlunderException {
-        var newList = new ArrayList<Fragment>(list.fragments().size());
-        newList.addAll(list.fragments());
+    public List<Fragment> run(SpellContext ctx, List<Fragment> list, List<Fragment> toRemove) throws BlunderException {
+        var newList = new ArrayList<Fragment>(list.size());
+        newList.addAll(list);
         newList.removeAll(toRemove);
-        return new ListFragment(ImmutableList.copyOf(newList));
+        return ImmutableList.copyOf(newList);
     }
 }

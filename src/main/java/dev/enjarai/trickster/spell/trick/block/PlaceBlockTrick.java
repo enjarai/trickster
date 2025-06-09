@@ -1,6 +1,5 @@
 package dev.enjarai.trickster.spell.trick.block;
 
-import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
@@ -23,7 +22,8 @@ import java.util.Optional;
 
 public class PlaceBlockTrick extends Trick<PlaceBlockTrick> {
     public PlaceBlockTrick() {
-        super(Pattern.of(0, 2, 8, 6, 0), Signature.of(FragmentType.VECTOR, FragmentType.SLOT, FragmentType.VECTOR.optionalOf(), FragmentType.VECTOR.optionalOf(), PlaceBlockTrick::placeSlot, FragmentType.VECTOR));
+        super(Pattern.of(0, 2, 8, 6, 0),
+                Signature.of(FragmentType.VECTOR, FragmentType.SLOT, FragmentType.VECTOR.optionalOf(), FragmentType.VECTOR.optionalOf(), PlaceBlockTrick::placeSlot, FragmentType.VECTOR));
         overload(Signature.of(FragmentType.VECTOR, FragmentType.BLOCK_TYPE, FragmentType.VECTOR.optionalOf(), FragmentType.VECTOR.optionalOf(), PlaceBlockTrick::placeType, FragmentType.VECTOR));
     }
 
