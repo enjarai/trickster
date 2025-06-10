@@ -91,7 +91,7 @@ public class VariadicArgType<T> implements ArgType<List<T>> {
         var text = Text.empty().append(typeText).append("...");
 
         if (unpack) {
-            text = text.append(" | [").append(typeText).append("]");
+            text = text.append(" | [ ").append(typeText).append(" ]");
         }
 
         return text;

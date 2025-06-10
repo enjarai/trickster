@@ -16,58 +16,63 @@
 }
 ```
 
-Tricks that pull information from the caster's inventory.
+These are tricks that pull information from an inventory.
+This can either be the caster's own, or an external block or entity.
+
+
+It is not possible to interact with the inventories of players that are not the caster.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:get_item_in_slot|>
 
-Returns the type of item that the given slot contains.
+Gives the type of item that the given slot contains.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:other_hand|>
 
-Returns the type of item in the caster's other hand.
+Gives the type of item in the caster's other hand.
 
 ;;;;;
 
 <|page-title@lavender:book_components|title=Note: Slot References|>Item slots may be referenced by spells.
 Creating such a reference comes at no cost. However, using the reference in a way that moves the items within the slot, will incur a move cost.
-This cost is equivalent to (distance * amount * 0.5kG). Slot references will always point to a block position, or use the *current caster at the time of move*.
+This cost is equivalent to (distance * amount * 0.5G). 
+Slot references either use the position of the caster at the time of move, or the position of their target when calculating cost.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:other_hand_slot|>
 
-Returns a slot reference of the caster's other hand.
+Gives a slot reference of the caster's other hand.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:get_inventory_slot|>
 
-Constructs a slot from an index and an inventory source, using the caster by default.
+Constructs and gives a slot from an index and an inventory source, using the caster by default.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:check_hat|>
 
-Returns the selected slot in the caster's [Top Hat](^trickster:items/top_hat).
+Gives the selected slot in the caster's [Hat](^trickster:items/top_hat).
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:get_mana_in_slot|>
 
-Returns the amount of mana in the given slots.
+Gives the amount of mana in the given slots.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:get_max_mana_in_slot|>
 
-Returns the maximum amount of mana which may be stored in the given slots.
+Gives the maximum amount of mana which may be stored in total in the given slots.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:get_count_in_slot|>
 
-Returns the amount of items stored in the given slot.
+Gives the amount of items stored in the given slot.

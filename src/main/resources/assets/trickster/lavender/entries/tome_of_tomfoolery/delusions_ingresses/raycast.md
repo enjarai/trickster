@@ -11,26 +11,36 @@
 }
 ```
 
-Raycasting tricks take either an entity or a position and a direction, and will return what the entity is looking at, 
+Raycasting tricks take either an entity or a position and a direction, and will give what the entity is looking at, 
 or what the vectors are pointing to.
 
 
+When using vectors, the first vector is interpreted as the position to start from, 
+while the second is seen as a unit vector representing the look direction.
+
+;;;;;
+
 Raycasts which target blocks may optionally be made to hit fluids if their last argument is true.
+
+
+If a raycast misses and does not hit anything of relevance, void will be returned.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:raycast|>
 
-Returns the block that is hit.
-
-;;;;;
-
-<|trick@trickster:templates|trick-id=trickster:raycast_side|>
-
-Returns a vector representing the side of the block that is hit.
+Gives the block that is hit.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:raycast_entity|>
 
-Returns the entity that is hit.
+Gives the entity that is hit.
+
+;;;;;
+
+<|trick@trickster:templates|trick-id=trickster:raycast_side|>
+
+;;;;;
+
+Gives a unit vector representing the side of the block that is hit.

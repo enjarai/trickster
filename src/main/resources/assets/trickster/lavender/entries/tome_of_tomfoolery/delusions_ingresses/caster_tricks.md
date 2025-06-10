@@ -19,96 +19,67 @@
 
 <|trick@trickster:templates|trick-id=trickster:reflection|>
 
-Returns the location the spell is being cast from.
+Gives the location the spell is being cast from.
 
 ;;;;;
 
-<|ploy@trickster:templates|trick-id=trickster:change_weight,cost=meowmeow*2|>
+<|trick@trickster:templates|trick-id=trickster:facing_reflection|>
+
+Gives the direction the casting block or entity is facing as a unit vector.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:facing_reflection,title=Directional Delusion|>
+<|trick@trickster:templates|trick-id=trickster:caster_reflection|>
 
--> vector
-
----
-
-Returns the direction the casting block or entity is facing as a unit vector, if available.
+Gives the entity casting the spell, if available.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:caster_reflection,title=Reflection Delusion|>
+<|trick@trickster:templates|trick-id=trickster:get_dimension|>
 
--> entity
-
----
-
-Returns the entity casting the spell.
+Gives the dimension where this spell is being cast.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:get_dimension,title=Dimensional Delusion|>
+<|trick@trickster:templates|trick-id=trickster:mana_reflection|>
 
--> dimension
-
----
-
-Returns the dimension which the caster is in.
+Gives the amount of mana directly available to the spell.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:mana_reflection,title=Authority Delusion|>
+This delusion counts the amount of mana in all mana-carrying items the caster is holding or wearing, 
+including [Knots](^trickster:items/knots) and [Whorls](^trickster:items/amethyst_whorl).
 
-{#808080}->{} {#ddaa00}number{}
 
----
-
-Returns the amount of mana directly available to the spell.
+When cast from a [Spell Construct](^trickster:items/spell_construct), only the mana in the Construct's one Knot slot is counted.
 
 ;;;;;
 
-This trick counts the amount of mana in all mana-carrying items the caster is holding or wearing, 
-including [Knots]() and [Whorls]().
+<|trick@trickster:templates|trick-id=trickster:max_mana_reflection|>
 
-
-When cast from a [Spell Construct](), only the mana in the Construct's one Knot slot is counted.
+Gives the maximum amount of mana that the caster of the spell can store. Works similarly to the previous delusion.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:max_mana_reflection,title=Crowning Delusion|>
+<|trick@trickster:templates|trick-id=trickster:current_thread|>
 
--> number
-
----
-
-Returns the maximum amount of mana that *could be* available to the spell.
+Gives the spell slot running this spell, or void if this casting context does not use spell slots.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:current_thread,title=Delusion of Order|>
+<|trick@trickster:templates|trick-id=trickster:read_macro_ring|>
 
--> number | void
-
----
-
-Returns the spell slot running this spell, or void if spell slots are not supported.
+Gives a map containing the combined maps of all rings worn, with any entries that aren't valid macros filtered out.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:hotbar_reflection,title=Framed Delusion|>
+The result of this trick is equal to the map used when evaluating macros.
 
--> number
 
----
-
-Returns the selected hotbar slot of the caster, if available.
+See the entry on [Macros](^trickster:concepts/macro) for more details.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:read_macro_ring,title=Macro Delusion|>
+<|trick@trickster:templates|trick-id=trickster:hotbar_reflection|>
 
--> {pattern: spell}
-
----
-
-Retrieves a map containing the combined maps of all rings worn.
+Gives the selected hotbar slot of the caster, if available.

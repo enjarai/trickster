@@ -6,6 +6,7 @@ import dev.enjarai.trickster.spell.PatternGlyph;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.EntityInvalidBlunder;
 import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.trick.Trick;
@@ -13,16 +14,15 @@ import dev.enjarai.trickster.spell.type.Signature;
 import io.vavr.Tuple2;
 import io.vavr.collection.HashMap;
 
-import java.util.Optional;
-
-public class ReadMacroRing extends Trick<ReadMacroRing> {
-    public ReadMacroRing() {
-        super(Pattern.of(1, 2, 5, 8, 7, 6, 3, 0, 1, 5, 7, 3, 1, 4, 7), Signature.of(ReadMacroRing::run, FragmentType.PATTERN.mappedTo(FragmentType.SPELL_PART.retType()).optionalOfRet()));
+public class ReadMacroRingTrick extends Trick<ReadMacroRingTrick> {
+    public ReadMacroRingTrick() {
+        super(Pattern.of(1, 2, 5, 8, 7, 6, 3, 0, 1, 5, 7, 3, 1, 4, 7), Signature.of(ReadMacroRingTrick::run, FragmentType.PATTERN.mappedTo(FragmentType.SPELL_PART.retType())));
     }
 
-    public Optional<HashMap<PatternGlyph, SpellPart>> run(SpellContext ctx) throws BlunderException {
+    public HashMap<PatternGlyph, SpellPart> run(SpellContext ctx) throws BlunderException {
         return FragmentComponent.getUserMergedMap(ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this)), "ring")
-                .map(ReadMacroRing::collectMap);
+                .map(ReadMacroRingTrick::collectMap)
+                .orElseThrow(() -> new EntityInvalidBlunder(this));
     }
 
     private static HashMap<PatternGlyph, SpellPart> collectMap(HashMap<Pattern, SpellPart> hamt) {

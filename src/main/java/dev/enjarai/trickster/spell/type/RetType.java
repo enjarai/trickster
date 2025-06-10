@@ -54,9 +54,9 @@ public interface RetType<T> {
         return new RetType<>() {
             @Override
             public MutableText asText() {
-                return Text.literal("[")
+                return Text.literal("[ ")
                         .append(RetType.this.asText())
-                        .append("]");
+                        .append(" ]");
             }
 
             @Override

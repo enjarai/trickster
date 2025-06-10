@@ -72,6 +72,6 @@ public class ListArgType<T> implements ArgType<List<T>> {
 
     @Override
     public MutableText asText() {
-        return Text.literal("[").append(type.asText()).append("]");
+        return Text.literal("[ ").append(type.asText()).append(" ]");
     }
 }

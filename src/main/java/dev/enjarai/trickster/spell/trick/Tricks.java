@@ -109,7 +109,7 @@ public class Tricks {
     public static final MaxManaReflectionTrick MAX_MANA_REFLECTION = register("max_mana_reflection", new MaxManaReflectionTrick());
     public static final FacingReflectionTrick FACING_REFLECTION = register("facing_reflection", new FacingReflectionTrick());
     public static final HotbarReflectionTrick HOTBAR_REFLECTION = register("hotbar_reflection", new HotbarReflectionTrick());
-    public static final ReadMacroRing READ_MACRO_RING = register("read_macro_ring", new ReadMacroRing());
+    public static final ReadMacroRingTrick READ_MACRO_RING = register("read_macro_ring", new ReadMacroRingTrick());
 
     // Entity
     public static final GetPositionTrick GET_POSITION = register("get_position", new GetPositionTrick());
