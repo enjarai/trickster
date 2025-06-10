@@ -15,7 +15,8 @@ import java.util.List;
 
 public class SubtractTrick extends DistortionTrick<SubtractTrick> {
     public SubtractTrick() {
-        super(Pattern.of(1, 4, 8, 7, 6, 4), Signature.of(ArgType.simple(SubtractableFragment.class).variadicOfArg().require().unpack(), SubtractTrick::run, RetType.simple(SubtractableFragment.class)));
+        super(Pattern.of(1, 4, 8, 7, 6, 4),
+                Signature.of(ArgType.simple(SubtractableFragment.class).variadicOfArg().require().unpack(), SubtractTrick::run, RetType.simple(SubtractableFragment.class)));
         overload(Signature.of(FragmentType.PATTERN.variadicOfArg().require().unpack(), SubtractTrick::runForGlyphs, FragmentType.PATTERN));
     }
 

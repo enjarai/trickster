@@ -15,7 +15,7 @@ import java.util.*;
 
 public class LocateGlyphTrick extends AbstractMetaTrick<LocateGlyphTrick> {
     public LocateGlyphTrick() {
-        super(Pattern.of(6, 7, 8, 2, 1, 0, 4, 8, 5), Signature.of(FragmentType.SPELL_PART, ArgType.ANY, LocateGlyphTrick::locate, FragmentType.NUMBER.listOfArg().maybe()));
+        super(Pattern.of(6, 7, 8, 2, 1, 0, 4, 8, 5), Signature.of(FragmentType.SPELL_PART, ArgType.ANY, LocateGlyphTrick::locate, FragmentType.NUMBER.listOfRet().optionalOfRet()));
     }
 
     public Optional<List<NumberFragment>> locate(SpellContext ctx, SpellPart spell, Fragment glyph) throws BlunderException {

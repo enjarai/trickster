@@ -18,7 +18,7 @@ import java.util.List;
 public class RangeFindEntityTrick extends Trick<RangeFindEntityTrick> {
     public RangeFindEntityTrick() {
         super(Pattern.of(3, 1, 0, 3, 6, 7, 8, 5, 7),
-                Signature.of(FragmentType.VECTOR, FragmentType.NUMBER, variadic(FragmentType.ENTITY_TYPE).unpack(), RangeFindEntityTrick::run, FragmentType.ENTITY.listOfArg()));
+                Signature.of(FragmentType.VECTOR, FragmentType.NUMBER, FragmentType.ENTITY_TYPE.variadicOfArg().unpack(), RangeFindEntityTrick::run, FragmentType.ENTITY.listOfRet()));
     }
 
     public List<EntityFragment> run(SpellContext ctx, VectorFragment posFragment, NumberFragment rangeFragment, List<EntityTypeFragment> typeFragments) throws BlunderException {

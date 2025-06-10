@@ -20,7 +20,8 @@ import java.util.Optional;
 
 public class BlockFindEntityTrick extends Trick<BlockFindEntityTrick> {
     public BlockFindEntityTrick() {
-        super(Pattern.of(2, 8, 6, 0, 2, 5, 4, 1, 2), Signature.of(FragmentType.VECTOR, variadic(FragmentType.ENTITY_TYPE).unpack(), BlockFindEntityTrick::find, FragmentType.ENTITY.optionalOfArg()));
+        super(Pattern.of(2, 8, 6, 0, 2, 5, 4, 1, 2),
+                Signature.of(FragmentType.VECTOR, FragmentType.ENTITY_TYPE.variadicOfArg().unpack(), BlockFindEntityTrick::find, FragmentType.ENTITY.optionalOfRet()));
     }
 
     public Optional<EntityFragment> find(SpellContext ctx, VectorFragment pos, List<EntityTypeFragment> typeFragments) throws BlunderException {

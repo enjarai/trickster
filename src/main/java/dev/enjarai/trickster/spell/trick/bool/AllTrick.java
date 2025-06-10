@@ -7,7 +7,6 @@ import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.trick.DistortionTrick;
-import dev.enjarai.trickster.spell.type.ArgType;
 import dev.enjarai.trickster.spell.type.Signature;
 
 import java.util.List;

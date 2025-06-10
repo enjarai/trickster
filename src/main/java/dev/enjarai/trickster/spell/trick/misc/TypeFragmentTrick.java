@@ -7,11 +7,12 @@ import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.TypeFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.ArgType;
 import dev.enjarai.trickster.spell.type.Signature;
 
 public class TypeFragmentTrick extends Trick<TypeFragmentTrick> {
     public TypeFragmentTrick() {
-        super(Pattern.of(3, 4, 0, 1, 4, 5), Signature.of(ANY, TypeFragmentTrick::run, FragmentType.TYPE));
+        super(Pattern.of(3, 4, 0, 1, 4, 5), Signature.of(ArgType.ANY, TypeFragmentTrick::run, FragmentType.TYPE));
     }
 
     public TypeFragment run(SpellContext ctx, Fragment input) throws BlunderException {

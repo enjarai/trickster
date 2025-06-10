@@ -18,7 +18,8 @@ import java.util.Optional;
 
 public class ListTakeRangeTrick extends DistortionTrick<ListTakeRangeTrick> {
     public ListTakeRangeTrick() {
-        super(Pattern.of(3, 6, 4, 0, 1, 2, 4, 8, 5), Signature.of(ArgType.ANY.listOfArg(), FragmentType.NUMBER, FragmentType.NUMBER.optionalOfArg(), ListTakeRangeTrick::take, RetType.ANY.listOfRet()));
+        super(Pattern.of(3, 6, 4, 0, 1, 2, 4, 8, 5),
+                Signature.of(ArgType.ANY.listOfArg(), FragmentType.NUMBER, FragmentType.NUMBER.optionalOfArg(), ListTakeRangeTrick::take, RetType.ANY.listOfRet()));
     }
 
     public List<Fragment> take(SpellContext ctx, List<Fragment> list, NumberFragment startFragment, Optional<NumberFragment> endFragment) throws BlunderException {

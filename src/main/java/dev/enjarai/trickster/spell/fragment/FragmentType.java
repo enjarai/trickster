@@ -75,37 +75,32 @@ public class FragmentType<T extends Fragment> implements RetType<T>, ArgType<T> 
 
     public static final FragmentType<TypeFragment> TYPE = register("type", TypeFragment.ENDEC, 0x66cc00);
     public static final FragmentType<NumberFragment> NUMBER = register("number", NumberFragment.ENDEC, 0xddaa00);
-    public static final FragmentType<BooleanFragment> BOOLEAN = Registry.register(REGISTRY, Trickster.id("boolean"), new FragmentType<>(BooleanFragment.ENDEC, OptionalInt.of(0xaa3355)));
     public static final FragmentType<VectorFragment> VECTOR = register("vector", VectorFragment.ENDEC, 0xaa7711);
     public static final FragmentType<ListFragment> LIST = register("list", ListFragment.ENDEC);
     public static final FragmentType<VoidFragment> VOID = register("void", VoidFragment.ENDEC, 0x4400aa);
     public static final FragmentType<PatternGlyph> PATTERN = register("pattern", PatternGlyph.ENDEC, 0x6644aa);
-    public static final FragmentType<Pattern> PATTERN_LITERAL = register(
-            "pattern_literal",
-            EndecTomfoolery.funnyFieldOf(Pattern.ENDEC, "pattern"), 0xbbbbaa
-    );
+    public static final FragmentType<Pattern> PATTERN_LITERAL = register("pattern_literal", EndecTomfoolery.funnyFieldOf(Pattern.ENDEC, "pattern"), 0xbbbbaa);
     public static final FragmentType<SpellPart> SPELL_PART = register("spell_part", SpellPart.ENDEC, 0xaa44aa);
     public static final FragmentType<EntityFragment> ENTITY = register("entity", EntityFragment.ENDEC, 0x338888);
     public static final FragmentType<ZalgoFragment> ZALGO = register("zalgo", ZalgoFragment.ENDEC, 0x444444);
-    public static final FragmentType<ItemTypeFragment> ITEM_TYPE = register(
-            "item_type", ItemTypeFragment.ENDEC,
-            0x2266aa
-    );
+    public static final FragmentType<ItemTypeFragment> ITEM_TYPE = register("item_type", ItemTypeFragment.ENDEC, 0x2266aa);
     public static final FragmentType<SlotFragment> SLOT = register("slot", SlotFragment.ENDEC, 0x77aaee);
-    public static final FragmentType<BlockTypeFragment> BLOCK_TYPE = register(
-            "block_type", BlockTypeFragment.ENDEC,
-            0x44aa33
-    );
-    public static final FragmentType<EntityTypeFragment> ENTITY_TYPE = register(
-            "entity_type", EntityTypeFragment.ENDEC,
-            0x8877bb
-    );
-    public static final FragmentType<DimensionFragment> DIMENSION = register(
-            "dimension", DimensionFragment.ENDEC,
-            0xdd55bb
-    );
+    public static final FragmentType<BlockTypeFragment> BLOCK_TYPE = register("block_type", BlockTypeFragment.ENDEC, 0x44aa33);
+    public static final FragmentType<EntityTypeFragment> ENTITY_TYPE = register("entity_type", EntityTypeFragment.ENDEC, 0x8877bb);
+    public static final FragmentType<DimensionFragment> DIMENSION = register("dimension", DimensionFragment.ENDEC, 0xdd55bb);
     public static final FragmentType<StringFragment> STRING = register("string", StringFragment.ENDEC, 0xaabb77);
     public static final FragmentType<MapFragment> MAP = register("map", MapFragment.ENDEC);
+    public static final FragmentType<BooleanFragment> BOOLEAN = Registry.register(REGISTRY, Trickster.id("boolean"), new FragmentType<>(BooleanFragment.ENDEC, OptionalInt.of(0xaa3355)) {
+        @Override
+        public BooleanFragment compose(Trick<?> trick, SpellContext ctx, List<Fragment> fragments) {
+            return BooleanFragment.of(fragments.getFirst().asBoolean());
+        }
+
+        @Override
+        public boolean match(List<Fragment> fragments) {
+            return true;
+        }
+    });
 
     private final StructEndec<T> endec;
     private final OptionalInt color;
@@ -245,21 +240,5 @@ public class FragmentType<T extends Fragment> implements RetType<T>, ArgType<T> 
         return "FragmentType[" +
                 "endec=" + endec + ", " +
                 "color=" + color + ']';
-    }
-
-    public static class Boolean extends FragmentType<BooleanFragment> {
-        public Boolean(StructEndec<BooleanFragment> endec, OptionalInt color) {
-            super(endec, color);
-        }
-
-        @Override
-        public BooleanFragment compose(Trick<?> trick, SpellContext ctx, List<Fragment> fragments) {
-            return BooleanFragment.of(fragments.getFirst().asBoolean());
-        }
-
-        @Override
-        public boolean match(List<Fragment> fragments) {
-            return true;
-        }
     }
 }
