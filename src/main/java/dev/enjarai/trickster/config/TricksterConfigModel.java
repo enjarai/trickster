@@ -1,13 +1,8 @@
 package dev.enjarai.trickster.config;
 
+import io.wispforest.owo.config.annotation.*;
 import io.wispforest.owo.ui.core.Color;
 import io.wispforest.owo.config.Option;
-import io.wispforest.owo.config.annotation.Config;
-import io.wispforest.owo.config.annotation.Modmenu;
-import io.wispforest.owo.config.annotation.PredicateConstraint;
-import io.wispforest.owo.config.annotation.RangeConstraint;
-import io.wispforest.owo.config.annotation.Sync;
-import io.wispforest.owo.config.annotation.SectionHeader;
 
 @Modmenu(modId = "trickster")
 @Config(name = "trickster-config", wrapperName = "TricksterConfig")
@@ -17,6 +12,7 @@ public class TricksterConfigModel {
     public boolean dotEmphasis = false;
     public Color dotEmphasisColor = new Color(0.5f, 0.2f, 0.4f, 1.0f);
 
+    @WithAlpha
     public Color subcircleDividerPinColor = new Color(0.5f, 0.5f, 1f, 0.2f);
 
     @SectionHeader("client")
