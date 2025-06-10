@@ -17,6 +17,8 @@ public class TricksterConfigModel {
     public boolean dotEmphasis = false;
     public Color dotEmphasisColor = new Color(0.5f, 0.2f, 0.4f, 1.0f);
 
+    public Color subcircleDividerPinColor = new Color(0.5f, 0.5f, 0.1f, 0.2f);
+
     @SectionHeader("client")
 
     public boolean topHatInterceptScrolling = false;
