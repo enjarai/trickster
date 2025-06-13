@@ -10,6 +10,7 @@
     "Submission Stratagem",
     "Distortion of Wholes",
     "Distortion of Supremacy",
+    "Natural Distortion",
     "Noble Stratagem",
     "Insignificance Stratagem",
     "Distortion of Grandeur",
@@ -97,6 +98,16 @@ number, number -> number
 ---
 
 Returns the first number raised to the power of the second.
+
+;;;;;
+
+<|glyph@trickster:templates|trick-id=trickster:ln,title=Natural Distortion|>
+
+number, [number] -> number
+
+---
+
+Returns the log of the first number with a base of either the second number or using the natural log if none is given.
 
 ;;;;;
 
