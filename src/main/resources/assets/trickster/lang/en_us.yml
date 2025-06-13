@@ -9,6 +9,7 @@ trickster:
   text:
     misc:
       value_truncated: Value truncated
+    disconnect_with_caution: DISCONNECT WITH CAUTION
 
   widget:
     scroll_name: Scroll Name...
@@ -368,6 +369,8 @@ item.trickster:
   spell_core: Spell Core
   rusted_spell_core: Rusted Spell Core
   ominous_spell_core: Ominous Spell Core
+  inactive_spawner_spell_core: Inactive Torment Spell Core
+  spawner_spell_core: Active Torment Spell Core
 
 block.trickster:
   spell_resonator: Spell Resonator
@@ -376,6 +379,7 @@ block.trickster:
   light: Light
   scroll_shelf: Scroll Shelf
   charging_array: Charging Array
+  inert_spawner: Inert Spawner
 
 effect.trickster:
   mana_boost: Mana Hyperflux

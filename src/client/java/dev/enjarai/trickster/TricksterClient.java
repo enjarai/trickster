@@ -80,6 +80,7 @@ public class TricksterClient implements ClientModInitializer {
         AccessoriesRendererRegistry.registerNoRenderer(ModItems.AMETHYST_WHORL);
 
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.SPELL_RESONATOR, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.INERT_SPAWNER, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.LIGHT, RenderLayer.getTranslucent());
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {

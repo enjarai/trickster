@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "trickster:item/inactive_spawner_spell_core"
+  }
+}

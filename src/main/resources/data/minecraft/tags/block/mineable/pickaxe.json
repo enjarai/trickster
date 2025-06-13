@@ -3,6 +3,7 @@
   "values": [
     "trickster:spell_resonator",
     "trickster:spell_construct",
-    "trickster:modular_spell_construct"
+    "trickster:modular_spell_construct",
+    "trickster:inert_spawner"
   ]
 }
