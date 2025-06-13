@@ -1,0 +1,26 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "i i",
+        "SNS",
+        "SQS"
+    ],
+    "key": {
+        "i": {
+            "item": "minecraft:iron_ingot"
+        },
+        "N": {
+            "item": "minecraft:nether_wart"
+        },
+        "S": {
+            "item": "minecraft:tuff"
+        },
+        "Q": {
+            "item": "minecraft:quartz"
+        }
+    },
+    "result": {
+        "id": "trickster:inactive_spawner_spell_core",
+        "count": 1
+    }
+}
