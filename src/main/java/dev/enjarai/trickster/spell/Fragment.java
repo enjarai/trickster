@@ -37,7 +37,7 @@ public non-sealed interface Fragment extends EvaluationResult, SpellInstruction 
             .setStyle(
                     Style.EMPTY
                             .withColor(Formatting.RED)
-                            .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.translatable(Trickster.MOD_ID + ".text.misc.value_truncated")))
+                            .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.translatable(Trickster.MOD_ID + ".text.value_truncated")))
             );
     @SuppressWarnings("unchecked")
     StructEndec<Fragment> ENDEC = EndecTomfoolery.lazyStruct(
