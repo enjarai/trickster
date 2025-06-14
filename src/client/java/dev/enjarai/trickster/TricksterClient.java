@@ -23,6 +23,7 @@ import dev.enjarai.trickster.screen.SignScrollScreen;
 import dev.enjarai.trickster.screen.owo.GlyphComponent;
 import dev.enjarai.trickster.screen.owo.ItemTagComponent;
 import dev.enjarai.trickster.screen.owo.SpellPreviewComponent;
+import dev.enjarai.trickster.screen.owo.TrickOverviewComponent;
 import io.wispforest.accessories.api.client.AccessoriesRendererRegistry;
 import io.wispforest.owo.ui.parsing.UIParsing;
 import net.fabricmc.api.ClientModInitializer;
@@ -63,6 +64,7 @@ public class TricksterClient implements ClientModInitializer {
 
         EntityRendererRegistry.register(ModEntities.LEVITATING_BLOCK, LevitatingBlockEntityRenderer::new);
 
+        UIParsing.registerFactory(Trickster.id("trick-overview"), TrickOverviewComponent::parse);
         UIParsing.registerFactory(Trickster.id("glyph"), GlyphComponent::parseTrick);
         UIParsing.registerFactory(Trickster.id("pattern"), GlyphComponent::parseList);
         UIParsing.registerFactory(Trickster.id("spell-preview"), SpellPreviewComponent::parse);

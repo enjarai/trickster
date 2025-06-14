@@ -24,21 +24,13 @@ the following patterns allow for a spell to modify other spells *during* the cas
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:supplier,title=Supply Distortion|>
-
-any -> spell
-
----
+<|trick@trickster:templates|trick-id=trickster:supplier|>
 
 Creates a new spell fragment which returns the previously provided fragment when executed.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:closure,title=Closure Stratagem|>
-
-spell, {any: any} -> spell
-
----
+<|trick@trickster:templates|trick-id=trickster:closure|>
 
 Replaces the keys of the map that are in the given spell with the value they map to.
 
@@ -57,91 +49,55 @@ that circle.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:locate_glyph,title=Pinpoint Distortion|>
-
-spell, any -> number[] | void
-
----
+<|trick@trickster:templates|trick-id=trickster:locate_glyph|>
 
 Returns the address of the first circle in the given spell with a glyph matching the given fragment. 
 The spell is searched using [BFS](https://en.wikipedia.org/wiki/Breadth-first_search).
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:locate_glyphs,title=Discovering Distortion|>
-
-spell, any -> number[][]
-
----
+<|trick@trickster:templates|trick-id=trickster:locate_glyphs|>
 
 Returns a list of all the addresses of circles in the given spell with a glyph matching the given fragment.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:retrieve_glyph,title=Retrieval Distortion|>
-
-spell, number[] -> any
-
----
+<|trick@trickster:templates|trick-id=trickster:retrieve_glyph|>
 
 Returns the glyph of the circle at the given address.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:set_glyph,title=Replacement Distortion|>
-
-spell, number[], any -> spell
-
----
+<|trick@trickster:templates|trick-id=trickster:set_glyph|>
 
 Replaces the glyph of the circle at the given address with the given fragment.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:get_subparts,title=Bundle Distortion|>
-
-spell -> spell[]
-
----
+<|trick@trickster:templates|trick-id=trickster:get_subparts|>
 
 Returns the branches of a spell as a list.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:retrieve_subtree,title=Felling Distortion|>
-
-spell, number[] -> spell | void
-
----
+<|trick@trickster:templates|trick-id=trickster:retrieve_subtree|>
 
 Returns the circle (and its branches) at the given address.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:set_subtree,title=Grafting Distortion|>
-
-spell, number[], spell -> spell
-
----
+<|trick@trickster:templates|trick-id=trickster:set_subtree|>
 
 Grafts the latter spell into the former, replacing the circle at the given address.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:add_subtree,title=Branching Distortion|>
-
-spell, number[], spell -> spell
-
----
+<|trick@trickster:templates|trick-id=trickster:add_subtree|>
 
 Attaches the latter spell to the circle at the given address as a new branch.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:remove_subtree,title=Pruning Distortion|>
-
-spell, number[] -> spell | void
-
----
+<|trick@trickster:templates|trick-id=trickster:remove_subtree|>
 
 Removes the circle at the given address. Returns void if the root node is removed.

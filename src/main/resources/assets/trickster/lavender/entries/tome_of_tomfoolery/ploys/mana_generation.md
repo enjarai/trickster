@@ -14,10 +14,6 @@ They will generally return the amount of excess mana that was generated but lost
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:drain_matter,title=Cultivator's Ploy|>
-
-vector -> number
-
----
+<|trick@trickster:templates|trick-id=trickster:drain_matter|>
 
 Absorbs soft plant matter at the given position into mana.

@@ -3,16 +3,18 @@ package dev.enjarai.trickster.spell.trick.entity;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.entity.ModEntities;
-import dev.enjarai.trickster.spell.*;
-import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.fragment.VectorFragment;
-import dev.enjarai.trickster.spell.fragment.EntityFragment;
-import dev.enjarai.trickster.spell.trick.Trick;
-import dev.enjarai.trickster.spell.type.Signature;
+import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.EntityCannotBeDisplacedBlunder;
 import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
 import dev.enjarai.trickster.spell.execution.TickData;
+import dev.enjarai.trickster.spell.fragment.EntityFragment;
+import dev.enjarai.trickster.spell.fragment.FragmentType;
+import dev.enjarai.trickster.spell.fragment.VectorFragment;
+import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.Signature;
+
 import java.util.HashMap;
 
 public class DisplaceEntityTrick extends Trick<DisplaceEntityTrick> {
@@ -23,11 +25,11 @@ public class DisplaceEntityTrick extends Trick<DisplaceEntityTrick> {
     public DisplaceEntityTrick() {
         super(
                 Pattern.of(1, 5, 7, 3, 1, 8, 3, 2, 7, 0, 5, 6, 1),
-                Signature.of(FragmentType.ENTITY.wardOf(), FragmentType.VECTOR, DisplaceEntityTrick::run)
+                Signature.of(FragmentType.ENTITY.wardOf(), FragmentType.VECTOR, DisplaceEntityTrick::run, FragmentType.ENTITY)
         );
     }
 
-    public Fragment run(SpellContext ctx, EntityFragment target, VectorFragment v) throws BlunderException {
+    public EntityFragment run(SpellContext ctx, EntityFragment target, VectorFragment v) throws BlunderException {
         var entity = target
                 .getEntity(ctx)
                 .orElseThrow(() -> new UnknownEntityBlunder(this));

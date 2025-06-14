@@ -24,81 +24,49 @@ it is worth noting that any fragment will be automatically coerced into a boolea
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:if_else,title=Decision Distortion|>
-
-(any, any)..., any -> any
-
----
+<|trick@trickster:templates|trick-id=trickster:if_else|>
 
 Returns one of two provided options based on a boolean value. 
 If true, the first option is returned. Otherwise, the second.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:equals,title=Parity Stratagem|>
-
-any... -> boolean
-
----
+<|trick@trickster:templates|trick-id=trickster:equals|>
 
 Checks for equality between many inputs. Will only return true if all inputs are equal.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:not_equals,title=Disparity Stratagem|>
-
-any... -> boolean
-
----
+<|trick@trickster:templates|trick-id=trickster:not_equals|>
 
 Checks for inequality between many inputs. Will return false if any input is equal to any other.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:all,title=Stratagem Bar None|>
-
-boolean... -> boolean
-
----
+<|trick@trickster:templates|trick-id=trickster:all|>
 
 Will only return true if all inputs are true.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:any,title=Stratagem In General|>
-
-boolean... -> boolean
-
----
+<|trick@trickster:templates|trick-id=trickster:any|>
 
 Will return true if any provided input is true.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:none,title=Stratagem In Absence|>
-
-boolean... -> boolean
-
----
+<|trick@trickster:templates|trick-id=trickster:none|>
 
 Will return true if none of the provided inputs are true.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:lesser_than,title=Lesser Distortion|>
-
-number, number -> boolean
-
----
+<|trick@trickster:templates|trick-id=trickster:lesser_than|>
 
 Returns whether the first number is lesser than the second.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:greater_than,title=Greater Distortion|>
-
-number, number -> boolean
-
----
+<|trick@trickster:templates|trick-id=trickster:greater_than|>
 
 Returns whether the first number is greater than the second.
