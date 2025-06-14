@@ -1,1 +1,3 @@
 - Fixed being able to write ephemeral fragments. (@aurakle)
+- Added a configuration option for the divider pin's colour and opacity. (@NOTMASTER09)
+- Made the string displayed while scrolling through the top hat translatable. (@Awakened-Redstone)
