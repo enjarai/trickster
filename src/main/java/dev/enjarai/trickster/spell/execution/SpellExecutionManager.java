@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.spell.execution;
 
 import java.util.List;
+import java.util.Optional;
 
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellPart;
@@ -15,6 +16,8 @@ public interface SpellExecutionManager {
     int queue(SpellExecutor executor);
 
     boolean kill(int index);
+
+    Optional<SpellPart> getSpell(int index);
 
     void killAll();
 }
