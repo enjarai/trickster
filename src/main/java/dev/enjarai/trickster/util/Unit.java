@@ -16,7 +16,7 @@ public abstract class Unit {
     }
 
     public float correct(float value) {
-        return (float) (value / Math.pow(1000, precision - 1));
+        return (float) (value / Math.pow(1000, precision));
     }
 
     public String shortName() {
@@ -42,7 +42,7 @@ public abstract class Unit {
             case 0 -> "";
             case -1 -> "m";
             default ->
-                    throw new IllegalStateException("Unit must have a precision in the range of -1 and 10 but got " + precision);
+                throw new IllegalStateException("Unit must have a precision in the range of -1 and 10 but got " + precision);
         };
     }
 
@@ -61,7 +61,7 @@ public abstract class Unit {
             case 0 -> "";
             case -1 -> "milli";
             default ->
-                    throw new IllegalStateException("Unit must have a precision in the range of -1 and 10 but got " + precision);
+                throw new IllegalStateException("Unit must have a precision in the range of -1 and 10 but got " + precision);
         };
     }
 
@@ -70,16 +70,16 @@ public abstract class Unit {
     protected abstract String longNameEnd();
 
     public static Gandalf getGandalfUnit(float value) {
-        return Gandalf.cache.apply(kiloUsageToPrecision(value));
+        return Gandalf.cache.apply(precisionFromValue(value));
     }
 
     public static Merlin getMerlinUnit(float value) {
-        return Merlin.cache.apply(kiloUsageToPrecision(value));
+        return Merlin.cache.apply(precisionFromValue(value));
     }
 
-    private static int kiloUsageToPrecision(float value) {
+    private static int precisionFromValue(float value) {
         int precision = 10;
-        double d = Math.abs(value) / Math.pow(1000, precision - 1);
+        double d = Math.abs(value) / Math.pow(1000, precision);
 
         while (precision > -1 && d < 10) {
             precision -= 1;

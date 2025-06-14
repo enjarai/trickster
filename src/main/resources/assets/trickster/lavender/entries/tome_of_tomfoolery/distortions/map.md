@@ -21,40 +21,24 @@ To acquire an empty map constant, see the relevant [revision](^trickster:constan
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:map_insert,title=Charting Stratagem|>
-
-{any: any}, [any, any]... -> any
-
----
+<|trick@trickster:templates|trick-id=trickster:map_insert|>
 
 Inserts key-value pairs into the given map.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:map_get,title=Navigator's Distortion|>
-
-{any: any}, any -> any
-
----
+<|trick@trickster:templates|trick-id=trickster:map_get|>
 
 If there is a value associated with the given fragment, returns it. Otherwise, returns void.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:map_merge,title=Admiral's Stratagem|>
-
-{any: any}, {any: any}... -> {any: any}
-
----
+<|trick@trickster:templates|trick-id=trickster:map_merge|>
 
 Combines many maps into one. Duplicate entries are prioritized by input index.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:map_remove,title=Stratagem of Annulment|>
-
-{any: any}, any... -> {any: any}
-
----
+<|trick@trickster:templates|trick-id=trickster:map_remove|>
 
 Removes entries from the given map which have any of the given keys.

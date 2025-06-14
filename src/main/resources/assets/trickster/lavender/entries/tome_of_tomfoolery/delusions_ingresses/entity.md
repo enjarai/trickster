@@ -25,174 +25,119 @@
 }
 ```
 
-Various tricks related to gathering data about entities.
+This collection of tricks provides options to gather information from entities in the world.
+
+
+These tricks will blunder if their target is not being observed.
+
+
+Keep in mind that entity fragments may [decay](^trickster:concepts/fragment_decay).
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:get_entity_type,title=Motive Verification Ingress|>
+<|trick@trickster:templates|trick-id=trickster:get_entity_type|>
 
-entity -> entity_type
-
----
-
-Given an entity, returns its type.
+Given an entity, gives its type.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:get_position,title=Locational Ingress|>
+<|trick@trickster:templates|trick-id=trickster:get_position|>
 
-entity -> vector
-
----
-
-Given an entity, returns its position in the world.
+Given an entity, gives the position of its feet.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:get_eye_position,title=Perspective Ingress|>
+<|trick@trickster:templates|trick-id=trickster:get_eye_position|>
 
-entity -> vector
-
----
-
-Given an entity, returns the position of its head.
+Given an entity, gives the position of its head.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:get_facing,title=Directional Ingress|>
+<|trick@trickster:templates|trick-id=trickster:get_facing|>
 
-entity -> vector
-
----
-
-Given an entity, returns its facing as a vector.
+Given an entity, gives the facing of its head as a unit vector.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:get_velocity,title=Movement Ingress|>
+<|trick@trickster:templates|trick-id=trickster:get_velocity|>
 
-entity -> vector
-
----
-
-Given an entity, returns its current velocity as a vector.
+Given an entity, gives its current velocity as a vector in blocks per tick.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:height_reflection,title=Stature Ingress|>
+<|trick@trickster:templates|trick-id=trickster:height_reflection|>
 
-entity -> number
-
----
-
-Given an entity, returns its height in blocks.
+Given an entity, gives its height in blocks.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:sneaking_reflection,title=Alternative Ingress|>
+<|trick@trickster:templates|trick-id=trickster:sneaking_reflection|>
 
-entity -> boolean
-
----
-
-Given an entity, returns whether the entity is crouching.
+Given an entity, gives whether the entity is crouching. 
+If the entity is unable to crouch, false will always be given.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:burning_reflection,title=Hearth's Ingress|>
+<|trick@trickster:templates|trick-id=trickster:burning_reflection|>
 
-entity -> boolean
-
----
-
-Given an entity, returns whether the entity is on fire.
+Given an entity, gives whether the entity is on fire.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:sprinting_reflection,title=Trekking Ingress|>
+<|trick@trickster:templates|trick-id=trickster:sprinting_reflection|>
 
-entity -> boolean
-
----
-
-Given an entity, returns whether the entity is sprinting.
+Given an entity, gives whether the entity is sprinting.
+If the entity is incapable of sprinting, false will always be given.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:blocking_reflection,title=Guard Ingress|>
+<|trick@trickster:templates|trick-id=trickster:blocking_reflection|>
 
-entity -> boolean
-
----
-
-Given an entity, returns whether the entity is blocking using a shield.
+Given an entity, gives whether the entity is blocking using a shield.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:get_max_health,title=Vigor Ingress|>
+<|trick@trickster:templates|trick-id=trickster:get_max_health|>
 
-entity -> number
-
----
-
-Given an entity, returns its maximum health.
+Given an entity, gives its maximum health.
+Blunders if the entity does not have health.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:get_health,title=Fettle Ingress|>
+<|trick@trickster:templates|trick-id=trickster:get_health|>
 
-entity -> number
-
----
-
-Given an entity, returns its current health.
+Given an entity, gives its current health.
+Blunders if the entity does not have health.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:get_armour,title=Bulwark Ingress|>
+<|trick@trickster:templates|trick-id=trickster:get_armour|>
 
-entity -> number
-
----
-
-Given an entity, returns its total armor value.
+Given an entity, gives its total armor value.
+Blunders if the entity cannot wear armor.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:get_scale,title=Ingress of Occupation|>
+<|trick@trickster:templates|trick-id=trickster:get_scale|>
 
-entity -> number
-
----
-
-Returns the scale of the given entity.
+Gives the scale of the given entity.
+Blunders if the entity cannot scale.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:get_flecks,title=Observer's Ingress|>
+<|trick@trickster:templates|trick-id=trickster:get_flecks|>
 
-[entity] -> number[]
-
----
-
-Returns the identifiers of all the flecks the caster or the given player can see.
+Gives the identifiers of all the flecks the given player can see.
+If no player is supplied, the caster is queried for this information instead.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:get_player_food,title=Ingress of Appetite|>
+<|trick@trickster:templates|trick-id=trickster:get_player_food|>
 
-entity -> number
-
----
-
-Given a player, returns their current food level.
+Given a player, gives their current food level.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:get_player_saturation,title=Ingress of Fulfilment|>
+<|trick@trickster:templates|trick-id=trickster:get_player_saturation|>
 
-entity -> number
-
----
-
-Given a player, returns their current saturation.
+Given a player, gives their current saturation.
