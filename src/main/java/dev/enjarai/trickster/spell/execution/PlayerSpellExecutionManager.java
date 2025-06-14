@@ -148,6 +148,14 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
     }
 
     @Override
+    public Optional<SpellPart> getSpell(int index) {
+        if (spells.containsKey(index))
+            return Optional.of(spells.get(index).spell());
+        else
+            return Optional.empty();
+    }
+
+    @Override
     public void killAll() {
         spells.clear();
     }

@@ -314,6 +314,14 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
     }
 
     @Override
+    public Optional<SpellPart> getSpell(int index) {
+        if (executors.size() > index && index >= 0)
+            return executors.get(index).map(executor -> Optional.of(executor.spell())).orElse(Optional.empty());
+        else
+            return Optional.empty();
+    }
+
+    @Override
     public void killAll() {
         executors.clear();
     }

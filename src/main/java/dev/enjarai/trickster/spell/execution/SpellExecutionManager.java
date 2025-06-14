@@ -17,5 +17,7 @@ public interface SpellExecutionManager {
 
     boolean kill(int index);
 
+    Optional<SpellPart> getSpell(int index);
+
     void killAll();
 }
