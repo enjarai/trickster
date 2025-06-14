@@ -28,7 +28,9 @@ public class FunnyStaticFrameBufferThing {
         var width = window.getWidth();
         var height = window.getHeight();
         if (buffer.textureWidth != width || buffer.textureHeight != height) {
-            buffer.resize(width, height, MinecraftClient.IS_SYSTEM_MAC);
+            if (width > 0 && height > 0) {
+                buffer.resize(width, height, MinecraftClient.IS_SYSTEM_MAC);
+            }
         }
     }
 
