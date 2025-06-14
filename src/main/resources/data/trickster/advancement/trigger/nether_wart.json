@@ -1,0 +1,15 @@
+{
+  "parent": "trickster:trigger/root",
+  "criteria": {
+    "pickup_nether_wart": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:nether_wart"
+          }
+        ]
+      }
+    }
+  }
+}

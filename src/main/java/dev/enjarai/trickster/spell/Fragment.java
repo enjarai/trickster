@@ -2,9 +2,6 @@ package dev.enjarai.trickster.spell;
 
 import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.Trickster;
-import dev.enjarai.trickster.item.ModItems;
-import dev.enjarai.trickster.item.component.FragmentComponent;
-import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.execution.SerializedSpellInstruction;
 import dev.enjarai.trickster.spell.execution.SpellInstructionType;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
@@ -16,7 +13,6 @@ import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.format.bytebuf.ByteBufDeserializer;
 import io.wispforest.endec.format.bytebuf.ByteBufSerializer;
 import io.wispforest.owo.serialization.endec.MinecraftEndecs;
-import net.minecraft.component.DataComponentTypes;
 import net.minecraft.text.HoverEvent;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
@@ -37,7 +33,7 @@ public non-sealed interface Fragment extends EvaluationResult, SpellInstruction 
             .setStyle(
                     Style.EMPTY
                             .withColor(Formatting.RED)
-                            .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.translatable(Trickster.MOD_ID + ".text.misc.value_truncated")))
+                            .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.translatable(Trickster.MOD_ID + ".text.value_truncated")))
             );
     @SuppressWarnings("unchecked")
     StructEndec<Fragment> ENDEC = EndecTomfoolery.lazyStruct(
