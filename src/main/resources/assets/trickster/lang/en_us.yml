@@ -7,8 +7,8 @@ trickster:
     written_scroll: Written Scroll
 
   text:
-    misc:
-      value_truncated: Value truncated
+    value_truncated: Value truncated
+    disconnect_with_caution: DISCONNECT WITH CAUTION
 
   widget:
     scroll_name: Scroll Name...
@@ -370,6 +370,8 @@ item.trickster:
   spell_core: Spell Core
   rusted_spell_core: Rusted Spell Core
   ominous_spell_core: Ominous Spell Core
+  inactive_spawner_spell_core: Torment Spell Core Shell
+  spawner_spell_core: Torment Spell Core
 
 block.trickster:
   spell_resonator: Spell Resonator
@@ -378,6 +380,7 @@ block.trickster:
   light: Light
   scroll_shelf: Scroll Shelf
   charging_array: Charging Array
+  inert_spawner: Inert Spawner
 
 effect.trickster:
   mana_boost: Mana Hyperflux
@@ -388,10 +391,6 @@ tag.item.trickster:
   holdable_hat: Holdable Hats
   scrolls: Scrolls
   spell_cost: Spell Cost
-
-death.attack:
-  mana_overflux: "%1$s's magic show has met an untimely end."
-  mana_overflux.player: "%2$s brought an end to %1$s's magic show."
 
 key:
   categories:
