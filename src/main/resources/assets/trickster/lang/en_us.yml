@@ -151,6 +151,7 @@ trickster:
 
     execute: Grand Deviation
     execute_same_scope: Quiet Deviation
+    atomic: Deviation of Singularity
     fork: Utensil Deviation
     fold: Folding Deviation
     try_catch: Cautious Deviation

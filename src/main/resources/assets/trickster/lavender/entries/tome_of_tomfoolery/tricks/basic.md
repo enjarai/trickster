@@ -29,53 +29,33 @@ Some items may have additional interactions when inscribed with fragments,
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:read_spell,title=Notulist's Ingress|>
-
-[slot] -> any
-
----
+<|trick@trickster:templates|trick-id=trickster:read_spell|>
 
 Reads the fragment from the item in the given slot or in the caster's offhand.
 Returns void if there is none.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:write_spell,title=Notulist's Ploy|>
-
-any, [slot] -> any
-
----
+<|trick@trickster:templates|trick-id=trickster:write_spell|>
 
 Inscribes a fragment onto the item in the given slot or in the caster's offhand.
 Returns its input, after ephemeral decay.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:write_closed_spell,title=Proprietary Notulist's Ploy|>
-
-any, [slot] -> any
-
----
+<|trick@trickster:templates|trick-id=trickster:write_closed_spell|>
 
 Same as Notulist's Ploy, but the fragment cannot be read by conventional means.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:clear_spell,title=Alethophobe's Ploy|>
-
-[slot] -> 
-
----
+<|trick@trickster:templates|trick-id=trickster:clear_spell|>
 
 Clears any fragment inscribed onto the item in the given slot or in the caster's offhand.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:reveal,title=Showcase Ploy|>
-
-any... -> any
-
----
+<|trick@trickster:templates|trick-id=trickster:reveal|>
 
 Shows all given values as a chat message to the caster and returns the first.
 
@@ -90,20 +70,12 @@ marking locations, and selecting targets.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:read_crow_mind,title=Crow Mind Delusion|>
-
--> any
-
----
+<|trick@trickster:templates|trick-id=trickster:read_crow_mind|>
 
 Returns the value currently stored in the caster's crow mind.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:write_crow_mind,title=Crow Mind Ploy|>
-
-any -> any
-
----
+<|trick@trickster:templates|trick-id=trickster:write_crow_mind|>
 
 Stores the supplied value in the caster's Crow Mind, overwriting any value that might already be present.

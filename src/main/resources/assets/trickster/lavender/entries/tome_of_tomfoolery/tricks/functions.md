@@ -34,43 +34,27 @@ using recursion to create what is essentially a loop.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:delay_execution,title=Deviation of Suspension|>
-
-[number] -> number
-
----
+<|trick@trickster:templates|trick-id=trickster:delay_execution|>
 
 Delays the execution of the current spell by the given number of ticks, or until the next tick. 
 Returns the delay.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:execute,title=Grand Deviation|>
-
-spell, any... -> any
-
----
+<|trick@trickster:templates|trick-id=trickster:execute|>
 
 A powerful trick indeed, it executes the passed in spell fragment, 
 providing it with all other passed in fragments as arguments.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:execute_same_scope,title=Quiet Deviation|>
-
-spell -> any
-
----
+<|trick@trickster:templates|trick-id=trickster:execute_same_scope|>
 
 Executes the given spell with the current spell's arguments.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:fork,title=Utensil Deviation|>
-
-spell, any... -> number
-
----
+<|trick@trickster:templates|trick-id=trickster:fork|>
 
 Dispatches the given spell to a free spell slot. The used spell slot is returned, or a negative if it failed.
 
@@ -82,11 +66,7 @@ Maps are also collections, though their keys may be any value and aren't automat
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:fold,title=Folding Deviation|>
-
-spell, collection, any -> any
-
----
+<|trick@trickster:templates|trick-id=trickster:fold|>
 
 For each entry in the collection, execute the given spell, with the given fragment as the first result.
 
@@ -109,31 +89,19 @@ The result of each execution is passed as the first argument to the next, where 
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:try_catch,title=Cautious Deviation|>
-
-spell, spell, any... -> any
-
----
+<|trick@trickster:templates|trick-id=trickster:try_catch|>
 
 Attempts to execute the first spell. If it blunders, the second spell is run and the blunder is silenced. Excess values are arguments to both.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:atomic,title=Deviation of Singularity|>
-
-spell, any... -> any
-
----
+<|trick@trickster:templates|trick-id=trickster:atomic|>
 
 Executes the given spell in a single tick, blundering if it's not possible due to spell size or illegal operations.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:kill_thread,title=Executioner's Deviation|>
-
-[number] -> boolean
-
----
+<|trick@trickster:templates|trick-id=trickster:kill_thread|>
 
 Ends the spell running in the given spell slot or the current slot if not provided. Returns whether it succeeded.
 
