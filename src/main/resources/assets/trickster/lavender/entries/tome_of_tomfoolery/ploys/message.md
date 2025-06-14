@@ -14,7 +14,7 @@ Utilizing the following tricks, spells may communicate with each other.
 
 ;;;;;
 
-<|ploy@trickster:templates|trick-id=trickster:message_send,cost=max(0kG\, range - 16kG)|>
+<|ploy@trickster:templates|trick-id=trickster:message_send,cost=max(0G\, range - 16G)|>
 
 Sends the given fragment to all spells within 16 blocks. Range may be extended by the given number at the cost of mana.
 

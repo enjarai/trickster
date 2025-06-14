@@ -15,7 +15,7 @@ A few miscellaneous ploys that don't fit into any other category.
 
 ;;;;;
 
-<|ploy@trickster:templates|trick-id=trickster:pin_chunk,cost=4kG|>
+<|ploy@trickster:templates|trick-id=trickster:pin_chunk,cost=4G|>
 
 Fully loads the chunk containing the given position for exactly 4 seconds.
 
