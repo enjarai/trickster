@@ -415,8 +415,8 @@ text.config.trickster-config:
     dotEmphasisColor: Terminal dot color
     subcircleDividerPinColor: Divider pin Color
     manaTransferEfficiency: Efficiency of the Conduit's Ploys
-    whorlMaxMana: Whorl maximum mana in kG
-    whorlRechargeRate: Whorl recharge rate in kG
+    whorlMaxMana: Whorl maximum mana in G
+    whorlRechargeRate: Whorl recharge rate in G
     topHatInterceptScrolling: Offhand hat intercepts hotbar scrolling
     invertTopHatScrolling: Invert hat scrolling
     allowScrollInSpellScreen: Allow scrolling to zoom while editing

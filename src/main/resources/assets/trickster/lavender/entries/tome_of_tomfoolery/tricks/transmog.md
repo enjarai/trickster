@@ -30,7 +30,7 @@ keeping all their attributes and other behaviour intact.
 
 slot, item -> boolean
 
-<|cost-rule@trickster:templates|formula=20kG|>
+<|cost-rule@trickster:templates|formula=20G|>
 
 Transmogrifies the item in the given slot to appear as the given item. Returns true if changes were made.
 
@@ -40,7 +40,7 @@ Transmogrifies the item in the given slot to appear as the given item. Returns t
 
 slot -> boolean
 
-<|cost-rule@trickster:templates|formula=30kG|>
+<|cost-rule@trickster:templates|formula=30G|>
 
 Applies a void transmogrification to the item in the given slot. Returns true if changes were made.
 
@@ -50,7 +50,7 @@ Applies a void transmogrification to the item in the given slot. Returns true if
 
 slot -> boolean
 
-<|cost-rule@trickster:templates|formula=10kG|>
+<|cost-rule@trickster:templates|formula=10G|>
 
 Removes any transmogrification from the item in the given slot. Returns true if changes were made.
 
