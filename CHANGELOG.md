@@ -2,3 +2,4 @@
 - Fixed charging arrays not being pickaxe-mineable. (@aurakle)
 - Added a configuration option for the divider pin's colour and opacity. (@NOTMASTER09)
 - Made the string displayed while scrolling through the top hat translatable. (@Awakened-Redstone)
+- Added a new spell core which only runs while a player is near. (@enjarai and @aurakle)
