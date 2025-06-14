@@ -1,0 +1,29 @@
+{
+  "display": {
+    "icon": {
+      "id": "trickster:inactive_spawner_spell_core"
+    },
+    "title": {
+      "text": "Don't Create the Torment Nexus"
+    },
+    "description": {
+      "text": "Acquire the shell of a Torment Spell Core"
+    },
+    "frame": "task",
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "trickster:modular_spell_construct",
+  "criteria": {
+    "pickup_rusted_core": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "trickster:inactive_spawner_spell_core"
+          }
+        ]
+      }
+    }
+  }
+}
