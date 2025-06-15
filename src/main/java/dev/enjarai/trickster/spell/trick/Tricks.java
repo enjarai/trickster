@@ -68,6 +68,7 @@ import dev.enjarai.trickster.spell.trick.func.ForkTrick;
 import dev.enjarai.trickster.spell.trick.func.GetAllArgumentsTrick;
 import dev.enjarai.trickster.spell.trick.func.GetCurrentThreadTrick;
 import dev.enjarai.trickster.spell.trick.func.GetSpellFromSlotTrick;
+import dev.enjarai.trickster.spell.trick.func.GetSpellStateTrick;
 import dev.enjarai.trickster.spell.trick.func.KillThreadTrick;
 import dev.enjarai.trickster.spell.trick.func.LoadArgumentTrick;
 import dev.enjarai.trickster.spell.trick.func.SupplierTrick;
@@ -189,6 +190,7 @@ public class Tricks {
     public static final KillThreadTrick KILL_THREAD = register("kill_thread", new KillThreadTrick());
     public static final GetCurrentThreadTrick CURRENT_THREAD = register("current_thread", new GetCurrentThreadTrick());
     public static final GetSpellFromSlotTrick THREAD_ROOT = register("thread_root", new GetSpellFromSlotTrick());
+    public static final GetSpellStateTrick SPELL_STATE = register("spell_state", new GetSpellStateTrick());
     public static final GetWeightTrick WEIGHT = register("weight", new GetWeightTrick());
     public static final GetAllArgumentsTrick GET_ALL_ARGUMENTS = register("get_all_arguments", new GetAllArgumentsTrick());
     public static final LoadArgumentTrick LOAD_ARGUMENT_1 = register("load_argument_1", new LoadArgumentTrick(Pattern.of(4, 1), 0));
