@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class RevealTrick extends Trick<RevealTrick> {
     public RevealTrick() {
-        super(Pattern.of(3, 4, 5, 8, 7, 6, 3), Signature.of(variadic(Fragment.class), RevealTrick::reveal));
+        super(Pattern.of(3, 4, 5, 8, 7, 6, 3), Signature.of(variadic(Fragment.class).require(), RevealTrick::reveal));
     }
 
     public Fragment reveal(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
