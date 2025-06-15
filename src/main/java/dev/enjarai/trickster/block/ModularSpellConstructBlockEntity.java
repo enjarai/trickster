@@ -2,6 +2,7 @@ package dev.enjarai.trickster.block;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalInt;
 
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
@@ -314,11 +315,21 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
     }
 
     @Override
-    public Optional<SpellPart> getSpell(int index) {
+    public Optional<SpellExecutor> getSpellExecutor(int index) {
         if (executors.size() > index && index >= 0)
-            return executors.get(index).map(executor -> Optional.of(executor.spell())).orElse(Optional.empty());
+            return executors.get(index).map(executor -> Optional.of(executor)).orElse(Optional.empty());
         else
             return Optional.empty();
+    }
+
+    @Override
+    public Optional<SpellPart> getSpell(int index) {
+        return getSpellExecutor(index).map(executor -> executor.spell());
+    }
+
+    @Override
+    public OptionalInt getSpellState(int index) {
+        return getSpellExecutor(index).map(executor -> OptionalInt.of(executor.getLastRunExecutions())).orElse(OptionalInt.empty());
     }
 
     @Override
