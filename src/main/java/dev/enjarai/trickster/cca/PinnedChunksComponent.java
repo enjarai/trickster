@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Map;
 
 public class PinnedChunksComponent implements ServerTickingComponent {
@@ -30,7 +31,8 @@ public class PinnedChunksComponent implements ServerTickingComponent {
 
     @Override
     public void serverTick() {
-        pins.keySet().forEach(chunk -> pins.compute(chunk, (c, t) -> t <= 0 ? null : t - 1));
+        var pinSet = new HashSet<>(pins.keySet());
+        pinSet.forEach(chunk -> pins.compute(chunk.longValue(), (c, t) -> t <= 0 ? null : t - 1));
         if (!pins.isEmpty()) {
             ((ServerWorld) world).resetIdleTimeout();
         }
