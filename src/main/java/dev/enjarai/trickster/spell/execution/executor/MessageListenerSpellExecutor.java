@@ -2,7 +2,6 @@ package dev.enjarai.trickster.spell.execution.executor;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.OptionalInt;
 
 import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.cca.MessageHandlerComponent.Key;
