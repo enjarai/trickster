@@ -30,7 +30,8 @@ public class HeatTrick extends Trick<HeatTrick> {
         var blockState = world.getBlockState(blockPos);
 
         if (CampfireBlock.canBeLit(blockState) || CandleBlock.canBeLit(blockState) || CandleCakeBlock.canBeLit(blockState)) {
-            ctx.useMana(this, 0.001f);
+            var candles = blockState.get(CandleBlock.CANDLES);
+            ctx.useMana(this, candles == null ? 1 : candles);
 
             world.setBlockState(blockPos, blockState.with(Properties.LIT, true));
             world.emitGameEvent(null, GameEvent.BLOCK_CHANGE, blockPos);
