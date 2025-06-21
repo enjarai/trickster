@@ -11,6 +11,7 @@ import net.minecraft.util.Identifier;
 
 public class TickData {
     private Map<Key<?>, Object> map = new HashMap<>();
+
     private int executionLimit = Trickster.CONFIG.maxExecutionsPerSpellPerTick();
     private int executions = 0;
     private Optional<Integer> slot = Optional.empty();
@@ -50,6 +51,16 @@ public class TickData {
         this.killed = true;
     }
 
+    public TickData setExecutionLimitRatioAbsolute(float ratio) {
+        executionLimit = (int) (ratio * Trickster.CONFIG.maxExecutionsPerSpellPerTick());
+        return this;
+    }
+
+    public TickData setExecutionLimitRatioRelative(float ratio) {
+        executionLimit = ((int) (executionLimit * ratio));
+        return this;
+    }
+    
     public record Key<T>(Identifier id, @Nullable Class<T> clazz) {
         @SuppressWarnings("unchecked")
         public Optional<T> get(TickData data) {
