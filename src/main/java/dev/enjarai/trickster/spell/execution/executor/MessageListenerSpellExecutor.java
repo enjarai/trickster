@@ -2,6 +2,7 @@ package dev.enjarai.trickster.spell.execution.executor;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalInt;
 
 import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.cca.MessageHandlerComponent.Key;
@@ -45,8 +46,8 @@ public class MessageListenerSpellExecutor implements SpellExecutor {
         this.result = result;
     }
 
-    public MessageListenerSpellExecutor(ExecutionState state, int timeout, Optional<Key.Channel> channel) {
-        this(state, channel, timeout >= 0 ? timeout + 1 : -1, Optional.empty());
+    public MessageListenerSpellExecutor(ExecutionState state, Optional<Integer> timeout, Optional<Key.Channel> channel) {
+        this(state, channel, timeout.map(i -> i < 0 ? i : i + 1).orElse(-1), Optional.empty());
     }
 
     @Override
