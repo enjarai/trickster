@@ -1,20 +1,24 @@
 {
   "draw": {
+    "subtitle": "trickster.subtitle.draw",
     "sounds": [
       "trickster:draw"
     ]
   },
   "complete": {
+    "subtitle": "trickster.subtitle.complete",
     "sounds": [
       "trickster:complete"
     ]
   },
   "cast": {
+    "subtitle": "trickster.subtitle.cast",
     "sounds": [
       "trickster:cast"
     ]
   },
   "collar_bell": {
+    "subtitle": "trickster.subtitle.collar_bell",
     "sounds": [
       "trickster:collar_bell_1",
       "trickster:collar_bell_2",

@@ -16,7 +16,7 @@ import java.util.List;
 
 public class RevealTrick extends Trick<RevealTrick> {
     public RevealTrick() {
-        super(Pattern.of(3, 4, 5, 8, 7, 6, 3), Signature.of(ArgType.ANY.variadicOfArg(), RevealTrick::reveal, RetType.ANY));
+        super(Pattern.of(3, 4, 5, 8, 7, 6, 3), Signature.of(ArgType.ANY.variadicOfArg().require(), RevealTrick::reveal, RetType.ANY));
     }
 
     public Fragment reveal(SpellContext ctx, List<Fragment> fragments) throws BlunderException {

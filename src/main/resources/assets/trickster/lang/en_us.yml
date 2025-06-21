@@ -35,6 +35,12 @@ trickster:
     collar_link: "Link: %s"
     unlinked: Unlinked
 
+  subtitle:
+    draw: "Spell drawing"
+    complete: "Spell completed"
+    cast: "Spell cast"
+    collar_bell: "Collar bell rings"
+
   gandalf:
     stored: "Stored: %s"
   merlin:
