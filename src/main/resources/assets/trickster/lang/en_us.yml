@@ -265,6 +265,9 @@ trickster:
     message_send: Dispatch Ploy
     message_listen: Ploy of Receipt
 
+    compose_string: Distortion of Composition
+    decompose_string: Distortion of Deconstruction
+
   fragment:
     trickster:
       type: Type
