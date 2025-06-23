@@ -29,86 +29,104 @@
 }
 ```
 
-The following patterns regard basic arithmetic and simple mathematical operations.
+The following patterns regard basic arithmetic and mathematical operations.
 
 
-Many base arithmetical operations, though not all, will work on both single numbers and vectors.
+Some of the base arithmetic tricks accept a combination of types of fragment. 
+These will have their signatures labelled with, for example, {#aa4444}Addable{} or {#aa4444}Roundable{}.
+These are shorthands for a combination of options:
+
+;;;;;
+
+{#aa4444}Addable{}, {#aa4444}Subtractable{}, {#aa4444}Multiplicable{}, {#aa4444}Divisible{}, and {#aa4444}Roundable{}
+are all either {#ddaa00}Numbers{} or {#aa7711}Vectors{}.
+
+
+Distortions here that take many arguments at once will apply their operation cumulatively.
+For example:
+
+
+1, 2, 3 into Annexation Stratagem = 1 + 2 + 3 = 6
+
+or
+
+1, 2, 3 into Submission Stratagem = 1 / 2 / 3 = 0.1666...
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:add|>
 
-Adds many numbers or vectors into a single value. 
-A number and a vector will combine into a vector.
+Adds fragments together.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:subtract|>
 
-Subtracts many numbers or vectors into a single value.
-A number and a vector will combine into a vector.
+Subtracts multiple fragments.
+
+;;;;;
+
+Annexation and Desertion Stratagem both accept {#6644aa}Patterns{} in addition to their normal
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:multiply|>
 
-Multiplies many numbers or vectors into a single value.
-A number and a vector will combine into a vector.
+Multiplies fragments.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:divide|>
 
-Divides many numbers or vectors into a single value.
-A number and a vector will combine into a vector.
+Divides fragments sequentially.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:modulo|>
 
-Returns the remainder of dividing the first number by the second number.
+Gives the remainder of dividing the first number by the second number.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:power|>
 
-Returns the first number raised to the power of the second.
+Gives the first number raised to the power of the second.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:max|>
 
-Returns the highest of many input values.
+Gives the highest of its input values.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:min|>
 
-Returns the lowest of many input values.
+Gives the lowest of its input values.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:ceil|>
 
-Returns the value of the input rounded up.
+Gives the value of the input rounded up.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:floor|>
 
-Returns the value of the input rounded down.
+Gives the value of the input rounded down.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:round|>
 
-Returns the rounded value of the input.
+Gives the rounded value of the input.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:sqrt|>
 
-Returns the square root of the input.
+Gives the square root of the input.
 
 ;;;;;
 
@@ -120,46 +138,46 @@ Inverts the given number or vector.
 
 <|trick@trickster:templates|trick-id=trickster:abs|>
 
-If the given number is negative, returns its positive equivalent. Otherwise, does nothing.
+If the given number is negative, gives its positive equivalent. Otherwise, gives the number as-is.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:sin|>
 
-Returns the sine of the given number.
+Gives the sine of the given number.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:cos|>
 
-Returns the cosine of the given number.
+Gives the cosine of the given number.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:tan|>
 
-Returns the tangent of the given number.
+Gives the tangent of the given number.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:arcsin|>
 
-Returns the arcsine of the given number.
+Gives the arcsine of the given number.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:arccos|>
 
-Returns the arccosine of the given number.
+Gives the arccosine of the given number.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:arctan|>
 
-Returns the arctangent of the given number.
+Gives the arctangent of the given number.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:arctan2|>
 
-Returns the angle measure between positive X axis and the ray from the origin to the point (y, x).
+Gives the angle measure between positive X axis and the ray from the origin to the point (y, x).
