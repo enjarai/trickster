@@ -63,6 +63,8 @@ public class TricksterClient implements ClientModInitializer {
 
         EntityRendererRegistry.register(ModEntities.LEVITATING_BLOCK, LevitatingBlockEntityRenderer::new);
 
+        EntityRendererRegistry.register(ModEntities.AMETHYST_SHARD, AmethystProjectileRenderer::new);
+
         UIParsing.registerFactory(Trickster.id("glyph"), GlyphComponent::parseTrick);
         UIParsing.registerFactory(Trickster.id("pattern"), GlyphComponent::parseList);
         UIParsing.registerFactory(Trickster.id("spell-preview"), SpellPreviewComponent::parse);
@@ -124,7 +126,7 @@ public class TricksterClient implements ClientModInitializer {
         WorldRenderEvents.AFTER_ENTITIES.register(FlecksRenderer::render);
 
         HudRenderCallback.EVENT.register(BarsRenderer::render);
-        HudRenderCallback.EVENT.register(SpellConstructErrorRenderer::render);
+        HudRenderCallback.EVENT.register(SpellTooltipErrorRenderer::render);
 
         EntityModelLayerRegistry.registerModelLayer(ScrollShelfBlockEntityRenderer.MODEL_LAYER,
                 ScrollShelfBlockEntityRenderer::getTexturedModelData);

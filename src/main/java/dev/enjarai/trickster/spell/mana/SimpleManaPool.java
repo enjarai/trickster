@@ -12,6 +12,7 @@ public class SimpleManaPool implements MutableManaPool {
             SimpleManaPool::new
     );
 
+
     protected float maxMana;
     protected float mana;
 
