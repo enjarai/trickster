@@ -26,52 +26,52 @@ These fragments can then be retrieved within the cast spell, either directly or 
 
 <|trick@trickster:templates|trick-id=trickster:get_all_arguments|>
 
-Gives all arguments as a list.
+Returns all arguments as a list.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:load_argument_1|>
 
-Gives the first argument passed. Blunders if it is unavailable.
+Returns the first argument passed. Blunders if it is unavailable.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:load_argument_2|>
 
-Gives the second argument passed. Blunders if it is unavailable.
+Returns the second argument passed. Blunders if it is unavailable.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:load_argument_3|>
 
-Gives the third argument passed. Blunders if it is unavailable.
+Returns the third argument passed. Blunders if it is unavailable.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:load_argument_4|>
 
-Gives the fourth argument passed. Blunders if it is unavailable.
+Returns the fourth argument passed. Blunders if it is unavailable.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:load_argument_5|>
 
-Gives the fifth argument passed. Blunders if it is unavailable.
+Returns the fifth argument passed. Blunders if it is unavailable.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:load_argument_6|>
 
-Gives the sixth argument passed. Blunders if it is unavailable.
+Returns the sixth argument passed. Blunders if it is unavailable.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:load_argument_7|>
 
-Gives the seventh argument passed. Blunders if it is unavailable.
+Returns the seventh argument passed. Blunders if it is unavailable.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:load_argument_8|>
 
-Gives the eighth argument passed. Blunders if it is unavailable.
+Returns the eighth argument passed. Blunders if it is unavailable.

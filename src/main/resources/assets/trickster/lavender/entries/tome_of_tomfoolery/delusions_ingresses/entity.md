@@ -37,107 +37,107 @@ Keep in mind that entity fragments may [decay](^trickster:concepts/fragment_deca
 
 <|trick@trickster:templates|trick-id=trickster:get_entity_type|>
 
-Given an entity, gives its type.
+Given an entity, returns its type.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:get_position|>
 
-Given an entity, gives the position of its feet.
+Given an entity, returns the position of its feet.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:get_eye_position|>
 
-Given an entity, gives the position of its head.
+Given an entity, returns the position of its head.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:get_facing|>
 
-Given an entity, gives the facing of its head as a unit vector.
+Given an entity, returns the facing of its head as a unit vector.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:get_velocity|>
 
-Given an entity, gives its current velocity as a vector in blocks per tick.
+Given an entity, returns its current velocity as a vector in blocks per tick.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:height_reflection|>
 
-Given an entity, gives its height in blocks.
+Given an entity, returns its height in blocks.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:sneaking_reflection|>
 
-Given an entity, gives whether the entity is crouching. 
+Given an entity, returns whether the entity is crouching. 
 If the entity is unable to crouch, false will always be given.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:burning_reflection|>
 
-Given an entity, gives whether the entity is on fire.
+Given an entity, returns whether the entity is on fire.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:sprinting_reflection|>
 
-Given an entity, gives whether the entity is sprinting.
+Given an entity, returns whether the entity is sprinting.
 If the entity is incapable of sprinting, false will always be given.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:blocking_reflection|>
 
-Given an entity, gives whether the entity is blocking using a shield.
+Given an entity, returns whether the entity is blocking using a shield.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:get_max_health|>
 
-Given an entity, gives its maximum health.
+Given an entity, returns its maximum health.
 Blunders if the entity does not have health.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:get_health|>
 
-Given an entity, gives its current health.
+Given an entity, returns its current health.
 Blunders if the entity does not have health.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:get_armour|>
 
-Given an entity, gives its total armor value.
+Given an entity, returns its total armor value.
 Blunders if the entity cannot wear armor.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:get_scale|>
 
-Gives the scale of the given entity.
+Returns the scale of the given entity.
 Blunders if the entity cannot scale.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:get_flecks|>
 
-Gives the identifiers of all the flecks the given player can see.
+Returns the identifiers of all the flecks the given player can see.
 If no player is supplied, the caster is queried for this information instead.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:get_player_food|>
 
-Given a player, gives their current food level.
+Given a player, returns their current food level.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:get_player_saturation|>
 
-Given a player, gives their current saturation.
+Given a player, returns their current saturation.

@@ -29,13 +29,13 @@ If a raycast misses and does not hit anything of relevance, void will be given.
 
 <|trick@trickster:templates|trick-id=trickster:raycast|>
 
-Gives the block that is hit.
+Returns the block that is hit.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:raycast_entity|>
 
-Gives the entity that is hit.
+Returns the entity that is hit.
 
 ;;;;;
 
@@ -43,4 +43,4 @@ Gives the entity that is hit.
 
 ;;;;;
 
-Gives a unit vector representing the side of the block that is hit.
+Returns a unit vector representing the side of the block that is hit.

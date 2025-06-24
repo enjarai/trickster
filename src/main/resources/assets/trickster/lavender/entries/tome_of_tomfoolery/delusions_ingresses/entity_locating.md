@@ -23,10 +23,10 @@ Keep in mind that entity fragments may [decay](^trickster:concepts/fragment_deca
 
 <|trick@trickster:templates|trick-id=trickster:block_find_entity|>
 
-Finds and gives an entity at a specific block position.
+Finds and returns an entity at a specific block position.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:range_find_entity|>
 
-Finds and gives a list of all entities in the provided range around a specific block position.
+Finds and returns a list of all entities in the provided range around a specific block position.

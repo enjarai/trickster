@@ -1,11 +1,9 @@
 package dev.enjarai.trickster.spell.trick.math;
 
 import dev.enjarai.trickster.spell.Pattern;
-import dev.enjarai.trickster.spell.PatternGlyph;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.AddableFragment;
-import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.trick.DistortionTrick;
 import dev.enjarai.trickster.spell.type.ArgType;
 import dev.enjarai.trickster.spell.type.RetType;
@@ -16,7 +14,6 @@ import java.util.List;
 public class AddTrick extends DistortionTrick<AddTrick> {
     public AddTrick() {
         super(Pattern.of(7, 4, 0, 1, 2, 4), Signature.of(ArgType.simple(AddableFragment.class).variadicOfArg().require().unpack(), AddTrick::run, RetType.simple(AddableFragment.class)));
-        overload(Signature.of(FragmentType.PATTERN.variadicOfArg().require().unpack(), AddTrick::runForGlyphs, FragmentType.PATTERN));
     }
 
     public AddableFragment run(SpellContext ctx, List<AddableFragment> fragments) throws BlunderException {
@@ -27,20 +24,6 @@ public class AddTrick extends DistortionTrick<AddTrick> {
                 result = value;
             } else {
                 result = result.add(value);
-            }
-        }
-
-        return result;
-    }
-
-    public PatternGlyph runForGlyphs(SpellContext ctx, List<PatternGlyph> patterns) throws BlunderException {
-        PatternGlyph result = null;
-
-        for (var value : patterns) {
-            if (result == null) {
-                result = value;
-            } else {
-                result = new PatternGlyph(result.pattern().add(value.pattern()));
             }
         }
 

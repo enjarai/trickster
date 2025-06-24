@@ -19,31 +19,31 @@
 
 <|trick@trickster:templates|trick-id=trickster:reflection|>
 
-Gives the location the spell is being cast from.
+Returns the location the spell is being cast from.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:facing_reflection|>
 
-Gives the direction the casting block or entity is facing as a unit vector.
+Returns the direction the casting block or entity is facing as a unit vector.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:caster_reflection|>
 
-Gives the entity casting the spell, if available.
+Returns the entity casting the spell, if available.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:get_dimension|>
 
-Gives the dimension where this spell is being cast.
+Returns the dimension where this spell is being cast.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:mana_reflection|>
 
-Gives the amount of mana directly available to the spell.
+Returns the amount of mana directly available to the spell.
 
 ;;;;;
 
@@ -57,19 +57,19 @@ When cast from a [Spell Construct](^trickster:items/spell_construct), only the m
 
 <|trick@trickster:templates|trick-id=trickster:max_mana_reflection|>
 
-Gives the maximum amount of mana that the caster of the spell can store. Works similarly to the previous delusion.
+Returns the maximum amount of mana that the caster of the spell can store. Works similarly to the previous delusion.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:current_thread|>
 
-Gives the spell slot running this spell, or void if this casting context does not use spell slots.
+Returns the spell slot running this spell, or void if this casting context does not use spell slots.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:read_macro_ring|>
 
-Gives a map containing the combined maps of all rings worn, with any entries that aren't valid macros filtered out.
+Returns a map containing the combined maps of all rings worn, with any entries that aren't valid macros filtered out.
 
 ;;;;;
 
@@ -82,4 +82,4 @@ See the entry on [Macros](^trickster:concepts/macro) for more details.
 
 <|trick@trickster:templates|trick-id=trickster:hotbar_reflection|>
 
-Gives the selected hotbar slot of the caster, if available.
+Returns the selected hotbar slot of the caster, if available.
