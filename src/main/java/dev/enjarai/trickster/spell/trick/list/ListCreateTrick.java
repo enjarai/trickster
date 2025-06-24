@@ -4,8 +4,9 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
-import dev.enjarai.trickster.spell.fragment.ListFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.RetType;
+import dev.enjarai.trickster.spell.type.Signature;
 
 import java.util.List;
 
@@ -14,11 +15,10 @@ import java.util.List;
  */
 public class ListCreateTrick extends Trick<ListCreateTrick> {
     public ListCreateTrick() {
-        super(Pattern.of(6, 3, 0, 2, 5, 8));
+        super(Pattern.of(6, 3, 0, 2, 5, 8), Signature.of(ListCreateTrick::create, RetType.ANY.listOfRet()));
     }
 
-    @Override
-    public Fragment activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
-        return new ListFragment(List.of());
+    public List<Fragment> create(SpellContext ctx) throws BlunderException {
+        return List.of();
     }
 }

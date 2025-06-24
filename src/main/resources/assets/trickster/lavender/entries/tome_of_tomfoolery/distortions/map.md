@@ -4,6 +4,7 @@
   "icon": "minecraft:filled_map",
   "category": "trickster:distortions",
   "additional_search_terms": [
+    "Cartographer's Delusion",
     "Charting Stratagem",
     "Navigator's Distortion",
     "Admiral's Stratagem",
@@ -14,10 +15,13 @@
 
 This chapter describes patterns that can be used to work with maps. 
 Maps allow for an association between one fragment and another, 
-similarly to how a dictionary associates a word to a definition.
+similarly to how a dictionary associates a word with a definition.
 
+;;;;;
 
-To acquire an empty map constant, see the relevant [revision](^trickster:constants#4).
+<|trick@trickster:templates|trick-id=trickster:map_create|>
+
+Creates a new empty map.
 
 ;;;;;
 

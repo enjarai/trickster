@@ -19,15 +19,48 @@
 This chapter describes a few patterns that can be used to perform boolean logic operations.
 
 
-While glyphs here may indicate they require a boolean input, 
-it is worth noting that any fragment will be automatically coerced into a boolean value when required.
+While glyphs here indicate they require a boolean input, 
+it is worth noting that **any fragment will be automatically coerced into a boolean value** when required.
+
+;;;;;
+
+Boolean values are created from any fragment based on the following logic:
+
+- If the fragment is {#4400aa}Void{}, it is **false**.
+- If the fragment is {#444444}Zalgo{}, it is **false**.
+- If the fragment is **false**, it is **false**.
+- Otherwise, it is **true**.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:if_else|>
 
-Returns one of two provided options based on a boolean value. 
-If true, the first option is returned. Otherwise, the second.
+This trick allows spells to use different fragments or even branch their behaviour based on certain criteria.
+
+;;;;;
+
+Decision Distortion takes one or multiple pairs of booleans and values.
+The value after the first boolean that is true will be returned.
+If all booleans are false, a fallback value that *must* be specified at the end is returned instead.
+
+
+For example:
+
+
+Giving this trick the arguments of **true, 1, 2** will make it return **1**, 
+as the boolean forms a pair with **1**, and evaluates to **true**.
+
+;;;;;
+
+Alternatively:
+
+
+Giving Decision Distortion the arguments of **false, 1, false, 2, 3** is also valid, 
+and will see it return the fallback value, which is **3**.
+
+
+And since any fragment counts as a boolean, giving it **void, 1, 2, 3, 4** will have it return **3**, 
+since the **2** and **3** form a pair where the **2** evaluates to **true**.
 
 ;;;;;
 

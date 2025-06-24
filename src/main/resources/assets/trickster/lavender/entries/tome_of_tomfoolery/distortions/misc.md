@@ -23,7 +23,7 @@ Returns the type of the given fragment. Can be used to validate inputs, among ot
 
 <|trick@trickster:templates|trick-id=trickster:hash_values|>
 
-Combines all given inputs into a single number. The same inputs will always produce the same number.
+Combines all given inputs into a single, arbitrary number. The same inputs will always produce the same number.
 
 ;;;;;
 

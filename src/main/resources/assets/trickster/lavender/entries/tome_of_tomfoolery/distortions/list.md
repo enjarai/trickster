@@ -4,6 +4,7 @@
   "icon": "minecraft:string",
   "category": "trickster:distortions",
   "additional_search_terms": [
+    "Catalogue Delusion",
     "Tally Distortion",
     "Expansion Stratagem",
     "Collection Stratagem",
@@ -22,7 +23,13 @@
 Within spells, it is possible to create lists of an arbitrary amount of fragments merged into a single value.
 
 
-Lists are zero indexed. To acquire an empty list constant, see the relevant [revision](^trickster:constants#3).
+Lists are zero indexed.
+
+;;;;;
+
+<|trick@trickster:templates|trick-id=trickster:list_create|>
+
+Creates a new empty list.
 
 ;;;;;
 

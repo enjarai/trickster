@@ -200,6 +200,7 @@ trickster:
     get_subparts: Bundle Distortion
     escape_pattern: Interpretation Distortion
 
+    map_create: Cartographer's Delusion
     map_get: Navigator's Distortion
     map_insert: Charting Stratagem
     map_merge: Admiral's Stratagem

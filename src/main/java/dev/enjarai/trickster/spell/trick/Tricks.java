@@ -21,10 +21,7 @@ import dev.enjarai.trickster.spell.trick.mana.BatteryCreationTrick;
 import dev.enjarai.trickster.spell.trick.mana.DrainMatterTrick;
 import dev.enjarai.trickster.spell.trick.mana.PullManaTrick;
 import dev.enjarai.trickster.spell.trick.mana.PushManaTrick;
-import dev.enjarai.trickster.spell.trick.map.MapGetTrick;
-import dev.enjarai.trickster.spell.trick.map.MapInsertTrick;
-import dev.enjarai.trickster.spell.trick.map.MapMergeTrick;
-import dev.enjarai.trickster.spell.trick.map.MapRemoveTrick;
+import dev.enjarai.trickster.spell.trick.map.*;
 import dev.enjarai.trickster.spell.trick.math.*;
 import dev.enjarai.trickster.spell.trick.misc.*;
 import dev.enjarai.trickster.spell.trick.particle.HighlightTrick;
@@ -207,6 +204,7 @@ public class Tricks {
     public static final CreateNumberRangeTrick CREATE_NUMBER_RANGE = register("create_number_range", new CreateNumberRangeTrick());
 
     // Map
+    public static final MapCreateTrick MAP_CREATE = register("map_create", new MapCreateTrick());
     public static final MapGetTrick MAP_GET = register("map_get", new MapGetTrick());
     public static final MapInsertTrick MAP_INSERT = register("map_insert", new MapInsertTrick());
     public static final MapMergeTrick MAP_MERGE = register("map_merge", new MapMergeTrick());
