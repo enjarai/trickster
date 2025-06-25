@@ -29,7 +29,7 @@ public class PowerResonatorTrick extends Trick<PowerResonatorTrick> {
         expectCanBuild(ctx, blockPos);
 
         if (world.getBlockState(blockPos).getBlock() instanceof SpellControlledRedstoneBlock block) {
-            ctx.useMana(this, (float) Math.sqrt(ctx.source().getBlockPos().getSquaredDistance(blockPos)) / 2f);
+            ctx.useMana(this, 4);
             var result = block.setPower(world, blockPos, intPower);
 
             if (result) {

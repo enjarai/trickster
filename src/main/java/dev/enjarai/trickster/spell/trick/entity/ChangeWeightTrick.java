@@ -34,8 +34,9 @@ public class ChangeWeightTrick extends Trick<ChangeWeightTrick> {
             throw new NumberTooSmallBlunder(this, 0);
         }
 
+        var cost = 10 + (float) (30 * (1 - weight));
         if (entity instanceof LevitatingBlockEntity levitatingBlock) {
-            ctx.useMana(this, (float) (60 * (1 - weight)));
+            ctx.useMana(this, cost);
 
             levitatingBlock.setWeight((float) weight);
             levitatingBlock.setShouldRevertNow(weight >= 1);
@@ -46,7 +47,7 @@ public class ChangeWeightTrick extends Trick<ChangeWeightTrick> {
                 throw new EntityInvalidBlunder(this);
             }
 
-            ctx.useMana(this, (float) (60 * (1 - weight)));
+            ctx.useMana(this, cost);
 
             ModEntityComponents.WEIGHT.get(entity).setWeight(weight);
             ModEntityComponents.GRACE.get(entity).triggerGrace("weight", 20);
@@ -72,7 +73,7 @@ public class ChangeWeightTrick extends Trick<ChangeWeightTrick> {
             throw new BlockInvalidBlunder(this);
         }
 
-        ctx.useMana(this, (float) (60 * (1 - weight)));
+        ctx.useMana(this, 10 + (float) (30 * (1 - weight)));
 
         var levitatingBlock = LevitatingBlockEntity.spawnFromBlock(
                 ctx.source().getWorld(), target.toBlockPos(), state, (float) weight

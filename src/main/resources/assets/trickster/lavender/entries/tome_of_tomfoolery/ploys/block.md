@@ -31,12 +31,18 @@ Breaks the block at the given position.
 
 <|ploy@trickster:templates|trick-id=trickster:place_block,cost=max(distance * 1G\, 8G)|>
 
-Places the given block at the given position.
+Places a block at the given position.
 
 ;;;;;
 
-Will consume its respective item. 
-This ploy optionally takes two additional arguments. 
+The block to place is determined based on a slot reference or block type fragment.
+
+
+If given a block type, the first available item of that type in the caster's inventory will be consumed.
+
+;;;;;
+
+Ploy of Creation optionally takes two additional arguments. 
 
 - The first defines the direction to place from.
 - The second defines what side of an adjacent block is interacted with when placing.
@@ -45,9 +51,22 @@ Some blocks may change their facing or other properties based on these values.
 
 ;;;;;
 
-<|ploy@trickster:templates|trick-id=trickster:change_weight,cost=60G * (1 - multiplier)|>
+<|ploy@trickster:templates|trick-id=trickster:change_weight,cost=10G + 30G * (1 - multiplier)|>
 
 Given a number between zero and one, levitates the block at the given position, using the number as its gravity multiplier.
+
+;;;;;
+
+The gravity manipulation of Ploy of Featherweight usually wears off within a couple of seconds if not reapplied.
+
+
+Applying it again to an already levitating block with a multiplier below one
+might be used to keep the block in its levitating state for longer, even while touching the ground.
+
+;;;;;
+
+If one instead wants to force the block to solidify regardless of its position or state, 
+a featherweight of exactly one may be applied.
 
 ;;;;;
 
@@ -95,7 +114,7 @@ The block underneath must have a solid top face.
 
 <|ploy@trickster:templates|trick-id=trickster:conjure_water,cost=15G|>
 
-Conjures a small splash of water at the given position.
+Conjures a bucket's worth of water at the given position.
 
 ;;;;;
 
@@ -105,6 +124,6 @@ Conjures a permanent light source at the given position.
 
 ;;;;;
 
-<|ploy@trickster:templates|trick-id=trickster:power_resonator,cost=distance / 2G|>
+<|ploy@trickster:templates|trick-id=trickster:power_resonator,cost=4G|>
 
 Powers the [Spell Resonator](^trickster:items/spell_resonator) at the given position with the given power level, between 0 and 15.
