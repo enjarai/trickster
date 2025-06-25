@@ -27,7 +27,7 @@ it is worth noting that **any fragment will be automatically coerced into a bool
 Boolean values are created from any fragment based on the following logic:
 
 - If the fragment is {#4400aa}Void{}, it is **false**.
-- If the fragment is {#444444}Zalgo{}, it is **false**.
+- If the fragment is {#444444}##Zalgo##{}, it is **false**.
 - If the fragment is **false**, it is **false**.
 - Otherwise, it is **true**.
 
