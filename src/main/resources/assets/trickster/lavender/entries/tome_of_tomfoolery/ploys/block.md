@@ -57,7 +57,7 @@ Given a number between zero and one, levitates the block at the given position, 
 
 ;;;;;
 
-The gravity manipulation of Ploy of Featherweight usually wears off within a couple of seconds if not reapplied.
+The gravity manipulation of Ploy of Featherweight usually wears off after about a second if not reapplied.
 
 
 Applying it again to an already levitating block with a multiplier below one

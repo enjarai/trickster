@@ -29,4 +29,4 @@ Swaps the item stacks within the given slots.
 
 <|trick@trickster:templates|trick-id=trickster:set_hat|>
 
-Sets the selected slot in the caster's [Top Hat](^trickster:items/top_hat), returning a boolean based on success.
+Sets the selected slot in the caster's [Hat](^trickster:items/top_hat), returning a boolean based on success.
