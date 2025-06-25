@@ -31,20 +31,20 @@ public class HeatTrick extends Trick<HeatTrick> {
         var blockState = world.getBlockState(blockPos);
 
         if (CampfireBlock.canBeLit(blockState) || CandleBlock.canBeLit(blockState) || CandleCakeBlock.canBeLit(blockState)) {
-            ctx.useMana(this, 0.001f);
+            ctx.useMana(this, 1);
 
             world.setBlockState(blockPos, blockState.with(Properties.LIT, true));
             world.emitGameEvent(null, GameEvent.BLOCK_CHANGE, blockPos);
+        } else if (blockState.getBlock() instanceof TntBlock) {
+            ctx.useMana(this, 1);
+
+            TntBlock.primeTnt(world, blockPos);
+            world.removeBlock(blockPos, false);
         } else if (!blockState.isAir()) {
             ctx.useMana(this, 80);
 
-            if (blockState.getBlock() instanceof TntBlock) {
-                ctx.useMana(this, 80);
-
-                TntBlock.primeTnt(world, blockPos);
-                world.removeBlock(blockPos, false);
-            } else if (blockState.getBlock() instanceof AbstractFurnaceBlock && world.getBlockEntity(blockPos) instanceof AbstractFurnaceBlockEntity furnace) {
-                ((FuelableFurnaceDuck) furnace).trickster$setFuelLevelAtLeast(1601);
+            if (blockState.getBlock() instanceof AbstractFurnaceBlock && world.getBlockEntity(blockPos) instanceof AbstractFurnaceBlockEntity furnace) {
+                ((FuelableFurnaceDuck) furnace).trickster$setFuelLevelAndSuperHeat(1601);
             } else {
                 DataLoader.getHeatLoader().convert(blockState.getBlock(), world, blockPos);
             }

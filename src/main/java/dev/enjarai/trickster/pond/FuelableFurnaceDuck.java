@@ -1,5 +1,5 @@
 package dev.enjarai.trickster.pond;
 
 public interface FuelableFurnaceDuck {
-    void trickster$setFuelLevelAtLeast(int level);
+    void trickster$setFuelLevelAndSuperHeat(int level);
 }
