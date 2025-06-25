@@ -36,14 +36,31 @@ Replaces the keys of the map that are in the given spell with the value they map
 
 ;;;;;
 
+Any values anywhere in the given spell will be replaced. 
+This could be constants in glyphs, patterns, and inner circles,
+but also entire subtrees of the spell.
+
+
+Values that are a part of inner circles or subspells will *also* be replaced.
+
+;;;;;
+
 <|page-title@lavender:book_components|title=Note: Addresses|>Just as elements of a list are accessed by their index, 
 parts of a spell are accessed by their address. 
 An address is a list of integers that forms a path to a specific circle in a spell.
 
+
+Addresses can be found using [Address Revision](^trickster:editing#29).
+
+
+To manually find the address of a circle, start at the central circle in the spell.
+
 ;;;;;
 
-To find the address of a circle, start at the central circle in the spell. Next, find the sub-circle attached to the central circle that is in the
+Next, find the sub-circle attached to the central circle that is in the
 path to the circle you are finding the address of. Take the index of that circle, which is the number of circles that come before it, counterclockwise. 
+
+
 Repeat this process, adding each index to the list until you reach the circle you are finding the address of. The list you constructed is the address to
 that circle.
 
