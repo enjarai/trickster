@@ -20,17 +20,17 @@ Just as values can be created, passed around, and used by spells, so can parts o
 
 
 When nesting one circle as a glyph inside another, 
-but not immediately providing any subcircles to the upper circle, 
-the upper circle will return the inner circle as a fragment.
+but not immediately providing any subcircles to the outer circle, 
+the outer circle will return the entire inner circle with all its subcircles and glyphs as a fragment.
 
 ;;;;;
 
-This fragment can then be used in a number of ways, including being written to an item using [Notulist's Ploy](^trickster:tricks/basic#4), 
-and being cast later or even multiple times within the same spell.
+This fragment can be used in a number of ways, including being written to an item using [Notulist's Ploy](^trickster:tricks/basic#4), 
+and being cast later or reused multiple times within the same spell.
 
 
-It is also very possible to pass a spell fragment inside of itself, and execute it again there, 
-using recursion to create what is essentially a loop.
+It is also very possible to pass a spell fragment inside of itself, and cast it again there, 
+using recursion to create repeating behaviour.
 
 ;;;;;
 
@@ -43,20 +43,21 @@ Returns the delay.
 
 <|trick@trickster:templates|trick-id=trickster:execute|>
 
-A powerful trick indeed, it executes the passed in spell fragment, 
-providing it with all other passed in fragments as arguments.
+Casts the given spell fragment, 
+providing it with all additional given fragments as arguments, in order of their appearance.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:execute_same_scope|>
 
-Executes the given spell with the current spell's arguments.
+Casts the given spell with the current spell's arguments.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:fork|>
 
-Dispatches the given spell to a free spell slot. The used spell slot is returned, or a negative if it failed.
+Dispatches the given spell to a free spell slot. The index of the now used spell slot (or -1) is returned.
+If the caster doesn't have multiple slots, this trick will blunder.
 
 ;;;;;
 
@@ -76,16 +77,20 @@ Each iteration receives four arguments:
 
 ---
 
-any, any, any, collection
+{#aa4444}Any{}, {#aa4444}Any{}, {#aa4444}Any{}, {#aa4444}Foldable{}
 
 ---
 
-Where the first argument is the result of the last iteration, the second is the current value, the third is its key, 
-and the fourth is the given collection.
+These represent the following values, in order:
+
+- The result of the last iteration.
+- The current value.
+- The key of the current value.
+- The full collection.
 
 ;;;;;
 
-The result of each execution is passed as the first argument to the next, where the last's result is the return of this trick.
+The result of each execution is passed as the first argument to the next, where the last's result is the return value of this trick overall.
 
 ;;;;;
 
@@ -97,7 +102,7 @@ Attempts to execute the first spell. If it blunders, the second spell is run and
 
 <|trick@trickster:templates|trick-id=trickster:atomic|>
 
-Executes the given spell in a single tick, blundering if it's not possible due to spell size or illegal operations.
+Executes the given spell in a single tick, blundering if this cannot be guaranteed due to spell size or illegal operations.
 
 ;;;;;
 

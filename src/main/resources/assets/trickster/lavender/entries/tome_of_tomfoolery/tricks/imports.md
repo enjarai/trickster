@@ -21,11 +21,11 @@ or have other side effects.
 
 <|trick@trickster:templates|trick-id=trickster:import|>
 
-Searches the caster's inventory for a specific item.
-The first item found with an inscribed spell will be cast with the provided arguments.
+Searches the caster's inventory for a specific item type.
+The first item of this type found to have an inscribed spell will be cast with the provided arguments.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:import_hat|>
 
-Grabs the spell from the specified slot in the caster's [Top Hat](^trickster:items/top_hat), casts it with the provided arguments, and returns the result.
+Grabs the spell from the specified slot in the caster's [Hat](^trickster:items/top_hat), casts it with the provided arguments, and returns the result.
