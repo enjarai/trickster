@@ -21,7 +21,7 @@ Fully loads the chunk containing the given position for exactly 4 seconds.
 
 ;;;;;
 
-<|page-title@lavender:book_components|title=Note: Bars|>Spells can display arbitrary values on the caster's screen as bars.
+<|page-title@lavender:book_components|title=Note: Bars|>Spells can display arbitrary values on the caster's view as bars.
 
 
 Bars are identified by a number and can be overwritten at any time by using the same number again.
@@ -33,16 +33,16 @@ A bar can either be given one number, which will be interpreted on a scale of 0 
 which means it will interpret the first as the current and the second as the maximum value.
 
 
-It also always returns the given value to its parent circle when updated, allowing for easy chaining.
+Ploy of Clarity returns the given value to its parent circle when used, allowing for easy chaining.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:show_bar|>
 
-Shows a bar on the caster's screen identified by the first number displaying the second number.
+Shows a bar on the caster's view identified by the first number displaying the second number.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:clear_bar|>
 
-Immediately clears a bar from the caster's screen identified by the given number.
+Immediately clears a bar identified by the given number from the caster's view.
