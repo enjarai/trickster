@@ -3,7 +3,6 @@ package dev.enjarai.trickster.spell.trick.entity;
 import dev.enjarai.trickster.entity.ModEntities;
 import dev.enjarai.trickster.item.component.EntityStorageComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
-import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.*;
@@ -20,10 +19,10 @@ import java.util.Optional;
 
 public class StoreEntityTrick extends Trick<StoreEntityTrick> {
     public StoreEntityTrick() {
-        super(Pattern.of(5, 2, 4, 3, 6, 7, 4), Signature.of(FragmentType.ENTITY, StoreEntityTrick::store));
+        super(Pattern.of(5, 2, 4, 3, 6, 7, 4), Signature.of(FragmentType.ENTITY, StoreEntityTrick::store, FragmentType.VOID));
     }
 
-    public Fragment store(SpellContext ctx, EntityFragment entity) throws BlunderException {
+    public VoidFragment store(SpellContext ctx, EntityFragment entity) throws BlunderException {
         var target = entity.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this));
 
         if (target instanceof PlayerEntity)

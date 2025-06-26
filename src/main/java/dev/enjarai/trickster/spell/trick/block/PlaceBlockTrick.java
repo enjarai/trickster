@@ -1,6 +1,5 @@
 package dev.enjarai.trickster.spell.trick.block;
 
-import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
@@ -23,25 +22,26 @@ import java.util.Optional;
 
 public class PlaceBlockTrick extends Trick<PlaceBlockTrick> {
     public PlaceBlockTrick() {
-        super(Pattern.of(0, 2, 8, 6, 0), Signature.of(FragmentType.VECTOR, FragmentType.SLOT, FragmentType.VECTOR.optionalOf(), FragmentType.VECTOR.optionalOf(), PlaceBlockTrick::placeSlot));
-        overload(Signature.of(FragmentType.VECTOR, FragmentType.BLOCK_TYPE, FragmentType.VECTOR.optionalOf(), FragmentType.VECTOR.optionalOf(), PlaceBlockTrick::placeType));
+        super(Pattern.of(0, 2, 8, 6, 0),
+                Signature.of(FragmentType.VECTOR, FragmentType.SLOT, FragmentType.VECTOR.optionalOfArg(), FragmentType.VECTOR.optionalOfArg(), PlaceBlockTrick::placeSlot, FragmentType.VECTOR));
+        overload(Signature.of(FragmentType.VECTOR, FragmentType.BLOCK_TYPE, FragmentType.VECTOR.optionalOfArg(), FragmentType.VECTOR.optionalOfArg(), PlaceBlockTrick::placeType, FragmentType.VECTOR));
     }
 
-    public Fragment placeSlot(SpellContext ctx, VectorFragment pos, SlotFragment slot, Optional<VectorFragment> facing, Optional<VectorFragment> side) throws BlunderException {
+    public VectorFragment placeSlot(SpellContext ctx, VectorFragment pos, SlotFragment slot, Optional<VectorFragment> facing, Optional<VectorFragment> side) throws BlunderException {
         expectCanBuild(ctx, pos.toBlockPos());
         var stack = ctx.getStack(this, Optional.of(slot), item -> item.getItem() instanceof BlockItem)
                 .orElseThrow(() -> new MissingItemBlunder(this));
         return place(ctx, pos, stack, facing, side);
     }
 
-    public Fragment placeType(SpellContext ctx, VectorFragment pos, BlockTypeFragment type, Optional<VectorFragment> facing, Optional<VectorFragment> side) throws BlunderException {
+    public VectorFragment placeType(SpellContext ctx, VectorFragment pos, BlockTypeFragment type, Optional<VectorFragment> facing, Optional<VectorFragment> side) throws BlunderException {
         expectCanBuild(ctx, pos.toBlockPos());
         var stack = ctx.getStack(this, Optional.empty(), item -> item.getItem() instanceof BlockItem blockItem && blockItem.getBlock() == type.block())
                 .orElseThrow(() -> new MissingItemBlunder(this));
         return place(ctx, pos, stack, facing, side);
     }
 
-    public Fragment place(SpellContext ctx, VectorFragment pos, ItemStack stack, Optional<VectorFragment> facingOptional, Optional<VectorFragment> sideOptional) throws BlunderException {
+    public VectorFragment place(SpellContext ctx, VectorFragment pos, ItemStack stack, Optional<VectorFragment> facingOptional, Optional<VectorFragment> sideOptional) throws BlunderException {
         var world = ctx.source().getWorld();
         var blockPos = pos.toBlockPos();
 

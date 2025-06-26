@@ -2,27 +2,22 @@ package dev.enjarai.trickster.spell.trick.block;
 
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.block.ModBlocks;
-import dev.enjarai.trickster.spell.EvaluationResult;
-import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.fragment.VectorFragment;
-import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlockTooHardBlunder;
 import dev.enjarai.trickster.spell.blunder.BlockUnoccupiedBlunder;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.fragment.FragmentType;
+import dev.enjarai.trickster.spell.fragment.VectorFragment;
+import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.Signature;
-import net.minecraft.util.math.ChunkSectionPos;
-
-import java.util.List;
 
 public class BreakBlockTrick extends Trick<BreakBlockTrick> {
     public BreakBlockTrick() {
-        super(Pattern.of(1, 5, 8, 6, 4, 1, 0, 3, 6), Signature.of(FragmentType.VECTOR, BreakBlockTrick::run));
+        super(Pattern.of(1, 5, 8, 6, 4, 1, 0, 3, 6), Signature.of(FragmentType.VECTOR, BreakBlockTrick::run, FragmentType.VECTOR));
     }
 
-    public EvaluationResult run(SpellContext ctx, VectorFragment pos) throws BlunderException {
+    public VectorFragment run(SpellContext ctx, VectorFragment pos) throws BlunderException {
         var blockPos = pos.toBlockPos();
         var world = ctx.source().getWorld();
 

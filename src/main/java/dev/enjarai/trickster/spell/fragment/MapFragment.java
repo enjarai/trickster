@@ -22,6 +22,7 @@ public record MapFragment(HashMap<Fragment, Fragment> map) implements FoldableFr
             Endec.map(Fragment.ENDEC, Fragment.ENDEC).xmap(HashMap::ofAll, HashMap::toJavaMap).fieldOf("entries", MapFragment::map),
             MapFragment::new
     );
+    public static final MapFragment EMPTY = new MapFragment(HashMap.empty());
 
     @Override
     public FragmentType<?> type() {
