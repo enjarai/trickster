@@ -19,6 +19,7 @@ repositories {
     // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
     // See https://docs.gradle.org/current/userguide/declaring_repositories.html
     // for more information about repositories.
+    mavenCentral()
 
     maven {
         name = "Modrinth"
@@ -34,6 +35,8 @@ repositories {
     maven {
         url "https://maven.enjarai.dev/mirrors"
     }
+
+    flatDir name: 'libs', dirs: "$projectDir/libs"
 }
 
 loom {
@@ -120,6 +123,13 @@ dependencies {
 
     // Optional compat
     modCompileOnly modLocalRuntime("maven.modrinth:transmog:${property('deps.transmog')}")
+
+    modClientCompileOnly modLocalRuntime("mod.master_bw3:coleus:1.0.0")
+    compileOnly runtimeOnly("com.j2html:j2html:1.6.0")
+    modLocalRuntime("maven.modrinth:isometric-renders:${property('deps.isometric-renders')}")
+    modLocalRuntime("net.fabricmc:fabric-language-kotlin:${property('deps.fabric-kotlin')}")
+    modLocalRuntime("io.wispforest:worldmesher:${property('deps.worldmesher')}")
+
 }
 
 processResources {
@@ -155,25 +165,25 @@ yamlang {
     inputDir = "assets/trickster/lang"
 }
 
-compileJava.dependsOn 'spotlessApply'
-spotless {
-    ratchetFrom 'origin/master'
-    encoding 'UTF-8'
-
-    format 'misc', {
-        target '*.gradle', '.gitattributes', '.gitignore', 'shell.nix'
-
-        trimTrailingWhitespace()
-        leadingTabsToSpaces()
-        endWithNewline()
-    }
-
-    java {
-        toggleOffOn()
-        removeUnusedImports()
-        eclipse('4.26').configFile('eclipse-prefs.properties')
-    }
-}
+//compileJava.dependsOn 'spotlessApply'
+//spotless {
+//    ratchetFrom 'origin/master'
+//    encoding 'UTF-8'
+//
+//    format 'misc', {
+//        target '*.gradle', '.gitattributes', '.gitignore', 'shell.nix'
+//
+//        trimTrailingWhitespace()
+//        leadingTabsToSpaces()
+//        endWithNewline()
+//    }
+//
+//    java {
+//        toggleOffOn()
+//        removeUnusedImports()
+//        eclipse('4.26').configFile('eclipse-prefs.properties')
+//    }
+//}
 
 // configure the maven publication
 publishing {
