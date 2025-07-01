@@ -36,7 +36,7 @@ repositories {
         url "https://maven.enjarai.dev/mirrors"
     }
 
-    flatDir name: 'libs', dirs: "$projectDir/libs"
+    flatDir name: 'libs', dirs: "/home/maple/projects/coleus/build/libs"
 }
 
 loom {
@@ -125,10 +125,10 @@ dependencies {
     modCompileOnly modLocalRuntime("maven.modrinth:transmog:${property('deps.transmog')}")
 
     modClientCompileOnly modLocalRuntime("mod.master_bw3:coleus:1.0.0")
-    compileOnly runtimeOnly("com.j2html:j2html:1.6.0")
-    modLocalRuntime("maven.modrinth:isometric-renders:${property('deps.isometric-renders')}")
+    modCompileOnly modLocalRuntime("maven.modrinth:isometric-renders:${property('deps.isometric-renders')}")
     modLocalRuntime("net.fabricmc:fabric-language-kotlin:${property('deps.fabric-kotlin')}")
     modLocalRuntime("io.wispforest:worldmesher:${property('deps.worldmesher')}")
+    compileOnly runtimeOnly("com.j2html:j2html:1.6.0")
 
 }
 
