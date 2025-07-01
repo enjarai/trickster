@@ -77,6 +77,8 @@ public class TricksterClient implements ClientModInitializer {
         HtmlTemplateRegistry.register(Identifier.of("trickster", "spell-preview-unloadable"), "owo what's this");
         HtmlTemplateRegistry.register(Identifier.of("trickster", "item-tag"), "owo what's this");
         HtmlTemplateRegistry.register(Identifier.of("trickster", "cost-rule"), "owo what's this");
+        HtmlTemplateRegistry.register(Identifier.of("trickster", "trick"), TricksterTemplateExpanders::glyphTemplate);
+        HtmlTemplateRegistry.register(Identifier.of("trickster", "ploy"), "owo what's this");
 
         ParticleFactoryRegistry.getInstance().register(ModParticles.PROTECTED_BLOCK,
                 ProtectedBlockParticle.Factory::new);
