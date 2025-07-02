@@ -1,13 +1,12 @@
 package dev.enjarai.trickster.spell.trick.entity;
 
-import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.OutOfRangeBlunder;
 import dev.enjarai.trickster.spell.fragment.*;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.Signature;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
-import dev.enjarai.trickster.spell.blunder.OutOfRangeBlunder;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.TypeFilter;
@@ -18,10 +17,11 @@ import java.util.List;
 
 public class RangeFindEntityTrick extends Trick<RangeFindEntityTrick> {
     public RangeFindEntityTrick() {
-        super(Pattern.of(3, 1, 0, 3, 6, 7, 8, 5, 7), Signature.of(FragmentType.VECTOR, FragmentType.NUMBER, variadic(FragmentType.ENTITY_TYPE).unpack(), RangeFindEntityTrick::run));
+        super(Pattern.of(3, 1, 0, 3, 6, 7, 8, 5, 7),
+                Signature.of(FragmentType.VECTOR, FragmentType.NUMBER, FragmentType.ENTITY_TYPE.variadicOfArg().unpack(), RangeFindEntityTrick::run, FragmentType.ENTITY.listOfRet()));
     }
 
-    public Fragment run(SpellContext ctx, VectorFragment posFragment, NumberFragment rangeFragment, List<EntityTypeFragment> typeFragments) throws BlunderException {
+    public List<EntityFragment> run(SpellContext ctx, VectorFragment posFragment, NumberFragment rangeFragment, List<EntityTypeFragment> typeFragments) throws BlunderException {
         var types = new ArrayList<EntityType<?>>(typeFragments.size());
         var pos = posFragment.vector();
         var range = rangeFragment.number();
@@ -47,9 +47,9 @@ public class RangeFindEntityTrick extends Trick<RangeFindEntityTrick> {
                 entities
         );
 
-        return new ListFragment(entities.stream()
+        return entities.stream()
                 .filter(EntityFragment::isValidEntity)
-                .<Fragment>map(EntityFragment::from)
-                .toList());
+                .map(EntityFragment::from)
+                .toList();
     }
 }

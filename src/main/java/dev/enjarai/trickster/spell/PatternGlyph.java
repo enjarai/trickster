@@ -1,8 +1,8 @@
 package dev.enjarai.trickster.spell;
 
+import dev.enjarai.trickster.spell.blunder.IncompatibleTypesBlunder;
 import dev.enjarai.trickster.spell.blunder.OverweightFragmentBlunder;
-import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.fragment.VoidFragment;
+import dev.enjarai.trickster.spell.fragment.*;
 import dev.enjarai.trickster.spell.trick.Tricks;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.UnknownTrickBlunder;
@@ -14,7 +14,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import java.util.List;
 import java.util.stream.Stream;
 
-public record PatternGlyph(Pattern pattern) implements Fragment {
+public record PatternGlyph(Pattern pattern) implements Fragment, AddableFragment, SubtractableFragment {
     public static final StructEndec<PatternGlyph> ENDEC = StructEndecBuilder.of(
             Pattern.ENDEC.fieldOf("pattern", PatternGlyph::pattern),
             PatternGlyph::new
@@ -75,5 +75,23 @@ public record PatternGlyph(Pattern pattern) implements Fragment {
     @Override
     public int getWeight() {
         return pattern.getWeight();
+    }
+
+    @Override
+    public AddableFragment add(Fragment other) throws BlunderException {
+        if (other instanceof PatternGlyph otherPattern) {
+            return new PatternGlyph(pattern().add(otherPattern.pattern()));
+        }
+
+        throw new IncompatibleTypesBlunder(Tricks.ADD);
+    }
+
+    @Override
+    public SubtractableFragment subtract(Fragment other) throws BlunderException {
+        if (other instanceof PatternGlyph otherPattern) {
+            return new PatternGlyph(pattern().subtract(otherPattern.pattern()));
+        }
+
+        throw new IncompatibleTypesBlunder(Tricks.SUBTRACT);
     }
 }
