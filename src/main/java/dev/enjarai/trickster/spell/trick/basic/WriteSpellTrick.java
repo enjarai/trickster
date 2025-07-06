@@ -24,8 +24,6 @@ public class WriteSpellTrick extends Trick<WriteSpellTrick> {
     }
 
     public static Fragment run(Trick<?> self, SpellContext ctx, Fragment input, Optional<SlotFragment> optionalSlot, Optional<StringFragment> optionalName, boolean closed) throws BlunderException {
-        input = input.applyEphemeral();
-
         var player = ctx.source().getPlayer();
         var slot = optionalSlot.or(() -> ctx.source().getOtherHandSlot())
                 .orElseThrow(() -> new NoPlayerBlunder(self));

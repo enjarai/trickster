@@ -25,6 +25,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
@@ -228,6 +229,19 @@ public class ModularSpellConstructBlock extends BlockWithEntity {
             }
 
             super.onStateReplaced(state, world, pos, newState, moved);
+        }
+    }
+
+    @Override
+    public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
+        BlockEntity blockEntity = world.getBlockEntity(pos);
+        if (blockEntity instanceof ModularSpellConstructBlockEntity circleEntity && !circleEntity.isEmpty()) {
+            var centerPos = pos.toCenterPos();
+            for (int i = 1; i < circleEntity.size(); ++i) {
+                if (circleEntity.getStack(i).getItem() instanceof SpellCoreItem coreItem && circleEntity.executors.get(i - 1).isPresent()) {
+                    coreItem.onDisplayTick(world, centerPos, random);
+                }
+            }
         }
     }
 

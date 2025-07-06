@@ -74,7 +74,7 @@ public class MessageHandlerComponent implements ServerTickingComponent {
 
     public static interface Key {
         boolean match(Key other);
-        
+
         public static record Channel(UUID uuid) implements Key {
             @Override
             public boolean match(Key other) {

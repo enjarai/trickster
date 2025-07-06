@@ -235,7 +235,11 @@ public final class SpellPart implements Fragment {
             if (i > 0) {
                 text.append(", ");
             }
-            text.append(subPart.asFormattedText());
+            if (subPart.glyph instanceof PatternGlyph) {
+                text.append("...");
+            } else {
+                text.append(subPart.glyph.asFormattedText());
+            }
         }
         text.append("}");
         return text;
