@@ -7,8 +7,8 @@ trickster:
     written_scroll: 定稿卷轴
 
   text:
-    misc:
-      value_truncated: 过长值已截断
+    value_truncated: 过长值已截断
+    disconnect_with_caution: 撤下需谨慎
 
   widget:
     scroll_name: 卷轴名称……
@@ -35,6 +35,12 @@ trickster:
     collar_link: "链接：%s"
     unlinked: 未链接
 
+  subtitle:
+    draw: "法术：绘制"
+    complete: "法术：完成"
+    cast: "法术：施放"
+    collar_bell: "缚环铃铛：鸣响"
+
   gandalf:
     stored: "存有：%s"
   merlin:
@@ -44,7 +50,9 @@ trickster:
 
   item_group: 戏法师
 
-  scroll_hat: 所选槽位：%d
+  scroll_hat:
+    named: "所选槽位：%d [%s]"
+    unnamed: "所选槽位：%d"
   scroll_executable: 单次使用（%f 千甘道夫）
 
   unnamed_entity: 未命名的%s
@@ -368,6 +376,8 @@ item.trickster:
   spell_core: 法术核心
   rusted_spell_core: 生锈法术核心
   ominous_spell_core: 不祥法术核心
+  inactive_spawner_spell_core: 磨难法术核心外壳
+  spawner_spell_core: 磨难法术核心
 
 block.trickster:
   spell_resonator: 法术谐振器
@@ -376,6 +386,7 @@ block.trickster:
   light: 光源
   scroll_shelf: 卷轴架
   charging_array: 充能阵列
+  inert_spawner: 惰性刷怪笼
 
 effect.trickster:
   mana_boost: 魔力超流
@@ -386,10 +397,6 @@ tag.item.trickster:
   holdable_hat: 可手持的帽子
   scrolls: 卷轴
   spell_cost: 法术消耗品
-
-death.attack:
-  mana_overflux: "%1$s的魔术秀不合时宜地终结了"
-  mana_overflux.player: "%2$s终止了%1$s的魔术秀"
 
 key:
   categories:
@@ -409,6 +416,7 @@ text.config.trickster-config:
   option:
     dotEmphasis: 界面中着重强调点
     dotEmphasisColor: 界面中点的强调色
+    subcircleDividerPinColor: 分隔销的颜色
     manaTransferEfficiency: 善流之技巧与恶流之技巧的效率
     whorlMaxMana: 螺坠最大魔力，以kG计
     whorlRechargeRate: 螺坠充能速度，以kG计
