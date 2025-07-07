@@ -19,7 +19,7 @@ There is something else that is strange about this Knot.
 ;;;;;
 
 When a slot which contains a Cracked Echo Knot is given as the second argument to a [Ploy of Receipt](^trickster:ploys/message#3), 
-it behaves rather queerly. Similarly, doing the same with a [Dispatch Ploy](^trickster:ploys/message#2) appears to alter *something*.
+it behaves rather queerly. Doing the same with a [Dispatch Ploy](^trickster:ploys/message#2) appears to alter *something*.
 
 
 It is uncertain how exactly these two ploys interact with the Cracked Echo Knot. 
