@@ -44,9 +44,9 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
 
     public SpellQueueResult queueAndCast(SpellSource source, SpellPart spell, List<Fragment> arguments, Optional<MutableManaPool> poolOverride) {
         var executor = new DefaultSpellExecutor(spell, poolOverride.flatMap(pool -> Optional.of(new ExecutionState(arguments, pool))).orElse(new ExecutionState(arguments)));
-        int queued = queue(executor);
+        OptionalInt queued = queue(executor);
 
-        if (queued >= 0) {
+        if (queued.isPresent()) {
             for (var iterator = spells.int2ObjectEntrySet().iterator(); iterator.hasNext();) {
                 var entry = iterator.next();
 
@@ -72,21 +72,21 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
     }
 
     @Override
-    public Optional<Integer> queue(SpellExecutor executor) {
+    public OptionalInt queue(SpellExecutor executor) {
         for (int i = 0; i < capacity; i++) {
             if (spells.putIfAbsent(i, executor) == null) {
-                return Optional.of(i);
+                return OptionalInt.of(i);
             }
         }
 
         for (int i = 0; i < capacity; i++) {
             if (spells.get(i) instanceof ErroredSpellExecutor) {
                 spells.put(i, executor);
-                return Optional.of(i);
+                return OptionalInt.of(i);
             }
         }
 
-        return Optional.empty();
+        return OptionalInt.empty();
     }
 
     public void tick(SpellSource source, ExecutorCallback tickCallback, ExecutorCallback completeCallback, ExecutorCallback errorCallback) {

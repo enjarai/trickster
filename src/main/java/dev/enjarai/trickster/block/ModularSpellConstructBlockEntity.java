@@ -2,6 +2,7 @@ package dev.enjarai.trickster.block;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalInt;
 
 import dev.enjarai.trickster.item.KnotItem;
 import dev.enjarai.trickster.spell.SpellPart;
@@ -303,7 +304,7 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
     }
 
     @Override
-    public Optional<Integer> queue(SpellExecutor executor) {
+    public OptionalInt queue(SpellExecutor executor) {
         for (int i = 1; i < inventory.size(); i++) {
             var stack = inventory.get(i);
 
@@ -314,11 +315,11 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
             ) {
                 executors.set(i - 1, Optional.of(executor));
                 markDirtyAndUpdateClients();
-                return Optional.of(i - 1);
+                return OptionalInt.of(i - 1);
             }
         }
 
-        return Optional.empty();
+        return OptionalInt.empty();
     }
 
     @Override
