@@ -295,7 +295,7 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
     }
 
     @Override
-    public int queue(SpellExecutor executor) {
+    public Optional<Integer> queue(SpellExecutor executor) {
         for (int i = 1; i < inventory.size(); i++) {
             var stack = inventory.get(i);
 
@@ -306,11 +306,11 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
             ) {
                 executors.set(i - 1, Optional.of(executor));
                 markDirtyAndUpdateClients();
-                return i - 1;
+                return Optional.of(i - 1);
             }
         }
 
-        return -1;
+        return Optional.empty();
     }
 
     @Override

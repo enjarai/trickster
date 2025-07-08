@@ -12,17 +12,17 @@ import dev.enjarai.trickster.spell.type.ArgType;
 import dev.enjarai.trickster.spell.type.Signature;
 
 import java.util.List;
+import java.util.Optional;
 
 public class ForkTrick extends Trick<ForkTrick> {
     public ForkTrick() {
-        super(Pattern.of(7, 4, 1, 0, 3, 6, 7, 8, 5, 4, 2), Signature.of(FragmentType.SPELL_PART, ArgType.ANY.variadicOfArg(), ForkTrick::run, FragmentType.NUMBER));
+        super(Pattern.of(7, 4, 1, 0, 3, 6, 7, 8, 5, 4, 2), Signature.of(FragmentType.SPELL_PART, ArgType.ANY.variadicOfArg(), ForkTrick::run, FragmentType.NUMBER.optionalOfRet()));
     }
 
-    public NumberFragment run(SpellContext ctx, SpellPart spell, List<Fragment> args) throws BlunderException {
-        var queued = ctx.source()
+    public Optional<NumberFragment> run(SpellContext ctx, SpellPart spell, List<Fragment> args) throws BlunderException {
+        return ctx.source()
                 .getExecutionManager()
-                .map(manager -> manager.queue(spell, args))
-                .orElse(-1);
-        return new NumberFragment(queued);
+                .flatMap(manager -> manager.queue(spell, args))
+                .map(i -> new NumberFragment(i));
     }
 }
