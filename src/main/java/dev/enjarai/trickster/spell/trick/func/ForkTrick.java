@@ -21,10 +21,10 @@ public class ForkTrick extends Trick<ForkTrick> {
     }
 
     public Optional<NumberFragment> run(SpellContext ctx, SpellPart spell, List<Fragment> args) throws BlunderException {
-        return ctx.source()
+        var slot = ctx.source()
                 .getExecutionManager()
                 .orElseThrow(() -> new IncompatibleSourceBlunder(this))
-                .queue(spell, args)
-                .map(i -> new NumberFragment(i));
+                .queue(spell, args);
+        return slot.isPresent() ? Optional.of(new NumberFragment(slot.getAsInt())) : Optional.empty();
     }
 }
