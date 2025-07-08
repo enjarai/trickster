@@ -11,22 +11,31 @@
 }
 ```
 
-Ploys for creating [Knots](^trickster:items/knots) and moving mana between them.
+*mun en kon suli o lawa e mi*
+
+
+*o pana tawa mi*
+
+
+*o pona e mi*
+
+
+-- jan Enali
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:battery_creation|>
 
-Creates a Knot of the type of the given item using a Glass Block. Uses amethyst if no slot is provided.
+Creates a [Knot](^trickster:items/knots) using the crystal of the given item using a Glass Block. Uses amethyst if no slot is provided.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:push_mana|>
 
-Pushes mana into the given slots, up to an amount, and returns the amount moved.
+Pushes mana into the given slots from the caster's reserves, up to an amount, and returns the amount moved.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:pull_mana|>
 
-Pulls mana from the given slots, up to an amount, and returns the amount moved.
+Pulls mana from the given slots into the caster's reserves, up to an amount, and returns the amount moved.

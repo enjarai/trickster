@@ -15,6 +15,10 @@
 Tricks for manipulating projectiles. Tricks in this category will take the required item from their caster's inventory, 
 or optionally a specific slot.
 
+
+These all have very aggressive cost scaling with distance.
+They should ideally be used at positions as near to the caster as possible.
+
 ;;;;;
 
 <|ploy@trickster:templates|trick-id=trickster:summon_arrow,cost=20G + 1G * distance ^ (distance / 3)|>

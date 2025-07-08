@@ -5,6 +5,7 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.IncompatibleSourceBlunder;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
@@ -22,7 +23,8 @@ public class ForkTrick extends Trick<ForkTrick> {
     public Optional<NumberFragment> run(SpellContext ctx, SpellPart spell, List<Fragment> args) throws BlunderException {
         return ctx.source()
                 .getExecutionManager()
-                .flatMap(manager -> manager.queue(spell, args))
+                .orElseThrow(() -> new IncompatibleSourceBlunder(this))
+                .queue(spell, args)
                 .map(i -> new NumberFragment(i));
     }
 }

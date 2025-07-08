@@ -15,8 +15,11 @@
 }
 ```
 
-Here listed are the most basic but useful general purpose tricks.
-Any aspiring magician is recommended to learn these.
+*"The foundations are arguably the most important part of any skillset. 
+There is no shame in revisiting them every now and then."*
+
+
+-- An excerpt from a lecture by Prof. Olivine.
 
 ;;;;;
 
@@ -31,15 +34,15 @@ Some items may have additional interactions when inscribed with fragments,
 
 <|trick@trickster:templates|trick-id=trickster:read_spell|>
 
-Reads the fragment from the item in the given slot or in the caster's offhand.
-Returns void if there is none.
+Reads the fragment from the item in the given slot, or in the caster's offhand if no slot is given.
+Returns void if no fragment is inscribed.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:write_spell|>
 
-Inscribes a fragment onto the item in the given slot or in the caster's offhand.
-Returns its input, after ephemeral decay.
+Inscribes a fragment onto the item in the given slot, or in the caster's offhand if no slot is given.
+Returns its input, after [decay](^trickster:concepts/fragment_decay).
 
 ;;;;;
 
@@ -51,7 +54,7 @@ Same as Notulist's Ploy, but the fragment cannot be read by conventional means.
 
 <|trick@trickster:templates|trick-id=trickster:clear_spell|>
 
-Clears any fragment inscribed onto the item in the given slot or in the caster's offhand.
+Clears any inscribed fragment from the item in the given slot, or in the caster's offhand if no slot is given.
 
 ;;;;;
 
