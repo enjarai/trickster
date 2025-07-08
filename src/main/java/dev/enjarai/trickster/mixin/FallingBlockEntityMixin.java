@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.mixin;
 
 import com.llamalad7.mixinextras.sugar.Local;
+import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.item.KnotItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -11,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -48,6 +50,9 @@ public abstract class FallingBlockEntityMixin extends Entity {
             // Delete the destroyed item
             entity.remove(Entity.RemovalReason.DISCARDED);
 
+            var advancementTriggerBox = Box.from(getPos()).expand(8);
+            var nearbyPlayers = serverWorld.getPlayers(p -> advancementTriggerBox.contains(p.getPos()));
+
             // Spawn the resulting item stack in the world
             var crackedVersion = knotItem.getCrackedVersion();
             if (crackedVersion != null) {
@@ -56,6 +61,10 @@ public abstract class FallingBlockEntityMixin extends Entity {
 
                 ItemEntity itemEntity = new ItemEntity(serverWorld, position.x, position.y, position.z, crackedStack);
                 serverWorld.spawnEntity(itemEntity);
+
+                nearbyPlayers.forEach(p -> ModCriteria.CRACK_KNOT.trigger(p, knotItem));
+            } else {
+                nearbyPlayers.forEach(ModCriteria.DESTROY_KNOT::trigger);
             }
 
             // Play sound
