@@ -16,6 +16,8 @@ public class ModCriteria {
     public static final TriggerWardCriterion TRIGGER_WARD = register("trigger_ward", new TriggerWardCriterion());
     public static final CreateKnotCriterion CREATE_KNOT = register("create_knot", new CreateKnotCriterion());
     public static final UseCostPloyCriterion USE_COST_PLOY = register("use_cost_ploy", new UseCostPloyCriterion());
+    public static final CrackKnotCriterion CRACK_KNOT = register("crack_knot", new CrackKnotCriterion());
+    public static final DestroyKnotCriterion DESTROY_KNOT = register("destroy_knot", new DestroyKnotCriterion());
 
     private static <T extends Criterion<?>> T register(String name, T criterion) {
         return Registry.register(Registries.CRITERION, Trickster.id(name), criterion);
