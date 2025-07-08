@@ -22,6 +22,7 @@ import dev.enjarai.trickster.spell.trick.Trick;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
@@ -43,6 +44,25 @@ public abstract class KnotItem extends Item {
             super(new Settings()
                     .component(ModComponents.MANA, new ManaComponent(SimpleManaPool.getSingleUse(128), 0)),
                     0);
+        }
+
+        @Override
+        public @Nullable KnotItem getCrackedVersion() {
+            return ModItems.CRACKED_AMETHYST_KNOT;
+        }
+    }
+
+    public static class CrackedAmethyst extends KnotItem {
+        public CrackedAmethyst() {
+            super(new Settings()
+                    .component(ModComponents.MANA, new ManaComponent(SimpleManaPool.getSingleUse(256), 0)),
+                    Float.MAX_VALUE);
+        }
+
+        @Override
+        public ItemStack transferPropertiesToCracked(World world, ItemStack self, ItemStack cracked) {
+            // Skip transferring the mana state
+            return cracked;
         }
     }
 
@@ -73,6 +93,37 @@ public abstract class KnotItem extends Item {
         public int getRange() {
             return 16;
         }
+
+        @Override
+        public @Nullable KnotItem getCrackedVersion() {
+            return ModItems.CRACKED_QUARTZ_KNOT;
+        }
+    }
+
+    public static class CrackedQuartz extends KnotItem implements ChannelItem {
+        public CrackedQuartz() {
+            super(new Settings()
+                    .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(0), 0))
+                    .component(ModComponents.TICK_CREATED, new TickTrackerComponent(0)),
+                    Float.MAX_VALUE);
+        }
+
+        public EvaluationResult messageListenBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, Optional<Integer> timeout) {
+            return new ListFragment(List.of(new NumberFragment(stack.get(ModComponents.TICK_CREATED).getTick(ctx.source().getWorld()))));
+        }
+
+        public void messageSendBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, Fragment value) {
+            // Can't change its time offset anymore
+        }
+
+        public int getRange() {
+            return 16;
+        }
+
+        @Override
+        public float getConstructExecutionLimitMultiplier(ItemStack stack) {
+            return 2;
+        }
     }
 
     public static class Emerald extends KnotItem {
@@ -81,6 +132,19 @@ public abstract class KnotItem extends Item {
                     .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(1024), 1 / 12f)),
                     512);
         }
+
+        @Override
+        public @Nullable KnotItem getCrackedVersion() {
+            return ModItems.CRACKED_EMERALD_KNOT;
+        }
+    }
+
+    public static class CrackedEmerald extends KnotItem {
+        public CrackedEmerald() {
+            super(new Settings()
+                    .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(1024), 1 / 12f / 6f)),
+                    Float.MAX_VALUE);
+        }
     }
 
     public static class Diamond extends KnotItem {
@@ -88,6 +152,19 @@ public abstract class KnotItem extends Item {
             super(new Settings()
                     .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(16384), 4 / 12f)),
                     8192);
+        }
+
+        @Override
+        public @Nullable KnotItem getCrackedVersion() {
+            return ModItems.CRACKED_DIAMOND_KNOT;
+        }
+    }
+
+    public static class CrackedDiamond extends KnotItem {
+        public CrackedDiamond() {
+            super(new Settings()
+                    .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(16384), 4 / 12f / 6f)),
+                    Float.MAX_VALUE);
         }
     }
 
@@ -123,12 +200,16 @@ public abstract class KnotItem extends Item {
             return 16;
         }
 
+        @Override
+        public @Nullable KnotItem getCrackedVersion() {
+            return ModItems.CRACKED_ECHO_KNOT;
+        }
     }
 
     public static class CrackedEcho extends KnotItem implements ChannelItem {
         public CrackedEcho() {
             super(new Settings()
-                    .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(32768), 2 / 12f)),
+                    .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(32768), 1 / 6f)),
                     Float.MAX_VALUE);
         }
 
@@ -155,6 +236,19 @@ public abstract class KnotItem extends Item {
             super(new Settings()
                     .component(ModComponents.MANA, new ManaComponent(new SavingsManaPool(1048576, (float) Math.pow(2, -20)), 0)),
                     524288);
+        }
+
+        @Override
+        public @Nullable KnotItem getCrackedVersion() {
+            return ModItems.CRACKED_ASTRAL_KNOT;
+        }
+    }
+
+    public static class CrackedAstral extends KnotItem {
+        public CrackedAstral() {
+            super(new Settings()
+                    .component(ModComponents.MANA, new ManaComponent(new SavingsManaPool(16777216, (float) -Math.pow(2, -20)), 0)),
+                    Float.MAX_VALUE);
         }
     }
 
@@ -187,5 +281,26 @@ public abstract class KnotItem extends Item {
 
     public ItemStack createStack(World world) {
         return getDefaultStack();
+    }
+
+    public @Nullable KnotItem getCrackedVersion() {
+        return null;
+    }
+
+    public ItemStack transferPropertiesToCracked(World world, ItemStack self, ItemStack cracked) {
+        if (self.contains(ModComponents.MANA) && cracked.contains(ModComponents.MANA)) {
+            //noinspection DataFlowIssue
+            var mana = self.get(ModComponents.MANA).pool().get(world);
+            //noinspection DataFlowIssue
+            var newPool = cracked.get(ModComponents.MANA).pool().makeClone(world);
+            newPool.set(mana, world);
+            cracked.set(ModComponents.MANA, new ManaComponent(newPool));
+        }
+
+        return cracked;
+    }
+
+    public float getConstructExecutionLimitMultiplier(ItemStack stack) {
+        return 1;
     }
 }

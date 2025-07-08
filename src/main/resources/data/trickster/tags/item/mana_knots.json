@@ -1,12 +1,17 @@
 {
   "values": [
     "trickster:amethyst_knot",
+    "trickster:cracked_amethyst_knot",
     "trickster:quartz_knot",
+    "trickster:cracked_quartz_knot",
     "trickster:emerald_knot",
+    "trickster:cracked_emerald_knot",
     "trickster:diamond_knot",
+    "trickster:cracked_diamond_knot",
     "trickster:echo_knot",
     "trickster:cracked_echo_knot",
     "trickster:astral_knot",
+    "trickster:cracked_astral_knot",
     "trickster:command_knot"
   ]
 }

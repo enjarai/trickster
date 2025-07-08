@@ -77,12 +77,17 @@ public class ModItems {
     public static final BlockItem CHARGING_ARRAY_ITEM = register("charging_array", new BlockItem(ModBlocks.CHARGING_ARRAY, new Item.Settings()));
     public static final BlockItem INERT_SPAWNER_ITEM = register("inert_spawner", new BlockItem(ModBlocks.INERT_SPAWNER, new Item.Settings()));
     public static final KnotItem.Amethyst AMETHYST_KNOT = register("amethyst_knot", new KnotItem.Amethyst());
+    public static final KnotItem.CrackedAmethyst CRACKED_AMETHYST_KNOT = register("cracked_amethyst_knot", new KnotItem.CrackedAmethyst());
     public static final KnotItem.Quartz QUARTZ_KNOT = register("quartz_knot", new KnotItem.Quartz());
+    public static final KnotItem.CrackedQuartz CRACKED_QUARTZ_KNOT = register("cracked_quartz_knot", new KnotItem.CrackedQuartz());
     public static final KnotItem.Emerald EMERALD_KNOT = register("emerald_knot", new KnotItem.Emerald());
+    public static final KnotItem.CrackedEmerald CRACKED_EMERALD_KNOT = register("cracked_emerald_knot", new KnotItem.CrackedEmerald());
     public static final KnotItem.Diamond DIAMOND_KNOT = register("diamond_knot", new KnotItem.Diamond());
+    public static final KnotItem.CrackedDiamond CRACKED_DIAMOND_KNOT = register("cracked_diamond_knot", new KnotItem.CrackedDiamond());
     public static final KnotItem.Echo ECHO_KNOT = register("echo_knot", new KnotItem.Echo());
     public static final KnotItem.CrackedEcho CRACKED_ECHO_KNOT = register("cracked_echo_knot", new KnotItem.CrackedEcho());
     public static final KnotItem.Astral ASTRAL_KNOT = register("astral_knot", new KnotItem.Astral());
+    public static final KnotItem.CrackedAstral CRACKED_ASTRAL_KNOT = register("cracked_astral_knot", new KnotItem.CrackedAstral());
     public static final KnotItem.Command COMMAND_KNOT = register("command_knot", new KnotItem.Command());
 
     // Advancement icon
@@ -98,6 +103,7 @@ public class ModItems {
     public static final TagKey<Item> MANA_KNOTS = TagKey.of(RegistryKeys.ITEM, Trickster.id("mana_knots"));
     public static final TagKey<Item> CANT_DESPAWN = TagKey.of(RegistryKeys.ITEM, Trickster.id("cant_despawn"));
     public static final TagKey<Item> COLLARS = TagKey.of(RegistryKeys.ITEM, Trickster.id("collars"));
+    public static final TagKey<Item> TICK_TOCK = TagKey.of(RegistryKeys.ITEM, Trickster.id("tick_tock"));
 
     public static final WrittenScrollItem[] COLORED_WRITTEN_SCROLLS = new WrittenScrollItem[DyeColor.values().length];
     public static final ScrollAndQuillItem[] COLORED_SCROLLS_AND_QUILLS = new ScrollAndQuillItem[DyeColor.values().length];
@@ -155,12 +161,17 @@ public class ModItems {
                 entries.add(INACTIVE_SPAWNER_SPELL_CORE);
                 entries.add(SPAWNER_SPELL_CORE);
                 entries.add(AMETHYST_KNOT);
+                entries.add(CRACKED_AMETHYST_KNOT);
                 entries.add(QUARTZ_KNOT);
+                entries.add(CRACKED_QUARTZ_KNOT);
                 entries.add(EMERALD_KNOT);
+                entries.add(CRACKED_EMERALD_KNOT);
                 entries.add(DIAMOND_KNOT);
+                entries.add(CRACKED_DIAMOND_KNOT);
                 entries.add(ECHO_KNOT);
                 entries.add(CRACKED_ECHO_KNOT);
                 entries.add(ASTRAL_KNOT);
+                entries.add(CRACKED_ASTRAL_KNOT);
                 entries.add(COMMAND_KNOT);
             })
             .build();

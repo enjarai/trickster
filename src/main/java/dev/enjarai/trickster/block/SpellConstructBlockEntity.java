@@ -1,8 +1,11 @@
 package dev.enjarai.trickster.block;
 
+import dev.enjarai.trickster.Trickster;
+import dev.enjarai.trickster.item.KnotItem;
 import dev.enjarai.trickster.item.component.ManaComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.*;
+import dev.enjarai.trickster.spell.execution.TickData;
 import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.execution.executor.ErroredSpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.BlockSpellSource;
@@ -100,8 +103,13 @@ public class SpellConstructBlockEntity extends BlockEntity implements SpellColor
                 if (!(executor instanceof ErroredSpellExecutor)) {
                     var error = Optional.<Text>empty();
 
+                    var executionLimit = Trickster.CONFIG.maxExecutionsPerSpellPerTick();
+                    if (stack.getItem() instanceof KnotItem knotItem) {
+                        executionLimit = (int) (executionLimit * knotItem.getConstructExecutionLimitMultiplier(stack));
+                    }
+
                     try {
-                        if (executor.run(source).isPresent()) {
+                        if (executor.run(source, new TickData().withExecutionLimit(executionLimit)).isPresent()) {
                             executor = null;
                             updateClient = true;
                         }
