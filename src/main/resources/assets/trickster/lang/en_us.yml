@@ -374,12 +374,17 @@ item.trickster:
   leash: Archmage's Tether
 
   amethyst_knot: Amethyst Knot
+  cracked_amethyst_knot: Cracked Amethyst Knot
   quartz_knot: Quartz Knot
+  cracked_quartz_knot: Cracked Quartz Knot
   emerald_knot: Emerald Knot
+  cracked_emerald_knot: Cracked Emerald Knot
   diamond_knot: Diamond Knot
+  cracked_diamond_knot: Cracked Diamond Knot
   echo_knot: Echo Knot
   cracked_echo_knot: Cracked Echo Knot
   astral_knot: Astral Knot
+  cracked_astral_knot: Cracked Astral Knot
   command_knot: Command Knot
 
   spell_core: Spell Core
