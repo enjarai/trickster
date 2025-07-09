@@ -40,7 +40,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 
 public class TricksterClient implements ClientModInitializer {
-    public static final MerlinKeeperTracker merlinKeeperTracker = new MerlinKeeperTracker(100);
+    public static final MerlinKeeperTracker merlinKeeperTracker = new MerlinKeeperTracker(20);
 
     @Override
     public void onInitializeClient() {
