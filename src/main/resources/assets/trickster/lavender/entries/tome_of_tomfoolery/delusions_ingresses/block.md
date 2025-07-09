@@ -14,7 +14,7 @@
 }
 ```
 
-Via these ingresses, one can query blocks in the world and their properties.
+Via these Ingresses, one can query blocks in the world and their properties.
 
 
 These tricks will blunder if their target is not being observed.
@@ -23,7 +23,7 @@ These tricks will blunder if their target is not being observed.
 
 <|trick@trickster:templates|trick-id=trickster:check_block|>
 
-Returns the block type at the given position.
+Returns the type of the block at the given position.
 
 ;;;;;
 

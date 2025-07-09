@@ -44,9 +44,8 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
 
     public SpellQueueResult queueAndCast(SpellSource source, SpellPart spell, List<Fragment> arguments, Optional<MutableManaPool> poolOverride) {
         var executor = new DefaultSpellExecutor(spell, poolOverride.flatMap(pool -> Optional.of(new ExecutionState(arguments, pool))).orElse(new ExecutionState(arguments)));
-        int queued = queue(executor);
 
-        if (queued >= 0) {
+        if (queue(executor).isPresent()) {
             for (var iterator = spells.int2ObjectEntrySet().iterator(); iterator.hasNext();) {
                 var entry = iterator.next();
 

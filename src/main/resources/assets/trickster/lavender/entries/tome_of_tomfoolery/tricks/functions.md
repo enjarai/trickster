@@ -54,10 +54,39 @@ Casts the given spell with the current spell's arguments.
 
 ;;;;;
 
+<|trick@trickster:templates|trick-id=trickster:try_catch|>
+
+Attempts to execute the first spell. If it blunders, the second spell is run and the blunder is silenced. Excess values are arguments to both.
+
+;;;;;
+
+<|trick@trickster:templates|trick-id=trickster:atomic|>
+
+Executes the given spell in a single tick, blundering if this cannot be guaranteed due to spell size or illegal operations.
+
+;;;;;
+
+If there are not enough circle evaluations available in the tick that this trick is used, 
+there will be a one tick delay before the entirety of the given spell is run at once.
+
+
+Illegal operations include the following:
+- [Deviation of Suspension](^trickster:tricks/functions#3).
+- [Ploy of Receipt](^trickster:ploys/message#3).
+- Any Deviation which evaluates a sub-spell.
+- Implicit sub-spell evaluation.
+
+;;;;;
+
 <|trick@trickster:templates|trick-id=trickster:fork|>
 
-Dispatches the given spell to a free spell slot. Returns the index of the now used spell slot, or void if no spell slot was available.
-If the caster doesn't have multiple slots, this trick will blunder.
+Dispatches the given spell to another spell slot.
+
+;;;;;
+
+If the caster doesn't support spell slots, this trick will blunder. 
+If there are no free spell slots, this trick will return void. 
+Otherwise, the index of the spell slot which was dispatched to is returned.
 
 ;;;;;
 
@@ -91,18 +120,6 @@ These represent the following values, in order:
 ;;;;;
 
 The result of each execution is passed as the first argument to the next, where the last's result is the return value of this trick overall.
-
-;;;;;
-
-<|trick@trickster:templates|trick-id=trickster:try_catch|>
-
-Attempts to execute the first spell. If it blunders, the second spell is run and the blunder is silenced. Excess values are arguments to both.
-
-;;;;;
-
-<|trick@trickster:templates|trick-id=trickster:atomic|>
-
-Executes the given spell in a single tick, blundering if this cannot be guaranteed due to spell size or illegal operations.
 
 ;;;;;
 

@@ -114,7 +114,7 @@ Blunders if the entity does not have health.
 <|trick@trickster:templates|trick-id=trickster:get_armour|>
 
 Given an entity, returns its total armor value.
-Blunders if the entity cannot wear armor.
+Blunders if the entity cannot have armor.
 
 ;;;;;
 

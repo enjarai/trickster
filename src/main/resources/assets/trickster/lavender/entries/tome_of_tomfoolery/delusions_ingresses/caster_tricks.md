@@ -25,7 +25,7 @@ Returns the location the spell is being cast from.
 
 <|trick@trickster:templates|trick-id=trickster:facing_reflection|>
 
-Returns the direction the casting block or entity is facing as a unit vector.
+Returns the direction the caster is facing as a unit vector.
 
 ;;;;;
 
@@ -63,7 +63,7 @@ Returns the maximum amount of mana that the caster of the spell can store. Works
 
 <|trick@trickster:templates|trick-id=trickster:current_thread|>
 
-Returns the spell slot running this spell, or void if this casting context does not use spell slots.
+Returns the spell slot running this spell, or void if this spell is not running in a spell slot.
 
 ;;;;;
 
