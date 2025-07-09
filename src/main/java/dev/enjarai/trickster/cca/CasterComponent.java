@@ -149,12 +149,12 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
         buf.write(SPELL_DATA_ENDEC, runningSpellData);
     }
 
-    public int queueSpell(SpellPart spell, List<Fragment> arguments) {
+    public Optional<Integer> queueSpell(SpellPart spell, List<Fragment> arguments) {
         playCastSound(0.8f, 0.1f);
         return executionManager.queue(spell, arguments);
     }
 
-    public int queueCollarSpell(SpellPart spell, List<Fragment> arguments) {
+    public Optional<Integer> queueCollarSpell(SpellPart spell, List<Fragment> arguments) {
         playCastSound(0.8f, 0.1f);
         return collarExecutionManager.queue(spell, arguments);
     }

@@ -8,3 +8,4 @@
 - Added subtitles that were missing. (@KyokoTomato)
 - Added a new spell core which only runs while a player is near. (@enjarai and @aurakle)
 - Fixed a dumb crash when the minecraft window is resized to 0x0 pixels. (@enjarai)
+- Made the first argument of the message listening trick optional. (@aurakle)

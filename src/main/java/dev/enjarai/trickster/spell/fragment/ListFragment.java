@@ -19,6 +19,7 @@ public record ListFragment(List<Fragment> fragments) implements FoldableFragment
             Fragment.ENDEC.listOf().fieldOf("fragments", ListFragment::fragments),
             ListFragment::new
     );
+    public static final ListFragment EMPTY = new ListFragment(ImmutableList.of());
 
     @Override
     public FragmentType<?> type() {

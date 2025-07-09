@@ -2,7 +2,6 @@ package dev.enjarai.trickster.spell.trick.block;
 
 import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.block.SpellControlledRedstoneBlock;
-import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlockInvalidBlunder;
@@ -20,17 +19,17 @@ import net.minecraft.util.math.MathHelper;
 public class PowerResonatorTrick extends Trick<PowerResonatorTrick> {
     public PowerResonatorTrick() {
         super(Pattern.of(7, 8, 6, 7, 2, 1, 0, 7),
-                Signature.of(FragmentType.VECTOR, FragmentType.NUMBER, PowerResonatorTrick::run));
+                Signature.of(FragmentType.VECTOR, FragmentType.NUMBER, PowerResonatorTrick::run, FragmentType.BOOLEAN));
     }
 
-    public Fragment run(SpellContext ctx, VectorFragment pos, NumberFragment power) throws BlunderException {
+    public BooleanFragment run(SpellContext ctx, VectorFragment pos, NumberFragment power) throws BlunderException {
         var blockPos = pos.toBlockPos();
         var intPower = MathHelper.clamp((int) power.number(), 0, 15);
         var world = ctx.source().getWorld();
         expectCanBuild(ctx, blockPos);
 
         if (world.getBlockState(blockPos).getBlock() instanceof SpellControlledRedstoneBlock block) {
-            ctx.useMana(this, (float) Math.sqrt(ctx.source().getBlockPos().getSquaredDistance(blockPos)) / 2f);
+            ctx.useMana(this, 4);
             var result = block.setPower(world, blockPos, intPower);
 
             if (result) {

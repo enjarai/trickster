@@ -11,34 +11,31 @@
 }
 ```
 
-Ploys for creating [Knots](^trickster:items/knots) and moving mana between them.
+*mun en kon suli o lawa e mi*
+
+
+*o pana tawa mi*
+
+
+*o pona e mi*
+
+
+-- jan Enali
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:battery_creation,title=Ploy of the Moon Watcher|>
+<|trick@trickster:templates|trick-id=trickster:battery_creation|>
 
-[slot], [slot] ->
-
----
-
-Creates a Knot of the type of the given item using a Glass Block. Uses amethyst if no slot is provided.
+Creates a [Knot](^trickster:items/knots) using the crystal of the given item using a Glass Block. Uses amethyst if no slot is provided.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:push_mana,title=Benevolent Conduit's Ploy|>
+<|trick@trickster:templates|trick-id=trickster:push_mana|>
 
-number, slot... | slot[] -> number
-
----
-
-Pushes mana into the given slots, up to an amount, and returns the amount moved.
+Pushes mana into the given slots from the caster's reserves, up to an amount, and returns the amount moved.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:pull_mana,title=Malevolent Conduit's Ploy|>
+<|trick@trickster:templates|trick-id=trickster:pull_mana|>
 
-number, slot... | slot[] -> number
-
----
-
-Pulls mana from the given slots, up to an amount, and returns the amount moved.
+Pulls mana from the given slots into the caster's reserves, up to an amount, and returns the amount moved.

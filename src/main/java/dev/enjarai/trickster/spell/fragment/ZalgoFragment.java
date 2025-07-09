@@ -99,7 +99,7 @@ public record ZalgoFragment(int index) implements Fragment {
 
     @Override
     public boolean fuzzyEquals(Fragment other) {
-        return other instanceof ZalgoFragment;
+        return false;
     }
 
     @Override

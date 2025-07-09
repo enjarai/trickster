@@ -11,7 +11,6 @@ import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.spell.EvaluationResult;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.execution.executor.MessageListenerSpellExecutor;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
@@ -61,7 +60,7 @@ public abstract class KnotItem extends Item {
             return stack;
         }
 
-        public EvaluationResult messageListenBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, int timeout) {
+        public EvaluationResult messageListenBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, Optional<Integer> timeout) {
             return new ListFragment(List.of(new NumberFragment(stack.get(ModComponents.TICK_CREATED).getTick(ctx.source().getWorld()))));
         }
 
@@ -109,7 +108,7 @@ public abstract class KnotItem extends Item {
             return stack;
         }
 
-        public EvaluationResult messageListenBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, int timeout) {
+        public EvaluationResult messageListenBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, Optional<Integer> timeout) {
             var uuid = stack.get(ModComponents.MANA).pool() instanceof SharedManaPool pool ? pool.uuid() : UUID.randomUUID();
             return new MessageListenerSpellExecutor(ctx.state(), timeout, Optional.of(new Key.Channel(uuid)));
         }
@@ -134,7 +133,7 @@ public abstract class KnotItem extends Item {
         }
 
         @Override
-        public EvaluationResult messageListenBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, int timeout) {
+        public EvaluationResult messageListenBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, Optional<Integer> timeout) {
             var uuid = UUID.randomUUID();
             ctx.source().getPlayer().ifPresent(player -> ModNetworking.CHANNEL.serverHandle(player).send(new EchoGrabClipboardPacket(uuid)));
             return new MessageListenerSpellExecutor(ctx.state(), timeout, Optional.of(new Key.Channel(uuid)));
