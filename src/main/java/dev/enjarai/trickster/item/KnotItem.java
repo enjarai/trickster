@@ -95,6 +95,11 @@ public abstract class KnotItem extends Item {
         }
 
         @Override
+        public float getConstructExecutionLimitMultiplier(ItemStack stack) {
+            return 1.25f;
+        }
+
+        @Override
         public @Nullable KnotItem getCrackedVersion() {
             return ModItems.CRACKED_QUARTZ_KNOT;
         }

@@ -103,13 +103,16 @@ public class SpellConstructBlockEntity extends BlockEntity implements SpellColor
                 if (!(executor instanceof ErroredSpellExecutor)) {
                     var error = Optional.<Text>empty();
 
+                    boolean canUseMana = true;
                     var executionLimit = Trickster.CONFIG.maxExecutionsPerSpellPerTick();
                     if (stack.getItem() instanceof KnotItem knotItem) {
                         executionLimit = (int) (executionLimit * knotItem.getConstructExecutionLimitMultiplier(stack));
+                        //noinspection DataFlowIssue
+                        canUseMana = stack.get(ModComponents.MANA).pool().getMax(serverWorld) > 0;
                     }
 
                     try {
-                        if (executor.run(source, new TickData().withExecutionLimit(executionLimit)).isPresent()) {
+                        if (executor.run(source, new TickData().withCanUseMana(canUseMana).withExecutionLimit(executionLimit)).isPresent()) {
                             executor = null;
                             updateClient = true;
                         }

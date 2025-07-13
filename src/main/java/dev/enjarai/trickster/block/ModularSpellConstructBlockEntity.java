@@ -105,8 +105,12 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
             var source = new BlockSpellSource<>(serverWorld, getPos(), this);
 
             float knotExecutionLimitMultiplier = 1;
-            if (inventory.getFirst().getItem() instanceof KnotItem knotItem) {
+            boolean canUseMana = true;
+            var knotStack = inventory.getFirst();
+            if (knotStack.getItem() instanceof KnotItem knotItem) {
                 knotExecutionLimitMultiplier = knotItem.getConstructExecutionLimitMultiplier(inventory.getFirst());
+                //noinspection DataFlowIssue
+                canUseMana = knotStack.get(ModComponents.MANA).pool().getMax(serverWorld) > 0;
             }
 
             for (int i = 0; i < inventory.size(); i++) {
@@ -121,7 +125,7 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
                         continue;
                     }
 
-                    var tickData = new TickData().withSlot(executorSlot);
+                    var tickData = new TickData().withSlot(executorSlot).withCanUseMana(canUseMana);
                     var executionLimit = item.getExecutionLimit(serverWorld, getPos().toCenterPos(), tickData.getExecutionLimit());
                     executionLimit = (int) (executionLimit * knotExecutionLimitMultiplier);
 

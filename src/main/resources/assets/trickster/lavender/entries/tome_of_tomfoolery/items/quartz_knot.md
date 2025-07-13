@@ -18,12 +18,22 @@ Its natural recharge rate is also pitifully at the levels of an Emerald Knot of 
 
 ;;;;;
 
-It seems to have one redeeming quality though. 
-Augmenting a [Ploy of Receipt](^trickster:ploys/message#3) with a slot as a second argument, it is possible to listen
+Regardless, it seems to have some redeeming qualities. 
+
+
+For one, inserting this Knot into a construct seems to speed it up ever so slightly.
+It really isn't much, but it could be just enough in a pinch...
+
+;;;;;
+
+Its second uniqueness seems much more interesting though.
+
+
+By augmenting a [Ploy of Receipt](^trickster:ploys/message#3) with a slot as a second argument, it is possible to listen
 for messages from an item.
 
 
-Most items do not react at all, but trying the same on this knot, it responds!
+Most items do not react to this at all, but trying the same on this Knot, it responds!
 
 ;;;;;
 
