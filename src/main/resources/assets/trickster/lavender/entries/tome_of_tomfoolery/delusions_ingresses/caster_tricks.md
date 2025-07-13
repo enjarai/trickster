@@ -17,6 +17,17 @@
 }
 ```
 
+*"More often than not, casting a spell will start from the Self."*
+
+
+*"Whether it be a human caster, a construct, or something else entirely,*
+*the Self is how we perceive the world, and as such, it is the lens through which we view our magic."*
+
+
+-- An excerpt from a lecture by Prof. Citrine.
+
+;;;;;
+
 <|trick@trickster:templates|trick-id=trickster:reflection|>
 
 Returns the location the spell is being cast from.
@@ -32,12 +43,6 @@ Returns the direction the caster is facing as a unit vector.
 <|trick@trickster:templates|trick-id=trickster:caster_reflection|>
 
 Returns the entity casting the spell, if available.
-
-;;;;;
-
-<|trick@trickster:templates|trick-id=trickster:get_dimension|>
-
-Returns the dimension where this spell is being cast.
 
 ;;;;;
 
@@ -83,3 +88,9 @@ See the entry on [Macros](^trickster:concepts/macro) for more details.
 <|trick@trickster:templates|trick-id=trickster:hotbar_reflection|>
 
 Returns the selected hotbar slot of the caster, if available.
+
+;;;;;
+
+<|trick@trickster:templates|trick-id=trickster:get_dimension|>
+
+Returns the dimension where this spell is being cast.

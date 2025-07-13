@@ -90,15 +90,15 @@ Otherwise, the index of the spell slot which was dispatched to is returned.
 
 ;;;;;
 
-<|page-title@lavender:book_components|title=Note: Collections|>Collections are fragments which contain other fragments and may be accessed using a specific key. 
-Lists are collections where the key is a whole number between zero and the size of the list, exclusive. 
-Maps are also collections, though their keys may be any value and aren't automatically determined by order of insertion.
+<|page-title@lavender:book_components|title=Note: Foldables|>{#aa4444}Foldables{} are fragments which contain other fragments and may be accessed using a specific key. 
+Lists are {#aa4444}Foldables{} where the key is a whole number between zero and the size of the list, exclusive. 
+Maps are also {#aa4444}Foldables{}, though their keys may be any value and aren't automatically determined by order of insertion.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:fold|>
 
-For each entry in the collection, execute the given spell, with the given fragment as the first result.
+For each entry in the {#aa4444}Foldable{}, execute the given spell, with the given fragment as the first result.
 
 ;;;;;
 
@@ -115,7 +115,7 @@ These represent the following values, in order:
 - The result of the last iteration.
 - The current value.
 - The key of the current value.
-- The full collection.
+- The full {#aa4444}Foldable{}.
 
 ;;;;;
 
