@@ -29,7 +29,7 @@ If a raycast misses and does not hit anything of relevance, void will be given.
 
 <|trick@trickster:templates|trick-id=trickster:raycast|>
 
-Returns the block that is hit.
+Returns the position of the block that is hit.
 
 ;;;;;
 
