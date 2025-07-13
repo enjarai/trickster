@@ -1,3 +1,5 @@
+- Massively reworked parts of the Tome of Tomfoolery to explain things more clearly. (@enjarai and @aurakle)
+- Added a new spell core which only runs while a player is near. (@enjarai and @aurakle)
 - Fixed being able to write ephemeral fragments. (@aurakle)
 - Fixed charging arrays not being pickaxe-mineable. (@aurakle)
 - Added a configuration option for the divider pin's colour and opacity. (@NOTMASTER09)
@@ -6,6 +8,6 @@
 - Made macros work in the creative keybind editing screen. (@KyokoTomato)
 - Fixed the reveal trick causing an uncaught exception. (@KyokoTomato)
 - Added subtitles that were missing. (@KyokoTomato)
-- Added a new spell core which only runs while a player is near. (@enjarai and @aurakle)
 - Fixed a dumb crash when the minecraft window is resized to 0x0 pixels. (@enjarai)
 - Made the first argument of the message listening trick optional. (@aurakle)
+- Undid changes to make the `exportSpell` subcommand operator-only. (@enjarai)
