@@ -1,6 +1,5 @@
 package dev.enjarai.trickster.spell.trick.math;
 
-import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
@@ -11,10 +10,10 @@ import dev.enjarai.trickster.spell.type.Signature;
 
 public class ArcSinTrick extends DistortionTrick<ArcSinTrick> {
     public ArcSinTrick() {
-        super(Pattern.of(2, 0, 4, 8), Signature.of(FragmentType.NUMBER, ArcSinTrick::math));
+        super(Pattern.of(2, 0, 4, 8), Signature.of(FragmentType.NUMBER, ArcSinTrick::math, FragmentType.NUMBER));
     }
 
-    public Fragment math(SpellContext ctx, NumberFragment number) throws BlunderException {
+    public NumberFragment math(SpellContext ctx, NumberFragment number) throws BlunderException {
         return new NumberFragment(Math.asin(number.number()));
     }
 }

@@ -3,7 +3,6 @@ package dev.enjarai.trickster.compat.transmog;
 import com.hidoni.transmog.TransmogUtils;
 import com.hidoni.transmog.registry.ModDataComponents;
 import com.hidoni.transmog.registry.ModItems;
-import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
@@ -15,10 +14,10 @@ import dev.enjarai.trickster.spell.type.Signature;
 
 public class HiddenTransmogTrick extends Trick<HiddenTransmogTrick> {
     public HiddenTransmogTrick() {
-        super(Pattern.of(6, 3, 4, 5, 2, 4, 6, 0, 1, 4, 7, 8, 2), Signature.of(FragmentType.SLOT, HiddenTransmogTrick::transmog));
+        super(Pattern.of(6, 3, 4, 5, 2, 4, 6, 0, 1, 4, 7, 8, 2), Signature.of(FragmentType.SLOT, HiddenTransmogTrick::transmog, FragmentType.BOOLEAN));
     }
 
-    public Fragment transmog(SpellContext ctx, SlotFragment slot) throws BlunderException {
+    public BooleanFragment transmog(SpellContext ctx, SlotFragment slot) throws BlunderException {
         var stack = slot.reference(this, ctx);
         var currentTransmog = stack.get(ModDataComponents.TRANSMOG_APPEARANCE_ITEM.get());
 

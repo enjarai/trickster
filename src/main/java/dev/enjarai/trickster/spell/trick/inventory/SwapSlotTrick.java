@@ -1,6 +1,5 @@
 package dev.enjarai.trickster.spell.trick.inventory;
 
-import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
@@ -12,10 +11,10 @@ import dev.enjarai.trickster.spell.type.Signature;
 
 public class SwapSlotTrick extends Trick<SwapSlotTrick> {
     public SwapSlotTrick() {
-        super(Pattern.of(1, 4, 7, 6, 4, 2, 1, 0, 4, 8, 7), Signature.of(FragmentType.SLOT, FragmentType.SLOT, SwapSlotTrick::run));
+        super(Pattern.of(1, 4, 7, 6, 4, 2, 1, 0, 4, 8, 7), Signature.of(FragmentType.SLOT, FragmentType.SLOT, SwapSlotTrick::run, FragmentType.VOID));
     }
 
-    public Fragment run(SpellContext ctx, SlotFragment slot, SlotFragment slot2) throws BlunderException {
+    public VoidFragment run(SpellContext ctx, SlotFragment slot, SlotFragment slot2) throws BlunderException {
         slot.swapWith(this, ctx, slot2);
         return VoidFragment.INSTANCE;
     }

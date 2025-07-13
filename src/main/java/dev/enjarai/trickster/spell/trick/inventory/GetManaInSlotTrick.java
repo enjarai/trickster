@@ -1,11 +1,6 @@
 package dev.enjarai.trickster.spell.trick.inventory;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 import dev.enjarai.trickster.item.component.ModComponents;
-import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
@@ -16,12 +11,16 @@ import dev.enjarai.trickster.spell.mana.SharedManaPool;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.Signature;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 public class GetManaInSlotTrick extends Trick<GetManaInSlotTrick> {
     public GetManaInSlotTrick() {
-        super(Pattern.of(3, 4, 5, 2, 4, 0, 3, 6, 8, 5), Signature.of(variadic(FragmentType.SLOT).unpack(), GetManaInSlotTrick::run));
+        super(Pattern.of(3, 4, 5, 2, 4, 0, 3, 6, 8, 5), Signature.of(FragmentType.SLOT.variadicOfArg().unpack(), GetManaInSlotTrick::run, FragmentType.NUMBER));
     }
 
-    public Fragment run(SpellContext ctx, List<SlotFragment> slots) throws BlunderException {
+    public NumberFragment run(SpellContext ctx, List<SlotFragment> slots) throws BlunderException {
         float result = 0;
         var identifiedKnots = new ArrayList<UUID>();
 

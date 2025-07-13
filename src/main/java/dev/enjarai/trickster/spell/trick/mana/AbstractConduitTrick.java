@@ -1,8 +1,6 @@
 package dev.enjarai.trickster.spell.trick.mana;
 
-import java.util.List;
-
-import dev.enjarai.trickster.spell.Fragment;
+import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
@@ -11,15 +9,16 @@ import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.fragment.SlotFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.Signature;
-import dev.enjarai.trickster.Trickster;
 import net.minecraft.item.ItemStack;
+
+import java.util.List;
 
 public abstract class AbstractConduitTrick extends Trick<AbstractConduitTrick> {
     public AbstractConduitTrick(Pattern pattern) {
-        super(pattern, Signature.of(FragmentType.NUMBER, variadic(FragmentType.SLOT).require().unpack(), AbstractConduitTrick::run));
+        super(pattern, Signature.of(FragmentType.NUMBER, FragmentType.SLOT.variadicOfArg().require().unpack(), AbstractConduitTrick::run, FragmentType.NUMBER));
     }
 
-    public Fragment run(SpellContext ctx, NumberFragment n, List<SlotFragment> slots) throws BlunderException {
+    public NumberFragment run(SpellContext ctx, NumberFragment n, List<SlotFragment> slots) throws BlunderException {
         double limit = n.number() / slots.size();
         float result = 0;
 

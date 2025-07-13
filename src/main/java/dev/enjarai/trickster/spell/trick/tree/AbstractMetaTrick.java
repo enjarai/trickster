@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 public abstract class AbstractMetaTrick<T extends AbstractMetaTrick<T>> extends DistortionTrick<T> {
-    protected static final ArgType<List<NumberFragment>> ADDRESS = list(FragmentType.NUMBER);
+    protected static final ArgType<List<NumberFragment>> ADDRESS = FragmentType.NUMBER.listOfArg();
 
     public AbstractMetaTrick(Pattern pattern) {
         super(pattern);
