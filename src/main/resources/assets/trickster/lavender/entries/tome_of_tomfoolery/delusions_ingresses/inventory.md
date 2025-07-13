@@ -51,7 +51,7 @@ Returns a slot reference of the caster's other hand.
 
 <|trick@trickster:templates|trick-id=trickster:get_inventory_slot|>
 
-Constructs and returns a slot from an index and an inventory source, using the caster by default.
+Constructs and returns a slot from an index and an inventory source, using the caster if no source is given.
 
 ;;;;;
 

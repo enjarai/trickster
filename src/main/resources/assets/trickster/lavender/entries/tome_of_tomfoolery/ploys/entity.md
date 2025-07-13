@@ -88,7 +88,12 @@ The hat must be held in the caster's offhand, and the entity must not be a playe
 
 ;;;;;
 
+Some entities cannot be stored into a hat, usually because they are too large.
+Trying to store such entities will result in a blunder.
+
+;;;;;
+
 <|ploy@trickster:templates|trick-id=trickster:release_entity,cost=2000G + 1G * distance ^ (distance / 5)|>
 
-Releases the entity stored in the caster's [Hat](^trickster:items/top_hat) to the given position, returning a reference to it. 
-Returns void if there is no entity.
+Releases the entity stored in the caster's [Hat](^trickster:items/top_hat) to the given position, returning a reference to it.
+Returns void if there is no entity to release.
