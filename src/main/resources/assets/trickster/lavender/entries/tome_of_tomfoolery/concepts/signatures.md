@@ -20,8 +20,7 @@ An example Signature might look like this:
 {#aa7711}Vector{}, {#ddaa00}Number{} -> {#aa3355}Boolean{}
 
 
-As one might imagine, 
-this describes a trick that expects a {#aa7711}Vector{} as the first argument and a {#ddaa00}Number{} as the second,
+This describes a trick that expects a {#aa7711}Vector{} as the first argument and a {#ddaa00}Number{} as the second,
 as counted clockwise from the circle's Divider Pin.
 
 
