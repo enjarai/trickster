@@ -30,7 +30,7 @@ A slot fragment may be supplied as the second argument to Dispatch Ploy instead 
 which will send the message *into* the item present in that slot, if possible.
 
 
-Ploy of receipt works similarly for receiving messages *from* items.
+Ploy of Receipt works similarly for receiving messages *from* items.
 
 
 Not all items are able to channel messages.
