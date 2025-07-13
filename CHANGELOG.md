@@ -11,3 +11,4 @@
 - Fixed a dumb crash when the minecraft window is resized to 0x0 pixels. (@enjarai)
 - Made the first argument of the message listening trick optional. (@aurakle)
 - Undid changes to make the `exportSpell` subcommand operator-only. (@enjarai)
+- Fixed some redundant phrasing in the Tome. (@Le-Kat)
