@@ -42,13 +42,20 @@ We've split this up into a MAY and MAY NOT section. These should be quite self-e
 - You MAY include this mod in a modpack, GIVEN that installing the modpack downloads the mod from an official source.
   - Both Modrinth and Curseforge provide means to create such modpacks.
 - You MAY modify compiled versions of this mod for personal use.
+- You MAY decompile the mod for any reason.
 
 - You MAY NOT re-upload this mod or altered versions of it to any mod hosting platforms.
-- You MAY NOT host this mod or altered versions of it yourself or provide it to others in other ways.
-  - Cases that fall under the above "MAY" conditions are exceptions to this.
+- You MAY NOT host this mod or altered versions of it yourself.
+- You MAY NOT provide this mod to others in a way that is not covered in the above "MAY" section.
 - You MAY NOT include this mod in modpacks or other forms of bundles that do not download it from an official source when installed.
 
 ## For developers
+
+The terms for SOURCE CODE of the mod are a bit different, and can be considered more loose.
+This applies to any of the code (primarily Java source files) that the mod is written in.
+It does not apply to PNGs, JSON files, or other assets.
+
+- You MAY 
 
 ## For anyone wanting to use Trickster's assets
 
