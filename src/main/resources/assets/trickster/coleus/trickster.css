@@ -1,0 +1,31 @@
+.trick {
+  width: fit-content;
+}
+
+.trick h2 {
+  margin: auto;
+  margin-top: 2em;
+  width: fit-content;
+}
+
+.pattern {
+  width: 20em;
+  fill: var(--base05);
+  margin-top: 1em;
+}
+
+.pattern line {
+  stroke: var(--base05);
+  stroke-width: 8px;
+}
+
+.trick .signature {
+  margin-left: 15px;
+}
+
+.cost-rule .embedded-component {
+  width: 100%;
+  image-rendering: crisp-edges;
+  margin-top: 1em;
+  transform: translateX(5px);
+}

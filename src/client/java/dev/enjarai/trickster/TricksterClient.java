@@ -24,6 +24,7 @@ import dev.enjarai.trickster.screen.SignScrollScreen;
 import dev.enjarai.trickster.screen.owo.GlyphComponent;
 import dev.enjarai.trickster.screen.owo.ItemTagComponent;
 import dev.enjarai.trickster.screen.owo.SpellPreviewComponent;
+import dev.enjarai.trickster.screen.owo.TrickOverviewComponent;
 import io.wispforest.accessories.api.client.AccessoriesRendererRegistry;
 import io.wispforest.owo.ui.parsing.UIParsing;
 import mod.master_bw3.coleus.HtmlTemplateRegistry;
@@ -66,6 +67,7 @@ public class TricksterClient implements ClientModInitializer {
 
         EntityRendererRegistry.register(ModEntities.LEVITATING_BLOCK, LevitatingBlockEntityRenderer::new);
 
+        UIParsing.registerFactory(Trickster.id("trick-overview"), TrickOverviewComponent::parse);
         UIParsing.registerFactory(Trickster.id("glyph"), GlyphComponent::parseTrick);
         UIParsing.registerFactory(Trickster.id("pattern"), GlyphComponent::parseList);
         UIParsing.registerFactory(Trickster.id("spell-preview"), SpellPreviewComponent::parse);
@@ -73,12 +75,14 @@ public class TricksterClient implements ClientModInitializer {
 
         HtmlTemplateRegistry.register(Identifier.of("trickster", "pattern"), TricksterTemplateExpanders::patternTemplate);
         HtmlTemplateRegistry.register(Identifier.of("trickster", "glyph"), TricksterTemplateExpanders::glyphTemplate);
-        HtmlTemplateRegistry.register(Identifier.of("trickster", "spell-preview"), "owo what's this");
-        HtmlTemplateRegistry.register(Identifier.of("trickster", "spell-preview-unloadable"), "owo what's this");
-        HtmlTemplateRegistry.register(Identifier.of("trickster", "item-tag"), "owo what's this");
-        HtmlTemplateRegistry.register(Identifier.of("trickster", "cost-rule"), "owo what's this");
-        HtmlTemplateRegistry.register(Identifier.of("trickster", "trick"), TricksterTemplateExpanders::glyphTemplate);
-        HtmlTemplateRegistry.register(Identifier.of("trickster", "ploy"), "owo what's this");
+//        HtmlTemplateRegistry.register(Identifier.of("trickster", "spell-preview"), "owo what's this");
+//        HtmlTemplateRegistry.register(Identifier.of("trickster", "spell-preview-unloadable"), "owo what's this");
+//        HtmlTemplateRegistry.register(Identifier.of("trickster", "item-tag"), "owo what's this");
+//        HtmlTemplateRegistry.register(Identifier.of("trickster", "cost-rule"), "owo what's this");
+        HtmlTemplateRegistry.register(Identifier.of("trickster", "trick"), TricksterTemplateExpanders::trickTemplate);
+        HtmlTemplateRegistry.register(Identifier.of("trickster", "ploy"), TricksterTemplateExpanders::trickTemplate);
+
+//        HtmlTemplateRegistry.register(Identifier.of("trickster", "ploy"), "owo what's this");
 
         ParticleFactoryRegistry.getInstance().register(ModParticles.PROTECTED_BLOCK,
                 ProtectedBlockParticle.Factory::new);

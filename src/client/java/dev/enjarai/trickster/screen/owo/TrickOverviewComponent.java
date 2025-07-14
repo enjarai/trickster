@@ -54,18 +54,7 @@ public class TrickOverviewComponent extends FlowLayout {
                 .margins(Insets.of(0, 5, 3, 3)));
 
         if (costCalculation != null) {
-            child(Containers.verticalFlow(Sizing.fill(100), Sizing.fixed(3))
-                    .child(Components.texture(
-                            bookTexture, 54, 240, 109,
-                            5, 512, 256)
-                            .blend(true)
-                            .positioning(Positioning.absolute(2, -1))
-                            .tooltip(Text.literal("Costs mana\n").append(Text.literal(costCalculation)
-                                    .styled(s -> s.withFormatting(Formatting.GRAY))))
-                    )
-                    .allowOverflow(true)
-                    .horizontalAlignment(HorizontalAlignment.CENTER)
-            );
+            child(new ManaCostComponent(costCalculation, bookTexture));
         } else {
             child(Components.texture(
                     bookTexture, 54, 183, 109,
