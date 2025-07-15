@@ -11,7 +11,9 @@
     "Cranium Delusion",
     "Ingress of Authority",
     "Crowning Ingress",
-    "Ingress of Plenitude"
+    "Ingress of Plenitude",
+    "Collector's Ingress",
+    "Ingress of Extent"
   ]
 }
 ```
