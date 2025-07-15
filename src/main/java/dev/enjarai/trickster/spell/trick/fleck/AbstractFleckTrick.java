@@ -1,13 +1,7 @@
 package dev.enjarai.trickster.spell.trick.fleck;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
-
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.fleck.Fleck;
-import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
@@ -18,6 +12,11 @@ import dev.enjarai.trickster.spell.type.Signature;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Box;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 public abstract class AbstractFleckTrick<T extends AbstractFleckTrick<T>> extends Trick<T> {
     public AbstractFleckTrick(Pattern pattern) {
@@ -32,7 +31,7 @@ public abstract class AbstractFleckTrick<T extends AbstractFleckTrick<T>> extend
         super(pattern, primary);
     }
 
-    protected Fragment display(SpellContext ctx, NumberFragment id, Fleck fleck, Optional<List<EntityFragment>> targets) {
+    protected NumberFragment display(SpellContext ctx, NumberFragment id, Fleck fleck, Optional<List<EntityFragment>> targets) {
         var players = getPlayersInRangeOrTargets(ctx, targets);
 
         players.forEach(player -> player.getComponent(ModEntityComponents.FLECKS).addFleck(id.asInt(), fleck));

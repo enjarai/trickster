@@ -5,19 +5,18 @@ import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.type.ArgType;
+import dev.enjarai.trickster.spell.type.RetType;
 import dev.enjarai.trickster.spell.type.Signature;
-import io.wispforest.owo.config.ConfigSynchronizer;
-import io.wispforest.owo.config.Option;
 import net.minecraft.text.Text;
 
 import java.util.List;
-import java.util.Map;
 
 public class RevealTrick extends Trick<RevealTrick> {
     public RevealTrick() {
-        super(Pattern.of(3, 4, 5, 8, 7, 6, 3), Signature.of(variadic(Fragment.class), RevealTrick::reveal));
+        super(Pattern.of(3, 4, 5, 8, 7, 6, 3), Signature.of(ArgType.ANY.variadicOfArg().require(), RevealTrick::reveal, RetType.ANY));
     }
 
     public Fragment reveal(SpellContext ctx, List<Fragment> fragments) throws BlunderException {

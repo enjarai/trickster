@@ -138,11 +138,13 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
                 var server = player().getServer();
                 if (server != null) {
                     server.execute(() -> {
+                        var spell2 = spell;
+
                         if (greedyEvaluation) {
                             var executionState = new ExecutionState(List.of());
                             try {
-                                spell.destructiveRun(new SpellContext(executionState, new PlayerSpellSource((ServerPlayerEntity) player()), new TickData()));
-                                this.spell.set(spell);
+                                spell2.destructiveRun(new SpellContext(executionState, new PlayerSpellSource((ServerPlayerEntity) player()), new TickData()));
+                                this.spell.set(spell2);
                             } catch (BlunderException e) {
                                 if (e instanceof NaNBlunder)
                                     ModCriteria.NAN_NUMBER.trigger((ServerPlayerEntity) player());
@@ -156,10 +158,11 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
                             ((ServerPlayerEntity) player()).getServerWorld().playSoundFromEntity(
                                     null, player(), ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f));
                         } else {
-                            this.spell.set(spell.applyEphemeral());
+                            spell2 = spell.applyEphemeral();
+                            this.spell.set(spell2);
                         }
 
-                        FragmentComponent.setValue(scrollStack, spell, Optional.empty(), false);
+                        FragmentComponent.setValue(scrollStack, spell2, Optional.empty(), false);
                     });
                 }
             } else {

@@ -59,6 +59,7 @@ public class ModModelGenerator extends FabricModelProvider {
             );
         }
         blockStateModelGenerator.registerSimpleState(ModBlocks.LIGHT);
+        blockStateModelGenerator.registerSingleton(ModBlocks.INERT_SPAWNER, TexturedModel.CUBE_ALL_INNER_FACES);
     }
 
     @Override
@@ -77,6 +78,8 @@ public class ModModelGenerator extends FabricModelProvider {
         itemModelGenerator.register(ModItems.SPELL_CORE, Models.GENERATED);
         itemModelGenerator.register(ModItems.RUSTED_SPELL_CORE, Models.GENERATED);
         itemModelGenerator.register(ModItems.OMINOUS_SPELL_CORE, Models.GENERATED);
+        itemModelGenerator.register(ModItems.INACTIVE_SPAWNER_SPELL_CORE, Models.GENERATED);
+        itemModelGenerator.register(ModItems.SPAWNER_SPELL_CORE, Models.GENERATED);
 
         itemModelGenerator.register(ModItems.SCROLL_AND_QUILL, Models.GENERATED);
         itemModelGenerator.register(ModItems.WRITTEN_SCROLL, Models.GENERATED);

@@ -1,7 +1,6 @@
 package dev.enjarai.trickster.spell.trick.block;
 
 import dev.enjarai.trickster.data.DataLoader;
-import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlockInvalidBlunder;
@@ -10,20 +9,20 @@ import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.Signature;
-import net.minecraft.block.*;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.FluidBlock;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.Direction;
 
-import java.util.List;
-
 public class ErodeTrick extends Trick<ErodeTrick> {
     public ErodeTrick() {
-        super(Pattern.of(0, 4, 6, 7, 8, 4, 2), Signature.of(FragmentType.VECTOR, FragmentType.VECTOR, ErodeTrick::erode));
+        super(Pattern.of(0, 4, 6, 7, 8, 4, 2), Signature.of(FragmentType.VECTOR, FragmentType.VECTOR, ErodeTrick::erode, FragmentType.VECTOR));
     }
 
-    public Fragment erode(SpellContext ctx, VectorFragment weatheringPosFragment, VectorFragment waterPosFragment) throws BlunderException {
+    public VectorFragment erode(SpellContext ctx, VectorFragment weatheringPosFragment, VectorFragment waterPosFragment) throws BlunderException {
         var weatheringPos = weatheringPosFragment.toBlockPos();
         var waterPos = waterPosFragment.toBlockPos();
 
@@ -36,8 +35,8 @@ public class ErodeTrick extends Trick<ErodeTrick> {
         if (!blockState.isAir()
                 && ((state.isOf(Blocks.WATER)
                         && state.get(FluidBlock.LEVEL) == 0)
-                    || state.getFluidState().isOf(Fluids.WATER)
-                    || state.isOf(Blocks.WATER_CAULDRON))) {
+                        || state.getFluidState().isOf(Fluids.WATER)
+                        || state.isOf(Blocks.WATER_CAULDRON))) {
             ctx.useMana(this, 80);
 
             if (state.isOf(Blocks.WATER_CAULDRON)) {

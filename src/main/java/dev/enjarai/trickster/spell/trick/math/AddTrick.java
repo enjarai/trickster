@@ -1,24 +1,22 @@
 package dev.enjarai.trickster.spell.trick.math;
 
-import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
-import dev.enjarai.trickster.spell.PatternGlyph;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.fragment.AddableFragment;
-import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.trick.DistortionTrick;
-import dev.enjarai.trickster.spell.type.Signature;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.fragment.AddableFragment;
+import dev.enjarai.trickster.spell.trick.DistortionTrick;
+import dev.enjarai.trickster.spell.type.ArgType;
+import dev.enjarai.trickster.spell.type.RetType;
+import dev.enjarai.trickster.spell.type.Signature;
 
 import java.util.List;
 
 public class AddTrick extends DistortionTrick<AddTrick> {
     public AddTrick() {
-        super(Pattern.of(7, 4, 0, 1, 2, 4), Signature.of(variadic(AddableFragment.class).require().unpack(), AddTrick::run));
-        overload(Signature.of(variadic(FragmentType.PATTERN).require().unpack(), AddTrick::runForGlyphs));
+        super(Pattern.of(7, 4, 0, 1, 2, 4), Signature.of(ArgType.simple(AddableFragment.class).variadicOfArg().require().unpack(), AddTrick::run, RetType.simple(AddableFragment.class)));
     }
 
-    public Fragment run(SpellContext ctx, List<AddableFragment> fragments) throws BlunderException {
+    public AddableFragment run(SpellContext ctx, List<AddableFragment> fragments) throws BlunderException {
         AddableFragment result = null;
 
         for (var value : fragments) {
@@ -26,20 +24,6 @@ public class AddTrick extends DistortionTrick<AddTrick> {
                 result = value;
             } else {
                 result = result.add(value);
-            }
-        }
-
-        return result;
-    }
-
-    public Fragment runForGlyphs(SpellContext ctx, List<PatternGlyph> patterns) throws BlunderException {
-        PatternGlyph result = null;
-
-        for (var value : patterns) {
-            if (result == null) {
-                result = value;
-            } else {
-                result = new PatternGlyph(result.pattern().add(value.pattern()));
             }
         }
 

@@ -1,21 +1,20 @@
 package dev.enjarai.trickster.spell.trick.vector;
 
-import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.trick.DistortionTrick;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.type.Signature;
 import org.joml.Vector3d;
 
 public class AlignVectorTrick extends DistortionTrick<AlignVectorTrick> {
     public AlignVectorTrick() {
-        super(Pattern.of(6, 4, 1, 2, 4, 5), Signature.of(FragmentType.VECTOR, AlignVectorTrick::align));
+        super(Pattern.of(6, 4, 1, 2, 4, 5), Signature.of(FragmentType.VECTOR, AlignVectorTrick::align, FragmentType.VECTOR));
     }
 
-    public Fragment align(SpellContext ctx, VectorFragment vec) throws BlunderException {
+    public VectorFragment align(SpellContext ctx, VectorFragment vec) throws BlunderException {
         var vector = vec.vector();
         var absX = Math.abs(vector.x());
         var absY = Math.abs(vector.y());

@@ -1,24 +1,23 @@
 package dev.enjarai.trickster.spell.trick.entity;
 
 import dev.enjarai.trickster.cca.ModEntityComponents;
-import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
-import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.Signature;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 public class PolymorphTrick extends Trick<PolymorphTrick> {
     public PolymorphTrick() {
-        super(Pattern.of(4, 2, 1, 0, 4, 8, 7, 6, 4), Signature.of(FragmentType.ENTITY.wardOf(), FragmentType.ENTITY, PolymorphTrick::morph));
+        super(Pattern.of(4, 2, 1, 0, 4, 8, 7, 6, 4), Signature.of(FragmentType.ENTITY.wardOf(), FragmentType.ENTITY, PolymorphTrick::morph, FragmentType.VOID));
     }
 
-    public Fragment morph(SpellContext ctx, EntityFragment source, EntityFragment target) throws BlunderException {
+    public VoidFragment morph(SpellContext ctx, EntityFragment source, EntityFragment target) throws BlunderException {
         var realSource = source.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this));
         var realTarget = target.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this));
 

@@ -68,11 +68,14 @@ public class ModItems {
     public static final SpellCoreItem SPELL_CORE = register("spell_core", new SpellCoreItem());
     public static final RustedSpellCoreItem RUSTED_SPELL_CORE = register("rusted_spell_core", new RustedSpellCoreItem());
     public static final OminousSpellCoreItem OMINOUS_SPELL_CORE = register("ominous_spell_core", new OminousSpellCoreItem());
+    public static final InactiveSpawnerSpellCoreItem INACTIVE_SPAWNER_SPELL_CORE = register("inactive_spawner_spell_core", new InactiveSpawnerSpellCoreItem());
+    public static final SpawnerSpellCoreItem SPAWNER_SPELL_CORE = register("spawner_spell_core", new SpawnerSpellCoreItem());
     public static final BlockItem SPELL_RESONATOR_ITEM = register("spell_resonator", new BlockItem(ModBlocks.SPELL_RESONATOR, new Item.Settings()));
     public static final BlockItem SPELL_CONSTRUCT_ITEM = register("spell_construct", new BlockItem(ModBlocks.SPELL_CONSTRUCT, new Item.Settings()));
     public static final BlockItem MODULAR_SPELL_CONSTRUCT_ITEM = register("modular_spell_construct", new BlockItem(ModBlocks.MODULAR_SPELL_CONSTRUCT, new Item.Settings()));
     public static final BlockItem SCROLL_SHELF_BLOCK_ITEM = register("scroll_shelf", new BlockItem(ModBlocks.SCROLL_SHELF, new Item.Settings()));
     public static final BlockItem CHARGING_ARRAY_ITEM = register("charging_array", new BlockItem(ModBlocks.CHARGING_ARRAY, new Item.Settings()));
+    public static final BlockItem INERT_SPAWNER_ITEM = register("inert_spawner", new BlockItem(ModBlocks.INERT_SPAWNER, new Item.Settings()));
     public static final KnotItem.Amethyst AMETHYST_KNOT = register("amethyst_knot", new KnotItem.Amethyst());
     public static final KnotItem.Quartz QUARTZ_KNOT = register("quartz_knot", new KnotItem.Quartz());
     public static final KnotItem.Emerald EMERALD_KNOT = register("emerald_knot", new KnotItem.Emerald());
@@ -145,9 +148,12 @@ public class ModItems {
                 entries.add(SPELL_CONSTRUCT_ITEM);
                 entries.add(MODULAR_SPELL_CONSTRUCT_ITEM);
                 entries.add(CHARGING_ARRAY_ITEM);
+                entries.add(INERT_SPAWNER_ITEM);
                 entries.add(SPELL_CORE);
                 entries.add(RUSTED_SPELL_CORE);
                 entries.add(OMINOUS_SPELL_CORE);
+                entries.add(INACTIVE_SPAWNER_SPELL_CORE);
+                entries.add(SPAWNER_SPELL_CORE);
                 entries.add(AMETHYST_KNOT);
                 entries.add(QUARTZ_KNOT);
                 entries.add(EMERALD_KNOT);

@@ -114,29 +114,33 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
                         continue;
                     }
 
-                    try {
-                        if (executor.run(source, new TickData().withSlot(executorSlot).withBonusExecutions(item.getExecutionBonus())).isPresent()) {
-                            executors.set(executorSlot, Optional.empty());
+                    var tickData = new TickData().withSlot(executorSlot);
+                    var executionLimit = item.getExecutionLimit(serverWorld, getPos().toCenterPos(), tickData.getExecutionLimit());
+                    if (executionLimit > 0) {
+                        try {
+                            if (executor.run(source, tickData.withExecutionLimit(executionLimit)).isPresent()) {
+                                executors.set(executorSlot, Optional.empty());
+                                updateClient = true;
+                            }
+                        } catch (BlunderException blunder) {
+                            error = Optional.of(
+                                    blunder.createMessage()
+                                            .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")")
+                            );
+                        } catch (Throwable e) {
+                            error = Optional.of(
+                                    Text.literal("Uncaught exception in spell: " + e.getMessage())
+                                            .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")")
+                            );
+                        }
+
+                        error.ifPresent(e -> {
+                            executors.set(executorSlot, Optional.of(new ErroredSpellExecutor(executor.spell(), e)));
+                        });
+                        if (error.isPresent()) {
+                            playCastSound(serverWorld, getPos(), 0.5f, 0.1f);
                             updateClient = true;
                         }
-                    } catch (BlunderException blunder) {
-                        error = Optional.of(
-                                blunder.createMessage()
-                                        .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")")
-                        );
-                    } catch (Throwable e) {
-                        error = Optional.of(
-                                Text.literal("Uncaught exception in spell: " + e.getMessage())
-                                        .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")")
-                        );
-                    }
-
-                    error.ifPresent(e -> {
-                        executors.set(executorSlot, Optional.of(new ErroredSpellExecutor(executor.spell(), e)));
-                    });
-                    if (error.isPresent()) {
-                        playCastSound(serverWorld, getPos(), 0.5f, 0.1f);
-                        updateClient = true;
                     }
                 }
 
@@ -291,7 +295,7 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
     }
 
     @Override
-    public int queue(SpellExecutor executor) {
+    public Optional<Integer> queue(SpellExecutor executor) {
         for (int i = 1; i < inventory.size(); i++) {
             var stack = inventory.get(i);
 
@@ -302,11 +306,11 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
             ) {
                 executors.set(i - 1, Optional.of(executor));
                 markDirtyAndUpdateClients();
-                return i - 1;
+                return Optional.of(i - 1);
             }
         }
 
-        return -1;
+        return Optional.empty();
     }
 
     @Override

@@ -7,8 +7,8 @@ trickster:
     written_scroll: Written Scroll
 
   text:
-    misc:
-      value_truncated: Value truncated
+    value_truncated: Value truncated
+    disconnect_with_caution: DISCONNECT WITH CAUTION
 
   widget:
     scroll_name: Scroll Name...
@@ -35,6 +35,12 @@ trickster:
     collar_link: "Link: %s"
     unlinked: Unlinked
 
+  subtitle:
+    draw: "Spell drawing"
+    complete: "Spell completed"
+    cast: "Spell cast"
+    collar_bell: "Collar bell rings"
+
   gandalf:
     stored: "Stored: %s"
   merlin:
@@ -44,7 +50,9 @@ trickster:
 
   item_group: Trickster
 
-  scroll_hat: 'Selected slot: %d'
+  scroll_hat: 
+    named: 'Selected slot: %d [%s]'
+    unnamed: 'Selected slot: %d'
   scroll_executable: Single-use (%f kiloGandalfs)
 
   unnamed_entity: Unnamed %s
@@ -86,6 +94,7 @@ trickster:
     cross_product: Perpendicular Distortion
     normalize: Regularity Distortion
     align_vector: Aligned Regularity Distortion
+    sqrt: Distortion of Decline
     invert: Inversion Distortion
     abs: Absolutist's Distortion
     length: Magnitude Distortion
@@ -148,12 +157,14 @@ trickster:
 
     execute: Grand Deviation
     execute_same_scope: Quiet Deviation
+    atomic: Deviation of Singularity
     fork: Utensil Deviation
     fold: Folding Deviation
     try_catch: Cautious Deviation
     delay_execution: Deviation of Suspension
     kill_thread: Executioner's Deviation
     current_thread: Delusion of Order
+    get_all_arguments: Hoarder's Delusion
     load_argument_1: Primary Delusion
     load_argument_2: Secondary Delusion
     load_argument_3: Tertiary Delusion
@@ -189,6 +200,7 @@ trickster:
     get_subparts: Bundle Distortion
     escape_pattern: Interpretation Distortion
 
+    map_create: Cartographer's Delusion
     map_get: Navigator's Distortion
     map_insert: Charting Stratagem
     map_merge: Admiral's Stratagem
@@ -267,15 +279,16 @@ trickster:
       map: Map
       void: Void
       pattern: Pattern
-      pattern_literal: Pattern Literal
+      pattern_literal: PatternLiteral
       spell_part: Spell
       entity: Entity
       slot: Slot
       zalgo: §kZalgo
       item_type: Item
       block_type: Block
-      entity_type: Entity Type
+      entity_type: EntityType
       string: String
+      dimension: Dimension
     class:
       Fragment: Any
       AddableFragment: Addable
@@ -299,7 +312,7 @@ trickster:
       ZalgoFragment: §kZalgo
       ItemTypeFragment: Item
       BlockTypeFragment: Block
-      EntityTypeFragment: Entity Type
+      EntityTypeFragment: EntityType
 
   blunder:
     overweight_fragment: Result fragment is overweight, result is %s
@@ -368,6 +381,8 @@ item.trickster:
   spell_core: Spell Core
   rusted_spell_core: Rusted Spell Core
   ominous_spell_core: Ominous Spell Core
+  inactive_spawner_spell_core: Torment Spell Core Shell
+  spawner_spell_core: Torment Spell Core
 
 block.trickster:
   spell_resonator: Spell Resonator
@@ -376,6 +391,7 @@ block.trickster:
   light: Light
   scroll_shelf: Scroll Shelf
   charging_array: Charging Array
+  inert_spawner: Inert Spawner
 
 effect.trickster:
   mana_boost: Mana Hyperflux
@@ -386,10 +402,6 @@ tag.item.trickster:
   holdable_hat: Holdable Hats
   scrolls: Scrolls
   spell_cost: Spell Cost
-
-death.attack:
-  mana_overflux: "%1$s's magic show has met an untimely end."
-  mana_overflux.player: "%2$s brought an end to %1$s's magic show."
 
 key:
   categories:
@@ -409,9 +421,10 @@ text.config.trickster-config:
   option:
     dotEmphasis: Terminal dot emphasis
     dotEmphasisColor: Terminal dot color
+    subcircleDividerPinColor: Divider pin Color
     manaTransferEfficiency: Efficiency of the Conduit's Ploys
-    whorlMaxMana: Whorl maximum mana in kG
-    whorlRechargeRate: Whorl recharge rate in kG
+    whorlMaxMana: Whorl maximum mana in G
+    whorlRechargeRate: Whorl recharge rate in G
     topHatInterceptScrolling: Offhand hat intercepts hotbar scrolling
     invertTopHatScrolling: Invert hat scrolling
     allowScrollInSpellScreen: Allow scrolling to zoom while editing

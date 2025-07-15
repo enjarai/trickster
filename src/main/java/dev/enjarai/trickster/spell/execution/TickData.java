@@ -41,8 +41,8 @@ public class TickData {
         return this;
     }
 
-    public TickData withBonusExecutions(int executions) {
-        executionLimit += executions;
+    public TickData withExecutionLimit(int executions) {
+        executionLimit = executions;
         return this;
     }
 
