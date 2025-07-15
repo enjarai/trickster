@@ -317,7 +317,7 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
     @Override
     public Optional<SpellExecutor> getSpellExecutor(int index) {
         if (executors.size() > index && index >= 0)
-            return executors.get(index).map(executor -> Optional.of(executor)).orElse(Optional.empty());
+            return executors.get(index).map(executor -> executor);
         else
             return Optional.empty();
     }
