@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.spell.fragment;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.IntStream;
@@ -59,11 +60,11 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
         return 64;
     }
 
-    public static ListFragment getSlots(Trick<?> trick, SpellContext ctx, Optional<Either<BlockPos, UUID>> source) {
+    public static List<SlotFragment> getSlots(Trick<?> trick, SpellContext ctx, Optional<Either<BlockPos, UUID>> source) {
         var inventory = getInventoryFromSource(trick, ctx, source);
-        return new ListFragment(IntStream.range(0, inventory.trickster$slot_holder$size()).mapToObj(slot -> {
-            return (Fragment) (new SlotFragment(slot, source));
-        }).toList());
+        return IntStream.range(0, inventory.trickster$slot_holder$size()).mapToObj(slot -> {
+            return new SlotFragment(slot, source);
+        }).toList();
     }
 
     public static NumberFragment getInventoryLength(Trick<?> trick, SpellContext ctx, Optional<Either<BlockPos, UUID>> source) {

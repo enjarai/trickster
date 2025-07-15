@@ -57,7 +57,9 @@ Constructs and returns a slot from an index and an inventory source, using the c
 
 <|trick@trickster:templates|trick-id=trickster:get_inventory_slots|>
 
-Constructs and returns a list of slots from an inventory source, using the caster if no source is given.
+;;;;;
+
+Returns a list of slots from an inventory source, using the caster if no source is given. An item or list of items can be passed and used as a filter to get only relevant slots from the inventory source.
 
 ;;;;;
 
