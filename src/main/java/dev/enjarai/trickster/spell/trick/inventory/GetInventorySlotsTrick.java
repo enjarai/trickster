@@ -1,6 +1,5 @@
 package dev.enjarai.trickster.spell.trick.inventory;
 
-import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
@@ -21,12 +20,12 @@ import com.mojang.datafixers.util.Either;
 
 public class GetInventorySlotsTrick extends Trick<GetInventorySlotsTrick> {
     public GetInventorySlotsTrick() {
-        super(Pattern.of(7, 4, 3, 0, 2, 5, 4, 0, 7, 2, 4), Signature.of(variadic(FragmentType.ITEM_TYPE).unpack(), GetInventorySlotsTrick::fromCaster));
-        overload(Signature.of(FragmentType.VECTOR, variadic(FragmentType.ITEM_TYPE).unpack(), GetInventorySlotsTrick::fromVector));
-        overload(Signature.of(FragmentType.ENTITY, variadic(FragmentType.ITEM_TYPE).unpack(), GetInventorySlotsTrick::fromEntity));
+        super(Pattern.of(7, 4, 3, 0, 2, 5, 4, 0, 7, 2, 4), Signature.of(FragmentType.ITEM_TYPE.variadicOfArg().unpack(), GetInventorySlotsTrick::fromCaster, FragmentType.LIST));
+        overload(Signature.of(FragmentType.VECTOR, FragmentType.ITEM_TYPE.variadicOfArg().unpack(), GetInventorySlotsTrick::fromVector, FragmentType.LIST));
+        overload(Signature.of(FragmentType.ENTITY, FragmentType.ITEM_TYPE.variadicOfArg().unpack(), GetInventorySlotsTrick::fromEntity, FragmentType.LIST));
     }
 
-    private Fragment fromSlots(SpellContext ctx, ListFragment slots, List<ItemTypeFragment> itemTypes) {
+    private ListFragment fromSlots(SpellContext ctx, ListFragment slots, List<ItemTypeFragment> itemTypes) {
         var itemTypesFilter = itemTypes.stream().map(typeFragment -> {
             return typeFragment.item();
         }).toList();
@@ -39,16 +38,16 @@ public class GetInventorySlotsTrick extends Trick<GetInventorySlotsTrick> {
         }
     }
 
-    public Fragment fromCaster(SpellContext ctx, List<ItemTypeFragment> itemTypes) throws BlunderException {
+    public ListFragment fromCaster(SpellContext ctx, List<ItemTypeFragment> itemTypes) throws BlunderException {
         var slots = SlotFragment.getSlots(this, ctx, Optional.empty());
         return fromSlots(ctx, slots, itemTypes);
     }
 
-    public Fragment fromVector(SpellContext ctx, VectorFragment pos, List<ItemTypeFragment> itemTypes) throws BlunderException {
+    public ListFragment fromVector(SpellContext ctx, VectorFragment pos, List<ItemTypeFragment> itemTypes) throws BlunderException {
         return fromSlots(ctx, SlotFragment.getSlots(this, ctx, Optional.of(Either.left(pos.toBlockPos()))), itemTypes);
     }
 
-    public Fragment fromEntity(SpellContext ctx, EntityFragment entity, List<ItemTypeFragment> itemTypes) throws BlunderException {
+    public ListFragment fromEntity(SpellContext ctx, EntityFragment entity, List<ItemTypeFragment> itemTypes) throws BlunderException {
         return fromSlots(ctx, SlotFragment.getSlots(this, ctx, Optional.of(Either.right(entity.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this)).getUuid()))), itemTypes);
     }
 }

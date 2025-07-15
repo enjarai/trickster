@@ -55,6 +55,18 @@ Constructs and returns a slot from an index and an inventory source, using the c
 
 ;;;;;
 
+<|trick@trickster:templates|trick-id=trickster:get_inventory_slots|>
+
+Constructs and returns a list of slots from an inventory source, using the caster if no source is given.
+
+;;;;;
+
+<|trick@trickster:templates|trick-id=trickster:get_inventory_size|>
+
+Returns the number of slots in an inventory source, using the caster if no source is given.
+
+;;;;;
+
 <|trick@trickster:templates|trick-id=trickster:check_hat|>
 
 Returns the selected slot in the caster's [Hat](^trickster:items/top_hat).
