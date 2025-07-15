@@ -32,7 +32,7 @@ Returns the type of item that the given slot contains.
 
 <|trick@trickster:templates|trick-id=trickster:other_hand|>
 
-Returns the type of item in the caster's other hand.
+Returns the type of item in the caster's offhand.
 
 ;;;;;
 
@@ -45,7 +45,7 @@ Slot references either use the position of the caster at the time of move, or th
 
 <|trick@trickster:templates|trick-id=trickster:other_hand_slot|>
 
-Returns a slot reference of the caster's other hand.
+Returns a slot reference of the caster's offhand.
 
 ;;;;;
 
