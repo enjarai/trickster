@@ -97,13 +97,9 @@ Returns the first number raised to the power of the second.
 
 ;;;;;
 
-<|glyph@trickster:templates|trick-id=trickster:ln,title=Natural Distortion|>
+<|trick@trickster:templates|trick-id=trickster:ln|>
 
-number, [number] -> number
-
----
-
-Returns the log of the first number with a base of either the second number or using the natural log if none is given.
+Returns the log of the first number with a base of either the second number or the natural log if none is given.
 
 ;;;;;
 

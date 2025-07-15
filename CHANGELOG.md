@@ -13,3 +13,4 @@
 - Made the first argument of the message listening trick optional. (@aurakle)
 - Undid changes to make the `exportSpell` subcommand operator-only. (@enjarai)
 - Fixed some redundant phrasing in the Tome. (@Le-Kat)
+- Added a trick for logarithms. (@Nicknakin)
