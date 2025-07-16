@@ -118,3 +118,4 @@ Attaches the latter spell to the circle at the given address as a new branch.
 <|trick@trickster:templates|trick-id=trickster:remove_subtree|>
 
 Removes the circle at the given address. Returns void if the root node is removed.
+

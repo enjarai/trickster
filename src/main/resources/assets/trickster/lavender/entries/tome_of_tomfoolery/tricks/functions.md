@@ -11,7 +11,9 @@
     "Folding Deviation",
     "Cautious Deviation",
     "Deviation of Singularity",
-    "Executioner's Deviation"
+    "Executioner's Deviation",
+    "Ingress of Origin",
+    "Turtle's Ingress"
   ]
 }
 ```
@@ -123,13 +125,25 @@ The result of each execution is passed as the first argument to the next, where 
 
 ;;;;;
 
-<|trick@trickster:templates|trick-id=trickster:kill_thread|>
-
-Ends the spell running in the given spell slot or the current slot if not provided. Returns whether it succeeded.
-
-;;;;;
-
 <|page-title@lavender:book_components|title=Note: Arguments|>Fragments can be passed into executed spell fragments as arguments.
 
 
 See the chapter on [arguments](^trickster:delusions_ingresses/arguments) for more information.
+
+;;;;;
+
+<|trick@trickster:templates|trick-id=trickster:kill_thread|>
+
+Ends the spell running in the given spell slot or the current slot if none is provided. Returns whether it succeeded.
+
+;;;;;
+
+<|trick@trickster:templates|trick-id=trickster:thread_root|>
+
+Fetches the original spell that spawned the given spell slot, or the current slot if none is provided.
+
+;;;;;
+
+<|trick@trickster:templates|trick-id=trickster:spell_state|>
+
+Returns the number of circles that were executed in the last tick in a given spell slot, or the current slot if none is provided.
