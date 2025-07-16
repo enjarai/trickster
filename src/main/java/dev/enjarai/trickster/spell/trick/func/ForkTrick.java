@@ -25,6 +25,6 @@ public class ForkTrick extends Trick<ForkTrick> {
                 .getExecutionManager()
                 .orElseThrow(() -> new IncompatibleSourceBlunder(this))
                 .queue(spell, args);
-        return slot.isPresent() ? Optional.of(new NumberFragment(slot.getAsInt())) : Optional.empty();
+        return slot.map(NumberFragment::new);
     }
 }

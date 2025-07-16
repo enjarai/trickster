@@ -71,21 +71,21 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
     }
 
     @Override
-    public OptionalInt queue(SpellExecutor executor) {
+    public Optional<Integer> queue(SpellExecutor executor) {
         for (int i = 0; i < capacity; i++) {
             if (spells.putIfAbsent(i, executor) == null) {
-                return OptionalInt.of(i);
+                return Optional.of(i);
             }
         }
 
         for (int i = 0; i < capacity; i++) {
             if (spells.get(i) instanceof ErroredSpellExecutor) {
                 spells.put(i, executor);
-                return OptionalInt.of(i);
+                return Optional.of(i);
             }
         }
 
-        return OptionalInt.empty();
+        return Optional.empty();
     }
 
     public void tick(SpellSource source, ExecutorCallback tickCallback, ExecutorCallback completeCallback, ExecutorCallback errorCallback) {

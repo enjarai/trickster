@@ -1,7 +1,7 @@
 package dev.enjarai.trickster.spell.execution;
 
 import java.util.List;
-import java.util.OptionalInt;
+import java.util.Optional;
 
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellPart;
@@ -9,11 +9,11 @@ import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.SpellExecutor;
 
 public interface SpellExecutionManager {
-    default OptionalInt queue(SpellPart spell, List<Fragment> arguments) {
+    default Optional<Integer> queue(SpellPart spell, List<Fragment> arguments) {
         return queue(new DefaultSpellExecutor(spell, arguments));
     }
 
-    OptionalInt queue(SpellExecutor executor);
+    Optional<Integer> queue(SpellExecutor executor);
 
     boolean kill(int index);
 
@@ -22,7 +22,7 @@ public interface SpellExecutionManager {
     Optional<SpellPart> getSpell(int index);
 
     default Optional<Integer> getSpellState(int index) {
-        return getSpellExecutor(index).map(executor -> executor.getLastRunExecutions());
+        return getSpellExecutor(index).map(SpellExecutor::getLastRunExecutions);
     };
 
     void killAll();
