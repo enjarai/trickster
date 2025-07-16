@@ -6,7 +6,7 @@
   "required_advancements": [
     "trickster:quartz_knot"
   ],
-  "ordinal": 13
+  "ordinal": 14
 }
 ```
 
@@ -18,18 +18,18 @@ Its natural recharge rate is also pitifully at the levels of an Emerald Knot of 
 
 ;;;;;
 
-Regardless, it seems to have some redeeming qualities. 
+Regardless, it has some redeeming qualities.
 
 
-For one, inserting this Knot into a construct seems to speed it up ever so slightly.
-It really isn't much, but it could be just enough in a pinch...
+For one, inserting this Knot into a construct accelerates its casting ever so slightly. 
+It really isn't much, but even a few extra circles can vastly improve a spell's effectiveness.
 
 ;;;;;
 
-Its second uniqueness seems much more interesting though.
+Its second uniqueness is far more interesting though.
 
 
-By augmenting a [Ploy of Receipt](^trickster:ploys/message#3) with a slot as a second argument, it is possible to listen
+By augmenting the [Ploy of Receipt](^trickster:ploys/message#3) with a slot as a second argument, it is possible to listen
 for messages from an item.
 
 

@@ -6,7 +6,7 @@
   "required_advancements": [
     "trickster:cracked_quartz_knot"
   ],
-  "ordinal": 15
+  "ordinal": 27
 }
 ```
 
@@ -20,10 +20,10 @@ but their cracked variant holds **no mana at all**.
 ;;;;;
 
 On the other hand, its ability to accelerate constructs is massively enhanced.
-When used as a mana source for a construct, its casting speed is **doubled**.
+When inserted into a construct, its casting speed is **doubled**.
 
 
-Obviously though, this means said construct will not be able to use mana at all, even indirectly.
+However, doing so will vastly limit the construct's capabilities, as it will have no access to mana.
 
 ;;;;;
 

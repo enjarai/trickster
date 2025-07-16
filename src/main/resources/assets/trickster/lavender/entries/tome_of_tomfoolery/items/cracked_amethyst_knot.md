@@ -6,13 +6,13 @@
   "required_advancements": [
     "trickster:cracked_amethyst_knot"
   ],
-  "ordinal": 15
+  "ordinal": 26
 }
 ```
 
 It seems that Amethyst had a little more potential than imagined! 
 By cracking an Amethyst Knot, this potential is unlocked, instantly recharging the Knot back to twice its original capacity.
-This means their mana output can be effectively tripled before they become obsolete.
+This means its mana output can be effectively tripled before it becomes obsolete.
 
 ;;;;;
 
