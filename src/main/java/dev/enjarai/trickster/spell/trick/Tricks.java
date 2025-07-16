@@ -157,7 +157,7 @@ public class Tricks {
     public static final MaxTrick MAX = register("max", new MaxTrick());
     public static final MinTrick MIN = register("min", new MinTrick());
     public static final PowerTrick POWER = register("power", new PowerTrick());
-    public static final LogTrick LOG = register("ln", new LogTrick());
+    public static final LogTrick LOG = register("logarithm", new LogTrick());
     public static final SqrtTrick SQRT = register("sqrt", new SqrtTrick());
     public static final SinTrick SIN = register("sin", new SinTrick());
     public static final CosTrick COS = register("cos", new CosTrick());
