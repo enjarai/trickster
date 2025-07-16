@@ -161,11 +161,6 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
     }
 
     @Override
-    public OptionalInt getSpellState(int index) {
-        return getSpellExecutor(index).map(executor -> OptionalInt.of(executor.getLastRunExecutions())).orElse(OptionalInt.empty());
-    }
-
-    @Override
     public void killAll() {
         spells.clear();
     }

@@ -14,8 +14,7 @@
     "Felling Distortion",
     "Grafting Distortion",
     "Branching Distortion",
-    "Pruning Distortion",
-    "Ingress of Memory"
+    "Pruning Distortion"
   ]
 }
 ```
@@ -120,8 +119,3 @@ Attaches the latter spell to the circle at the given address as a new branch.
 
 Removes the circle at the given address. Returns void if the root node is removed.
 
-;;;;;
-
-<|trick@trickster:templates|trick-id=trickster:weight|>
-
-Returns the weight of the given fragment.
