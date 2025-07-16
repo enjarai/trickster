@@ -22,7 +22,7 @@ public interface SpellExecutionManager {
     Optional<SpellPart> getSpell(int index);
 
     default Optional<Integer> getSpellState(int index) {
-        return getSpellExecutor(index).map(executor -> executor.getLastRunExecutions());
+        return getSpellExecutor(index).map(SpellExecutor::getLastRunExecutions);
     };
 
     void killAll();

@@ -30,10 +30,7 @@ import net.minecraft.world.World;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 public class CasterComponent implements ServerTickingComponent, AutoSyncedComponent {
     private final PlayerEntity player;

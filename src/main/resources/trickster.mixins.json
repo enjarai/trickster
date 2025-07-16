@@ -8,6 +8,7 @@
     "AnvilScreenHandlerMixin",
     "DataPackContentsMixin",
     "EntityMixin",
+    "FallingBlockEntityMixin",
     "ItemEntityMixin",
     "ItemFrameEntityMixin",
     "ItemMixin",

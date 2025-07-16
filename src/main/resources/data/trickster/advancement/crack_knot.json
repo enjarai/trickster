@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "id": "trickster:cracked_emerald_knot"
+    },
+    "title": {
+      "text": "What a Waste!"
+    },
+    "description": {
+      "text": "Intentionally crack a perfectly good Knot"
+    },
+    "frame": "task",
+    "announce_to_chat": true
+  },
+  "parent": "trickster:cracked_echo_knot",
+  "criteria": {
+    "crack_knot": {
+      "trigger": "trickster:crack_knot",
+      "conditions": {
+      }
+    }
+  }
+}

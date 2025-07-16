@@ -1,26 +1,26 @@
 {
   "display": {
     "icon": {
-      "id": "trickster:cracked_echo_knot"
+      "id": "trickster:cracked_quartz_knot"
     },
     "title": {
-      "text": "Broken and Alone"
+      "text": "Tick-Tock Goes the Overclock"
     },
     "description": {
-      "text": "Find or create a Cracked Echo Knot"
+      "text": "Crack a Quartz Knot."
     },
     "frame": "task",
     "announce_to_chat": true,
     "hidden": true
   },
-  "parent": "trickster:root",
+  "parent": "trickster:crack_knot",
   "criteria": {
-    "pickup_echo_knot": {
+    "pickup_quartz_knot": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": "trickster:cracked_echo_knot"
+            "items": "trickster:cracked_quartz_knot"
           }
         ]
       }

@@ -3,6 +3,7 @@ package dev.enjarai.trickster.block;
 import java.util.List;
 import java.util.Optional;
 
+import dev.enjarai.trickster.item.KnotItem;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import io.wispforest.endec.impl.KeyedEndec;
@@ -102,6 +103,15 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
         if (getWorld() instanceof ServerWorld serverWorld) {
             var source = new BlockSpellSource<>(serverWorld, getPos(), this);
 
+            float knotExecutionLimitMultiplier = 1;
+            boolean canUseMana = true;
+            var knotStack = inventory.getFirst();
+            if (knotStack.getItem() instanceof KnotItem knotItem) {
+                knotExecutionLimitMultiplier = knotItem.getConstructExecutionLimitMultiplier(inventory.getFirst());
+                //noinspection DataFlowIssue
+                canUseMana = knotStack.get(ModComponents.MANA).pool().getMax(serverWorld) > 0;
+            }
+
             for (int i = 0; i < inventory.size(); i++) {
                 var stack = inventory.get(i);
                 var executorSlot = i - 1;
@@ -114,8 +124,10 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
                         continue;
                     }
 
-                    var tickData = new TickData().withSlot(executorSlot);
+                    var tickData = new TickData().withSlot(executorSlot).withCanUseMana(canUseMana);
                     var executionLimit = item.getExecutionLimit(serverWorld, getPos().toCenterPos(), tickData.getExecutionLimit());
+                    executionLimit = (int) (executionLimit * knotExecutionLimitMultiplier);
+
                     if (executionLimit > 0) {
                         try {
                             if (executor.run(source, tickData.withExecutionLimit(executionLimit)).isPresent()) {
