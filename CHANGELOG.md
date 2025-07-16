@@ -1,6 +1,7 @@
 - Massively reworked parts of the Tome of Tomfoolery to explain things more clearly. (@enjarai and @aurakle)
 - Added a new spell core which only runs while a player is near. (@enjarai and @aurakle)
 - Made all spell cores stackable to 4. (@enjarai)
+- Made all knots crackable by smashing them with an anvil. (@enjarai)
 - Fixed being able to write ephemeral fragments. (@aurakle)
 - Fixed charging arrays not being pickaxe-mineable. (@aurakle)
 - Added a configuration option for the divider pin's colour and opacity. (@NOTMASTER09)
