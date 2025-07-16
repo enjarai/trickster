@@ -125,25 +125,25 @@ The result of each execution is passed as the first argument to the next, where 
 
 ;;;;;
 
+<|page-title@lavender:book_components|title=Note: Arguments|>Fragments can be passed into executed spell fragments as arguments.
+
+
+See the chapter on [arguments](^trickster:delusions_ingresses/arguments) for more information.
+
+;;;;;
+
 <|trick@trickster:templates|trick-id=trickster:kill_thread|>
 
-Ends the spell running in the given spell slot or the current slot if not provided. Returns whether it succeeded.
+Ends the spell running in the given spell slot or the current slot if none is provided. Returns whether it succeeded.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:thread_root|>
 
-Fetches the original spell that spawned the given spell slot.
+Fetches the original spell that spawned the given spell slot, or the current slot if none is provided.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:spell_state|>
 
-Returns the number of circles that were executed in the last tick for a given spell slot.
-
-;;;;;
-
-<|page-title@lavender:book_components|title=Note: Arguments|>Fragments can be passed into executed spell fragments as arguments.
-
-
-See the chapter on [arguments](^trickster:delusions_ingresses/arguments) for more information.
+Returns the number of circles that were executed in the last tick in a given spell slot, or the current slot if none is provided.

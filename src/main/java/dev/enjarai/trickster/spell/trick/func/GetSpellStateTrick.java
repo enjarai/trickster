@@ -20,6 +20,6 @@ public class GetSpellStateTrick extends Trick<GetSpellStateTrick> {
     public Optional<NumberFragment> run(SpellContext ctx, Optional<NumberFragment> maybeSpellSlot) throws BlunderException {
         var spellSlot = maybeSpellSlot.orElse(new NumberFragment(ctx.data().getSlot().orElseThrow(() -> new IncompatibleSourceBlunder(this))));
         var manager = ctx.source().getExecutionManager().orElseThrow(() -> new IncompatibleSourceBlunder(this));
-        return manager.getSpellState(spellSlot.asInt()).map(state -> new NumberFragment(state));
+        return manager.getSpellState(spellSlot.asInt()).map(NumberFragment::new);
     }
 }
