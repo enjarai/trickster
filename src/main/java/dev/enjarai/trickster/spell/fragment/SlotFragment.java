@@ -1,7 +1,9 @@
 package dev.enjarai.trickster.spell.fragment;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.IntStream;
 
 import org.joml.Vector3dc;
 
@@ -56,6 +58,18 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
     @Override
     public int getWeight() {
         return 64;
+    }
+
+    public static List<SlotFragment> getSlots(Trick<?> trick, SpellContext ctx, Optional<Either<BlockPos, UUID>> source) {
+        var inventory = getInventoryFromSource(trick, ctx, source);
+        return IntStream.range(0, inventory.trickster$slot_holder$size()).mapToObj(slot -> {
+            return new SlotFragment(slot, source);
+        }).toList();
+    }
+
+    public static NumberFragment getInventoryLength(Trick<?> trick, SpellContext ctx, Optional<Either<BlockPos, UUID>> source) {
+        var inventory = getInventoryFromSource(trick, ctx, source);
+        return new NumberFragment(inventory.trickster$slot_holder$size());
     }
 
     public void setStack(ItemStack itemStack, Trick<?> trick, SpellContext ctx) {
@@ -185,6 +199,10 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
     }
 
     private SlotHolderDuck getInventory(Trick<?> trickSource, SpellContext ctx) throws BlunderException {
+        return getInventoryFromSource(trickSource, ctx, source);
+    }
+
+    private static SlotHolderDuck getInventoryFromSource(Trick<?> trickSource, SpellContext ctx, Optional<Either<BlockPos, UUID>> source) throws BlunderException {
         return source.map(s -> {
             if (s.left().isPresent()) {
                 var e = ctx.source().getWorld().getBlockEntity(s.left().get());

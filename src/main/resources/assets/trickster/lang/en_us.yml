@@ -237,6 +237,8 @@ trickster:
     get_count_in_slot: Ingress of Plenitude
     get_max_mana_in_slot: Crowning Ingress
     get_inventory_slot: Intrusive Ingress
+    get_inventory_slots: Collector's Ingress
+    get_inventory_size: Ingress of Extent
     drop_stack_from_slot: Ploy of Offering
     swap_slot: Swindler's Ploy
     block_from_item: Placement Distortion

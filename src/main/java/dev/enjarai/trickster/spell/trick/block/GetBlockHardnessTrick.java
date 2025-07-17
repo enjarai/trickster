@@ -3,6 +3,7 @@ package dev.enjarai.trickster.spell.trick.block;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
+import dev.enjarai.trickster.spell.fragment.BlockTypeFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
@@ -12,6 +13,7 @@ import dev.enjarai.trickster.spell.type.Signature;
 public class GetBlockHardnessTrick extends Trick<GetBlockHardnessTrick> {
     public GetBlockHardnessTrick() {
         super(Pattern.of(1, 2, 8, 6, 0, 4, 2, 0, 1), Signature.of(FragmentType.VECTOR, GetBlockHardnessTrick::get, FragmentType.NUMBER));
+        overload(Signature.of(FragmentType.BLOCK_TYPE, GetBlockHardnessTrick::getFromBlock, FragmentType.NUMBER));
     }
 
     public NumberFragment get(SpellContext ctx, VectorFragment pos) throws BlunderException {
@@ -23,5 +25,10 @@ public class GetBlockHardnessTrick extends Trick<GetBlockHardnessTrick> {
 
         return new NumberFragment(hardness < 0 ? Float.MAX_VALUE : hardness);
 
+    }
+
+    public NumberFragment getFromBlock(SpellContext ctx, BlockTypeFragment block) throws BlunderException {
+        var hardness = block.block().getHardness();
+        return new NumberFragment(hardness < 0 ? Float.MAX_VALUE : hardness);
     }
 }

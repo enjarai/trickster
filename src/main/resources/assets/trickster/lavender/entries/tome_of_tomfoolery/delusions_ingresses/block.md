@@ -29,7 +29,7 @@ Returns the type of the block at the given position.
 
 <|trick@trickster:templates|trick-id=trickster:get_block_hardness|>
 
-Returns the hardness of the block at the given position.
+Returns the hardness of the block at the given position or of the given block type.
 
 ;;;;;
 
