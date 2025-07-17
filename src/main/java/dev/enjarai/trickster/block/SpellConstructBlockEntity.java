@@ -121,7 +121,7 @@ public class SpellConstructBlockEntity extends BlockEntity implements SpellColor
                                 blunder.createMessage()
                                         .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")")
                         );
-                    } catch (Exception e) {
+                    } catch (Throwable e) {
                         error = Optional.of(
                                 Text.literal("Uncaught exception in spell: " + e.getMessage())
                                         .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")")

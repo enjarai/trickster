@@ -32,7 +32,7 @@ public class ListArgType<T> implements ArgType<List<T>> {
 
         if (argc != 0) {
             for (int i = 0; i < list.size() / argc; i++) {
-                result.add(type.compose(trick, ctx, isolate(i * argc, list)));
+                result.add(type.compose(trick, ctx, type.isolate(i * argc, list)));
             }
         }
 
@@ -57,7 +57,7 @@ public class ListArgType<T> implements ArgType<List<T>> {
         }
 
         for (int i = 0; i < list.size() / argc; i++) {
-            if (!type.match(isolate(i * argc, list))) {
+            if (!type.match(type.isolate(i * argc, list))) {
                 return false;
             }
         }
