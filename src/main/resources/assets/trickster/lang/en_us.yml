@@ -64,7 +64,7 @@ trickster:
     divide: Submission Stratagem
     modulo: Distortion of Wholes
     power: Distortion of Supremacy
-    ln: Natural Distortion
+    logarithm: Distortion of Inferiority
     max: Noble Stratagem
     min: Insignificance Stratagem
     ceil: Distortion of Grandeur
@@ -165,6 +165,8 @@ trickster:
     delay_execution: Deviation of Suspension
     kill_thread: Executioner's Deviation
     current_thread: Delusion of Order
+    thread_root: Ingress of Origin
+    spell_state: Turtle's Ingress
     get_all_arguments: Hoarder's Delusion
     load_argument_1: Primary Delusion
     load_argument_2: Secondary Delusion
@@ -188,7 +190,7 @@ trickster:
     list_size: Tally Distortion
     create_number_range: Interlude Distortion
 
-    closure: Closure Stratagem
+    closure: Distortion of Closure
     supplier: Supply Distortion
     locate_glyph: Pinpoint Distortion
     locate_glyphs: Discovering Distortion
@@ -200,6 +202,7 @@ trickster:
     remove_subtree: Pruning Distortion
     get_subparts: Bundle Distortion
     escape_pattern: Interpretation Distortion
+    weight: Distortion of Memory
 
     map_create: Cartographer's Delusion
     map_get: Navigator's Distortion
@@ -373,12 +376,17 @@ item.trickster:
   leash: Archmage's Tether
 
   amethyst_knot: Amethyst Knot
+  cracked_amethyst_knot: Cracked Amethyst Knot
   quartz_knot: Quartz Knot
+  cracked_quartz_knot: Cracked Quartz Knot
   emerald_knot: Emerald Knot
+  cracked_emerald_knot: Cracked Emerald Knot
   diamond_knot: Diamond Knot
+  cracked_diamond_knot: Cracked Diamond Knot
   echo_knot: Echo Knot
   cracked_echo_knot: Cracked Echo Knot
   astral_knot: Astral Knot
+  cracked_astral_knot: Cracked Astral Knot
   command_knot: Command Knot
 
   spell_core: Spell Core

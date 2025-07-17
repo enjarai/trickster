@@ -78,6 +78,9 @@ public class Tricks {
     public static final SupplierTrick SUPPLIER = register("supplier", new SupplierTrick());
     public static final KillThreadTrick KILL_THREAD = register("kill_thread", new KillThreadTrick());
     public static final GetCurrentThreadTrick CURRENT_THREAD = register("current_thread", new GetCurrentThreadTrick());
+    public static final GetSpellFromSlotTrick THREAD_ROOT = register("thread_root", new GetSpellFromSlotTrick());
+    public static final GetSpellStateTrick SPELL_STATE = register("spell_state", new GetSpellStateTrick());
+    public static final GetWeightTrick WEIGHT = register("weight", new GetWeightTrick());
     public static final GetAllArgumentsTrick GET_ALL_ARGUMENTS = register("get_all_arguments", new GetAllArgumentsTrick());
     public static final LoadArgumentTrick LOAD_ARGUMENT_1 = register("load_argument_1", new LoadArgumentTrick(Pattern.of(4, 1), 0));
     public static final LoadArgumentTrick LOAD_ARGUMENT_2 = register("load_argument_2", new LoadArgumentTrick(Pattern.of(4, 2), 1));
@@ -157,7 +160,7 @@ public class Tricks {
     public static final MaxTrick MAX = register("max", new MaxTrick());
     public static final MinTrick MIN = register("min", new MinTrick());
     public static final PowerTrick POWER = register("power", new PowerTrick());
-    public static final LogTrick LOG = register("ln", new LogTrick());
+    public static final LogTrick LOG = register("logarithm", new LogTrick());
     public static final SqrtTrick SQRT = register("sqrt", new SqrtTrick());
     public static final SinTrick SIN = register("sin", new SinTrick());
     public static final CosTrick COS = register("cos", new CosTrick());

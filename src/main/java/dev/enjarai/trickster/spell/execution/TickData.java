@@ -10,11 +10,12 @@ import dev.enjarai.trickster.Trickster;
 import net.minecraft.util.Identifier;
 
 public class TickData {
-    private Map<Key<?>, Object> map = new HashMap<>();
+    private final Map<Key<?>, Object> map = new HashMap<>();
     private int executionLimit = Trickster.CONFIG.maxExecutionsPerSpellPerTick();
     private int executions = 0;
     private Optional<Integer> slot = Optional.empty();
     private boolean killed = false;
+    private boolean canUseMana = true;
 
     public void incrementExecutions() {
         executions++;
@@ -36,6 +37,10 @@ public class TickData {
         return killed || executions >= executionLimit;
     }
 
+    public boolean canUseMana() {
+        return canUseMana;
+    }
+
     public TickData withSlot(int slot) {
         this.slot = Optional.of(slot);
         return this;
@@ -48,6 +53,11 @@ public class TickData {
 
     public void kill() {
         this.killed = true;
+    }
+
+    public TickData withCanUseMana(boolean canUseMana) {
+        this.canUseMana = canUseMana;
+        return this;
     }
 
     public record Key<T>(Identifier id, @Nullable Class<T> clazz) {

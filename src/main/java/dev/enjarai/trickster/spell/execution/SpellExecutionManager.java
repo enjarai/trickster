@@ -17,5 +17,13 @@ public interface SpellExecutionManager {
 
     boolean kill(int index);
 
+    Optional<SpellExecutor> getSpellExecutor(int index);
+
+    Optional<SpellPart> getSpell(int index);
+
+    default Optional<Integer> getSpellState(int index) {
+        return getSpellExecutor(index).map(SpellExecutor::getLastRunExecutions);
+    };
+
     void killAll();
 }

@@ -1,0 +1,29 @@
+{
+  "display": {
+    "icon": {
+      "id": "trickster:cracked_amethyst_knot"
+    },
+    "title": {
+      "text": "Second Wind"
+    },
+    "description": {
+      "text": "Crack an Amethyst Knot"
+    },
+    "frame": "task",
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "trickster:crack_knot",
+  "criteria": {
+    "pickup_amethyst_knot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "trickster:cracked_amethyst_knot"
+          }
+        ]
+      }
+    }
+  }
+}
