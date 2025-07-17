@@ -28,10 +28,7 @@ public class GetBlockHardnessTrick extends Trick<GetBlockHardnessTrick> {
     }
 
     public NumberFragment getFromBlock(SpellContext ctx, BlockTypeFragment block) throws BlunderException {
-
         var hardness = block.block().getHardness();
-
         return new NumberFragment(hardness < 0 ? Float.MAX_VALUE : hardness);
-
     }
 }
