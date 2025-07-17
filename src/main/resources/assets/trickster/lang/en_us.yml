@@ -190,7 +190,7 @@ trickster:
     list_size: Tally Distortion
     create_number_range: Interlude Distortion
 
-    closure: Closure Stratagem
+    closure: Distortion of Closure
     supplier: Supply Distortion
     locate_glyph: Pinpoint Distortion
     locate_glyphs: Discovering Distortion
@@ -202,7 +202,7 @@ trickster:
     remove_subtree: Pruning Distortion
     get_subparts: Bundle Distortion
     escape_pattern: Interpretation Distortion
-    weight: Ingress of Memory
+    weight: Distortion of Memory
 
     map_create: Cartographer's Delusion
     map_get: Navigator's Distortion

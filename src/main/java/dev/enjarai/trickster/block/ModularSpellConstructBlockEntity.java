@@ -3,6 +3,7 @@ package dev.enjarai.trickster.block;
 import java.util.List;
 import java.util.Optional;
 
+import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.item.KnotItem;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
@@ -144,6 +145,7 @@ public class ModularSpellConstructBlockEntity extends BlockEntity implements Inv
                                     Text.literal("Uncaught exception in spell: " + e.getMessage())
                                             .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")")
                             );
+                            Trickster.LOGGER.error("Uncaught exception in spell", e);
                         }
 
                         error.ifPresent(e -> {

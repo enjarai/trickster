@@ -5,7 +5,7 @@
   "category": "trickster:distortions",
   "additional_search_terms": [
     "Supply Distortion",
-    "Closure Stratagem",
+    "Distortion of Closure",
     "Pinpoint Distortion",
     "Discovering Distortion",
     "Retrieval Distortion",

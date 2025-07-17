@@ -15,6 +15,6 @@ public class GetWeightTrick extends Trick<GetWeightTrick> {
     }
 
     public NumberFragment run(SpellContext ctx, Fragment fragment) {
-        return new NumberFragment(fragment.getWeight());
+        return new NumberFragment(fragment.getWeight() / Fragment.MAX_WEIGHT);
     }
 }

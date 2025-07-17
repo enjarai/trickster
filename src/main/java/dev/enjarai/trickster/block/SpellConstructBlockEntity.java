@@ -126,6 +126,7 @@ public class SpellConstructBlockEntity extends BlockEntity implements SpellColor
                                 Text.literal("Uncaught exception in spell: " + e.getMessage())
                                         .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")")
                         );
+                        Trickster.LOGGER.error("Uncaught exception in spell", e);
                     }
 
                     error.ifPresent(e -> {

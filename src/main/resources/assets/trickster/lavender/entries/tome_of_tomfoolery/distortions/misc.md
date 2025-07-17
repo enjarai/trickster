@@ -7,7 +7,7 @@
     "Argumentative Distortion",
     "Decaying Distortion",
     "Interpretation Distortion",
-    "Ingress of Memory"
+    "Distortion of Memory"
   ]
 }
 ```
@@ -36,5 +36,4 @@ Converts a pattern into a literal representation of itself, to be used when cons
 
 <|trick@trickster:templates|trick-id=trickster:weight|>
 
-Returns the weight of the given fragment.
-
+Returns a number from zero to one indicating how close the given fragment is to being overweight.
