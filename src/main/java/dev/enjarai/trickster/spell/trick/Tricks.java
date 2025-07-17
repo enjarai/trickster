@@ -7,6 +7,7 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.trick.basic.*;
 import dev.enjarai.trickster.spell.trick.block.*;
 import dev.enjarai.trickster.spell.trick.bool.*;
+import dev.enjarai.trickster.spell.trick.debug.DebugLogTrick;
 import dev.enjarai.trickster.spell.trick.dimension.GetDimensionTrick;
 import dev.enjarai.trickster.spell.trick.entity.*;
 import dev.enjarai.trickster.spell.trick.entity.query.*;
@@ -35,6 +36,7 @@ import dev.enjarai.trickster.spell.trick.raycast.RaycastEntityTrick;
 import dev.enjarai.trickster.spell.trick.tree.*;
 import dev.enjarai.trickster.spell.trick.vector.*;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.item.Items;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -293,6 +295,12 @@ public class Tricks {
     public static final PushManaTrick PUSH_MANA = register("push_mana", new PushManaTrick());
     public static final PullManaTrick PULL_MANA = register("pull_mana", new PullManaTrick());
     public static final DrainMatterTrick DRAIN_MATTER = register("drain_matter", new DrainMatterTrick());
+
+    static {
+        if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
+            register("debug_log", new DebugLogTrick());
+        }
+    }
 
     @ApiStatus.Internal
     public static <T extends Trick<?>> T register(String path, T trick) {
