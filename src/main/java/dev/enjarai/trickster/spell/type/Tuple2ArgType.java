@@ -26,14 +26,14 @@ public class Tuple2ArgType<T1, T2> implements ArgType<Tuple2<T1, T2>> {
     @Override
     public Tuple2<T1, T2> compose(Trick<?> trick, SpellContext ctx, List<Fragment> fragments) {
         return new Tuple2<>(
-                arg1.compose(trick, ctx, isolate(0, fragments)),
-                arg2.compose(trick, ctx, isolate(arg1.argc(fragments), fragments))
+                arg1.compose(trick, ctx, arg1.isolate(0, fragments)),
+                arg2.compose(trick, ctx, arg2.isolate(arg1.argc(fragments), fragments))
         );
     }
 
     @Override
     public boolean match(List<Fragment> fragments) {
-        return arg1.isolateAndMatch(fragments) && arg2.match(isolate(arg1.argc(fragments), fragments));
+        return arg1.isolateAndMatch(fragments) && arg2.match(arg2.isolate(arg1.argc(fragments), fragments));
     }
 
     @Override
