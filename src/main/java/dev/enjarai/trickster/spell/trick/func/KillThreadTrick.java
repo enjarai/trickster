@@ -19,12 +19,12 @@ public class KillThreadTrick extends Trick<KillThreadTrick> {
 
     public BooleanFragment run(SpellContext ctx, Optional<NumberFragment> index) throws BlunderException {
         var manager = ctx.source().getExecutionManager().orElseThrow(() -> new IncompatibleSourceBlunder(this));
+        var currentIndex = ctx.data().getSlot().orElseThrow(() -> new IncompatibleSourceBlunder(this));
 
-        if (index.isPresent()) {
-            return BooleanFragment.of(manager.kill(index.get().asInt()));
-        } else {
+        if (index.isEmpty() || index.get().asInt() == currentIndex) {
             ctx.data().kill();
-            return BooleanFragment.TRUE;
         }
+
+        return BooleanFragment.of(manager.kill(index.map(NumberFragment::asInt).orElse(currentIndex)));
     }
 }

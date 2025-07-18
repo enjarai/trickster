@@ -50,6 +50,12 @@ public abstract class KnotItem extends Item {
         public @Nullable KnotItem getCrackedVersion() {
             return ModItems.CRACKED_AMETHYST_KNOT;
         }
+
+        @Override
+        public ItemStack transferPropertiesToCracked(World world, ItemStack self, ItemStack cracked) {
+            // Skip transferring the mana state
+            return cracked;
+        }
     }
 
     public static class CrackedAmethyst extends KnotItem {
@@ -57,12 +63,6 @@ public abstract class KnotItem extends Item {
             super(new Settings()
                     .component(ModComponents.MANA, new ManaComponent(SimpleManaPool.getSingleUse(256), 0)),
                     Float.MAX_VALUE);
-        }
-
-        @Override
-        public ItemStack transferPropertiesToCracked(World world, ItemStack self, ItemStack cracked) {
-            // Skip transferring the mana state
-            return cracked;
         }
     }
 

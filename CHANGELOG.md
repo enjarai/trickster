@@ -1,1 +1,2 @@
-- Fixed missing datagen assets. (@enjarai)
+- Fixed Amethyst Knots not recharging when cracked. (@enjarai)
+- Fixed Executioner's Deviation. (@enjarai)
