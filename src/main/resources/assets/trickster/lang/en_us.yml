@@ -435,7 +435,7 @@ text.config.trickster-config:
     subcircleDividerPinColor: Divider pin Color
     manaTransferEfficiency: Efficiency of the Conduit's Ploys
     whorlMaxMana: Whorl maximum mana in G
-    whorlRechargeRate: Whorl recharge rate in G
+    whorlRechargeRate: Whorl recharge rate in M
     topHatInterceptScrolling: Offhand hat intercepts hotbar scrolling
     invertTopHatScrolling: Invert hat scrolling
     allowScrollInSpellScreen: Allow scrolling to zoom while editing
