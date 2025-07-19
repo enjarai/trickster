@@ -155,14 +155,14 @@ public class SpellConstructBlockEntity extends BlockEntity implements SpellColor
             var fragment = getComponents().get(ModComponents.FRAGMENT).value();
 
             if (fragment instanceof SpellPart spell) {
-                if (
-                    executor == null
-                            || !spell.equals(executor.spell())
-                            || executor instanceof ErroredSpellExecutor
-                ) {
-                    executor = new DefaultSpellExecutor(spell, List.of());
-                    markDirtyAndUpdateClients();
-                }
+                //                if (
+                //                    executor == null
+                //                            || !spell.equals(executor.spell())
+                //                            || executor instanceof ErroredSpellExecutor
+                //                ) {
+                executor = new DefaultSpellExecutor(spell, List.of());
+                markDirtyAndUpdateClients();
+                //                }
             }
         }
     }

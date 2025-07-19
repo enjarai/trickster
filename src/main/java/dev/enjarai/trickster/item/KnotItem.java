@@ -50,6 +50,12 @@ public abstract class KnotItem extends Item {
         public @Nullable KnotItem getCrackedVersion() {
             return ModItems.CRACKED_AMETHYST_KNOT;
         }
+
+        @Override
+        public ItemStack transferPropertiesToCracked(World world, ItemStack self, ItemStack cracked) {
+            // Skip transferring the mana state
+            return cracked;
+        }
     }
 
     public static class CrackedAmethyst extends KnotItem {
@@ -57,12 +63,6 @@ public abstract class KnotItem extends Item {
             super(new Settings()
                     .component(ModComponents.MANA, new ManaComponent(SimpleManaPool.getSingleUse(256), 0)),
                     Float.MAX_VALUE);
-        }
-
-        @Override
-        public ItemStack transferPropertiesToCracked(World world, ItemStack self, ItemStack cracked) {
-            // Skip transferring the mana state
-            return cracked;
         }
     }
 
@@ -108,13 +108,12 @@ public abstract class KnotItem extends Item {
     public static class CrackedQuartz extends KnotItem implements ChannelItem {
         public CrackedQuartz() {
             super(new Settings()
-                    .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(0), 0))
-                    .component(ModComponents.TICK_CREATED, new TickTrackerComponent(0)),
+                    .component(ModComponents.MANA, new ManaComponent(new SimpleManaPool(0), 0)),
                     Float.MAX_VALUE);
         }
 
         public EvaluationResult messageListenBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, Optional<Integer> timeout) {
-            return new ListFragment(List.of(new NumberFragment(stack.get(ModComponents.TICK_CREATED).getTick(ctx.source().getWorld()))));
+            return new ListFragment(List.of(new NumberFragment(ctx.source().getWorld().getTimeOfDay())));
         }
 
         public void messageSendBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, Fragment value) {
