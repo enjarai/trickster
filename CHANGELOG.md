@@ -1,1 +1,1 @@
-- Fixed missing datagen assets. (@enjarai)
+- Fixed fragment weights always being 0. (@aurakle)
