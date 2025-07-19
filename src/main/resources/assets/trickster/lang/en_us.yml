@@ -244,6 +244,7 @@ trickster:
     move_stack: Organizer's Ploy
     block_from_item: Placement Distortion
     item_from_block: Pickup Distortion
+    get_max_count: Distortion of Breadth
 
     type_fragment: Argumentative Distortion
     hash_values: Decaying Distortion
