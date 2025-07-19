@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.IntStream;
 
+import nl.enjarai.cicada.util.duck.ConvertibleVec3d;
 import org.joml.Vector3dc;
 
 import com.mojang.datafixers.util.Either;
@@ -135,6 +136,42 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
         }
     }
 
+    public int moveInto(Trick<?> trickSource, SpellContext ctx, SlotFragment to, int maxAmount) throws BlunderException {
+        if (equals(to)) {
+            return 0;
+        }
+
+        var toStack = to.getStack(trickSource, ctx);
+        var stack = getStack(trickSource, ctx);
+
+        if (!ItemStack.areItemsAndComponentsEqual(stack, toStack) && !toStack.isEmpty()) {
+            return 0;
+        }
+
+        var amountToBeMoved = Math.min(Math.min(maxAmount, stack.getCount()),
+                toStack.isEmpty() ? stack.getMaxCount() : toStack.getMaxCount() - toStack.getCount());
+        if (amountToBeMoved <= 0) {
+            return 0;
+        }
+
+        var movedStack = move(trickSource, ctx, amountToBeMoved, to.getSourceOrCasterPos(trickSource, ctx));
+
+        try {
+            ctx.useMana(trickSource, to.getMoveCost(trickSource, ctx, getSourceOrCasterPos(trickSource, ctx), amountToBeMoved));
+        } catch (Exception e) {
+            ctx.source().offerOrDropItem(movedStack);
+            throw e;
+        }
+
+        if (toStack.isEmpty()) {
+            to.setStack(movedStack, trickSource, ctx);
+        } else {
+            toStack.setCount(toStack.getCount() + amountToBeMoved);
+        }
+
+        return amountToBeMoved;
+    }
+
     public ItemStack move(Trick<?> trickSource, SpellContext ctx) throws BlunderException {
         return move(trickSource, ctx, 1);
     }
@@ -168,12 +205,12 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
         return source
                 .map(either -> Either.unwrap(
                         either
-                                .mapLeft(blockPos -> blockPos.toCenterPos())
+                                .mapLeft(BlockPos::toCenterPos)
                                 .mapRight(uuid -> new EntityFragment(uuid, Text.literal(""))
                                         .getEntity(ctx)
                                         .orElseThrow(() -> new UnknownEntityBlunder(trickSource))
                                         .getPos())))
-                .map(v -> v.toVector3d());
+                .map(ConvertibleVec3d::toVector3d);
     }
 
     public Vector3dc getSourceOrCasterPos(Trick<?> trickSource, SpellContext ctx) {
@@ -221,7 +258,7 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
             }
         }).orElseGet(
                 () -> ctx.source().getInventory()
-                        .map(inv -> new BridgedSlotHolder(inv))
+                        .map(BridgedSlotHolder::new)
                         .orElseThrow(() -> new NoInventoryBlunder(trickSource))
         );
     }

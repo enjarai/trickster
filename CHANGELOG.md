@@ -1,1 +1,3 @@
+- Nerfed Cracked Quartz Knots. (@enjarai)
+- Added a ploy to move and merge itemstacks. (@enjarai)
 - Fixed fragment weights always being 0. (@aurakle)

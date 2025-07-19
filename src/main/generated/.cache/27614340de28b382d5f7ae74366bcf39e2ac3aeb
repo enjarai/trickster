@@ -1,4 +1,4 @@
-// 1.21	2025-07-18T00:27:15.526466815	Trickster/Model Definitions
+// 1.21	2025-07-19T13:29:50.128092901	Trickster/Model Definitions
 0af8ae55bca54e5baea1b840c12340690af85f5c assets/trickster/models/item/written_scroll_green.json
 25fc9665ae52d7788aa19923c04ba3874290a007 assets/trickster/models/item/scroll_and_quill_orange.json
 b1b58c33f70e10632bb128929a2cc5548313f19a assets/trickster/models/item/ominous_spell_core.json
@@ -64,8 +64,8 @@ ce371fd6383c178fd713cbe03828b8015df480d8 assets/trickster/models/item/scroll_and
 9faf558d1aa0f4946cf100c91b4f2819b7a07538 assets/trickster/models/item/written_scroll_orange.json
 68799707c7a1bba63c5cff3c8dbeec6b44bd06b8 assets/trickster/blockstates/charging_array.json
 9d5d343103d621d1a2f492cec156c06274efdc15 assets/trickster/blockstates/spell_resonator.json
-a9369fdeff6dd9472a8bb5f443ffb4631c146486 assets/trickster/blockstates/inert_spawner.json
 e622027802fd7ffb1c2e6f6d1733f17ed239e61d assets/trickster/models/item/tome_of_tomfoolery.json
+a9369fdeff6dd9472a8bb5f443ffb4631c146486 assets/trickster/blockstates/inert_spawner.json
 96809df525387fe221827afd762b90062300440f assets/trickster/models/item/scroll_and_quill_black.json
 4320a21f02ba7db476a7dbf19eaa031ef40ca85c assets/trickster/models/item/scroll_and_quill_green.json
 e7e256d1cc75121b08bfb8a9cf6c6bf4818b559f assets/trickster/models/item/modular_spell_construct.json

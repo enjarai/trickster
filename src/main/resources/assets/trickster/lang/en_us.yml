@@ -241,6 +241,7 @@ trickster:
     get_inventory_size: Ingress of Extent
     drop_stack_from_slot: Ploy of Offering
     swap_slot: Swindler's Ploy
+    move_stack: Organizer's Ploy
     block_from_item: Placement Distortion
     item_from_block: Pickup Distortion
 

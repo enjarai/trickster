@@ -19,8 +19,8 @@ but their cracked variant holds **no mana at all**.
 
 ;;;;;
 
-On the other hand, its ability to accelerate constructs is massively enhanced.
-When inserted into a construct, its casting speed is **doubled**.
+On the other hand, its ability to accelerate constructs is enhanced.
+When inserted into a construct, its casting speed is increased by 50%.
 
 
 However, doing so will vastly limit the construct's capabilities, as it will have no access to mana.

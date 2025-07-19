@@ -126,7 +126,7 @@ public abstract class KnotItem extends Item {
 
         @Override
         public float getConstructExecutionLimitMultiplier(ItemStack stack) {
-            return 2;
+            return 1.5f;
         }
     }
 

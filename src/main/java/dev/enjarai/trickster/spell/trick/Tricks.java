@@ -262,6 +262,7 @@ public class Tricks {
     public static final GetCountInSlotTrick GET_COUNT_IN_SLOT = register("get_count_in_slot", new GetCountInSlotTrick());
     public static final DropStackFromSlotTrick DROP_STACK_FROM_SLOT = register("drop_stack_from_slot", new DropStackFromSlotTrick());
     public static final SwapSlotTrick SWAP_SLOT = register("swap_slot", new SwapSlotTrick());
+    public static final MoveStackTrick MOVE_STACK = register("move_stack", new MoveStackTrick());
     public static final BlockFromItemTrick BLOCK_FROM_ITEM = register("block_from_item", new BlockFromItemTrick());
     public static final ItemFromBlockTrick ITEM_FROM_BLOCK = register("item_from_block", new ItemFromBlockTrick());
 
