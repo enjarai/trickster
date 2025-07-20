@@ -29,3 +29,13 @@
   margin-top: 1em;
   transform: translateX(5px);
 }
+
+.spell-preview-iframe {
+   width: 80%;
+   aspect-ratio: 1;
+   margin: auto;
+   display: block;
+   margin-bottom: 2em;
+   margin-top: 2em;
+   border: solid 4px var(--base01);
+ }

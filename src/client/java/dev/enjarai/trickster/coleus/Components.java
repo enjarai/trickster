@@ -3,16 +3,11 @@ package dev.enjarai.trickster.coleus;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.type.Signature;
-import j2html.tags.DomContent;
 import j2html.tags.Tag;
-import j2html.tags.specialized.SpanTag;
 import org.joml.Vector2f;
-
-import java.nio.file.Path;
 
 import static dev.enjarai.trickster.render.SpellCircleRenderer.*;
 import static j2html.TagCreator.tag;
-import j2html.tags.Tag;
 import static mod.master_bw3.coleus.Components.text;
 
 public class Components {

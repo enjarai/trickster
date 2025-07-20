@@ -10,12 +10,13 @@ import io.wispforest.owo.ui.core.Component;
 import io.wispforest.owo.ui.core.Insets;
 import io.wispforest.owo.ui.core.Sizing;
 import j2html.tags.DomContent;
+import j2html.tags.UnescapedText;
 import mod.master_bw3.coleus.PageContext;
 import mod.master_bw3.coleus.SearchEntry;
 import net.minecraft.util.Identifier;
 
-import java.nio.file.Path;
-import java.util.ArrayList;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -33,15 +34,6 @@ public class TricksterTemplateExpanders {
         if (!properties.containsKey("pattern")) return text("");
 
         Pattern pattern = Pattern.from(Arrays.stream(properties.get("pattern").split(",")).map(s -> Byte.valueOf(s, 10)).toList());
-
-        var trick = Tricks.lookup(pattern);
-
-        String patternName;
-        if (trick != null) {
-            patternName = trick.getName().getString();
-        } else {
-            patternName = Integer.toString(pattern.toInt());
-        }
 
         var div = div().withClass("trick");
         if (properties.containsKey("title")) {
@@ -65,7 +57,6 @@ public class TricksterTemplateExpanders {
         if (!properties.containsKey("trick-id")) return text("");
 
         Identifier trickId = Identifier.of(properties.get("trick-id"));
-        //var trickElementId = trickId.toString().replace(':', '-');
         Trick<?> trick = Tricks.REGISTRY.get(trickId);
 
         context.addSearchEntry(new SearchEntry(
@@ -105,4 +96,40 @@ public class TricksterTemplateExpanders {
 
         return trickContainer;
     }
+
+    public static DomContent spellPreviewTemplate(Map<String, String> properties, PageContext context) {
+        if (!properties.containsKey("spell")) return text("");
+
+        var spellString = properties.get("spell");
+        var urlEncodedSpellString = URLEncoder.encode(spellString, StandardCharsets.UTF_8);
+
+        return div().withClass("spell-preview").with(
+                iframe()
+
+                        .withSrc("https://trickster-studio.maplesyrum.me/viewer/?fixed=false&spell=" + urlEncodedSpellString)
+                        .attr("allowtransparency", "true")
+                        .withClass("spell-preview-iframe"),
+                script(new UnescapedText(
+                    """
+                    (() => {
+                        const currentScript = document.currentScript;
+                        const parent = currentScript.parentElement;
+                        const iframeElement = parent.querySelector(".spell-preview-iframe");
+                        const pageElement = document.getElementById("page");
+
+                        iframeElement.addEventListener("mouseenter", () => {
+                          pageElement.dataset.originalOverflow = pageElement.style.overflow;
+                          pageElement.style.overflow = "hidden";
+                        });
+
+                        iframeElement.addEventListener("mouseleave", () => {
+                          pageElement.style.overflow = pageElement.dataset.originalOverflow || "";
+                        });
+                    })()
+                    """
+                ))
+        );
+    }
+
+
 }
