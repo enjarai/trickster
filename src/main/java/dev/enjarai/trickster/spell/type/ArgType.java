@@ -30,7 +30,8 @@ public interface ArgType<T> {
     MutableText asText();
 
     default List<Fragment> isolate(int start, List<Fragment> fragments) {
-        return fragments.subList(start, argc(fragments));
+        fragments = fragments.subList(start, fragments.size());
+        return fragments.subList(0, argc(fragments));
     }
 
     default boolean isolateAndMatch(List<Fragment> fragments) {

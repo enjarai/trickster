@@ -37,7 +37,7 @@ public class VariadicArgType<T> implements ArgType<List<T>> {
 
         if (argc != 0) {
             for (int i = 0; i < fragments.size() / argc; i++) {
-                result.add(type.compose(trick, ctx, isolate(i * argc, fragments)));
+                result.add(type.compose(trick, ctx, type.isolate(i * argc, fragments)));
             }
         }
 
@@ -72,7 +72,7 @@ public class VariadicArgType<T> implements ArgType<List<T>> {
         }
 
         for (int i = 0; i < fragments.size() / argc; i++) {
-            if (!type.match(isolate(i * argc, fragments))) {
+            if (!type.match(type.isolate(i * argc, fragments))) {
                 return false;
             }
         }

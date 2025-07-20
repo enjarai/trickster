@@ -1,8 +1,11 @@
 package dev.enjarai.trickster.block;
 
+import dev.enjarai.trickster.Trickster;
+import dev.enjarai.trickster.item.KnotItem;
 import dev.enjarai.trickster.item.component.ManaComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.*;
+import dev.enjarai.trickster.spell.execution.TickData;
 import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.execution.executor.ErroredSpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.BlockSpellSource;
@@ -100,8 +103,16 @@ public class SpellConstructBlockEntity extends BlockEntity implements SpellColor
                 if (!(executor instanceof ErroredSpellExecutor)) {
                     var error = Optional.<Text>empty();
 
+                    boolean canUseMana = true;
+                    var executionLimit = Trickster.CONFIG.maxExecutionsPerSpellPerTick();
+                    if (stack.getItem() instanceof KnotItem knotItem) {
+                        executionLimit = (int) (executionLimit * knotItem.getConstructExecutionLimitMultiplier(stack));
+                        //noinspection DataFlowIssue
+                        canUseMana = stack.get(ModComponents.MANA).pool().getMax(serverWorld) > 0;
+                    }
+
                     try {
-                        if (executor.run(source).isPresent()) {
+                        if (executor.run(source, new TickData().withCanUseMana(canUseMana).withExecutionLimit(executionLimit)).isPresent()) {
                             executor = null;
                             updateClient = true;
                         }
@@ -110,11 +121,12 @@ public class SpellConstructBlockEntity extends BlockEntity implements SpellColor
                                 blunder.createMessage()
                                         .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")")
                         );
-                    } catch (Exception e) {
+                    } catch (Throwable e) {
                         error = Optional.of(
                                 Text.literal("Uncaught exception in spell: " + e.getMessage())
                                         .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")")
                         );
+                        Trickster.LOGGER.error("Uncaught exception in spell", e);
                     }
 
                     error.ifPresent(e -> {
@@ -143,14 +155,14 @@ public class SpellConstructBlockEntity extends BlockEntity implements SpellColor
             var fragment = getComponents().get(ModComponents.FRAGMENT).value();
 
             if (fragment instanceof SpellPart spell) {
-                if (
-                    executor == null
-                            || !spell.equals(executor.spell())
-                            || executor instanceof ErroredSpellExecutor
-                ) {
-                    executor = new DefaultSpellExecutor(spell, List.of());
-                    markDirtyAndUpdateClients();
-                }
+                //                if (
+                //                    executor == null
+                //                            || !spell.equals(executor.spell())
+                //                            || executor instanceof ErroredSpellExecutor
+                //                ) {
+                executor = new DefaultSpellExecutor(spell, List.of());
+                markDirtyAndUpdateClients();
+                //                }
             }
         }
     }

@@ -10,6 +10,7 @@
     "Submission Stratagem",
     "Distortion of Wholes",
     "Distortion of Supremacy",
+    "Distortion of Inferiority",
     "Noble Stratagem",
     "Insignificance Stratagem",
     "Distortion of Grandeur",
@@ -93,6 +94,12 @@ Returns the remainder of dividing the first number by the second number.
 <|trick@trickster:templates|trick-id=trickster:power|>
 
 Returns the first number raised to the power of the second.
+
+;;;;;
+
+<|trick@trickster:templates|trick-id=trickster:logarithm|>
+
+Given two numbers, returns the power that the first number must be raised by to equal the second.
 
 ;;;;;
 

@@ -6,7 +6,8 @@
   "additional_search_terms": [
     "Argumentative Distortion",
     "Decaying Distortion",
-    "Interpretation Distortion"
+    "Interpretation Distortion",
+    "Distortion of Memory"
   ]
 }
 ```
@@ -30,3 +31,9 @@ Combines all given inputs into a single, arbitrary number. The same inputs will 
 <|trick@trickster:templates|trick-id=trickster:escape_pattern|>
 
 Converts a pattern into a literal representation of itself, to be used when constructing spells.
+
+;;;;;
+
+<|trick@trickster:templates|trick-id=trickster:weight|>
+
+Returns a number from zero to one indicating how close the given fragment is to being overweight.

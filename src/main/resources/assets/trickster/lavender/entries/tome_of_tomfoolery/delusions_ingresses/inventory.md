@@ -11,7 +11,9 @@
     "Cranium Delusion",
     "Ingress of Authority",
     "Crowning Ingress",
-    "Ingress of Plenitude"
+    "Ingress of Plenitude",
+    "Collector's Ingress",
+    "Ingress of Extent"
   ]
 }
 ```
@@ -32,7 +34,7 @@ Returns the type of item that the given slot contains.
 
 <|trick@trickster:templates|trick-id=trickster:other_hand|>
 
-Returns the type of item in the caster's other hand.
+Returns the type of item in the caster's offhand.
 
 ;;;;;
 
@@ -45,13 +47,30 @@ Slot references either use the position of the caster at the time of move, or th
 
 <|trick@trickster:templates|trick-id=trickster:other_hand_slot|>
 
-Returns a slot reference of the caster's other hand.
+Returns a slot reference of the caster's offhand.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:get_inventory_slot|>
 
 Constructs and returns a slot from an index and an inventory source, using the caster if no source is given.
+
+;;;;;
+
+<|trick@trickster:templates|trick-id=trickster:get_inventory_slots|>
+
+Returns a list of slots from an inventory source.
+
+;;;;;
+
+If no source is given, the caster's inventory is used. 
+An item or list of items may be passed as a filter to get only relevant slots from the inventory source.
+
+;;;;;
+
+<|trick@trickster:templates|trick-id=trickster:get_inventory_size|>
+
+Returns the number of slots in an inventory source, using the caster if no source is given.
 
 ;;;;;
 

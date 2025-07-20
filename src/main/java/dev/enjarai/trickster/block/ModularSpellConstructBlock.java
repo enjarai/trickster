@@ -175,7 +175,7 @@ public class ModularSpellConstructBlock extends BlockWithEntity {
     private static void tryAddCore(World world, BlockPos pos, PlayerEntity player, ModularSpellConstructBlockEntity blockEntity, ItemStack stack, int slot) {
         if (!world.isClient) {
             player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
-            blockEntity.setStack(slot, stack.copyAndEmpty());
+            blockEntity.setStack(slot, stack.split(1));
             world.playSound(null, pos, SoundEvents.ITEM_BOOK_PUT, SoundCategory.BLOCKS, 1.0F, 1.0F);
         }
     }

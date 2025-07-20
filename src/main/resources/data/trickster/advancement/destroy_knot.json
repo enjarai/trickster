@@ -1,0 +1,22 @@
+{
+  "display": {
+    "icon": {
+      "id": "trickster:cracked_diamond_knot"
+    },
+    "title": {
+      "text": "What Did You Think Would Happen?"
+    },
+    "description": {
+      "text": "Completely destroy a Knot"
+    },
+    "frame": "task",
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "trickster:crack_knot",
+  "criteria": {
+    "destroy_knot": {
+      "trigger": "trickster:destroy_knot"
+    }
+  }
+}

@@ -7,6 +7,7 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.trick.basic.*;
 import dev.enjarai.trickster.spell.trick.block.*;
 import dev.enjarai.trickster.spell.trick.bool.*;
+import dev.enjarai.trickster.spell.trick.debug.DebugLogTrick;
 import dev.enjarai.trickster.spell.trick.dimension.GetDimensionTrick;
 import dev.enjarai.trickster.spell.trick.entity.*;
 import dev.enjarai.trickster.spell.trick.entity.query.*;
@@ -35,6 +36,7 @@ import dev.enjarai.trickster.spell.trick.raycast.RaycastEntityTrick;
 import dev.enjarai.trickster.spell.trick.tree.*;
 import dev.enjarai.trickster.spell.trick.vector.*;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.item.Items;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -78,6 +80,9 @@ public class Tricks {
     public static final SupplierTrick SUPPLIER = register("supplier", new SupplierTrick());
     public static final KillThreadTrick KILL_THREAD = register("kill_thread", new KillThreadTrick());
     public static final GetCurrentThreadTrick CURRENT_THREAD = register("current_thread", new GetCurrentThreadTrick());
+    public static final GetSpellFromSlotTrick THREAD_ROOT = register("thread_root", new GetSpellFromSlotTrick());
+    public static final GetSpellStateTrick SPELL_STATE = register("spell_state", new GetSpellStateTrick());
+    public static final GetWeightTrick WEIGHT = register("weight", new GetWeightTrick());
     public static final GetAllArgumentsTrick GET_ALL_ARGUMENTS = register("get_all_arguments", new GetAllArgumentsTrick());
     public static final LoadArgumentTrick LOAD_ARGUMENT_1 = register("load_argument_1", new LoadArgumentTrick(Pattern.of(4, 1), 0));
     public static final LoadArgumentTrick LOAD_ARGUMENT_2 = register("load_argument_2", new LoadArgumentTrick(Pattern.of(4, 2), 1));
@@ -157,6 +162,7 @@ public class Tricks {
     public static final MaxTrick MAX = register("max", new MaxTrick());
     public static final MinTrick MIN = register("min", new MinTrick());
     public static final PowerTrick POWER = register("power", new PowerTrick());
+    public static final LogTrick LOG = register("logarithm", new LogTrick());
     public static final SqrtTrick SQRT = register("sqrt", new SqrtTrick());
     public static final SinTrick SIN = register("sin", new SinTrick());
     public static final CosTrick COS = register("cos", new CosTrick());
@@ -251,11 +257,15 @@ public class Tricks {
     public static final GetManaInSlotTrick GET_MANA_IN_SLOT = register("get_mana_in_slot", new GetManaInSlotTrick());
     public static final GetMaxManaInSlotTrick GET_MAX_MANA_IN_SLOT = register("get_max_mana_in_slot", new GetMaxManaInSlotTrick());
     public static final GetInventorySlotTrick GET_INVENTORY_SLOT = register("get_inventory_slot", new GetInventorySlotTrick());
+    public static final GetInventorySizeTrick GET_INVENTORY_SIZE = register("get_inventory_size", new GetInventorySizeTrick());
+    public static final GetInventorySlotsTrick GET_INVENTORY_SLOTS = register("get_inventory_slots", new GetInventorySlotsTrick());
     public static final GetCountInSlotTrick GET_COUNT_IN_SLOT = register("get_count_in_slot", new GetCountInSlotTrick());
     public static final DropStackFromSlotTrick DROP_STACK_FROM_SLOT = register("drop_stack_from_slot", new DropStackFromSlotTrick());
     public static final SwapSlotTrick SWAP_SLOT = register("swap_slot", new SwapSlotTrick());
+    public static final MoveStackTrick MOVE_STACK = register("move_stack", new MoveStackTrick());
     public static final BlockFromItemTrick BLOCK_FROM_ITEM = register("block_from_item", new BlockFromItemTrick());
     public static final ItemFromBlockTrick ITEM_FROM_BLOCK = register("item_from_block", new ItemFromBlockTrick());
+    public static final GetMaxCount GET_MAX_COUNT = register("get_max_count", new GetMaxCount());
 
     // Projectile
     public static final SummonArrowTrick SUMMON_ARROW = register("summon_arrow", new SummonArrowTrick());
@@ -289,6 +299,12 @@ public class Tricks {
     public static final PushManaTrick PUSH_MANA = register("push_mana", new PushManaTrick());
     public static final PullManaTrick PULL_MANA = register("pull_mana", new PullManaTrick());
     public static final DrainMatterTrick DRAIN_MATTER = register("drain_matter", new DrainMatterTrick());
+
+    static {
+        if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
+            register("debug_log", new DebugLogTrick());
+        }
+    }
 
     @ApiStatus.Internal
     public static <T extends Trick<?>> T register(String path, T trick) {
