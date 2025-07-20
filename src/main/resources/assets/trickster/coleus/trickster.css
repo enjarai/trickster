@@ -12,6 +12,8 @@
   width: 20em;
   fill: var(--base05);
   margin-top: 1em;
+  display: block;
+  margin: auto;
 }
 
 .pattern line {
@@ -20,7 +22,7 @@
 }
 
 .trick .signature {
-  margin-left: 15px;
+  margin: 0 15px;
 }
 
 .cost-rule .embedded-component {

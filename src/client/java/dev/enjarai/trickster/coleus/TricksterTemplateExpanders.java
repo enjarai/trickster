@@ -66,32 +66,26 @@ public class TricksterTemplateExpanders {
                 List.of()
                 ));
 
-        var manaCostContainer = div().withClass("cost-rule embedded-component-container");
         var trickContainer = div().withClass("trick").withId(trickId.toString())
                 .with(h2(trick.getName().getString()), Components.pattern(trick.getPattern(), 400))
-                .with(trick.getSignatures().stream().flatMap(signature -> Arrays.stream(new DomContent[]{br(), br(), Components.signature(signature).withClass("signature")})))
-                .with(manaCostContainer);
+                .with(trick.getSignatures().stream().flatMap(signature -> Arrays.stream(new DomContent[]{br(), br(), Components.signature(signature).withClass("signature")})));
 
         var texture = properties.getOrDefault("texture", properties.get("book-texture"));
         var hasCost = properties.containsKey("cost");
-        Component component;
         if (hasCost) {
-            component = new ManaCostComponent(properties.get("cost"), Identifier.of(texture));
-        } else {
-            component = texture(Identifier.of(texture), 54, 183, 109,
-                            3, 512, 256).blend(true);
-        }
-        manaCostContainer.with(
-                owo(Containers.verticalFlow(Sizing.fixed(112), Sizing.fixed(8)).child(component).padding(Insets.of(2, 0, 0, 0)),
-                        context.getPagePath(), context.getAssetsDir().resolve(trickId.getNamespace()).resolve(trickId.getPath() + "-mana-cost.png"),
-                        500, 2).withClass("embedded-component")
-        );
-        if (hasCost) {
+            var manaCostContainer = div().withClass("cost-rule embedded-component-container");
+            FlowLayout component = new ManaCostComponent(properties.get("cost"), Identifier.of(texture));
             manaCostContainer.with(
-                    tooltip(((FlowLayout) component).childById(Component.class, "cost-texture").tooltip(),
+                    owo(Containers.verticalFlow(Sizing.fixed(112), Sizing.fixed(8)).child(component).padding(Insets.of(2, 0, 0, 0)),
+                            context.getPagePath(), context.getAssetsDir().resolve(trickId.getNamespace()).resolve(trickId.getPath() + "-mana-cost.png"),
+                            500, 2).withClass("embedded-component"),
+                    tooltip(component.childById(Component.class, "cost-texture").tooltip(),
                             context.getPagePath(), context.getAssetsDir().resolve(trickId.getNamespace()).resolve(trickId.getPath() + "-mana-cost-tooltip.png"),
                             2).withClass("embedded-component-tooltip")
             );
+            trickContainer.with(manaCostContainer);
+        } else {
+            trickContainer.with(hr());
         }
 
         return trickContainer;
@@ -104,9 +98,7 @@ public class TricksterTemplateExpanders {
         var urlEncodedSpellString = URLEncoder.encode(spellString, StandardCharsets.UTF_8);
 
         return div().withClass("spell-preview").with(
-                iframe()
-
-                        .withSrc("https://trickster-studio.maplesyrum.me/viewer/?fixed=false&spell=" + urlEncodedSpellString)
+                iframe().withSrc("https://trickster-studio.maplesyrum.me/viewer/?fixed=false&spell=" + urlEncodedSpellString)
                         .attr("allowtransparency", "true")
                         .withClass("spell-preview-iframe"),
                 script(new UnescapedText(
