@@ -159,25 +159,25 @@ yamlang {
     inputDir = "assets/trickster/lang"
 }
 
-//compileJava.dependsOn 'spotlessApply'
-//spotless {
-//    ratchetFrom 'origin/master'
-//    encoding 'UTF-8'
-//
-//    format 'misc', {
-//        target '*.gradle', '.gitattributes', '.gitignore', 'shell.nix'
-//
-//        trimTrailingWhitespace()
-//        leadingTabsToSpaces()
-//        endWithNewline()
-//    }
-//
-//    java {
-//        toggleOffOn()
-//        removeUnusedImports()
-//        eclipse('4.26').configFile('eclipse-prefs.properties')
-//    }
-//}
+compileJava.dependsOn 'spotlessApply'
+spotless {
+    ratchetFrom 'origin/master'
+    encoding 'UTF-8'
+
+    format 'misc', {
+        target '*.gradle', '.gitattributes', '.gitignore', 'shell.nix'
+
+        trimTrailingWhitespace()
+        leadingTabsToSpaces()
+        endWithNewline()
+    }
+
+    java {
+        toggleOffOn()
+        removeUnusedImports()
+        eclipse('4.26').configFile('eclipse-prefs.properties')
+    }
+}
 
 // configure the maven publication
 publishing {
