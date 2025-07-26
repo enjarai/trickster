@@ -1,7 +1,6 @@
 package dev.enjarai.trickster.screen.owo;
 
 import io.wispforest.owo.ui.component.Components;
-import io.wispforest.owo.ui.container.Containers;
 import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.core.HorizontalAlignment;
 import io.wispforest.owo.ui.core.Positioning;
@@ -20,7 +19,7 @@ public class ManaCostComponent extends FlowLayout {
         child(Components.texture(bookTexture, 54, 240, 109, 5, 512, 256)
                 .blend(true)
                 .id("cost-texture")
-                .positioning(Positioning.absolute(2, -1))
+                .positioning(Positioning.absolute(0, -1))
                 .tooltip(Text.literal("Costs mana\n")
                 .append(Text.literal(costCalculation)
                 .styled(s -> s.withFormatting(Formatting.GRAY))))).allowOverflow(true)

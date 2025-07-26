@@ -4,6 +4,7 @@ import dev.enjarai.trickster.screen.owo.ManaCostComponent;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.trick.Tricks;
+import io.wispforest.owo.ui.component.TextureComponent;
 import io.wispforest.owo.ui.container.Containers;
 import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.core.Component;
@@ -70,10 +71,10 @@ public class TricksterTemplateExpanders {
                 .with(h2(trick.getName().getString()), Components.pattern(trick.getPattern(), 400))
                 .with(trick.getSignatures().stream().flatMap(signature -> Arrays.stream(new DomContent[]{br(), br(), Components.signature(signature).withClass("signature")})));
 
+        var manaCostContainer = div().withClass("cost-rule embedded-component-container");
         var texture = properties.getOrDefault("texture", properties.get("book-texture"));
         var hasCost = properties.containsKey("cost");
         if (hasCost) {
-            var manaCostContainer = div().withClass("cost-rule embedded-component-container");
             FlowLayout component = new ManaCostComponent(properties.get("cost"), Identifier.of(texture));
             manaCostContainer.with(
                     owo(Containers.verticalFlow(Sizing.fixed(112), Sizing.fixed(8)).child(component).padding(Insets.of(2, 0, 0, 0)),
@@ -83,10 +84,19 @@ public class TricksterTemplateExpanders {
                             context.getPagePath(), context.getAssetsDir().resolve(trickId.getNamespace()).resolve(trickId.getPath() + "-mana-cost-tooltip.png"),
                             2).withClass("embedded-component-tooltip")
             );
-            trickContainer.with(manaCostContainer);
         } else {
-            trickContainer.with(hr());
+            TextureComponent component = texture(
+                    Identifier.of(texture), 54, 183, 109,
+                            3, 512, 256)
+                    .blend(true);
+
+            manaCostContainer.with(
+                    owo(Containers.verticalFlow(Sizing.fixed(112), Sizing.fixed(8)).child(component).padding(Insets.of(2, 0, 0, 0)),
+                            context.getPagePath(), context.getAssetsDir().resolve(trickId.getNamespace()).resolve(trickId.getPath() + "-mana-cost.png"),
+                            500, 2).withClass("embedded-component")
+            );
         }
+        trickContainer.with(manaCostContainer);
 
         return trickContainer;
     }

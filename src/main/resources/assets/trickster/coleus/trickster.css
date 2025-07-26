@@ -23,13 +23,14 @@
 
 .trick .signature {
   margin: 0 15px;
+  max-width: 450px;
+  display: inline-block;
 }
 
 .cost-rule .embedded-component {
-  width: 100%;
+  width: 500px;
   image-rendering: crisp-edges;
   margin-top: 1em;
-  transform: translateX(5px);
 }
 
 .spell-preview-iframe {
