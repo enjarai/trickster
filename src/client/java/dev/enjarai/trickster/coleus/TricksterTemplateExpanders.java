@@ -54,9 +54,43 @@ public class TricksterTemplateExpanders {
         return Components.pattern(trick.getPattern(), 400);
     }
 
-    public static DomContent trickTemplate(Map<String, String> properties, PageContext context) {
-        if (!properties.containsKey("trick-id")) return text("");
+    public static DomContent revisionTemplate(Map<String, String> properties, PageContext context) {
+        var title = properties.get("title");
+        var id = title.toLowerCase().replaceAll("[^a-z0-9]", "");
+        Pattern pattern = Pattern.from(Arrays.stream(properties.get("pattern").split(",")).map(s -> Byte.valueOf(s, 10)).toList());
 
+        context.addSearchEntry(new SearchEntry(
+                title,
+                "",
+                context.getBookDir().relativize(context.getPagePath()) + "#" + id,
+                List.of()
+        ));
+
+        var trickContainer = div().withClass("trick").withId(id)
+                .with(
+                        h2(title),
+                        Components.pattern(pattern, 400),
+                        span("(Scribing Pattern)").withClass("gray")
+                );
+
+        var manaCostContainer = div().withClass("cost-rule embedded-component-container");
+        var texture = properties.getOrDefault("texture", properties.get("book-texture"));
+
+        TextureComponent component = texture(
+                Identifier.of(texture), 54, 183, 109,
+                3, 512, 256)
+                .blend(true);
+        manaCostContainer.with(
+                owo(Containers.verticalFlow(Sizing.fixed(112), Sizing.fixed(8)).child(component).padding(Insets.of(2, 0, 0, 0)),
+                        context.getPagePath(), context.getAssetsDir().resolve(id + "-mana-cost.png"),
+                        500, 2).withClass("embedded-component")
+        );
+        trickContainer.with(manaCostContainer);
+
+        return trickContainer;
+    }
+
+    public static DomContent trickTemplate(Map<String, String> properties, PageContext context) {
         Identifier trickId = Identifier.of(properties.get("trick-id"));
         Trick<?> trick = Tricks.REGISTRY.get(trickId);
 

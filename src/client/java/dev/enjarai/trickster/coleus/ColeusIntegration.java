@@ -11,5 +11,6 @@ public class ColeusIntegration {
         HtmlTemplateRegistry.register(Identifier.of("trickster", "ploy"), TricksterTemplateExpanders::trickTemplate);
         HtmlTemplateRegistry.register(Identifier.of("trickster", "spell-preview"), TricksterTemplateExpanders::spellPreviewTemplate);
         HtmlTemplateRegistry.register(Identifier.of("trickster", "spell-preview-unloadable"), TricksterTemplateExpanders::spellPreviewTemplate);
+        HtmlTemplateRegistry.register(Identifier.of("trickster", "revision"), TricksterTemplateExpanders::revisionTemplate);
     }
 }

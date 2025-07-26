@@ -9,6 +9,10 @@
             <trickster.trick-overview texture="{{book-texture}}" trick-id="{{trick-id}}" cost="{{cost}}">
             </trickster.trick-overview>
         </template>
+        <template name="revision">
+            <trickster.trick-overview texture="{{book-texture}}" pattern="{{pattern}}" title="{{title}}" content="(Scribing Pattern)">
+            </trickster.trick-overview>
+        </template>
         <template name="glyph">
             <flow-layout direction="vertical">
                 <children>
