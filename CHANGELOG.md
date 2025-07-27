@@ -1,1 +1,1 @@
-- Added a trick to get the max stack size of an item. (@aurakle)
+- Made it impossible to move "infinite" mana. (@aurakle)
