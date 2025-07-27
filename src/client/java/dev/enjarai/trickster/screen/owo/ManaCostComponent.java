@@ -21,8 +21,9 @@ public class ManaCostComponent extends FlowLayout {
                 .id("cost-texture")
                 .positioning(Positioning.absolute(0, -1))
                 .tooltip(Text.literal("Costs mana\n")
-                .append(Text.literal(costCalculation)
-                .styled(s -> s.withFormatting(Formatting.GRAY))))).allowOverflow(true)
+                        .append(Text.literal(costCalculation)
+                                .styled(s -> s.withFormatting(Formatting.GRAY)))))
+                .allowOverflow(true)
                 .horizontalAlignment(HorizontalAlignment.CENTER);
     }
 }

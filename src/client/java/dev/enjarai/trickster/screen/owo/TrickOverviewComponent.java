@@ -11,7 +11,6 @@ import io.wispforest.owo.ui.parsing.UIParsing;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.util.Colors;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
@@ -28,7 +27,7 @@ public class TrickOverviewComponent extends FlowLayout {
         trick.getName().getSiblings().forEach(s -> name.append(s.copy().formatted(Formatting.DARK_GRAY)));
 
         var signatures = Text.empty();
-        for (var iterator = trick.getSignatures().iterator(); iterator.hasNext(); ) {
+        for (var iterator = trick.getSignatures().iterator(); iterator.hasNext();) {
             var signature = iterator.next();
             signatures = signatures.append(signature.asText());
             if (iterator.hasNext()) {
@@ -57,19 +56,18 @@ public class TrickOverviewComponent extends FlowLayout {
         child(new GlyphComponent(pattern, 50));
 
         child(Components.label(content.styled(s -> s
-                        .withFormatting(Formatting.DARK_GRAY)
-                        .withFont(MinecraftClient.UNICODE_FONT_ID)))
+                .withFormatting(Formatting.DARK_GRAY)
+                .withFont(MinecraftClient.UNICODE_FONT_ID)))
                 .horizontalTextAlignment(HorizontalAlignment.LEFT)
                 .horizontalSizing(Sizing.fill(100))
                 .margins(Insets.of(0, 5, 3, 3)));
-
 
         if (costCalculation != null) {
             child(new ManaCostComponent(costCalculation, bookTexture));
         } else {
             child(Components.texture(
-                            bookTexture, 54, 183, 109,
-                            3, 512, 256)
+                    bookTexture, 54, 183, 109,
+                    3, 512, 256)
                     .blend(true)
             );
         }
@@ -105,7 +103,6 @@ public class TrickOverviewComponent extends FlowLayout {
                             .map(s -> Byte.valueOf(s, 10)).toList()
             );
             var content = Text.literal(element.getAttributeNode("content").getTextContent());
-
 
             return TrickOverviewComponent.of(pattern, title, content, null, texture);
         }

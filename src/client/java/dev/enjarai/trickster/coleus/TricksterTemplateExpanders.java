@@ -99,11 +99,11 @@ public class TricksterTemplateExpanders {
                 trick.getSignatures().stream().map((signature) -> signature.asText().getString()).collect(Collectors.joining("\n")),
                 context.getBookDir().relativize(context.getPagePath()) + "#" + trickId,
                 List.of()
-                ));
+        ));
 
         var trickContainer = div().withClass("trick").withId(trickId.toString())
                 .with(h2(trick.getName().getString()), Components.pattern(trick.getPattern(), 400))
-                .with(trick.getSignatures().stream().flatMap(signature -> Arrays.stream(new DomContent[]{br(), br(), Components.signature(signature).withClass("signature")})));
+                .with(trick.getSignatures().stream().flatMap(signature -> Arrays.stream(new DomContent[] { br(), br(), Components.signature(signature).withClass("signature") })));
 
         var manaCostContainer = div().withClass("cost-rule embedded-component-container");
         var texture = properties.getOrDefault("texture", properties.get("book-texture"));
@@ -121,7 +121,7 @@ public class TricksterTemplateExpanders {
         } else {
             TextureComponent component = texture(
                     Identifier.of(texture), 54, 183, 109,
-                            3, 512, 256)
+                    3, 512, 256)
                     .blend(true);
 
             manaCostContainer.with(
@@ -146,26 +146,25 @@ public class TricksterTemplateExpanders {
                         .attr("allowtransparency", "true")
                         .withClass("spell-preview-iframe"),
                 script(new UnescapedText(
-                    """
-                    (() => {
-                        const currentScript = document.currentScript;
-                        const parent = currentScript.parentElement;
-                        const iframeElement = parent.querySelector(".spell-preview-iframe");
-                        const pageElement = document.getElementById("page");
+                        """
+                                (() => {
+                                    const currentScript = document.currentScript;
+                                    const parent = currentScript.parentElement;
+                                    const iframeElement = parent.querySelector(".spell-preview-iframe");
+                                    const pageElement = document.getElementById("page");
 
-                        iframeElement.addEventListener("mouseenter", () => {
-                          pageElement.dataset.originalOverflow = pageElement.style.overflow;
-                          pageElement.style.overflow = "hidden";
-                        });
+                                    iframeElement.addEventListener("mouseenter", () => {
+                                      pageElement.dataset.originalOverflow = pageElement.style.overflow;
+                                      pageElement.style.overflow = "hidden";
+                                    });
 
-                        iframeElement.addEventListener("mouseleave", () => {
-                          pageElement.style.overflow = pageElement.dataset.originalOverflow || "";
-                        });
-                    })()
-                    """
+                                    iframeElement.addEventListener("mouseleave", () => {
+                                      pageElement.style.overflow = pageElement.dataset.originalOverflow || "";
+                                    });
+                                })()
+                                """
                 ))
         );
     }
-
 
 }
