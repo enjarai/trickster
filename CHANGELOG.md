@@ -1,1 +1,2 @@
 - Made it impossible to move "infinite" mana. (@aurakle)
+- Added Coleus integration. (@Master-Bw3)
