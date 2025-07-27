@@ -1,6 +1,7 @@
 package dev.enjarai.trickster;
 
 import dev.enjarai.trickster.block.ModBlocks;
+import dev.enjarai.trickster.coleus.ColeusIntegration;
 import dev.enjarai.trickster.entity.ModEntities;
 import dev.enjarai.trickster.item.KnotItem;
 import dev.enjarai.trickster.item.component.ModComponents;
@@ -36,6 +37,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
@@ -139,5 +141,9 @@ public class TricksterClient implements ClientModInitializer {
                 ScrollShelfBlockEntityRenderer::getTexturedModelData);
         EntityModelLayerRegistry.registerModelLayer(ModularSpellConstructBlockEntityRenderer.MODEL_LAYER,
                 ModularSpellConstructBlockEntityRenderer::getTexturedModelData);
+
+        if (FabricLoader.getInstance().isModLoaded("coleus")) {
+            ColeusIntegration.init();
+        }
     }
 }
