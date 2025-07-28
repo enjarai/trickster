@@ -1,0 +1,39 @@
+name: Build
+on:
+  push:
+    branches:
+      - master
+jobs:
+  publish_web_book:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+    env:
+      COLEUS_BOOK_GEN: 'true'
+      COLEUS_BOOK_ID: 'trickster:tome_of_tomfoolery'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'microsoft'
+          java-version: '21'
+      - name: Generate Book
+        uses: modmuss50/xvfb-action@v1
+        with:
+          run: ./gradlew runClient --stacktrace
+      - name: Deploy
+        if: github.ref == 'refs/heads/master'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./run/coleus/trickster/tome_of_tomfoolery
+      - name: Upload Site Artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Book
+          path: ./run/coleus/trickster/tome_of_tomfoolery
