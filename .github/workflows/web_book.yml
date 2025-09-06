@@ -32,7 +32,7 @@ jobs:
       #     github_token: ${{ secrets.GITHUB_TOKEN }}
       #     publish_dir: ./run/coleus/trickster/tome_of_tomfoolery
       - name: Deploy to staticinator
-        uses: https://github.com/enjarai/staticinator@master
+        uses: enjarai/staticinator@master
         with:
           folder: ./run/coleus/trickster/tome_of_tomfoolery
           host: ${{ secrets.DEPLOY_HOST }}
