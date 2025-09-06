@@ -32,11 +32,13 @@ jobs:
       #     github_token: ${{ secrets.GITHUB_TOKEN }}
       #     publish_dir: ./run/coleus/trickster/tome_of_tomfoolery
       - name: Deploy to staticinator
-        uses: enjarai/staticinator@master
-        with:
-          folder: ./run/coleus/trickster/tome_of_tomfoolery
-          host: ${{ secrets.DEPLOY_HOST }}
-          token: ${{ secrets.DEPLOY_TOKEN }}
+        env:
+          HOST: ${{ secrets.DEPLOY_HOST }}
+          TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+        run: |
+          tar -czvf "./archive.tar.gz" -C "./run/coleus/trickster/tome_of_tomfoolery" .
+          curl -F "file=@./archive.tar.gz" -H "Token: $TOKEN" -H "Target-Host: $HOST" "https://deploy.enjarai.dev/update" -v
+
       # - name: Upload Site Artifact
       #   uses: actions/upload-artifact@v4
       #   if: always()
