@@ -411,7 +411,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
                 }
 
                 if (!hasLine(i, last)) {
-                    var move = new ArrayList<Byte>(drawingPattern);
+                    var move = new ArrayList<>(drawingPattern);
                     // resolve the middle dot if we are going across
                     if (i == 8 - last) {
                         if (hasLine(i, MIDDLE_DOT) || hasLine(last, MIDDLE_DOT)) {
@@ -425,7 +425,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
                     move.add(i);
                     moves.put(i, move);
                 } else if (drawingPattern.size() >= 2 && drawingPattern.get(drawingPattern.size() - 2) == i) {
-                    var move = new ArrayList<Byte>(drawingPattern);
+                    var move = new ArrayList<>(drawingPattern);
                     move.removeLast();
                     moves.put(i, move);
                 }

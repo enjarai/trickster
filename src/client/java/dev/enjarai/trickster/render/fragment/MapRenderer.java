@@ -1,6 +1,6 @@
 package dev.enjarai.trickster.render.fragment;
 
-import dev.enjarai.trickster.render.SpellCircleRenderer;
+import dev.enjarai.trickster.render.CircleRenderer;
 import dev.enjarai.trickster.spell.fragment.MapFragment;
 import io.vavr.Tuple;
 import net.minecraft.client.MinecraftClient;
@@ -14,7 +14,7 @@ import net.minecraft.util.math.Vec3d;
 public class MapRenderer implements FragmentRenderer<MapFragment> {
     @Override
     public void render(MapFragment fragment, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float radius, float alpha, Vec3d normal, float tickDelta,
-            SpellCircleRenderer delegator) {
+            CircleRenderer delegator) {
         var textRenderer = MinecraftClient.getInstance().textRenderer;
         var texts = fragment.map().map((k, v) -> Tuple.of(k.asFormattedText(), v.asFormattedText()));
 
