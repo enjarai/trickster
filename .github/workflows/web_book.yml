@@ -25,15 +25,21 @@ jobs:
         uses: modmuss50/xvfb-action@v1
         with:
           run: ./gradlew runClient --stacktrace
-      - name: Deploy
-        if: github.ref == 'refs/heads/master'
-        uses: peaceiris/actions-gh-pages@v4
+      # - name: Deploy
+      #   if: github.ref == 'refs/heads/master'
+      #   uses: peaceiris/actions-gh-pages@v4
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     publish_dir: ./run/coleus/trickster/tome_of_tomfoolery
+      - name: Deploy to staticinator
+        uses: https://github.com/enjarai/staticinator@master
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./run/coleus/trickster/tome_of_tomfoolery
-      - name: Upload Site Artifact
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: Book
-          path: ./run/coleus/trickster/tome_of_tomfoolery
+          folder: ./run/coleus/trickster/tome_of_tomfoolery
+          host: ${{ secrets.DEPLOY_HOST }}
+          token: ${{ secrets.DEPLOY_TOKEN }}
+      # - name: Upload Site Artifact
+      #   uses: actions/upload-artifact@v4
+      #   if: always()
+      #   with:
+      #     name: Book
+      #     path: ./run/coleus/trickster/tome_of_tomfoolery
