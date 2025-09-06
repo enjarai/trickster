@@ -1,0 +1,417 @@
+@font-face {
+  font-family: karla;
+  src: url("./Karla-VariableFont_wght.ttf");
+}
+
+html {
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden
+}
+
+body {
+  display: flex;
+  font-family: karla;
+  font-size: 16px;
+  background-color: var(--base00);
+  color: var(--base05);
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+main {
+  width: 62em;
+  max-width: 100vw;
+  margin: auto;
+  padding: 0 1em;
+  box-sizing: border-box;
+}
+
+#outer-page {
+  width: 100%;
+  height: 100%;
+  overflow-y: hidden;
+  overflow-x: clip;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+
+#page {
+  flex-grow: 1;
+  overflow-y: scroll;
+  overflow-x: clip;
+  position: relative;
+  padding-bottom: 20em;
+}
+
+#prev-page, #next-page {
+  position: absolute;
+  width: 5em;
+  height: 100%;
+  top: 0;
+  padding: 0;
+  margin: 0;
+}
+
+#prev-page {
+  left: 0;
+}
+
+#next-page {
+  right: 0;
+}
+
+#prev-page label, #next-page label {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+#prev-page:hover label, #next-page:hover label {
+  background-color: var(--base01)
+}
+
+#prev-page input, #next-page input {
+  display: none;
+}
+
+#prev-page svg, #next-page svg {
+  fill: var(--base05);
+  display: block;
+  margin: 30px;
+}
+
+#prev-page:hover svg, #next-page:hover svg {
+  fill: var(--base06);
+}
+
+@media (max-width: 1600px) {
+  #prev-page, #next-page {
+    display: none;
+  }
+
+  #sidebar[data-toggled="true"] {
+    display: none;
+  }
+}
+
+#mobile-page-nav {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  margin-bottom: 1em;
+}
+
+#prev-page-mobile, #next-page-mobile {
+  width: 5em;
+  height: 3em;
+}
+
+#prev-page-mobile label, #next-page-mobile label {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  background-color: var(--base01);
+  border-radius: 8px;
+}
+
+#prev-page-mobile:hover label, #next-page-mobile:hover label {
+  background-color: var(--base02)
+}
+
+#prev-page-mobile input, #next-page-mobile input {
+  display: none;
+}
+
+#prev-page-mobile svg, #next-page-mobile svg {
+  fill: var(--base05);
+  display: block;
+  margin: 10px;
+}
+
+#next-page-mobile {
+  margin-left: auto;
+}
+
+@media (min-width: 1600px) {
+  #mobile-page-nav {
+    display: none;
+  }
+
+  #sidebar[data-toggled="false"] {
+    display: none;
+  }
+}
+
+
+#search-overlay {
+  box-sizing: border-box;
+  background: var(--base00);
+  border: solid 1px var(--base04);
+  position: absolute;
+  top: 7em;
+  left: 50%;
+  width: 80%;
+  max-width: 50em;
+
+  transform: translateX(-50%);
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  
+  padding: 1em 2em;;
+}
+
+#search {
+  box-sizing: border-box;
+  width: 100%;
+  margin-bottom: 2em;
+  background-color: var(--base01);
+  padding: 0.5em;
+  color: var(--base05);
+  border: solid 1px var(--base04);
+}
+
+#search:focus {
+  border-color: var(--base0C);
+  outline-width: 1px;
+}
+
+#overlay-background {
+  background-color: rgba(0, 0, 0, 0.2);
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 150;
+}
+
+:focus-visible {
+  outline: solid 2px var(--base0C);
+}
+
+a {
+  text-decoration: none;
+}
+
+a:link {
+  color: var(--base0D);
+}
+
+a:visited {
+  color: color-mix(in srgb, var(--base0D), black 10%);
+}
+
+a:hover {
+  color: color-mix(in srgb, var(--base0D), white 10%);
+}
+
+hr {
+  color: var(--base03);
+}
+
+mark {
+  background-color: var(--base0A);
+}
+
+::selection {
+  background-color: var(--base02);
+}
+
+.toolbar {
+  position: relative;
+  z-index: 100;
+  border-bottom: solid 1px var(--base03);
+  padding: 0.5em;
+  background-color: var(--base00);
+  min-width: max-content;
+  display: flex;
+}
+
+
+#menu-button, #search-button {
+  width: 2em;
+  height: 2em;
+  background: transparent;
+  padding: 5px;
+  border: 0;
+}
+
+#menu-button svg, #search-button svg {
+  fill: var(--base05);
+}
+
+#menu-button:hover svg, #search-button:hover svg {
+  fill: var(--base07);
+}
+
+#search-button {
+ padding-top: 7px;  
+  margin-right: 10em;
+}
+
+#theme-select {
+  margin-left: auto;
+  background: none;
+  border: 1px solid var(--base03);
+  color: var(--base05);
+}
+
+#theme-select option {
+    color: var(--base05);
+  background: var(--base00);
+
+}
+
+#sidebar {
+  min-width: calc(min(22em, 80vw));
+  width: 22em;
+  overflow: scroll;
+  height: 100%;
+  border-right: solid 1px var(--base03);
+  padding-top: 1em;
+  box-sizing: border-box;
+}
+
+#sidebar ol {
+  padding-left: 1em;
+  margin: 0;
+}
+
+#sidebar li {
+  margin: 0.5em 0;
+}
+
+#sidebar li strong {
+  font-weight: 800;
+}
+
+.item-spotlight {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.lavender-book_components-item-spotlight {
+  image-rendering: pixelated;
+}
+
+.recipe-preview {
+  margin: auto;
+  display: block;
+}
+
+.embedded-component-container {
+  position: relative;
+  margin: 1em 0;
+}
+
+.embedded-component-tooltip {
+  user-select: none;
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 100%;
+  z-index: 10;
+}
+
+.embedded-component:hover + .embedded-component-tooltip {
+  display: block;
+}
+
+.embedded-component {
+  max-width: 100%;
+}
+
+.hover-text {
+  position: relative;
+}
+
+.hover-text-tooltip {
+  user-select: none;
+  position: absolute;
+  display: none;
+  top: 100%;
+  left: 0;
+  z-index: 10;
+}
+
+.hover-text:hover .hover-text-tooltip:not(:hover) {
+  display: block;
+}
+
+.block-quote {
+  border-left: solid 2px var(--base05);
+  padding-left: 1em;
+  margin: 0.5em 0;
+}
+
+.black {
+  color: var(--base05);
+}
+
+.dark_blue {
+  color: var(--base0D);
+}
+
+.dark_green {
+  color: var(--base0B);
+}
+
+.dark_aqua {
+  color: var(--base0C);
+}
+
+.dark_red {
+  color: var(--base08);
+}
+
+.dark_purple {
+  color: var(--base0E);
+}
+
+.gold {
+  color: var(--base09);
+}
+
+.gray {
+  color: var(--base03);
+}
+
+.dark_gray {
+  color: var(--base04);
+}
+
+.blue {
+  color: var(--base0D);
+}
+
+.green {
+  color: var(--base0B);
+}
+
+.aqua {
+  color: var(--base0C);
+}
+
+.red {
+  color: var(--base08);
+}
+
+.light_purple {
+  color: var(--base0E);
+}
+
+.yellow {
+  color: var(--base0A);
+}
+
+.white {
+  color: var(--base00);
+}
