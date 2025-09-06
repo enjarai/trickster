@@ -1,6 +1,6 @@
 package dev.enjarai.trickster.render.fragment;
 
-import dev.enjarai.trickster.render.SpellCircleRenderer;
+import dev.enjarai.trickster.render.CircleRenderer;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.LightmapTextureManager;
@@ -10,7 +10,8 @@ import net.minecraft.util.math.Vec3d;
 
 public class EntityRenderer implements FragmentRenderer<EntityFragment> {
     @Override
-    public void render(EntityFragment fragment, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float size, float alpha, Vec3d normal, float tickDelta, SpellCircleRenderer delegator) {
+    public void render(EntityFragment fragment, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float size, float alpha, Vec3d normal, float tickDelta,
+            CircleRenderer delegator) {
         var entity = fragment.getEntity(MinecraftClient.getInstance().world, true);
 
         if (entity.isPresent()) {

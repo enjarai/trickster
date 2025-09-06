@@ -1,6 +1,6 @@
 package dev.enjarai.trickster.render.fragment;
 
-import dev.enjarai.trickster.render.SpellCircleRenderer;
+import dev.enjarai.trickster.render.CircleRenderer;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.PatternGlyph;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -13,11 +13,12 @@ import static dev.enjarai.trickster.screen.SpellPartWidget.isCircleClickable;
 
 public class PatternRenderer implements FragmentRenderer<PatternGlyph> {
     @Override
-    public void render(PatternGlyph fragment, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float size, float alpha, Vec3d normal, float tickDelta, SpellCircleRenderer delegator) {
+    public void render(PatternGlyph fragment, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float size, float alpha, Vec3d normal, float tickDelta,
+            CircleRenderer delegator) {
         renderPattern(fragment.pattern(), matrices, vertexConsumers, x, y, size / PATTERN_TO_PART_RATIO, alpha, delegator);
     }
 
-    public static void renderPattern(Pattern pattern, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float size, float alpha, SpellCircleRenderer delegator) {
+    public static void renderPattern(Pattern pattern, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float size, float alpha, CircleRenderer delegator) {
         var pixelSize = size / PART_PIXEL_RADIUS;
 
         var r = delegator.getR();
@@ -60,26 +61,26 @@ public class PatternRenderer implements FragmentRenderer<PatternGlyph> {
         }
 
         //        var pixelSize = size / PART_PIXEL_RADIUS;
-//
-//        for (int i = 0; i < 9; i++) {
-//            var pos = getPatternDotPosition(x, y, i, size);
-//
-//            var isLinked = pattern.contains(i);
-//            var dotSize = pixelSize;
-//
-//            drawFlatPolygon(matrices, vertexConsumers, c -> {
-//                c.accept(pos.x - dotSize, pos.y - dotSize);
-//                c.accept(pos.x - dotSize, pos.y + dotSize);
-//                c.accept(pos.x + dotSize, pos.y + dotSize);
-//                c.accept(pos.x + dotSize, pos.y - dotSize);
-//            }, 0, 0, 0, 0, isLinked ? 0.9f : 0.5f);
-//        }
-//
-//        for (var line : pattern.entries()) {
-//            var now = getPatternDotPosition(x, y, line.p1(), size);
-//            var last = getPatternDotPosition(x, y, line.p2(), size);
-//            drawGlyphLine(matrices, vertexConsumers, last, now, 1, false, 0, 1f, 1f, 1f, alpha);
-//        }
+        //
+        //        for (int i = 0; i < 9; i++) {
+        //            var pos = getPatternDotPosition(x, y, i, size);
+        //
+        //            var isLinked = pattern.contains(i);
+        //            var dotSize = pixelSize;
+        //
+        //            drawFlatPolygon(matrices, vertexConsumers, c -> {
+        //                c.accept(pos.x - dotSize, pos.y - dotSize);
+        //                c.accept(pos.x - dotSize, pos.y + dotSize);
+        //                c.accept(pos.x + dotSize, pos.y + dotSize);
+        //                c.accept(pos.x + dotSize, pos.y - dotSize);
+        //            }, 0, 0, 0, 0, isLinked ? 0.9f : 0.5f);
+        //        }
+        //
+        //        for (var line : pattern.entries()) {
+        //            var now = getPatternDotPosition(x, y, line.p1(), size);
+        //            var last = getPatternDotPosition(x, y, line.p2(), size);
+        //            drawGlyphLine(matrices, vertexConsumers, last, now, 1, false, 0, 1f, 1f, 1f, alpha);
+        //        }
     }
 
     @Override
