@@ -1,0 +1,29 @@
+{
+  "display": {
+    "icon": {
+      "id": "trickster:cracked_quartz_knot"
+    },
+    "title": {
+      "text": "Tick-Tock Goes the Overclock"
+    },
+    "description": {
+      "text": "Crack a Quartz Knot"
+    },
+    "frame": "task",
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "trickster:crack_knot",
+  "criteria": {
+    "pickup_quartz_knot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "trickster:cracked_quartz_knot"
+          }
+        ]
+      }
+    }
+  }
+}

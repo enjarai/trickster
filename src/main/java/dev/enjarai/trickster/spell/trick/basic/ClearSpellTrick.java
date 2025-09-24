@@ -1,6 +1,5 @@
 package dev.enjarai.trickster.spell.trick.basic;
 
-import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
@@ -16,10 +15,10 @@ import java.util.Optional;
 
 public class ClearSpellTrick extends Trick<ClearSpellTrick> {
     public ClearSpellTrick() {
-        super(Pattern.of(1, 4, 5, 8, 7, 6, 3, 4), Signature.of(FragmentType.SLOT.optionalOf(), ClearSpellTrick::run));
+        super(Pattern.of(1, 4, 5, 8, 7, 6, 3, 4), Signature.of(FragmentType.SLOT.optionalOfArg(), ClearSpellTrick::run, FragmentType.VOID));
     }
 
-    public Fragment run(SpellContext ctx, Optional<SlotFragment> optionalSlot) throws BlunderException {
+    public VoidFragment run(SpellContext ctx, Optional<SlotFragment> optionalSlot) throws BlunderException {
         var slot = optionalSlot.or(() -> ctx.source().getOtherHandSlot()).orElseThrow(() -> new NoPlayerBlunder(this));
         var range = ctx.source().getPos().distance(slot.getSourceOrCasterPos(this, ctx));
 

@@ -20,7 +20,13 @@ public class InactiveSpawnerSpellCoreItem extends SpellCoreItem {
         var player = context.getPlayer();
         if (world.getBlockState(pos).isOf(Blocks.SPAWNER) && player != null) {
             world.setBlockState(pos, ModBlocks.INERT_SPAWNER.getDefaultState());
-            player.setStackInHand(context.getHand(), context.getStack().withItem(ModItems.SPAWNER_SPELL_CORE));
+
+            var splitStack = context.getStack().split(1).withItem(ModItems.SPAWNER_SPELL_CORE);
+            if (player.getStackInHand(context.getHand()).isEmpty()) {
+                player.setStackInHand(context.getHand(), splitStack);
+            } else {
+                player.getInventory().offerOrDrop(splitStack);
+            }
             return ActionResult.SUCCESS;
         }
 

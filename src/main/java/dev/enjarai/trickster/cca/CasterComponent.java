@@ -30,10 +30,7 @@ import net.minecraft.world.World;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 public class CasterComponent implements ServerTickingComponent, AutoSyncedComponent {
     private final PlayerEntity player;
@@ -149,12 +146,12 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
         buf.write(SPELL_DATA_ENDEC, runningSpellData);
     }
 
-    public int queueSpell(SpellPart spell, List<Fragment> arguments) {
+    public Optional<Integer> queueSpell(SpellPart spell, List<Fragment> arguments) {
         playCastSound(0.8f, 0.1f);
         return executionManager.queue(spell, arguments);
     }
 
-    public int queueCollarSpell(SpellPart spell, List<Fragment> arguments) {
+    public Optional<Integer> queueCollarSpell(SpellPart spell, List<Fragment> arguments) {
         playCastSound(0.8f, 0.1f);
         return collarExecutionManager.queue(spell, arguments);
     }

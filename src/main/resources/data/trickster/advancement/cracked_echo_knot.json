@@ -7,7 +7,7 @@
       "text": "Broken and Alone"
     },
     "description": {
-      "text": "Find a Cracked Echo Knot"
+      "text": "Find or create a Cracked Echo Knot"
     },
     "frame": "task",
     "announce_to_chat": true,

@@ -1,6 +1,7 @@
 package dev.enjarai.trickster;
 
 import dev.enjarai.trickster.block.ModBlocks;
+import dev.enjarai.trickster.coleus.ColeusIntegration;
 import dev.enjarai.trickster.entity.ModEntities;
 import dev.enjarai.trickster.item.KnotItem;
 import dev.enjarai.trickster.item.component.ModComponents;
@@ -20,10 +21,13 @@ import dev.enjarai.trickster.render.fragment.FragmentRenderer;
 import dev.enjarai.trickster.screen.ModHandledScreens;
 import dev.enjarai.trickster.screen.ScrollAndQuillScreen;
 import dev.enjarai.trickster.screen.SignScrollScreen;
+import dev.enjarai.trickster.screen.md.ObfuscatedFeature;
 import dev.enjarai.trickster.screen.owo.GlyphComponent;
 import dev.enjarai.trickster.screen.owo.ItemTagComponent;
 import dev.enjarai.trickster.screen.owo.SpellPreviewComponent;
+import dev.enjarai.trickster.screen.owo.TrickOverviewComponent;
 import io.wispforest.accessories.api.client.AccessoriesRendererRegistry;
+import io.wispforest.lavender.client.LavenderBookScreen;
 import io.wispforest.owo.ui.parsing.UIParsing;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
@@ -33,14 +37,17 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 
+import java.util.List;
+
 public class TricksterClient implements ClientModInitializer {
-    public static final MerlinKeeperTracker merlinKeeperTracker = new MerlinKeeperTracker(100);
+    public static final MerlinKeeperTracker merlinKeeperTracker = new MerlinKeeperTracker(20);
 
     @Override
     public void onInitializeClient() {
@@ -63,10 +70,14 @@ public class TricksterClient implements ClientModInitializer {
 
         EntityRendererRegistry.register(ModEntities.LEVITATING_BLOCK, LevitatingBlockEntityRenderer::new);
 
+        UIParsing.registerFactory(Trickster.id("trick-overview"), TrickOverviewComponent::parse);
         UIParsing.registerFactory(Trickster.id("glyph"), GlyphComponent::parseTrick);
         UIParsing.registerFactory(Trickster.id("pattern"), GlyphComponent::parseList);
         UIParsing.registerFactory(Trickster.id("spell-preview"), SpellPreviewComponent::parse);
         UIParsing.registerFactory(Trickster.id("item-tag"), ItemTagComponent::parse);
+
+        LavenderBookScreen.registerFeatureFactory(Trickster.id("tome_of_tomfoolery"),
+                componentSource -> List.of(new ObfuscatedFeature()));
 
         ParticleFactoryRegistry.getInstance().register(ModParticles.PROTECTED_BLOCK,
                 ProtectedBlockParticle.Factory::new);
@@ -100,7 +111,7 @@ public class TricksterClient implements ClientModInitializer {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (client.world != null && client.world.getTime() % 20 == 0
                     && client.player != null
-                    && (client.player.getMainHandStack().isOf(ModItems.QUARTZ_KNOT) || client.player.getOffHandStack().isOf(ModItems.QUARTZ_KNOT))) {
+                    && (client.player.getMainHandStack().isIn(ModItems.TICK_TOCK) || client.player.getOffHandStack().isIn(ModItems.TICK_TOCK))) {
                 client.player.playSound(SoundEvents.BLOCK_COMPARATOR_CLICK, 0.1f, client.world.getTime() % 40 == 0 ? 2 : 1.7f);
             }
         });
@@ -130,5 +141,9 @@ public class TricksterClient implements ClientModInitializer {
                 ScrollShelfBlockEntityRenderer::getTexturedModelData);
         EntityModelLayerRegistry.registerModelLayer(ModularSpellConstructBlockEntityRenderer.MODEL_LAYER,
                 ModularSpellConstructBlockEntityRenderer::getTexturedModelData);
+
+        if (FabricLoader.getInstance().isModLoaded("coleus")) {
+            ColeusIntegration.init();
+        }
     }
 }

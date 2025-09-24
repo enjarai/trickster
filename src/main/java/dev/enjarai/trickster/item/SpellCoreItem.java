@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public class SpellCoreItem extends Item {
     public SpellCoreItem() {
-        super(new Settings().maxCount(1));
+        super(new Settings().maxCount(4));
     }
 
     //TODO: add javadocs

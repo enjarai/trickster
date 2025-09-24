@@ -1,6 +1,5 @@
 package dev.enjarai.trickster.spell.trick.tree;
 
-import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.PatternGlyph;
 import dev.enjarai.trickster.spell.SpellContext;
@@ -11,10 +10,10 @@ import dev.enjarai.trickster.spell.type.Signature;
 
 public class EscapePatternTrick extends Trick<EscapePatternTrick> {
     public EscapePatternTrick() {
-        super(Pattern.of(1, 5, 7, 3, 1, 4, 3), Signature.of(FragmentType.PATTERN, EscapePatternTrick::run));
+        super(Pattern.of(1, 5, 7, 3, 1, 4, 3), Signature.of(FragmentType.PATTERN, EscapePatternTrick::run, FragmentType.PATTERN_LITERAL));
     }
 
-    public Fragment run(SpellContext ctx, PatternGlyph pattern) throws BlunderException {
+    public Pattern run(SpellContext ctx, PatternGlyph pattern) throws BlunderException {
         return pattern.pattern();
     }
 }

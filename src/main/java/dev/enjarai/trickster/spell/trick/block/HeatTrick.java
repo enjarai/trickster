@@ -2,7 +2,6 @@ package dev.enjarai.trickster.spell.trick.block;
 
 import dev.enjarai.trickster.data.DataLoader;
 import dev.enjarai.trickster.pond.FuelableFurnaceDuck;
-import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlockInvalidBlunder;
@@ -20,10 +19,10 @@ import net.minecraft.world.event.GameEvent;
 
 public class HeatTrick extends Trick<HeatTrick> {
     public HeatTrick() {
-        super(Pattern.of(3, 4, 5, 2, 3, 0, 5, 1, 3), Signature.of(FragmentType.VECTOR, HeatTrick::heat));
+        super(Pattern.of(3, 4, 5, 2, 3, 0, 5, 1, 3), Signature.of(FragmentType.VECTOR, HeatTrick::heat, FragmentType.VECTOR));
     }
 
-    public Fragment heat(SpellContext ctx, VectorFragment pos) throws BlunderException {
+    public VectorFragment heat(SpellContext ctx, VectorFragment pos) throws BlunderException {
         var blockPos = pos.toBlockPos();
         var world = ctx.source().getWorld();
         expectCanBuild(ctx, blockPos);
@@ -31,7 +30,12 @@ public class HeatTrick extends Trick<HeatTrick> {
         var blockState = world.getBlockState(blockPos);
 
         if (CampfireBlock.canBeLit(blockState) || CandleBlock.canBeLit(blockState) || CandleCakeBlock.canBeLit(blockState)) {
-            ctx.useMana(this, 0.001f);
+            if (blockState.contains(CandleBlock.CANDLES)) {
+                var candles = blockState.get(CandleBlock.CANDLES);
+                ctx.useMana(this, candles);
+            } else {
+                ctx.useMana(this, 1);
+            }
 
             world.setBlockState(blockPos, blockState.with(Properties.LIT, true));
             world.emitGameEvent(null, GameEvent.BLOCK_CHANGE, blockPos);

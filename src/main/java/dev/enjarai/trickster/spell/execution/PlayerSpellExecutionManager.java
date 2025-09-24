@@ -44,9 +44,8 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
 
     public SpellQueueResult queueAndCast(SpellSource source, SpellPart spell, List<Fragment> arguments, Optional<MutableManaPool> poolOverride) {
         var executor = new DefaultSpellExecutor(spell, poolOverride.flatMap(pool -> Optional.of(new ExecutionState(arguments, pool))).orElse(new ExecutionState(arguments)));
-        int queued = queue(executor);
 
-        if (queued >= 0) {
+        if (queue(executor).isPresent()) {
             for (var iterator = spells.int2ObjectEntrySet().iterator(); iterator.hasNext();) {
                 var entry = iterator.next();
 
@@ -72,21 +71,21 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
     }
 
     @Override
-    public int queue(SpellExecutor executor) {
+    public Optional<Integer> queue(SpellExecutor executor) {
         for (int i = 0; i < capacity; i++) {
             if (spells.putIfAbsent(i, executor) == null) {
-                return i;
+                return Optional.of(i);
             }
         }
 
         for (int i = 0; i < capacity; i++) {
             if (spells.get(i) instanceof ErroredSpellExecutor) {
                 spells.put(i, executor);
-                return i;
+                return Optional.of(i);
             }
         }
 
-        return -1;
+        return Optional.empty();
     }
 
     public void tick(SpellSource source, ExecutorCallback tickCallback, ExecutorCallback completeCallback, ExecutorCallback errorCallback) {
@@ -109,7 +108,6 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
      * Attempts to run the given entry's SpellExecutor.
      * 
      * @param source TODO
-     * @param entry TODO
      * @param tickCallback TODO
      * @param completeCallback TODO
      * @param errorCallback TODO
@@ -134,11 +132,11 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
             spells.put(key, new ErroredSpellExecutor(executor.spell(), message));
             source.getPlayer().ifPresent(player -> player.sendMessage(message));
             errorCallback.callTheBack(key, executor);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             var message = Text.literal("Uncaught exception in spell: " + e.getMessage())
                     .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")");
 
-            Trickster.LOGGER.warn("Uncaught error in spell:", e);
+            Trickster.LOGGER.error("Uncaught error in spell:", e);
 
             spells.put(key, new ErroredSpellExecutor(executor.spell(), message));
             source.getPlayer().ifPresent(player -> player.sendMessage(message));
@@ -146,6 +144,19 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
         }
 
         return true;
+    }
+
+    @Override
+    public Optional<SpellExecutor> getSpellExecutor(int index) {
+        if (spells.containsKey(index))
+            return Optional.of(spells.get(index));
+        else
+            return Optional.empty();
+    }
+
+    @Override
+    public Optional<SpellPart> getSpell(int index) {
+        return getSpellExecutor(index).map(executor -> executor.spell());
     }
 
     @Override

@@ -1,124 +1,30 @@
 package dev.enjarai.trickster.spell.trick;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import dev.enjarai.trickster.spell.trick.basic.*;
-import dev.enjarai.trickster.spell.trick.block.*;
-import dev.enjarai.trickster.spell.trick.entity.*;
-import dev.enjarai.trickster.spell.trick.entity.query.*;
-import dev.enjarai.trickster.spell.trick.fleck.DeleteFleckTrick;
-import dev.enjarai.trickster.spell.trick.inventory.*;
-import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.Nullable;
-
 import com.mojang.serialization.Lifecycle;
-
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.spell.Pattern;
-import dev.enjarai.trickster.spell.trick.basic.CasterReflectionTrick;
-import dev.enjarai.trickster.spell.trick.basic.CostTrick;
-import dev.enjarai.trickster.spell.trick.basic.FacingReflectionTrick;
-import dev.enjarai.trickster.spell.trick.basic.HotbarReflectionTrick;
-import dev.enjarai.trickster.spell.trick.basic.ManaReflectionTrick;
-import dev.enjarai.trickster.spell.trick.basic.MaxManaReflectionTrick;
-import dev.enjarai.trickster.spell.trick.basic.OnePonyTrick;
-import dev.enjarai.trickster.spell.trick.basic.ReadCrowMindTrick;
-import dev.enjarai.trickster.spell.trick.basic.ReadSpellTrick;
-import dev.enjarai.trickster.spell.trick.basic.ReflectionTrick;
-import dev.enjarai.trickster.spell.trick.basic.RevealTrick;
-import dev.enjarai.trickster.spell.trick.basic.WriteClosedSpellTrick;
-import dev.enjarai.trickster.spell.trick.basic.WriteCrowMindTrick;
-import dev.enjarai.trickster.spell.trick.basic.WriteSpellTrick;
-import dev.enjarai.trickster.spell.trick.block.BreakBlockTrick;
-import dev.enjarai.trickster.spell.trick.block.CanPlaceTrick;
-import dev.enjarai.trickster.spell.trick.block.CheckBlockTrick;
-import dev.enjarai.trickster.spell.trick.block.CheckResonatorTrick;
-import dev.enjarai.trickster.spell.trick.block.ConjureFlowerTrick;
-import dev.enjarai.trickster.spell.trick.block.ConjureLightTrick;
-import dev.enjarai.trickster.spell.trick.block.ConjureWaterTrick;
-import dev.enjarai.trickster.spell.trick.block.CoolTrick;
-import dev.enjarai.trickster.spell.trick.block.ErodeTrick;
-import dev.enjarai.trickster.spell.trick.block.GetBlockHardnessTrick;
-import dev.enjarai.trickster.spell.trick.block.GetRedstonePowerTrick;
-import dev.enjarai.trickster.spell.trick.block.GetLightLevelTrick;
-import dev.enjarai.trickster.spell.trick.block.HeatTrick;
-import dev.enjarai.trickster.spell.trick.block.PlaceBlockTrick;
-import dev.enjarai.trickster.spell.trick.block.PowerResonatorTrick;
-import dev.enjarai.trickster.spell.trick.block.SwapBlockTrick;
-import dev.enjarai.trickster.spell.trick.bool.AllTrick;
-import dev.enjarai.trickster.spell.trick.bool.AnyTrick;
-import dev.enjarai.trickster.spell.trick.bool.EqualsTrick;
-import dev.enjarai.trickster.spell.trick.bool.GreaterThanTrick;
-import dev.enjarai.trickster.spell.trick.bool.IfElseTrick;
-import dev.enjarai.trickster.spell.trick.bool.LesserThanTrick;
-import dev.enjarai.trickster.spell.trick.bool.NoneTrick;
-import dev.enjarai.trickster.spell.trick.bool.NotEqualsTrick;
+import dev.enjarai.trickster.spell.trick.basic.*;
+import dev.enjarai.trickster.spell.trick.block.*;
+import dev.enjarai.trickster.spell.trick.bool.*;
+import dev.enjarai.trickster.spell.trick.debug.DebugLogTrick;
 import dev.enjarai.trickster.spell.trick.dimension.GetDimensionTrick;
+import dev.enjarai.trickster.spell.trick.entity.*;
+import dev.enjarai.trickster.spell.trick.entity.query.*;
+import dev.enjarai.trickster.spell.trick.fleck.DeleteFleckTrick;
 import dev.enjarai.trickster.spell.trick.fleck.GetFlecksTrick;
 import dev.enjarai.trickster.spell.trick.fleck.LineFleckTrick;
 import dev.enjarai.trickster.spell.trick.fleck.SpellFleckTrick;
-import dev.enjarai.trickster.spell.trick.func.AtomicTrick;
-import dev.enjarai.trickster.spell.trick.func.ClosureTrick;
-import dev.enjarai.trickster.spell.trick.func.ExecuteTrick;
-import dev.enjarai.trickster.spell.trick.func.ExecuteWithinCurrentScopeTrick;
-import dev.enjarai.trickster.spell.trick.func.FoldTrick;
-import dev.enjarai.trickster.spell.trick.func.ForkTrick;
-import dev.enjarai.trickster.spell.trick.func.GetAllArgumentsTrick;
-import dev.enjarai.trickster.spell.trick.func.GetCurrentThreadTrick;
-import dev.enjarai.trickster.spell.trick.func.KillThreadTrick;
-import dev.enjarai.trickster.spell.trick.func.LoadArgumentTrick;
-import dev.enjarai.trickster.spell.trick.func.SupplierTrick;
-import dev.enjarai.trickster.spell.trick.func.TryCatchTrick;
-import dev.enjarai.trickster.spell.trick.list.CreateNumberRangeTrick;
-import dev.enjarai.trickster.spell.trick.list.ListAddRangeTrick;
-import dev.enjarai.trickster.spell.trick.list.ListAddTrick;
-import dev.enjarai.trickster.spell.trick.list.ListCreateTrick;
-import dev.enjarai.trickster.spell.trick.list.ListGetTrick;
-import dev.enjarai.trickster.spell.trick.list.ListIndexOfTrick;
-import dev.enjarai.trickster.spell.trick.list.ListInsertTrick;
-import dev.enjarai.trickster.spell.trick.list.ListRemoveElementTrick;
-import dev.enjarai.trickster.spell.trick.list.ListRemoveTrick;
-import dev.enjarai.trickster.spell.trick.list.ListReverseTrick;
-import dev.enjarai.trickster.spell.trick.list.ListSizeTrick;
-import dev.enjarai.trickster.spell.trick.list.ListTakeRangeTrick;
+import dev.enjarai.trickster.spell.trick.func.*;
+import dev.enjarai.trickster.spell.trick.inventory.*;
+import dev.enjarai.trickster.spell.trick.list.*;
 import dev.enjarai.trickster.spell.trick.mana.BatteryCreationTrick;
 import dev.enjarai.trickster.spell.trick.mana.DrainMatterTrick;
 import dev.enjarai.trickster.spell.trick.mana.PullManaTrick;
 import dev.enjarai.trickster.spell.trick.mana.PushManaTrick;
-import dev.enjarai.trickster.spell.trick.map.MapGetTrick;
-import dev.enjarai.trickster.spell.trick.map.MapInsertTrick;
-import dev.enjarai.trickster.spell.trick.map.MapMergeTrick;
-import dev.enjarai.trickster.spell.trick.map.MapRemoveTrick;
-import dev.enjarai.trickster.spell.trick.math.AbsTrick;
-import dev.enjarai.trickster.spell.trick.math.AddTrick;
-import dev.enjarai.trickster.spell.trick.math.ArcCosTrick;
-import dev.enjarai.trickster.spell.trick.math.ArcSinTrick;
-import dev.enjarai.trickster.spell.trick.math.ArcTan2Trick;
-import dev.enjarai.trickster.spell.trick.math.ArcTanTrick;
-import dev.enjarai.trickster.spell.trick.math.CeilTrick;
-import dev.enjarai.trickster.spell.trick.math.CosTrick;
-import dev.enjarai.trickster.spell.trick.math.DivideTrick;
-import dev.enjarai.trickster.spell.trick.math.FloorTrick;
-import dev.enjarai.trickster.spell.trick.math.MaxTrick;
-import dev.enjarai.trickster.spell.trick.math.MinTrick;
-import dev.enjarai.trickster.spell.trick.math.ModuloTrick;
-import dev.enjarai.trickster.spell.trick.math.MultiplyTrick;
-import dev.enjarai.trickster.spell.trick.math.PowerTrick;
-import dev.enjarai.trickster.spell.trick.math.RoundTrick;
-import dev.enjarai.trickster.spell.trick.math.SinTrick;
-import dev.enjarai.trickster.spell.trick.math.SqrtTrick;
-import dev.enjarai.trickster.spell.trick.math.SubtractTrick;
-import dev.enjarai.trickster.spell.trick.math.TanTrick;
-import dev.enjarai.trickster.spell.trick.misc.ClearBarTrick;
-import dev.enjarai.trickster.spell.trick.misc.DelayExecutionTrick;
-import dev.enjarai.trickster.spell.trick.misc.HashValuesTrick;
-import dev.enjarai.trickster.spell.trick.misc.MessageListenTrick;
-import dev.enjarai.trickster.spell.trick.misc.MessageSendTrick;
-import dev.enjarai.trickster.spell.trick.misc.PinChunkTrick;
-import dev.enjarai.trickster.spell.trick.misc.ShowBarTrick;
-import dev.enjarai.trickster.spell.trick.misc.TypeFragmentTrick;
+import dev.enjarai.trickster.spell.trick.map.*;
+import dev.enjarai.trickster.spell.trick.math.*;
+import dev.enjarai.trickster.spell.trick.misc.*;
 import dev.enjarai.trickster.spell.trick.particle.HighlightTrick;
 import dev.enjarai.trickster.spell.trick.projectile.SummonArrowTrick;
 import dev.enjarai.trickster.spell.trick.projectile.SummonDragonBreathTrick;
@@ -127,33 +33,21 @@ import dev.enjarai.trickster.spell.trick.projectile.SummonTntTrick;
 import dev.enjarai.trickster.spell.trick.raycast.RaycastBlockPosTrick;
 import dev.enjarai.trickster.spell.trick.raycast.RaycastBlockSideTrick;
 import dev.enjarai.trickster.spell.trick.raycast.RaycastEntityTrick;
-import dev.enjarai.trickster.spell.trick.tree.AddSubtreeTrick;
-import dev.enjarai.trickster.spell.trick.tree.EscapePatternTrick;
-import dev.enjarai.trickster.spell.trick.tree.GetSubPartsTrick;
-import dev.enjarai.trickster.spell.trick.tree.LocateGlyphTrick;
-import dev.enjarai.trickster.spell.trick.tree.LocateGlyphsTrick;
-import dev.enjarai.trickster.spell.trick.tree.RemoveSubtreeTrick;
-import dev.enjarai.trickster.spell.trick.tree.RetrieveGlyphTrick;
-import dev.enjarai.trickster.spell.trick.tree.RetrieveSubtreeTrick;
-import dev.enjarai.trickster.spell.trick.tree.SetGlyphTrick;
-import dev.enjarai.trickster.spell.trick.tree.SetSubtreeTrick;
-import dev.enjarai.trickster.spell.trick.vector.AlignVectorTrick;
-import dev.enjarai.trickster.spell.trick.vector.CrossProductTrick;
-import dev.enjarai.trickster.spell.trick.vector.DotProductTrick;
-import dev.enjarai.trickster.spell.trick.vector.ExtractXTrick;
-import dev.enjarai.trickster.spell.trick.vector.ExtractYTrick;
-import dev.enjarai.trickster.spell.trick.vector.ExtractZTrick;
-import dev.enjarai.trickster.spell.trick.vector.InvertTrick;
-import dev.enjarai.trickster.spell.trick.vector.LengthTrick;
-import dev.enjarai.trickster.spell.trick.vector.MergeVectorTrick;
-import dev.enjarai.trickster.spell.trick.vector.NormalizeTrick;
+import dev.enjarai.trickster.spell.trick.tree.*;
+import dev.enjarai.trickster.spell.trick.vector.*;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.item.Items;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.SimpleRegistry;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryEntryInfo;
+import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @SuppressWarnings("unused")
 public class Tricks {
@@ -186,6 +80,9 @@ public class Tricks {
     public static final SupplierTrick SUPPLIER = register("supplier", new SupplierTrick());
     public static final KillThreadTrick KILL_THREAD = register("kill_thread", new KillThreadTrick());
     public static final GetCurrentThreadTrick CURRENT_THREAD = register("current_thread", new GetCurrentThreadTrick());
+    public static final GetSpellFromSlotTrick THREAD_ROOT = register("thread_root", new GetSpellFromSlotTrick());
+    public static final GetSpellStateTrick SPELL_STATE = register("spell_state", new GetSpellStateTrick());
+    public static final GetWeightTrick WEIGHT = register("weight", new GetWeightTrick());
     public static final GetAllArgumentsTrick GET_ALL_ARGUMENTS = register("get_all_arguments", new GetAllArgumentsTrick());
     public static final LoadArgumentTrick LOAD_ARGUMENT_1 = register("load_argument_1", new LoadArgumentTrick(Pattern.of(4, 1), 0));
     public static final LoadArgumentTrick LOAD_ARGUMENT_2 = register("load_argument_2", new LoadArgumentTrick(Pattern.of(4, 2), 1));
@@ -214,7 +111,7 @@ public class Tricks {
     public static final MaxManaReflectionTrick MAX_MANA_REFLECTION = register("max_mana_reflection", new MaxManaReflectionTrick());
     public static final FacingReflectionTrick FACING_REFLECTION = register("facing_reflection", new FacingReflectionTrick());
     public static final HotbarReflectionTrick HOTBAR_REFLECTION = register("hotbar_reflection", new HotbarReflectionTrick());
-    public static final ReadMacroRing READ_MACRO_RING = register("read_macro_ring", new ReadMacroRing());
+    public static final ReadMacroRingTrick READ_MACRO_RING = register("read_macro_ring", new ReadMacroRingTrick());
 
     // Entity
     public static final GetPositionTrick GET_POSITION = register("get_position", new GetPositionTrick());
@@ -265,6 +162,7 @@ public class Tricks {
     public static final MaxTrick MAX = register("max", new MaxTrick());
     public static final MinTrick MIN = register("min", new MinTrick());
     public static final PowerTrick POWER = register("power", new PowerTrick());
+    public static final LogTrick LOG = register("logarithm", new LogTrick());
     public static final SqrtTrick SQRT = register("sqrt", new SqrtTrick());
     public static final SinTrick SIN = register("sin", new SinTrick());
     public static final CosTrick COS = register("cos", new CosTrick());
@@ -312,6 +210,7 @@ public class Tricks {
     public static final CreateNumberRangeTrick CREATE_NUMBER_RANGE = register("create_number_range", new CreateNumberRangeTrick());
 
     // Map
+    public static final MapCreateTrick MAP_CREATE = register("map_create", new MapCreateTrick());
     public static final MapGetTrick MAP_GET = register("map_get", new MapGetTrick());
     public static final MapInsertTrick MAP_INSERT = register("map_insert", new MapInsertTrick());
     public static final MapMergeTrick MAP_MERGE = register("map_merge", new MapMergeTrick());
@@ -358,11 +257,15 @@ public class Tricks {
     public static final GetManaInSlotTrick GET_MANA_IN_SLOT = register("get_mana_in_slot", new GetManaInSlotTrick());
     public static final GetMaxManaInSlotTrick GET_MAX_MANA_IN_SLOT = register("get_max_mana_in_slot", new GetMaxManaInSlotTrick());
     public static final GetInventorySlotTrick GET_INVENTORY_SLOT = register("get_inventory_slot", new GetInventorySlotTrick());
+    public static final GetInventorySizeTrick GET_INVENTORY_SIZE = register("get_inventory_size", new GetInventorySizeTrick());
+    public static final GetInventorySlotsTrick GET_INVENTORY_SLOTS = register("get_inventory_slots", new GetInventorySlotsTrick());
     public static final GetCountInSlotTrick GET_COUNT_IN_SLOT = register("get_count_in_slot", new GetCountInSlotTrick());
     public static final DropStackFromSlotTrick DROP_STACK_FROM_SLOT = register("drop_stack_from_slot", new DropStackFromSlotTrick());
     public static final SwapSlotTrick SWAP_SLOT = register("swap_slot", new SwapSlotTrick());
+    public static final MoveStackTrick MOVE_STACK = register("move_stack", new MoveStackTrick());
     public static final BlockFromItemTrick BLOCK_FROM_ITEM = register("block_from_item", new BlockFromItemTrick());
     public static final ItemFromBlockTrick ITEM_FROM_BLOCK = register("item_from_block", new ItemFromBlockTrick());
+    public static final GetMaxCount GET_MAX_COUNT = register("get_max_count", new GetMaxCount());
 
     // Projectile
     public static final SummonArrowTrick SUMMON_ARROW = register("summon_arrow", new SummonArrowTrick());
@@ -396,6 +299,12 @@ public class Tricks {
     public static final PushManaTrick PUSH_MANA = register("push_mana", new PushManaTrick());
     public static final PullManaTrick PULL_MANA = register("pull_mana", new PullManaTrick());
     public static final DrainMatterTrick DRAIN_MATTER = register("drain_matter", new DrainMatterTrick());
+
+    static {
+        if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
+            register("debug_log", new DebugLogTrick());
+        }
+    }
 
     @ApiStatus.Internal
     public static <T extends Trick<?>> T register(String path, T trick) {

@@ -1,6 +1,18 @@
 <owo-ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/wisp-forest/owo-lib/1.20/owo-ui.xsd">
     <templates>
+        <template name="trick">
+            <trickster.trick-overview texture="{{book-texture}}" trick-id="{{trick-id}}">
+            </trickster.trick-overview>
+        </template>
+        <template name="ploy">
+            <trickster.trick-overview texture="{{book-texture}}" trick-id="{{trick-id}}" cost="{{cost}}">
+            </trickster.trick-overview>
+        </template>
+        <template name="revision">
+            <trickster.trick-overview texture="{{book-texture}}" pattern="{{pattern}}" title="{{title}}" content="(Scribing Pattern)">
+            </trickster.trick-overview>
+        </template>
         <template name="glyph">
             <flow-layout direction="vertical">
                 <children>

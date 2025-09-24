@@ -1,15 +1,15 @@
 package dev.enjarai.trickster.spell.trick;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import dev.enjarai.trickster.spell.EvaluationResult;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.type.Signature;
+
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public abstract class DistortionTrick<T extends DistortionTrick<T>> extends Trick<T> {
     private static final int CACHE_SIZE = 20;

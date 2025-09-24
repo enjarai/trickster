@@ -1,0 +1,44 @@
+.trick {
+  width: fit-content;
+}
+
+.trick h2 {
+  margin: auto;
+  margin-top: 2em;
+  width: fit-content;
+}
+
+.pattern {
+  width: 20em;
+  fill: var(--base05);
+  margin-top: 1em;
+  display: block;
+  margin: auto;
+}
+
+.pattern line {
+  stroke: var(--base05);
+  stroke-width: 8px;
+}
+
+.trick .signature {
+  margin: 0 15px;
+  max-width: 450px;
+  display: inline-block;
+}
+
+.cost-rule .embedded-component {
+  width: 500px;
+  image-rendering: crisp-edges;
+  margin-top: 1em;
+}
+
+.spell-preview-iframe {
+   width: 80%;
+   aspect-ratio: 1;
+   margin: auto;
+   display: block;
+   margin-bottom: 2em;
+   margin-top: 2em;
+   border: solid 4px var(--base01);
+ }

@@ -19,6 +19,10 @@ public record SpellContext(ExecutionState state, SpellSource source, TickData da
             throw new IllegalStateException("Internal error: Mana used is NaN");
         }
 
+        if (!data.canUseMana()) {
+            throw new NotEnoughManaBlunder(trickSource, amount);
+        }
+
         try {
             state.useMana(trickSource, this, amount);
         } catch (NotEnoughManaBlunder blunder) {
