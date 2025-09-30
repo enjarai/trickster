@@ -12,7 +12,7 @@
 Trickster is a magician-themed esolang-based magic mod loosely inspired by [Hex Casting](https://modrinth.com/mod/hex-casting).
 It lets you draw infinitely nested spell circles and glyphs to combine tricks and create magical effects as simple or complex as you want.
 
-![A simple spell](https://i.enjarai.dev/u/sPUWj0.png)
+![A simple spell](img/spell.png)
 
 ## So what can I make?
 
@@ -25,7 +25,7 @@ Spells can do literally anything you can imagine*!
 <sub>*Assumes your imagination is limited by the scope of available glyphs.
 Library inc. takes no responsibility for overactive imagination or other forms of undue creativity.</sub>
 
-![A persistent multi-core spell construct](https://i.enjarai.dev/u/pRQrnj.png)
+![A persistent multi-core spell construct](img/construct.png)
 
 ## That's a pretty bold statement isnt it?
 
@@ -47,13 +47,15 @@ the go-to guide for being up to no good.
 Making use of the excellent [Lavender](https://modrinth.com/mod/lavender) and fully custom interactive widgets,
 the Tome™ provides a state-of-the-art guidebook experience for all of your magical needs.
 
-![Documentation](https://i.enjarai.dev/u/OmfF44.png)
+Check out the web version of the book at [trickster.ing](https://trickster.ing/)!
+
+![Documentation](img/book.png)
 
 ## What else can I expect?
 
 As any good magic mod should, we provide a solid selection of tools and trinkets to facilitate spellcasting.
 
-![A few of the available toys](https://i.enjarai.dev/u/UghuSY.png)
+![A few of the available toys](img/items.png)
 
 ## Functional as in Functional Programming
 
