@@ -30,6 +30,8 @@ public class ModBlocks {
     public static final BlockEntityType<ChargingArrayBlockEntity> CHARGING_ARRAY_ENTITY = BlockEntityType.Builder.create(ChargingArrayBlockEntity::new, CHARGING_ARRAY).build(null);
 
     public static final TagKey<Block> UNBREAKABLE = TagKey.of(RegistryKeys.BLOCK, Trickster.id("unbreakable"));
+    public static final TagKey<Block> UNSWAPABLE = TagKey.of(RegistryKeys.BLOCK, Trickster.id("unswapable"));
+    public static final TagKey<Block> WEIGHTLESS = TagKey.of(RegistryKeys.BLOCK, Trickster.id("weightless"));
     public static final TagKey<Block> CONJURABLE_FLOWERS = TagKey.of(RegistryKeys.BLOCK, Trickster.id("conjurable_flowers"));
 
     private static <T extends Block> T register(String name, T block) {

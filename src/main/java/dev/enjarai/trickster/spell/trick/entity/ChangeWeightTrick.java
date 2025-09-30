@@ -1,6 +1,6 @@
 package dev.enjarai.trickster.spell.trick.entity;
 
-import dev.enjarai.trickster.Trickster;
+import dev.enjarai.trickster.block.ModBlocks;
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.entity.LevitatingBlockEntity;
 import dev.enjarai.trickster.particle.ModParticles;
@@ -68,8 +68,7 @@ public class ChangeWeightTrick extends Trick<ChangeWeightTrick> {
             throw new NumberTooSmallBlunder(this, 0);
         }
 
-        if (state.isAir() || state.getBlock() instanceof FluidBlock
-                || (!Trickster.CONFIG.allowSwapBedrock() && state.getHardness(world, blockPos) < 0)) {
+        if (state.isAir() || state.getBlock() instanceof FluidBlock || state.isIn(ModBlocks.WEIGHTLESS)) {
             throw new BlockInvalidBlunder(this);
         }
 
