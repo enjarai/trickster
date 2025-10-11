@@ -35,7 +35,7 @@ public class DisplaceEntityTrick extends Trick<DisplaceEntityTrick> {
                 .orElseThrow(() -> new UnknownEntityBlunder(this));
         var vector = v.vector();
 
-        if (entity.getType().isIn(ModEntities.IRREPRESSIBLE))
+        if (entity.getType().isIn(ModEntities.CANNOT_REPRESS))
             throw new EntityCannotBeDisplacedBlunder(this, entity);
 
         var map = COMPOUND_LEN.set(ctx.data(), COMPOUND_LEN.get(ctx.data()).orElse(new HashMap<>()));

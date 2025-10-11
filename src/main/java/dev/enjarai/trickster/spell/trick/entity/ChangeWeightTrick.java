@@ -68,7 +68,7 @@ public class ChangeWeightTrick extends Trick<ChangeWeightTrick> {
             throw new NumberTooSmallBlunder(this, 0);
         }
 
-        if (state.isAir() || state.getBlock() instanceof FluidBlock || state.isIn(ModBlocks.WEIGHTLESS)) {
+        if (state.isAir() || state.getBlock() instanceof FluidBlock || state.isIn(ModBlocks.CANNOT_LEVITATE)) {
             throw new BlockInvalidBlunder(this);
         }
 

@@ -31,7 +31,7 @@ public class BreakBlockTrick extends Trick<BreakBlockTrick> {
 
         float hardness = state.getBlock().getHardness();
 
-        if (!state.isIn(ModBlocks.UNBREAKABLE) && hardness >= 0 && hardness < Trickster.CONFIG.maxBlockBreakingHardness()) {
+        if (!state.isIn(ModBlocks.CANNOT_BREAK) && hardness >= 0 && hardness < Trickster.CONFIG.maxBlockBreakingHardness()) {
             ctx.useMana(this, Math.max(hardness, 8));
             ctx.source().getCaster().ifPresentOrElse(c -> world.breakBlock(blockPos, true, c), () -> world.breakBlock(blockPos, true));
         } else {

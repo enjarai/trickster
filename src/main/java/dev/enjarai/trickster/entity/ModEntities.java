@@ -9,11 +9,10 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
 
 public class ModEntities {
-    public static final EntityType<LevitatingBlockEntity> LEVITATING_BLOCK =
-            Registry.register(Registries.ENTITY_TYPE, Trickster.id("levitating_block"),
-                    EntityType.Builder.create(LevitatingBlockEntity::new, SpawnGroup.MISC).dimensions(1, 1).build());
+    public static final EntityType<LevitatingBlockEntity> LEVITATING_BLOCK = Registry.register(Registries.ENTITY_TYPE, Trickster.id("levitating_block"),
+            EntityType.Builder.create(LevitatingBlockEntity::new, SpawnGroup.MISC).dimensions(1, 1).build());
 
-    public static final TagKey<EntityType<?>> IRREPRESSIBLE = TagKey.of(RegistryKeys.ENTITY_TYPE, Trickster.id("irrepressible"));
+    public static final TagKey<EntityType<?>> CANNOT_REPRESS = TagKey.of(RegistryKeys.ENTITY_TYPE, Trickster.id("cannot_repress"));
 
     public static void register() {
 

@@ -43,10 +43,10 @@ public class SwapBlockTrick extends Trick<SwapBlockTrick> {
             throw new BlockUnoccupiedBlunder(this, pos2);
         }
 
-        if (state1.isIn(ModBlocks.UNSWAPPABLE)) {
+        if (state1.isIn(ModBlocks.CANNOT_SWAP)) {
             throw new BlockInvalidBlunder(this);
         }
-        if (state2.isIn(ModBlocks.UNSWAPPABLE)) {
+        if (state2.isIn(ModBlocks.CANNOT_SWAP)) {
             throw new BlockInvalidBlunder(this);
         }
 

@@ -29,9 +29,9 @@ public class ModBlocks {
     public static final BlockEntityType<ScrollShelfBlockEntity> SCROLL_SHELF_ENTITY = BlockEntityType.Builder.create(ScrollShelfBlockEntity::new, SCROLL_SHELF).build(null);
     public static final BlockEntityType<ChargingArrayBlockEntity> CHARGING_ARRAY_ENTITY = BlockEntityType.Builder.create(ChargingArrayBlockEntity::new, CHARGING_ARRAY).build(null);
 
-    public static final TagKey<Block> UNBREAKABLE = TagKey.of(RegistryKeys.BLOCK, Trickster.id("unbreakable"));
-    public static final TagKey<Block> UNSWAPPABLE = TagKey.of(RegistryKeys.BLOCK, Trickster.id("unswappable"));
-    public static final TagKey<Block> WEIGHTLESS = TagKey.of(RegistryKeys.BLOCK, Trickster.id("weightless"));
+    public static final TagKey<Block> CANNOT_BREAK = TagKey.of(RegistryKeys.BLOCK, Trickster.id("cannot_break"));
+    public static final TagKey<Block> CANNOT_SWAP = TagKey.of(RegistryKeys.BLOCK, Trickster.id("cannot_swap"));
+    public static final TagKey<Block> CANNOT_LEVITATE = TagKey.of(RegistryKeys.BLOCK, Trickster.id("cannot_levitate"));
     public static final TagKey<Block> CONJURABLE_FLOWERS = TagKey.of(RegistryKeys.BLOCK, Trickster.id("conjurable_flowers"));
 
     private static <T extends Block> T register(String name, T block) {
