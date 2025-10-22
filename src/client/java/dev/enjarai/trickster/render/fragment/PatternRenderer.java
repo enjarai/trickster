@@ -5,10 +5,11 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.PatternGlyph;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.Vec3d;
 import org.joml.Vector2f;
 
-import static dev.enjarai.trickster.render.SpellCircleRenderer.*;
+import static dev.enjarai.trickster.render.CircleRenderer.*;
 import static dev.enjarai.trickster.screen.SpellPartWidget.isCircleClickable;
 
 public class PatternRenderer implements FragmentRenderer<PatternGlyph> {
@@ -57,7 +58,11 @@ public class PatternRenderer implements FragmentRenderer<PatternGlyph> {
         for (var line : pattern.entries()) {
             var first = getPatternDotPosition(x, y, line.p1(), size);
             var second = getPatternDotPosition(x, y, line.p2(), size);
-            drawGlyphLine(matrices, vertexConsumers, first, second, pixelSize, false, 1, r, g, b, 0.7f * alpha, delegator.animated);
+            drawGlyphLine(
+                    matrices, vertexConsumers, first, second, pixelSize,
+                    false, 1, r, g, b, 0.7f * alpha, true, //delegator.animated, TODO BWA
+                    Util.getMeasuringTimeMs()
+            );
         }
 
         //        var pixelSize = size / PART_PIXEL_RADIUS;

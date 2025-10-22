@@ -54,11 +54,11 @@ public class CircleRenderer {
     );
 
     public final boolean inUI;
-    public final boolean animated;
     public final boolean inEditor;
 
     private double mouseX;
     private double mouseY;
+    private long renderTime;
 
     private float r = 1f, g = 1f, b = 1f;
     private float circleTransparency = 1f;
@@ -66,12 +66,15 @@ public class CircleRenderer {
     public CircleRenderer(Boolean inUI, boolean inEditor) {
         this.inUI = inUI;
         this.inEditor = inEditor;
-        this.animated = true;
     }
 
     public void setMousePosition(double mouseX, double mouseY) {
         this.mouseX = mouseX;
         this.mouseY = mouseY;
+    }
+
+    public void setRenderTime(long renderTime) {
+        this.renderTime = renderTime;
     }
 
     public void setColor(float r, float g, float b) {
@@ -198,13 +201,13 @@ public class CircleRenderer {
             for (var line : patternList.entries()) {
                 var first = getPatternDotPosition(x, y, line.p1(), patternRadius);
                 var second = getPatternDotPosition(x, y, line.p2(), patternRadius);
-                drawGlyphLine(matrices, vertexConsumers, first, second, pixelSize, isDrawing, 1, r, g, b, 0.7f * alpha, animated && inUI);
+                drawGlyphLine(matrices, vertexConsumers, first, second, pixelSize, isDrawing, 1, r, g, b, 0.7f * alpha, inUI, renderTime);
             }
 
             if (isDrawing) {
                 var last = getPatternDotPosition(x, y, drawingPattern.getLast(), patternRadius);
                 var now = new Vector2f((float) mouseX, (float) mouseY);
-                drawGlyphLine(matrices, vertexConsumers, last, now, pixelSize, true, 1, r, g, b, 0.7f * alpha, animated && inUI);
+                drawGlyphLine(matrices, vertexConsumers, last, now, pixelSize, true, 1, r, g, b, 0.7f * alpha, inUI, renderTime);
             }
         } else {
             //noinspection rawtypes
@@ -253,8 +256,9 @@ public class CircleRenderer {
 
     private static final Random glyphRandom = new LocalRandom(0);
 
-    public static void drawGlyphLine(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Vector2f last, Vector2f now, float pixelSize, boolean isDrawing, float tone, float r, float g,
-            float b, float opacity, boolean animated) {
+    public static void drawGlyphLine(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Vector2f last,
+            Vector2f now, float pixelSize, boolean isDrawing, float tone, float r, float g,
+            float b, float opacity, boolean animated, long renderTime) {
         if (last.distance(now) < pixelSize * 6) {
             return;
         }
@@ -266,7 +270,7 @@ public class CircleRenderer {
             var lineStart = new Vector2f(last.x - directionVec.x, last.y - directionVec.y);
             var lineEnd = new Vector2f(now.x + directionVec.x, now.y + directionVec.y);
 
-            var parallel1 = parallelVec.mul(1 + glyphRandom.nextFloat() - 0.5f, new Vector2f());
+            var parallel1 = parallelVec.mul(1 + (float) Math.sin(renderTime / 300d), new Vector2f());
             var parallel2 = new Vector2f();
 
             float steps = last.distance(now) / pixelSize / 4;
@@ -276,7 +280,7 @@ public class CircleRenderer {
                 var pos1 = lineStart.lerp(lineEnd, i / steps, new Vector2f());
                 var pos2 = lineStart.lerp(lineEnd, (i + lineLength) / steps, new Vector2f());
 
-                parallel2 = parallelVec.mul(1 + (glyphRandom.nextFloat() - 0.5f) * lineLength, parallel2);
+                parallel2 = parallelVec.mul(1 + (float) Math.sin(renderTime / 300d + i * Math.PI) * lineLength, parallel2);
 
                 Vector2f finalParallel1 = parallel1;
                 Vector2f finalParallel2 = parallel2;
