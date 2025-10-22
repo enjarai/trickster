@@ -9,6 +9,7 @@ import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
 
@@ -42,9 +43,14 @@ public class CircleElement implements Element, Drawable, Selectable {
     private final CircleElement parentCircle;
     private final List<CircleElement> childCircles = new ArrayList<>();
 
-    private double x;
-    private double y;
-    private double radius;
+    private double canonicalX;
+    private double canonicalY;
+    private double canonicalRadius;
+    private double animationX;
+    private double animationY;
+    private double animationRadius;
+
+    private long animationStart;
 
     private double startingAngle;
 
@@ -55,14 +61,17 @@ public class CircleElement implements Element, Drawable, Selectable {
         this.screen = screen;
         this.part = part;
         this.parentCircle = parentCircle;
-        this.x = x;
-        this.y = y;
-        this.radius = radius;
+        this.canonicalX = x;
+        this.canonicalY = y;
+        this.canonicalRadius = radius;
+        this.animationX = x;
+        this.animationY = y;
+        this.animationRadius = radius;
         this.startingAngle = startingAngle;
     }
 
     public void initialize() {
-        if (radius > FORK_THRESHOLD) {
+        if (canonicalRadius > FORK_THRESHOLD) {
             fork();
         }
         // probably dont need this
@@ -72,15 +81,19 @@ public class CircleElement implements Element, Drawable, Selectable {
     }
 
     public void updatePosition(double x, double y, double radius) {
-        this.x = x;
-        this.y = y;
-        if (radius > FORK_THRESHOLD && this.radius < FORK_THRESHOLD) {
+        this.canonicalX = x;
+        this.canonicalY = y;
+        if (radius > FORK_THRESHOLD && this.canonicalRadius < FORK_THRESHOLD) {
             fork();
         }
-        this.radius = radius;
+        this.canonicalRadius = radius;
         if (radius < DISCARD_THRESHOLD) {
             discard();
         }
+        animationX = getAnimatedX();
+        animationY = getAnimatedY();
+        animationRadius = getAnimatedRadius();
+        animationStart = screen.getCurrentTime();
     }
 
     private void fork() {
@@ -90,13 +103,19 @@ public class CircleElement implements Element, Drawable, Selectable {
         int i = 0;
         for (var child : part.subParts) {
             var angle = part.subAngle(i, startingAngle);
-            var subX = x + (radius * Math.cos(angle));
-            var subY = y + (radius * Math.sin(angle));
+            var subX = canonicalX + (canonicalRadius * Math.cos(angle));
+            var subY = canonicalY + (canonicalRadius * Math.sin(angle));
 
             var circle = new CircleElement(
                     screen, child, this,
-                    subX, subY, part.subRadius(radius),
+                    subX, subY, part.subRadius(canonicalRadius),
                     angle
+            );
+            var animationRadius = getAnimatedRadius();
+            circle.applyAnimationState(
+                    getAnimatedX() + (animationRadius * Math.cos(angle)),
+                    getAnimatedY() + (animationRadius * Math.sin(angle)),
+                    part.subRadius(animationRadius)
             );
 
             childCircles.add(circle);
@@ -108,8 +127,11 @@ public class CircleElement implements Element, Drawable, Selectable {
         if (part.glyph instanceof SpellPart inner) {
             var circle = new CircleElement(
                     screen, inner, this,
-                    x, y, radius / 3,
+                    canonicalX, canonicalY, canonicalRadius / 3,
                     startingAngle
+            );
+            circle.applyAnimationState(
+                    getAnimatedX(), getAnimatedY(), getAnimatedRadius() / 3
             );
 
             childCircles.add(circle);
@@ -131,10 +153,14 @@ public class CircleElement implements Element, Drawable, Selectable {
     }
 
     public void zoom(double mouseX, double mouseY, double amount) {
-        var newRadius = radius + amount * radius * ZOOM_SPEED;
+        var newRadius = canonicalRadius + amount * canonicalRadius * ZOOM_SPEED;
 
-        var newX = x + (x - mouseX) * amount * ZOOM_SPEED;
-        var newY = y + (y - mouseY) * amount * ZOOM_SPEED;
+        var newX = canonicalX + (canonicalX - mouseX) * amount * ZOOM_SPEED;
+        var newY = canonicalY + (canonicalY - mouseY) * amount * ZOOM_SPEED;
+
+        //        animationRadius += amount * animationRadius * ZOOM_SPEED;
+        //        animationX += (animationX - mouseX) * amount * ZOOM_SPEED;
+        //        animationY += (animationY - mouseY) * amount * ZOOM_SPEED;
 
         updatePosition(newX, newY, newRadius);
     }
@@ -222,7 +248,7 @@ public class CircleElement implements Element, Drawable, Selectable {
             // if we are checking the closest neighboring dots on the ring
             // translate the dots outward a bit by enlarging the radius
             // this will make it easier to connect lines to the next neighbors on the ring
-            var patternRadius = radius / PATTERN_TO_PART_RATIO;
+            var patternRadius = getAnimatedRadius() / PATTERN_TO_PART_RATIO;
             var pixelSize = patternRadius / PART_PIXEL_RADIUS;
 
             if (drawingPattern != null && !drawingPattern.isEmpty()) {
@@ -232,7 +258,7 @@ public class CircleElement implements Element, Drawable, Selectable {
                 }
             }
 
-            var pos = getPatternDotPosition((float) x, (float) y, i, (float) patternRadius);
+            var pos = getPatternDotPosition((float) getAnimatedX(), (float) getAnimatedY(), i, (float) patternRadius);
 
             if (isInsideHitbox(pos, (float) pixelSize, mouseX, mouseY)) {
                 return i;
@@ -282,15 +308,50 @@ public class CircleElement implements Element, Drawable, Selectable {
         return moves;
     }
 
+    private void applyAnimationState(double animationX, double animationY, double animationRadius) {
+        animationStart = screen.getCurrentTime();
+        this.animationX = animationX;
+        this.animationY = animationY;
+        this.animationRadius = animationRadius;
+    }
+
+    private double animate(double canonicalV, double animationV) {
+        var weight = canonicalRadius / 2;
+        var delta = canonicalV - animationV;
+        var progress = (screen.getCurrentTime() - animationStart) / weight * delta;
+        if (delta > 0) {
+            animationV += MathHelper.clamp(progress, 0, delta);
+        } else {
+            animationV += MathHelper.clamp(progress, delta, 0);
+        }
+        return animationV;
+    }
+
+    public double getAnimatedX() {
+        return animate(canonicalX, animationX);
+    }
+
+    public double getAnimatedY() {
+        return animate(canonicalY, animationY) + Math.sin(screen.getCurrentTime() / 1000d);
+    }
+
+    public double getAnimatedRadius() {
+        return animate(canonicalRadius, animationRadius);
+    }
+
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        var x = getAnimatedX();
+        var y = getAnimatedY();
+        var radius = getAnimatedRadius();
+
         var matrices = context.getMatrices();
         matrices.push();
         matrices.translate(0, 0, 1 / radius);
         screen.renderer.renderCircle(
                 matrices, part,
                 x, y, radius, startingAngle, delta, // maybe we dont need angle here
-                radius -> Math.clamp(1 / (radius / screen.height * 3), 0.0, 0.8),
+                r -> Math.clamp(1 / (r / screen.height * 3), 0.0, 0.8),
                 new Vec3d(-1, 0, 0), drawingPattern
         );
         matrices.pop();
@@ -298,9 +359,9 @@ public class CircleElement implements Element, Drawable, Selectable {
 
     @Override
     public boolean isMouseOver(double mouseX, double mouseY) {
-        var activeRadius = radius / 2;
-        var diffX = mouseX - x;
-        var diffY = mouseY - y;
+        var activeRadius = getAnimatedRadius() / 2;
+        var diffX = mouseX - getAnimatedX();
+        var diffY = mouseY - getAnimatedY();
         return diffX * diffX + diffY * diffY < activeRadius * activeRadius;
     }
 
@@ -325,6 +386,6 @@ public class CircleElement implements Element, Drawable, Selectable {
     }
 
     public double getRadius() {
-        return radius;
+        return canonicalRadius;
     }
 }

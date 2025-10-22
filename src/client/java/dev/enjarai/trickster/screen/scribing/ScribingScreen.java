@@ -4,9 +4,11 @@ import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.render.CircleRenderer;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellPart;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
+import net.minecraft.util.Util;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -21,6 +23,8 @@ public class ScribingScreen extends Screen {
     private CircleElement drawingCircle;
 
     private double inputZ = 0;
+
+    private long currentTime;
 
     public ScribingScreen(Text title, boolean mutable) {
         super(title);
@@ -75,9 +79,22 @@ public class ScribingScreen extends Screen {
         drawingCircle = circle;
     }
 
+    /**
+     * Previous frame time in seconds
+     */
+    public double getFrameTime() {
+        return MinecraftClient.getInstance().getRenderTime() / 1_000_000_000d;
+    }
+
+    public long getCurrentTime() {
+        return currentTime;
+    }
+
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         renderer.setMousePosition(mouseX, mouseY);
+        currentTime = Util.getMeasuringTimeMs();
+        renderer.setRenderTime(currentTime);
 
         super.render(context, mouseX, mouseY, delta);
         CircleRenderer.VERTEX_CONSUMERS.draw();
