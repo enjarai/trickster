@@ -1,6 +1,6 @@
 package dev.enjarai.trickster.spell.trick.block;
 
-import dev.enjarai.trickster.Trickster;
+import dev.enjarai.trickster.block.ModBlocks;
 import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
@@ -43,13 +43,11 @@ public class SwapBlockTrick extends Trick<SwapBlockTrick> {
             throw new BlockUnoccupiedBlunder(this, pos2);
         }
 
-        if (!Trickster.CONFIG.allowSwapBedrock()) {
-            if (state1.getHardness(world, blockPos1) < 0) {
-                throw new BlockInvalidBlunder(this);
-            }
-            if (state2.getHardness(world, blockPos2) < 0) {
-                throw new BlockInvalidBlunder(this);
-            }
+        if (state1.isIn(ModBlocks.CANNOT_SWAP)) {
+            throw new BlockInvalidBlunder(this);
+        }
+        if (state2.isIn(ModBlocks.CANNOT_SWAP)) {
+            throw new BlockInvalidBlunder(this);
         }
 
         ctx.useMana(this, (float) (60 + (pos1.vector().distance(pos2.vector()))));
