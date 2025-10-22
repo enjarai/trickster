@@ -1,9 +1,7 @@
 package dev.enjarai.trickster.mixin;
 
-import dev.enjarai.trickster.ModSounds;
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.CollarItem;
-import dev.enjarai.trickster.item.ModItems;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -18,23 +16,23 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin {
-    @Shadow public abstract World getWorld();
+    @Shadow
+    public abstract World getWorld();
 
-    @SuppressWarnings("ConstantValue")
+    @Shadow
+    public abstract boolean isSneaking();
+
     @Inject(
-            method = "getFinalGravity",
-            at = @At("HEAD"),
-            cancellable = true
+            method = "getFinalGravity", at = @At("HEAD"), cancellable = true
     )
     private void applyGravityGrace(CallbackInfoReturnable<Double> cir) {
-        if ((Object) this instanceof LivingEntity && ModEntityComponents.GRACE.get(this).isInGrace("gravity")) {
+        if ((Entity) (Object) this instanceof LivingEntity && ModEntityComponents.GRACE.get(this).isInGrace("gravity")) {
             cir.setReturnValue(0.0);
         }
     }
 
     @Inject(
-            method = "playStepSound",
-            at = @At("TAIL")
+            method = "playStepSound", at = @At("TAIL")
     )
     private void playStepSound(BlockPos pos, BlockState state, CallbackInfo ci) {
         if ((Entity) (Object) this instanceof LivingEntity) {
@@ -42,9 +40,11 @@ public abstract class EntityMixin {
         }
     }
 
-    @Inject(method = "setSneaking", at = @At("HEAD"))
+    @Inject(
+            method = "setSneaking", at = @At("HEAD")
+    )
     private void setSneaking(boolean sneaking, CallbackInfo ci) {
-        if ((Entity) (Object) this instanceof LivingEntity) {
+        if ((Entity) (Object) this instanceof LivingEntity && isSneaking() != sneaking) {
             CollarItem.playJingleQuestionMark((LivingEntity) (Object) this, true);
         }
     }
