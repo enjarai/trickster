@@ -448,6 +448,7 @@ text.config.trickster-config:
     maxBlockBreakingHardness: Max hardness for Ploy of Destruction
 
     dragDrawing: Draw by dragging
+    animateLines: Animate pattern glyphs
     barsHorizontal: Show spell-created bars horizontally
     disableOffhandScrollOpening: Require scroll in main hand to edit
     adjacentPixelCollisionOffset: Offset factor of adjacent pixels
