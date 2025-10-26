@@ -26,6 +26,7 @@ public class AutoSpellAccessory extends AccessoryItem {
             if (tickCount == 0) {
                 ItemTriggerHelper.trigger(player, stack, new ArrayList<Fragment>());
             }
+            tickCount += 1;
         }
     }
 }
