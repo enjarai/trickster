@@ -97,6 +97,7 @@ public class ModModelGenerator extends FabricModelProvider {
         itemModelGenerator.register(ModItems.MACRO_RING, Models.GENERATED);
         itemModelGenerator.register(ModItems.SPELL_INK, Models.GENERATED);
         itemModelGenerator.register(ModItems.SPELL_RESONATOR_ITEM, Models.GENERATED);
+        itemModelGenerator.register(ModItems.SPELL_RING, Models.GENERATED);
 
         // For the NaN advancement
         itemModelGenerator.register(ModItems.NAN, Models.GENERATED);

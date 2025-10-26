@@ -89,6 +89,7 @@ public class ModItems {
     public static final KnotItem.Astral ASTRAL_KNOT = register("astral_knot", new KnotItem.Astral());
     public static final KnotItem.CrackedAstral CRACKED_ASTRAL_KNOT = register("cracked_astral_knot", new KnotItem.CrackedAstral());
     public static final KnotItem.Command COMMAND_KNOT = register("command_knot", new KnotItem.Command());
+    public static final AutoSpellAccessory SPELL_RING = register("spell_ring", new AutoSpellAccessory());
 
     // Advancement icon
     public static final Item NAN = register("nan", new Item(new Item.Settings()));
@@ -173,6 +174,7 @@ public class ModItems {
                 entries.add(ASTRAL_KNOT);
                 entries.add(CRACKED_ASTRAL_KNOT);
                 entries.add(COMMAND_KNOT);
+                entries.add(SPELL_RING);
             })
             .build();
 
