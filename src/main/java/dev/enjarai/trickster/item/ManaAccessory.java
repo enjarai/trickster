@@ -9,7 +9,6 @@ import io.wispforest.accessories.api.slot.SlotReference;
 import net.minecraft.item.ItemStack;
 
 public class ManaAccessory extends AccessoryItem {
-
     public ManaAccessory() {
         super(new Settings()
                 .maxCount(1)

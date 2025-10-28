@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "t": {
+      "item": "trickster:spawner_spell_core"
+    },
+    "c": {
+      "item": "minecraft:chain"
+    },
+    "i": {
+      "item": "trickster:spell_ink"
+    }
+  },
+  "pattern": [
+    " cc",
+    "cic",
+    "cct"
+  ],
+  "result": {
+    "count": 1,
+    "id": "trickster:torment_on_a_chain"
+  }
+}
