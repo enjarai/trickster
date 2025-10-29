@@ -48,11 +48,11 @@ public interface FragmentRenderer<T extends Fragment> {
         var color = ColorHelper.Argb.withAlpha((int) (alpha * 0xff), 0xffffff);
 
         textRenderer.draw(
-                text,
-                -(width - 1f) / 2f, -height / 2f, color, false,
-                matrices.peek().getPositionMatrix(),
-                vertexConsumers, TextRenderer.TextLayerType.NORMAL,
-                0, 0xf000f0
+            text,
+            -(width - 1f) / 2f, -height / 2f, color, false,
+            matrices.peek().getPositionMatrix(),
+            vertexConsumers, TextRenderer.TextLayerType.NORMAL,
+            0, 0xf000f0
         );
 
         matrices.pop();

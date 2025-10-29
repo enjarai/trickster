@@ -30,10 +30,10 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     static final Byte DOT_COUNT = 9;
 
     static final Byte[] RING_ORDER = {
-            (byte) 0, (byte) 1, (byte) 2, (byte) 5, (byte) 8, (byte) 7, (byte) 6, (byte) 3
+        (byte) 0, (byte) 1, (byte) 2, (byte) 5, (byte) 8, (byte) 7, (byte) 6, (byte) 3
     };
     static final Byte[] RING_INDICES = {
-            (byte) 0, (byte) 1, (byte) 2, (byte) 7, (byte) 0, (byte) 3, (byte) 6, (byte) 5, (byte) 4
+        (byte) 0, (byte) 1, (byte) 2, (byte) 7, (byte) 0, (byte) 3, (byte) 6, (byte) 5, (byte) 4
     };
 
     private SpellPart rootSpellPart;
@@ -134,8 +134,8 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             revisionContext.updateSpell(rootSpellPart);
 
             MinecraftClient.getInstance().player.playSoundToPlayer(
-                    ModSounds.COMPLETE, SoundCategory.MASTER,
-                    1f, 0.6f
+                ModSounds.COMPLETE, SoundCategory.MASTER,
+                1f, 0.6f
             );
             return true;
         }
@@ -144,10 +144,10 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
     public ScrollAndQuillScreen.PositionMemory saveAndClose() {
         return new ScrollAndQuillScreen.PositionMemory(
-                rootSpellPart.hashCode(),
-                position, radius,
-                rootSpellPart, spellPart,
-                new ArrayList<>(parents), new ArrayList<>(angleOffsets));
+            rootSpellPart.hashCode(),
+            position, radius,
+            rootSpellPart, spellPart,
+            new ArrayList<>(parents), new ArrayList<>(angleOffsets));
     }
 
     public void load(ScrollAndQuillScreen.PositionMemory memory) {
@@ -171,10 +171,10 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         //        context.getMatrices().scale((float) PRECISION_OFFSET, (float) PRECISION_OFFSET, (float) PRECISION_OFFSET);
         windowHeight = context.getScaledWindowHeight();
         this.renderer.renderPart(
-                context.getMatrices(), context.getVertexConsumers(), spellPart,
-                position.x, position.y, radius, angleOffsets.peek(), delta,
-                radius -> (float) Math.clamp(1 / (radius / windowHeight * 3), 0.0, 0.8),
-                new Vec3d(-1, 0, 0)
+            context.getMatrices(), context.getVertexConsumers(), spellPart,
+            position.x, position.y, radius, angleOffsets.peek(), delta,
+            radius -> (float) Math.clamp(1 / (radius / windowHeight * 3), 0.0, 0.8),
+            new Vec3d(-1, 0, 0)
         );
         context.draw();
 
@@ -376,7 +376,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         } else {
             var i = RING_INDICES[a];
             return b == RING_ORDER[(i + 1) % 8] ||
-                    b == RING_ORDER[i == 0 ? 7 : (i - 1) % 8];
+                b == RING_ORDER[i == 0 ? 7 : (i - 1) % 8];
         }
     }
 
@@ -474,8 +474,8 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
                     drawingPattern = moves.get(i);
                     // TODO click sound?
                     MinecraftClient.getInstance().player.playSoundToPlayer(
-                            ModSounds.DRAW, SoundCategory.MASTER,
-                            1f, ModSounds.randomPitch(removing ? 0.6f : 1.0f, 0.2f)
+                        ModSounds.DRAW, SoundCategory.MASTER,
+                        1f, ModSounds.randomPitch(removing ? 0.6f : 1.0f, 0.2f)
                     );
                 }
                 return true;
@@ -530,8 +530,8 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         revisionContext.updateSpell(rootSpellPart);
 
         MinecraftClient.getInstance().player.playSoundToPlayer(
-                ModSounds.COMPLETE, SoundCategory.MASTER,
-                1f, patternSize > 1 ? 1f : 0.6f
+            ModSounds.COMPLETE, SoundCategory.MASTER,
+            1f, patternSize > 1 ? 1f : 0.6f
         );
     }
 
@@ -566,7 +566,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
     protected boolean propagateMouseEvent(SpellPart part, Vector2d pos, double radius, double startingAngle, Vector2d mouse, MouseEventHandler callback) {
         int closestIndex = closestIndex(part, pos, mouse, radius, startingAngle);
         boolean centerAvailable = (isCircleClickable(toLocalSpace(radius)) && (drawingPart == null || drawingPart == part))
-                || part.glyph instanceof SpellPart;
+            || part.glyph instanceof SpellPart;
 
         SpellPart closest = part;
         double closestDistanceSquared = Double.MAX_VALUE;

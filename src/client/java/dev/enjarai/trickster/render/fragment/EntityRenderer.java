@@ -11,7 +11,7 @@ import net.minecraft.util.math.Vec3d;
 public class EntityRenderer implements FragmentRenderer<EntityFragment> {
     @Override
     public void render(EntityFragment fragment, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float size, float alpha, Vec3d normal, float tickDelta,
-            CircleRenderer delegator) {
+        CircleRenderer delegator) {
         var entity = fragment.getEntity(MinecraftClient.getInstance().world, true);
 
         if (entity.isPresent()) {
@@ -22,8 +22,8 @@ public class EntityRenderer implements FragmentRenderer<EntityFragment> {
             matrices.scale(0.8f, 0.8f, 0.8f);
 
             MinecraftClient.getInstance().getEntityRenderDispatcher().render(
-                    entity.get(), 0, 0, 0, 0, tickDelta,
-                    matrices, vertexConsumers, LightmapTextureManager.pack(0, 15)
+                entity.get(), 0, 0, 0, 0, tickDelta,
+                matrices, vertexConsumers, LightmapTextureManager.pack(0, 15)
             );
 
             matrices.pop();
