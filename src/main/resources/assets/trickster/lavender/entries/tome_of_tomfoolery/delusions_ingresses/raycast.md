@@ -27,7 +27,7 @@ If a raycast misses and does not hit anything of relevance within 64 blocks, voi
 
 ;;;;;
 
-<|trick@trickster:templates|trick-id=trickster:raycast|>
+<|trick@trickster:templates|trick-id=trickster:raycast_block|>
 
 Returns the position of the block that is hit.
 
@@ -44,3 +44,11 @@ Returns the entity that is hit.
 ;;;;;
 
 Returns a unit vector representing the side of the block that is hit.
+
+;;;;;
+
+<|trick@trickster:templates|trick-id=trickster:raycast_pos|>
+
+;;;;;
+
+Returns the exact position of where the ray intersects a block.
