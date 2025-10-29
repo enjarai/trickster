@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.mixin.client;
 
-import dev.enjarai.trickster.screen.scribing.ScribingScreen;
+import dev.enjarai.trickster.screen.scribing.CircleSoupWidget;
+import io.wispforest.owo.braid.core.BraidScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -17,13 +18,13 @@ public class TitleScreenMixin extends Screen {
     }
 
     @Inject(
-            method = "init", at = @At("TAIL")
+        method = "init", at = @At("TAIL")
     )
     private void init(CallbackInfo ci) {
         addDrawableChild(
-                ButtonWidget.builder(Text.translatable("menu.options"), button -> this.client.setScreen(new ScribingScreen(Text.of("meow"), true)))
-                        .dimensions(this.width / 2 - 200, this.height / 2, 98, 20)
-                        .build()
+            ButtonWidget.builder(Text.translatable("menu.options"), button -> this.client.setScreen(new BraidScreen(new CircleSoupWidget())))
+                .dimensions(this.width / 2 - 200, this.height / 2, 98, 20)
+                .build()
         );
     }
 }

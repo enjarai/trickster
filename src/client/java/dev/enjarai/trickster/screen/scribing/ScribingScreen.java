@@ -35,23 +35,23 @@ public class ScribingScreen extends Screen {
     protected void init() {
         circles.clear();
         addCircle(new CircleElement(
-                this,
-                (SpellPart) Fragment.fromBase64(
-                        "YxEpKcpMzi4uSS2yKi5IzcmJL0gsKsEqKIgQLEgsAVJ5G32YWFkZmRkYGECYgZERUwkDAxNIiomBSsocoMrY8CnjFGBnIMoYDCsFEGrzSnOTUosYEICJgQlZKZFhBNbJWIfPORs8mFjxOtfFgYsse+GepL7RTIyc+Mw15GhqITZUSYgpHpLdCgpbRiLTHh4HOxiQ4WByQhWvS50awLEFDAhdfMpA2RKf/KIGvH61/0CsXx0QikgOFaLigVCCJcoQqmYYTogU7iiChAmRCRqfSg4GFqJDn9h8RgRBTqKVxudOpiaGhcSnRixWKAhQKUQXMTB04gks+weogYXbRkYF0lxEYg4B5m+8IUq3+oJIraDCnkDJhai4ia5sCQeZACMDHsOILsaUG5w68JjjoESkOUzoLicpATiBA4jUREVk4JBcBzigxQROc4C2cOB1hwO2QMHjS1YSrCM2aQPzAzPtmqlIgVeWmlySX8QMC7oDExjQAaHa7QD2WIEavGeCkW4DUG4/NG3bzI/pTiAumhywF31Qg/dfXssoguRMewSfxDYAsTE9GpO0iUn70ZgcpjG5fzQmh2hMopeuVItJDIJRFJ9xhDqGyC0YKg2uEKuSwl4hlpBAGp8YHCkZSxcvhIjwFnJhwCuPbAiUAAC2SONd1RMAAA=="),
-                null,
-                width / 4d, height / 2d,
-                width / 8d,
-                0
+            this,
+            (SpellPart) Fragment.fromBase64(
+                "YxEpKcpMzi4uSS2yKi5IzcmJL0gsKsEqKIgQLEgsAVJ5G32YWFkZmRkYGECYgZERUwkDAxNIiomBSsocoMrY8CnjFGBnIMoYDCsFEGrzSnOTUosYEICJgQlZKZFhBNbJWIfPORs8mFjxOtfFgYsse+GepL7RTIyc+Mw15GhqITZUSYgpHpLdCgpbRiLTHh4HOxiQ4WByQhWvS50awLEFDAhdfMpA2RKf/KIGvH61/0CsXx0QikgOFaLigVCCJcoQqmYYTogU7iiChAmRCRqfSg4GFqJDn9h8RgRBTqKVxudOpiaGhcSnRixWKAhQKUQXMTB04gks+weogYXbRkYF0lxEYg4B5m+8IUq3+oJIraDCnkDJhai4ia5sCQeZACMDHsOILsaUG5w68JjjoESkOUzoLicpATiBA4jUREVk4JBcBzigxQROc4C2cOB1hwO2QMHjS1YSrCM2aQPzAzPtmqlIgVeWmlySX8QMC7oDExjQAaHa7QD2WIEavGeCkW4DUG4/NG3bzI/pTiAumhywF31Qg/dfXssoguRMewSfxDYAsTE9GpO0iUn70ZgcpjG5fzQmh2hMopeuVItJDIJRFJ9xhDqGyC0YKg2uEKuSwl4hlpBAGp8YHCkZSxcvhIjwFnJhwCuPbAiUAAC2SONd1RMAAA=="),
+            null,
+            width / 4d, height / 2d,
+            width / 8d,
+            0
         ));
 
         addCircle(new CircleElement(
-                this,
-                (SpellPart) Fragment.fromBase64(
-                        "YxEpKcpMzi4uSS2yKi5IzcmJL0gsKsEqKIgQLEgsAVJ5G32YWFkZmRkYGECYgZERUwkDAxNIiomBSsocoMrY8CnjFGBnIMoYDCsFEGrzSnOTUosYEICJgQlZKZFhBNbJWIfPORs8mFjxOtfFgYsse+GepL7RTIyc+Mw15GhqITZUSYgpHpLdCgpbRiLTHh4HOxiQ4WByQhWvS50awLEFDAhdfMpA2RKf/KIGvH61/0CsXx0QikgOFaLigVCCJcoQqmYYTogU7iiChAmRCRqfSg4GFqJDn9h8RgRBTqKVxudOpiaGhcSnRixWKAhQKUQXMTB04gks+weogYXbRkYF0lxEYg4B5m+8IUq3+oJIraDCnkDJhai4ia5sCQeZACMDHsOILsaUG5w68JjjoESkOUzoLicpATiBA4jUREVk4JBcBzigxQROc4C2cOB1hwO2QMHjS1YSrCM2aQPzAzPtmqlIgVeWmlySX8QMC7oDExjQAaHa7QD2WIEavGeCkW4DUG4/NG3bzI/pTiAumhywF31Qg/dfXssoguRMewSfxDYAsTE9GpO0iUn70ZgcpjG5fzQmh2hMopeuVItJDIJRFJ9xhDqGyC0YKg2uEKuSwl4hlpBAGp8YHCkZSxcvhIjwFnJhwCuPbAiUAAC2SONd1RMAAA=="),
-                null,
-                width / 4d * 3, height / 2d,
-                width / 8d,
-                0
+            this,
+            (SpellPart) Fragment.fromBase64(
+                "YxEpKcpMzi4uSS2yKi5IzcmJL0gsKsEqKIgQLEgsAVJ5G32YWFkZmRkYGECYgZERUwkDAxNIiomBSsocoMrY8CnjFGBnIMoYDCsFEGrzSnOTUosYEICJgQlZKZFhBNbJWIfPORs8mFjxOtfFgYsse+GepL7RTIyc+Mw15GhqITZUSYgpHpLdCgpbRiLTHh4HOxiQ4WByQhWvS50awLEFDAhdfMpA2RKf/KIGvH61/0CsXx0QikgOFaLigVCCJcoQqmYYTogU7iiChAmRCRqfSg4GFqJDn9h8RgRBTqKVxudOpiaGhcSnRixWKAhQKUQXMTB04gks+weogYXbRkYF0lxEYg4B5m+8IUq3+oJIraDCnkDJhai4ia5sCQeZACMDHsOILsaUG5w68JjjoESkOUzoLicpATiBA4jUREVk4JBcBzigxQROc4C2cOB1hwO2QMHjS1YSrCM2aQPzAzPtmqlIgVeWmlySX8QMC7oDExjQAaHa7QD2WIEavGeCkW4DUG4/NG3bzI/pTiAumhywF31Qg/dfXssoguRMewSfxDYAsTE9GpO0iUn70ZgcpjG5fzQmh2hMopeuVItJDIJRFJ9xhDqGyC0YKg2uEKuSwl4hlpBAGp8YHCkZSxcvhIjwFnJhwCuPbAiUAAC2SONd1RMAAA=="),
+            null,
+            width / 4d * 3, height / 2d,
+            width / 8d,
+            0
         ));
     }
 

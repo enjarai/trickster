@@ -11,7 +11,7 @@ import net.minecraft.util.math.Vec3d;
 public class BlockTypeRenderer implements FragmentRenderer<BlockTypeFragment> {
     @Override
     public void render(BlockTypeFragment fragment, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float size, float alpha, Vec3d normal, float tickDelta,
-            CircleRenderer delegator) {
+        CircleRenderer delegator) {
         var block = fragment.block();
 
         if (Item.BLOCK_ITEMS.containsKey(block)) {

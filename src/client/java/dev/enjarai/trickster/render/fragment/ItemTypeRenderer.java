@@ -16,16 +16,16 @@ import net.minecraft.util.math.Vec3d;
 public class ItemTypeRenderer implements FragmentRenderer<ItemTypeFragment> {
     @Override
     public void render(ItemTypeFragment fragment, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float size, float alpha, Vec3d normal, float tickDelta,
-            CircleRenderer delegator) {
+        CircleRenderer delegator) {
         var stack = fragment.item().getDefaultStack();
         renderItem(stack, ModelTransformationMode.GUI, matrices, vertexConsumers, x, y, size, delegator, 14, false);
     }
 
     public static void renderItem(ItemStack stack, ModelTransformationMode transformationMode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float size,
-            CircleRenderer delegator, int light, boolean alwaysFlatLight) {
+        CircleRenderer delegator, int light, boolean alwaysFlatLight) {
         var bakedModel = MinecraftClient.getInstance().getItemRenderer().getModel(
-                stack, MinecraftClient.getInstance().world,
-                null, 0
+            stack, MinecraftClient.getInstance().world,
+            null, 0
         );
 
         matrices.push();
@@ -47,10 +47,10 @@ public class ItemTypeRenderer implements FragmentRenderer<ItemTypeFragment> {
         }
 
         MinecraftClient.getInstance().getItemRenderer().renderItem(
-                stack, transformationMode,
-                false, matrices, vertexConsumers,
-                LightmapTextureManager.pack(0, light), OverlayTexture.DEFAULT_UV,
-                bakedModel
+            stack, transformationMode,
+            false, matrices, vertexConsumers,
+            LightmapTextureManager.pack(0, light), OverlayTexture.DEFAULT_UV,
+            bakedModel
         );
         if (delegator.inUI && vertexConsumers instanceof VertexConsumerProvider.Immediate immediate) {
             immediate.draw();

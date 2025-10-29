@@ -10,7 +10,6 @@ import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -27,10 +26,10 @@ public class CircleElement implements Element, Drawable, Selectable {
     static final Byte DOT_COUNT = 9;
 
     static final Byte[] RING_ORDER = {
-            (byte) 0, (byte) 1, (byte) 2, (byte) 5, (byte) 8, (byte) 7, (byte) 6, (byte) 3
+        (byte) 0, (byte) 1, (byte) 2, (byte) 5, (byte) 8, (byte) 7, (byte) 6, (byte) 3
     };
     static final Byte[] RING_INDICES = {
-            (byte) 0, (byte) 1, (byte) 2, (byte) 7, (byte) 0, (byte) 3, (byte) 6, (byte) 5, (byte) 4
+        (byte) 0, (byte) 1, (byte) 2, (byte) 7, (byte) 0, (byte) 3, (byte) 6, (byte) 5, (byte) 4
     };
 
     public static final double FORK_THRESHOLD = 50;
@@ -107,15 +106,15 @@ public class CircleElement implements Element, Drawable, Selectable {
             var subY = canonicalY + (canonicalRadius * Math.sin(angle));
 
             var circle = new CircleElement(
-                    screen, child, this,
-                    subX, subY, part.subRadius(canonicalRadius),
-                    angle
+                screen, child, this,
+                subX, subY, part.subRadius(canonicalRadius),
+                angle
             );
             var animationRadius = getAnimatedRadius();
             circle.applyAnimationState(
-                    getAnimatedX() + (animationRadius * Math.cos(angle)),
-                    getAnimatedY() + (animationRadius * Math.sin(angle)),
-                    part.subRadius(animationRadius)
+                getAnimatedX() + (animationRadius * Math.cos(angle)),
+                getAnimatedY() + (animationRadius * Math.sin(angle)),
+                part.subRadius(animationRadius)
             );
 
             childCircles.add(circle);
@@ -126,12 +125,12 @@ public class CircleElement implements Element, Drawable, Selectable {
 
         if (part.glyph instanceof SpellPart inner) {
             var circle = new CircleElement(
-                    screen, inner, this,
-                    canonicalX, canonicalY, canonicalRadius / 3,
-                    startingAngle
+                screen, inner, this,
+                canonicalX, canonicalY, canonicalRadius / 3,
+                startingAngle
             );
             circle.applyAnimationState(
-                    getAnimatedX(), getAnimatedY(), getAnimatedRadius() / 3
+                getAnimatedX(), getAnimatedY(), getAnimatedRadius() / 3
             );
 
             childCircles.add(circle);
@@ -226,7 +225,7 @@ public class CircleElement implements Element, Drawable, Selectable {
         } else {
             var i = RING_INDICES[a];
             return b == RING_ORDER[(i + 1) % 8] ||
-                    b == RING_ORDER[i == 0 ? 7 : (i - 1) % 8];
+                b == RING_ORDER[i == 0 ? 7 : (i - 1) % 8];
         }
     }
 
@@ -348,12 +347,12 @@ public class CircleElement implements Element, Drawable, Selectable {
         var matrices = context.getMatrices();
         matrices.push();
         matrices.translate(0, 0, 1 / radius);
-        screen.renderer.renderCircle(
-                matrices, part,
-                x, y, radius, startingAngle, delta, // maybe we dont need angle here
-                r -> Math.clamp(1 / (r / screen.height * 3), 0.0, 0.8),
-                new Vec3d(-1, 0, 0), drawingPattern
-        );
+        //        screen.renderer.renderCircle(
+        //                matrices, part,
+        //                x, y, radius, startingAngle, delta, // maybe we dont need angle here
+        //                r -> Math.clamp(1 / (r / screen.height * 3), 0.0, 0.8),
+        //                new Vec3d(-1, 0, 0), drawingPattern
+        //        );
         matrices.pop();
     }
 

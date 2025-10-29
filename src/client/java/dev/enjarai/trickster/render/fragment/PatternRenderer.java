@@ -15,7 +15,7 @@ import static dev.enjarai.trickster.screen.SpellPartWidget.isCircleClickable;
 public class PatternRenderer implements FragmentRenderer<PatternGlyph> {
     @Override
     public void render(PatternGlyph fragment, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float size, float alpha, Vec3d normal, float tickDelta,
-            CircleRenderer delegator) {
+        CircleRenderer delegator) {
         renderPattern(fragment.pattern(), matrices, vertexConsumers, x, y, size / PATTERN_TO_PART_RATIO, alpha, delegator);
     }
 
@@ -48,20 +48,20 @@ public class PatternRenderer implements FragmentRenderer<PatternGlyph> {
             var dotSize = pixelSize * dotScale;
 
             drawFlatPolygon(matrices, vertexConsumers,
-                    pos.x - dotSize, pos.y - dotSize,
-                    pos.x - dotSize, pos.y + dotSize,
-                    pos.x + dotSize, pos.y + dotSize,
-                    pos.x + dotSize, pos.y - dotSize,
-                    0, r, g, b, 0.7f * alpha);
+                pos.x - dotSize, pos.y - dotSize,
+                pos.x - dotSize, pos.y + dotSize,
+                pos.x + dotSize, pos.y + dotSize,
+                pos.x + dotSize, pos.y - dotSize,
+                0, r, g, b, 0.7f * alpha);
         }
 
         for (var line : pattern.entries()) {
             var first = getPatternDotPosition(x, y, line.p1(), size);
             var second = getPatternDotPosition(x, y, line.p2(), size);
             drawGlyphLine(
-                    matrices, vertexConsumers, first, second, pixelSize,
-                    false, 1, r, g, b, 0.7f * alpha, true, //delegator.animated, TODO BWA
-                    Util.getMeasuringTimeMs()
+                matrices, vertexConsumers, first, second, pixelSize,
+                false, 1, r, g, b, 0.7f * alpha, true, //delegator.animated, TODO BWA
+                Util.getMeasuringTimeMs()
             );
         }
 
