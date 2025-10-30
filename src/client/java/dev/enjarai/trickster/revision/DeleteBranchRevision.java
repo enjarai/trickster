@@ -1,7 +1,10 @@
 package dev.enjarai.trickster.revision;
 
+import dev.enjarai.trickster.SpellView;
 import dev.enjarai.trickster.spell.Pattern;
-import dev.enjarai.trickster.spell.SpellPart;
+import dev.enjarai.trickster.spell.PatternGlyph;
+
+import java.util.List;
 
 public class DeleteBranchRevision implements Revision {
     @Override
@@ -10,11 +13,12 @@ public class DeleteBranchRevision implements Revision {
     }
 
     @Override
-    public SpellPart apply(RevisionContext ctx, SpellPart root, SpellPart drawingPart) {
-        if (drawingPart == root)
-            return new SpellPart();
-
-        drawingPart.setSubPartInTree(current -> null, root, false);
-        return root;
+    public void apply(RevisionContext ctx, SpellView view) {
+        if (view.parent != null) {
+            view.delete();
+        } else {
+            view.replaceGlyph(new PatternGlyph());
+            view.replaceChildren(List.of());
+        }
     }
 }

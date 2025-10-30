@@ -1,7 +1,10 @@
 package dev.enjarai.trickster.revision;
 
+import dev.enjarai.trickster.SpellView;
 import dev.enjarai.trickster.spell.Pattern;
-import dev.enjarai.trickster.spell.SpellPart;
+import dev.enjarai.trickster.spell.PatternGlyph;
+
+import java.util.List;
 
 public class InsertParentCircleRevision implements Revision {
     @Override
@@ -10,14 +13,9 @@ public class InsertParentCircleRevision implements Revision {
     }
 
     @Override
-    public SpellPart apply(RevisionContext ctx, SpellPart root, SpellPart drawingPart) {
-        var newPart = new SpellPart();
-        newPart.subParts.add(drawingPart);
-
-        if (drawingPart == root)
-            return newPart;
-
-        drawingPart.setSubPartInTree(current -> newPart, root, false);
-        return root;
+    public void apply(RevisionContext ctx, SpellView view) {
+        var newPart = view.part.deepClone();
+        view.replaceGlyph(new PatternGlyph());
+        view.replaceChildren(List.of(newPart));
     }
 }

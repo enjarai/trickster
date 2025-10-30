@@ -1,7 +1,9 @@
 package dev.enjarai.trickster.revision;
 
+import dev.enjarai.trickster.SpellView;
 import dev.enjarai.trickster.spell.Pattern;
-import dev.enjarai.trickster.spell.SpellPart;
+
+import java.util.ArrayList;
 
 public class ShiftSubcircleForwardsRevision implements Revision {
     @Override
@@ -10,10 +12,11 @@ public class ShiftSubcircleForwardsRevision implements Revision {
     }
 
     @Override
-    public SpellPart apply(RevisionContext ctx, SpellPart root, SpellPart drawingPart) {
-        if (!drawingPart.subParts.isEmpty())
-            drawingPart.subParts.addFirst(drawingPart.subParts.removeLast());
-
-        return root;
+    public void apply(RevisionContext ctx, SpellView view) {
+        if (!view.part.isEmpty()) {
+            var children = new ArrayList<>(view.part.subParts);
+            children.addFirst(children.removeLast());
+            view.replaceChildren(children);
+        }
     }
 }

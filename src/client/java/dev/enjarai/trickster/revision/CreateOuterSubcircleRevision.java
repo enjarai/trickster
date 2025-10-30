@@ -1,7 +1,10 @@
 package dev.enjarai.trickster.revision;
 
+import dev.enjarai.trickster.SpellView;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellPart;
+
+import java.util.ArrayList;
 
 public class CreateOuterSubcircleRevision implements Revision {
     @Override
@@ -10,18 +13,11 @@ public class CreateOuterSubcircleRevision implements Revision {
     }
 
     @Override
-    public SpellPart apply(RevisionContext ctx, SpellPart root, SpellPart drawingPart) {
-        if (drawingPart != root) {
-            if (root.glyph == drawingPart) {
-                root.subParts.add(new SpellPart());
-            } else {
-                drawingPart.setSubPartInTree(current -> {
-                    current.subParts.add(new SpellPart());
-                    return current;
-                }, root, true);
-            }
+    public void apply(RevisionContext ctx, SpellView view) {
+        if (view.parent != null && view.isInner) {
+            var children = new ArrayList<>(view.parent.part.subParts);
+            children.add(new SpellPart());
+            view.parent.replaceChildren(children);
         }
-
-        return root;
     }
 }

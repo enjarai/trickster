@@ -1,7 +1,7 @@
 package dev.enjarai.trickster.revision;
 
+import dev.enjarai.trickster.SpellView;
 import dev.enjarai.trickster.spell.Pattern;
-import dev.enjarai.trickster.spell.SpellPart;
 
 public class ExecuteOffHandRevision implements Revision {
     @Override
@@ -10,9 +10,8 @@ public class ExecuteOffHandRevision implements Revision {
     }
 
     @Override
-    public SpellPart apply(RevisionContext ctx, SpellPart root, SpellPart drawingPart) {
+    public void apply(RevisionContext ctx, SpellView view) {
         //TODO: make this independent of SpellPartWidget
         ctx.executeOffhand();
-        return root;
     }
 }
