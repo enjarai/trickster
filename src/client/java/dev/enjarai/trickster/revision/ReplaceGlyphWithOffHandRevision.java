@@ -1,7 +1,7 @@
 package dev.enjarai.trickster.revision;
 
+import dev.enjarai.trickster.SpellView;
 import dev.enjarai.trickster.spell.Pattern;
-import dev.enjarai.trickster.spell.SpellPart;
 
 public class ReplaceGlyphWithOffHandRevision implements Revision {
     @Override
@@ -10,9 +10,8 @@ public class ReplaceGlyphWithOffHandRevision implements Revision {
     }
 
     @Override
-    public SpellPart apply(RevisionContext ctx, SpellPart root, SpellPart drawingPart) {
+    public void apply(RevisionContext ctx, SpellView view) {
         //TODO: get other hand fragment!
-        drawingPart.glyph = ctx.getOtherHandSpell().deepClone();
-        return root;
+        view.replaceGlyph(ctx.getOtherHandSpell().deepClone());
     }
 }

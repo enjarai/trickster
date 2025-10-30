@@ -1,7 +1,7 @@
 package dev.enjarai.trickster.revision;
 
+import dev.enjarai.trickster.SpellView;
 import dev.enjarai.trickster.spell.Pattern;
-import dev.enjarai.trickster.spell.SpellPart;
 
 public class WriteBranchToOffHandRevision implements Revision {
     @Override
@@ -10,8 +10,7 @@ public class WriteBranchToOffHandRevision implements Revision {
     }
 
     @Override
-    public SpellPart apply(RevisionContext ctx, SpellPart root, SpellPart drawingPart) {
-        ctx.updateOffHandSpell(drawingPart);
-        return root;
+    public void apply(RevisionContext ctx, SpellView view) {
+        ctx.updateOffHandSpell(view.part);
     }
 }

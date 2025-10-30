@@ -1,8 +1,8 @@
 package dev.enjarai.trickster.revision;
 
+import dev.enjarai.trickster.SpellView;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.PatternGlyph;
-import dev.enjarai.trickster.spell.SpellPart;
 
 public class PatternLiteralRevision implements Revision {
     @Override
@@ -11,10 +11,9 @@ public class PatternLiteralRevision implements Revision {
     }
 
     @Override
-    public SpellPart apply(RevisionContext ctx, SpellPart root, SpellPart drawingPart) {
-        if (drawingPart.glyph instanceof PatternGlyph(Pattern pattern)) {
-            drawingPart.glyph = pattern;
+    public void apply(RevisionContext ctx, SpellView view) {
+        if (view.part.glyph instanceof PatternGlyph(Pattern pattern)) {
+            view.replaceGlyph(pattern);
         }
-        return root;
     }
 }

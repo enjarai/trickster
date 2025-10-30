@@ -1,7 +1,7 @@
 package dev.enjarai.trickster.revision;
 
+import dev.enjarai.trickster.SpellView;
 import dev.enjarai.trickster.spell.Pattern;
-import dev.enjarai.trickster.spell.SpellPart;
 
 public interface Revision {
     /**
@@ -11,10 +11,9 @@ public interface Revision {
 
     /**
      * Applies this revision over the root spell part, replacing the root with this function's return.
+     *
      * @param ctx The context of the editor.
-     * @param root The current root.
-     * @param drawingPart The spell part that is being drawn in.
-     * @return The new root spell part.
+     * @param view The current root.
      */
-    SpellPart apply(RevisionContext ctx, SpellPart root, SpellPart drawingPart);
+    void apply(RevisionContext ctx, SpellView view);
 }

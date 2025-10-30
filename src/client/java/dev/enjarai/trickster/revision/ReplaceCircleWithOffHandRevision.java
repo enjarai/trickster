@@ -1,7 +1,7 @@
 package dev.enjarai.trickster.revision;
 
+import dev.enjarai.trickster.SpellView;
 import dev.enjarai.trickster.spell.Pattern;
-import dev.enjarai.trickster.spell.SpellPart;
 
 public class ReplaceCircleWithOffHandRevision implements Revision {
     @Override
@@ -10,13 +10,9 @@ public class ReplaceCircleWithOffHandRevision implements Revision {
     }
 
     @Override
-    public SpellPart apply(RevisionContext ctx, SpellPart root, SpellPart drawingPart) {
+    public void apply(RevisionContext ctx, SpellView view) {
         var offhand = ctx.getOtherHandSpell().deepClone();
 
-        if (drawingPart == root)
-            return offhand;
-
-        drawingPart.setSubPartInTree(current -> offhand, root, false);
-        return root;
+        view.replace(offhand);
     }
 }

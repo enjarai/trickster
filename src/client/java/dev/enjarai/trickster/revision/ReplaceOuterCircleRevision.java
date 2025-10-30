@@ -1,7 +1,7 @@
 package dev.enjarai.trickster.revision;
 
+import dev.enjarai.trickster.SpellView;
 import dev.enjarai.trickster.spell.Pattern;
-import dev.enjarai.trickster.spell.SpellPart;
 
 public class ReplaceOuterCircleRevision implements Revision {
     @Override
@@ -10,14 +10,9 @@ public class ReplaceOuterCircleRevision implements Revision {
     }
 
     @Override
-    public SpellPart apply(RevisionContext ctx, SpellPart root, SpellPart drawingPart) {
-        if (drawingPart != root) {
-            if (root.glyph == drawingPart)
-                return drawingPart;
-
-            drawingPart.setSubPartInTree(current -> drawingPart, root, true);
+    public void apply(RevisionContext ctx, SpellView view) {
+        if (view.parent != null) {
+            view.parent.replace(view.part);
         }
-
-        return root;
     }
 }

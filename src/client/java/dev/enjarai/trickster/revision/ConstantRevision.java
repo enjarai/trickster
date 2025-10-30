@@ -1,8 +1,8 @@
 package dev.enjarai.trickster.revision;
 
+import dev.enjarai.trickster.SpellView;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
-import dev.enjarai.trickster.spell.SpellPart;
 
 public class ConstantRevision implements Revision {
     private final Pattern pattern;
@@ -19,8 +19,7 @@ public class ConstantRevision implements Revision {
     }
 
     @Override
-    public SpellPart apply(RevisionContext ctx, SpellPart root, SpellPart drawingPart) {
-        drawingPart.glyph = fragment;
-        return root;
+    public void apply(RevisionContext ctx, SpellView view) {
+        view.replaceGlyph(fragment);
     }
 }

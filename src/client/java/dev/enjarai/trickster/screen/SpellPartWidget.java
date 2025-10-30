@@ -493,27 +493,27 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
         if (compiled.equals(Revisions.EXECUTE_OFF_HAND.pattern())) {
             toBeReplaced = drawingPart; //TODO: allow handling this in a more generic way?
-            Revisions.EXECUTE_OFF_HAND.apply(revisionContext, spellPart, drawingPart);
+            //            Revisions.EXECUTE_OFF_HAND.apply(revisionContext, spellPart);
         } else if (rev.isPresent()) {
-            var result = rev.get().apply(revisionContext, spellPart, drawingPart);
-
-            if (result != spellPart) {
-                if (!parents.isEmpty()) {
-                    var parent = parents.peek();
-
-                    for (int i = 0; i < parent.subParts.size(); i++) {
-                        if (parent.subParts.get(i) == spellPart) {
-                            parent.subParts.set(i, result);
-                        }
-                    }
-                }
-
-                if (spellPart == rootSpellPart) {
-                    rootSpellPart = result;
-                }
-
-                spellPart = result;
-            }
+            //            var result = rev.get().apply(revisionContext, spellPart);
+            //
+            //            if (result != spellPart) {
+            //                if (!parents.isEmpty()) {
+            //                    var parent = parents.peek();
+            //
+            //                    for (int i = 0; i < parent.subParts.size(); i++) {
+            //                        if (parent.subParts.get(i) == spellPart) {
+            //                            parent.subParts.set(i, result);
+            //                        }
+            //                    }
+            //                }
+            //
+            //                if (spellPart == rootSpellPart) {
+            //                    rootSpellPart = result;
+            //                }
+            //
+            //                spellPart = result;
+            //            }
         } else if (revisionContext.getMacros().get(compiled).isDefined()) {
             toBeReplaced = drawingPart;
             revisionContext.updateSpellWithSpell(drawingPart, revisionContext.getMacros().get(compiled).get());
