@@ -6,7 +6,8 @@
   "additional_search_terms": [
     "Pinpoint Ingress",
     "Bearing Ingress",
-    "Mark Ingress"
+    "Mark Ingress",
+    "Pinprick Ingress"
   ]
 }
 ```
