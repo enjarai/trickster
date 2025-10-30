@@ -7,7 +7,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 
 public record WardType<T extends Ward>(StructEndec<T> endec) {
-    public static final RegistryKey<Registry<WardType<?>>> REGISTRY_KEY = RegistryKey.ofRegistry(Trickster.id("mana_pool_type"));
+    public static final RegistryKey<Registry<WardType<?>>> REGISTRY_KEY = RegistryKey.ofRegistry(Trickster.id("ward_type"));
     public static final Registry<WardType<?>> REGISTRY = FabricRegistryBuilder.createSimple(REGISTRY_KEY).buildAndRegister();
 
     public static final WardType<SimpleCubicWard> SIMPLE_CUBIC = register("simple_cubic", SimpleCubicWard.ENDEC);

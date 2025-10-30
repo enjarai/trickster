@@ -2,21 +2,32 @@ package dev.enjarai.trickster.cca;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.joml.Vector3dc;
-import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
+import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
+import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
+import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.spell.ward.Ward;
+import dev.enjarai.trickster.spell.ward.action.Action;
+import dev.enjarai.trickster.spell.ward.action.Target;
+import io.wispforest.endec.Endec;
+import io.wispforest.endec.impl.KeyedEndec;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.registry.RegistryWrapper.WrapperLookup;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 
-public class WardManagerComponent implements ServerTickingComponent {
+public class WardManagerComponent implements CommonTickingComponent, AutoSyncedComponent {
+    private static final Endec<Map<UUID, Ward>> WARDS_ENDEC = Endec.map(EndecTomfoolery.UUID, Ward.ENDEC);
+    private static final KeyedEndec<Map<UUID, Ward>> KEYED_WARDS_ENDEC = WARDS_ENDEC.keyed("wards", () -> new HashMap<>());
+
     private final World world;
-    private final HashMap<UUID, Ward> wards = new HashMap<>();
+    private final Map<UUID, Ward> wards = new HashMap<>();
 
     public WardManagerComponent(World world) {
         this.world = world;
@@ -24,18 +35,28 @@ public class WardManagerComponent implements ServerTickingComponent {
 
     @Override
     public void readFromNbt(NbtCompound tag, WrapperLookup registryLookup) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'readFromNbt'");
+        wards.clear();
+        wards.putAll(tag.get(KEYED_WARDS_ENDEC));
     }
 
     @Override
     public void writeToNbt(NbtCompound tag, WrapperLookup registryLookup) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'writeToNbt'");
+        tag.put(KEYED_WARDS_ENDEC, wards);
     }
 
     @Override
-    public void serverTick() {
+    public void applySyncPacket(RegistryByteBuf buf) {
+        var map = buf.read(WARDS_ENDEC);
+        wards.clear();
+        wards.putAll(map);
+    }
+
+    public void writeSyncPacket(RegistryByteBuf buf, ServerPlayerEntity recipient) {
+        buf.write(WARDS_ENDEC, wards);
+    }
+
+    @Override
+    public void tick() {
         var world = (ServerWorld) this.world;
         var toRemove = new ArrayList<UUID>();
 
@@ -57,15 +78,33 @@ public class WardManagerComponent implements ServerTickingComponent {
         return Optional.ofNullable(wards.get(uuid));
     }
 
-    public ArrayList<Ward> get(Vector3dc pos) {
+    public ArrayList<Ward> allThatCanCancel(Action<?> action) {
         var result = new ArrayList<Ward>();
 
         for (var ward : wards.values()) {
-            if (ward.matchPos(pos)) {
+            if (ward.matchTarget(action.target(world)) && ward.matchAction(action.type())) {
                 result.add(ward);
             }
         }
 
         return result;
+    }
+
+    // if this returns true, the caller MUST cancel the action
+    // failing to do so would result in unexpected drain of the ward's reserves
+    public <T extends Target> boolean shouldCancel(Action<T> action) {
+        var wards = allThatCanCancel(action);
+
+        if (wards.size() > 0) {
+            float cost = action.cost(world);
+
+            for (var ward : wards) {
+                ward.drain(world, cost / wards.size());
+            }
+
+            return true;
+        } else {
+            return false;
+        }
     }
 }

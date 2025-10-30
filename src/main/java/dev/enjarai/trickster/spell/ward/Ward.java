@@ -1,12 +1,12 @@
 package dev.enjarai.trickster.spell.ward;
 
-import org.joml.Vector3dc;
-
 import dev.enjarai.trickster.EndecTomfoolery;
+import dev.enjarai.trickster.spell.ward.action.ActionType;
+import dev.enjarai.trickster.spell.ward.action.Target;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.owo.serialization.endec.MinecraftEndecs;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.world.World;
 
 public interface Ward {
     @SuppressWarnings("unchecked")
@@ -14,9 +14,13 @@ public interface Ward {
 
     WardType<?> type();
 
-    void tick(ServerWorld world);
+    void tick(World world);
 
-    boolean shouldLive(ServerWorld world);
+    void drain(World world, float amount);
 
-    boolean matchPos(Vector3dc pos);
+    boolean shouldLive(World world);
+
+    boolean matchTarget(Target target);
+
+    boolean matchAction(ActionType<?> action);
 }
