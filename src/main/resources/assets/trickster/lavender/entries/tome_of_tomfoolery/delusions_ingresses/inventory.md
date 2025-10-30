@@ -13,7 +13,8 @@
     "Crowning Ingress",
     "Ingress of Plenitude",
     "Collector's Ingress",
-    "Ingress of Extent"
+    "Ingress of Extent",
+    "Investigative Ingress"
   ]
 }
 ```
@@ -29,6 +30,12 @@ It is not possible to interact with the inventories of players that are not the 
 <|trick@trickster:templates|trick-id=trickster:get_item_in_slot|>
 
 Returns the type of item that the given slot contains.
+
+;;;;;
+
+<|trick@trickster:templates|trick-id=trickster:get_equipment|>
+
+Returns a list of the given entity's equipment including other players. It is ordered as following: [mainhand, offhand, helmet, chestplate, leggings, boots]
 
 ;;;;;
 
