@@ -57,6 +57,7 @@ public class CircleRenderer {
 
     private double mouseX;
     private double mouseY;
+    private boolean lineToMouse;
     private long renderTime;
 
     private float r = 1f, g = 1f, b = 1f;
@@ -70,6 +71,10 @@ public class CircleRenderer {
     public void setMousePosition(double mouseX, double mouseY) {
         this.mouseX = mouseX;
         this.mouseY = mouseY;
+    }
+
+    public void setLineToMouse(boolean lineToMouse) {
+        this.lineToMouse = lineToMouse;
     }
 
     public void setRenderTime(long renderTime) {
@@ -201,7 +206,7 @@ public class CircleRenderer {
                 drawGlyphLine(matrices, vertexConsumers, first, second, pixelSize, isDrawing, 1, r, g, b, 0.7f * alpha, inUI, renderTime);
             }
 
-            if (isDrawing) {
+            if (isDrawing && lineToMouse) {
                 var last = getPatternDotPosition(x, y, drawingPattern.getLast(), patternRadius);
                 var now = new Vector2f((float) mouseX, (float) mouseY);
                 drawGlyphLine(matrices, vertexConsumers, last, now, pixelSize, true, 1, r, g, b, 0.7f * alpha, inUI, renderTime);

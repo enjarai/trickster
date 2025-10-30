@@ -61,11 +61,13 @@ public class CircleWidget extends StatefulWidget {
 
     public static class State extends WidgetState<CircleWidget> {
         private double mouseX, mouseY;
+        private boolean mouseInside;
         @Nullable
         private List<Byte> drawingPattern;
 
         private void draw(BraidDrawContext ctx, WidgetTransform transform) {
             renderer.setMousePosition(mouseX, mouseY);
+            renderer.setLineToMouse(mouseInside);
             renderer.renderCircle(
                 ctx.getMatrices(), widget().partView.part,
                 16, 16, 16, widget().startingAngle, 0,
@@ -81,6 +83,7 @@ public class CircleWidget extends StatefulWidget {
                 area -> {
                     area.moveCallback(this::mouseMove);
                     area.releaseCallback((x, y, button, modifiers) -> mouseClick(x, y, button, SharedState.get(context, CircleSoupState.class)));
+                    area.exitCallback(this::mouseLeave);
                 },
                 new Sized(
                     32, 32,
@@ -115,6 +118,7 @@ public class CircleWidget extends StatefulWidget {
         public void mouseMove(double x, double y) {
             mouseX = x;
             mouseY = y;
+            mouseInside = true;
 
             if (drawingPattern == null) {
                 return;
@@ -134,6 +138,10 @@ public class CircleWidget extends StatefulWidget {
                     PositionedSoundInstance.master(ModSounds.DRAW, ModSounds.randomPitch(removing ? 0.6f : 1.0f, 0.2f))
                 );
             }
+        }
+
+        public void mouseLeave() {
+            mouseInside = false;
         }
 
         public void finishDrawing(boolean apply, CircleSoupState state) {

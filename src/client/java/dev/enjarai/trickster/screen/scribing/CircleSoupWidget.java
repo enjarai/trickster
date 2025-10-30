@@ -253,17 +253,16 @@ public class CircleSoupWidget extends StatefulWidget {
             private void backtrack() {
                 if (parentCircle != null || partView.parent == null) return;
 
-                if (partView.isInner && partView.children.isEmpty()) {
+                if (partView.isInner) {
                     var circle = new CircleState(
                         x, y, radius * 3,
                         startingAngle, partView.parent
                     );
-                    circle.childCircles.add(this);
 
-                    parentCircle = circle;
+                    relinkChildren(circle);
                     addCircle(circle);
-                } else if (partView.isFirstChild()) {
-                    var parentAngle = partView.parent.part.superAngle(0, startingAngle);
+                } else if (!partView.children.isEmpty()) {
+                    var parentAngle = partView.parent.part.superAngle(partView.getOwnIndex(), startingAngle);
                     var parentRadius = partView.parent.part.superRadius(radius);
                     var parentX = x - (parentRadius * Math.cos(startingAngle));
                     var parentY = y - (parentRadius * Math.sin(startingAngle));
@@ -272,14 +271,25 @@ public class CircleSoupWidget extends StatefulWidget {
                         parentX, parentY, parentRadius,
                         parentAngle, partView.parent
                     );
-                    for (var child : partView.parent.children) {
-                        if (circles.containsKey(child)) {
-                            circle.childCircles.add(circles.get(child));
-                        }
-                    }
 
-                    parentCircle = circle;
+                    relinkChildren(circle);
                     addCircle(circle);
+                }
+            }
+
+            private void relinkChildren(CircleState parent) {
+                for (var child : parent.partView.children) {
+                    if (circles.containsKey(child)) {
+                        var childState = circles.get(child);
+                        parent.childCircles.add(childState);
+                        childState.parentCircle = parent;
+                    }
+                }
+
+                if (parent.partView.inner != null && circles.containsKey(parent.partView.inner)) {
+                    var innerState = circles.get(parent.partView.inner);
+                    parent.childCircles.add(innerState);
+                    innerState.parentCircle = parent;
                 }
             }
 

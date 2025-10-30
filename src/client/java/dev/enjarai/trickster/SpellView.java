@@ -46,11 +46,11 @@ public class SpellView {
         return mainView;
     }
 
-    public boolean isFirstChild() {
+    public int getOwnIndex() {
         if (isInner || parent == null || parent.children.isEmpty()) {
-            return false;
+            return -1;
         }
 
-        return parent.children.getFirst() == this;
+        return parent.children.indexOf(this);
     }
 }
