@@ -13,7 +13,8 @@
     "Crowning Ingress",
     "Ingress of Plenitude",
     "Collector's Ingress",
-    "Ingress of Extent"
+    "Ingress of Extent",
+    "Investigative Ingress"
   ]
 }
 ```
@@ -22,13 +23,19 @@ These are tricks that pull information from an inventory.
 This can either be the caster's own, or an external block or entity.
 
 
-It is not possible to interact with the inventories of players that are not the caster.
+It is not possible to interact with the slots of players that are not the caster.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:get_item_in_slot|>
 
 Returns the type of item that the given slot contains.
+
+;;;;;
+
+<|trick@trickster:templates|trick-id=trickster:get_equipment|>
+
+Returns a list of the given entity's currently worn equipment as item types. Comes in the order: mainhand, offhand, boots, leggings, chestplate, helmet
 
 ;;;;;
 
