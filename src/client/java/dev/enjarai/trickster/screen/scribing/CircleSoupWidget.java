@@ -2,6 +2,7 @@ package dev.enjarai.trickster.screen.scribing;
 
 import dev.enjarai.trickster.SpellView;
 import dev.enjarai.trickster.Trickster;
+import dev.enjarai.trickster.render.CircleRenderer;
 import dev.enjarai.trickster.revision.RevisionContext;
 import dev.enjarai.trickster.revision.Revisions;
 import dev.enjarai.trickster.spell.Pattern;
@@ -31,16 +32,26 @@ import java.util.Map;
 public class CircleSoupWidget extends StatefulWidget {
     public static final double FORK_THRESHOLD_FORWARDS = 1;
     public static final double DISCARD_THRESHOLD_FORWARDS = 0.1;
-    public static final double FORK_THRESHOLD_BACKWARDS = 100;
-    public static final double DISCARD_THRESHOLD_BACKWARDS = 300;
+    public static final double FORK_THRESHOLD_BACKWARDS = 3200;
+    public static final double DISCARD_THRESHOLD_BACKWARDS = 12800;
     public static final double ZOOM_SPEED = 0.1;
+
+    public final CircleRenderer renderer = new CircleRenderer(true, true, 0);
 
     private final SpellPart spellPart;
     private final RevisionContext revisionContext;
+    private final boolean mutable;
+    private final double startingRadius;
 
-    public CircleSoupWidget(SpellPart spellPart, RevisionContext revisionContext) {
+    public CircleSoupWidget(SpellPart spellPart, RevisionContext revisionContext, boolean mutable) {
+        this(spellPart, revisionContext, mutable, 80);
+    }
+
+    public CircleSoupWidget(SpellPart spellPart, RevisionContext revisionContext, boolean mutable, double startingRadius) {
         this.spellPart = spellPart;
         this.revisionContext = revisionContext;
+        this.mutable = mutable;
+        this.startingRadius = startingRadius;
     }
 
     @Override
@@ -61,7 +72,7 @@ public class CircleSoupWidget extends StatefulWidget {
             circles.clear();
             addCircle(new CircleState(
                 0, 0,
-                80,
+                widget().startingRadius,
                 0,
                 rootView
             ));
@@ -98,7 +109,9 @@ public class CircleSoupWidget extends StatefulWidget {
                                 return new DragArena(circles.values().stream().map(c -> new CircleSoupElement(
                                     Duration.ofMillis(250),
                                     Easing.OUT_EXPO,
-                                    c, constraints
+                                    widget().renderer,
+                                    c, constraints,
+                                    widget().mutable
                                 ).key(
                                     Key.of(String.valueOf(c.partView.hashCode()))
                                 )).toList());
@@ -223,7 +236,6 @@ public class CircleSoupWidget extends StatefulWidget {
                 partView.updateListener = () -> {
                     List.copyOf(childCircles).forEach(CircleState::discardChildren);
                     this.initialize();
-                    widget().revisionContext.updateSpell(rootView.part);
                 };
             }
 
@@ -357,8 +369,9 @@ public class CircleSoupWidget extends StatefulWidget {
                     //                    revisionContext.updateSpellWithSpell(drawingPart, revisionContext.getMacros().get(compiled).get());
                 } else {
                     partView.replaceGlyph(new PatternGlyph(pattern));
-                    widget().revisionContext.updateSpell(rootView.part);
                 }
+
+                widget().revisionContext.updateSpell(rootView.part);
             }
 
             private void discard() {

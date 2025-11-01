@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ScribingScreen extends Screen {
-    public final CircleRenderer renderer = new CircleRenderer(true, true);
+    public final CircleRenderer renderer = new CircleRenderer(true, true, 0);
     private final List<CircleElement> circles = new ArrayList<>();
 
     public final boolean mutable;

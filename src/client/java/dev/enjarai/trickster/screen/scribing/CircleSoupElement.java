@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.screen.scribing;
 
+import dev.enjarai.trickster.render.CircleRenderer;
 import io.wispforest.owo.braid.animation.AutomaticallyAnimatedWidget;
 import io.wispforest.owo.braid.animation.DoubleLerp;
 import io.wispforest.owo.braid.animation.Easing;
@@ -13,13 +14,17 @@ import org.joml.Matrix4f;
 import java.time.Duration;
 
 public class CircleSoupElement extends AutomaticallyAnimatedWidget {
+    private final CircleRenderer renderer;
     private final CircleSoupWidget.State.CircleState circleState;
     private final Constraints soupConstraints;
+    private final boolean mutable;
 
-    CircleSoupElement(Duration duration, Easing easing, CircleSoupWidget.State.CircleState circleState, Constraints soupConstraints) {
+    CircleSoupElement(Duration duration, Easing easing, CircleRenderer renderer, CircleSoupWidget.State.CircleState circleState, Constraints soupConstraints, boolean mutable) {
         super(duration, easing);
+        this.renderer = renderer;
         this.circleState = circleState;
         this.soupConstraints = soupConstraints;
+        this.mutable = mutable;
     }
 
     @Override
@@ -52,10 +57,12 @@ public class CircleSoupElement extends AutomaticallyAnimatedWidget {
                         .scale((float) (double) radius / 16)
                         .translate(0, 0, 1f / (float) (double) radius),
                     new CircleWidget(
+                        widget().renderer,
                         radius,
                         c.startingAngle,
                         c.partView,
-                        c::updatePattern
+                        c::updatePattern,
+                        widget().mutable
                     )
                 )
             );

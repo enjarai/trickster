@@ -11,7 +11,7 @@ public class ScrollAndQuillScreen extends BraidScreen implements ScreenHandlerPr
     protected final ScrollAndQuillScreenHandler handler;
 
     public ScrollAndQuillScreen(ScrollAndQuillScreenHandler handler, PlayerInventory playerInventory, Text title) {
-        super(new CircleSoupWidget(handler.initialData.spell(), handler));
+        super(new CircleSoupWidget(handler.initialData.spell(), handler, handler.initialData.mutable()));
         this.handler = handler;
     }
 

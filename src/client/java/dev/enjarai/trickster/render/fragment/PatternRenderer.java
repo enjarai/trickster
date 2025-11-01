@@ -5,7 +5,6 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.PatternGlyph;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.Util;
 import net.minecraft.util.math.Vec3d;
 import org.joml.Vector2f;
 
@@ -19,7 +18,10 @@ public class PatternRenderer implements FragmentRenderer<PatternGlyph> {
         renderPattern(fragment.pattern(), matrices, vertexConsumers, x, y, size / PATTERN_TO_PART_RATIO, alpha, delegator);
     }
 
-    public static void renderPattern(Pattern pattern, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float size, float alpha, CircleRenderer delegator) {
+    public static void renderPattern(
+        Pattern pattern, MatrixStack matrices, VertexConsumerProvider vertexConsumers,
+        float x, float y, float size, float alpha, CircleRenderer delegator
+    ) {
         var pixelSize = size / PART_PIXEL_RADIUS;
 
         var r = delegator.getR();
@@ -61,7 +63,7 @@ public class PatternRenderer implements FragmentRenderer<PatternGlyph> {
             drawGlyphLine(
                 matrices, vertexConsumers, first, second, pixelSize,
                 false, 1, r, g, b, 0.7f * alpha, true, //delegator.animated, TODO BWA
-                Util.getMeasuringTimeMs()
+                0
             );
         }
 

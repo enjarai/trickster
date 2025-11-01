@@ -1,6 +1,6 @@
 package dev.enjarai.trickster.render.fleck;
 
-import dev.enjarai.trickster.render.SpellCircleRenderer;
+import dev.enjarai.trickster.render.CircleRenderer;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.client.render.*;
 import dev.enjarai.trickster.fleck.*;
@@ -12,11 +12,12 @@ import net.minecraft.util.math.Vec3d;
 import org.joml.Vector3f;
 
 public class SpellFleckRenderer implements FleckRenderer<SpellFleck> {
-    private final SpellCircleRenderer renderer = new SpellCircleRenderer(false, 1);
+    private final CircleRenderer renderer = new CircleRenderer(false, false, 6);
 
     @Override
     public void render(
-            SpellFleck fleck, SpellFleck lastFleck, WorldRenderContext context, ClientWorld world, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int color
+        SpellFleck fleck, SpellFleck lastFleck, WorldRenderContext context, ClientWorld world,
+        float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int color
     ) {
 
         matrices.push();
@@ -50,19 +51,17 @@ public class SpellFleckRenderer implements FleckRenderer<SpellFleck> {
         matrices.multiply(RotationAxis.POSITIVE_Y.rotation(yaw));
         matrices.multiply(RotationAxis.POSITIVE_X.rotation(pitch));
 
-        //TODO WOBBLE
-
-        renderer.renderPart(
-                matrices,
-                vertexConsumers,
-                spell,
-                0,
-                0,
-                targetSize / 2,
-                0,
-                tickDelta,
-                size1 -> 1.0f,
-                new Vec3d(facing.x(), facing.y(), facing.z())
+        renderer.renderCircle(
+            matrices,
+            spell,
+            0,
+            0,
+            targetSize / 2,
+            0,
+            tickDelta,
+            1.0f,
+            new Vec3d(facing.x(), facing.y(), facing.z()),
+            null
         );
 
         matrices.pop();

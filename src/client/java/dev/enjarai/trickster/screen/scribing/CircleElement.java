@@ -18,8 +18,8 @@ import java.util.List;
 
 import static dev.enjarai.trickster.render.CircleRenderer.getPatternDotPosition;
 import static dev.enjarai.trickster.render.CircleRenderer.isInsideHitbox;
-import static dev.enjarai.trickster.render.SpellCircleRenderer.PART_PIXEL_RADIUS;
-import static dev.enjarai.trickster.render.SpellCircleRenderer.PATTERN_TO_PART_RATIO;
+import static dev.enjarai.trickster.render.CircleRenderer.PART_PIXEL_RADIUS;
+import static dev.enjarai.trickster.render.CircleRenderer.PATTERN_TO_PART_RATIO;
 
 public class CircleElement implements Element, Drawable, Selectable {
     static final Byte MIDDLE_DOT = 4;

@@ -27,8 +27,8 @@ import java.util.function.Consumer;
 
 import static dev.enjarai.trickster.render.CircleRenderer.getPatternDotPosition;
 import static dev.enjarai.trickster.render.CircleRenderer.isInsideHitbox;
-import static dev.enjarai.trickster.render.SpellCircleRenderer.PART_PIXEL_RADIUS;
-import static dev.enjarai.trickster.render.SpellCircleRenderer.PATTERN_TO_PART_RATIO;
+import static dev.enjarai.trickster.render.CircleRenderer.PART_PIXEL_RADIUS;
+import static dev.enjarai.trickster.render.CircleRenderer.PATTERN_TO_PART_RATIO;
 
 public class CircleWidget extends StatefulWidget {
     public static final Byte MIDDLE_DOT = 4;
@@ -41,17 +41,19 @@ public class CircleWidget extends StatefulWidget {
         (byte) 0, (byte) 1, (byte) 2, (byte) 7, (byte) 0, (byte) 3, (byte) 6, (byte) 5, (byte) 4
     };
 
-    private static final CircleRenderer renderer = new CircleRenderer(true, true);
-
+    private final CircleRenderer renderer;
     private final double radius, startingAngle;
     private final SpellView partView;
     private final Consumer<Pattern> updatePattern;
+    private final boolean mutable;
 
-    public CircleWidget(double radius, double startingAngle, SpellView partView, Consumer<Pattern> updatePattern) {
+    public CircleWidget(CircleRenderer renderer, double radius, double startingAngle, SpellView partView, Consumer<Pattern> updatePattern, boolean mutable) {
+        this.renderer = renderer;
         this.radius = radius;
         this.startingAngle = startingAngle;
         this.partView = partView;
         this.updatePattern = updatePattern;
+        this.mutable = mutable;
     }
 
     // TODO this still depends on the GUI scale, should be a ratio of the scaled window height of the context
@@ -65,15 +67,16 @@ public class CircleWidget extends StatefulWidget {
     }
 
     public static class State extends WidgetState<CircleWidget> {
-        private double mouseX, mouseY;
+        private double mouseX = -9999;
+        private double mouseY = -9999;
         private boolean mouseInside;
         @Nullable
         private List<Byte> drawingPattern;
 
         private void draw(BraidDrawContext ctx, WidgetTransform transform) {
-            renderer.setMousePosition(mouseX, mouseY);
-            renderer.setLineToMouse(mouseInside);
-            renderer.renderCircle(
+            widget().renderer.setMousePosition(mouseX, mouseY);
+            widget().renderer.setLineToMouse(mouseInside);
+            widget().renderer.renderCircle(
                 ctx.getMatrices(), widget().partView.part,
                 16, 16, 16, widget().startingAngle, 0,
                 (float) Math.clamp(1 / (widget().radius / ctx.getScaledWindowHeight() * 3), 0.0, 0.8),
@@ -98,7 +101,7 @@ public class CircleWidget extends StatefulWidget {
         }
 
         public boolean mouseClick(double x, double y, int button, CircleSoupState state) {
-            if (state.dragging) {
+            if (!widget().mutable || state.dragging) {
                 return false;
             }
 
@@ -125,6 +128,10 @@ public class CircleWidget extends StatefulWidget {
         }
 
         public void mouseMove(double x, double y) {
+            if (!widget().mutable) {
+                return;
+            }
+
             mouseX = x;
             mouseY = y;
             mouseInside = true;

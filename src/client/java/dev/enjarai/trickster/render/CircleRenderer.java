@@ -16,8 +16,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.random.LocalRandom;
-import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
@@ -54,6 +52,7 @@ public class CircleRenderer {
 
     public final boolean inUI;
     public final boolean inEditor;
+    public final int recursions;
 
     private double mouseX;
     private double mouseY;
@@ -63,9 +62,10 @@ public class CircleRenderer {
     private float r = 1f, g = 1f, b = 1f;
     private float circleTransparency = 1f;
 
-    public CircleRenderer(Boolean inUI, boolean inEditor) {
+    public CircleRenderer(Boolean inUI, boolean inEditor, int recursions) {
         this.inUI = inUI;
         this.inEditor = inEditor;
+        this.recursions = recursions;
     }
 
     public void setMousePosition(double mouseX, double mouseY) {
@@ -119,8 +119,19 @@ public class CircleRenderer {
         return circleTransparency;
     }
 
-    public void renderCircle(MatrixStack matrices, SpellPart entry, double x, double y, double radius, double startingAngle, float delta,
-        float alpha, Vec3d normal, @Nullable List<Byte> drawingPattern) {
+    public void renderCircle(
+        MatrixStack matrices, SpellPart entry,
+        double x, double y, double radius, double startingAngle, float delta,
+        float alpha, Vec3d normal, @Nullable List<Byte> drawingPattern
+    ) {
+        renderCircle(matrices, entry, x, y, radius, startingAngle, delta, alpha, normal, drawingPattern, 0);
+    }
+
+    public void renderCircle(
+        MatrixStack matrices, SpellPart entry,
+        double x, double y, double radius, double startingAngle, float delta,
+        float alpha, Vec3d normal, @Nullable List<Byte> drawingPattern, int recursions
+    ) {
         var vertexConsumers = VERTEX_CONSUMERS;
 
         drawTexturedQuad(
@@ -129,18 +140,55 @@ public class CircleRenderer {
             0,
             r, g, b, alpha * circleTransparency, inUI
         );
-        if (!(entry.glyph instanceof SpellPart)) {
+        if (entry.glyph instanceof SpellPart glyph) {
+            if (recursions < this.recursions) {
+                renderCircle(
+                    matrices, glyph, x, y, radius / 3,
+                    startingAngle, delta, alpha / 2, normal,
+                    drawingPattern, recursions + 1
+                );
+            }
+        } else {
             matrices.push();
-            drawSide(matrices, vertexConsumers, (float) x, (float) y, (float) radius, alpha, normal, delta, entry.glyph, drawingPattern);
+            drawSide(
+                matrices, vertexConsumers, (float) x, (float) y, (float) radius,
+                alpha, normal, delta, entry.glyph, drawingPattern
+            );
             matrices.pop();
         }
 
         int partCount = entry.partCount();
 
         drawDivider(matrices, vertexConsumers, x, y, startingAngle, radius, partCount, alpha);
+
+        matrices.push();
+        if (!inUI) {
+            matrices.translate(0, 0, -radius / 8f);
+        }
+        int i = 0;
+        for (var child : entry.getSubParts()) {
+            var angle = entry.subAngle(i, startingAngle);
+            var subX = x + (radius * Math.cos(angle));
+            var subY = y + (radius * Math.sin(angle));
+
+            if (recursions < this.recursions) {
+                renderCircle(
+                    matrices, child, subX, subY, entry.subRadius(radius),
+                    angle, delta, alpha / 3 * 2, normal,
+                    drawingPattern, recursions + 1
+                );
+            }
+
+            i++;
+        }
+        matrices.pop();
     }
 
-    protected void drawDivider(MatrixStack matrices, VertexConsumerProvider vertexConsumers, double x, double y, double startingAngle, double radius, float partCount, double alpha) {
+    protected void drawDivider(
+        MatrixStack matrices, VertexConsumerProvider vertexConsumers,
+        double x, double y, double startingAngle, double radius,
+        float partCount, double alpha
+    ) {
         var pixelSize = radius / PART_PIXEL_RADIUS;
         var lineAngle = startingAngle + (2 * Math.PI) / partCount * -0.5 - (Math.PI / 2);
 
@@ -162,9 +210,11 @@ public class CircleRenderer {
             0, dividerColor.red() * r, dividerColor.green() * g, dividerColor.blue() * b, dividerColor.alpha() * (float) alpha);
     }
 
-    private void drawSide(MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y,
+    private void drawSide(
+        MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y,
         float radius, float alpha, Vec3d normal, float delta,
-        Fragment glyph, @Nullable List<Byte> drawingPattern) {
+        Fragment glyph, @Nullable List<Byte> drawingPattern
+    ) {
         float patternRadius = radius / PATTERN_TO_PART_RATIO;
         float pixelSize = patternRadius / PART_PIXEL_RADIUS;
 
@@ -256,11 +306,11 @@ public class CircleRenderer {
         }
     }
 
-    private static final Random glyphRandom = new LocalRandom(0);
-
-    public static void drawGlyphLine(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Vector2f last,
+    public static void drawGlyphLine(
+        MatrixStack matrices, VertexConsumerProvider vertexConsumers, Vector2f last,
         Vector2f now, float pixelSize, boolean isDrawing, float tone, float r, float g,
-        float b, float opacity, boolean animated, long renderTime) {
+        float b, float opacity, boolean animated, long renderTime
+    ) {
         if (last.distance(now) < pixelSize * 6) {
             return;
         }
@@ -326,8 +376,11 @@ public class CircleRenderer {
             mouseY >= pos.y - hitboxSize && mouseY <= pos.y + hitboxSize;
     }
 
-    public static void drawTexturedQuad(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Identifier texture, float x1, float x2, float y1, float y2, float z, float r, float g, float b,
-        float alpha, boolean inGui) {
+    public static void drawTexturedQuad(
+        MatrixStack matrices, VertexConsumerProvider vertexConsumers, Identifier texture,
+        float x1, float x2, float y1, float y2, float z, float r, float g, float b,
+        float alpha, boolean inGui
+    ) {
         //        if (inUI) {
         //            RenderSystem.setShaderTexture(0, texture);
         //            RenderSystem.setShader(GameRenderer::getPositionTexProgram);
@@ -370,9 +423,11 @@ public class CircleRenderer {
         }
     }
 
-    public static void drawFlatPolygon(MatrixStack matrices, VertexConsumerProvider vertexConsumers,
+    public static void drawFlatPolygon(
+        MatrixStack matrices, VertexConsumerProvider vertexConsumers,
         float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4,
-        float z, float r, float g, float b, float alpha) {
+        float z, float r, float g, float b, float alpha
+    ) {
         Matrix4f matrix4f = matrices.peek().getPositionMatrix();
         VertexConsumer vertexConsumer = vertexConsumers.getBuffer(GLYPH_LAYER);
         vertexConsumer.vertex(matrix4f, x1, y1, z).color(r, g, b, alpha);
