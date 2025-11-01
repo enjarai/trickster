@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static dev.enjarai.trickster.screen.SpellPartWidget.isCircleClickable;
+import static dev.enjarai.trickster.screen.scribing.CircleWidget.isCircleClickable;
 import static net.minecraft.client.render.RenderPhase.*;
 
 public class SpellCircleRenderer {

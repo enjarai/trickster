@@ -17,7 +17,7 @@ public class SpellView {
     public List<SpellView> children = new ArrayList<>();
     public boolean isInner = false;
 
-    public Runnable rebuildListener;
+    public Runnable updateListener;
 
     private SpellView(SpellPart part) {
         this.part = part;
@@ -112,8 +112,8 @@ public class SpellView {
     }
 
     public void triggerRebuild() {
-        if (rebuildListener != null) {
-            rebuildListener.run();
+        if (updateListener != null) {
+            updateListener.run();
         }
     }
 }

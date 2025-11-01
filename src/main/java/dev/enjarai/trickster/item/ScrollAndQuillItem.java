@@ -5,14 +5,12 @@ import dev.enjarai.trickster.item.component.FragmentComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.screen.ScrollAndQuillScreenHandler;
+import dev.enjarai.trickster.spell.SpellPart;
 import io.vavr.collection.HashMap;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.screen.NamedScreenHandlerFactory;
-import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -39,11 +37,11 @@ public class ScrollAndQuillItem extends Item {
 
         if (
             hand == Hand.OFF_HAND
-                    && ModNetworking.clientOrDefault(
-                            user,
-                            Trickster.CONFIG.keys.disableOffhandScrollOpening,
-                            Trickster.CONFIG.disableOffhandScrollOpening()
-                    )
+                && ModNetworking.clientOrDefault(
+                    user,
+                    Trickster.CONFIG.keys.disableOffhandScrollOpening,
+                    Trickster.CONFIG.disableOffhandScrollOpening()
+                )
         ) {
             return TypedActionResult.pass(stack);
         }
@@ -58,21 +56,14 @@ public class ScrollAndQuillItem extends Item {
                 screenOpener.accept(Text.of("trickster.screen.sign_scroll"), hand);
             }
         } else {
-            user.openHandledScreen(new NamedScreenHandlerFactory() {
-                @Override
-                public Text getDisplayName() {
-                    return Text.translatable("trickster.screen.scroll_and_quill");
-                }
-
-                @Override
-                public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-                    return new ScrollAndQuillScreenHandler(
-                            syncId, playerInventory, stack, otherStack, slot,
-                            mergedMap,
-                            false, true
-                    );
-                }
-            });
+            user.openHandledScreen(ScrollAndQuillScreenHandler.factory(
+                Text.translatable("trickster.screen.scroll_and_quill"),
+                new ScrollAndQuillScreenHandler.InitialData(
+                    FragmentComponent.getSpellPart(stack).orElse(new SpellPart()),
+                    true, hand
+                ),
+                stack, otherStack
+            ));
         }
 
         return TypedActionResult.success(stack);

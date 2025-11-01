@@ -54,6 +54,11 @@ public class CircleWidget extends StatefulWidget {
         this.updatePattern = updatePattern;
     }
 
+    // TODO this still depends on the GUI scale, should be a ratio of the scaled window height of the context
+    public static boolean isCircleClickable(double radius) {
+        return radius >= 16 && radius <= 256;
+    }
+
     @Override
     public WidgetState<?> createState() {
         return new State();
@@ -103,6 +108,10 @@ public class CircleWidget extends StatefulWidget {
             }
 
             if (state.drawing) {
+                return false;
+            }
+
+            if (widget().partView.inner != null) {
                 return false;
             }
 

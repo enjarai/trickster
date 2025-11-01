@@ -12,6 +12,7 @@ public class ExecuteOffHandRevision implements Revision {
     @Override
     public void apply(RevisionContext ctx, SpellView view) {
         //TODO: make this independent of SpellPartWidget
-        ctx.executeOffhand();
+        // TODO implement and meow a lot
+        //        ctx.executeOffhand();
     }
 }

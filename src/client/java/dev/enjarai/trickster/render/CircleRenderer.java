@@ -24,7 +24,7 @@ import org.joml.Vector2f;
 
 import java.util.List;
 
-import static dev.enjarai.trickster.screen.SpellPartWidget.isCircleClickable;
+import static dev.enjarai.trickster.screen.scribing.CircleWidget.isCircleClickable;
 import static net.minecraft.client.render.RenderPhase.*;
 
 public class CircleRenderer {

@@ -34,26 +34,6 @@ public class SpellPreviewComponent extends BaseComponent {
             }
 
             @Override
-            public void updateSpellWithSpell(SpellPart drawingPart, SpellPart spell) {
-
-            }
-
-            @Override
-            public void updateOffHandSpell(SpellPart sp) {
-
-            }
-
-            @Override
-            public SpellPart getOtherHandSpell() {
-                return new SpellPart();
-            }
-
-            @Override
-            public void executeOffhand() {
-
-            }
-
-            @Override
             public HashMap<Pattern, SpellPart> getMacros() {
                 return HashMap.empty();
             }
@@ -96,8 +76,8 @@ public class SpellPreviewComponent extends BaseComponent {
                 client.setScreen(bookScreen);
             }
         },
-                Text.translatable("trickster.message.import_example"),
-                Text.translatable("trickster.message.import_example.description")
+            Text.translatable("trickster.message.import_example"),
+            Text.translatable("trickster.message.import_example.description")
         ));
     }
 
