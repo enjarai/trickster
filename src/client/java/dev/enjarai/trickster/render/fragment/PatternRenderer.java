@@ -10,7 +10,7 @@ import net.minecraft.util.math.Vec3d;
 import org.joml.Vector2f;
 
 import static dev.enjarai.trickster.render.CircleRenderer.*;
-import static dev.enjarai.trickster.screen.SpellPartWidget.isCircleClickable;
+import static dev.enjarai.trickster.screen.scribing.CircleWidget.isCircleClickable;
 
 public class PatternRenderer implements FragmentRenderer<PatternGlyph> {
     @Override

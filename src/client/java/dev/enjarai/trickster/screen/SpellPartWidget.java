@@ -5,6 +5,7 @@ import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.render.SpellCircleRenderer;
 import dev.enjarai.trickster.revision.RevisionContext;
 import dev.enjarai.trickster.revision.Revisions;
+import dev.enjarai.trickster.screen.scribing.CircleWidget;
 import dev.enjarai.trickster.spell.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.*;
@@ -142,24 +143,24 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         return false;
     }
 
-    public ScrollAndQuillScreen.PositionMemory saveAndClose() {
-        return new ScrollAndQuillScreen.PositionMemory(
-            rootSpellPart.hashCode(),
-            position, radius,
-            rootSpellPart, spellPart,
-            new ArrayList<>(parents), new ArrayList<>(angleOffsets));
-    }
-
-    public void load(ScrollAndQuillScreen.PositionMemory memory) {
-        this.position = memory.position();
-        this.radius = memory.radius();
-        this.rootSpellPart = memory.rootSpellPart();
-        this.spellPart = memory.spellPart();
-        this.parents.clear();
-        this.angleOffsets.clear();
-        this.parents.addAll(memory.parents());
-        this.angleOffsets.addAll(memory.angleOffsets());
-    }
+    //    public ScrollAndQuillScreen.PositionMemory saveAndClose() {
+    //        return new ScrollAndQuillScreen.PositionMemory(
+    //            rootSpellPart.hashCode(),
+    //            position, radius,
+    //            rootSpellPart, spellPart,
+    //            new ArrayList<>(parents), new ArrayList<>(angleOffsets));
+    //    }
+    //
+    //    public void load(ScrollAndQuillScreen.PositionMemory memory) {
+    //        this.position = memory.position();
+    //        this.radius = memory.radius();
+    //        this.rootSpellPart = memory.rootSpellPart();
+    //        this.spellPart = memory.spellPart();
+    //        this.parents.clear();
+    //        this.angleOffsets.clear();
+    //        this.parents.addAll(memory.parents());
+    //        this.angleOffsets.addAll(memory.angleOffsets());
+    //    }
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
@@ -179,11 +180,6 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
         context.draw();
 
         //        context.getMatrices().pop();
-    }
-
-    // TODO this still depends on the GUI scale, should be a ratio of the scaled window height of the context
-    public static boolean isCircleClickable(double radius) {
-        return radius >= 16 && radius <= 256;
     }
 
     @Override
@@ -516,7 +512,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
             //            }
         } else if (revisionContext.getMacros().get(compiled).isDefined()) {
             toBeReplaced = drawingPart;
-            revisionContext.updateSpellWithSpell(drawingPart, revisionContext.getMacros().get(compiled).get());
+            //            revisionContext.updateSpellWithSpell(drawingPart, revisionContext.getMacros().get(compiled).get());
         } else {
             if (patternSize >= 2) {
                 drawingPart.glyph = new PatternGlyph(compiled);
@@ -565,7 +561,7 @@ public class SpellPartWidget extends AbstractParentElement implements Drawable, 
 
     protected boolean propagateMouseEvent(SpellPart part, Vector2d pos, double radius, double startingAngle, Vector2d mouse, MouseEventHandler callback) {
         int closestIndex = closestIndex(part, pos, mouse, radius, startingAngle);
-        boolean centerAvailable = (isCircleClickable(toLocalSpace(radius)) && (drawingPart == null || drawingPart == part))
+        boolean centerAvailable = (CircleWidget.isCircleClickable(toLocalSpace(radius)) && (drawingPart == null || drawingPart == part))
             || part.glyph instanceof SpellPart;
 
         SpellPart closest = part;

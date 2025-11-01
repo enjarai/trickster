@@ -1,20 +1,17 @@
 package dev.enjarai.trickster.item;
 
 import dev.enjarai.trickster.cca.ModEntityComponents;
+import dev.enjarai.trickster.item.component.FragmentComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.screen.ScrollAndQuillScreenHandler;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.execution.SpellQueueResult;
 import dev.enjarai.trickster.spell.mana.SimpleManaPool;
-import io.vavr.collection.HashMap;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.screen.NamedScreenHandlerFactory;
-import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
@@ -54,21 +51,14 @@ public class WrittenScrollItem extends Item {
                 return TypedActionResult.pass(stack);
             }
 
-            user.openHandledScreen(new NamedScreenHandlerFactory() {
-                @Override
-                public Text getDisplayName() {
-                    return Text.translatable("trickster.screen.written_scroll");
-                }
-
-                @Override
-                public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-                    return new ScrollAndQuillScreenHandler(
-                            syncId, playerInventory, stack, otherStack, slot,
-                            HashMap.empty(),
-                            false, false
-                    );
-                }
-            });
+            user.openHandledScreen(ScrollAndQuillScreenHandler.factory(
+                Text.translatable("trickster.screen.written_scroll"),
+                new ScrollAndQuillScreenHandler.InitialData(
+                    FragmentComponent.getSpellPart(stack).orElse(new SpellPart()),
+                    false, hand
+                ),
+                stack, otherStack
+            ));
         }
 
         return TypedActionResult.success(stack);

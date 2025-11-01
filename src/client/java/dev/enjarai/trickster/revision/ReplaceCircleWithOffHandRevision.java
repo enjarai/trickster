@@ -11,8 +11,9 @@ public class ReplaceCircleWithOffHandRevision implements Revision {
 
     @Override
     public void apply(RevisionContext ctx, SpellView view) {
-        var offhand = ctx.getOtherHandSpell().deepClone();
+        // TODO
+        //        var offhand = ctx.getOtherHandSpell().deepClone();
 
-        view.replace(offhand);
+        //        view.replace(offhand);
     }
 }
