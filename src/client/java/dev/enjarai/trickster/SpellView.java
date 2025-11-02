@@ -59,6 +59,55 @@ public class SpellView {
         return parent.children.indexOf(this);
     }
 
+    public List<Integer> getPath() {
+        var path = new ArrayList<Integer>();
+
+        var current = this;
+        while (current.parent != null) {
+            if (current.isInner) {
+                path.addFirst(-1);
+            } else {
+                path.addFirst(current.getOwnIndex());
+            }
+            current = current.parent;
+        }
+
+        return path;
+    }
+
+    @Nullable
+    public SpellView traverseTo(List<Integer> path) {
+        var current = this;
+
+        for (var i : path) {
+            if (current == null) {
+                return null;
+            }
+
+            if (i < 0) {
+                current = current.inner;
+            } else {
+                if (i >= current.children.size()) {
+                    return null;
+                }
+
+                current = current.children.get(i);
+            }
+        }
+
+        return current;
+    }
+
+    public SpellView getUpperParent() {
+        var current = this;
+
+        while (current.parent != null) {
+            current = current.parent;
+        }
+
+        return current;
+    }
+
     public void delete() {
         if (parent != null) {
             if (isInner) {

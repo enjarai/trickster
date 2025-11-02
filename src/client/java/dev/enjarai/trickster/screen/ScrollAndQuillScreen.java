@@ -1,22 +1,55 @@
 package dev.enjarai.trickster.screen;
 
+import dev.enjarai.trickster.SpellView;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.screen.scribing.CircleSoupWidget;
 import io.wispforest.owo.braid.core.BraidScreen;
 import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ScrollAndQuillScreen extends BraidScreen implements ScreenHandlerProvider<ScrollAndQuillScreenHandler> {
+    public static final List<PositionMemory> positions = new ArrayList<>();
+
     protected final ScrollAndQuillScreenHandler handler;
 
-    public ScrollAndQuillScreen(ScrollAndQuillScreenHandler handler, PlayerInventory playerInventory, Text title) {
-        super(new CircleSoupWidget(handler.initialData.spell(), handler, handler.initialData.mutable()));
+    public static ScrollAndQuillScreen create(ScrollAndQuillScreenHandler handler, PlayerInventory playerInventory, Text title) {
+        var position = loadPosition(handler.initialData.hash());
+        var view = SpellView.index(handler.initialData.spell());
+        var x = 0d;
+        var y = 0d;
+        var radius = 80d;
+        var angle = 0d;
+
+        if (position != null) {
+            var loaded = view.traverseTo(position.path);
+            if (loaded != null) {
+                view = loaded;
+                x = position.x;
+                y = position.y;
+                radius = position.radius;
+                angle = position.angle;
+            }
+        }
+
+        return new ScrollAndQuillScreen(new CircleSoupWidget(
+            view, handler, handler.initialData.mutable(),
+            x, y, radius, angle, savePosition(handler)
+        ), handler);
+    }
+
+    private ScrollAndQuillScreen(CircleSoupWidget widget, ScrollAndQuillScreenHandler handler) {
+        super(widget);
         this.handler = handler;
     }
 
     @Override
     public void close() {
+        // TODO
         // First cancel drawing a pattern if applicable
         //        if (rootWidget.cancelDrawing()) {
         //            return;
@@ -45,13 +78,35 @@ public class ScrollAndQuillScreen extends BraidScreen implements ScreenHandlerPr
         }
     }
 
-    // TODO
-    //    public record PositionMemory(int spellHash,
-    //            Vector2d position,
-    //            double radius,
-    //            SpellPart rootSpellPart,
-    //            SpellPart spellPart,
-    //            ArrayList<SpellPart> parents,
-    //            ArrayList<Double> angleOffsets) {
-    //    }
+    @Nullable
+    private static PositionMemory loadPosition(int hash) {
+        return positions.stream()
+            .filter(position -> position.hash == hash)
+            .findFirst()
+            .orElse(null);
+    }
+
+    private static CircleSoupWidget.DisposeCallback savePosition(ScrollAndQuillScreenHandler handler) {
+        return (view, x, y, radius, angle) -> {
+            positions.removeIf(m -> m.hash() == handler.initialData.hash());
+
+            while (positions.size() > 10) {
+                positions.removeFirst();
+            }
+
+            positions.add(new PositionMemory(
+                handler.initialData.hash(),
+                view.getPath(), x, y, radius, angle
+            ));
+        };
+    }
+
+    public record PositionMemory(
+        int hash,
+        List<Integer> path,
+        double x,
+        double y,
+        double radius,
+        double angle) {
+    }
 }

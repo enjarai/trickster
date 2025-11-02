@@ -55,7 +55,7 @@ public class WrittenScrollItem extends Item {
                 Text.translatable("trickster.screen.written_scroll"),
                 new ScrollAndQuillScreenHandler.InitialData(
                     FragmentComponent.getSpellPart(stack).orElse(new SpellPart()),
-                    false, hand
+                    false, hand, System.identityHashCode(stack)
                 ),
                 stack, otherStack
             ));

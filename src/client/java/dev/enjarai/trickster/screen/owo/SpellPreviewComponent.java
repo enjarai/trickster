@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.screen.owo;
 
+import dev.enjarai.trickster.SpellView;
 import dev.enjarai.trickster.net.LoadExampleSpellPacket;
 import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.revision.RevisionContext;
@@ -28,7 +29,8 @@ public class SpellPreviewComponent extends BraidComponent {
 
     public static SpellPreviewComponent of(SpellPart spell) {
         var widget = new CircleSoupWidget(
-            spell, RevisionContext.DUMMY, false, 24
+            SpellView.index(spell), RevisionContext.DUMMY, false,
+            0, 0, 24, 0, (view, x1, y1, radius, angle) -> {}
         );
         var component = new SpellPreviewComponent(new Clip(
             widget

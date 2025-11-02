@@ -25,16 +25,12 @@ import net.minecraft.util.Hand;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 public class ScrollAndQuillScreenHandler extends ScreenHandler implements RevisionContext {
     private ItemStack scrollStack;
     private ItemStack otherHandStack;
 
     public final InitialData initialData;
-
-    public Consumer<Fragment> replacerCallback;
-    public Consumer<Optional<SpellPart>> updateDrawingPartCallback;
 
     // Client constructor
     public ScrollAndQuillScreenHandler(int syncId, PlayerInventory playerInventory, InitialData initialData) {
@@ -135,11 +131,12 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
         public static final Endec<SpellMessage> ENDEC = SpellPart.ENDEC.xmap(SpellMessage::new, SpellMessage::spell);
     }
 
-    public record InitialData(SpellPart spell, boolean mutable, Hand hand) {
+    public record InitialData(SpellPart spell, boolean mutable, Hand hand, int hash) {
         public static final Endec<InitialData> ENDEC = StructEndecBuilder.of(
             SpellPart.ENDEC.fieldOf("spell", InitialData::spell),
             Endec.BOOLEAN.fieldOf("mutable", InitialData::mutable),
             Endec.forEnum(Hand.class).fieldOf("hand", InitialData::hand),
+            Endec.INT.fieldOf("hash", InitialData::hash),
             InitialData::new
         );
     }
