@@ -32,7 +32,6 @@ public class ScrollAndQuillItem extends Item {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         var stack = user.getStackInHand(hand);
         var otherStack = user.getStackInHand(hand == Hand.MAIN_HAND ? Hand.OFF_HAND : Hand.MAIN_HAND);
-        var slot = hand == Hand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
         var mergedMap = FragmentComponent.getUserMergedMap(user, "ring", HashMap::empty);
 
         if (
@@ -60,9 +59,9 @@ public class ScrollAndQuillItem extends Item {
                 Text.translatable("trickster.screen.scroll_and_quill"),
                 new ScrollAndQuillScreenHandler.InitialData(
                     FragmentComponent.getSpellPart(stack).orElse(new SpellPart()),
-                    true, hand, System.identityHashCode(stack)
+                    true, hand, System.identityHashCode(stack), mergedMap.keySet().toJavaSet()
                 ),
-                stack, otherStack
+                stack, otherStack, mergedMap
             ));
         }
 

@@ -1,10 +1,10 @@
 package dev.enjarai.trickster.screen.scribing;
 
-import dev.enjarai.trickster.SpellView;
+import dev.enjarai.trickster.spell.SpellView;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.render.CircleRenderer;
-import dev.enjarai.trickster.revision.RevisionContext;
-import dev.enjarai.trickster.revision.Revisions;
+import dev.enjarai.trickster.spell.revision.RevisionContext;
+import dev.enjarai.trickster.spell.revision.Revisions;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.PatternGlyph;
 import io.wispforest.owo.braid.animation.Easing;

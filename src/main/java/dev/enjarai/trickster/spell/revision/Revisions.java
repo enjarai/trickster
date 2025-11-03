@@ -1,4 +1,4 @@
-package dev.enjarai.trickster.revision;
+package dev.enjarai.trickster.spell.revision;
 
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
@@ -24,8 +24,8 @@ public class Revisions {
     public static final Revision SHIFT_SUBCIRCLE_FORWARDS = register(new ShiftSubcircleForwardsRevision());
     public static final Revision REPLACE_CIRCLE_WITH_OFF_HAND = register(new ReplaceCircleWithOffHandRevision());
     public static final Revision REPLACE_GLYPH_WITH_OFF_HAND = register(new ReplaceGlyphWithOffHandRevision());
-    public static final Revision REPLACE_CIRCLE_WITH_CROW_MIND = register(new ReplaceCircleWithCrowMindRevision());
-    public static final Revision EXECUTE_OFF_HAND = register(new ExecuteOffHandRevision());
+    //    public static final Revision REPLACE_CIRCLE_WITH_CROW_MIND = register(new ReplaceCircleWithCrowMindRevision());
+    //    public static final Revision EXECUTE_OFF_HAND = register(new ExecuteOffHandRevision());
     public static final Revision WRITE_ADDRESS_TO_OFF_HAND = register(new WriteAddressToOffHandRevision());
     public static final Revision WRITE_BRANCH_TO_OFF_HAND = register(new WriteBranchToOffHandRevision());
     public static final Revision PATTERN_LITERAL = register(new PatternLiteralRevision());

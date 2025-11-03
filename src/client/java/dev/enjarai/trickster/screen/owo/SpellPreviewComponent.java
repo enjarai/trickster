@@ -1,9 +1,9 @@
 package dev.enjarai.trickster.screen.owo;
 
-import dev.enjarai.trickster.SpellView;
+import dev.enjarai.trickster.spell.SpellView;
 import dev.enjarai.trickster.net.LoadExampleSpellPacket;
 import dev.enjarai.trickster.net.ModNetworking;
-import dev.enjarai.trickster.revision.RevisionContext;
+import dev.enjarai.trickster.spell.revision.RevisionContext;
 import dev.enjarai.trickster.screen.scribing.CircleSoupWidget;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellPart;

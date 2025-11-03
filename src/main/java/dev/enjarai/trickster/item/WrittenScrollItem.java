@@ -7,6 +7,7 @@ import dev.enjarai.trickster.screen.ScrollAndQuillScreenHandler;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.execution.SpellQueueResult;
 import dev.enjarai.trickster.spell.mana.SimpleManaPool;
+import io.vavr.collection.HashMap;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -21,6 +22,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public class WrittenScrollItem extends Item {
     public WrittenScrollItem(Settings settings) {
@@ -31,7 +33,6 @@ public class WrittenScrollItem extends Item {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         var stack = user.getStackInHand(hand);
         var otherStack = user.getStackInHand(hand == Hand.MAIN_HAND ? Hand.OFF_HAND : Hand.MAIN_HAND);
-        var slot = hand == Hand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
         var meta = stack.get(ModComponents.WRITTEN_SCROLL_META);
 
         if (meta != null && meta.executable()) {
@@ -55,9 +56,9 @@ public class WrittenScrollItem extends Item {
                 Text.translatable("trickster.screen.written_scroll"),
                 new ScrollAndQuillScreenHandler.InitialData(
                     FragmentComponent.getSpellPart(stack).orElse(new SpellPart()),
-                    false, hand, System.identityHashCode(stack)
+                    false, hand, System.identityHashCode(stack), Set.of()
                 ),
-                stack, otherStack
+                stack, otherStack, HashMap.empty()
             ));
         }
 

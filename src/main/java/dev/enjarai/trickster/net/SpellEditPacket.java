@@ -24,9 +24,9 @@ public record SpellEditPacket() {
             Text.translatable("trickster.screen.scroll_and_quill"),
             new ScrollAndQuillScreenHandler.InitialData(
                 FragmentComponent.getSpellPart(stack).orElse(new SpellPart()),
-                true, Hand.MAIN_HAND, System.identityHashCode(stack)
+                true, Hand.MAIN_HAND, System.identityHashCode(stack), mergedMap.keySet().toJavaSet()
             ),
-            stack, player.getOffHandStack()
+            stack, player.getOffHandStack(), mergedMap
         ));
     }
 }

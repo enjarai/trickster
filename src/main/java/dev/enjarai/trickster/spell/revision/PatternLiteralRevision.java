@@ -1,6 +1,6 @@
-package dev.enjarai.trickster.revision;
+package dev.enjarai.trickster.spell.revision;
 
-import dev.enjarai.trickster.SpellView;
+import dev.enjarai.trickster.spell.SpellView;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.PatternGlyph;
 

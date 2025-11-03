@@ -27,6 +27,10 @@ import static net.minecraft.client.render.RenderPhase.*;
 
 public class CircleRenderer {
     public static final Identifier CIRCLE_TEXTURE = Trickster.id("textures/gui/circle_48.png");
+    public static final Identifier[] LOADING_TEXTURES = new Identifier[] {
+        Trickster.id("textures/gui/spinner_1.png"),
+        Trickster.id("textures/gui/spinner_2.png"),
+    };
     public static final float PATTERN_TO_PART_RATIO = 2.5f;
     public static final int PART_PIXEL_RADIUS = 24;
     public static final int CLICK_HITBOX_SIZE = 5;
@@ -61,6 +65,7 @@ public class CircleRenderer {
 
     private float r = 1f, g = 1f, b = 1f;
     private float circleTransparency = 1f;
+    private int loading = -1;
 
     public CircleRenderer(Boolean inUI, boolean inEditor, int recursions) {
         this.inUI = inUI;
@@ -85,6 +90,10 @@ public class CircleRenderer {
         this.r = r;
         this.g = g;
         this.b = b;
+    }
+
+    public void setLoading(int loading) {
+        this.loading = loading;
     }
 
     public boolean isInEditor() {
@@ -149,12 +158,21 @@ public class CircleRenderer {
                 );
             }
         } else {
-            matrices.push();
-            drawSide(
-                matrices, vertexConsumers, (float) x, (float) y, (float) radius,
-                alpha, normal, delta, entry.glyph, drawingPattern
-            );
-            matrices.pop();
+            if (loading < 0) {
+                matrices.push();
+                drawSide(
+                    matrices, vertexConsumers, (float) x, (float) y, (float) radius,
+                    alpha, normal, delta, entry.glyph, drawingPattern
+                );
+                matrices.pop();
+            } else {
+                drawTexturedQuad(
+                    matrices, vertexConsumers, LOADING_TEXTURES[loading],
+                    (float) (x - radius), (float) (x + radius), (float) (y - radius), (float) (y + radius),
+                    0,
+                    r, g, b, alpha * circleTransparency, inUI
+                );
+            }
         }
 
         int partCount = entry.partCount();

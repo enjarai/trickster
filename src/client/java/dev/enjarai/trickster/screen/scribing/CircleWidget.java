@@ -1,7 +1,7 @@
 package dev.enjarai.trickster.screen.scribing;
 
 import dev.enjarai.trickster.ModSounds;
-import dev.enjarai.trickster.SpellView;
+import dev.enjarai.trickster.spell.SpellView;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.render.CircleRenderer;
 import dev.enjarai.trickster.spell.Pattern;
@@ -76,6 +76,7 @@ public class CircleWidget extends StatefulWidget {
         private void draw(BraidDrawContext ctx, WidgetTransform transform) {
             widget().renderer.setMousePosition(mouseX, mouseY);
             widget().renderer.setLineToMouse(mouseInside);
+            widget().renderer.setLoading(widget().partView.loading ? (int) (System.currentTimeMillis() / 250 % 2) : -1);
             widget().renderer.renderCircle(
                 ctx.getMatrices(), widget().partView.part,
                 16, 16, 16, widget().startingAngle, 0,
@@ -101,7 +102,7 @@ public class CircleWidget extends StatefulWidget {
         }
 
         public boolean mouseClick(double x, double y, int button, CircleSoupState state) {
-            if (!widget().mutable || state.dragging) {
+            if (!widget().mutable || state.dragging || widget().partView.beingReplaced) {
                 return false;
             }
 

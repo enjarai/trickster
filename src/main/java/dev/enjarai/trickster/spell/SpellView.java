@@ -1,8 +1,5 @@
-package dev.enjarai.trickster;
+package dev.enjarai.trickster.spell;
 
-import dev.enjarai.trickster.spell.Fragment;
-import dev.enjarai.trickster.spell.PatternGlyph;
-import dev.enjarai.trickster.spell.SpellPart;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayDeque;
@@ -16,6 +13,8 @@ public class SpellView {
     public SpellView parent, inner;
     public List<SpellView> children = new ArrayList<>();
     public boolean isInner = false;
+    public boolean beingReplaced = false;
+    public boolean loading = false;
 
     public Runnable updateListener;
 
