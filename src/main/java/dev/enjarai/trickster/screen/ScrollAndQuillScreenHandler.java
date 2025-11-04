@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.screen;
 
+import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.component.FragmentComponent;
 import dev.enjarai.trickster.spell.revision.Revision;
 import dev.enjarai.trickster.spell.revision.RevisionContext;
@@ -132,7 +133,12 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
 
     @Override
     public void delegateToServer(Revision revision, SpellView view, Consumer<SpellPart> responseHandler) {
-        delegateToServer(player().getRandom().nextInt(), revision.pattern(), view, responseHandler);
+        delegateToServer(revision.pattern(), view, responseHandler);
+    }
+
+    @Override
+    public void delegateToServer(Pattern revision, SpellView view, Consumer<SpellPart> responseHandler) {
+        delegateToServer(player().getRandom().nextInt(), revision, view, responseHandler);
     }
 
     private void delegateToServer(int sync, Pattern revision, SpellView view, Consumer<SpellPart> responseHandler) {
@@ -141,7 +147,15 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
             server.execute(() -> {
                 var macro = macros.get(revision);
                 if (macro.isDefined()) {
-
+                    ModEntityComponents.CASTER.get(player())
+                        .queueMacroSpell(macro.get(), List.of(view.part), result -> {
+                            var part = result instanceof SpellPart p ? p : null;
+                            if (part == null) {
+                                view.replaceGlyph(result);
+                                part = view.part;
+                            }
+                            sendMessage(new ReplyToClient(sync, part));
+                        });
                     return;
                 }
 
@@ -153,6 +167,7 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
             syncedReplacements.put(sync, part -> {
                 if (view.beingReplaced) {
                     view.beingReplaced = false;
+                    view.loading = false;
                     responseHandler.accept(part);
                 }
             });
@@ -162,8 +177,8 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
     }
 
     @Override
-    public HashMap<Pattern, SpellPart> getMacros() {
-        return HashMap.empty();
+    public Set<Pattern> getMacros() {
+        return initialData.macros;
     }
 
     @Override

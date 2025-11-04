@@ -387,18 +387,14 @@ public class CircleSoupWidget extends StatefulWidget {
             }
 
             public void updatePattern(Pattern pattern) {
+                if (widget().revisionContext.getMacros().contains(pattern)) {
+                    widget().revisionContext.delegateToServer(pattern, partView, partView::replace);
+                    partView.loading = true;
+                }
+
                 var rev = Revisions.lookup(pattern);
-
-                //                if (compiled.equals(Revisions.EXECUTE_OFF_HAND.pattern())) {
-                //                    toBeReplaced = drawingPart; //TODO: allow handling this in a more generic way?
-                //                    Revisions.EXECUTE_OFF_HAND.apply(revisionContext, spellPart, drawingPart);
-                //                } else
-
                 if (rev.isPresent()) {
                     rev.get().apply(widget().revisionContext, partView);
-                    //                } else if (revisionContext.getMacros().get(compiled).isDefined()) {
-                    //                    toBeReplaced = drawingPart;
-                    //                    revisionContext.updateSpellWithSpell(drawingPart, revisionContext.getMacros().get(compiled).get());
                 } else {
                     partView.replaceGlyph(new PatternGlyph(pattern));
                 }

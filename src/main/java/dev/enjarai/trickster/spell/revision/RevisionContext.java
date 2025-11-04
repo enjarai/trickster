@@ -3,10 +3,10 @@ package dev.enjarai.trickster.spell.revision;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.SpellView;
-import io.vavr.collection.HashMap;
 import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Set;
 import java.util.function.Consumer;
 
 public interface RevisionContext {
@@ -14,7 +14,9 @@ public interface RevisionContext {
 
     void delegateToServer(Revision revision, SpellView view, Consumer<SpellPart> responseHandler);
 
-    HashMap<Pattern, SpellPart> getMacros();
+    void delegateToServer(Pattern revision, SpellView view, Consumer<SpellPart> responseHandler);
+
+    Set<Pattern> getMacros();
 
     /**
      * Only works on the server side.
@@ -27,8 +29,8 @@ public interface RevisionContext {
         public void updateSpell(SpellPart sp) {}
 
         @Override
-        public HashMap<Pattern, SpellPart> getMacros() {
-            return HashMap.empty();
+        public Set<Pattern> getMacros() {
+            return Set.of();
         }
 
         @Override
@@ -38,5 +40,8 @@ public interface RevisionContext {
 
         @Override
         public void delegateToServer(Revision revision, SpellView view, Consumer<SpellPart> responseHandler) {}
+
+        @Override
+        public void delegateToServer(Pattern revision, SpellView view, Consumer<SpellPart> responseHandler) {}
     };
 }

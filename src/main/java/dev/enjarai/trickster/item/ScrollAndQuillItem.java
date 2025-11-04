@@ -7,7 +7,6 @@ import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.screen.ScrollAndQuillScreenHandler;
 import dev.enjarai.trickster.spell.SpellPart;
 import io.vavr.collection.HashMap;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

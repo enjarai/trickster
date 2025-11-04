@@ -3,6 +3,7 @@ package dev.enjarai.trickster.cca;
 import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.ModSounds;
 import dev.enjarai.trickster.item.ModItems;
+import dev.enjarai.trickster.screen.ScrollAndQuillScreenHandler;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellExecutor;
 import dev.enjarai.trickster.spell.SpellPart;
@@ -27,27 +28,35 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 public class CasterComponent implements ServerTickingComponent, AutoSyncedComponent {
     private final PlayerEntity player;
     private PlayerSpellExecutionManager executionManager;
     private PlayerSpellExecutionManager collarExecutionManager;
+
+    // The macro manager and its handler are not persistently stored and will reset if a scroll and quill screen closes
+    private final PlayerSpellExecutionManager macroExecutionManager;
+    @Nullable
+    private Consumer<Fragment> macroCompletionHandler;
+
     private final Int2ObjectMap<RunningSpellData> runningSpellData = new Int2ObjectOpenHashMap<>();
     private int lastSentSpellDataHash;
     private RegistryKey<World> lastPlayerWorld;
     private int wait;
 
     public static final Endec<Map<Integer, RunningSpellData>> SPELL_DATA_ENDEC = Endec.map(
-            Endec.INT, StructEndecBuilder.of(
-                    Endec.INT.fieldOf("executions_last_tick", RunningSpellData::executionsLastTick),
-                    Endec.BOOLEAN.fieldOf("errored", RunningSpellData::errored),
-                    EndecTomfoolery.safeOptionalOf(MinecraftEndecs.TEXT).optionalFieldOf("message", RunningSpellData::message, Optional.empty()),
-                    RunningSpellData::new
-            )
+        Endec.INT, StructEndecBuilder.of(
+            Endec.INT.fieldOf("executions_last_tick", RunningSpellData::executionsLastTick),
+            Endec.BOOLEAN.fieldOf("errored", RunningSpellData::errored),
+            EndecTomfoolery.safeOptionalOf(MinecraftEndecs.TEXT).optionalFieldOf("message", RunningSpellData::message, Optional.empty()),
+            RunningSpellData::new
+        )
     );
     public static final KeyedEndec<PlayerSpellExecutionManager> EXECUTION_MANAGER_ENDEC = PlayerSpellExecutionManager.ENDEC.keyed("manager", () -> new PlayerSpellExecutionManager(5));
     public static final KeyedEndec<PlayerSpellExecutionManager> COLLAR_EXECUTION_MANAGER_ENDEC = PlayerSpellExecutionManager.ENDEC.keyed("collar_manager", () -> new PlayerSpellExecutionManager(1));
@@ -57,6 +66,7 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
         // TODO: make capacity of execution manager an attribute
         this.executionManager = new PlayerSpellExecutionManager(5);
         this.collarExecutionManager = new PlayerSpellExecutionManager(1);
+        this.macroExecutionManager = new PlayerSpellExecutionManager(1);
     }
 
     @Override
@@ -72,9 +82,18 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
 
         runningSpellData.clear();
         executionManager.tick(new PlayerSpellSource((ServerPlayerEntity) player, executionManager),
-                this::afterExecutorTick, this::completeExecutor, this::executorError);
+            this::afterExecutorTick, this::completeExecutor, this::executorError);
         collarExecutionManager.tick(new PlayerSpellSource((ServerPlayerEntity) player, collarExecutionManager),
-                (i, e) -> {}, this::completeExecutor, this::executorError);
+            (i, e) -> {}, this::completeExecutor, this::executorError);
+
+        if (macroExecutionManager.getSpellExecutor(0).isPresent() && !canRunMacros()) {
+            macroExecutionManager.killAll();
+            macroCompletionHandler = null;
+            playCastSound(0.5f, 0.1f);
+        } else {
+            macroExecutionManager.tick(new PlayerSpellSource((ServerPlayerEntity) player, macroExecutionManager),
+                (i, e) -> {}, this::completeMacroExecutor, this::macroExecutorError);
+        }
         ModEntityComponents.CASTER.sync(player);
     }
 
@@ -86,13 +105,13 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
             errored = true;
         }
         runningSpellData.put(
-                index, new RunningSpellData(
-                        executor.getLastRunExecutions(), errored, Optional.ofNullable(message)
-                )
+            index, new RunningSpellData(
+                executor.getLastRunExecutions(), errored, Optional.ofNullable(message)
+            )
         );
     }
 
-    private void completeExecutor(int index, SpellExecutor executor) {
+    private void completeExecutor(int index, SpellExecutor executor, Fragment result) {
         playCastSound(1.2f, 0.1f);
     }
 
@@ -100,10 +119,23 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
         playCastSound(0.5f, 0.1f);
     }
 
+    private void completeMacroExecutor(int index, SpellExecutor executor, Fragment result) {
+        if (macroCompletionHandler != null) {
+            macroCompletionHandler.accept(result);
+            macroCompletionHandler = null;
+        }
+        completeExecutor(index, executor, result);
+    }
+
+    private void macroExecutorError(int index, SpellExecutor executor) {
+        macroCompletionHandler = null;
+        executorError(index, executor);
+    }
+
     public void playCastSound(float startPitch, float pitchRange) {
         if (player instanceof ServerPlayerEntity serverPlayer) {
             serverPlayer.getServerWorld().playSoundFromEntity(
-                    null, serverPlayer, ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(startPitch, pitchRange)
+                null, serverPlayer, ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(startPitch, pitchRange)
             );
         }
     }
@@ -156,6 +188,19 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
         return collarExecutionManager.queue(spell, arguments);
     }
 
+    public Optional<Integer> queueMacroSpell(SpellPart spell, List<Fragment> arguments, Consumer<Fragment> callback) {
+        if (!canRunMacros()) {
+            return Optional.empty();
+        }
+
+        playCastSound(0.8f, 0.1f);
+        var result = macroExecutionManager.queue(spell, arguments);
+        if (result.isPresent()) {
+            macroCompletionHandler = callback;
+        }
+        return result;
+    }
+
     public SpellQueueResult queueSpellAndCast(SpellPart spell, List<Fragment> arguments, Optional<MutableManaPool> poolOverride) {
         playCastSound(0.8f, 0.1f);
         return executionManager.queueAndCast(new PlayerSpellSource((ServerPlayerEntity) player, executionManager), spell, arguments, poolOverride);
@@ -189,6 +234,10 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
 
     public Int2ObjectMap<RunningSpellData> getRunningSpellData() {
         return runningSpellData;
+    }
+
+    private boolean canRunMacros() {
+        return player.currentScreenHandler instanceof ScrollAndQuillScreenHandler;
     }
 
     public record RunningSpellData(int executionsLastTick, boolean errored, Optional<Text> message) {

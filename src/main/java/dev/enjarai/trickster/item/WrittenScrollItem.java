@@ -8,7 +8,6 @@ import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.execution.SpellQueueResult;
 import dev.enjarai.trickster.spell.mana.SimpleManaPool;
 import io.vavr.collection.HashMap;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
