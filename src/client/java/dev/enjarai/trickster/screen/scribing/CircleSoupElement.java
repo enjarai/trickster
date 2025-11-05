@@ -13,6 +13,8 @@ import org.joml.Matrix4f;
 
 import java.time.Duration;
 
+import static dev.enjarai.trickster.screen.scribing.CircleWidget.RADIUS;
+
 public class CircleSoupElement extends AutomaticallyAnimatedWidget {
     private final CircleRenderer renderer;
     private final CircleSoupWidget.State.CircleState circleState;
@@ -53,8 +55,8 @@ public class CircleSoupElement extends AutomaticallyAnimatedWidget {
                 x.compute(animationValue()), y.compute(animationValue()),
                 new Transform(
                     new Matrix4f()
-                        .translate(-16f, -16f, 0)
-                        .scale((float) (double) radius / 16)
+                        .translate(-RADIUS, -RADIUS, 0)
+                        .scale((float) (double) radius / RADIUS)
                         .translate(0, 0, 1f / (float) (double) radius),
                     new CircleWidget(
                         widget().renderer,

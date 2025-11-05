@@ -19,6 +19,7 @@ import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
+import org.joml.Vector3f;
 
 import java.util.List;
 
@@ -205,15 +206,17 @@ public class CircleRenderer {
     protected void drawDivider(
         MatrixStack matrices, VertexConsumerProvider vertexConsumers,
         double x, double y, double startingAngle, double radius,
-        float partCount, double alpha
+        int partCount, double alpha
     ) {
+        if (partCount == 0) return;
+
         var pixelSize = radius / PART_PIXEL_RADIUS;
-        var lineAngle = startingAngle + (2 * Math.PI) / partCount * -0.5 - (Math.PI / 2);
+        var offset = getDividerOffset(radius, startingAngle, partCount);
 
-        float lineX = (float) (x + (radius * Math.cos(lineAngle)));
-        float lineY = (float) (y + (radius * Math.sin(lineAngle)));
+        float lineX = (float) (x + offset.x);
+        float lineY = (float) (y + offset.y);
 
-        var toCenterVec = new Vector2f((float) (lineX - x), (float) (lineY - y)).normalize();
+        var toCenterVec = new Vector2f(offset.x, offset.y).normalize();
         var perpendicularVec = new Vector2f(toCenterVec).perpendicular();
         toCenterVec.mul((float) (pixelSize * 6));
         perpendicularVec.mul((float) (pixelSize * 0.5f));
@@ -226,6 +229,15 @@ public class CircleRenderer {
             lineX + perpendicularVec.x - toCenterVec.x, lineY + perpendicularVec.y - toCenterVec.y,
             lineX - perpendicularVec.x - toCenterVec.x, lineY - perpendicularVec.y - toCenterVec.y,
             0, dividerColor.red() * r, dividerColor.green() * g, dividerColor.blue() * b, dividerColor.alpha() * (float) alpha);
+    }
+
+    public Vector3f getDividerOffset(double distance, double startingAngle, int partCount) {
+        var lineAngle = partCount == 0 ? startingAngle : startingAngle + (2 * Math.PI) / partCount * -0.5 - (Math.PI / 2);
+
+        float lineX = (float) (distance * Math.cos(lineAngle));
+        float lineY = (float) (distance * Math.sin(lineAngle));
+
+        return new Vector3f(lineX, lineY, 0);
     }
 
     private void drawSide(

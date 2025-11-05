@@ -11,14 +11,16 @@ import io.wispforest.owo.braid.framework.instance.WidgetTransform;
 import io.wispforest.owo.braid.framework.proxy.WidgetState;
 import io.wispforest.owo.braid.framework.widget.StatefulWidget;
 import io.wispforest.owo.braid.framework.widget.Widget;
-import io.wispforest.owo.braid.widgets.basic.CustomDraw;
-import io.wispforest.owo.braid.widgets.basic.MouseArea;
-import io.wispforest.owo.braid.widgets.basic.Sized;
+import io.wispforest.owo.braid.widgets.basic.*;
+import io.wispforest.owo.braid.widgets.button.RawButton;
 import io.wispforest.owo.braid.widgets.sharedstate.SharedState;
+import io.wispforest.owo.braid.widgets.stack.Stack;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.sound.PositionedSoundInstance;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix4f;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,6 +33,8 @@ import static dev.enjarai.trickster.render.CircleRenderer.PART_PIXEL_RADIUS;
 import static dev.enjarai.trickster.render.CircleRenderer.PATTERN_TO_PART_RATIO;
 
 public class CircleWidget extends StatefulWidget {
+    public static final Identifier CIRCLE_TEXTURE = Trickster.id("textures/gui/circle_8.png");
+
     public static final Byte MIDDLE_DOT = 4;
     public static final Byte DOT_COUNT = 9;
 
@@ -40,6 +44,9 @@ public class CircleWidget extends StatefulWidget {
     public static final Byte[] RING_INDICES = {
         (byte) 0, (byte) 1, (byte) 2, (byte) 7, (byte) 0, (byte) 3, (byte) 6, (byte) 5, (byte) 4
     };
+
+    public static final float DIAMETER = 48;
+    public static final float RADIUS = DIAMETER / 2;
 
     private final CircleRenderer renderer;
     private final double radius, startingAngle;
@@ -79,9 +86,18 @@ public class CircleWidget extends StatefulWidget {
             widget().renderer.setLoading(widget().partView.loading ? (int) (System.currentTimeMillis() / 250 % 2) : -1);
             widget().renderer.renderCircle(
                 ctx.getMatrices(), widget().partView.part,
-                16, 16, 16, widget().startingAngle, 0,
+                RADIUS, RADIUS, RADIUS, widget().startingAngle, 0,
                 (float) Math.clamp(1 / (widget().radius / ctx.getScaledWindowHeight() * 3), 0.0, 0.8),
                 new Vec3d(-1, 0, 0), drawingPattern
+            );
+            CircleRenderer.VERTEX_CONSUMERS.draw();
+        }
+
+        private void drawCastButton(BraidDrawContext ctx, WidgetTransform transform) {
+            CircleRenderer.drawTexturedQuad(
+                ctx.getMatrices(), CircleRenderer.VERTEX_CONSUMERS, CIRCLE_TEXTURE,
+                -1, 7, -1, 7, 0, 1, 1, 1,
+                (float) Math.clamp(1 / (widget().radius / ctx.getScaledWindowHeight() * 3), 0.0, 0.8), true
             );
             CircleRenderer.VERTEX_CONSUMERS.draw();
         }
@@ -95,8 +111,29 @@ public class CircleWidget extends StatefulWidget {
                     area.exitCallback(this::mouseLeave);
                 },
                 new Sized(
-                    32, 32,
-                    new CustomDraw(this::draw)
+                    DIAMETER, DIAMETER,
+                    new Stack(
+                        new CustomDraw(this::draw),
+                        new Center(
+                            new Transform(
+                                new Matrix4f()
+                                    .translate(widget().renderer.getDividerOffset(
+                                        RADIUS / 3f * 2f,
+                                        widget().startingAngle,
+                                        widget().partView.part.partCount()
+                                    )),
+                                new RawButton(
+                                    () -> {
+
+                                    },
+                                    new Sized(
+                                        6, 6,
+                                        new CustomDraw(this::drawCastButton)
+                                    )
+                                )
+                            )
+                        )
+                    )
                 )
             );
         }
