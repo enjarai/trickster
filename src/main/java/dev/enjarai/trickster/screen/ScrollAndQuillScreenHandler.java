@@ -145,6 +145,14 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
         var server = player().getServer();
         if (server != null) {
             server.execute(() -> {
+                if (revision.isEmpty()) {
+                    ModEntityComponents.CASTER.get(player())
+                        .queueMacroSpell(view.part, List.of(), result -> {
+                            sendMessage(new ReplyToClient(sync, new SpellPart(result)));
+                        });
+                    return;
+                }
+
                 var macro = macros.get(revision);
                 if (macro.isDefined()) {
                     ModEntityComponents.CASTER.get(player())
@@ -164,11 +172,15 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
                 });
             });
         } else {
+            // TODO figure out how to run multiple server revisions in parallel
+            if (!syncedReplacements.isEmpty()) return;
+
             syncedReplacements.put(sync, part -> {
                 if (view.beingReplaced) {
                     view.beingReplaced = false;
                     view.loading = false;
                     responseHandler.accept(part);
+                    updateSpell(view.getUpperParent().part);
                 }
             });
             view.beingReplaced = true;
