@@ -38,7 +38,7 @@ public class EvaluationMirrorItem extends Item {
             Text.translatable("trickster.screen.mirror_of_evaluation"),
             new ScrollAndQuillScreenHandler.InitialData(
                 FragmentComponent.getSpellPart(stack).orElse(new SpellPart()),
-                true, hand, System.identityHashCode(stack), macros.keySet().toJavaSet()
+                true, true, hand, System.identityHashCode(stack), macros.keySet().toJavaSet()
             ),
             stack, otherStack, macros
         ));

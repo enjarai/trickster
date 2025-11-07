@@ -31,7 +31,7 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
     public final InitialData initialData;
 
     // Client fields
-    private final Int2ObjectMap<Consumer<SpellPart>> syncedReplacements = new Int2ObjectOpenHashMap<>();
+    private final Int2ObjectMap<Consumer<Optional<SpellPart>>> syncedReplacements = new Int2ObjectOpenHashMap<>();
 
     // Server fields
     private ItemStack scrollStack;
@@ -145,10 +145,10 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
         var server = player().getServer();
         if (server != null) {
             server.execute(() -> {
-                if (revision.isEmpty()) {
+                if (revision.isEmpty() && initialData.allowEval()) {
                     ModEntityComponents.CASTER.get(player())
                         .queueMacroSpell(view.part, List.of(), result -> {
-                            sendMessage(new ReplyToClient(sync, new SpellPart(result)));
+                            sendMessage(new ReplyToClient(sync, result.map(SpellPart::new)));
                         });
                     return;
                 }
@@ -157,18 +157,20 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
                 if (macro.isDefined()) {
                     ModEntityComponents.CASTER.get(player())
                         .queueMacroSpell(macro.get(), List.of(view.part), result -> {
-                            var part = result instanceof SpellPart p ? p : null;
-                            if (part == null) {
-                                view.replaceGlyph(result);
-                                part = view.part;
-                            }
-                            sendMessage(new ReplyToClient(sync, part));
+                            sendMessage(new ReplyToClient(sync, result.map(f -> {
+                                var part = f instanceof SpellPart p ? p : null;
+                                if (part == null) {
+                                    view.replaceGlyph(f);
+                                    part = view.part;
+                                }
+                                return part;
+                            })));
                         });
                     return;
                 }
 
                 Revisions.lookup(revision).ifPresent(r -> {
-                    r.applyServer(this, view, part -> sendMessage(new ReplyToClient(sync, part)));
+                    r.applyServer(this, view, part -> sendMessage(new ReplyToClient(sync, Optional.of(part))));
                 });
             });
         } else {
@@ -179,8 +181,10 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
                 if (view.beingReplaced) {
                     view.beingReplaced = false;
                     view.loading = false;
-                    responseHandler.accept(part);
-                    updateSpell(view.getUpperParent().part);
+                    part.ifPresent(p -> {
+                        responseHandler.accept(p);
+                        updateSpell(view.getUpperParent().part);
+                    });
                 }
             });
             view.beingReplaced = true;
@@ -225,18 +229,19 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
         );
     }
 
-    public record ReplyToClient(int sync, SpellPart replacement) {
+    public record ReplyToClient(int sync, Optional<SpellPart> replacement) {
         public static final Endec<ReplyToClient> ENDEC = StructEndecBuilder.of(
             Endec.INT.fieldOf("sync", ReplyToClient::sync),
-            SpellPart.ENDEC.fieldOf("replacement", ReplyToClient::replacement),
+            SpellPart.ENDEC.optionalOf().fieldOf("replacement", ReplyToClient::replacement),
             ReplyToClient::new
         );
     }
 
-    public record InitialData(SpellPart spell, boolean mutable, Hand hand, int hash, Set<Pattern> macros) {
+    public record InitialData(SpellPart spell, boolean mutable, boolean allowEval, Hand hand, int hash, Set<Pattern> macros) {
         public static final Endec<InitialData> ENDEC = StructEndecBuilder.of(
             SpellPart.ENDEC.fieldOf("spell", InitialData::spell),
             Endec.BOOLEAN.fieldOf("mutable", InitialData::mutable),
+            Endec.BOOLEAN.fieldOf("allowEval", InitialData::allowEval),
             Endec.forEnum(Hand.class).fieldOf("hand", InitialData::hand),
             Endec.INT.fieldOf("hash", InitialData::hash),
             Pattern.ENDEC.setOf().fieldOf("macros", InitialData::macros),

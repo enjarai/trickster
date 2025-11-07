@@ -20,13 +20,15 @@ public class CircleSoupElement extends AutomaticallyAnimatedWidget {
     private final CircleSoupWidget.State.CircleState circleState;
     private final Constraints soupConstraints;
     private final boolean mutable;
+    private final boolean allowsEval;
 
-    CircleSoupElement(Duration duration, Easing easing, CircleRenderer renderer, CircleSoupWidget.State.CircleState circleState, Constraints soupConstraints, boolean mutable) {
+    CircleSoupElement(Duration duration, Easing easing, CircleRenderer renderer, CircleSoupWidget.State.CircleState circleState, Constraints soupConstraints, boolean mutable, boolean allowsEval) {
         super(duration, easing);
         this.renderer = renderer;
         this.circleState = circleState;
         this.soupConstraints = soupConstraints;
         this.mutable = mutable;
+        this.allowsEval = allowsEval;
     }
 
     @Override
@@ -64,7 +66,8 @@ public class CircleSoupElement extends AutomaticallyAnimatedWidget {
                         c.startingAngle,
                         c.partView,
                         c::updatePattern,
-                        widget().mutable
+                        widget().mutable,
+                        widget().allowsEval ? c::triggerEval : null
                     )
                 )
             );

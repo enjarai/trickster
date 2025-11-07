@@ -58,7 +58,7 @@ public class ScrollAndQuillItem extends Item {
                 Text.translatable("trickster.screen.scroll_and_quill"),
                 new ScrollAndQuillScreenHandler.InitialData(
                     FragmentComponent.getSpellPart(stack).orElse(new SpellPart()),
-                    true, hand, System.identityHashCode(stack), mergedMap.keySet().toJavaSet()
+                    true, false, hand, System.identityHashCode(stack), mergedMap.keySet().toJavaSet()
                 ),
                 stack, otherStack, mergedMap
             ));

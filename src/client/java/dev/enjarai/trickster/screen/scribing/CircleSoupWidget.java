@@ -40,20 +40,22 @@ public class CircleSoupWidget extends StatefulWidget {
     private final SpellView view;
     private final RevisionContext revisionContext;
     private final boolean mutable;
+    private final boolean allowsEval;
     private final double x;
     private final double y;
     private final double radius;
     private final double angle;
     private final DisposeCallback disposeCallback;
 
-    public CircleSoupWidget(SpellView view, RevisionContext revisionContext, boolean mutable) {
-        this(view, revisionContext, mutable, 0, 0, 80, 0, (v, x, y, r, a) -> {});
+    public CircleSoupWidget(SpellView view, RevisionContext revisionContext, boolean mutable, boolean allowsEval) {
+        this(view, revisionContext, mutable, allowsEval, 0, 0, 80, 0, (v, x, y, r, a) -> {});
     }
 
-    public CircleSoupWidget(SpellView view, RevisionContext revisionContext, boolean mutable, double x, double y, double radius, double angle, DisposeCallback disposeCallback) {
+    public CircleSoupWidget(SpellView view, RevisionContext revisionContext, boolean mutable, boolean allowsEval, double x, double y, double radius, double angle, DisposeCallback disposeCallback) {
         this.view = view;
         this.revisionContext = revisionContext;
         this.mutable = mutable;
+        this.allowsEval = allowsEval;
         this.x = x;
         this.y = y;
         this.radius = radius;
@@ -135,7 +137,8 @@ public class CircleSoupWidget extends StatefulWidget {
                                     Easing.OUT_EXPO,
                                     widget().renderer,
                                     c, constraints,
-                                    widget().mutable
+                                    widget().mutable,
+                                    widget().allowsEval
                                 ).key(
                                     Key.of(String.valueOf(c.partView.hashCode()))
                                 )).toList());
@@ -392,6 +395,11 @@ public class CircleSoupWidget extends StatefulWidget {
                 }
 
                 widget().revisionContext.updateSpell(rootView.part);
+            }
+
+            public void triggerEval() {
+                widget().revisionContext.delegateToServer(Pattern.EMPTY, partView, partView::replace);
+                partView.loading = true;
             }
 
             private void discard() {

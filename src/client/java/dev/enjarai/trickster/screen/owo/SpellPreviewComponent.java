@@ -29,7 +29,7 @@ public class SpellPreviewComponent extends BraidComponent {
 
     public static SpellPreviewComponent of(SpellPart spell) {
         var widget = new CircleSoupWidget(
-            SpellView.index(spell), RevisionContext.DUMMY, false,
+            SpellView.index(spell), RevisionContext.DUMMY, false, false,
             0, 0, 24, 0, (view, x1, y1, radius, angle) -> {}
         );
         var component = new SpellPreviewComponent(new Clip(

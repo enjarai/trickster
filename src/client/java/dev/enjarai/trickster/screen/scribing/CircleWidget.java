@@ -12,7 +12,6 @@ import io.wispforest.owo.braid.framework.proxy.WidgetState;
 import io.wispforest.owo.braid.framework.widget.StatefulWidget;
 import io.wispforest.owo.braid.framework.widget.Widget;
 import io.wispforest.owo.braid.widgets.basic.*;
-import io.wispforest.owo.braid.widgets.button.RawButton;
 import io.wispforest.owo.braid.widgets.sharedstate.SharedState;
 import io.wispforest.owo.braid.widgets.stack.Stack;
 import net.minecraft.client.MinecraftClient;
@@ -53,14 +52,17 @@ public class CircleWidget extends StatefulWidget {
     private final SpellView partView;
     private final Consumer<Pattern> updatePattern;
     private final boolean mutable;
+    @Nullable
+    private final Runnable eval;
 
-    public CircleWidget(CircleRenderer renderer, double radius, double startingAngle, SpellView partView, Consumer<Pattern> updatePattern, boolean mutable) {
+    public CircleWidget(CircleRenderer renderer, double radius, double startingAngle, SpellView partView, Consumer<Pattern> updatePattern, boolean mutable, @Nullable Runnable eval) {
         this.renderer = renderer;
         this.radius = radius;
         this.startingAngle = startingAngle;
         this.partView = partView;
         this.updatePattern = updatePattern;
         this.mutable = mutable;
+        this.eval = eval;
     }
 
     // TODO this still depends on the GUI scale, should be a ratio of the scaled window height of the context
@@ -114,7 +116,7 @@ public class CircleWidget extends StatefulWidget {
                     DIAMETER, DIAMETER,
                     new Stack(
                         new CustomDraw(this::draw),
-                        new Center(
+                        widget().eval != null ? new Center(
                             new Transform(
                                 new Matrix4f()
                                     .translate(widget().renderer.getDividerOffset(
@@ -122,9 +124,9 @@ public class CircleWidget extends StatefulWidget {
                                         widget().startingAngle,
                                         widget().partView.part.partCount()
                                     )),
-                                new RawButton(
-                                    () -> {
-
+                                new MouseArea(
+                                    area -> {
+                                        area.releaseCallback((x, y, button, modifiers) -> clickEval(SharedState.get(context, CircleSoupState.class)));
                                     },
                                     new Sized(
                                         6, 6,
@@ -132,7 +134,7 @@ public class CircleWidget extends StatefulWidget {
                                     )
                                 )
                             )
-                        )
+                        ) : EmptyWidget.INSTANCE
                     )
                 )
             );
@@ -198,6 +200,17 @@ public class CircleWidget extends StatefulWidget {
             mouseInside = false;
         }
 
+        public boolean clickEval(CircleSoupState state) {
+            if (state.dragging || widget().partView.beingReplaced || state.drawing || widget().eval == null) {
+                return false;
+            }
+
+            //noinspection DataFlowIssue
+            widget().eval.run();
+
+            return true;
+        }
+
         public void finishDrawing(boolean apply, CircleSoupState state) {
             if (drawingPattern == null) {
                 return;
@@ -254,7 +267,7 @@ public class CircleWidget extends StatefulWidget {
                 // if we are checking the closest neighboring dots on the ring
                 // translate the dots outward a bit by enlarging the radius
                 // this will make it easier to connect lines to the next neighbors on the ring
-                var patternRadius = 16 / PATTERN_TO_PART_RATIO;
+                var patternRadius = RADIUS / PATTERN_TO_PART_RATIO;
                 var pixelSize = patternRadius / PART_PIXEL_RADIUS;
 
                 if (drawingPattern != null && !drawingPattern.isEmpty()) {
@@ -264,9 +277,9 @@ public class CircleWidget extends StatefulWidget {
                     }
                 }
 
-                var pos = getPatternDotPosition(16, 16, i, (float) patternRadius);
+                var pos = getPatternDotPosition(RADIUS, RADIUS, i, patternRadius);
 
-                if (isInsideHitbox(pos, (float) pixelSize, mouseX, mouseY)) {
+                if (isInsideHitbox(pos, pixelSize, mouseX, mouseY)) {
                     return i;
                 }
             }

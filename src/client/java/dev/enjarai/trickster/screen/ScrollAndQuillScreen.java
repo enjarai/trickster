@@ -37,7 +37,7 @@ public class ScrollAndQuillScreen extends BraidScreen implements ScreenHandlerPr
         }
 
         return new ScrollAndQuillScreen(new CircleSoupWidget(
-            view, handler, handler.initialData.mutable(),
+            view, handler, handler.initialData.mutable(), handler.initialData.allowEval(),
             x, y, radius, angle, savePosition(handler)
         ), handler);
     }
