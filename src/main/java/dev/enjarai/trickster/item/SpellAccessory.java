@@ -24,4 +24,25 @@ public class SpellAccessory extends AccessoryItem {
             }
         }
     }
+
+    @Override
+    public boolean canEquip(ItemStack stack, SlotReference reference) {
+        var capability = reference.capability();
+
+        if (capability == null) {
+            return false;
+        }
+
+        int amount = capability.getEquipped(s -> s.getItem() instanceof SpellAccessory).size();
+
+        if (amount == 0) {
+            return true;
+        }
+
+        if (amount == 1 && reference.getStack().getItem() instanceof SpellAccessory) {
+            return true;
+        }
+
+        return false;
+    }
 }

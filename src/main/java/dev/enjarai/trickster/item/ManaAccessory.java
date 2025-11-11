@@ -30,4 +30,25 @@ public class ManaAccessory extends AccessoryItem {
 
         stack.set(ModComponents.MANA, component.with(pool));
     }
+
+    @Override
+    public boolean canEquip(ItemStack stack, SlotReference reference) {
+        var capability = reference.capability();
+
+        if (capability == null) {
+            return false;
+        }
+
+        int amount = capability.getEquipped(s -> s.getItem() instanceof ManaAccessory).size();
+
+        if (amount == 0) {
+            return true;
+        }
+
+        if (amount == 1 && reference.getStack().getItem() instanceof ManaAccessory) {
+            return true;
+        }
+
+        return false;
+    }
 }
