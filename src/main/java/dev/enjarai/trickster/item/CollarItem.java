@@ -3,6 +3,7 @@ package dev.enjarai.trickster.item;
 import dev.enjarai.trickster.ModSounds;
 import dev.enjarai.trickster.item.component.ModComponents;
 import io.wispforest.accessories.api.AccessoryItem;
+import io.wispforest.accessories.api.slot.SlotReference;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -23,6 +24,27 @@ public class CollarItem extends AccessoryItem {
         }
 
         super.appendTooltip(stack, context, tooltip, type);
+    }
+
+    @Override
+    public boolean canEquip(ItemStack stack, SlotReference reference) {
+        var capability = reference.capability();
+
+        if (capability == null) {
+            return false;
+        }
+
+        int amount = capability.getEquipped(s -> s.getItem() instanceof CollarItem).size();
+
+        if (amount == 0) {
+            return true;
+        }
+
+        if (amount == 1 && reference.getStack().getItem() instanceof CollarItem) {
+            return true;
+        }
+
+        return false;
     }
 
     public static void playJingleQuestionMark(LivingEntity entity, boolean server) {

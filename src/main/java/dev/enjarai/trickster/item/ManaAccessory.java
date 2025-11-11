@@ -9,7 +9,6 @@ import io.wispforest.accessories.api.slot.SlotReference;
 import net.minecraft.item.ItemStack;
 
 public class ManaAccessory extends AccessoryItem {
-
     public ManaAccessory() {
         super(new Settings()
                 .maxCount(1)
@@ -30,5 +29,26 @@ public class ManaAccessory extends AccessoryItem {
         pool.setMax(Trickster.CONFIG.whorlMaxMana(), world);
 
         stack.set(ModComponents.MANA, component.with(pool));
+    }
+
+    @Override
+    public boolean canEquip(ItemStack stack, SlotReference reference) {
+        var capability = reference.capability();
+
+        if (capability == null) {
+            return false;
+        }
+
+        int amount = capability.getEquipped(s -> s.getItem() instanceof ManaAccessory).size();
+
+        if (amount == 0) {
+            return true;
+        }
+
+        if (amount == 1 && reference.getStack().getItem() instanceof ManaAccessory) {
+            return true;
+        }
+
+        return false;
     }
 }
