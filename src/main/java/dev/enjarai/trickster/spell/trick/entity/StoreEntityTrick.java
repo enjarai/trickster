@@ -28,7 +28,7 @@ public class StoreEntityTrick extends Trick<StoreEntityTrick> {
         if (target instanceof PlayerEntity)
             throw new EntityInvalidBlunder(this);
 
-        if (target.getType().isIn(ModEntities.IRREPRESSIBLE))
+        if (target.getType().isIn(ModEntities.CANNOT_STORE))
             throw new EntityCannotBeStoredBlunder(this, target);
 
         var player = ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this));
