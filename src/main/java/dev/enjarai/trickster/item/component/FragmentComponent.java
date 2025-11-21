@@ -189,7 +189,11 @@ public record FragmentComponent(Fragment value, Optional<Text> name, boolean imm
     public static boolean modifyReferencedStack(ItemStack stack, Function<ItemStack, Boolean> modifier) {
         if (stack.isIn(ModItems.HOLDABLE_HAT) && stack.contains(DataComponentTypes.CONTAINER) && stack.contains(ModComponents.SELECTED_SLOT)) {
             var stacks = stack.get(DataComponentTypes.CONTAINER).stream().collect(Collectors.toCollection(ArrayList::new));
-            var stack2 = stacks.get(stack.get(ModComponents.SELECTED_SLOT).slot());
+            int selectedSlot = stack.get(ModComponents.SELECTED_SLOT).slot();
+            if (stacks.size() <= selectedSlot) {
+                return true;
+            }
+            var stack2 = stacks.get(selectedSlot);
             boolean modified = modifier.apply(stack2);
 
             if (modified) {
