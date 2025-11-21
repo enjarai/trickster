@@ -22,7 +22,7 @@ When Extensive Revision is drawn in the blue circle, the green circle will be cr
 
 Adds a new inner circle to an existing circle.
 Inner circles act like glyphs, and can be activated as such.
-See [Spell Fragments](^trickster:distortions/functions).
+See [Spell Deviations](^trickster:tricks/functions).
 
 ;;;;;
 
