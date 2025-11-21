@@ -15,7 +15,7 @@ import java.util.List;
 
 public class GetEquipmentTrick extends Trick<GetEquipmentTrick> {
     public GetEquipmentTrick() {
-        super(Pattern.of(0, 4, 2, 5, 4, 3, 0, 6, 7, 8, 2), Signature.of(FragmentType.ENTITY, GetEquipmentTrick::run, FragmentType.ITEM_TYPE.listOfRet()));
+        super(Pattern.of(1, 8, 7, 6, 1, 4, 3, 0, 4, 5, 2, 4), Signature.of(FragmentType.ENTITY, GetEquipmentTrick::run, FragmentType.ITEM_TYPE.listOfRet()));
     }
 
     public List<ItemTypeFragment> run(SpellContext ctx, EntityFragment target) throws BlunderException {
