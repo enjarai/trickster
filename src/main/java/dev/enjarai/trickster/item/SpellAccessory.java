@@ -19,7 +19,7 @@ public class SpellAccessory extends AccessoryItem {
             var caster = ModEntityComponents.CASTER.get(player);
             var fragment = stack.get(ModComponents.FRAGMENT);
 
-            if (caster != null && fragment != null && fragment.value() instanceof SpellPart spell) {
+            if (fragment != null && fragment.value() instanceof SpellPart spell) {
                 caster.setTormentSpell(spell);
             }
         }

@@ -24,8 +24,8 @@ public class WrappedSpellExecutionManager implements SpellExecutionManager {
     public void tick(SpellSource source) {
         executor.ifPresent(executor -> {
             try {
-                if (!executor.run(source).isEmpty()) {
-                    restart();
+                if (executor.run(source).isPresent()) {
+                    this.executor = Optional.empty();
                 }
             } catch (BlunderException blunder) {
                 var message = blunder.createMessage()
@@ -35,7 +35,7 @@ public class WrappedSpellExecutionManager implements SpellExecutionManager {
                     source.getPlayer().ifPresent(ModCriteria.NAN_NUMBER::trigger);
 
                 source.getPlayer().ifPresent(player -> player.sendMessage(message));
-                restart();
+                this.executor = Optional.empty();
             } catch (Throwable e) {
                 var message = Text.literal("Uncaught exception in spell: " + e.getMessage())
                         .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")");
@@ -43,14 +43,8 @@ public class WrappedSpellExecutionManager implements SpellExecutionManager {
                 Trickster.LOGGER.error("Uncaught error in spell:", e);
 
                 source.getPlayer().ifPresent(player -> player.sendMessage(message));
-                restart();
+                this.executor = Optional.empty();
             }
-        });
-    }
-
-    public void restart() {
-        executor.ifPresent(executor -> {
-            this.executor = Optional.of(new DefaultSpellExecutor(executor.spell(), new ExecutionState(List.of())));
         });
     }
 
