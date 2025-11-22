@@ -18,7 +18,7 @@ import java.util.Optional;
 
 public class RevealActionBarTrick extends Trick<RevealActionBarTrick> {
     public RevealActionBarTrick() {
-        super(Pattern.of(7, 4, 3, 6, 7, 8, 5, 4), Signature.of(ArgType.ANY.variadicOfArg().optionalOfArg(), RevealActionBarTrick::reveal, RetType.ANY));
+        super(Pattern.of(6, 4, 8, 5, 4, 3, 6, 7, 8), Signature.of(ArgType.ANY.variadicOfArg().optionalOfArg(), RevealActionBarTrick::reveal, RetType.ANY));
     }
 
     public Fragment reveal(SpellContext ctx, Optional<List<Fragment>> optionalFragments) throws BlunderException {
