@@ -10,6 +10,7 @@ import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
+import dev.enjarai.trickster.spell.ward.action.BreakBlockAction;
 import dev.enjarai.trickster.spell.type.Signature;
 
 public class BreakBlockTrick extends Trick<BreakBlockTrick> {
@@ -22,6 +23,7 @@ public class BreakBlockTrick extends Trick<BreakBlockTrick> {
         var world = ctx.source().getWorld();
 
         expectCanBuild(ctx, blockPos);
+        checkWard(ctx, new BreakBlockAction(blockPos));
 
         var state = world.getBlockState(blockPos);
 

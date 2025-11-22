@@ -278,6 +278,8 @@ trickster:
     message_send: Dispatch Ploy
     message_listen: Ploy of Receipt
 
+    create_ward: Guardian's Ploy
+
   fragment:
     trickster:
       type: Type
@@ -298,6 +300,7 @@ trickster:
       entity_type: EntityType
       string: String
       dimension: Dimension
+      ward: Ward
     class:
       Fragment: Any
       AddableFragment: Addable

@@ -81,11 +81,6 @@ public class VariadicArgType<T> implements ArgType<List<T>> {
     }
 
     @Override
-    public ArgType<List<T>> wardOf() {
-        return new VariadicArgType<>(type.wardOf(), require, unpack);
-    }
-
-    @Override
     public MutableText asText() {
         var typeText = type.asText();
         var text = Text.empty().append(typeText).append("...");

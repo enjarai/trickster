@@ -25,7 +25,7 @@ public record WardFragment(UUID uuid) implements Fragment {
 
     @Override
     public Text asText() {
-        return Text.literal("Meow meow");
+        return Text.literal("Ward (").append(uuid.toString()).append(")");
     }
 
     @Override

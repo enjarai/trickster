@@ -14,7 +14,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 
 public class PolymorphTrick extends Trick<PolymorphTrick> {
     public PolymorphTrick() {
-        super(Pattern.of(4, 2, 1, 0, 4, 8, 7, 6, 4), Signature.of(FragmentType.ENTITY.wardOf(), FragmentType.ENTITY, PolymorphTrick::morph, FragmentType.VOID));
+        super(Pattern.of(4, 2, 1, 0, 4, 8, 7, 6, 4), Signature.of(FragmentType.ENTITY, FragmentType.ENTITY, PolymorphTrick::morph, FragmentType.VOID));
     }
 
     public VoidFragment morph(SpellContext ctx, EntityFragment source, EntityFragment target) throws BlunderException {

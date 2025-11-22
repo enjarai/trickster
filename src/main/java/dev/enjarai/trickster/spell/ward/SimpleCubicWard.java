@@ -98,6 +98,6 @@ public class SimpleCubicWard implements Ward {
         double y = Math.abs(pos1.y() - pos2.y());
         double z = Math.abs(pos1.z() - pos2.z());
 
-        return (float) (x * y * z * actions.size());
+        return (float) (100.0 + 3.0 * x * y * z * actions.size());
     }
 }

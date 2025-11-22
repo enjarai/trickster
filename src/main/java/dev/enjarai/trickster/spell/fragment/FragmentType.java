@@ -178,42 +178,6 @@ public class FragmentType<T extends Fragment> implements RetType<T>, ArgType<T> 
         return fragments.getFirst().type() == this;
     }
 
-    @Override
-    public ArgType<T> wardOf() {
-        return new ArgType<>() {
-            @Override
-            public int argc(List<Fragment> fragments) {
-                return FragmentType.this.argc(fragments);
-            }
-
-            @Override
-            public T compose(Trick<?> trick, SpellContext ctx, List<Fragment> fragments) {
-                var result = FragmentType.this.compose(trick, ctx, fragments);
-
-                if (result instanceof EntityFragment entity) {
-                    ArgType.tryWard(trick, ctx, entity, fragments);
-                }
-
-                return result;
-            }
-
-            @Override
-            public boolean match(List<Fragment> fragments) {
-                return FragmentType.this.match(fragments);
-            }
-
-            @Override
-            public ArgType<T> wardOf() {
-                return this;
-            }
-
-            @Override
-            public MutableText asText() {
-                return FragmentType.this.asText();
-            }
-        };
-    }
-
     public StructEndec<T> endec() {
         return endec;
     }

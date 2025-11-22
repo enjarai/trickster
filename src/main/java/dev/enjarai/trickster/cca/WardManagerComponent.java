@@ -19,7 +19,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.registry.RegistryWrapper.WrapperLookup;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 
 public class WardManagerComponent implements CommonTickingComponent, AutoSyncedComponent {
@@ -57,7 +56,6 @@ public class WardManagerComponent implements CommonTickingComponent, AutoSyncedC
 
     @Override
     public void tick() {
-        var world = (ServerWorld) this.world;
         var toRemove = new ArrayList<UUID>();
 
         for (var kv : wards.entrySet()) {
@@ -72,6 +70,12 @@ public class WardManagerComponent implements CommonTickingComponent, AutoSyncedC
         for (var uuid : toRemove) {
             wards.remove(uuid);
         }
+    }
+
+    public UUID put(Ward ward) {
+        var uuid = UUID.randomUUID(); // Evelyn I hate doing this but <3
+        wards.put(uuid, ward);
+        return uuid;
     }
 
     public Optional<Ward> get(UUID uuid) {

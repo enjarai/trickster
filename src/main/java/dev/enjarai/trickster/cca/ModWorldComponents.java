@@ -13,5 +13,6 @@ public class ModWorldComponents implements WorldComponentInitializer {
     @Override
     public void registerWorldComponentFactories(WorldComponentFactoryRegistry registry) {
         registry.register(PINNED_CHUNKS, PinnedChunksComponent::new);
+        registry.register(WARD_MANAGER, WardManagerComponent::new);
     }
 }

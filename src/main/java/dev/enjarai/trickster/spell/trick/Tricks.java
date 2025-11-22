@@ -36,6 +36,7 @@ import dev.enjarai.trickster.spell.trick.raycast.RaycastEntityTrick;
 import dev.enjarai.trickster.spell.trick.raycast.RaycastPosTrick;
 import dev.enjarai.trickster.spell.trick.tree.*;
 import dev.enjarai.trickster.spell.trick.vector.*;
+import dev.enjarai.trickster.spell.trick.ward.CreateWardTrick;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.item.Items;
@@ -60,7 +61,7 @@ public class Tricks {
         public RegistryEntry.Reference<Trick<?>> add(RegistryKey<Trick<?>> key, Trick<?> value, RegistryEntryInfo info) {
             if (LOOKUP.containsKey(value.getPattern())) {
                 Trickster.LOGGER.warn(
-                        "WARNING: A mod is overriding a pattern that is already defined! This may result in one of the tricks being unusable. ({} overrode {})",
+                        "WARNING: A mod is overriding a trick that is already defined! This may result in one of the tricks being unusable. ({} overrode {})",
                         key.getValue(), getId(LOOKUP.get(value.getPattern()))
                 );
             }
@@ -301,6 +302,9 @@ public class Tricks {
     public static final PushManaTrick PUSH_MANA = register("push_mana", new PushManaTrick());
     public static final PullManaTrick PULL_MANA = register("pull_mana", new PullManaTrick());
     public static final DrainMatterTrick DRAIN_MATTER = register("drain_matter", new DrainMatterTrick());
+
+    // Wards
+    public static final CreateWardTrick CREATE_WARD = register("create_ward", new CreateWardTrick());
 
     static {
         if (FabricLoader.getInstance().isDevelopmentEnvironment()) {

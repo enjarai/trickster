@@ -59,7 +59,8 @@
             "trickster:weight",
             "trickster:scale",
             "trickster:displacement",
-            "trickster:curse"
+            "trickster:curse",
+            "trickster:ward_manager"
         ]
     },
     "mixins": [
