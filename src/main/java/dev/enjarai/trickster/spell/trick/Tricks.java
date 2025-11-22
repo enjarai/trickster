@@ -269,6 +269,7 @@ public class Tricks {
     public static final BlockFromItemTrick BLOCK_FROM_ITEM = register("block_from_item", new BlockFromItemTrick());
     public static final ItemFromBlockTrick ITEM_FROM_BLOCK = register("item_from_block", new ItemFromBlockTrick());
     public static final GetMaxCount GET_MAX_COUNT = register("get_max_count", new GetMaxCount());
+    public static final GetEquipmentTrick GET_EQUIPMENT = register("get_equipment", new GetEquipmentTrick());
 
     // Projectile
     public static final SummonArrowTrick SUMMON_ARROW = register("summon_arrow", new SummonArrowTrick());

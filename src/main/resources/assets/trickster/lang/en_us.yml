@@ -247,6 +247,7 @@ trickster:
     block_from_item: Placement Distortion
     item_from_block: Pickup Distortion
     get_max_count: Distortion of Breadth
+    get_equipment: Investigative Ingress
 
     type_fragment: Argumentative Distortion
     hash_values: Decaying Distortion
