@@ -22,9 +22,6 @@ public class TricksterConfigModel {
     public boolean allowScrollInSpellScreen = true;
     public double keyZoomSpeed = 1.0;
 
-    @Sync(Option.SyncMode.INFORM_SERVER)
-    public boolean revealToHotbar = false;
-
     @SectionHeader("server")
 
     @Sync(Option.SyncMode.OVERRIDE_CLIENT)
