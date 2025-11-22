@@ -2,7 +2,6 @@ package dev.enjarai.trickster.spell.trick.projectile;
 
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.MissingItemBlunder;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
@@ -20,7 +19,7 @@ public class SummonTntTrick extends Trick<SummonTntTrick> {
         super(Pattern.of(0, 2, 8, 6, 0, 1, 4, 7, 8, 5, 4, 3, 0, 4, 8), Signature.of(FragmentType.VECTOR, FragmentType.SLOT.optionalOfArg(), SummonTntTrick::run, FragmentType.ENTITY));
     }
 
-    public EntityFragment run(SpellContext ctx, VectorFragment pos, Optional<SlotFragment> optionalSlot) throws BlunderException {
+    public EntityFragment run(SpellContext ctx, VectorFragment pos, Optional<SlotFragment> optionalSlot) {
         var stack = ctx.getStack(this, optionalSlot, s -> s.isOf(Items.TNT)).orElseThrow(() -> new MissingItemBlunder(this));
         var world = ctx.source().getWorld();
 

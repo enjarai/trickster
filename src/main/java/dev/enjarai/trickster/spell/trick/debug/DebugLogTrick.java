@@ -5,7 +5,6 @@ import dev.enjarai.trickster.spell.EvaluationResult;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.trick.Trick;
 
 import java.util.List;
@@ -16,7 +15,7 @@ public class DebugLogTrick extends Trick<DebugLogTrick> {
     }
 
     @Override
-    public EvaluationResult activate(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    public EvaluationResult activate(SpellContext ctx, List<Fragment> fragments) {
         Trickster.LOGGER.info("Debug log trick:");
         fragments.stream()
                 .map(f -> f.asText().getString())

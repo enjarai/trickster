@@ -2,7 +2,6 @@ package dev.enjarai.trickster.spell.trick.projectile;
 
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.MissingItemBlunder;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
@@ -23,7 +22,7 @@ public class SummonDragonBreathTrick extends Trick<SummonDragonBreathTrick> {
         );
     }
 
-    public EntityFragment run(SpellContext ctx, VectorFragment pos, Optional<SlotFragment> optionalSlot, Optional<SlotFragment> optionalSlot2) throws BlunderException {
+    public EntityFragment run(SpellContext ctx, VectorFragment pos, Optional<SlotFragment> optionalSlot, Optional<SlotFragment> optionalSlot2) {
         var stack = ctx.getStack(this, optionalSlot, s -> s.isOf(Items.FIRE_CHARGE)).orElseThrow(() -> new MissingItemBlunder(this));
         var world = ctx.source().getWorld();
 

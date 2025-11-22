@@ -3,7 +3,6 @@ package dev.enjarai.trickster.spell.trick.map;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.trick.DistortionTrick;
 import dev.enjarai.trickster.spell.type.ArgType;
 import dev.enjarai.trickster.spell.type.RetType;
@@ -17,7 +16,7 @@ public class MapMergeTrick extends DistortionTrick<MapMergeTrick> {
         super(Pattern.of(2, 4, 8, 2, 5, 8, 6, 3, 0), Signature.of(ArgType.ANY.mappedTo(ArgType.ANY).variadicOfArg().require().unpack(), MapMergeTrick::run, RetType.ANY.mappedTo(RetType.ANY)));
     }
 
-    public HashMap<Fragment, Fragment> run(SpellContext ctx, List<HashMap<Fragment, Fragment>> maps) throws BlunderException {
+    public HashMap<Fragment, Fragment> run(SpellContext ctx, List<HashMap<Fragment, Fragment>> maps) {
         var baseMap = HashMap.<Fragment, Fragment>empty();
 
         for (var map : maps) {

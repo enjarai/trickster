@@ -21,9 +21,7 @@ public class TricksterConfigModel {
     public boolean invertTopHatScrolling = false;
     public boolean allowScrollInSpellScreen = true;
     public double keyZoomSpeed = 1.0;
-
-    @Sync(Option.SyncMode.INFORM_SERVER)
-    public boolean revealToHotbar = false;
+    public boolean animateLines = true;
 
     @SectionHeader("server")
 

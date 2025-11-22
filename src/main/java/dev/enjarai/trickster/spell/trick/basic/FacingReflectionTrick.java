@@ -2,7 +2,6 @@ package dev.enjarai.trickster.spell.trick.basic;
 
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.IncompatibleSourceBlunder;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
@@ -14,7 +13,7 @@ public class FacingReflectionTrick extends Trick<FacingReflectionTrick> {
         super(Pattern.of(3, 1, 5, 7, 3, 6, 4, 2, 5), Signature.of(FacingReflectionTrick::run, FragmentType.VECTOR));
     }
 
-    public VectorFragment run(SpellContext ctx) throws BlunderException {
+    public VectorFragment run(SpellContext ctx) {
         return new VectorFragment(ctx.source().getFacing().orElseThrow(() -> new IncompatibleSourceBlunder(this)));
     }
 }

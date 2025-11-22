@@ -3,7 +3,6 @@ package dev.enjarai.trickster.spell.trick.entity;
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.InvalidEntityBlunder;
 import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
@@ -19,7 +18,7 @@ public class SetScaleTrick extends Trick<SetScaleTrick> {
         super(Pattern.of(7, 6, 0, 1, 2, 8, 7, 4), Signature.of(FragmentType.ENTITY, FragmentType.NUMBER, SetScaleTrick::set, FragmentType.ENTITY));
     }
 
-    public EntityFragment set(SpellContext ctx, EntityFragment entity, NumberFragment scaleFragment) throws BlunderException {
+    public EntityFragment set(SpellContext ctx, EntityFragment entity, NumberFragment scaleFragment) {
         var target = entity.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this));
 
         var scale = MathHelper.clamp(scaleFragment.number(), 0.0625, 8.0);

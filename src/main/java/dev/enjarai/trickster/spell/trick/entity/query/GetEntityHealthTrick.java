@@ -2,7 +2,6 @@ package dev.enjarai.trickster.spell.trick.entity.query;
 
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import net.minecraft.entity.LivingEntity;
@@ -13,7 +12,7 @@ public class GetEntityHealthTrick extends AbstractEntityQueryTrick<LivingEntity,
     }
 
     @Override
-    public NumberFragment run(SpellContext ctx, LivingEntity entity) throws BlunderException {
+    public NumberFragment run(SpellContext ctx, LivingEntity entity) {
         return new NumberFragment(entity.getHealth());
     }
 }

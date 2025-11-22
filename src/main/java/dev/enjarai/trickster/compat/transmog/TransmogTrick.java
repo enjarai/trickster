@@ -9,7 +9,6 @@ import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.ItemTypeFragment;
 import dev.enjarai.trickster.spell.fragment.SlotFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.type.Signature;
 
 public class TransmogTrick extends Trick<TransmogTrick> {
@@ -17,7 +16,7 @@ public class TransmogTrick extends Trick<TransmogTrick> {
         super(Pattern.of(6, 3, 4, 5, 2, 4, 6, 1, 4, 7, 2), Signature.of(FragmentType.SLOT, FragmentType.ITEM_TYPE, TransmogTrick::transmog, FragmentType.BOOLEAN));
     }
 
-    public BooleanFragment transmog(SpellContext ctx, SlotFragment slot, ItemTypeFragment item) throws BlunderException {
+    public BooleanFragment transmog(SpellContext ctx, SlotFragment slot, ItemTypeFragment item) {
         var stack = slot.reference(this, ctx);
         var currentTransmog = stack.get(ModDataComponents.TRANSMOG_APPEARANCE_ITEM.get());
 

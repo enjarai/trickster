@@ -6,7 +6,6 @@ import dev.enjarai.trickster.item.ChannelItem;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.ItemInvalidBlunder;
 import dev.enjarai.trickster.spell.blunder.OutOfRangeBlunder;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
@@ -27,12 +26,12 @@ public class MessageSendTrick extends Trick<MessageSendTrick> {
         overload(Signature.of(ArgType.ANY, FragmentType.SLOT, MessageSendTrick::channel, RetType.ANY));
     }
 
-    public Fragment broadcast(SpellContext ctx, Fragment value, Optional<NumberFragment> range) throws BlunderException {
+    public Fragment broadcast(SpellContext ctx, Fragment value, Optional<NumberFragment> range) {
         range.ifPresent(n -> ctx.useMana(this, (float) n.number()));
         return run(ctx, new Key.Broadcast(ctx.source().getWorld().getRegistryKey(), ctx.source().getPos(), range.orElse(DEFAULT_RANGE).number()), value);
     }
 
-    public Fragment channel(SpellContext ctx, Fragment value, SlotFragment slot) throws BlunderException {
+    public Fragment channel(SpellContext ctx, Fragment value, SlotFragment slot) {
         var stack = slot.reference(this, ctx);
         var range = ctx.source().getPos().distance(slot.getSourceOrCasterPos(this, ctx));
         var item = stack.getItem();
@@ -49,7 +48,7 @@ public class MessageSendTrick extends Trick<MessageSendTrick> {
         throw new ItemInvalidBlunder(this);
     }
 
-    public Fragment run(SpellContext ctx, Key key, Fragment value) throws BlunderException {
+    public Fragment run(SpellContext ctx, Key key, Fragment value) {
         ModGlobalComponents.MESSAGE_HANDLER.get(ctx.source().getWorld().getScoreboard()).send(key, value);
         return value;
     }

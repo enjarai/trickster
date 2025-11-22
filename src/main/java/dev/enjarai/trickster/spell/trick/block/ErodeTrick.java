@@ -4,7 +4,6 @@ import dev.enjarai.trickster.data.DataLoader;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlockInvalidBlunder;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
@@ -22,7 +21,7 @@ public class ErodeTrick extends Trick<ErodeTrick> {
         super(Pattern.of(0, 4, 6, 7, 8, 4, 2), Signature.of(FragmentType.VECTOR, FragmentType.VECTOR, ErodeTrick::erode, FragmentType.VECTOR));
     }
 
-    public VectorFragment erode(SpellContext ctx, VectorFragment weatheringPosFragment, VectorFragment waterPosFragment) throws BlunderException {
+    public VectorFragment erode(SpellContext ctx, VectorFragment weatheringPosFragment, VectorFragment waterPosFragment) {
         var weatheringPos = weatheringPosFragment.toBlockPos();
         var waterPos = waterPosFragment.toBlockPos();
 

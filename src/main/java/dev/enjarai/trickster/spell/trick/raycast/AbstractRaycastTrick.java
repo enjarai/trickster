@@ -23,13 +23,13 @@ public abstract class AbstractRaycastTrick<T extends Fragment> extends Trick<Abs
         overload(Signature.of(FragmentType.ENTITY, FragmentType.BOOLEAN.optionalOfArg(), AbstractRaycastTrick::fromEntity, retType.optionalOfRet()));
     }
 
-    public Optional<T> fromVectors(SpellContext ctx, VectorFragment vec1, VectorFragment vec2, Optional<BooleanFragment> bool) throws BlunderException {
+    public Optional<T> fromVectors(SpellContext ctx, VectorFragment vec1, VectorFragment vec2, Optional<BooleanFragment> bool) {
         var position = new Vec3d(vec1.x(), vec1.y(), vec1.z());
         var direction = new Vec3d(vec2.x(), vec2.y(), vec2.z()).normalize();
         return run(ctx, Optional.empty(), position, direction, bool);
     }
 
-    public Optional<T> fromEntity(SpellContext ctx, EntityFragment e, Optional<BooleanFragment> bool) throws BlunderException {
+    public Optional<T> fromEntity(SpellContext ctx, EntityFragment e, Optional<BooleanFragment> bool) {
         var entity = e.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this));
         var position = entity.getEyePos();
         var direction = entity.getRotationVector();

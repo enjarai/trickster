@@ -3,7 +3,6 @@ package dev.enjarai.trickster.spell.trick.entity;
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
@@ -17,7 +16,7 @@ public class PolymorphTrick extends Trick<PolymorphTrick> {
         super(Pattern.of(4, 2, 1, 0, 4, 8, 7, 6, 4), Signature.of(FragmentType.ENTITY, FragmentType.ENTITY, PolymorphTrick::morph, FragmentType.VOID));
     }
 
-    public VoidFragment morph(SpellContext ctx, EntityFragment source, EntityFragment target) throws BlunderException {
+    public VoidFragment morph(SpellContext ctx, EntityFragment source, EntityFragment target) {
         var realSource = source.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this));
         var realTarget = target.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this));
 

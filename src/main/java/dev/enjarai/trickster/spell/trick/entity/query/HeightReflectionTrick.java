@@ -2,7 +2,6 @@ package dev.enjarai.trickster.spell.trick.entity.query;
 
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import net.minecraft.entity.Entity;
@@ -13,7 +12,7 @@ public class HeightReflectionTrick extends AbstractEntityQueryTrick<Entity, Numb
     }
 
     @Override
-    protected NumberFragment run(SpellContext ctx, Entity entity) throws BlunderException {
+    protected NumberFragment run(SpellContext ctx, Entity entity) {
         return new NumberFragment(entity.getHeight());
     }
 }

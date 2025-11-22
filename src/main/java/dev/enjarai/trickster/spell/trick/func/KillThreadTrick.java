@@ -2,7 +2,6 @@ package dev.enjarai.trickster.spell.trick.func;
 
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.IncompatibleSourceBlunder;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
@@ -17,7 +16,7 @@ public class KillThreadTrick extends Trick<KillThreadTrick> {
         super(Pattern.of(6, 3, 1, 4, 3, 7, 5, 4, 7, 6), Signature.of(FragmentType.NUMBER.optionalOfArg(), KillThreadTrick::run, FragmentType.BOOLEAN));
     }
 
-    public BooleanFragment run(SpellContext ctx, Optional<NumberFragment> index) throws BlunderException {
+    public BooleanFragment run(SpellContext ctx, Optional<NumberFragment> index) {
         var manager = ctx.source().getExecutionManager().orElseThrow(() -> new IncompatibleSourceBlunder(this));
         var currentIndex = ctx.data().getSlot().orElseThrow(() -> new IncompatibleSourceBlunder(this));
 

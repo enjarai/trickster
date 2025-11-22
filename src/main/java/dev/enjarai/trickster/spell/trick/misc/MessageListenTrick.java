@@ -5,7 +5,6 @@ import dev.enjarai.trickster.spell.EvaluationResult;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.SpellExecutor;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.ItemInvalidBlunder;
 import dev.enjarai.trickster.spell.blunder.OutOfRangeBlunder;
 import dev.enjarai.trickster.spell.execution.executor.MessageListenerSpellExecutor;
@@ -26,11 +25,11 @@ public class MessageListenTrick extends Trick<MessageListenTrick> {
     }
 
     //TODO: how should we stop this from running in single-tick mode
-    public SpellExecutor run(SpellContext ctx, Optional<NumberFragment> timeout) throws BlunderException {
+    public SpellExecutor run(SpellContext ctx, Optional<NumberFragment> timeout) {
         return new MessageListenerSpellExecutor(ctx.state(), timeout.map(n -> n.asInt()), Optional.empty());
     }
 
-    public EvaluationResult runWithChannel(SpellContext ctx, Optional<NumberFragment> timeout, SlotFragment slot) throws BlunderException {
+    public EvaluationResult runWithChannel(SpellContext ctx, Optional<NumberFragment> timeout, SlotFragment slot) {
         var stack = slot.reference(this, ctx);
         var range = ctx.source().getPos().distance(slot.getSourceOrCasterPos(this, ctx));
         var item = stack.getItem();

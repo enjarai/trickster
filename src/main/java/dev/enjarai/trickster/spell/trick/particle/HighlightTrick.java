@@ -3,7 +3,6 @@ package dev.enjarai.trickster.spell.trick.particle;
 import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
@@ -16,7 +15,7 @@ public class HighlightTrick extends Trick<HighlightTrick> {
         super(Pattern.of(2, 0, 1, 2, 3, 4, 5, 8, 7, 6, 3), Signature.of(FragmentType.VECTOR.variadicOfArg().require().unpack(), HighlightTrick::run, FragmentType.VECTOR));
     }
 
-    public VectorFragment run(SpellContext ctx, List<VectorFragment> positions) throws BlunderException {
+    public VectorFragment run(SpellContext ctx, List<VectorFragment> positions) {
         for (var pos : positions) {
             var block = pos.toBlockPos().toCenterPos();
             ctx.source().getWorld().spawnParticles(

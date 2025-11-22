@@ -6,7 +6,6 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlockOccupiedBlunder;
 import dev.enjarai.trickster.spell.blunder.BlockUnoccupiedBlunder;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
@@ -19,7 +18,7 @@ public class ConjureFlowerTrick extends Trick<ConjureFlowerTrick> {
         super(Pattern.of(4, 0, 1, 4, 2, 5, 4, 8, 7, 4, 6, 3, 4), Signature.of(FragmentType.VECTOR, ConjureFlowerTrick::conjure, FragmentType.VECTOR));
     }
 
-    public VectorFragment conjure(SpellContext ctx, VectorFragment pos) throws BlunderException {
+    public VectorFragment conjure(SpellContext ctx, VectorFragment pos) {
         var blockPos = pos.toBlockPos();
         var world = ctx.source().getWorld();
         expectCanBuild(ctx, blockPos);

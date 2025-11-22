@@ -5,7 +5,6 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.PatternGlyph;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.SpellPart;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.EntityInvalidBlunder;
 import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
@@ -19,7 +18,7 @@ public class ReadMacroRingTrick extends Trick<ReadMacroRingTrick> {
         super(Pattern.of(1, 2, 5, 8, 7, 6, 3, 0, 1, 5, 7, 3, 1, 4, 7), Signature.of(ReadMacroRingTrick::run, FragmentType.PATTERN.mappedTo(FragmentType.SPELL_PART.retType())));
     }
 
-    public HashMap<PatternGlyph, SpellPart> run(SpellContext ctx) throws BlunderException {
+    public HashMap<PatternGlyph, SpellPart> run(SpellContext ctx) {
         return FragmentComponent.getUserMergedMap(ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this)), "ring")
                 .map(ReadMacroRingTrick::collectMap)
                 .orElseThrow(() -> new EntityInvalidBlunder(this));

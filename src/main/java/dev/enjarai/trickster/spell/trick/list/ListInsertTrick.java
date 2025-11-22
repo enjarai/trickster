@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableList;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.IndexOutOfBoundsBlunder;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
@@ -22,7 +21,7 @@ public class ListInsertTrick extends DistortionTrick<ListInsertTrick> {
         super(Pattern.of(6, 3, 0, 4, 2, 5, 8), Signature.of(ArgType.ANY.listOfArg(), FragmentType.NUMBER, ArgType.ANY.variadicOfArg(), ListInsertTrick::run, RetType.ANY.listOfRet()));
     }
 
-    public List<Fragment> run(SpellContext ctx, List<Fragment> list, NumberFragment index, List<Fragment> toAdd) throws BlunderException {
+    public List<Fragment> run(SpellContext ctx, List<Fragment> list, NumberFragment index, List<Fragment> toAdd) {
         if (index.number() < 0 || index.number() > list.size()) {
             throw new IndexOutOfBoundsBlunder(this, MathHelper.floor(index.number()));
         }
