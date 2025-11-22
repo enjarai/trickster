@@ -3,7 +3,6 @@ package dev.enjarai.trickster.spell.trick.entity;
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.trick.entity.query.AbstractEntityQueryTrick;
@@ -16,7 +15,7 @@ public class DispelPolymorphTrick extends AbstractEntityQueryTrick<LivingEntity,
     }
 
     @Override
-    public EntityFragment run(SpellContext ctx, LivingEntity entity) throws BlunderException {
+    public EntityFragment run(SpellContext ctx, LivingEntity entity) {
         if (entity instanceof ServerPlayerEntity player) {
             ctx.useMana(this, 1000);
             player.getComponent(ModEntityComponents.DISGUISE).setUuid(null);

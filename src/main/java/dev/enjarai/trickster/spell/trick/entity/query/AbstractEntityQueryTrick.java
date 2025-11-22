@@ -22,7 +22,7 @@ public abstract class AbstractEntityQueryTrick<T extends Entity, R> extends Tric
 
     protected abstract R run(SpellContext ctx, T entity) throws BlunderException;
 
-    public R run(SpellContext ctx, EntityFragment entity) throws BlunderException {
+    public R run(SpellContext ctx, EntityFragment entity) {
         var resolvedEntity = entity.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this));
 
         if (clazz.isInstance(resolvedEntity)) {

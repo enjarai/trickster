@@ -3,7 +3,6 @@ package dev.enjarai.trickster.spell.trick.list;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.NumberTooLargeBlunder;
 import dev.enjarai.trickster.spell.blunder.NumberTooSmallBlunder;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
@@ -22,7 +21,7 @@ public class ListTakeRangeTrick extends DistortionTrick<ListTakeRangeTrick> {
                 Signature.of(ArgType.ANY.listOfArg(), FragmentType.NUMBER, FragmentType.NUMBER.optionalOfArg(), ListTakeRangeTrick::take, RetType.ANY.listOfRet()));
     }
 
-    public List<Fragment> take(SpellContext ctx, List<Fragment> list, NumberFragment startFragment, Optional<NumberFragment> endFragment) throws BlunderException {
+    public List<Fragment> take(SpellContext ctx, List<Fragment> list, NumberFragment startFragment, Optional<NumberFragment> endFragment) {
         int listSize = list.size();
         int start = startFragment.asInt();
         int end = endFragment

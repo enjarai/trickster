@@ -5,7 +5,6 @@ import dev.enjarai.trickster.particle.ModParticles;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlockInvalidBlunder;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
@@ -19,7 +18,7 @@ public class DrainMatterTrick extends Trick<DrainMatterTrick> {
         super(Pattern.of(0, 2, 8, 6, 0, 1, 2, 5, 4, 3, 0), Signature.of(FragmentType.VECTOR, DrainMatterTrick::run, FragmentType.NUMBER));
     }
 
-    public NumberFragment run(SpellContext ctx, VectorFragment pos) throws BlunderException {
+    public NumberFragment run(SpellContext ctx, VectorFragment pos) {
         var world = ctx.source().getWorld();
         var blockPos = pos.toBlockPos();
         var state = world.getBlockState(blockPos);

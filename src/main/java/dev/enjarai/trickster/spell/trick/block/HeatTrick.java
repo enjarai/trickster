@@ -5,7 +5,6 @@ import dev.enjarai.trickster.pond.FuelableFurnaceDuck;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlockInvalidBlunder;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
@@ -22,7 +21,7 @@ public class HeatTrick extends Trick<HeatTrick> {
         super(Pattern.of(3, 4, 5, 2, 3, 0, 5, 1, 3), Signature.of(FragmentType.VECTOR, HeatTrick::heat, FragmentType.VECTOR));
     }
 
-    public VectorFragment heat(SpellContext ctx, VectorFragment pos) throws BlunderException {
+    public VectorFragment heat(SpellContext ctx, VectorFragment pos) {
         var blockPos = pos.toBlockPos();
         var world = ctx.source().getWorld();
         expectCanBuild(ctx, blockPos);

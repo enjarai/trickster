@@ -23,7 +23,7 @@ public class ImportHatTrick extends Trick<ImportHatTrick> {
         super(Pattern.of(3, 0, 5, 6, 3, 2, 5, 8, 3, 1, 5, 7, 3), Signature.of(FragmentType.NUMBER, ArgType.ANY.variadicOfArg(), ImportHatTrick::run, RetType.ANY.executor()));
     }
 
-    public SpellExecutor run(SpellContext ctx, NumberFragment index, List<Fragment> args) throws BlunderException {
+    public SpellExecutor run(SpellContext ctx, NumberFragment index, List<Fragment> args) {
         var player = ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this));
         ItemStack hatStack;
 

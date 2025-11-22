@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableList;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.IndexOutOfBoundsBlunder;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
@@ -23,7 +22,7 @@ public class ListRemoveTrick extends DistortionTrick<ListRemoveTrick> {
         super(Pattern.of(6, 3, 0, 4, 8, 5, 2), Signature.of(ArgType.ANY.listOfArg(), FragmentType.NUMBER.variadicOfArg().unpack(), ListRemoveTrick::remove, RetType.ANY.listOfRet()));
     }
 
-    public List<Fragment> remove(SpellContext ctx, List<Fragment> list, List<NumberFragment> indexes) throws BlunderException {
+    public List<Fragment> remove(SpellContext ctx, List<Fragment> list, List<NumberFragment> indexes) {
         for (var index : indexes) {
             if (index.number() < 0 || index.number() >= list.size()) {
                 throw new IndexOutOfBoundsBlunder(this, MathHelper.floor(index.number()));

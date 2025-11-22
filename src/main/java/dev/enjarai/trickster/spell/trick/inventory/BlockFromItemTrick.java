@@ -2,7 +2,6 @@ package dev.enjarai.trickster.spell.trick.inventory;
 
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.BlockTypeFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.ItemTypeFragment;
@@ -17,7 +16,7 @@ public class BlockFromItemTrick extends Trick<BlockFromItemTrick> {
         super(Pattern.of(4, 3, 6, 8, 5, 4, 1), Signature.of(FragmentType.ITEM_TYPE, BlockFromItemTrick::run, FragmentType.BLOCK_TYPE.optionalOfRet()));
     }
 
-    public Optional<BlockTypeFragment> run(SpellContext ctx, ItemTypeFragment itemType) throws BlunderException {
+    public Optional<BlockTypeFragment> run(SpellContext ctx, ItemTypeFragment itemType) {
         if (itemType.item() instanceof BlockItem blockItem) {
             return Optional.of(new BlockTypeFragment(blockItem.getBlock()));
         }

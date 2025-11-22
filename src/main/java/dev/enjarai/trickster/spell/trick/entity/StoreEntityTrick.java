@@ -22,7 +22,7 @@ public class StoreEntityTrick extends Trick<StoreEntityTrick> {
         super(Pattern.of(5, 2, 4, 3, 6, 7, 4), Signature.of(FragmentType.ENTITY, StoreEntityTrick::store, FragmentType.VOID));
     }
 
-    public VoidFragment store(SpellContext ctx, EntityFragment entity) throws BlunderException {
+    public VoidFragment store(SpellContext ctx, EntityFragment entity) {
         var target = entity.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this));
 
         if (target instanceof PlayerEntity)

@@ -5,7 +5,6 @@ import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.item.component.SelectedSlotComponent;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
@@ -21,7 +20,7 @@ public class SetHatTrick extends Trick<SetHatTrick> {
         super(Pattern.of(1, 3, 7, 5, 2, 0, 3, 6, 8, 5, 1, 4, 7), Signature.of(FragmentType.NUMBER, SetHatTrick::run, FragmentType.BOOLEAN));
     }
 
-    public BooleanFragment run(SpellContext ctx, NumberFragment number) throws BlunderException {
+    public BooleanFragment run(SpellContext ctx, NumberFragment number) {
         var newSlot = number.number();
 
         var player = ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this));

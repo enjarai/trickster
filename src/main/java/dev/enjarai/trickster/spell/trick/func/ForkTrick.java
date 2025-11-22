@@ -4,7 +4,6 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.SpellPart;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.IncompatibleSourceBlunder;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
@@ -20,7 +19,7 @@ public class ForkTrick extends Trick<ForkTrick> {
         super(Pattern.of(7, 4, 1, 0, 3, 6, 7, 8, 5, 4, 2), Signature.of(FragmentType.SPELL_PART, ArgType.ANY.variadicOfArg(), ForkTrick::run, FragmentType.NUMBER.optionalOfRet()));
     }
 
-    public Optional<NumberFragment> run(SpellContext ctx, SpellPart spell, List<Fragment> args) throws BlunderException {
+    public Optional<NumberFragment> run(SpellContext ctx, SpellPart spell, List<Fragment> args) {
         var slot = ctx.source()
                 .getExecutionManager()
                 .orElseThrow(() -> new IncompatibleSourceBlunder(this))

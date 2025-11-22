@@ -2,7 +2,6 @@ package dev.enjarai.trickster.spell.trick.vector;
 
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
@@ -20,11 +19,11 @@ public class InvertTrick extends DistortionTrick<InvertTrick> {
         ));
     }
 
-    public NumberFragment invert(SpellContext ctx, NumberFragment number) throws BlunderException {
+    public NumberFragment invert(SpellContext ctx, NumberFragment number) {
         return new NumberFragment(-number.number());
     }
 
-    public VectorFragment invert(SpellContext ctx, VectorFragment vec) throws BlunderException {
+    public VectorFragment invert(SpellContext ctx, VectorFragment vec) {
         return new VectorFragment(vec.vector().mul(-1, new Vector3d()));
     }
 }
