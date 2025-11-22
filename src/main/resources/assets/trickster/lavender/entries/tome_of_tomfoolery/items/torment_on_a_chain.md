@@ -1,6 +1,6 @@
 ```json
 {
-  "title": "Torment On A Chain",
+  "title": "Torment on a Chain",
   "icon": "trickster:torment_on_a_chain",
   "category": "trickster:items",
   "required_advancements": [
