@@ -5,11 +5,7 @@ import java.util.List;
 import io.wispforest.owo.serialization.CodecUtils;
 import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Vec3i;
-import org.joml.Vector3dc;
 
-import dev.enjarai.trickster.EndecTomfoolery;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.mana.SimpleManaPool;
 import dev.enjarai.trickster.spell.trick.Trick;
