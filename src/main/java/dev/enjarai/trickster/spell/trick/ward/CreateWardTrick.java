@@ -16,6 +16,7 @@ import dev.enjarai.trickster.spell.type.Signature;
 import dev.enjarai.trickster.spell.ward.SimpleCubicWard;
 import dev.enjarai.trickster.spell.ward.Ward;
 import dev.enjarai.trickster.spell.ward.action.ActionType;
+import net.minecraft.util.math.BlockBox;
 
 public class CreateWardTrick extends Trick<CreateWardTrick> {
     public CreateWardTrick() {
@@ -25,7 +26,7 @@ public class CreateWardTrick extends Trick<CreateWardTrick> {
 
     public WardFragment simpleCubic(SpellContext ctx, VectorFragment pos1, VectorFragment pos2, List<PatternGlyph> patterns) {
         var actions = computeActionsFromPatterns(ctx, patterns);
-        var ward = SimpleCubicWard.tryCreate(this, ctx, pos1.vector(), pos2.vector(), actions);
+        var ward = SimpleCubicWard.tryCreate(this, ctx, BlockBox.create(pos1.toBlockPos(), pos2.toBlockPos()), actions);
 
         return finish(ctx, ward);
     }

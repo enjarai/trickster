@@ -23,7 +23,7 @@ import net.minecraft.world.World;
 
 public class WardManagerComponent implements CommonTickingComponent, AutoSyncedComponent {
     private static final Endec<Map<UUID, Ward>> WARDS_ENDEC = Endec.map(EndecTomfoolery.UUID, Ward.ENDEC);
-    private static final KeyedEndec<Map<UUID, Ward>> KEYED_WARDS_ENDEC = WARDS_ENDEC.keyed("wards", () -> new HashMap<>());
+    private static final KeyedEndec<Map<UUID, Ward>> KEYED_WARDS_ENDEC = WARDS_ENDEC.keyed("wards", HashMap::new);
 
     private final World world;
     private final Map<UUID, Ward> wards = new HashMap<>();
@@ -84,9 +84,10 @@ public class WardManagerComponent implements CommonTickingComponent, AutoSyncedC
 
     public ArrayList<Ward> allThatCanCancel(Action<?> action) {
         var result = new ArrayList<Ward>();
+        var target = action.target(world);
 
         for (var ward : wards.values()) {
-            if (ward.matchTarget(action.target(world)) && ward.matchAction(action.type())) {
+            if (ward.matchTarget(target) && ward.matchAction(action.type())) {
                 result.add(ward);
             }
         }

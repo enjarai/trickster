@@ -2,6 +2,11 @@ package dev.enjarai.trickster.spell.ward;
 
 import java.util.List;
 
+import io.wispforest.owo.serialization.CodecUtils;
+import net.minecraft.util.math.BlockBox;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3i;
 import org.joml.Vector3dc;
 
 import dev.enjarai.trickster.EndecTomfoolery;
@@ -18,21 +23,18 @@ import net.minecraft.world.World;
 public class SimpleCubicWard implements Ward {
     public static final StructEndec<SimpleCubicWard> ENDEC = StructEndecBuilder.of(
             SimpleManaPool.ENDEC.fieldOf("buffer", ward -> ward.buffer),
-            EndecTomfoolery.VECTOR_3D_ENDEC.fieldOf("pos1", ward -> ward.pos1),
-            EndecTomfoolery.VECTOR_3D_ENDEC.fieldOf("pos2", ward -> ward.pos2),
+            CodecUtils.toEndec(BlockBox.CODEC).fieldOf("area", ward -> ward.area),
             MinecraftEndecs.ofRegistry(ActionType.REGISTRY).listOf().fieldOf("actions", ward -> ward.actions),
             SimpleCubicWard::new
     );
 
     private final SimpleManaPool buffer;
-    private final Vector3dc pos1;
-    private final Vector3dc pos2;
+    private final BlockBox area;
     private final List<ActionType<?>> actions;
 
-    private SimpleCubicWard(SimpleManaPool buffer, Vector3dc pos1, Vector3dc pos2, List<ActionType<?>> actions) {
+    private SimpleCubicWard(SimpleManaPool buffer, BlockBox area, List<ActionType<?>> actions) {
         this.buffer = buffer;
-        this.pos1 = pos1;
-        this.pos2 = pos2;
+        this.area = area;
         this.actions = actions;
     }
 
@@ -53,31 +55,23 @@ public class SimpleCubicWard implements Ward {
 
     @Override
     public boolean shouldLive(World world) {
-        return buffer.get(world) > calculateMaintenanceCost(pos1, pos2, actions);
+        return buffer.get(world) > calculateMaintenanceCost(area, actions);
     }
 
     @Override
     public boolean matchTarget(Target target) {
-        Vector3dc pos;
+        BlockPos pos;
 
         if (target instanceof Target.Vector vec) {
-            pos = vec.vector();
+            var v = vec.vector();
+            pos = BlockPos.ofFloored(v.x(), v.y(), v.z());
         } else if (target instanceof Target.Block blo) {
-            pos = blo.block().toCenterPos().toVector3d();
+            pos = blo.block();
         } else {
             return false;
         }
 
-        double minX = Math.min(pos1.x(), pos2.x());
-        double maxX = Math.max(pos1.x(), pos2.x());
-        double minY = Math.min(pos1.y(), pos2.y());
-        double maxY = Math.max(pos1.y(), pos2.y());
-        double minZ = Math.min(pos1.z(), pos2.z());
-        double maxZ = Math.max(pos1.z(), pos2.z());
-
-        return minX <= pos.x() && pos.x() <= maxX
-                && minY <= pos.y() && pos.y() <= maxY
-                && minZ <= pos.z() && pos.z() <= maxZ;
+        return area.contains(pos);
     }
 
     @Override
@@ -85,19 +79,15 @@ public class SimpleCubicWard implements Ward {
         return actions.contains(action);
     }
 
-    public static SimpleCubicWard tryCreate(Trick<?> trickSource, SpellContext ctx, Vector3dc pos1, Vector3dc pos2, List<ActionType<?>> actions) {
-        float cost = calculateMaintenanceCost(pos1, pos2, actions);
+    public static SimpleCubicWard tryCreate(Trick<?> trickSource, SpellContext ctx, BlockBox area, List<ActionType<?>> actions) {
+        float cost = calculateMaintenanceCost(area, actions);
         ctx.useMana(trickSource, cost * 1.5f);
 
         var pool = new SimpleManaPool(cost * 1.5f, cost * 4);
-        return new SimpleCubicWard(pool, pos1, pos2, actions);
+        return new SimpleCubicWard(pool, area, actions);
     }
 
-    private static float calculateMaintenanceCost(Vector3dc pos1, Vector3dc pos2, List<ActionType<?>> actions) {
-        double x = Math.abs(pos1.x() - pos2.x());
-        double y = Math.abs(pos1.y() - pos2.y());
-        double z = Math.abs(pos1.z() - pos2.z());
-
-        return (float) (100.0 + 3.0 * x * y * z * actions.size());
+    private static float calculateMaintenanceCost(BlockBox area, List<ActionType<?>> actions) {
+        return (float) (100.0 + 3.0 * area.getBlockCountX() * area.getBlockCountY() * area.getBlockCountZ() * actions.size());
     }
 }
