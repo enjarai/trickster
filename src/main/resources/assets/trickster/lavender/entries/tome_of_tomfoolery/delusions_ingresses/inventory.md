@@ -33,12 +33,6 @@ Returns the type of item that the given slot contains.
 
 ;;;;;
 
-<|trick@trickster:templates|trick-id=trickster:get_equipment|>
-
-Returns a list of the given entity's currently worn equipment as item types. Comes in the order: mainhand, offhand, boots, leggings, chestplate, helmet
-
-;;;;;
-
 <|trick@trickster:templates|trick-id=trickster:other_hand|>
 
 Returns the type of item in the caster's offhand.
@@ -102,3 +96,9 @@ Returns the maximum amount of mana which may be stored in total in the given slo
 <|trick@trickster:templates|trick-id=trickster:get_count_in_slot|>
 
 Returns the amount of items stored in the given slot.
+
+;;;;;
+
+<|trick@trickster:templates|trick-id=trickster:get_equipment|>
+
+Returns a list of the given entity's currently worn equipment as item types. Comes in the order: mainhand, offhand, boots, leggings, chestplate, helmet
