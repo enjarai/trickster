@@ -60,10 +60,10 @@ public class SimpleCubicWard implements Ward {
     public boolean matchTarget(Target target) {
         Vector3dc pos;
 
-        if (target instanceof Target.Vec vec) {
-            pos = vec.vec();
-        } else if (target instanceof Target.Blo blo) {
-            pos = blo.blo().toCenterPos().toVector3d();
+        if (target instanceof Target.Vector vec) {
+            pos = vec.vector();
+        } else if (target instanceof Target.Block blo) {
+            pos = blo.block().toCenterPos().toVector3d();
         } else {
             return false;
         }

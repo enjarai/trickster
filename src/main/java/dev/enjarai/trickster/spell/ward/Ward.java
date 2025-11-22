@@ -10,7 +10,11 @@ import net.minecraft.world.World;
 
 public interface Ward {
     @SuppressWarnings("unchecked")
-    StructEndec<Ward> ENDEC = EndecTomfoolery.lazyStruct(() -> (StructEndec<Ward>) Endec.dispatchedStruct(WardType::endec, Ward::type, MinecraftEndecs.ofRegistry(WardType.REGISTRY)));
+    StructEndec<Ward> ENDEC = EndecTomfoolery.lazyStruct(
+        () -> (StructEndec<Ward>) Endec.dispatchedStruct(
+            WardType::endec, Ward::type, MinecraftEndecs.ofRegistry(WardType.REGISTRY)
+        )
+    );
 
     WardType<?> type();
 

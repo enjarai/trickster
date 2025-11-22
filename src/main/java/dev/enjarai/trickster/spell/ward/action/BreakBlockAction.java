@@ -3,7 +3,7 @@ package dev.enjarai.trickster.spell.ward.action;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BreakBlockAction implements Action<Target.Blo> {
+public class BreakBlockAction implements Action<Target.Block> {
     private final BlockPos pos;
 
     public BreakBlockAction(BlockPos pos) {
@@ -16,8 +16,8 @@ public class BreakBlockAction implements Action<Target.Blo> {
     }
 
     @Override
-    public Target.Blo target(World world) {
-        return new Target.Blo(pos);
+    public Target.Block target(World world) {
+        return new Target.Block(pos);
     }
 
     @Override

@@ -1,20 +1,15 @@
 package dev.enjarai.trickster.spell.ward.action;
 
-import org.joml.Vector3dc;
-
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.BlockPos;
-
 public sealed interface Target {
-    record Vec(Vector3dc vec) implements Target {
+    record Vector(org.joml.Vector3dc vector) implements Target {
 
     }
 
-    record Blo(BlockPos blo) implements Target {
+    record Block(net.minecraft.util.math.BlockPos block) implements Target {
 
     }
 
-    record Ent(Entity ent) implements Target {
+    record Entity(net.minecraft.entity.Entity entity) implements Target {
 
     }
 }
