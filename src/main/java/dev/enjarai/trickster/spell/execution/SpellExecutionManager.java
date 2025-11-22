@@ -26,4 +26,8 @@ public interface SpellExecutionManager {
     };
 
     void killAll();
+
+    interface ExecutorCallback {
+        void callTheBack(int index, SpellExecutor executor);
+    }
 }
