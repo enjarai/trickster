@@ -124,7 +124,8 @@ trickster:
     sprinting_reflection: Trekking Ingress
     burning_reflection: Hearth's Ingress
     blocking_reflection: Guard Ingress
-    raycast: Pinpoint Ingress
+    raycast_block: Pinpoint Ingress
+    raycast_pos: Pinprick Ingress
     raycast_side: Bearing Ingress
     raycast_entity: Mark Ingress
     get_entity_type: Motive Verification Ingress
@@ -377,6 +378,7 @@ item.trickster:
   amethyst_whorl: Amethyst Whorl
   collar: Acolyte's Bindings
   leash: Archmage's Tether
+  torment_on_a_chain: Torment on a Chain
 
   amethyst_knot: Amethyst Knot
   cracked_amethyst_knot: Cracked Amethyst Knot

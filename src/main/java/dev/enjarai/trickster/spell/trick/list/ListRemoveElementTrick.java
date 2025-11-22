@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableList;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.trick.DistortionTrick;
 import dev.enjarai.trickster.spell.type.ArgType;
 import dev.enjarai.trickster.spell.type.RetType;
@@ -18,7 +17,7 @@ public class ListRemoveElementTrick extends DistortionTrick<ListRemoveElementTri
         super(Pattern.of(4, 6, 3, 0, 4, 8, 5, 2), Signature.of(ArgType.ANY.listOfArg(), ArgType.ANY.variadicOfArg(), ListRemoveElementTrick::run, RetType.ANY.listOfRet()));
     }
 
-    public List<Fragment> run(SpellContext ctx, List<Fragment> list, List<Fragment> toRemove) throws BlunderException {
+    public List<Fragment> run(SpellContext ctx, List<Fragment> list, List<Fragment> toRemove) {
         var newList = new ArrayList<Fragment>(list.size());
         newList.addAll(list);
         newList.removeAll(toRemove);

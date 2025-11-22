@@ -2,7 +2,6 @@ package dev.enjarai.trickster.spell.trick.entity;
 
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.OutOfRangeBlunder;
 import dev.enjarai.trickster.spell.fragment.*;
 import dev.enjarai.trickster.spell.trick.Trick;
@@ -21,7 +20,7 @@ public class RangeFindEntityTrick extends Trick<RangeFindEntityTrick> {
                 Signature.of(FragmentType.VECTOR, FragmentType.NUMBER, FragmentType.ENTITY_TYPE.variadicOfArg().unpack(), RangeFindEntityTrick::run, FragmentType.ENTITY.listOfRet()));
     }
 
-    public List<EntityFragment> run(SpellContext ctx, VectorFragment posFragment, NumberFragment rangeFragment, List<EntityTypeFragment> typeFragments) throws BlunderException {
+    public List<EntityFragment> run(SpellContext ctx, VectorFragment posFragment, NumberFragment rangeFragment, List<EntityTypeFragment> typeFragments) {
         var types = new ArrayList<EntityType<?>>(typeFragments.size());
         var pos = posFragment.vector();
         var range = rangeFragment.number();

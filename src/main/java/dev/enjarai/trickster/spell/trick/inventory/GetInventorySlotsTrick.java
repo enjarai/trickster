@@ -2,7 +2,6 @@ package dev.enjarai.trickster.spell.trick.inventory;
 
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
@@ -38,16 +37,16 @@ public class GetInventorySlotsTrick extends Trick<GetInventorySlotsTrick> {
         }
     }
 
-    public List<SlotFragment> fromCaster(SpellContext ctx, List<ItemTypeFragment> itemTypes) throws BlunderException {
+    public List<SlotFragment> fromCaster(SpellContext ctx, List<ItemTypeFragment> itemTypes) {
         var slots = SlotFragment.getSlots(this, ctx, Optional.empty());
         return fromSlots(ctx, slots, itemTypes);
     }
 
-    public List<SlotFragment> fromVector(SpellContext ctx, VectorFragment pos, List<ItemTypeFragment> itemTypes) throws BlunderException {
+    public List<SlotFragment> fromVector(SpellContext ctx, VectorFragment pos, List<ItemTypeFragment> itemTypes) {
         return fromSlots(ctx, SlotFragment.getSlots(this, ctx, Optional.of(Either.left(pos.toBlockPos()))), itemTypes);
     }
 
-    public List<SlotFragment> fromEntity(SpellContext ctx, EntityFragment entity, List<ItemTypeFragment> itemTypes) throws BlunderException {
+    public List<SlotFragment> fromEntity(SpellContext ctx, EntityFragment entity, List<ItemTypeFragment> itemTypes) {
         return fromSlots(ctx, SlotFragment.getSlots(this, ctx, Optional.of(Either.right(entity.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this)).getUuid()))), itemTypes);
     }
 }

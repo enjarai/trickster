@@ -2,7 +2,6 @@ package dev.enjarai.trickster.spell.trick.inventory;
 
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.MissingItemBlunder;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.SlotFragment;
@@ -14,7 +13,7 @@ public class OtherHandSlotTrick extends Trick<OtherHandSlotTrick> {
         super(Pattern.of(7, 4, 1, 2, 5, 4), Signature.of(OtherHandSlotTrick::run, FragmentType.SLOT));
     }
 
-    public SlotFragment run(SpellContext ctx) throws BlunderException {
+    public SlotFragment run(SpellContext ctx) {
         return ctx.source().getOtherHandSlot().orElseThrow(() -> new MissingItemBlunder(this));
     }
 }

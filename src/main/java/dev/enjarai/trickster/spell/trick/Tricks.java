@@ -33,6 +33,7 @@ import dev.enjarai.trickster.spell.trick.projectile.SummonTntTrick;
 import dev.enjarai.trickster.spell.trick.raycast.RaycastBlockPosTrick;
 import dev.enjarai.trickster.spell.trick.raycast.RaycastBlockSideTrick;
 import dev.enjarai.trickster.spell.trick.raycast.RaycastEntityTrick;
+import dev.enjarai.trickster.spell.trick.raycast.RaycastPosTrick;
 import dev.enjarai.trickster.spell.trick.tree.*;
 import dev.enjarai.trickster.spell.trick.vector.*;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
@@ -130,7 +131,8 @@ public class Tricks {
     public static final BlockingReflectionTrick BLOCKING_REFLECTION = register("blocking_reflection", new BlockingReflectionTrick());
     public static final GetPlayerFoodTrick GET_PLAYER_FOOD = register("get_player_food", new GetPlayerFoodTrick());
     public static final GetPlayerSaturationTrick GET_PLAYER_SATURATION = register("get_player_saturation", new GetPlayerSaturationTrick());
-    public static final RaycastBlockPosTrick RAYCAST = register("raycast", new RaycastBlockPosTrick());
+    public static final RaycastBlockPosTrick RAYCAST_BLOCK = register("raycast_block", new RaycastBlockPosTrick());
+    public static final RaycastPosTrick RAYCAST_POS = register("raycast_pos", new RaycastPosTrick());
     public static final RaycastBlockSideTrick RAYCAST_SIDE = register("raycast_side", new RaycastBlockSideTrick());
     public static final RaycastEntityTrick RAYCAST_ENTITY = register("raycast_entity", new RaycastEntityTrick());
     public static final AddVelocityTrick ADD_VELOCITY = register("add_velocity", new AddVelocityTrick());

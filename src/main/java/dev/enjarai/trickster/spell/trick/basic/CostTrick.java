@@ -4,7 +4,6 @@ import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.MissingCostBlunder;
 import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
@@ -17,7 +16,7 @@ public class CostTrick extends Trick<CostTrick> {
         super(Pattern.of(1, 5, 8, 6, 3, 1), Signature.of(CostTrick::run, FragmentType.VOID));
     }
 
-    public VoidFragment run(SpellContext ctx) throws BlunderException {
+    public VoidFragment run(SpellContext ctx) {
         var player = ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this));
         ModCriteria.USE_COST_PLOY.trigger(player);
 

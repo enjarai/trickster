@@ -1,2 +1,4 @@
-- Made it impossible to move "infinite" mana. (@aurakle)
-- Added Coleus integration. (@Master-Bw3)
+- Fixed Acolyte's Bindings constantly ringing when sitting/riding. (@enjarai)
+- Generalized two entity tricks from LivingEntity specific to Entity specific. (@Nicknakin)
+- Added and renamed some entity and block tags to allow for more granular control. (@AshAxolotl)
+- Fixed `Either` return types from tricks. (@enjarai)

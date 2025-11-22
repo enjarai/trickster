@@ -2,7 +2,6 @@ package dev.enjarai.trickster.spell.trick.inventory;
 
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
@@ -23,15 +22,15 @@ public class GetInventorySizeTrick extends Trick<GetInventorySizeTrick> {
         overload(Signature.of(FragmentType.ENTITY, GetInventorySizeTrick::fromEntity, FragmentType.NUMBER));
     }
 
-    public NumberFragment fromCaster(SpellContext ctx) throws BlunderException {
+    public NumberFragment fromCaster(SpellContext ctx) {
         return SlotFragment.getInventoryLength(this, ctx, Optional.empty());
     }
 
-    public NumberFragment fromVector(SpellContext ctx, VectorFragment pos) throws BlunderException {
+    public NumberFragment fromVector(SpellContext ctx, VectorFragment pos) {
         return SlotFragment.getInventoryLength(this, ctx, Optional.of(Either.left(pos.toBlockPos())));
     }
 
-    public NumberFragment fromEntity(SpellContext ctx, EntityFragment entity) throws BlunderException {
+    public NumberFragment fromEntity(SpellContext ctx, EntityFragment entity) {
         return SlotFragment.getInventoryLength(this, ctx, Optional.of(Either.right(entity.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this)).getUuid())));
     }
 }

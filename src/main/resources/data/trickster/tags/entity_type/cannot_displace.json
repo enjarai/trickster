@@ -1,5 +1,9 @@
 {
   "values": [
+    {
+      "id": "#trickster:irrepressible",
+      "required": false
+    },
     "minecraft:ender_dragon",
     "minecraft:wither",
     "minecraft:warden",

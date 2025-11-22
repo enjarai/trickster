@@ -3,7 +3,6 @@ package dev.enjarai.trickster.spell.trick.entity;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
 import dev.enjarai.trickster.spell.execution.TickData;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
@@ -26,7 +25,7 @@ public class AddVelocityTrick extends Trick<AddVelocityTrick> {
         );
     }
 
-    public EntityFragment run(SpellContext ctx, EntityFragment target, VectorFragment v) throws BlunderException {
+    public EntityFragment run(SpellContext ctx, EntityFragment target, VectorFragment v) {
         var entity = target
                 .getEntity(ctx)
                 .orElseThrow(() -> new UnknownEntityBlunder(this));

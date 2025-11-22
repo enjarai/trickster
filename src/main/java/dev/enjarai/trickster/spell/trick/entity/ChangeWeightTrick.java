@@ -1,6 +1,6 @@
 package dev.enjarai.trickster.spell.trick.entity;
 
-import dev.enjarai.trickster.Trickster;
+import dev.enjarai.trickster.block.ModBlocks;
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.entity.LevitatingBlockEntity;
 import dev.enjarai.trickster.particle.ModParticles;
@@ -22,7 +22,7 @@ public class ChangeWeightTrick extends Trick<ChangeWeightTrick> {
         overload(Signature.of(FragmentType.VECTOR, FragmentType.NUMBER, ChangeWeightTrick::change, FragmentType.ENTITY));
     }
 
-    public EntityFragment change(SpellContext ctx, EntityFragment target, NumberFragment number) throws BlunderException {
+    public EntityFragment change(SpellContext ctx, EntityFragment target, NumberFragment number) {
         var entity = target
                 .getEntity(ctx)
                 .orElseThrow(() -> new UnknownEntityBlunder(this));
@@ -56,7 +56,7 @@ public class ChangeWeightTrick extends Trick<ChangeWeightTrick> {
         return target;
     }
 
-    public EntityFragment change(SpellContext ctx, VectorFragment target, NumberFragment number) throws BlunderException {
+    public EntityFragment change(SpellContext ctx, VectorFragment target, NumberFragment number) {
         var world = ctx.source().getWorld();
         var blockPos = target.toBlockPos();
         var state = world.getBlockState(blockPos);
@@ -68,8 +68,7 @@ public class ChangeWeightTrick extends Trick<ChangeWeightTrick> {
             throw new NumberTooSmallBlunder(this, 0);
         }
 
-        if (state.isAir() || state.getBlock() instanceof FluidBlock
-                || (!Trickster.CONFIG.allowSwapBedrock() && state.getHardness(world, blockPos) < 0)) {
+        if (state.isAir() || state.getBlock() instanceof FluidBlock || state.isIn(ModBlocks.CANNOT_LEVITATE)) {
             throw new BlockInvalidBlunder(this);
         }
 

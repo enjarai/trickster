@@ -3,7 +3,6 @@ package dev.enjarai.trickster.spell.trick.basic;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.SlotFragment;
 import dev.enjarai.trickster.spell.fragment.StringFragment;
@@ -20,7 +19,7 @@ public class WriteClosedSpellTrick extends Trick<WriteClosedSpellTrick> {
                 Signature.of(ArgType.ANY, FragmentType.SLOT.optionalOfArg(), FragmentType.STRING.optionalOfArg(), WriteClosedSpellTrick::run, RetType.ANY));
     }
 
-    public Fragment run(SpellContext ctx, Fragment input, Optional<SlotFragment> optionalSlot, Optional<StringFragment> optionalName) throws BlunderException {
+    public Fragment run(SpellContext ctx, Fragment input, Optional<SlotFragment> optionalSlot, Optional<StringFragment> optionalName) {
         return WriteSpellTrick.run(this, ctx, input, optionalSlot, optionalName, true);
     }
 }

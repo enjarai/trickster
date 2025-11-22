@@ -4,7 +4,6 @@ import dev.enjarai.trickster.block.SpellControlledRedstoneBlock;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlockInvalidBlunder;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
@@ -16,7 +15,7 @@ public class CheckResonatorTrick extends Trick<CheckResonatorTrick> {
         super(Pattern.of(7, 8, 6, 7, 2, 1, 0, 7, 4), Signature.of(FragmentType.VECTOR, CheckResonatorTrick::check, FragmentType.NUMBER));
     }
 
-    public NumberFragment check(SpellContext ctx, VectorFragment pos) throws BlunderException {
+    public NumberFragment check(SpellContext ctx, VectorFragment pos) {
         var blockPos = pos.toBlockPos();
         var world = ctx.source().getWorld();
 

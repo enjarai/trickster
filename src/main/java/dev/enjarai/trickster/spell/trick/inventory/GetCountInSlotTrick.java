@@ -2,7 +2,6 @@ package dev.enjarai.trickster.spell.trick.inventory;
 
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.fragment.SlotFragment;
@@ -14,7 +13,7 @@ public class GetCountInSlotTrick extends Trick<GetCountInSlotTrick> {
         super(Pattern.of(7, 8, 6, 7, 4, 3, 6, 0, 3, 1, 2, 5, 7), Signature.of(FragmentType.SLOT, GetCountInSlotTrick::run, FragmentType.NUMBER));
     }
 
-    public NumberFragment run(SpellContext ctx, SlotFragment slot) throws BlunderException {
+    public NumberFragment run(SpellContext ctx, SlotFragment slot) {
         return new NumberFragment(slot.reference(this, ctx).getCount());
     }
 }

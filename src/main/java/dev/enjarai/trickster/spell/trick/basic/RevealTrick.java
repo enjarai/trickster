@@ -18,7 +18,7 @@ public class RevealTrick extends Trick<RevealTrick> {
         super(Pattern.of(3, 4, 5, 8, 7, 6, 3), Signature.of(ArgType.ANY.variadicOfArg().require(), RevealTrick::reveal, RetType.ANY));
     }
 
-    public Fragment reveal(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
+    public Fragment reveal(SpellContext ctx, List<Fragment> fragments) {
         var first = fragments.getFirst();
         var result = first.asFormattedText();
 

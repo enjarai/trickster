@@ -2,7 +2,6 @@ package dev.enjarai.trickster.spell.trick.math;
 
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.trick.DistortionTrick;
@@ -13,7 +12,7 @@ public class AbsTrick extends DistortionTrick<AbsTrick> {
         super(Pattern.of(3, 0, 1, 2, 5), Signature.of(FragmentType.NUMBER, AbsTrick::math, FragmentType.NUMBER));
     }
 
-    public NumberFragment math(SpellContext ctx, NumberFragment number) throws BlunderException {
+    public NumberFragment math(SpellContext ctx, NumberFragment number) {
         return new NumberFragment(Math.abs(number.number()));
     }
 }

@@ -3,7 +3,6 @@ package dev.enjarai.trickster.spell.trick.misc;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
@@ -18,7 +17,7 @@ public class HashValuesTrick extends Trick<HashValuesTrick> {
         super(Pattern.of(1, 4, 8, 7, 4, 3), Signature.of(ArgType.ANY.variadicOfArg(), HashValuesTrick::run, FragmentType.NUMBER));
     }
 
-    public NumberFragment run(SpellContext ctx, List<Fragment> args) throws BlunderException {
+    public NumberFragment run(SpellContext ctx, List<Fragment> args) {
         return new NumberFragment(args.stream()
                 .map(Fragment::applyEphemeral)
                 .map(Fragment::fuzzyHash)

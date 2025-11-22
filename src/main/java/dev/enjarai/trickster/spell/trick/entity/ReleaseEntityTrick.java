@@ -5,7 +5,6 @@ import dev.enjarai.trickster.item.component.EntityStorageComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.EntityInvalidBlunder;
 import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
@@ -23,7 +22,7 @@ public class ReleaseEntityTrick extends Trick<ReleaseEntityTrick> {
         super(Pattern.of(4, 3, 6, 7, 4, 8, 2), Signature.of(FragmentType.VECTOR, ReleaseEntityTrick::release, FragmentType.ENTITY.optionalOfRet()));
     }
 
-    public Optional<EntityFragment> release(SpellContext ctx, VectorFragment vector) throws BlunderException {
+    public Optional<EntityFragment> release(SpellContext ctx, VectorFragment vector) {
         var pos = vector.vector();
         var player = ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this));
         var offhand = player.getOffHandStack();

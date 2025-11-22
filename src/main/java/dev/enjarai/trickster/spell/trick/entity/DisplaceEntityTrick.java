@@ -5,7 +5,6 @@ import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.entity.ModEntities;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.EntityCannotBeDisplacedBlunder;
 import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
 import dev.enjarai.trickster.spell.execution.TickData;
@@ -29,13 +28,13 @@ public class DisplaceEntityTrick extends Trick<DisplaceEntityTrick> {
         );
     }
 
-    public EntityFragment run(SpellContext ctx, EntityFragment target, VectorFragment v) throws BlunderException {
+    public EntityFragment run(SpellContext ctx, EntityFragment target, VectorFragment v) {
         var entity = target
                 .getEntity(ctx)
                 .orElseThrow(() -> new UnknownEntityBlunder(this));
         var vector = v.vector();
 
-        if (entity.getType().isIn(ModEntities.IRREPRESSIBLE))
+        if (entity.getType().isIn(ModEntities.CANNOT_DISPLACE))
             throw new EntityCannotBeDisplacedBlunder(this, entity);
 
         var map = COMPOUND_LEN.set(ctx.data(), COMPOUND_LEN.get(ctx.data()).orElse(new HashMap<>()));
