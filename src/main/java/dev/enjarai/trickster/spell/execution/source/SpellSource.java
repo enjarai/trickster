@@ -2,7 +2,7 @@ package dev.enjarai.trickster.spell.execution.source;
 
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.execution.SpellExecutionManager;
-import dev.enjarai.trickster.spell.fragment.SlotFragment;
+import dev.enjarai.trickster.spell.fragment.slot.SlotFragment;
 import dev.enjarai.trickster.spell.mana.MutableManaPool;
 import dev.enjarai.trickster.spell.mana.generation.ManaHandler;
 import net.minecraft.entity.Entity;
