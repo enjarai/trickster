@@ -1,21 +1,24 @@
 package dev.enjarai.trickster.spell.fragment.slot;
 
 import dev.enjarai.trickster.EndecTomfoolery;
+import dev.enjarai.trickster.pond.SlotHolderDuck;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
-import dev.enjarai.trickster.spell.blunder.NoSuchSlotBlunder;
-import dev.enjarai.trickster.spell.blunder.NotSlottedStorageBlunder;
+import dev.enjarai.trickster.spell.blunder.*;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import io.wispforest.owo.serialization.endec.MinecraftEndecs;
+import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.SlottedStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.util.math.BlockPos;
+import org.joml.Vector3dc;
 
 import java.util.UUID;
 
@@ -43,6 +46,8 @@ public sealed interface StorageSource {
     }
 
     String describe();
+
+    Vector3dc getPosition(Trick<?> trick, SpellContext ctx);
 
     default NumberFragment getInventoryLength(Trick<?> trick, SpellContext ctx, VariantType<?> type) throws BlunderException {
         return new NumberFragment(getSlottedStorage(trick, ctx, type).getSlotCount());
@@ -73,6 +78,11 @@ public sealed interface StorageSource {
         public String describe() {
             return "caster";
         }
+
+        @Override
+        public Vector3dc getPosition(Trick<?> trick, SpellContext ctx) {
+            return ctx.source().getPos();
+        }
     }
 
     record Block(BlockPos pos) implements StorageSource {
@@ -86,14 +96,30 @@ public sealed interface StorageSource {
             return "block";
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         public <T> Storage<T> getStorage(Trick<?> trick, SpellContext ctx, VariantType<T> variant) throws BlunderException {
-            return null;
+            if (variant == VariantType.ITEM) {
+                var storage = ItemStorage.SIDED.find(ctx.source().getWorld(), pos, null);
+
+                if (storage == null) {
+                    throw new NoInventoryBlunder(trick);
+                }
+
+                return (Storage<T>) storage;
+            }
+
+            return Storage.empty();
         }
 
         @Override
         public String describe() {
             return "%d, %d, %d".formatted(pos.getX(), pos.getY(), pos.getZ());
+        }
+
+        @Override
+        public Vector3dc getPosition(Trick<?> trick, SpellContext ctx) {
+            return pos.toCenterPos().toVector3d();
         }
     }
 
@@ -104,8 +130,40 @@ public sealed interface StorageSource {
         );
 
         @Override
+        public String getId() {
+            return "entity";
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public <T> Storage<T> getStorage(Trick<?> trick, SpellContext ctx, VariantType<T> variant) throws BlunderException {
+            if (variant == VariantType.ITEM) {
+                var entity = ctx.source().getWorld().getEntity(uuid);
+
+                if (entity instanceof SlotHolderDuck holder) {
+//                    return holder; TODO
+                } else if (entity instanceof Inventory inv) {
+                    return (Storage<T>) InventoryStorage.of(inv, null);
+                } else throw new NoInventoryBlunder(trick);
+            }
+
+            return Storage.empty();
+        }
+
+        @Override
         public String describe() {
             return uuid.toString();
+        }
+
+        @Override
+        public Vector3dc getPosition(Trick<?> trick, SpellContext ctx) {
+            var entity = ctx.source().getWorld().getEntity(uuid);
+
+            if (entity == null) {
+                throw new EntityInvalidBlunder(trick);
+            }
+
+            return entity.getPos().toVector3d();
         }
     }
 
@@ -121,9 +179,22 @@ public sealed interface StorageSource {
             return "slot";
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         public <T> Storage<T> getStorage(Trick<?> trick, SpellContext ctx, VariantType<T> variant) throws BlunderException {
-            return null;
+            var slot = getSelfSlot(trick, ctx, VariantType.ITEM);
+
+            if (variant == VariantType.ITEM) {
+                var container = ItemStorage.ITEM.find(slot.getResource().toStack(), ContainerItemContext.ofSingleSlot(slot));
+
+                if (container == null) {
+                    throw new NoInventoryBlunder(trick);
+                }
+
+                return (Storage<T>) container;
+            }
+
+            return Storage.empty();
         }
 
         @Override
@@ -132,6 +203,11 @@ public sealed interface StorageSource {
                     slot,
                     source.describe()
             );
+        }
+
+        @Override
+        public Vector3dc getPosition(Trick<?> trick, SpellContext ctx) {
+            return source.getPosition(trick, ctx);
         }
 
         public <T> SingleSlotStorage<T> getSelfSlot(Trick<?> trick, SpellContext ctx, VariantType<T> variant) throws BlunderException {
