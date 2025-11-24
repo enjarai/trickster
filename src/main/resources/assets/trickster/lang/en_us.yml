@@ -417,7 +417,9 @@ tag.item.trickster:
   spell_cost: Spell Cost
 
 death.attack:
-  levitating_block: "%1$s was crushed by a block"
+  levitating_block: "%1$s was slapped with %2$s block"
+  levitating_block.attacker: "%1$s was slapped with %2$s block by %3$s"
+  levitating_block.player: "%1$s was slapped with %2$s block while running from %3$s"
 
 key:
   categories:

@@ -2,7 +2,7 @@ package dev.enjarai.trickster.entity;
 
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.cca.ModEntityComponents;
-import dev.enjarai.trickster.misc.ModDamageTypes;
+import dev.enjarai.trickster.misc.LevitatingBlockDamageSource;
 import dev.enjarai.trickster.util.Trolling;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -12,7 +12,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MovementType;
 import net.minecraft.entity.Ownable;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -265,7 +264,8 @@ public class LevitatingBlockEntity extends Entity implements Ownable {
 
         var hit = getEntityCollision(currentPos, nextPos);
         if (hit != null) {
-            hit.getEntity().damage(new DamageSource(getWorld().getRegistryManager().get(RegistryKeys.DAMAGE_TYPE).entryOf(ModDamageTypes.LEVITATING_BLOCK), this, getOwner()),
+            hit.getEntity().damage(
+                    new LevitatingBlockDamageSource(getWorld(), this, getOwner(), blockState.getBlock().getName()),
                     (float) hit.getEntity().getVelocity().add(velocity.negate()).length() * blockState.getHardness(getWorld(), getFallingBlockPos()));
 
             hit.getEntity().setVelocity(hit.getEntity().getVelocity().add(velocity));
