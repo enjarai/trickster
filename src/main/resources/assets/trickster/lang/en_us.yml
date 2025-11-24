@@ -453,7 +453,6 @@ text.config.trickster-config:
     maxExecutionsPerSpellPerTick: Max operations per tick per spell
     allowSwapBedrock: Permit block swapping of bedrock
     maxBlockBreakingHardness: Max hardness for Ploy of Destruction
-    readWriteRange: Range of Notulist's Ingress/Ploy
 
     dragDrawing: Draw by dragging
     animateLines: Animate pattern glyphs

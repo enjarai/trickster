@@ -1,6 +1,5 @@
 package dev.enjarai.trickster.spell.trick.basic;
 
-import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
@@ -32,8 +31,8 @@ public class WriteSpellTrick extends Trick<WriteSpellTrick> {
         var name = optionalName.map(StringFragment::asText);
         var range = ctx.source().getPos().distance(slot.getSourceOrCasterPos(self, ctx));
 
-        if (range > Trickster.CONFIG.readWriteRange()) {
-            throw new OutOfRangeBlunder(self, Trickster.CONFIG.readWriteRange(), range);
+        if (range > 16) {
+            throw new OutOfRangeBlunder(self, 16.0, range);
         }
 
         slot.writeFragment(input, closed, name, player, self, ctx);
