@@ -1,0 +1,51 @@
+package dev.enjarai.trickster.spell.trick.fleck;
+
+import dev.enjarai.trickster.cca.ModEntityComponents;
+import dev.enjarai.trickster.fleck.SpellFleck;
+import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.blunder.NoSuchFleckBlunder;
+import dev.enjarai.trickster.spell.fragment.EntityFragment;
+import dev.enjarai.trickster.spell.fragment.FragmentType;
+import dev.enjarai.trickster.spell.fragment.NumberFragment;
+import dev.enjarai.trickster.spell.type.Signature;
+import net.minecraft.entity.player.PlayerEntity;
+
+import java.util.List;
+import java.util.Optional;
+
+public class RollFleckTrick extends AbstractFleckTrick<RollFleckTrick> {
+    public RollFleckTrick() {
+        super(
+                /*
+                0 1 2
+                3 4 5
+                6 7 8
+                 */
+                Pattern.of(0, 6, 4, 2, 8, 7, 6, 3, 0, 1, 2, 5, 8),
+                Signature.of(FragmentType.NUMBER, FragmentType.NUMBER, FragmentType.ENTITY.variadicOfArg().unpack().optionalOfArg(), RollFleckTrick::rollFleck, FragmentType.NUMBER)
+        );
+    }
+
+    public NumberFragment rollFleck(SpellContext ctx, NumberFragment id, NumberFragment roll, Optional<List<EntityFragment>> targets) {
+        var players = getPlayersInRangeOrTargets(ctx, targets);
+        players.forEach(player -> {
+            var flecks = ((PlayerEntity) player).getComponent(ModEntityComponents.FLECKS).getFlecks();
+            if (!flecks.containsKey(id.asInt())) {
+                throw new NoSuchFleckBlunder(this);
+            }
+            var fleck = flecks.get(id.asInt()).fleck();
+            if (fleck instanceof SpellFleck sfleck) {
+                display(ctx, id, new SpellFleck(
+                        sfleck.pos(),
+                        sfleck.facing(),
+                        sfleck.spell(),
+                        sfleck.size(),
+                        (float) roll.number()
+                ), Optional.of(List.of(EntityFragment.from(player))));
+            }
+        });
+
+        return id;
+    }
+}
