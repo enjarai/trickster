@@ -2,6 +2,7 @@ package dev.enjarai.trickster.entity;
 
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.cca.ModEntityComponents;
+import dev.enjarai.trickster.misc.ModDamageTypes;
 import dev.enjarai.trickster.util.Trolling;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -10,6 +11,8 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MovementType;
+import net.minecraft.entity.Ownable;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -31,19 +34,23 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.UUID;
 
-public class LevitatingBlockEntity extends Entity {
+public class LevitatingBlockEntity extends Entity implements Ownable {
     protected static final TrackedData<BlockPos> BLOCK_POS = DataTracker.registerData(LevitatingBlockEntity.class, TrackedDataHandlerRegistry.BLOCK_POS);
     protected static final TrackedData<Float> WEIGHT = DataTracker.registerData(LevitatingBlockEntity.class, TrackedDataHandlerRegistry.FLOAT);
     protected static final TrackedData<NbtCompound> BLOCK_ENTITY_DATA = DataTracker.registerData(LevitatingBlockEntity.class, TrackedDataHandlerRegistry.NBT_COMPOUND);
     protected static final TrackedData<Boolean> SHOULD_REVERT_NOW = DataTracker.registerData(LevitatingBlockEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 
     private BlockState blockState = Blocks.STONE.getDefaultState();
+    @Nullable
+    private UUID ownerUuid;
+    @Nullable
+    private Entity owner;
 
     public BlockEntity cachedBlockEntity;
 
@@ -76,6 +83,10 @@ public class LevitatingBlockEntity extends Entity {
         } else {
             this.setBlockEntityData(new NbtCompound());
         }
+        if (nbt.containsUuid("Owner")) {
+            this.ownerUuid = nbt.getUuid("Owner");
+            this.owner = null;
+        }
 
         if (nbt.contains("weight", NbtElement.FLOAT_TYPE)) {
             this.setWeight(nbt.getFloat("weight"));
@@ -92,13 +103,16 @@ public class LevitatingBlockEntity extends Entity {
         if (!this.getBlockEntityData().isEmpty()) {
             nbt.put("BlockEntityData", this.getBlockEntityData());
         }
+        if (this.ownerUuid != null) {
+            nbt.putUuid("Owner", this.ownerUuid);
+        }
 
         nbt.putFloat("weight", this.getWeight());
         nbt.put("fallingBlockPos", NbtHelper.fromBlockPos(this.getFallingBlockPos()));
         nbt.putBoolean("shouldRevertNow", this.getShouldRevertNow());
     }
 
-    public static LevitatingBlockEntity spawnFromBlock(World world, BlockPos pos, BlockState state, float weight) {
+    public static LevitatingBlockEntity spawnFromBlock(World world, BlockPos pos, BlockState state, float weight, @Nullable Entity owner) {
         LevitatingBlockEntity fallingBlockEntity = new LevitatingBlockEntity(ModEntities.LEVITATING_BLOCK, world);
         fallingBlockEntity.setPosition(
                 pos.getX() + 0.5,
@@ -112,6 +126,10 @@ public class LevitatingBlockEntity extends Entity {
         fallingBlockEntity.prevZ = fallingBlockEntity.getZ();
         fallingBlockEntity.blockState = state.contains(Properties.WATERLOGGED) ? state.with(Properties.WATERLOGGED, false) : state;
         fallingBlockEntity.setFallingBlockPos(pos);
+        if (owner != null) {
+            fallingBlockEntity.owner = owner;
+            fallingBlockEntity.ownerUuid = owner.getUuid();
+        }
 
         var entity = world.getBlockEntity(pos);
         if (entity != null) {
@@ -247,7 +265,7 @@ public class LevitatingBlockEntity extends Entity {
 
         var hit = getEntityCollision(currentPos, nextPos);
         if (hit != null) {
-            hit.getEntity().damage(getWorld().getDamageSources().fallingBlock(this),
+            hit.getEntity().damage(new DamageSource(getWorld().getRegistryManager().get(RegistryKeys.DAMAGE_TYPE).entryOf(ModDamageTypes.LEVITATING_BLOCK), this, getOwner()),
                     (float) hit.getEntity().getVelocity().add(velocity.negate()).length() * blockState.getHardness(getWorld(), getFallingBlockPos()));
 
             hit.getEntity().setVelocity(hit.getEntity().getVelocity().add(velocity));
@@ -279,6 +297,7 @@ public class LevitatingBlockEntity extends Entity {
         double e = packet.getY();
         double f = packet.getZ();
         this.setPosition(d, e, f);
+        // Todo currently the client doesnt know the owner. Because normally this is sent using the entityData int which is already used for the blockstate. I'm not sure if this is important
     }
 
     @Override
@@ -340,5 +359,17 @@ public class LevitatingBlockEntity extends Entity {
 
     public boolean getShouldRevertNow() {
         return this.dataTracker.get(SHOULD_REVERT_NOW);
+    }
+
+    @Override
+    public @Nullable Entity getOwner() {
+        if (this.owner != null && !this.owner.isRemoved()) {
+            return this.owner;
+        } else if (this.ownerUuid != null && this.getWorld() instanceof ServerWorld serverWorld) {
+            this.owner = serverWorld.getEntity(this.ownerUuid);
+            return this.owner;
+        } else {
+            return null;
+        }
     }
 }

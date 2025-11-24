@@ -416,6 +416,9 @@ tag.item.trickster:
   scrolls: Scrolls
   spell_cost: Spell Cost
 
+death.attack:
+  levitating_block: "%1$s was crushed by a block"
+
 key:
   categories:
     trickster: Trickster
