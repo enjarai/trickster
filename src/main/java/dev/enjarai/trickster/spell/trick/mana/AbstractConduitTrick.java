@@ -24,16 +24,21 @@ public abstract class AbstractConduitTrick extends Trick<AbstractConduitTrick> {
         }
 
         double limit = n.number() / slots.size();
-        float result = 0;
+        var result = new Object() {
+            float r = 0;
+        };
 
         for (var slot : slots) {
             var distance = ctx.source().getPos().distance(slot.getSourceOrCasterPos(this, ctx));
             float r = Trickster.CONFIG.manaTransferEfficiency();
             double tax = Math.max(0, 1 - r / (distance + r - 16));
-            result += affect(ctx, slot.reference(this, ctx), (float) limit, tax);
+            slot.applyModifier(this, ctx, stack -> {
+                result.r += affect(ctx, stack, (float) limit, tax);
+                return stack;
+            });
         }
 
-        return new NumberFragment(result);
+        return new NumberFragment(result.r);
     }
 
     /**

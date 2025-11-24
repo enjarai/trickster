@@ -8,6 +8,7 @@ import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.ItemTypeFragment;
 import dev.enjarai.trickster.spell.fragment.slot.SlotFragment;
+import dev.enjarai.trickster.spell.fragment.slot.VariantType;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.Signature;
 
@@ -17,8 +18,8 @@ public class TransmogTrick extends Trick<TransmogTrick> {
     }
 
     public BooleanFragment transmog(SpellContext ctx, SlotFragment slot, ItemTypeFragment item) {
-        var stack = slot.reference(this, ctx);
-        var currentTransmog = stack.get(ModDataComponents.TRANSMOG_APPEARANCE_ITEM.get());
+        var resource = slot.getResource(this, ctx, VariantType.ITEM);
+        var currentTransmog = resource.getComponentMap().get(ModDataComponents.TRANSMOG_APPEARANCE_ITEM.get());
 
         var targetItem = item.item();
 
@@ -27,7 +28,10 @@ public class TransmogTrick extends Trick<TransmogTrick> {
         }
 
         ctx.useMana(this, 20);
-        TransmogUtils.transmogAppearanceOntoItemStack(targetItem.getDefaultStack(), stack);
+        slot.applyModifier(this, ctx, stack -> {
+            TransmogUtils.transmogAppearanceOntoItemStack(targetItem.getDefaultStack(), stack);
+            return stack;
+        });
 
         return BooleanFragment.TRUE;
     }

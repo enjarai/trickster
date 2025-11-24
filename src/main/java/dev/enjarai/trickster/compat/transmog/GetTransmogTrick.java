@@ -6,6 +6,7 @@ import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.ItemTypeFragment;
 import dev.enjarai.trickster.spell.fragment.slot.SlotFragment;
+import dev.enjarai.trickster.spell.fragment.slot.VariantType;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.Signature;
 
@@ -17,8 +18,8 @@ public class GetTransmogTrick extends Trick<GetTransmogTrick> {
     }
 
     public Optional<ItemTypeFragment> get(SpellContext ctx, SlotFragment slot) {
-        var stack = slot.reference(this, ctx);
-        var currentTransmog = stack.get(ModDataComponents.TRANSMOG_APPEARANCE_ITEM.get());
+        var stack = slot.getResource(this, ctx, VariantType.ITEM);
+        var currentTransmog = stack.getComponentMap().get(ModDataComponents.TRANSMOG_APPEARANCE_ITEM.get());
 
         if (currentTransmog == null) {
             return Optional.empty();

@@ -11,6 +11,7 @@ import dev.enjarai.trickster.spell.blunder.OutOfRangeBlunder;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.fragment.slot.SlotFragment;
+import dev.enjarai.trickster.spell.fragment.slot.VariantType;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.ArgType;
 import dev.enjarai.trickster.spell.type.RetType;
@@ -32,16 +33,19 @@ public class MessageSendTrick extends Trick<MessageSendTrick> {
     }
 
     public Fragment channel(SpellContext ctx, Fragment value, SlotFragment slot) {
-        var stack = slot.reference(this, ctx);
+        var resource = slot.getResource(this, ctx, VariantType.ITEM);
         var range = ctx.source().getPos().distance(slot.getSourceOrCasterPos(this, ctx));
-        var item = stack.getItem();
+        var item = resource.getItem();
 
         if (item instanceof ChannelItem channelItem) {
             if (range > channelItem.getRange()) {
                 throw new OutOfRangeBlunder(this, channelItem.getRange(), range);
             }
 
-            channelItem.messageSendBehavior(this, ctx, stack, value);
+            slot.applyModifier(this, ctx, stack -> {
+                channelItem.messageSendBehavior(this, ctx, stack, value);
+                return stack;
+            });
             return value;
         }
 

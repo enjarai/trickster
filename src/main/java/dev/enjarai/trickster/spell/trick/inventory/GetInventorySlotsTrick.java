@@ -24,9 +24,7 @@ public class GetInventorySlotsTrick extends Trick<GetInventorySlotsTrick> {
     }
 
     private List<SlotFragment> fromSlots(SpellContext ctx, List<SlotFragment> slots, List<ItemTypeFragment> itemTypes) {
-        var itemTypesFilter = itemTypes.stream().map(typeFragment -> {
-            return typeFragment.item();
-        }).toList();
+        var itemTypesFilter = itemTypes.stream().map(ItemTypeFragment::item).toList();
 
         if (itemTypes.size() > 0) {
             return slots.stream()
