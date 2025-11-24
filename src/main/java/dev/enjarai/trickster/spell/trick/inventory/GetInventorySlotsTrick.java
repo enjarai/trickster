@@ -6,7 +6,7 @@ import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.ItemTypeFragment;
-import dev.enjarai.trickster.spell.fragment.SlotFragment;
+import dev.enjarai.trickster.spell.fragment.slot.SlotFragment;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.Signature;

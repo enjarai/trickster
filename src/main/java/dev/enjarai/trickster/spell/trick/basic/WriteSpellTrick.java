@@ -1,12 +1,14 @@
 package dev.enjarai.trickster.spell.trick.basic;
 
+import dev.enjarai.trickster.item.component.FragmentComponent;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.blunder.ImmutableItemBlunder;
 import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
 import dev.enjarai.trickster.spell.blunder.OutOfRangeBlunder;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.fragment.SlotFragment;
+import dev.enjarai.trickster.spell.fragment.slot.SlotFragment;
 import dev.enjarai.trickster.spell.fragment.StringFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.ArgType;
@@ -35,7 +37,10 @@ public class WriteSpellTrick extends Trick<WriteSpellTrick> {
             throw new OutOfRangeBlunder(self, 16.0, range);
         }
 
-        slot.writeFragment(input, closed, name, player, self, ctx);
+        slot.applyModifier(self, ctx, stack -> {
+            var updated = FragmentComponent.write(stack, input, closed, player, name);
+            return updated.orElseThrow(() -> new ImmutableItemBlunder(self));
+        });
         return input;
     }
 }

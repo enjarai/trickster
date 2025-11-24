@@ -1,10 +1,20 @@
-package dev.enjarai.trickster.spell.fragment;
+package dev.enjarai.trickster.spell.fragment.slot;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
+import dev.enjarai.trickster.spell.fragment.EntityFragment;
+import dev.enjarai.trickster.spell.fragment.FragmentType;
+import dev.enjarai.trickster.spell.fragment.NumberFragment;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.SlottedStorage;
+import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import nl.enjarai.cicada.util.duck.ConvertibleVec3d;
 import org.joml.Vector3dc;
 
@@ -28,13 +38,35 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 
-public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) implements Fragment {
-
-    public static final StructEndec<SlotFragment> ENDEC = StructEndecBuilder.of(
-            Endec.INT.fieldOf("slot", SlotFragment::slot),
-            EndecTomfoolery.safeOptionalOf(new EitherEndec<>(EndecTomfoolery.ALWAYS_READABLE_BLOCK_POS, EndecTomfoolery.UUID, true)).fieldOf("source", SlotFragment::source),
+public record SlotFragment(StorageSource.Slot slot) implements Fragment {
+    public static final StructEndec<SlotFragment> V1_ENDEC = StructEndecBuilder.of(
+            Endec.INT.fieldOf("slot", f -> {
+                throw new UnsupportedOperationException();
+            }),
+            EndecTomfoolery.safeOptionalOf(new EitherEndec<>(EndecTomfoolery.ALWAYS_READABLE_BLOCK_POS, EndecTomfoolery.UUID, true)).fieldOf("source", f -> {
+                throw new UnsupportedOperationException();
+            }),
             SlotFragment::new
     );
+    public static final StructEndec<SlotFragment> ENDEC = EndecTomfoolery.backwardsCompat(
+            StructEndecBuilder.of(
+                    StorageSource.Slot.ENDEC.fieldOf("slot", SlotFragment::slot),
+                    SlotFragment::new
+            ),
+            V1_ENDEC
+    );
+
+    private SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) {
+        this(new StorageSource.Slot(slot, source
+                .map(e -> e
+                        .<StorageSource>map(
+                                StorageSource.Block::new,
+                                StorageSource.Entity::new
+                        )
+                )
+                .orElse(StorageSource.Caster.INSTANCE)
+        ));
+    }
 
     @Override
     public FragmentType<?> type() {
@@ -43,17 +75,7 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
 
     @Override
     public Text asText() {
-        return Text.literal(
-                "slot %d at %s".formatted(
-                        slot,
-                        source.map(either -> {
-                            var mapped = either
-                                    .mapLeft(blockPos -> "%d, %d, %d".formatted(blockPos.getX(), blockPos.getY(), blockPos.getZ()))
-                                    .mapRight(UUID::toString);
-                            return mapped.right().orElseGet(() -> mapped.left().get());
-                        }).orElse("caster")
-                )
-        );
+        return Text.literal(slot.describe());
     }
 
     @Override
@@ -61,40 +83,51 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
         return 64;
     }
 
-    public static List<SlotFragment> getSlots(Trick<?> trick, SpellContext ctx, Optional<Either<BlockPos, UUID>> source) {
-        var inventory = getInventoryFromSource(trick, ctx, source);
-        return IntStream.range(0, inventory.trickster$slot_holder$size()).mapToObj(slot -> {
-            return new SlotFragment(slot, source);
-        }).toList();
+    public static List<SlotFragment> getSlots(Trick<?> trick, SpellContext ctx, StorageSource source, VariantType<?> type) {
+        var storage = source.getSlottedStorage(trick, ctx, type);
+        var amount = storage.getSlotCount();
+
+        var slots = new ArrayList<SlotFragment>();
+        for (int i = 0; i < amount; i++) {
+            slots.add(new SlotFragment(new StorageSource.Slot(i, source)));
+        }
+
+        return slots;
     }
 
-    public static NumberFragment getInventoryLength(Trick<?> trick, SpellContext ctx, Optional<Either<BlockPos, UUID>> source) {
-        var inventory = getInventoryFromSource(trick, ctx, source);
-        return new NumberFragment(inventory.trickster$slot_holder$size());
-    }
+    public boolean applyModifier(Trick<?> trick, SpellContext ctx, Function<ItemStack, ItemStack> modifier) {
+        var slot = slot().getSelfSlot(trick, ctx, VariantType.ITEM);
+        var resource = slot.getResource();
+        if (resource.isBlank()) {
+            return false;
+        }
 
-    public void setStack(ItemStack itemStack, Trick<?> trick, SpellContext ctx) {
-        var inventory = getInventory(trick, ctx);
-        inventory.trickster$slot_holder$setStack(slot, itemStack);
-    }
+        try (var trans = Transaction.openOuter()) {
+            var total = slot.getAmount();
+            var taken = slot.extract(resource, Long.MAX_VALUE, trans);
 
-    public void writeFragment(Fragment fragment, boolean closed, Optional<Text> name, Optional<ServerPlayerEntity> player, Trick<?> trick, SpellContext ctx) throws BlunderException {
-        var inventory = getInventory(trick, ctx);
-        var stack = inventory.trickster$slot_holder$getStack(slot);
-        var updated = FragmentComponent.write(stack, fragment, closed, player, name);
+            if (total != taken) {
+                return false;
+            }
 
-        inventory.trickster$slot_holder$setStack(slot, updated.orElseThrow(() -> new ImmutableItemBlunder(trick)));
-    }
+            var tempStack = resource.toStack(1);
+            tempStack = modifier.apply(tempStack);
 
-    public void resetFragment(Trick<?> trick, SpellContext ctx) throws BlunderException {
-        var inventory = getInventory(trick, ctx);
-        var stack = inventory.trickster$slot_holder$getStack(slot);
-        var updated = FragmentComponent.reset(stack);
+            var newResource = ItemVariant.of(tempStack);
+            var given = slot.insert(newResource, taken, trans);
 
-        inventory.trickster$slot_holder$setStack(slot, updated.orElseThrow(() -> new ImmutableItemBlunder(trick)));
+            if (given != taken) {
+                return false;
+            }
+            trans.commit();
+        }
+
+        return true;
     }
 
     public void swapWith(Trick<?> trickSource, SpellContext ctx, SlotFragment other) throws BlunderException {
+
+
         var otherInv = other.getInventory(trickSource, ctx);
         var inv = getInventory(trickSource, ctx);
 
@@ -136,58 +169,8 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
         }
     }
 
-    public int moveInto(Trick<?> trickSource, SpellContext ctx, SlotFragment to, int maxAmount) throws BlunderException {
-        if (equals(to)) {
-            return 0;
-        }
+    public <T> long moveInto(Trick<?> trick, SpellContext ctx, SlotFragment to, long maxAmount, VariantType<T> type) throws BlunderException {
 
-        var toStack = to.getStack(trickSource, ctx);
-        var stack = getStack(trickSource, ctx);
-
-        if (!ItemStack.areItemsAndComponentsEqual(stack, toStack) && !toStack.isEmpty()) {
-            return 0;
-        }
-
-        var amountToBeMoved = Math.min(Math.min(maxAmount, stack.getCount()),
-                toStack.isEmpty() ? stack.getMaxCount() : toStack.getMaxCount() - toStack.getCount());
-        if (amountToBeMoved <= 0) {
-            return 0;
-        }
-
-        var movedStack = move(trickSource, ctx, amountToBeMoved, to.getSourceOrCasterPos(trickSource, ctx));
-
-        try {
-            ctx.useMana(trickSource, to.getMoveCost(trickSource, ctx, getSourceOrCasterPos(trickSource, ctx), amountToBeMoved));
-        } catch (Exception e) {
-            ctx.source().offerOrDropItem(movedStack);
-            throw e;
-        }
-
-        if (toStack.isEmpty()) {
-            to.setStack(movedStack, trickSource, ctx);
-        } else {
-            toStack.setCount(toStack.getCount() + amountToBeMoved);
-        }
-
-        return amountToBeMoved;
-    }
-
-    public ItemStack move(Trick<?> trickSource, SpellContext ctx) throws BlunderException {
-        return move(trickSource, ctx, 1);
-    }
-
-    public ItemStack move(Trick<?> trickSource, SpellContext ctx, int amount) {
-        return move(trickSource, ctx, amount, ctx.source().getPos());
-    }
-
-    public ItemStack move(Trick<?> trickSource, SpellContext ctx, int amount, Vector3dc pos) throws BlunderException {
-        var stack = getStack(trickSource, ctx);
-
-        if (stack.getCount() < amount)
-            throw new MissingItemBlunder(trickSource);
-
-        ctx.useMana(trickSource, getMoveCost(trickSource, ctx, pos, amount));
-        return takeFromSlot(trickSource, ctx, amount);
     }
 
     /**
@@ -263,7 +246,7 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
         );
     }
 
-    private float getMoveCost(Trick<?> trickSource, SpellContext ctx, Vector3dc pos, int amount) throws BlunderException {
+    public float getMoveCost(Trick<?> trickSource, SpellContext ctx, Vector3dc pos, long amount) throws BlunderException {
         return getSourcePos(trickSource, ctx)
                 .map(sourcePos -> (float) (pos.distance(sourcePos) * amount * 0.5))
                 .orElse(0f);

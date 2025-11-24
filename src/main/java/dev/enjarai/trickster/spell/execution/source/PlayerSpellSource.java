@@ -8,7 +8,7 @@ import dev.enjarai.trickster.spell.mana.PlayerManaPool;
 import net.minecraft.util.math.BlockPos;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.execution.SpellExecutionManager;
-import dev.enjarai.trickster.spell.fragment.SlotFragment;
+import dev.enjarai.trickster.spell.fragment.slot.SlotFragment;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.mana.MutableManaPool;
 import dev.enjarai.trickster.spell.mana.generation.ManaHandler;

@@ -5,7 +5,7 @@ import dev.enjarai.trickster.spell.blunder.*;
 import dev.enjarai.trickster.spell.execution.ExecutionState;
 import dev.enjarai.trickster.spell.execution.TickData;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
-import dev.enjarai.trickster.spell.fragment.SlotFragment;
+import dev.enjarai.trickster.spell.fragment.slot.SlotFragment;
 import dev.enjarai.trickster.spell.mana.MutableManaPool;
 import dev.enjarai.trickster.spell.trick.Trick;
 import net.minecraft.item.ItemStack;
