@@ -36,6 +36,7 @@ public class SummonDragonBreathTrick extends Trick<SummonDragonBreathTrick> {
                 var projectile = EntityType.DRAGON_FIREBALL.create(world);
                 assert projectile != null;
                 projectile.setPos(pos.x(), pos.y(), pos.z());
+                ctx.source().getCaster().ifPresent(projectile::setOwner);
 
                 world.spawnEntity(projectile);
                 return EntityFragment.from(projectile);

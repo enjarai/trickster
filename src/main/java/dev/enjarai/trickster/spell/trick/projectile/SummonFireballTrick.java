@@ -29,6 +29,7 @@ public class SummonFireballTrick extends Trick<SummonFireballTrick> {
 
             var projectile = EntityType.FIREBALL.create(world);
             projectile.setPos(pos.x(), pos.y(), pos.z());
+            ctx.source().getCaster().ifPresent(projectile::setOwner);
 
             world.spawnEntity(projectile);
             return EntityFragment.from(projectile);
