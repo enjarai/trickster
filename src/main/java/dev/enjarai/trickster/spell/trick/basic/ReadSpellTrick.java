@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.spell.trick.basic;
 
+import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.item.component.FragmentComponent;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
@@ -23,8 +24,8 @@ public class ReadSpellTrick extends Trick<ReadSpellTrick> {
         var slot = optionalSlot.or(() -> ctx.source().getOtherHandSlot()).orElseThrow(() -> new NoPlayerBlunder(this));
         var range = ctx.source().getPos().distance(slot.getSourceOrCasterPos(this, ctx));
 
-        if (range > 16) {
-            throw new OutOfRangeBlunder(this, 16.0, range);
+        if (range > Trickster.CONFIG.readWriteRange()) {
+            throw new OutOfRangeBlunder(this, Trickster.CONFIG.readWriteRange(), range);
         }
 
         return FragmentComponent.getFragment(slot.reference(this, ctx));
