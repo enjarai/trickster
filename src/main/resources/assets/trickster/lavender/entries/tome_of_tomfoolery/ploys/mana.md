@@ -45,6 +45,9 @@ a loss is incurred proportional to the amount of mana transferred multiplied by 
 
 This loss follows a roughly exponential scale, reaching around 50% at or near 100 blocks of distance.
 
+
+The provided amount is split equally between all the provided slots, even if the given slots cannot provide or store a sufficient amount of mana.
+
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:push_mana|>
