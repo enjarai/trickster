@@ -19,19 +19,19 @@ Creating a slot reference comes at no cost. However, using the reference in a wa
 
 ;;;;;
 
-<|ploy@trickster:templates|trick-id=trickster:drop_stack_from_slot,cost=distance * amount * 0.5G|>
+<|trick@trickster:templates|trick-id=trickster:drop_stack_from_slot|>
 
 Drops items from the given slot at a position, returning their entity. Optionally, an amount can be specified.
 
 ;;;;;
 
-<|ploy@trickster:templates|trick-id=trickster:swap_slot,cost=distance * amount * 0.5G|>
+<|trick@trickster:templates|trick-id=trickster:swap_slot|>
 
 Swaps the item stacks within the given slots.
 
 ;;;;;
 
-<|ploy@trickster:templates|trick-id=trickster:move_stack,cost=distance * amount * 0.5G|>
+<|trick@trickster:templates|trick-id=trickster:move_stack|>
 
 Moves items from one slot into another, optionally limiting the amount. Can merge and split stacks.
 
