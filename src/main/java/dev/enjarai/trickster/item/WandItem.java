@@ -3,6 +3,7 @@ package dev.enjarai.trickster.item;
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.SpellPart;
+import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -25,7 +26,7 @@ public class WandItem extends Item {
             var component = stack.get(ModComponents.FRAGMENT);
             if (component != null) {
                 var spell = component.value() instanceof SpellPart part ? part : new SpellPart(component.value());
-                ModEntityComponents.CASTER.get(user).queueSpell(spell, List.of());
+                ModEntityComponents.CASTER.get(user).queueSpell(spell, List.of(BooleanFragment.TRUE));
             }
         }
 
