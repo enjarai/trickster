@@ -368,6 +368,7 @@ public class LevitatingBlockEntity extends Entity implements Ownable {
             this.owner = serverWorld.getEntity(this.ownerUuid);
             return this.owner;
         } else {
+            this.owner = null;
             return null;
         }
     }
