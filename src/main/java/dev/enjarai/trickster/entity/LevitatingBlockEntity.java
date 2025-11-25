@@ -297,7 +297,6 @@ public class LevitatingBlockEntity extends Entity implements Ownable {
         double e = packet.getY();
         double f = packet.getZ();
         this.setPosition(d, e, f);
-        // Todo currently the client doesnt know the owner. Because normally this is sent using the entityData int which is already used for the blockstate. I'm not sure if this is important
     }
 
     @Override
