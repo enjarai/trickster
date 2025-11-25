@@ -27,7 +27,7 @@ public class ClearSpellTrick extends Trick<ClearSpellTrick> {
             throw new OutOfRangeBlunder(this, 16.0, range);
         }
 
-        slot.applyModifier(this, ctx, stack -> {
+        slot.applyItemModifier(this, ctx, stack -> {
             var updated = FragmentComponent.reset(stack);
             return updated.orElseThrow(() -> new ImmutableItemBlunder(this));
         });

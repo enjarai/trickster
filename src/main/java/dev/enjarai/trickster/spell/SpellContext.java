@@ -58,7 +58,7 @@ public record SpellContext(ExecutionState state, SpellSource source, TickData da
         ItemStack result = null;
 
         if (optionalSlot.isPresent()) {
-            var slot = optionalSlot.get().slot().getSelfSlot(trick, this, VariantType.ITEM);
+            var slot = optionalSlot.get().getStorage(trick, this, VariantType.ITEM);
 
             if (!validator.test(slot.getResource().toStack())) {
                 throw new ItemInvalidBlunder(trick);

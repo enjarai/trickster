@@ -32,7 +32,7 @@ public abstract class AbstractConduitTrick extends Trick<AbstractConduitTrick> {
             var distance = ctx.source().getPos().distance(slot.getSourceOrCasterPos(this, ctx));
             float r = Trickster.CONFIG.manaTransferEfficiency();
             double tax = Math.max(0, 1 - r / (distance + r - 16));
-            slot.applyModifier(this, ctx, stack -> {
+            slot.applyItemModifier(this, ctx, stack -> {
                 result.r += affect(ctx, stack, (float) limit, tax);
                 return stack;
             });

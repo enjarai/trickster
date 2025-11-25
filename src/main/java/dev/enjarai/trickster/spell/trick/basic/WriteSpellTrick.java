@@ -37,7 +37,7 @@ public class WriteSpellTrick extends Trick<WriteSpellTrick> {
             throw new OutOfRangeBlunder(self, 16.0, range);
         }
 
-        slot.applyModifier(self, ctx, stack -> {
+        slot.applyItemModifier(self, ctx, stack -> {
             var updated = FragmentComponent.write(stack, input, closed, player, name);
             return updated.orElseThrow(() -> new ImmutableItemBlunder(self));
         });

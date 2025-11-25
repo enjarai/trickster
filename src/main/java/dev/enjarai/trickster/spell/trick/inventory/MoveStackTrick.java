@@ -18,15 +18,18 @@ public class MoveStackTrick extends Trick<MoveStackTrick> {
         super(Pattern.of(7, 4, 6, 7, 8, 4, 0, 2, 4), Signature.of(FragmentType.SLOT, FragmentType.SLOT, FragmentType.NUMBER.optionalOfArg(), MoveStackTrick::move, FragmentType.NUMBER));
     }
 
-    public NumberFragment move(SpellContext ctx, SlotFragment sourceSlot, SlotFragment destinationSlot, Optional<NumberFragment> amount) {
+    @SuppressWarnings("unchecked")
+    public <T> NumberFragment move(SpellContext ctx, SlotFragment sourceSlot, SlotFragment destinationSlot, Optional<NumberFragment> amount) {
         if (sourceSlot.equals(destinationSlot)) {
             return new NumberFragment(0);
         }
 
+        VariantType<T> variantType = (VariantType<T>) sourceSlot.variantType();
+
         try (var trans = Transaction.openOuter()) {
             var moved = StorageUtil.move(
-                    sourceSlot.slot().getSelfSlot(this, ctx, VariantType.ITEM),
-                    destinationSlot.slot().getSelfSlot(this, ctx, VariantType.ITEM),
+                    sourceSlot.getStorage(this, ctx, variantType),
+                    destinationSlot.getStorage(this, ctx, variantType),
                     v -> true,
                     amount.map(NumberFragment::asLong).orElse(Long.MAX_VALUE),
                     trans
