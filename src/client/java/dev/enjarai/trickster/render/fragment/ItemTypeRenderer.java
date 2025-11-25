@@ -1,7 +1,7 @@
 package dev.enjarai.trickster.render.fragment;
 
 import dev.enjarai.trickster.render.SpellCircleRenderer;
-import dev.enjarai.trickster.spell.fragment.ItemTypeFragment;
+import dev.enjarai.trickster.spell.fragment.slot.ItemTypeFragment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.client.render.LightmapTextureManager;

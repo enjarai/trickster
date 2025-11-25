@@ -62,7 +62,7 @@ public sealed interface StorageSource {
             return "caster";
         }
 
-        @SuppressWarnings({"unchecked", "rawtypes"})
+        @SuppressWarnings({ "unchecked", "rawtypes" })
         @Override
         public <T> Storage<T> getStorage(Trick<?> trick, SpellContext ctx, VariantType<T> variant) throws BlunderException {
             if (variant == VariantType.ITEM) {
@@ -141,7 +141,7 @@ public sealed interface StorageSource {
                 var entity = ctx.source().getWorld().getEntity(uuid);
 
                 if (entity instanceof SlotHolderDuck holder) {
-//                    return holder; TODO
+                    //                    return holder; TODO
                 } else if (entity instanceof Inventory inv) {
                     return (Storage<T>) InventoryStorage.of(inv, null);
                 } else throw new NoInventoryBlunder(trick);

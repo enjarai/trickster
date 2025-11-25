@@ -13,7 +13,6 @@ import dev.enjarai.trickster.spell.trick.Trick;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -97,7 +96,7 @@ public record SpellContext(ExecutionState state, SpellSource source, TickData da
             var stack = inventory.getStack(i);
 
             if (stack.isOf(type)) {
-                return new SlotFragment(new StorageSource.Slot(i, StorageSource.Caster.INSTANCE));
+                return new SlotFragment(new StorageSource.Slot(i, StorageSource.Caster.INSTANCE), VariantType.ITEM);
             }
         }
 
