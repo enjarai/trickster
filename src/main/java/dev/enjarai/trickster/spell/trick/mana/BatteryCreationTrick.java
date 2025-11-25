@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class BatteryCreationTrick extends Trick<BatteryCreationTrick> {
-    private Map<Item, KnotItem> types = new HashMap<>();
+    private final Map<Item, KnotItem> types = new HashMap<>();
 
     public BatteryCreationTrick() {
         super(Pattern.of(6, 8, 5, 2, 1, 8, 7, 6, 1, 0, 3, 6), Signature.of(FragmentType.SLOT.optionalOfArg(),
@@ -33,8 +33,8 @@ public class BatteryCreationTrick extends Trick<BatteryCreationTrick> {
         var sourceSlot = slot1.orElseGet(() -> ctx.findSlotOnPlayer(this, Items.AMETHYST_SHARD));
         var glassSlot = slot2.orElseGet(() -> ctx.findSlotOnPlayer(this, Items.GLASS));
 
-        var sourceStorage = sourceSlot.slot().getSelfSlot(this, ctx, VariantType.ITEM);
-        var glassStorage = glassSlot.slot().getSelfSlot(this, ctx, VariantType.ITEM);
+        var sourceStorage = sourceSlot.getStorage(this, ctx, VariantType.ITEM);
+        var glassStorage = glassSlot.getStorage(this, ctx, VariantType.ITEM);
 
         var sourceItem = sourceStorage.getResource().getItem();
         var type = types.get(sourceItem);

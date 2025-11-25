@@ -93,10 +93,10 @@ public record SlotFragment(StorageSource.Slot slot, VariantType<?> variantType) 
         }
     }
 
-    public boolean applyModifier(Trick<?> trick, SpellContext ctx, Function<ItemStack, ItemStack> modifier) {
+    public boolean applyItemModifier(Trick<?> trick, SpellContext ctx, Function<ItemStack, ItemStack> modifier) {
         assertVariantType(trick, VariantType.ITEM);
 
-        var slot = slot().getSelfSlot(trick, ctx, VariantType.ITEM);
+        var slot = getStorage(trick, ctx, VariantType.ITEM);
         var resource = slot.getResource();
         if (resource.isBlank()) {
             return false;

@@ -16,10 +16,13 @@ public class SwapSlotTrick extends Trick<SwapSlotTrick> {
         super(Pattern.of(1, 4, 7, 6, 4, 2, 1, 0, 4, 8, 7), Signature.of(FragmentType.SLOT, FragmentType.SLOT, SwapSlotTrick::run, FragmentType.VOID));
     }
 
-    public VoidFragment run(SpellContext ctx, SlotFragment slot1, SlotFragment slot2) {
+    @SuppressWarnings("unchecked")
+    public <T> VoidFragment run(SpellContext ctx, SlotFragment slot1, SlotFragment slot2) {
+        VariantType<T> variantType = (VariantType<T>) slot1.variantType();
+
         try (var trans = Transaction.openOuter()) {
-            var storage1 = slot1.slot().getSelfSlot(this, ctx, VariantType.ITEM);
-            var storage2 = slot2.slot().getSelfSlot(this, ctx, VariantType.ITEM);
+            var storage1 = slot1.getStorage(this, ctx, variantType);
+            var storage2 = slot2.getStorage(this, ctx, variantType);
 
             var variant1 = storage1.getResource();
             var variant2 = storage2.getResource();

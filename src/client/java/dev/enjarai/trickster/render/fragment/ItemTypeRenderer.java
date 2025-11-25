@@ -15,12 +15,14 @@ import net.minecraft.util.math.Vec3d;
 
 public class ItemTypeRenderer implements FragmentRenderer<ItemTypeFragment> {
     @Override
-    public void render(ItemTypeFragment fragment, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float size, float alpha, Vec3d normal, float tickDelta, SpellCircleRenderer delegator) {
+    public void render(ItemTypeFragment fragment, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float size, float alpha, Vec3d normal, float tickDelta,
+            SpellCircleRenderer delegator) {
         var stack = fragment.item().getDefaultStack();
         renderItem(stack, ModelTransformationMode.GUI, matrices, vertexConsumers, x, y, size, delegator, 14, false);
     }
 
-    public static void renderItem(ItemStack stack, ModelTransformationMode transformationMode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float size, SpellCircleRenderer delegator, int light, boolean alwaysFlatLight) {
+    public static void renderItem(ItemStack stack, ModelTransformationMode transformationMode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float size,
+            SpellCircleRenderer delegator, int light, boolean alwaysFlatLight) {
         var bakedModel = MinecraftClient.getInstance().getItemRenderer().getModel(
                 stack, MinecraftClient.getInstance().world,
                 null, 0

@@ -24,7 +24,7 @@ public class RemoveTransmogTrick extends Trick<RemoveTransmogTrick> {
         }
 
         ctx.useMana(this, 10);
-        slot.applyModifier(this, ctx, stack -> {
+        slot.applyItemModifier(this, ctx, stack -> {
             stack.remove(ModDataComponents.TRANSMOG_APPEARANCE_ITEM.get());
             return stack;
         });

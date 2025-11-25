@@ -26,7 +26,7 @@ public class HiddenTransmogTrick extends Trick<HiddenTransmogTrick> {
         }
 
         ctx.useMana(this, 30);
-        slot.applyModifier(this, ctx, stack -> {
+        slot.applyItemModifier(this, ctx, stack -> {
             TransmogUtils.transmogAppearanceOntoItemStack(ModItems.VOID_FRAGMENT.get().getDefaultStack(), stack);
             return stack;
         });

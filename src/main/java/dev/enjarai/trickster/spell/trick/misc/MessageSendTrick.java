@@ -42,7 +42,7 @@ public class MessageSendTrick extends Trick<MessageSendTrick> {
                 throw new OutOfRangeBlunder(this, channelItem.getRange(), range);
             }
 
-            slot.applyModifier(this, ctx, stack -> {
+            slot.applyItemModifier(this, ctx, stack -> {
                 channelItem.messageSendBehavior(this, ctx, stack, value);
                 return stack;
             });

@@ -28,7 +28,7 @@ public class TransmogTrick extends Trick<TransmogTrick> {
         }
 
         ctx.useMana(this, 20);
-        slot.applyModifier(this, ctx, stack -> {
+        slot.applyItemModifier(this, ctx, stack -> {
             TransmogUtils.transmogAppearanceOntoItemStack(targetItem.getDefaultStack(), stack);
             return stack;
         });
