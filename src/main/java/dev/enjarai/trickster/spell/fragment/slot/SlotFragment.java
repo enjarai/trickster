@@ -6,17 +6,15 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 
-import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import nl.enjarai.cicada.util.duck.ConvertibleVec3d;
 import org.joml.Vector3dc;
 
 import com.mojang.datafixers.util.Either;
 
 import dev.enjarai.trickster.EndecTomfoolery;
-import dev.enjarai.trickster.pond.SlotHolderDuck;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.*;
@@ -25,13 +23,13 @@ import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import io.wispforest.owo.serialization.endec.EitherEndec;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 
-public record SlotFragment(StorageSource.Slot slot) implements Fragment {
+public record SlotFragment(StorageSource.Slot slot, VariantType<?> variantType) implements Fragment {
+
     public static final StructEndec<SlotFragment> V1_ENDEC = StructEndecBuilder.of(
             Endec.INT.fieldOf("slot", f -> {
                 throw new UnsupportedOperationException();
@@ -44,6 +42,7 @@ public record SlotFragment(StorageSource.Slot slot) implements Fragment {
     public static final StructEndec<SlotFragment> ENDEC = EndecTomfoolery.backwardsCompat(
             StructEndecBuilder.of(
                     StorageSource.Slot.ENDEC.fieldOf("slot", SlotFragment::slot),
+                    VariantType.ENDEC.fieldOf("variantType", SlotFragment::variantType),
                     SlotFragment::new
             ),
             V1_ENDEC
@@ -58,7 +57,7 @@ public record SlotFragment(StorageSource.Slot slot) implements Fragment {
                         )
                 )
                 .orElse(StorageSource.Caster.INSTANCE)
-        ));
+        ), VariantType.ITEM);
     }
 
     @Override
@@ -82,13 +81,21 @@ public record SlotFragment(StorageSource.Slot slot) implements Fragment {
 
         var slots = new ArrayList<SlotFragment>();
         for (int i = 0; i < amount; i++) {
-            slots.add(new SlotFragment(new StorageSource.Slot(i, source)));
+            slots.add(new SlotFragment(new StorageSource.Slot(i, source), type));
         }
 
         return slots;
     }
 
+    public void assertVariantType(Trick<?> trick, VariantType<?> variantType) {
+        if (variantType != variantType()) {
+            throw new InvalidSlotBlunder(trick); // TODO maybe more info here
+        }
+    }
+
     public boolean applyModifier(Trick<?> trick, SpellContext ctx, Function<ItemStack, ItemStack> modifier) {
+        assertVariantType(trick, VariantType.ITEM);
+
         var slot = slot().getSelfSlot(trick, ctx, VariantType.ITEM);
         var resource = slot.getResource();
         if (resource.isBlank()) {
@@ -118,15 +125,26 @@ public record SlotFragment(StorageSource.Slot slot) implements Fragment {
         return true;
     }
 
-    public <T> T getResource(Trick<?> trick, SpellContext ctx, VariantType<T> type) {
-        return slot().getSelfSlot(trick, ctx, type).getResource();
+    public <T> SingleSlotStorage<T> getStorage(Trick<?> trick, SpellContext ctx, VariantType<T> expectedVariantType) {
+        assertVariantType(trick, expectedVariantType);
+        return slot().getSelfSlot(trick, ctx, expectedVariantType);
     }
 
-    public long getAmount(Trick<?> trick, SpellContext ctx, VariantType<?> type) {
-        return slot().getSelfSlot(trick, ctx, type).getAmount();
+    public SingleSlotStorage<?> getStorage(Trick<?> trick, SpellContext ctx) {
+        return slot().getSelfSlot(trick, ctx, variantType);
+    }
+
+    public <T> T getResource(Trick<?> trick, SpellContext ctx, VariantType<T> expectedVariantType) {
+        assertVariantType(trick, expectedVariantType);
+        return slot().getSelfSlot(trick, ctx, expectedVariantType).getResource();
+    }
+
+    public long getAmount(Trick<?> trick, SpellContext ctx) {
+        return slot().getSelfSlot(trick, ctx, variantType).getAmount();
     }
 
     public Item getItem(Trick<?> trick, SpellContext ctx) throws BlunderException {
+        assertVariantType(trick, VariantType.ITEM);
         return getResource(trick, ctx, VariantType.ITEM).getItem();
     }
 
@@ -144,7 +162,11 @@ public record SlotFragment(StorageSource.Slot slot) implements Fragment {
 
     public float getMoveCost(Trick<?> trickSource, SpellContext ctx, Vector3dc pos, long amount) throws BlunderException {
         return getSourcePos(trickSource, ctx)
-            .map(sourcePos -> (float) (pos.distance(sourcePos) * amount * 0.5))
-            .orElse(0f);
+                .map(sourcePos -> (float) (pos.distance(sourcePos) * amount * 0.5))
+                .orElse(0f);
+    }
+
+    public void incurCost(Trick<?> trick, SpellContext ctx, Vector3dc pos, long amountMoved) {
+        ctx.useMana(trick, getMoveCost(trick, ctx, pos, amountMoved));
     }
 }

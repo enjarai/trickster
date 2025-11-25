@@ -15,6 +15,6 @@ public class GetCountInSlotTrick extends Trick<GetCountInSlotTrick> {
     }
 
     public NumberFragment run(SpellContext ctx, SlotFragment slot) {
-        return new NumberFragment(slot.getAmount(this, ctx, VariantType.ITEM));
+        return new NumberFragment(slot.getAmount(this, ctx));
     }
 }
