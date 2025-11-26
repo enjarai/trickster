@@ -5,7 +5,10 @@ import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.net.LeftClickItemPacket;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.util.Hand;
+import net.minecraft.world.GameMode;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -22,6 +25,10 @@ public class MinecraftClientMixin {
 
     @Shadow
     private int itemUseCooldown;
+
+    @Shadow
+    @Nullable
+    public ClientPlayerInteractionManager interactionManager;
 
     // Cast the wand on left-click this allows for spamming left click which is the same as using an item normally.
     @Inject(method = "doAttack", at = @At(value = "HEAD"), cancellable = true)
@@ -55,8 +62,10 @@ public class MinecraftClientMixin {
 
     @Unique
     private void useItem(Hand hand) {
-        itemUseCooldown = 4;
-        player.swingHand(hand);
-        ModNetworking.CHANNEL.clientHandle().send(new LeftClickItemPacket(hand));
+        if (this.interactionManager.getCurrentGameMode() != GameMode.SPECTATOR) {
+            itemUseCooldown = 4;
+            player.swingHand(hand);
+            ModNetworking.CHANNEL.clientHandle().send(new LeftClickItemPacket(hand));
+        }
     }
 }
