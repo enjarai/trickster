@@ -13,20 +13,25 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class WandItem extends Item {
+public class WandItem extends Item implements LeftClickItem {
     public WandItem(Settings settings) {
         super(settings);
     }
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        return use(world, user, hand, true);
+    }
+
+    @Override
+    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand, Boolean rightClick) {
         var stack = user.getStackInHand(hand);
 
         if (!world.isClient()) {
             var component = stack.get(ModComponents.FRAGMENT);
             if (component != null) {
                 var spell = component.value() instanceof SpellPart part ? part : new SpellPart(component.value());
-                ModEntityComponents.CASTER.get(user).queueSpell(spell, List.of(BooleanFragment.TRUE));
+                ModEntityComponents.CASTER.get(user).queueSpell(spell, List.of(BooleanFragment.of(rightClick)));
             }
         }
 

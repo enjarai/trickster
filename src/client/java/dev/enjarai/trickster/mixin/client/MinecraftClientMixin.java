@@ -2,7 +2,7 @@ package dev.enjarai.trickster.mixin.client;
 
 import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.net.ModNetworking;
-import dev.enjarai.trickster.net.WandLeftClickPacket;
+import dev.enjarai.trickster.net.LeftClickItemPacket;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.util.Hand;
@@ -25,25 +25,25 @@ public class MinecraftClientMixin {
 
     // Cast the wand on left-click this allows for spamming left click which is the same as using an item normally.
     @Inject(method = "doAttack", at = @At(value = "HEAD"), cancellable = true)
-    private void wandLeftClickDetection(CallbackInfoReturnable<Boolean> cir) {
+    private void itemLeftClickDetection(CallbackInfoReturnable<Boolean> cir) {
         Hand hand = getHand();
-        if (player.getStackInHand(hand).isIn(ModItems.WANDS)) {
+        if (player.getStackInHand(hand).isIn(ModItems.LEFT_CLICK_USE)) {
             cir.setReturnValue(true);
-            castWand(hand);
+            useItem(hand);
         }
     }
 
     // Cast the wand when holding left-click uses the same cooldown as using an item normally
     @Inject(method = "handleBlockBreaking", at = @At(value = "HEAD"), cancellable = true)
-    private void wandLeftClickHoldDetection(boolean breaking, CallbackInfo ci) {
+    private void itemLeftClickHoldDetection(boolean breaking, CallbackInfo ci) {
         if (!breaking) {
             return;
         }
         Hand hand = getHand();
-        if (player.getStackInHand(hand).isIn(ModItems.WANDS)) {
+        if (player.getStackInHand(hand).isIn(ModItems.LEFT_CLICK_USE)) {
             ci.cancel();
             if (itemUseCooldown == 0) {
-                castWand(hand);
+                useItem(hand);
             }
         }
     }
@@ -54,9 +54,9 @@ public class MinecraftClientMixin {
     }
 
     @Unique
-    private void castWand(Hand hand) {
+    private void useItem(Hand hand) {
         itemUseCooldown = 4;
         player.swingHand(hand);
-        ModNetworking.CHANNEL.clientHandle().send(new WandLeftClickPacket(hand));
+        ModNetworking.CHANNEL.clientHandle().send(new LeftClickItemPacket(hand));
     }
 }
