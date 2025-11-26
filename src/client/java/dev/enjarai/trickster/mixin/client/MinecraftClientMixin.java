@@ -27,7 +27,7 @@ public class MinecraftClientMixin {
     @Inject(method = "doAttack", at = @At(value = "HEAD"), cancellable = true)
     private void wandLeftClickDetection(CallbackInfoReturnable<Boolean> cir) {
         Hand hand = getHand();
-        if (player.getStackInHand(hand).getItem() == ModItems.WAND) {
+        if (player.getStackInHand(hand).isIn(ModItems.WANDS)) {
             cir.setReturnValue(true);
             castWand(hand);
         }
@@ -40,7 +40,7 @@ public class MinecraftClientMixin {
             return;
         }
         Hand hand = getHand();
-        if (player.getStackInHand(hand).getItem() == ModItems.WAND) {
+        if (player.getStackInHand(hand).isIn(ModItems.WANDS)) {
             ci.cancel();
             if (itemUseCooldown == 0) {
                 castWand(hand);
