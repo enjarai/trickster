@@ -24,7 +24,7 @@ public class WandItem extends Item implements LeftClickItem {
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand, Boolean rightClick) {
+    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand, boolean rightClick) {
         var stack = user.getStackInHand(hand);
 
         if (!world.isClient()) {

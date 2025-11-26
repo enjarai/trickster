@@ -7,5 +7,5 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
 public interface LeftClickItem {
-    TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand, Boolean rightClick);
+    TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand, boolean rightClick);
 }
