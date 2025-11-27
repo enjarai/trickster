@@ -7,6 +7,7 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.trick.basic.*;
 import dev.enjarai.trickster.spell.trick.block.*;
 import dev.enjarai.trickster.spell.trick.bool.*;
+import dev.enjarai.trickster.spell.trick.color.ItemToColorTrick;
 import dev.enjarai.trickster.spell.trick.debug.DebugLogTrick;
 import dev.enjarai.trickster.spell.trick.dimension.GetDimensionTrick;
 import dev.enjarai.trickster.spell.trick.entity.*;
@@ -44,6 +45,7 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.SimpleRegistry;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryEntryInfo;
+import net.minecraft.util.DyeColor;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
@@ -175,6 +177,7 @@ public class Tricks {
     public static final ArcTanTrick ARCTAN = register("arctan", new ArcTanTrick());
     public static final ArcTan2Trick ARCTAN2 = register("arctan2", new ArcTan2Trick());
     public static final AbsTrick ABS = register("abs", new AbsTrick());
+    public static final AvgTrick AVG = register("avg", new AvgTrick());
 
     // Vector
     public static final ExtractXTrick EXTRACT_X = register("extract_x", new ExtractXTrick());
@@ -303,6 +306,10 @@ public class Tricks {
     public static final PushManaTrick PUSH_MANA = register("push_mana", new PushManaTrick());
     public static final PullManaTrick PULL_MANA = register("pull_mana", new PullManaTrick());
     public static final DrainMatterTrick DRAIN_MATTER = register("drain_matter", new DrainMatterTrick());
+
+    // Color
+    public static final ItemToColorTrick ITEM_TO_COLOR = register("item_to_color", new ItemToColorTrick(Pattern.of(0, 4, 2, 1, 0, 7, 2), DyeColor::getEntityColor));
+    public static final ItemToColorTrick ITEM_TO_GLOW_COLOR = register("item_to_glow_color", new ItemToColorTrick(Pattern.of(0, 4, 2, 1, 0, 7, 2, 0), DyeColor::getSignColor));
 
     static {
         if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
