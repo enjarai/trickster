@@ -33,6 +33,7 @@ import dev.enjarai.trickster.spell.trick.projectile.SummonTntTrick;
 import dev.enjarai.trickster.spell.trick.raycast.RaycastBlockPosTrick;
 import dev.enjarai.trickster.spell.trick.raycast.RaycastBlockSideTrick;
 import dev.enjarai.trickster.spell.trick.raycast.RaycastEntityTrick;
+import dev.enjarai.trickster.spell.trick.raycast.RaycastPosTrick;
 import dev.enjarai.trickster.spell.trick.tree.*;
 import dev.enjarai.trickster.spell.trick.vector.*;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
@@ -96,6 +97,7 @@ public class Tricks {
     // Basic
     public static final OnePonyTrick TWO = register("two", new OnePonyTrick());
     public static final RevealTrick REVEAL = register("reveal", new RevealTrick());
+    public static final RevealActionBarTrick REVEAL_ACTION_BAR = register("reveal_action_bar", new RevealActionBarTrick());
     public static final ReadSpellTrick READ_SPELL = register("read_spell", new ReadSpellTrick());
     public static final WriteSpellTrick WRITE_SPELL = register("write_spell", new WriteSpellTrick());
     public static final ClearSpellTrick CLEAR_SPELL_TRICK = register("clear_spell", new ClearSpellTrick());
@@ -129,7 +131,8 @@ public class Tricks {
     public static final BlockingReflectionTrick BLOCKING_REFLECTION = register("blocking_reflection", new BlockingReflectionTrick());
     public static final GetPlayerFoodTrick GET_PLAYER_FOOD = register("get_player_food", new GetPlayerFoodTrick());
     public static final GetPlayerSaturationTrick GET_PLAYER_SATURATION = register("get_player_saturation", new GetPlayerSaturationTrick());
-    public static final RaycastBlockPosTrick RAYCAST = register("raycast", new RaycastBlockPosTrick());
+    public static final RaycastBlockPosTrick RAYCAST_BLOCK = register("raycast_block", new RaycastBlockPosTrick());
+    public static final RaycastPosTrick RAYCAST_POS = register("raycast_pos", new RaycastPosTrick());
     public static final RaycastBlockSideTrick RAYCAST_SIDE = register("raycast_side", new RaycastBlockSideTrick());
     public static final RaycastEntityTrick RAYCAST_ENTITY = register("raycast_entity", new RaycastEntityTrick());
     public static final AddVelocityTrick ADD_VELOCITY = register("add_velocity", new AddVelocityTrick());
@@ -266,6 +269,7 @@ public class Tricks {
     public static final BlockFromItemTrick BLOCK_FROM_ITEM = register("block_from_item", new BlockFromItemTrick());
     public static final ItemFromBlockTrick ITEM_FROM_BLOCK = register("item_from_block", new ItemFromBlockTrick());
     public static final GetMaxCount GET_MAX_COUNT = register("get_max_count", new GetMaxCount());
+    public static final GetEquipmentTrick GET_EQUIPMENT = register("get_equipment", new GetEquipmentTrick());
 
     // Projectile
     public static final SummonArrowTrick SUMMON_ARROW = register("summon_arrow", new SummonArrowTrick());

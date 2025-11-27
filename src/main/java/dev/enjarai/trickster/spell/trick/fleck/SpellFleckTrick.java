@@ -4,7 +4,6 @@ import dev.enjarai.trickster.fleck.SpellFleck;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.SpellPart;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
@@ -25,8 +24,7 @@ public class SpellFleckTrick extends AbstractFleckTrick<SpellFleckTrick> {
     }
 
     public NumberFragment run(SpellContext ctx, NumberFragment id, VectorFragment position, VectorFragment facing, SpellPart spell, Optional<NumberFragment> size,
-            Optional<List<EntityFragment>> targets)
-            throws BlunderException {
+            Optional<List<EntityFragment>> targets) {
         return display(ctx, id, new SpellFleck(
                 position.vector().get(new Vector3f()),
                 facing.vector().get(new Vector3f()),

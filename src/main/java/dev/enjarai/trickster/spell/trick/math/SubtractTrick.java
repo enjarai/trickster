@@ -2,7 +2,6 @@ package dev.enjarai.trickster.spell.trick.math;
 
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.SubtractableFragment;
 import dev.enjarai.trickster.spell.trick.DistortionTrick;
 import dev.enjarai.trickster.spell.type.ArgType;
@@ -17,7 +16,7 @@ public class SubtractTrick extends DistortionTrick<SubtractTrick> {
                 Signature.of(ArgType.simple(SubtractableFragment.class).variadicOfArg().require().unpack(), SubtractTrick::run, RetType.simple(SubtractableFragment.class)));
     }
 
-    public SubtractableFragment run(SpellContext ctx, List<SubtractableFragment> fragments) throws BlunderException {
+    public SubtractableFragment run(SpellContext ctx, List<SubtractableFragment> fragments) {
         SubtractableFragment result = null;
 
         for (var value : fragments) {

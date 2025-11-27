@@ -2,7 +2,6 @@ package dev.enjarai.trickster.spell.trick.inventory;
 
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.*;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.MissingItemBlunder;
 import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
@@ -20,7 +19,7 @@ public class ImportTrick extends Trick<ImportTrick> {
         super(Pattern.of(3, 0, 5, 6, 3, 2, 5, 8, 3), Signature.of(FragmentType.ITEM_TYPE, ArgType.ANY.variadicOfArg(), ImportTrick::run, RetType.ANY.executor()));
     }
 
-    public SpellExecutor run(SpellContext ctx, ItemTypeFragment itemType, List<Fragment> args) throws BlunderException {
+    public SpellExecutor run(SpellContext ctx, ItemTypeFragment itemType, List<Fragment> args) {
         var stack = ctx.getStack(this, Optional.empty(), s -> s.isOf(itemType.item()) && s.contains(ModComponents.FRAGMENT));
 
         if (stack.isEmpty()) {

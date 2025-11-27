@@ -2,7 +2,6 @@ package dev.enjarai.trickster.spell.trick.basic;
 
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
@@ -14,7 +13,7 @@ public class HotbarReflectionTrick extends Trick<HotbarReflectionTrick> {
         super(Pattern.of(6, 4, 8, 5, 4, 3, 6, 8), Signature.of(HotbarReflectionTrick::run, FragmentType.NUMBER));
     }
 
-    public NumberFragment run(SpellContext ctx) throws BlunderException {
+    public NumberFragment run(SpellContext ctx) {
         return new NumberFragment(
                 ctx.source().getPlayer()
                         .orElseThrow(() -> new NoPlayerBlunder(this)).getInventory().selectedSlot

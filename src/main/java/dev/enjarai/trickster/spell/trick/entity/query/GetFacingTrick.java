@@ -2,7 +2,6 @@ package dev.enjarai.trickster.spell.trick.entity.query;
 
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import net.minecraft.entity.Entity;
@@ -14,7 +13,7 @@ public class GetFacingTrick extends AbstractEntityQueryTrick<Entity, VectorFragm
     }
 
     @Override
-    protected VectorFragment run(SpellContext ctx, Entity entity) throws BlunderException {
+    protected VectorFragment run(SpellContext ctx, Entity entity) {
         var facing = entity.getRotationVector();
 
         return new VectorFragment(new Vector3d(facing.x, facing.y, facing.z));

@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "amount": 1,
+  "operation": "set",
+  "order": 1050,
+  "icon": "trickster:gui/slot/collar",
+  "validators": [
+    "accessories:tag",
+    "accessories:component"
+  ]
+}

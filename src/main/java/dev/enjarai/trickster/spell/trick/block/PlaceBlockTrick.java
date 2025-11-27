@@ -27,21 +27,21 @@ public class PlaceBlockTrick extends Trick<PlaceBlockTrick> {
         overload(Signature.of(FragmentType.VECTOR, FragmentType.BLOCK_TYPE, FragmentType.VECTOR.optionalOfArg(), FragmentType.VECTOR.optionalOfArg(), PlaceBlockTrick::placeType, FragmentType.VECTOR));
     }
 
-    public VectorFragment placeSlot(SpellContext ctx, VectorFragment pos, SlotFragment slot, Optional<VectorFragment> facing, Optional<VectorFragment> side) throws BlunderException {
+    public VectorFragment placeSlot(SpellContext ctx, VectorFragment pos, SlotFragment slot, Optional<VectorFragment> facing, Optional<VectorFragment> side) {
         expectCanBuild(ctx, pos.toBlockPos());
         var stack = ctx.getStack(this, Optional.of(slot), item -> item.getItem() instanceof BlockItem)
                 .orElseThrow(() -> new MissingItemBlunder(this));
         return place(ctx, pos, stack, facing, side);
     }
 
-    public VectorFragment placeType(SpellContext ctx, VectorFragment pos, BlockTypeFragment type, Optional<VectorFragment> facing, Optional<VectorFragment> side) throws BlunderException {
+    public VectorFragment placeType(SpellContext ctx, VectorFragment pos, BlockTypeFragment type, Optional<VectorFragment> facing, Optional<VectorFragment> side) {
         expectCanBuild(ctx, pos.toBlockPos());
         var stack = ctx.getStack(this, Optional.empty(), item -> item.getItem() instanceof BlockItem blockItem && blockItem.getBlock() == type.block())
                 .orElseThrow(() -> new MissingItemBlunder(this));
         return place(ctx, pos, stack, facing, side);
     }
 
-    public VectorFragment place(SpellContext ctx, VectorFragment pos, ItemStack stack, Optional<VectorFragment> facingOptional, Optional<VectorFragment> sideOptional) throws BlunderException {
+    public VectorFragment place(SpellContext ctx, VectorFragment pos, ItemStack stack, Optional<VectorFragment> facingOptional, Optional<VectorFragment> sideOptional) {
         var world = ctx.source().getWorld();
         var blockPos = pos.toBlockPos();
 

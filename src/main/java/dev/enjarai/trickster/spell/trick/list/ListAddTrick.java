@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableList;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.trick.DistortionTrick;
 import dev.enjarai.trickster.spell.type.ArgType;
 import dev.enjarai.trickster.spell.type.RetType;
@@ -17,7 +16,7 @@ public class ListAddTrick extends DistortionTrick<ListAddTrick> {
         super(Pattern.of(0, 4, 6, 3, 0, 2, 5, 8), Signature.of(ArgType.ANY.listOfArg(), ArgType.ANY.variadicOfArg(), ListAddTrick::run, RetType.ANY.listOfRet()));
     }
 
-    public List<Fragment> run(SpellContext ctx, List<Fragment> list, List<Fragment> toAdd) throws BlunderException {
+    public List<Fragment> run(SpellContext ctx, List<Fragment> list, List<Fragment> toAdd) {
         return ImmutableList.<Fragment>builder().addAll(list).addAll(toAdd).build();
     }
 }

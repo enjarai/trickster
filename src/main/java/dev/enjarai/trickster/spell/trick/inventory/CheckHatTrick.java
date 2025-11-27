@@ -4,7 +4,6 @@ import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
@@ -21,7 +20,7 @@ public class CheckHatTrick extends Trick<CheckHatTrick> {
         super(Pattern.of(3, 0, 2, 5, 8, 6, 3, 1, 5, 7, 3), Signature.of(CheckHatTrick::run, FragmentType.NUMBER.optionalOfRet()));
     }
 
-    public Optional<NumberFragment> run(SpellContext ctx) throws BlunderException {
+    public Optional<NumberFragment> run(SpellContext ctx) {
         var player = ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this));
         ItemStack hatStack;
 

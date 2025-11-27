@@ -3,7 +3,6 @@ package dev.enjarai.trickster.spell.trick.misc;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.TypeFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
@@ -15,7 +14,7 @@ public class TypeFragmentTrick extends Trick<TypeFragmentTrick> {
         super(Pattern.of(3, 4, 0, 1, 4, 5), Signature.of(ArgType.ANY, TypeFragmentTrick::run, FragmentType.TYPE));
     }
 
-    public TypeFragment run(SpellContext ctx, Fragment input) throws BlunderException {
+    public TypeFragment run(SpellContext ctx, Fragment input) {
         return new TypeFragment(input.type());
     }
 }

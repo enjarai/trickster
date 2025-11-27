@@ -6,7 +6,6 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlockTooHardBlunder;
 import dev.enjarai.trickster.spell.blunder.BlockUnoccupiedBlunder;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
@@ -17,7 +16,7 @@ public class BreakBlockTrick extends Trick<BreakBlockTrick> {
         super(Pattern.of(1, 5, 8, 6, 4, 1, 0, 3, 6), Signature.of(FragmentType.VECTOR, BreakBlockTrick::run, FragmentType.VECTOR));
     }
 
-    public VectorFragment run(SpellContext ctx, VectorFragment pos) throws BlunderException {
+    public VectorFragment run(SpellContext ctx, VectorFragment pos) {
         var blockPos = pos.toBlockPos();
         var world = ctx.source().getWorld();
 

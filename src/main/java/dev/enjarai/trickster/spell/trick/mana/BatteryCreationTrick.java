@@ -5,7 +5,6 @@ import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.item.KnotItem;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.ItemInvalidBlunder;
 import dev.enjarai.trickster.spell.blunder.MissingItemBlunder;
 import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
@@ -29,8 +28,7 @@ public class BatteryCreationTrick extends Trick<BatteryCreationTrick> {
                 FragmentType.SLOT.optionalOfArg(), BatteryCreationTrick::run, FragmentType.VOID));
     }
 
-    public VoidFragment run(SpellContext ctx, Optional<SlotFragment> slot1, Optional<SlotFragment> slot2)
-            throws BlunderException {
+    public VoidFragment run(SpellContext ctx, Optional<SlotFragment> slot1, Optional<SlotFragment> slot2) {
         var sourceSlot = slot1
                 .orElseGet(() -> {
                     var player = ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this));

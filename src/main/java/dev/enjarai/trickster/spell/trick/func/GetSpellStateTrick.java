@@ -4,7 +4,6 @@ import java.util.Optional;
 
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.IncompatibleSourceBlunder;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
@@ -17,7 +16,7 @@ public class GetSpellStateTrick extends Trick<GetSpellStateTrick> {
                 Signature.of(FragmentType.NUMBER.optionalOfArg(), GetSpellStateTrick::run, FragmentType.NUMBER.optionalOfRet()));
     }
 
-    public Optional<NumberFragment> run(SpellContext ctx, Optional<NumberFragment> maybeSpellSlot) throws BlunderException {
+    public Optional<NumberFragment> run(SpellContext ctx, Optional<NumberFragment> maybeSpellSlot) {
         var spellSlot = maybeSpellSlot.orElse(new NumberFragment(ctx.data().getSlot().orElseThrow(() -> new IncompatibleSourceBlunder(this))));
         var manager = ctx.source().getExecutionManager().orElseThrow(() -> new IncompatibleSourceBlunder(this));
         return manager.getSpellState(spellSlot.asInt()).map(NumberFragment::new);

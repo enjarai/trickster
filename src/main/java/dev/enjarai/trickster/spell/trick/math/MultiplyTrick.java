@@ -2,7 +2,6 @@ package dev.enjarai.trickster.spell.trick.math;
 
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.MultiplicableFragment;
 import dev.enjarai.trickster.spell.trick.DistortionTrick;
 import dev.enjarai.trickster.spell.type.ArgType;
@@ -17,7 +16,7 @@ public class MultiplyTrick extends DistortionTrick<MultiplyTrick> {
                 Signature.of(ArgType.simple(MultiplicableFragment.class).variadicOfArg().require().unpack(), MultiplyTrick::run, RetType.simple(MultiplicableFragment.class)));
     }
 
-    public MultiplicableFragment run(SpellContext ctx, List<MultiplicableFragment> fragments) throws BlunderException {
+    public MultiplicableFragment run(SpellContext ctx, List<MultiplicableFragment> fragments) {
         MultiplicableFragment result = null;
 
         for (var value : fragments) {

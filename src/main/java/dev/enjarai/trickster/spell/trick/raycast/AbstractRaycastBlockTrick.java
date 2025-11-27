@@ -19,7 +19,7 @@ public abstract class AbstractRaycastBlockTrick extends AbstractRaycastTrick<Vec
         super(pattern, FragmentType.VECTOR);
     }
 
-    public Optional<VectorFragment> run(SpellContext ctx, Optional<Entity> entity, Vec3d position, Vec3d direction, Optional<BooleanFragment> bool) throws BlunderException {
+    public Optional<VectorFragment> run(SpellContext ctx, Optional<Entity> entity, Vec3d position, Vec3d direction, Optional<BooleanFragment> bool) {
         boolean includeFluids = bool.orElse(BooleanFragment.FALSE).asBoolean();
 
         return activate(

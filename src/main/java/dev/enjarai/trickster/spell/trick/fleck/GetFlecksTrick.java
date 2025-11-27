@@ -3,7 +3,6 @@ package dev.enjarai.trickster.spell.trick.fleck;
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
 import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
@@ -20,7 +19,7 @@ public class GetFlecksTrick extends Trick<GetFlecksTrick> {
         super(Pattern.of(0, 4, 8, 7, 4, 1, 2, 4, 6), Signature.of(FragmentType.ENTITY.optionalOfArg(), GetFlecksTrick::run, FragmentType.NUMBER.listOfRet())); // bluetooth symbol
     }
 
-    public List<NumberFragment> run(SpellContext ctx, Optional<EntityFragment> entity) throws BlunderException {
+    public List<NumberFragment> run(SpellContext ctx, Optional<EntityFragment> entity) {
         return ModEntityComponents.FLECKS.get(
                 entity
                         .map(fragment -> fragment.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this)))

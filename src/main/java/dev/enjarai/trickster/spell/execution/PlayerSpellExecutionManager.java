@@ -173,8 +173,4 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
 
         return false;
     }
-
-    public interface ExecutorCallback {
-        void callTheBack(int index, SpellExecutor executor);
-    }
 }

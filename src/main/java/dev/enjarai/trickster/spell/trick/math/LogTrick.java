@@ -5,7 +5,6 @@ import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.trick.DistortionTrick;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.type.Signature;
 
 public class LogTrick extends DistortionTrick<LogTrick> {
@@ -13,7 +12,7 @@ public class LogTrick extends DistortionTrick<LogTrick> {
         super(Pattern.of(0, 7, 2), Signature.of(FragmentType.NUMBER, FragmentType.NUMBER, LogTrick::math, FragmentType.NUMBER));
     }
 
-    public NumberFragment math(SpellContext ctx, NumberFragment logBase, NumberFragment number) throws BlunderException {
+    public NumberFragment math(SpellContext ctx, NumberFragment logBase, NumberFragment number) {
         return new NumberFragment(Math.log(number.number()) / Math.log(logBase.number()));
     }
 }

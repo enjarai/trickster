@@ -2,7 +2,6 @@ package dev.enjarai.trickster.spell.trick.projectile;
 
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.MissingItemBlunder;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
@@ -20,7 +19,7 @@ public class SummonFireballTrick extends Trick<SummonFireballTrick> {
         super(Pattern.of(1, 4, 0, 3, 6, 7, 8, 5, 2, 1, 5, 4, 8, 6, 4, 3), Signature.of(FragmentType.VECTOR, FragmentType.SLOT.optionalOfArg(), SummonFireballTrick::run, FragmentType.ENTITY));
     }
 
-    public EntityFragment run(SpellContext ctx, VectorFragment pos, Optional<SlotFragment> optionalSlot) throws BlunderException {
+    public EntityFragment run(SpellContext ctx, VectorFragment pos, Optional<SlotFragment> optionalSlot) {
         var stack = ctx.getStack(this, optionalSlot, s -> s.isOf(Items.FIRE_CHARGE)).orElseThrow(() -> new MissingItemBlunder(this));
         var world = ctx.source().getWorld();
 

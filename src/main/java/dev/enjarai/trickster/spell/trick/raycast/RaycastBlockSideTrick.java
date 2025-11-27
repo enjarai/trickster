@@ -1,7 +1,6 @@
 package dev.enjarai.trickster.spell.trick.raycast;
 
 import dev.enjarai.trickster.spell.Pattern;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -14,7 +13,7 @@ public class RaycastBlockSideTrick extends AbstractRaycastBlockTrick {
     }
 
     @Override
-    public Optional<VectorFragment> activate(BlockHitResult hit) throws BlunderException {
+    public Optional<VectorFragment> activate(BlockHitResult hit) {
         return hit.getType() == HitResult.Type.MISS ? Optional.empty() : Optional.of(VectorFragment.of(hit.getSide().getVector()));
     }
 }

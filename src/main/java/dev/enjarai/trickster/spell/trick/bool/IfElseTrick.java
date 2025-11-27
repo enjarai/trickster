@@ -3,7 +3,6 @@ package dev.enjarai.trickster.spell.trick.bool;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.trick.DistortionTrick;
@@ -19,7 +18,7 @@ public class IfElseTrick extends DistortionTrick<IfElseTrick> {
         super(Pattern.of(3, 4, 0, 2, 4, 5), Signature.of(FragmentType.BOOLEAN.pairedWith(ArgType.ANY).variadicOfArg(), ArgType.ANY, IfElseTrick::run, RetType.ANY));
     }
 
-    public Fragment run(SpellContext ctx, List<Tuple2<BooleanFragment, Fragment>> args, Fragment fallback) throws BlunderException {
+    public Fragment run(SpellContext ctx, List<Tuple2<BooleanFragment, Fragment>> args, Fragment fallback) {
         Fragment result = null;
 
         for (var pair : args) {
