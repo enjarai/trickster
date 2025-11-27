@@ -11,6 +11,7 @@ import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.fragment.slot.ItemTypeFragment;
 import dev.enjarai.trickster.spell.fragment.slot.SlotFragment;
+import dev.enjarai.trickster.spell.fragment.slot.ContainerFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.ArgType;
 import dev.enjarai.trickster.spell.type.RetType;
@@ -87,6 +88,7 @@ public class FragmentType<T extends Fragment> implements RetType<T>, ArgType<T> 
     public static final FragmentType<ZalgoFragment> ZALGO = register("zalgo", ZalgoFragment.ENDEC, 0x444444);
     public static final FragmentType<ItemTypeFragment> ITEM_TYPE = register("item_type", ItemTypeFragment.ENDEC, 0x2266aa);
     public static final FragmentType<SlotFragment> SLOT = register("slot", SlotFragment.ENDEC, 0x77aaee);
+    public static final FragmentType<ContainerFragment> CONTAINER = register("container", ContainerFragment.ENDEC, 0xbbbbff);
     public static final FragmentType<BlockTypeFragment> BLOCK_TYPE = register("block_type", BlockTypeFragment.ENDEC, 0x44aa33);
     public static final FragmentType<EntityTypeFragment> ENTITY_TYPE = register("entity_type", EntityTypeFragment.ENDEC, 0x8877bb);
     public static final FragmentType<DimensionFragment> DIMENSION = register("dimension", DimensionFragment.ENDEC, 0xdd55bb);

@@ -3,6 +3,7 @@ package dev.enjarai.trickster.spell.fragment.slot;
 import dev.enjarai.trickster.Trickster;
 import io.wispforest.endec.Endec;
 import io.wispforest.owo.serialization.endec.MinecraftEndecs;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.minecraft.util.Identifier;
 
@@ -14,6 +15,7 @@ public record VariantType<T>(Identifier id) {
     public static final Endec<VariantType<?>> ENDEC = MinecraftEndecs.IDENTIFIER.xmap(registry::get, VariantType::id);
 
     public static final VariantType<ItemVariant> ITEM = register(Trickster.id("item"));
+    public static final VariantType<FluidVariant> FLUID = register(Trickster.id("fluid"));
 
     public static <T> VariantType<T> register(Identifier id) {
         var type = new VariantType<T>(id);

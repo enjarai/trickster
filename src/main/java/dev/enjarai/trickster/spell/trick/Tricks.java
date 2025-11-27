@@ -260,14 +260,16 @@ public class Tricks {
     public static final GetItemInSlotTrick GET_ITEM_IN_SLOT = register("get_item_in_slot", new GetItemInSlotTrick());
     public static final GetManaInSlotTrick GET_MANA_IN_SLOT = register("get_mana_in_slot", new GetManaInSlotTrick());
     public static final GetMaxManaInSlotTrick GET_MAX_MANA_IN_SLOT = register("get_max_mana_in_slot", new GetMaxManaInSlotTrick());
-    public static final GetInventorySlotTrick GET_INVENTORY_SLOT = register("get_inventory_slot", new GetInventorySlotTrick(VariantType.ITEM));
+    public static final GetSlotTrick GET_ITEM_SLOT = register("get_item_slot", new GetSlotTrick(Pattern.of(4, 2, 1, 0, 4, 7, 6, 3, 4, 5, 8, 7, 2, 0, 7), VariantType.ITEM));
+    public static final GetSlotTrick GET_FLUID_SLOT = register("get_fluid_slot", new GetSlotTrick(Pattern.of(6, 0, 1, 2, 8, 7, 6, 3, 4, 5, 8, 4, 6), VariantType.FLUID));
+    public static final GetContainerTrick GET_FLUID_CONTAINER = register("get_fluid_container", new GetContainerTrick(Pattern.of(0, 6, 7, 8, 5, 4, 3, 6, 4, 8, 2), VariantType.FLUID));
     public static final GetInventorySizeTrick GET_INVENTORY_SIZE = register("get_inventory_size", new GetInventorySizeTrick(VariantType.ITEM));
     public static final GetInventorySlotsTrick<ItemVariant, ItemTypeFragment> GET_INVENTORY_SLOTS = register("get_inventory_slots",
             new GetInventorySlotsTrick<>(VariantType.ITEM, FragmentType.ITEM_TYPE));
     public static final GetCountInSlotTrick GET_COUNT_IN_SLOT = register("get_count_in_slot", new GetCountInSlotTrick());
     public static final DropStackFromSlotTrick DROP_STACK_FROM_SLOT = register("drop_stack_from_slot", new DropStackFromSlotTrick());
     public static final SwapSlotTrick SWAP_SLOT = register("swap_slot", new SwapSlotTrick());
-    public static final MoveStackTrick MOVE_STACK = register("move_stack", new MoveStackTrick());
+    public static final MoveResourceTrick MOVE_STACK = register("move_stack", new MoveResourceTrick());
     public static final BlockFromItemTrick BLOCK_FROM_ITEM = register("block_from_item", new BlockFromItemTrick());
     public static final ItemFromBlockTrick ITEM_FROM_BLOCK = register("item_from_block", new ItemFromBlockTrick());
     public static final GetMaxCount GET_MAX_COUNT = register("get_max_count", new GetMaxCount());

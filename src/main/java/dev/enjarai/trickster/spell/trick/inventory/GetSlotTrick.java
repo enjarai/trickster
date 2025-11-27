@@ -10,14 +10,14 @@ import dev.enjarai.trickster.spell.fragment.slot.VariantType;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.Signature;
 
-public class GetInventorySlotTrick extends Trick<GetInventorySlotTrick> {
+public class GetSlotTrick extends Trick<GetSlotTrick> {
     private final VariantType<?> variantType;
 
-    public GetInventorySlotTrick(VariantType<?> variantType) {
-        super(Pattern.of(4, 2, 1, 0, 4, 7, 6, 3, 4, 5, 8, 7, 2, 0, 7), Signature.of(FragmentType.NUMBER, GetInventorySlotTrick::fromCaster, FragmentType.SLOT));
+    public GetSlotTrick(Pattern pattern, VariantType<?> variantType) {
+        super(pattern, Signature.of(FragmentType.NUMBER, GetSlotTrick::fromCaster, FragmentType.SLOT));
         this.variantType = variantType;
-        overload(Signature.of(FragmentType.NUMBER, FragmentType.VECTOR, GetInventorySlotTrick::fromVector, FragmentType.SLOT));
-        overload(Signature.of(FragmentType.NUMBER, FragmentType.ENTITY, GetInventorySlotTrick::fromEntity, FragmentType.SLOT));
+        overload(Signature.of(FragmentType.NUMBER, FragmentType.VECTOR, GetSlotTrick::fromVector, FragmentType.SLOT));
+        overload(Signature.of(FragmentType.NUMBER, FragmentType.ENTITY, GetSlotTrick::fromEntity, FragmentType.SLOT));
     }
 
     public SlotFragment fromCaster(SpellContext ctx, NumberFragment slot) {

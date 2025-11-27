@@ -15,7 +15,6 @@ import org.joml.Vector3dc;
 import com.mojang.datafixers.util.Either;
 
 import dev.enjarai.trickster.EndecTomfoolery;
-import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.*;
 import dev.enjarai.trickster.spell.trick.Trick;
@@ -28,7 +27,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 
-public record SlotFragment(StorageSource.Slot slot, VariantType<?> variantType) implements Fragment {
+public record SlotFragment(StorageSource.Slot slot, VariantType<?> variantType) implements StorageFragment {
 
     public static final StructEndec<SlotFragment> V1_ENDEC = StructEndecBuilder.of(
             Endec.INT.fieldOf("slot", f -> {
@@ -42,7 +41,7 @@ public record SlotFragment(StorageSource.Slot slot, VariantType<?> variantType) 
     public static final StructEndec<SlotFragment> ENDEC = EndecTomfoolery.backwardsCompat(
             StructEndecBuilder.of(
                     StorageSource.Slot.ENDEC.fieldOf("slot", SlotFragment::slot),
-                    VariantType.ENDEC.fieldOf("variantType", SlotFragment::variantType),
+                    VariantType.ENDEC.fieldOf("variant_type", SlotFragment::variantType),
                     SlotFragment::new
             ),
             V1_ENDEC
@@ -85,12 +84,6 @@ public record SlotFragment(StorageSource.Slot slot, VariantType<?> variantType) 
         }
 
         return slots;
-    }
-
-    public void assertVariantType(Trick<?> trick, VariantType<?> variantType) {
-        if (variantType != variantType()) {
-            throw new InvalidSlotBlunder(trick); // TODO maybe more info here
-        }
     }
 
     public boolean applyItemModifier(Trick<?> trick, SpellContext ctx, Function<ItemStack, ItemStack> modifier) {
@@ -148,6 +141,7 @@ public record SlotFragment(StorageSource.Slot slot, VariantType<?> variantType) 
         return getResource(trick, ctx, VariantType.ITEM).getItem();
     }
 
+    @Override
     public Optional<Vector3dc> getSourcePos(Trick<?> trick, SpellContext ctx) {
         if (slot().source() == StorageSource.Caster.INSTANCE) {
             return Optional.empty();
@@ -156,17 +150,8 @@ public record SlotFragment(StorageSource.Slot slot, VariantType<?> variantType) 
         }
     }
 
+    @Override
     public Vector3dc getSourceOrCasterPos(Trick<?> trick, SpellContext ctx) {
         return slot().source().getPosition(trick, ctx);
-    }
-
-    public float getMoveCost(Trick<?> trickSource, SpellContext ctx, Vector3dc pos, long amount) throws BlunderException {
-        return getSourcePos(trickSource, ctx)
-                .map(sourcePos -> (float) (pos.distance(sourcePos) * amount * 0.5))
-                .orElse(0f);
-    }
-
-    public void incurCost(Trick<?> trick, SpellContext ctx, Vector3dc pos, long amountMoved) {
-        ctx.useMana(trick, getMoveCost(trick, ctx, pos, amountMoved));
     }
 }
