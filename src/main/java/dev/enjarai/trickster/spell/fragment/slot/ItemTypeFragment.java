@@ -39,7 +39,7 @@ public record ItemTypeFragment(Item item) implements Fragment, ResourceVariantFr
     }
 
     @Override
-    public boolean slotContains(Trick<?> trick, SpellContext ctx, SlotFragment slotFragment) {
-        return slotFragment.getResource(trick, ctx, variantType()).getItem() == item;
+    public boolean resourceMatches(Trick<?> trick, SpellContext ctx, ItemVariant resource) {
+        return resource.getItem() == item;
     }
 }

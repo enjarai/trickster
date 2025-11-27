@@ -4,6 +4,7 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
 import dev.enjarai.trickster.spell.fragment.*;
+import dev.enjarai.trickster.spell.fragment.slot.ContainerFragment;
 import dev.enjarai.trickster.spell.fragment.slot.SlotFragment;
 import dev.enjarai.trickster.spell.fragment.slot.StorageSource;
 import dev.enjarai.trickster.spell.fragment.slot.VariantType;
@@ -18,6 +19,7 @@ public class GetSlotTrick extends Trick<GetSlotTrick> {
         this.variantType = variantType;
         overload(Signature.of(FragmentType.NUMBER, FragmentType.VECTOR, GetSlotTrick::fromVector, FragmentType.SLOT));
         overload(Signature.of(FragmentType.NUMBER, FragmentType.ENTITY, GetSlotTrick::fromEntity, FragmentType.SLOT));
+        overload(Signature.of(FragmentType.NUMBER, FragmentType.CONTAINER, GetSlotTrick::fromContainer, FragmentType.SLOT));
     }
 
     public SlotFragment fromCaster(SpellContext ctx, NumberFragment slot) {
@@ -30,5 +32,10 @@ public class GetSlotTrick extends Trick<GetSlotTrick> {
 
     public SlotFragment fromEntity(SpellContext ctx, NumberFragment slot, EntityFragment entity) {
         return new SlotFragment(new StorageSource.Slot(slot.asInt(), new StorageSource.Entity(entity.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this)).getUuid())), variantType);
+    }
+
+    public SlotFragment fromContainer(SpellContext ctx, NumberFragment slot, ContainerFragment container) {
+        container.assertVariantType(this, variantType);
+        return new SlotFragment(new StorageSource.Slot(slot.asInt(), container.source()), variantType);
     }
 }
