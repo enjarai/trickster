@@ -2,6 +2,7 @@ package dev.enjarai.trickster.spell.trick.fleck;
 
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.fleck.LineFleck;
+import dev.enjarai.trickster.fleck.ScalableFleck;
 import dev.enjarai.trickster.fleck.SpellFleck;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
@@ -31,25 +32,13 @@ public class ScaleFleckTrick extends AbstractFleckTrick<ScaleFleckTrick> {
     public NumberFragment scaleFleck(SpellContext ctx, NumberFragment id, NumberFragment size, Optional<List<EntityFragment>> targets) {
         var players = getPlayersInRangeOrTargets(ctx, targets);
         players.forEach(player -> {
-            var flecks = ((PlayerEntity) player).getComponent(ModEntityComponents.FLECKS).getFlecks();
+            var flecks = player.getComponent(ModEntityComponents.FLECKS).getFlecks();
             if (!flecks.containsKey(id.asInt())) {
                 throw new NoSuchFleckBlunder(this);
             }
             var fleck = flecks.get(id.asInt()).fleck();
-            if (fleck instanceof SpellFleck sfleck) {
-                display(ctx, id, new SpellFleck(
-                        sfleck.pos(),
-                        sfleck.facing(),
-                        sfleck.spell(),
-                        (float) size.number(),
-                        sfleck.roll()
-                ), Optional.of(List.of(EntityFragment.from(player))));
-            } else if (fleck instanceof LineFleck lfleck) {
-                display(ctx, id, new LineFleck(
-                        lfleck.pos(),
-                        lfleck.pos2(),
-                        (float) size.number()
-                ), Optional.of(List.of(EntityFragment.from(player))));
+            if (fleck instanceof ScalableFleck sfleck) {
+                display(ctx, id, sfleck.scaleFleck(size), Optional.of(List.of(EntityFragment.from(player))));
             }
         });
 

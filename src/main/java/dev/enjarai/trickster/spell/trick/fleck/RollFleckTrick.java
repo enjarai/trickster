@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.spell.trick.fleck;
 
 import dev.enjarai.trickster.cca.ModEntityComponents;
+import dev.enjarai.trickster.fleck.RollableFleck;
 import dev.enjarai.trickster.fleck.SpellFleck;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
@@ -30,19 +31,13 @@ public class RollFleckTrick extends AbstractFleckTrick<RollFleckTrick> {
     public NumberFragment rollFleck(SpellContext ctx, NumberFragment id, NumberFragment roll, Optional<List<EntityFragment>> targets) {
         var players = getPlayersInRangeOrTargets(ctx, targets);
         players.forEach(player -> {
-            var flecks = ((PlayerEntity) player).getComponent(ModEntityComponents.FLECKS).getFlecks();
+            var flecks = player.getComponent(ModEntityComponents.FLECKS).getFlecks();
             if (!flecks.containsKey(id.asInt())) {
                 throw new NoSuchFleckBlunder(this);
             }
             var fleck = flecks.get(id.asInt()).fleck();
-            if (fleck instanceof SpellFleck sfleck) {
-                display(ctx, id, new SpellFleck(
-                        sfleck.pos(),
-                        sfleck.facing(),
-                        sfleck.spell(),
-                        sfleck.size(),
-                        (float) roll.number()
-                ), Optional.of(List.of(EntityFragment.from(player))));
+            if (fleck instanceof RollableFleck rfleck) {
+                display(ctx, id, rfleck.rollFleck((float)(roll.number())), Optional.of(List.of(EntityFragment.from(player))));
             }
         });
 
