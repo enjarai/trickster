@@ -1,22 +1,19 @@
 package dev.enjarai.trickster.spell.fragment.slot;
 
-import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlunderException;
-import dev.enjarai.trickster.spell.blunder.InvalidStorageBlunder;
 import dev.enjarai.trickster.spell.trick.Trick;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import org.joml.Vector3dc;
 
 import java.util.Optional;
 
-public interface StorageFragment extends Fragment {
+public interface StorageFragment extends VariantingFragment {
     VariantType<?> variantType();
 
-    default void assertVariantType(Trick<?> trick, VariantType<?> variantType) {
-        if (variantType != variantType()) {
-            throw new InvalidStorageBlunder(trick); // TODO maybe more info here
-        }
-    }
+    Storage<?> getStorage(Trick<?> trick, SpellContext ctx);
+
+    <T> Storage<T> getStorage(Trick<?> trick, SpellContext ctx, VariantType<T> variantType);
 
     Optional<Vector3dc> getSourcePos(Trick<?> trick, SpellContext ctx);
 
@@ -24,7 +21,7 @@ public interface StorageFragment extends Fragment {
 
     default float getMoveCost(Trick<?> trickSource, SpellContext ctx, Vector3dc pos, long amount) throws BlunderException {
         return getSourcePos(trickSource, ctx)
-                .map(sourcePos -> (float) (pos.distance(sourcePos) * amount * 0.5))
+                .map(sourcePos -> (float) (pos.distance(sourcePos) * amount * 0.5) * variantType().costMultiplier())
                 .orElse(0f);
     }
 

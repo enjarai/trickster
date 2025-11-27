@@ -22,6 +22,14 @@ public class GetContainerTrick extends Trick<GetContainerTrick> {
         overload(Signature.of(FragmentType.ENTITY, GetContainerTrick::fromEntity, FragmentType.CONTAINER));
     }
 
+    public GetContainerTrick(Pattern pattern, VariantType<?> variantType, boolean allowEntities) {
+        super(pattern, Signature.of(FragmentType.VECTOR, GetContainerTrick::fromVector, FragmentType.CONTAINER));
+        this.variantType = variantType;
+        if (allowEntities) {
+            overload(Signature.of(FragmentType.ENTITY, GetContainerTrick::fromEntity, FragmentType.CONTAINER));
+        }
+    }
+
     public ContainerFragment fromCaster(SpellContext ctx) {
         return new ContainerFragment(StorageSource.Caster.INSTANCE, variantType);
     }
