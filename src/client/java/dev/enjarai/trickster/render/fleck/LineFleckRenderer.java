@@ -8,6 +8,7 @@ import net.minecraft.client.world.ClientWorld;
 import dev.enjarai.trickster.fleck.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ColorHelper;
+import net.minecraft.util.math.MathHelper;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -24,16 +25,19 @@ public class LineFleckRenderer implements FleckRenderer<LineFleck> {
 
         var pos1 = fleck.pos().get(new Vector3f());
         var pos2 = fleck.pos2().get(new Vector3f());
+        var size = fleck.size();
 
         if (lastFleck != null) {
             var oldPos1 = lastFleck.pos();
             var oldPos2 = lastFleck.pos2();
+            var oldSize = lastFleck.size();
             oldPos1.lerp(pos1, tickDelta, pos1);
             oldPos2.lerp(pos2, tickDelta, pos2);
+            size = MathHelper.lerp(tickDelta, oldSize, size);
         }
 
         var offset = pos2.sub(pos1, new Vector3f());
-        var step = offset.normalize().mul(LINE_SEGMENT_LENGTH);
+        var step = offset.normalize().mul(LINE_SEGMENT_LENGTH * size);
 
         var prev = pos1.get(new Vector3f());
         var cur = pos1.add(step, new Vector3f());
@@ -43,12 +47,12 @@ public class LineFleckRenderer implements FleckRenderer<LineFleck> {
         var camPos = context.camera().getPos().toVector3f();
 
         while (pos1.distance(pos2) >= pos1.distance(cur)) {
-            drawSegment(prev, cur, LINE_SEGMENT_WIDTH, matrices, buffer, argb, LightmapTextureManager.MAX_LIGHT_COORDINATE, camPos, 1.0f);
+            drawSegment(prev, cur, LINE_SEGMENT_WIDTH * size, matrices, buffer, argb, LightmapTextureManager.MAX_LIGHT_COORDINATE, camPos, 1.0f);
             prev.add(step);
             cur.add(step);
         }
 
-        drawSegment(prev, pos2, LINE_SEGMENT_WIDTH, matrices, buffer, argb, LightmapTextureManager.MAX_LIGHT_COORDINATE, camPos, prev.distance(pos2) / LINE_SEGMENT_LENGTH);
+        drawSegment(prev, pos2, LINE_SEGMENT_WIDTH * size, matrices, buffer, argb, LightmapTextureManager.MAX_LIGHT_COORDINATE, camPos, prev.distance(pos2) / LINE_SEGMENT_LENGTH);
     }
 
     private static void drawSegment(Vector3fc start, Vector3fc end, float width, MatrixStack matrices, VertexConsumer buffer, int argb, int light, Vector3f camPos, float uvfactor) {
