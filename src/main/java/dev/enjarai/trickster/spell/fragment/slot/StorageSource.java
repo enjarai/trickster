@@ -11,6 +11,7 @@ import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import io.wispforest.owo.serialization.endec.MinecraftEndecs;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.SlottedStorage;
@@ -99,8 +100,9 @@ public sealed interface StorageSource {
         @SuppressWarnings("unchecked")
         @Override
         public <T> Storage<T> getStorage(Trick<?> trick, SpellContext ctx, VariantType<T> variant) throws BlunderException {
-            if (variant == VariantType.ITEM) {
-                var storage = ItemStorage.SIDED.find(ctx.source().getWorld(), pos, null);
+            if (variant == VariantType.ITEM || variant == VariantType.FLUID) {
+                var lookup = variant == VariantType.ITEM ? ItemStorage.SIDED : FluidStorage.SIDED;
+                var storage = lookup.find(ctx.source().getWorld(), pos, null);
 
                 if (storage == null) {
                     throw new NoInventoryBlunder(trick);
@@ -184,8 +186,9 @@ public sealed interface StorageSource {
         public <T> Storage<T> getStorage(Trick<?> trick, SpellContext ctx, VariantType<T> variant) throws BlunderException {
             var slot = getSelfSlot(trick, ctx, VariantType.ITEM);
 
-            if (variant == VariantType.ITEM) {
-                var container = ItemStorage.ITEM.find(slot.getResource().toStack(), ContainerItemContext.ofSingleSlot(slot));
+            if (variant == VariantType.ITEM || variant == VariantType.FLUID) {
+                var lookup = variant == VariantType.ITEM ? ItemStorage.ITEM : FluidStorage.ITEM;
+                var container = lookup.find(slot.getResource().toStack(), ContainerItemContext.ofSingleSlot(slot));
 
                 if (container == null) {
                     throw new NoInventoryBlunder(trick);
