@@ -107,6 +107,7 @@ trickster:
     write_closed_spell: 禁文记事员之技巧
     read_macro_ring: 宏之错觉
     reveal: 展示之技巧
+    reveal_action_bar: 知晓之技巧
     read_crow_mind: 乌鸦灵思之错觉
     write_crow_mind: 乌鸦灵思之技巧
     cost: 消耗之技巧
@@ -123,7 +124,8 @@ trickster:
     sprinting_reflection: 远足之辑流
     burning_reflection: 炉灶之辑流
     blocking_reflection: 盾护之辑流
-    raycast: 着点之辑流
+    raycast_block: 着点之辑流
+    raycast_pos: 着处之辑流
     raycast_side: 承座之辑流
     raycast_entity: 标记之辑流
     get_entity_type: 动机验证之辑流
@@ -245,6 +247,7 @@ trickster:
     block_from_item: 放置之曲变
     item_from_block: 拾取之曲变
     get_max_count: 容宽之曲变
+    get_equipment: 探查之辑流
 
     type_fragment: 参量之曲变
     hash_values: 衰退之曲变
@@ -376,6 +379,7 @@ item.trickster:
   amethyst_whorl: 紫水晶螺坠
   collar: 侍者的缚环
   leash: 法师的捆索
+  torment_on_a_chain: 磨难链坠
 
   amethyst_knot: 紫水晶晶结
   cracked_amethyst_knot: 开裂的紫水晶晶结
@@ -406,6 +410,9 @@ block.trickster:
   charging_array: 充能阵列
   inert_spawner: 惰性刷怪笼
 
+entity.trickster:
+  levitating_block: 受重力影响的方块
+
 effect.trickster:
   mana_boost: 魔力超流
   mana_deficiency: 魔力降流
@@ -423,6 +430,9 @@ key:
   trickster:
     take_hat: 取下帽子
     modify_spell: 修改法术（仅创造）
+
+accessories.slot:
+  collar: 颈环
 
 text.config.trickster-config:
   title: 戏法师（Trickster）配置
@@ -448,6 +458,7 @@ text.config.trickster-config:
     maxBlockBreakingHardness: 摧毁之技巧可摧毁方块的最大硬度
 
     dragDrawing: 拖动绘制
-    barsHorizontal: 条栏水平显示
+    animateLines: 启用图案符记动效
+    barsHorizontal: 水平显示条栏
     disableOffhandScrollOpening: 主手持有卷轴才可修改
     adjacentPixelCollisionOffset: 相邻像素的偏移因数
