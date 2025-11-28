@@ -38,6 +38,8 @@ public class MoveResourceTrick extends Trick<MoveResourceTrick> {
                 sourceSlot.getStorage(this, ctx, variantType),
                 destinationSlot.getStorage(this, ctx, variantType),
                 v -> {
+                    if (allowedResources.isEmpty()) return true;
+
                     for (var resource : allowedResources) {
                         if (resource.resourceMatches(this, ctx, v)) {
                             return true;
