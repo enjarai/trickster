@@ -33,15 +33,13 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
-import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.*;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.MathHelper;
 
 import java.util.List;
@@ -79,7 +77,7 @@ public class TricksterClient implements ClientModInitializer {
         LavenderBookScreen.registerFeatureFactory(Trickster.id("tome_of_tomfoolery"),
                 componentSource -> List.of(new ObfuscatedFeature()));
 
-        ParticleFactoryRegistry.getInstance().register(ModParticles.PROTECTED_BLOCK,
+        ParticleFactoryRegistry.getInstance().register(ModParticles.HIGHLIGHT_BLOCK,
                 ProtectedBlockParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(ModParticles.SPELL, SpellParticle.Factory::new);
 
@@ -94,6 +92,7 @@ public class TricksterClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.SPELL_RESONATOR, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.INERT_SPAWNER, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.LIGHT, RenderLayer.getTranslucent());
+        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.COLOR_BLOCK, RenderLayer.getTranslucent());
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (client.player != null) {
@@ -146,5 +145,16 @@ public class TricksterClient implements ClientModInitializer {
         if (FabricLoader.getInstance().isModLoaded("coleus")) {
             ColeusIntegration.init();
         }
+
+        ColorProviderRegistry.BLOCK.register((state, world, pos, index) -> {
+            if (world == null || pos == null) {
+                return DyeColor.RED.getEntityColor();
+            }
+            if (world.getBlockEntityRenderData(pos) instanceof Integer color) {
+                return color;
+            }
+            return DyeColor.PURPLE.getEntityColor();
+        }, ModBlocks.COLOR_BLOCK);
+
     }
 }
