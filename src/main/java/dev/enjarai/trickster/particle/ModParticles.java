@@ -10,7 +10,7 @@ public class ModParticles {
     public static final ParticleType<SpellParticleOptions> SPELL = FabricParticleTypes.complex(SpellParticleOptions.CODEC, SpellParticleOptions.PACKET_CODEC);
     public static final ParticleType<HighlightParticleOptions> HIGHLIGHT_BLOCK = FabricParticleTypes.complex(HighlightParticleOptions.CODEC, HighlightParticleOptions.PACKET_CODEC);
 
-    public static final SpellParticleOptions PROTECTED_BLOCK = new SpellParticleOptions(-0x66666601);
+    public static final HighlightParticleOptions PROTECTED_BLOCK = new HighlightParticleOptions(-0x66666601);
     public static final SpellParticleOptions SPELL_WHITE = new SpellParticleOptions(0xffffff);
 
     public static void register() {
