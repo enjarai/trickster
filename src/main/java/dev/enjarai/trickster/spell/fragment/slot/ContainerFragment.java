@@ -25,12 +25,12 @@ public record ContainerFragment(StorageSource source, VariantType<?> variantType
 
     @Override
     public Text asText() {
-        return Text.literal(source.describe());
+        return source.describe();
     }
 
     @Override
     public int getWeight() {
-        return 64;
+        return 32 + source.getWeight();
     }
 
     public Storage<?> getStorage(Trick<?> trick, SpellContext ctx) {
