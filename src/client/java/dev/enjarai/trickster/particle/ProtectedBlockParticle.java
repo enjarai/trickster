@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.particle;
 
+import dev.enjarai.trickster.spell.fragment.ColorFragment;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.*;
@@ -7,7 +8,6 @@ import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.particle.SimpleParticleType;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import org.joml.Quaternionf;
@@ -16,14 +16,15 @@ import org.joml.Vector3f;
 public class ProtectedBlockParticle extends SpriteBillboardParticle {
     public static float QUARTER = (float) (Math.PI / 2);
 
-    protected ProtectedBlockParticle(ClientWorld world, double x, double y, double z) {
+    protected ProtectedBlockParticle(ClientWorld world, double x, double y, double z, int c) {
         super(world, x, y, z);
         maxAge = 10;
         scale = 1 / 16f * 8.5f;
-        alpha = 0.6f;
-        red = 0.6f;
-        green = 0.6f;
-        blue = 1f;
+        var color = ColorFragment.argbAsVector(c);
+        alpha = color.w;
+        red = color.x;
+        green = color.y;
+        blue = color.z;
     }
 
     @Override
@@ -40,9 +41,9 @@ public class ProtectedBlockParticle extends SpriteBillboardParticle {
 
     protected void renderFace(VertexConsumer vertexConsumer, Camera camera, Quaternionf quaternionf, float tickDelta, float offsetX, float offsetY, float offsetZ) {
         Vec3d vec3d = camera.getPos();
-        float g = (float)(MathHelper.lerp(tickDelta, this.prevPosX, this.x) - vec3d.getX() + offsetX);
-        float h = (float)(MathHelper.lerp(tickDelta, this.prevPosY, this.y) - vec3d.getY() + offsetY);
-        float i = (float)(MathHelper.lerp(tickDelta, this.prevPosZ, this.z) - vec3d.getZ() + offsetZ);
+        float g = (float) (MathHelper.lerp(tickDelta, this.prevPosX, this.x) - vec3d.getX() + offsetX);
+        float h = (float) (MathHelper.lerp(tickDelta, this.prevPosY, this.y) - vec3d.getY() + offsetY);
+        float i = (float) (MathHelper.lerp(tickDelta, this.prevPosZ, this.z) - vec3d.getZ() + offsetZ);
         this.renderFaceVertices(vertexConsumer, quaternionf, g, h, i, tickDelta);
     }
 
@@ -82,15 +83,15 @@ public class ProtectedBlockParticle extends SpriteBillboardParticle {
     }
 
     @Environment(EnvType.CLIENT)
-    public static class Factory implements ParticleFactory<SimpleParticleType> {
+    public static class Factory implements ParticleFactory<HighlightParticleOptions> {
         private final SpriteProvider spriteProvider;
 
         public Factory(SpriteProvider spriteProvider) {
             this.spriteProvider = spriteProvider;
         }
 
-        public Particle createParticle(SimpleParticleType simpleParticleType, ClientWorld clientWorld, double d, double e, double f, double g, double h, double i) {
-            var particle = new ProtectedBlockParticle(clientWorld, d, e, f);
+        public Particle createParticle(HighlightParticleOptions options, ClientWorld clientWorld, double d, double e, double f, double g, double h, double i) {
+            var particle = new ProtectedBlockParticle(clientWorld, d, e, f, options.color);
             particle.setSprite(this.spriteProvider);
             return particle;
         }

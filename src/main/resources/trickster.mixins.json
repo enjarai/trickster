@@ -6,6 +6,7 @@
   "mixins": [
     "AbstractFurnaceBlockEntityMixin",
     "AnvilScreenHandlerMixin",
+    "BeaconBlockEntityMixin",
     "DataPackContentsMixin",
     "EntityMixin",
     "FallingBlockEntityMixin",

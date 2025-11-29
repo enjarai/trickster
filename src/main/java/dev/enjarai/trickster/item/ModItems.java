@@ -77,6 +77,7 @@ public class ModItems {
     public static final BlockItem SCROLL_SHELF_BLOCK_ITEM = register("scroll_shelf", new BlockItem(ModBlocks.SCROLL_SHELF, new Item.Settings()));
     public static final BlockItem CHARGING_ARRAY_ITEM = register("charging_array", new BlockItem(ModBlocks.CHARGING_ARRAY, new Item.Settings()));
     public static final BlockItem INERT_SPAWNER_ITEM = register("inert_spawner", new BlockItem(ModBlocks.INERT_SPAWNER, new Item.Settings()));
+    public static final BlockItem COLOR_BLOCK = register("color_block", new BlockItem(ModBlocks.COLOR_BLOCK, new Item.Settings()));
     public static final KnotItem.Amethyst AMETHYST_KNOT = register("amethyst_knot", new KnotItem.Amethyst());
     public static final KnotItem.CrackedAmethyst CRACKED_AMETHYST_KNOT = register("cracked_amethyst_knot", new KnotItem.CrackedAmethyst());
     public static final KnotItem.Quartz QUARTZ_KNOT = register("quartz_knot", new KnotItem.Quartz());
