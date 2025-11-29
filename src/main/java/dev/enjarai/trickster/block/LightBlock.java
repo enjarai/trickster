@@ -11,6 +11,7 @@ import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -22,18 +23,22 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.ToIntFunction;
+
 public class LightBlock extends BlockWithEntity implements Waterloggable {
     public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
+    public static final IntProperty LIGHT_LEVEL = Properties.LEVEL_15;
+    public static final ToIntFunction<BlockState> STATE_TO_LUMINANCE = state -> (Integer) state.get(LIGHT_LEVEL);
 
     public static final VoxelShape SHAPE = createCuboidShape(5, 5, 5, 11, 11, 11);
 
     protected LightBlock() {
         super(Settings.create()
-                .noCollision().luminance(b -> 15).breakInstantly()
+                .noCollision().luminance(STATE_TO_LUMINANCE).breakInstantly()
                 .noBlockBreakParticles().sounds(BlockSoundGroup.AMETHYST_BLOCK)
                 .replaceable()
                 .pistonBehavior(PistonBehavior.DESTROY));
-        setDefaultState(getStateManager().getDefaultState().with(WATERLOGGED, false));
+        setDefaultState(getStateManager().getDefaultState().with(LIGHT_LEVEL, 15).with(WATERLOGGED, false));
     }
 
     // TODO decide if we can make this work?
@@ -44,7 +49,7 @@ public class LightBlock extends BlockWithEntity implements Waterloggable {
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(WATERLOGGED);
+        builder.add(LIGHT_LEVEL, WATERLOGGED);
     }
 
     @Override
