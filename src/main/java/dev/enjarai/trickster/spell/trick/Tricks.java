@@ -8,6 +8,7 @@ import dev.enjarai.trickster.spell.trick.basic.*;
 import dev.enjarai.trickster.spell.trick.block.*;
 import dev.enjarai.trickster.spell.trick.bool.*;
 import dev.enjarai.trickster.spell.trick.color.ItemToColorTrick;
+import dev.enjarai.trickster.spell.trick.color.PaintTrick;
 import dev.enjarai.trickster.spell.trick.debug.DebugLogTrick;
 import dev.enjarai.trickster.spell.trick.dimension.GetDimensionTrick;
 import dev.enjarai.trickster.spell.trick.entity.*;
@@ -310,6 +311,7 @@ public class Tricks {
     // Color
     public static final ItemToColorTrick ITEM_TO_COLOR = register("item_to_color", new ItemToColorTrick(Pattern.of(0, 4, 2, 1, 0, 7, 2), DyeColor::getEntityColor));
     public static final ItemToColorTrick ITEM_TO_GLOW_COLOR = register("item_to_glow_color", new ItemToColorTrick(Pattern.of(0, 4, 2, 1, 0, 7, 2, 0), DyeColor::getSignColor));
+    public static final PaintTrick PAINT = register("paint", new PaintTrick());
 
     static {
         if (FabricLoader.getInstance().isDevelopmentEnvironment()) {

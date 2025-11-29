@@ -280,6 +280,10 @@ trickster:
     message_send: Dispatch Ploy
     message_listen: Ploy of Receipt
 
+    item_to_color: Pigment Distortion
+    item_to_glow_color: Vibrant Distortion
+    paint: Ploy of Pigmentation
+
   fragment:
     trickster:
       type: Type
@@ -300,6 +304,7 @@ trickster:
       entity_type: EntityType
       string: String
       dimension: Dimension
+      color: Color
     class:
       Fragment: Any
       AddableFragment: Addable

@@ -91,7 +91,7 @@ public class FragmentType<T extends Fragment> implements RetType<T>, ArgType<T> 
     public static final FragmentType<DimensionFragment> DIMENSION = register("dimension", DimensionFragment.ENDEC, 0xdd55bb);
     public static final FragmentType<StringFragment> STRING = register("string", StringFragment.ENDEC, 0xaabb77);
     public static final FragmentType<MapFragment> MAP = register("map", MapFragment.ENDEC);
-    public static final FragmentType<ColorFragment> COLOR = register("color", ColorFragment.ENDEC);
+    public static final FragmentType<ColorFragment> COLOR = register("color", ColorFragment.ENDEC, 0xff0055);
     public static final FragmentType<BooleanFragment> BOOLEAN = Registry.register(REGISTRY, Trickster.id("boolean"), new FragmentType<>(BooleanFragment.ENDEC, OptionalInt.of(0xaa3355)) {
         @Override
         public BooleanFragment compose(Trick<?> trick, SpellContext ctx, List<Fragment> fragments) {
