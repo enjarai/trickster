@@ -333,6 +333,13 @@ trickster:
     expected_overweight_fragment: Result fragment is overweight (%d/%d)
     missing_fragment: Missing at index %d, expected %s
 
+  storage:
+    caster: caster
+    block: %d, %d, %d
+    entity: %s
+    slot: slot %d at %s
+    merged: %d storages
+
 item.trickster:
   tome_of_tomfoolery: Tome of Tomfoolery
   mirror_of_evaluation: Mirror of Evaluation

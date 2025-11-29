@@ -16,11 +16,15 @@ import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.SlottedStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.CombinedStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import org.joml.Vector3dc;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public sealed interface StorageSource {
@@ -29,6 +33,7 @@ public sealed interface StorageSource {
         case "block" -> Block.ENDEC;
         case "entity" -> Entity.ENDEC;
         case "slot" -> Slot.ENDEC;
+        case "merged" -> Merged.ENDEC;
         default -> throw new IllegalArgumentException("No such storage source exists");
     }, StorageSource::getId, Endec.STRING);
 
@@ -46,12 +51,16 @@ public sealed interface StorageSource {
         throw new NotSlottedStorageBlunder(trick);
     }
 
-    String describe();
+    Text describe();
 
     Vector3dc getPosition(Trick<?> trick, SpellContext ctx);
 
     default NumberFragment getInventoryLength(Trick<?> trick, SpellContext ctx, VariantType<?> type) throws BlunderException {
         return new NumberFragment(getSlottedStorage(trick, ctx, type).getSlotCount());
+    }
+
+    default int getWeight() {
+        return 32;
     }
 
     record Caster() implements StorageSource {
@@ -76,8 +85,8 @@ public sealed interface StorageSource {
         }
 
         @Override
-        public String describe() {
-            return "caster";
+        public Text describe() {
+            return Text.translatable("trickster.storage.caster");
         }
 
         @Override
@@ -88,8 +97,8 @@ public sealed interface StorageSource {
 
     record Block(BlockPos pos) implements StorageSource {
         public static final StructEndec<Block> ENDEC = StructEndecBuilder.of(
-                MinecraftEndecs.BLOCK_POS.fieldOf("pos", Block::pos),
-                Block::new
+            MinecraftEndecs.BLOCK_POS.fieldOf("pos", Block::pos),
+            Block::new
         );
 
         @Override
@@ -115,8 +124,11 @@ public sealed interface StorageSource {
         }
 
         @Override
-        public String describe() {
-            return "%d, %d, %d".formatted(pos.getX(), pos.getY(), pos.getZ());
+        public Text describe() {
+            return Text.translatable(
+                "trickster.storage.block",
+                pos.getX(), pos.getY(), pos.getZ()
+            );
         }
 
         @Override
@@ -127,8 +139,8 @@ public sealed interface StorageSource {
 
     record Entity(UUID uuid) implements StorageSource {
         public static final StructEndec<Entity> ENDEC = StructEndecBuilder.of(
-                EndecTomfoolery.UUID.fieldOf("uuid", Entity::uuid),
-                Entity::new
+            EndecTomfoolery.UUID.fieldOf("uuid", Entity::uuid),
+            Entity::new
         );
 
         @Override
@@ -153,8 +165,11 @@ public sealed interface StorageSource {
         }
 
         @Override
-        public String describe() {
-            return uuid.toString();
+        public Text describe() {
+            return Text.translatable(
+                "trickster.storage.entity",
+                uuid.toString()
+            );
         }
 
         @Override
@@ -171,9 +186,9 @@ public sealed interface StorageSource {
 
     record Slot(int slot, StorageSource source) implements StorageSource {
         public static final StructEndec<Slot> ENDEC = StructEndecBuilder.of(
-                Endec.INT.fieldOf("slot", Slot::slot),
-                StorageSource.ENDEC.fieldOf("source", Slot::source),
-                Slot::new
+            Endec.INT.fieldOf("slot", Slot::slot),
+            StorageSource.ENDEC.fieldOf("source", Slot::source),
+            Slot::new
         );
 
         @Override
@@ -201,10 +216,10 @@ public sealed interface StorageSource {
         }
 
         @Override
-        public String describe() {
-            return "slot %d at %s".formatted(
-                    slot,
-                    source.describe()
+        public Text describe() {
+            return Text.translatable(
+                "trickster.storage.slot",
+                slot, source.describe()
             );
         }
 
@@ -213,12 +228,53 @@ public sealed interface StorageSource {
             return source.getPosition(trick, ctx);
         }
 
+        @Override
+        public int getWeight() {
+            return 32 + source.getWeight();
+        }
+
         public <T> SingleSlotStorage<T> getSelfSlot(Trick<?> trick, SpellContext ctx, VariantType<T> variant) throws BlunderException {
             try {
                 return source.getSlottedStorage(trick, ctx, variant).getSlot(slot);
             } catch (IndexOutOfBoundsException e) {
                 throw new NoSuchSlotBlunder(trick);
             }
+        }
+    }
+
+    record Merged(List<StorageSource> sources) implements StorageSource {
+        public static final StructEndec<Merged> ENDEC = StructEndecBuilder.of(
+            StorageSource.ENDEC.listOf().fieldOf("sources", Merged::sources),
+            Merged::new
+        );
+
+        @Override
+        public String getId() {
+            return "merged";
+        }
+
+        @Override
+        public <T> Storage<T> getStorage(Trick<?> trick, SpellContext ctx, VariantType<T> variant) throws BlunderException {
+            var storages = new ArrayList<Storage<T>>();
+
+            for (var source : sources) {
+                storages.add(source.getStorage(trick, ctx, variant));
+            }
+
+            return new CombinedStorage<>(storages);
+        }
+
+        @Override
+        public Text describe() {
+            return Text.translatable(
+                "trickster.storage.merged",
+                sources.size()
+            );
+        }
+
+        @Override
+        public Vector3dc getPosition(Trick<?> trick, SpellContext ctx) {
+            return null; // TODO gotta figure out how the fuck this is supposed to work
         }
     }
 }

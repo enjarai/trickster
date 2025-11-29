@@ -66,12 +66,12 @@ public record SlotFragment(StorageSource.Slot slot, VariantType<?> variantType) 
 
     @Override
     public Text asText() {
-        return Text.literal(slot.describe());
+        return slot.describe();
     }
 
     @Override
     public int getWeight() {
-        return 64;
+        return 32 + slot.getWeight();
     }
 
     public static List<SlotFragment> getSlots(Trick<?> trick, SpellContext ctx, StorageSource source, VariantType<?> type) {
