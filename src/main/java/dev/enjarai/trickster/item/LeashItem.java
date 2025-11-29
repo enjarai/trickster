@@ -4,6 +4,7 @@ import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.component.CollarLinkComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.SpellPart;
+import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import io.wispforest.accessories.api.slot.SlotReference;
 import net.minecraft.entity.LivingEntity;
@@ -24,7 +25,7 @@ import net.minecraft.world.World;
 import java.util.List;
 import java.util.UUID;
 
-public class LeashItem extends Item {
+public class LeashItem extends Item implements LeftClickItem {
     public LeashItem(Settings settings) {
         super(settings.maxCount(1));
     }
@@ -85,6 +86,11 @@ public class LeashItem extends Item {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        return use(world, user, hand, true);
+    }
+
+    @Override
+    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand, boolean rightClick) {
         var stack = user.getStackInHand(hand);
         var linkComponent = stack.get(ModComponents.COLLAR_LINK);
 
@@ -114,7 +120,7 @@ public class LeashItem extends Item {
                         if (fragmentComponent != null) {
                             for (var player : players) {
                                 var spell = fragmentComponent.value() instanceof SpellPart part ? part : new SpellPart(fragmentComponent.value());
-                                ModEntityComponents.CASTER.get(player).queueCollarSpell(spell, List.of(EntityFragment.from(user)));
+                                ModEntityComponents.CASTER.get(player).queueCollarSpell(spell, List.of(BooleanFragment.of(rightClick), EntityFragment.from(user)));
                                 ModEntityComponents.CASTER.get(user).playCastSound(0.8f, 0.1f);
                             }
                         }
