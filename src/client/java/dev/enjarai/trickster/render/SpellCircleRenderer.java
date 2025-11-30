@@ -350,7 +350,7 @@ public class SpellCircleRenderer {
         var parallelVec = new Vector2f(last.y - now.y, now.x - last.x).normalize().mul(pixelSize / 2);
         var directionVec = new Vector2f(last.x - now.x, last.y - now.y).normalize().mul(pixelSize * 3);
 
-        if (animated) {
+        if (animated && Trickster.CONFIG.animateLines()) {
             var lineStart = new Vector2f(last.x - directionVec.x, last.y - directionVec.y);
             var lineEnd = new Vector2f(now.x + directionVec.x, now.y + directionVec.y);
 

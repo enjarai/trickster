@@ -3,7 +3,6 @@ package dev.enjarai.trickster.spell.trick.misc;
 import dev.enjarai.trickster.cca.ModWorldComponents;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
@@ -15,7 +14,7 @@ public class PinChunkTrick extends Trick<PinChunkTrick> {
         super(Pattern.of(6, 5, 0, 7, 2, 3, 8, 1, 6), Signature.of(FragmentType.VECTOR, PinChunkTrick::run, FragmentType.VECTOR));
     }
 
-    public VectorFragment run(SpellContext ctx, VectorFragment pos) throws BlunderException {
+    public VectorFragment run(SpellContext ctx, VectorFragment pos) {
         var chunkPos = new ChunkPos(pos.toBlockPos());
 
         ctx.useMana(this, 4);

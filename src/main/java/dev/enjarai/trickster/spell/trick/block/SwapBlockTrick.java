@@ -6,7 +6,6 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlockInvalidBlunder;
 import dev.enjarai.trickster.spell.blunder.BlockUnoccupiedBlunder;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.OverlapBlunder;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
@@ -22,7 +21,7 @@ public class SwapBlockTrick extends Trick<SwapBlockTrick> {
                 Signature.of(FragmentType.VECTOR, FragmentType.VECTOR, SwapBlockTrick::run, FragmentType.VOID));
     }
 
-    public VoidFragment run(SpellContext ctx, VectorFragment pos1, VectorFragment pos2) throws BlunderException {
+    public VoidFragment run(SpellContext ctx, VectorFragment pos1, VectorFragment pos2) {
         var blockPos1 = pos1.toBlockPos();
         var blockPos2 = pos2.toBlockPos();
         var world = ctx.source().getWorld();

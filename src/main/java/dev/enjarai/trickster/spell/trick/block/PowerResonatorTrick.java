@@ -5,7 +5,6 @@ import dev.enjarai.trickster.block.SpellControlledRedstoneBlock;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.BlockInvalidBlunder;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
@@ -22,7 +21,7 @@ public class PowerResonatorTrick extends Trick<PowerResonatorTrick> {
                 Signature.of(FragmentType.VECTOR, FragmentType.NUMBER, PowerResonatorTrick::run, FragmentType.BOOLEAN));
     }
 
-    public BooleanFragment run(SpellContext ctx, VectorFragment pos, NumberFragment power) throws BlunderException {
+    public BooleanFragment run(SpellContext ctx, VectorFragment pos, NumberFragment power) {
         var blockPos = pos.toBlockPos();
         var intPower = MathHelper.clamp((int) power.number(), 0, 15);
         var world = ctx.source().getWorld();

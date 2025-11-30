@@ -2,7 +2,6 @@ package dev.enjarai.trickster.spell.trick.entity.query;
 
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import net.minecraft.entity.player.PlayerEntity;
@@ -13,7 +12,7 @@ public class GetPlayerFoodTrick extends AbstractEntityQueryTrick<PlayerEntity, N
     }
 
     @Override
-    protected NumberFragment run(SpellContext ctx, PlayerEntity entity) throws BlunderException {
+    protected NumberFragment run(SpellContext ctx, PlayerEntity entity) {
         return new NumberFragment(entity.getHungerManager().getFoodLevel());
     }
 }

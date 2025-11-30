@@ -3,7 +3,6 @@ package dev.enjarai.trickster.spell.trick.inventory;
 import com.mojang.datafixers.util.Either;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
 import dev.enjarai.trickster.spell.fragment.*;
 import dev.enjarai.trickster.spell.trick.Trick;
@@ -18,15 +17,15 @@ public class GetInventorySlotTrick extends Trick<GetInventorySlotTrick> {
         overload(Signature.of(FragmentType.NUMBER, FragmentType.ENTITY, GetInventorySlotTrick::fromEntity, FragmentType.SLOT));
     }
 
-    public SlotFragment fromCaster(SpellContext ctx, NumberFragment slot) throws BlunderException {
+    public SlotFragment fromCaster(SpellContext ctx, NumberFragment slot) {
         return new SlotFragment(slot.asInt(), Optional.empty());
     }
 
-    public SlotFragment fromVector(SpellContext ctx, NumberFragment slot, VectorFragment pos) throws BlunderException {
+    public SlotFragment fromVector(SpellContext ctx, NumberFragment slot, VectorFragment pos) {
         return new SlotFragment(slot.asInt(), Optional.of(Either.left(pos.toBlockPos())));
     }
 
-    public SlotFragment fromEntity(SpellContext ctx, NumberFragment slot, EntityFragment entity) throws BlunderException {
+    public SlotFragment fromEntity(SpellContext ctx, NumberFragment slot, EntityFragment entity) {
         return new SlotFragment(slot.asInt(), Optional.of(Either.right(entity.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this)).getUuid())));
     }
 }

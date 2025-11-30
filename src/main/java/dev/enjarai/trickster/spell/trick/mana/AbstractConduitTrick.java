@@ -3,7 +3,6 @@ package dev.enjarai.trickster.spell.trick.mana;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.NumberIsInfiniteBlunder;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
@@ -19,7 +18,7 @@ public abstract class AbstractConduitTrick extends Trick<AbstractConduitTrick> {
         super(pattern, Signature.of(FragmentType.NUMBER, FragmentType.SLOT.variadicOfArg().require().unpack(), AbstractConduitTrick::run, FragmentType.NUMBER));
     }
 
-    public NumberFragment run(SpellContext ctx, NumberFragment n, List<SlotFragment> slots) throws BlunderException {
+    public NumberFragment run(SpellContext ctx, NumberFragment n, List<SlotFragment> slots) {
         if (Double.isInfinite(n.number())) {
             throw new NumberIsInfiniteBlunder(this);
         }

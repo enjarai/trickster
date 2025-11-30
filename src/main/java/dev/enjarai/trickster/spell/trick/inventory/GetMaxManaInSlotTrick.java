@@ -3,7 +3,6 @@ package dev.enjarai.trickster.spell.trick.inventory;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.fragment.SlotFragment;
@@ -17,7 +16,7 @@ public class GetMaxManaInSlotTrick extends Trick<GetMaxManaInSlotTrick> {
         super(Pattern.of(0, 2, 3, 0, 4, 3, 6, 8, 5, 4, 2, 1, 5, 2), Signature.of(FragmentType.SLOT.variadicOfArg().unpack(), GetMaxManaInSlotTrick::run, FragmentType.NUMBER));
     }
 
-    public NumberFragment run(SpellContext ctx, List<SlotFragment> slots) throws BlunderException {
+    public NumberFragment run(SpellContext ctx, List<SlotFragment> slots) {
         float result = 0;
 
         for (var slot : slots) {

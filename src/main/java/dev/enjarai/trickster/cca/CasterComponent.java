@@ -8,6 +8,8 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellExecutor;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.execution.SpellQueueResult;
+import dev.enjarai.trickster.spell.execution.WrappedSpellExecutionManager;
+import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.execution.executor.ErroredSpellExecutor;
 import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
 import dev.enjarai.trickster.spell.execution.PlayerSpellExecutionManager;
@@ -44,7 +46,7 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
     private final PlayerSpellExecutionManager macroExecutionManager;
     @Nullable
     private Consumer<Optional<Fragment>> macroCompletionHandler;
-
+    private WrappedSpellExecutionManager tormentExecutionManager;
     private final Int2ObjectMap<RunningSpellData> runningSpellData = new Int2ObjectOpenHashMap<>();
     private int lastSentSpellDataHash;
     private RegistryKey<World> lastPlayerWorld;
@@ -60,6 +62,7 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
     );
     public static final KeyedEndec<PlayerSpellExecutionManager> EXECUTION_MANAGER_ENDEC = PlayerSpellExecutionManager.ENDEC.keyed("manager", () -> new PlayerSpellExecutionManager(5));
     public static final KeyedEndec<PlayerSpellExecutionManager> COLLAR_EXECUTION_MANAGER_ENDEC = PlayerSpellExecutionManager.ENDEC.keyed("collar_manager", () -> new PlayerSpellExecutionManager(1));
+    public static final KeyedEndec<Optional<DefaultSpellExecutor>> TORMENT_SPELL_ENDEC = DefaultSpellExecutor.ENDEC.optionalOf().keyed("torment_spell", () -> Optional.empty());
 
     public CasterComponent(PlayerEntity player) {
         this.player = player;
@@ -67,6 +70,7 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
         this.executionManager = new PlayerSpellExecutionManager(5);
         this.collarExecutionManager = new PlayerSpellExecutionManager(1);
         this.macroExecutionManager = new PlayerSpellExecutionManager(1);
+        this.tormentExecutionManager = new WrappedSpellExecutionManager(this.executionManager);
     }
 
     @Override
@@ -80,11 +84,16 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
             collarExecutionManager.killAll();
         }
 
+        if (player.accessoriesCapability() == null || !player.accessoriesCapability().isEquipped(ModItems.TORMENT_ON_A_CHAIN)) {
+            tormentExecutionManager.setExecutor(Optional.empty());
+        }
+
         runningSpellData.clear();
         executionManager.tick(new PlayerSpellSource((ServerPlayerEntity) player, executionManager),
             this::afterExecutorTick, this::completeExecutor, this::executorError);
         collarExecutionManager.tick(new PlayerSpellSource((ServerPlayerEntity) player, collarExecutionManager),
             (i, e) -> {}, this::completeExecutor, this::executorError);
+        tormentExecutionManager.tick(new PlayerSpellSource((ServerPlayerEntity) player, tormentExecutionManager));
 
         if (macroExecutionManager.getSpellExecutor(0).isPresent() && !canRunMacros()) {
             macroExecutionManager.killAll();
@@ -94,6 +103,7 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
             macroExecutionManager.tick(new PlayerSpellSource((ServerPlayerEntity) player, macroExecutionManager),
                 (i, e) -> {}, this::completeMacroExecutor, this::macroExecutorError);
         }
+
         ModEntityComponents.CASTER.sync(player);
     }
 
@@ -143,10 +153,16 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
         }
     }
 
+    public void setTormentSpell(SpellPart spell) {
+        tormentExecutionManager.setSpell(spell);
+    }
+
     @Override
     public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
         executionManager = tag.get(SerializationContext.attributes(EndecTomfoolery.CODEC_SAFE), EXECUTION_MANAGER_ENDEC);
         collarExecutionManager = tag.get(SerializationContext.attributes(EndecTomfoolery.CODEC_SAFE), COLLAR_EXECUTION_MANAGER_ENDEC);
+        tormentExecutionManager = new WrappedSpellExecutionManager(executionManager);
+        tormentExecutionManager.setExecutor(tag.get(SerializationContext.attributes(EndecTomfoolery.CODEC_SAFE), TORMENT_SPELL_ENDEC));
         waitTicks(20);
     }
 
@@ -154,6 +170,7 @@ public class CasterComponent implements ServerTickingComponent, AutoSyncedCompon
     public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
         tag.put(SerializationContext.attributes(EndecTomfoolery.CODEC_SAFE), EXECUTION_MANAGER_ENDEC, executionManager);
         tag.put(SerializationContext.attributes(EndecTomfoolery.CODEC_SAFE), COLLAR_EXECUTION_MANAGER_ENDEC, collarExecutionManager);
+        tag.put(SerializationContext.attributes(EndecTomfoolery.CODEC_SAFE), TORMENT_SPELL_ENDEC, tormentExecutionManager.getExecutor());
     }
 
     @Override

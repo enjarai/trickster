@@ -2,7 +2,6 @@ package dev.enjarai.trickster.spell.trick.math;
 
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.RoundableFragment;
 import dev.enjarai.trickster.spell.trick.DistortionTrick;
 import dev.enjarai.trickster.spell.type.ArgType;
@@ -14,7 +13,7 @@ public class RoundTrick extends DistortionTrick<RoundTrick> {
         super(Pattern.of(0, 1, 4, 7, 6), Signature.of(ArgType.simple(RoundableFragment.class), RoundTrick::math, RetType.simple(RoundableFragment.class)));
     }
 
-    public RoundableFragment math(SpellContext ctx, RoundableFragment param) throws BlunderException {
+    public RoundableFragment math(SpellContext ctx, RoundableFragment param) {
         return param.round();
     }
 }

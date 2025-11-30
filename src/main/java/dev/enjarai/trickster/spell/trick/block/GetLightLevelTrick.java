@@ -2,7 +2,6 @@ package dev.enjarai.trickster.spell.trick.block;
 
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
@@ -18,7 +17,7 @@ public class GetLightLevelTrick extends Trick<GetLightLevelTrick> {
         super(Pattern.of(8, 4, 0, 1, 2, 0, 6, 8, 2), Signature.of(FragmentType.VECTOR, FragmentType.BOOLEAN.optionalOfArg(), GetLightLevelTrick::get, FragmentType.NUMBER));
     }
 
-    public NumberFragment get(SpellContext ctx, VectorFragment pos, Optional<BooleanFragment> sky) throws BlunderException {
+    public NumberFragment get(SpellContext ctx, VectorFragment pos, Optional<BooleanFragment> sky) {
         var blockPos = pos.toBlockPos();
         var world = ctx.source().getWorld();
 

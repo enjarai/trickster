@@ -3,7 +3,6 @@ package dev.enjarai.trickster.spell.trick.inventory;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.fragment.SlotFragment;
@@ -20,7 +19,7 @@ public class GetManaInSlotTrick extends Trick<GetManaInSlotTrick> {
         super(Pattern.of(3, 4, 5, 2, 4, 0, 3, 6, 8, 5), Signature.of(FragmentType.SLOT.variadicOfArg().unpack(), GetManaInSlotTrick::run, FragmentType.NUMBER));
     }
 
-    public NumberFragment run(SpellContext ctx, List<SlotFragment> slots) throws BlunderException {
+    public NumberFragment run(SpellContext ctx, List<SlotFragment> slots) {
         float result = 0;
         var identifiedKnots = new ArrayList<UUID>();
 

@@ -3,7 +3,6 @@ package dev.enjarai.trickster.spell.trick.list;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.trick.DistortionTrick;
@@ -18,7 +17,7 @@ public class ListIndexOfTrick extends DistortionTrick<ListIndexOfTrick> {
         super(Pattern.of(8, 5, 2, 0, 3, 6, 4, 2, 1), Signature.of(ArgType.ANY.listOfArg(), ArgType.ANY, ListIndexOfTrick::indexOf, FragmentType.NUMBER.optionalOfRet()));
     }
 
-    public Optional<NumberFragment> indexOf(SpellContext ctx, List<Fragment> list, Fragment el) throws BlunderException {
+    public Optional<NumberFragment> indexOf(SpellContext ctx, List<Fragment> list, Fragment el) {
         var index = list.indexOf(el);
 
         return index == -1 ? Optional.empty() : Optional.of(new NumberFragment(index));

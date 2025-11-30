@@ -2,7 +2,6 @@ package dev.enjarai.trickster.spell.trick.inventory;
 
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.NumberTooSmallBlunder;
 import dev.enjarai.trickster.spell.fragment.*;
 import dev.enjarai.trickster.spell.trick.Trick;
@@ -16,7 +15,7 @@ public class DropStackFromSlotTrick extends Trick<DropStackFromSlotTrick> {
         super(Pattern.of(1, 4, 7, 3, 4, 5, 7), Signature.of(FragmentType.SLOT, FragmentType.VECTOR, FragmentType.NUMBER.optionalOfArg(), DropStackFromSlotTrick::run, FragmentType.ENTITY));
     }
 
-    public EntityFragment run(SpellContext ctx, SlotFragment slot, VectorFragment pos, Optional<NumberFragment> optionalAmount) throws BlunderException {
+    public EntityFragment run(SpellContext ctx, SlotFragment slot, VectorFragment pos, Optional<NumberFragment> optionalAmount) {
         var vector = pos.vector();
         var amount = optionalAmount.orElse(new NumberFragment(1)).number();
 

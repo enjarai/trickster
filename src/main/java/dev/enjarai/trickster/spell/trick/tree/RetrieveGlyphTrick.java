@@ -4,7 +4,6 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.SpellPart;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.type.RetType;
@@ -18,7 +17,7 @@ public class RetrieveGlyphTrick extends AbstractMetaTrick<RetrieveGlyphTrick> {
         super(Pattern.of(2, 1, 0, 4, 6, 7, 8), Signature.of(FragmentType.SPELL_PART, ADDRESS, RetrieveGlyphTrick::retrieve, RetType.ANY.optionalOfRet()));
     }
 
-    public Optional<Fragment> retrieve(SpellContext ctx, SpellPart spell, List<NumberFragment> address) throws BlunderException {
+    public Optional<Fragment> retrieve(SpellContext ctx, SpellPart spell, List<NumberFragment> address) {
         return findNode(spell, address).map(node -> node.glyph);
     }
 }

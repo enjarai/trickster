@@ -4,7 +4,6 @@ import dev.enjarai.trickster.item.component.FragmentComponent;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
 import dev.enjarai.trickster.spell.blunder.OutOfRangeBlunder;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
@@ -20,7 +19,7 @@ public class ReadSpellTrick extends Trick<ReadSpellTrick> {
         super(Pattern.of(7, 4, 1, 0, 3, 4, 5, 2, 1), Signature.of(FragmentType.SLOT.optionalOfArg(), ReadSpellTrick::run, RetType.ANY.optionalOfRet()));
     }
 
-    public Optional<Fragment> run(SpellContext ctx, Optional<SlotFragment> optionalSlot) throws BlunderException {
+    public Optional<Fragment> run(SpellContext ctx, Optional<SlotFragment> optionalSlot) {
         var slot = optionalSlot.or(() -> ctx.source().getOtherHandSlot()).orElseThrow(() -> new NoPlayerBlunder(this));
         var range = ctx.source().getPos().distance(slot.getSourceOrCasterPos(this, ctx));
 

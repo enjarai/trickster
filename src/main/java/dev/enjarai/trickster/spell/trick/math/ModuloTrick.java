@@ -2,7 +2,6 @@ package dev.enjarai.trickster.spell.trick.math;
 
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.DivideByZeroBlunder;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
@@ -14,7 +13,7 @@ public class ModuloTrick extends DistortionTrick<ModuloTrick> {
         super(Pattern.of(0, 4, 1, 2, 4, 6, 7, 4, 8), Signature.of(FragmentType.NUMBER, FragmentType.NUMBER, ModuloTrick::math, FragmentType.NUMBER));
     }
 
-    public NumberFragment math(SpellContext ctx, NumberFragment param1, NumberFragment param2) throws BlunderException {
+    public NumberFragment math(SpellContext ctx, NumberFragment param1, NumberFragment param2) {
         if (param2.number() == 0) {
             throw new DivideByZeroBlunder(this);
         }

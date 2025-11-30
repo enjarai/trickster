@@ -2,7 +2,6 @@ package dev.enjarai.trickster.spell.trick.block;
 
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.BlockTypeFragment;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
@@ -17,7 +16,7 @@ public class CanPlaceTrick extends Trick<CanPlaceTrick> {
         super(Pattern.of(0, 2, 8, 5, 2, 4, 6, 8, 4, 0, 6, 3, 0), Signature.of(FragmentType.VECTOR, FragmentType.BLOCK_TYPE.optionalOfArg(), CanPlaceTrick::check, FragmentType.BOOLEAN));
     }
 
-    public BooleanFragment check(SpellContext ctx, VectorFragment pos, Optional<BlockTypeFragment> blockType) throws BlunderException {
+    public BooleanFragment check(SpellContext ctx, VectorFragment pos, Optional<BlockTypeFragment> blockType) {
         var blockPos = pos.toBlockPos();
         var world = ctx.source().getWorld();
 

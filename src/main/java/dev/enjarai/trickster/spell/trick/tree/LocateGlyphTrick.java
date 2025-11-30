@@ -4,7 +4,6 @@ import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.SpellPart;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.type.ArgType;
@@ -18,7 +17,7 @@ public class LocateGlyphTrick extends AbstractMetaTrick<LocateGlyphTrick> {
         super(Pattern.of(6, 7, 8, 2, 1, 0, 4, 8, 5), Signature.of(FragmentType.SPELL_PART, ArgType.ANY, LocateGlyphTrick::locate, FragmentType.NUMBER.listOfRet().optionalOfRet()));
     }
 
-    public Optional<List<NumberFragment>> locate(SpellContext ctx, SpellPart spell, Fragment glyph) throws BlunderException {
+    public Optional<List<NumberFragment>> locate(SpellContext ctx, SpellPart spell, Fragment glyph) {
         var address = search(spell, glyph);
 
         if (address == null) {

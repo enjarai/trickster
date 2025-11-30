@@ -22,7 +22,7 @@ public class ChangeWeightTrick extends Trick<ChangeWeightTrick> {
         overload(Signature.of(FragmentType.VECTOR, FragmentType.NUMBER, ChangeWeightTrick::change, FragmentType.ENTITY));
     }
 
-    public EntityFragment change(SpellContext ctx, EntityFragment target, NumberFragment number) throws BlunderException {
+    public EntityFragment change(SpellContext ctx, EntityFragment target, NumberFragment number) {
         var entity = target
                 .getEntity(ctx)
                 .orElseThrow(() -> new UnknownEntityBlunder(this));
@@ -56,7 +56,7 @@ public class ChangeWeightTrick extends Trick<ChangeWeightTrick> {
         return target;
     }
 
-    public EntityFragment change(SpellContext ctx, VectorFragment target, NumberFragment number) throws BlunderException {
+    public EntityFragment change(SpellContext ctx, VectorFragment target, NumberFragment number) {
         var world = ctx.source().getWorld();
         var blockPos = target.toBlockPos();
         var state = world.getBlockState(blockPos);

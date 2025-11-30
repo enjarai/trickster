@@ -3,7 +3,6 @@ package dev.enjarai.trickster.spell.trick.basic;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
 import dev.enjarai.trickster.spell.blunder.OutOfRangeBlunder;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
@@ -21,11 +20,11 @@ public class WriteSpellTrick extends Trick<WriteSpellTrick> {
         super(Pattern.of(1, 4, 7, 8, 5, 4, 3, 6, 7), Signature.of(ArgType.ANY, FragmentType.SLOT.optionalOfArg(), FragmentType.STRING.optionalOfArg(), WriteSpellTrick::run, RetType.ANY));
     }
 
-    public Fragment run(SpellContext ctx, Fragment input, Optional<SlotFragment> slot, Optional<StringFragment> name) throws BlunderException {
+    public Fragment run(SpellContext ctx, Fragment input, Optional<SlotFragment> slot, Optional<StringFragment> name) {
         return run(this, ctx, input, slot, name, false);
     }
 
-    public static Fragment run(Trick<?> self, SpellContext ctx, Fragment input, Optional<SlotFragment> optionalSlot, Optional<StringFragment> optionalName, boolean closed) throws BlunderException {
+    public static Fragment run(Trick<?> self, SpellContext ctx, Fragment input, Optional<SlotFragment> optionalSlot, Optional<StringFragment> optionalName, boolean closed) {
         var player = ctx.source().getPlayer();
         var slot = optionalSlot.or(() -> ctx.source().getOtherHandSlot())
                 .orElseThrow(() -> new NoPlayerBlunder(self));

@@ -2,7 +2,6 @@ package dev.enjarai.trickster.spell.trick.entity;
 
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.EntityTypeFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
@@ -24,7 +23,7 @@ public class BlockFindEntityTrick extends Trick<BlockFindEntityTrick> {
                 Signature.of(FragmentType.VECTOR, FragmentType.ENTITY_TYPE.variadicOfArg().unpack(), BlockFindEntityTrick::find, FragmentType.ENTITY.optionalOfRet()));
     }
 
-    public Optional<EntityFragment> find(SpellContext ctx, VectorFragment pos, List<EntityTypeFragment> typeFragments) throws BlunderException {
+    public Optional<EntityFragment> find(SpellContext ctx, VectorFragment pos, List<EntityTypeFragment> typeFragments) {
         var world = ctx.source().getWorld();
         var blockPos = pos.toBlockPos();
         var types = new ArrayList<EntityType<?>>(typeFragments.size());

@@ -8,7 +8,6 @@ import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.SlotFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.type.Signature;
 
 public class RemoveTransmogTrick extends Trick<RemoveTransmogTrick> {
@@ -16,7 +15,7 @@ public class RemoveTransmogTrick extends Trick<RemoveTransmogTrick> {
         super(Pattern.of(6, 3, 4, 5, 2, 4, 6, 8, 4, 0, 2), Signature.of(FragmentType.SLOT, RemoveTransmogTrick::remove, FragmentType.BOOLEAN));
     }
 
-    public BooleanFragment remove(SpellContext ctx, SlotFragment slot) throws BlunderException {
+    public BooleanFragment remove(SpellContext ctx, SlotFragment slot) {
         var stack = slot.reference(this, ctx);
 
         if (!TransmogUtils.isItemStackTransmogged(stack)) {
