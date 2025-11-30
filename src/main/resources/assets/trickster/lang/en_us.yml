@@ -415,6 +415,7 @@ block.trickster:
   scroll_shelf: Scroll Shelf
   charging_array: Charging Array
   inert_spawner: Inert Spawner
+  color_block: Infused Ceramic
 
 effect.trickster:
   mana_boost: Mana Hyperflux

@@ -8,13 +8,12 @@ import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
 public class ColorBlockEntity extends BlockEntity implements SpellColoredBlockEntity, RenderDataBlockEntity {
 
-    public int[] colors = new int[] { DyeColor.CYAN.getEntityColor() };
+    public int[] colors = new int[] { -6182991 };
 
     public ColorBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlocks.COLOR_BLOCK_ENTITY, pos, state);
@@ -30,7 +29,6 @@ public class ColorBlockEntity extends BlockEntity implements SpellColoredBlockEn
         this.colors = colors;
         markDirty();
         if (world == null) return;
-        world.setBlockState(getPos(), world.getBlockState(getPos()).with(ColorBlock.TRANSLUCENT, (colors[0] & 0xFF000000) != 0));
         world.updateListeners(pos, getCachedState(), getCachedState(), 0);
     }
 
@@ -49,7 +47,7 @@ public class ColorBlockEntity extends BlockEntity implements SpellColoredBlockEn
     protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         colors = nbt.getIntArray("colors");
         if (colors.length == 0) {
-            colors = new int[] { 0xffffff };
+            colors = new int[] { -6182991 };
         }
         if (world != null) {
             world.updateListeners(pos, getCachedState(), getCachedState(), 0);

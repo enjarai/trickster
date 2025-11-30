@@ -39,7 +39,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.MathHelper;
 
 import java.util.List;
@@ -148,12 +147,12 @@ public class TricksterClient implements ClientModInitializer {
 
         ColorProviderRegistry.BLOCK.register((state, world, pos, index) -> {
             if (world == null || pos == null) {
-                return DyeColor.RED.getEntityColor();
+                return -6182991;
             }
             if (world.getBlockEntityRenderData(pos) instanceof Integer color) {
                 return color;
             }
-            return DyeColor.PURPLE.getEntityColor();
+            return -6182991;
         }, ModBlocks.COLOR_BLOCK);
 
     }
