@@ -50,6 +50,7 @@ public class WardManagerComponent implements CommonTickingComponent, AutoSyncedC
         wards.putAll(map);
     }
 
+    @Override
     public void writeSyncPacket(RegistryByteBuf buf, ServerPlayerEntity recipient) {
         buf.write(WARDS_ENDEC, wards);
     }
@@ -82,11 +83,20 @@ public class WardManagerComponent implements CommonTickingComponent, AutoSyncedC
         return Optional.ofNullable(wards.get(uuid));
     }
 
-    public ArrayList<Ward> allThatCanCancel(Action<?> action) {
+    private ArrayList<Ward> allThatCanCancel(Action<?> action) {
         var result = new ArrayList<Ward>();
-        var target = action.target(world);
+        var bypass = action.source.getComponent(ModUwuComponents.WARD_BYPASS).orElse(null);
+        var target = action.target();
 
-        for (var ward : wards.values()) {
+        for (var kv : wards.entrySet()) {
+            var uuid = kv.getKey();
+
+            if (bypass != null && bypass.contains(world, uuid)) {
+                continue;
+            }
+
+            var ward = kv.getValue();
+
             if (ward.matchTarget(target) && ward.matchAction(action.type())) {
                 result.add(ward);
             }
@@ -97,11 +107,13 @@ public class WardManagerComponent implements CommonTickingComponent, AutoSyncedC
 
     // if this returns true, the caller MUST cancel the action
     // failing to do so would result in unexpected drain of the ward's reserves
-    public <T extends Target> boolean shouldCancel(Action<T> action) {
-        var wards = allThatCanCancel(action);
+    public static <T extends Target> boolean shouldCancel(Action<T> action) {
+        var world = action.source.getWorld();
+        var manager = ModWorldComponents.WARD_MANAGER.get(world);
+        var wards = manager.allThatCanCancel(action);
 
         if (wards.size() > 0) {
-            float cost = action.cost(world);
+            float cost = action.cost();
 
             for (var ward : wards) {
                 ward.drain(world, cost / wards.size());

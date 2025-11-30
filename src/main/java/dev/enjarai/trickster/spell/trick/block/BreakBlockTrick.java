@@ -22,7 +22,7 @@ public class BreakBlockTrick extends Trick<BreakBlockTrick> {
         var world = ctx.source().getWorld();
 
         expectCanBuild(ctx, blockPos);
-        checkWard(ctx, new BreakBlockAction(blockPos));
+        checkWard(new BreakBlockAction(ctx.source(), blockPos));
 
         var state = world.getBlockState(blockPos);
 

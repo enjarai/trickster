@@ -36,6 +36,7 @@ import dev.enjarai.trickster.spell.trick.raycast.RaycastEntityTrick;
 import dev.enjarai.trickster.spell.trick.raycast.RaycastPosTrick;
 import dev.enjarai.trickster.spell.trick.tree.*;
 import dev.enjarai.trickster.spell.trick.vector.*;
+import dev.enjarai.trickster.spell.trick.ward.BypassWardTrick;
 import dev.enjarai.trickster.spell.trick.ward.CreateWardTrick;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.fabricmc.loader.api.FabricLoader;
@@ -307,6 +308,7 @@ public class Tricks {
 
     // Wards
     public static final CreateWardTrick CREATE_WARD = register("create_ward", new CreateWardTrick());
+    public static final BypassWardTrick BYPASS_WARD = register("bypass_ward", new BypassWardTrick());
 
     static {
         if (FabricLoader.getInstance().isDevelopmentEnvironment()) {

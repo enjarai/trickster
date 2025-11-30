@@ -1,12 +1,13 @@
 package dev.enjarai.trickster.spell.ward.action;
 
+import dev.enjarai.trickster.spell.Source;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
-public class BreakBlockAction implements Action<Target.Block> {
+public class BreakBlockAction extends Action<Target.Block> {
     private final BlockPos pos;
 
-    public BreakBlockAction(BlockPos pos) {
+    public BreakBlockAction(Source source, BlockPos pos) {
+        super(source);
         this.pos = pos;
     }
 
@@ -16,12 +17,12 @@ public class BreakBlockAction implements Action<Target.Block> {
     }
 
     @Override
-    public Target.Block target(World world) {
+    public Target.Block target() {
         return new Target.Block(pos);
     }
 
     @Override
-    public float cost(World world) {
-        return Math.max(world.getBlockState(pos).getBlock().getHardness(), 8);
+    public float cost() {
+        return Math.max(source.getWorld().getBlockState(pos).getBlock().getHardness(), 8);
     }
 }

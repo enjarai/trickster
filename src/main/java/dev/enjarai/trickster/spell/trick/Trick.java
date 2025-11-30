@@ -1,7 +1,7 @@
 package dev.enjarai.trickster.spell.trick;
 
 import dev.enjarai.trickster.Trickster;
-import dev.enjarai.trickster.cca.ModWorldComponents;
+import dev.enjarai.trickster.cca.WardManagerComponent;
 import dev.enjarai.trickster.spell.EvaluationResult;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
@@ -92,9 +92,8 @@ public abstract class Trick<T extends Trick<T>> {
         }
     }
 
-    protected void checkWard(SpellContext ctx, Action<?> action) {
-        var wards = ModWorldComponents.WARD_MANAGER.get(ctx.source().getWorld());
-        if (wards.shouldCancel(action)) {
+    protected void checkWard(Action<?> action) {
+        if (WardManagerComponent.shouldCancel(action)) {
             throw new BlockedByWardBlunder(this);
         }
     }

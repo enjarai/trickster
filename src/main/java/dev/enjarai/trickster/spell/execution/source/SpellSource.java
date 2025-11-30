@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.spell.execution.source;
 
 import dev.enjarai.trickster.spell.Fragment;
+import dev.enjarai.trickster.spell.Source;
 import dev.enjarai.trickster.spell.execution.SpellExecutionManager;
 import dev.enjarai.trickster.spell.fragment.SlotFragment;
 import dev.enjarai.trickster.spell.mana.MutableManaPool;
@@ -12,13 +13,11 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import org.joml.Vector3d;
-import org.ladysnake.cca.api.v3.component.Component;
-import org.ladysnake.cca.api.v3.component.ComponentKey;
 
 import java.util.*;
 import java.util.function.Predicate;
 
-public interface SpellSource {
+public interface SpellSource extends Source {
     default Optional<ServerPlayerEntity> getPlayer() {
         return Optional.empty();
     }
@@ -55,8 +54,6 @@ public interface SpellSource {
     default Optional<Vector3d> getFacing() {
         return Optional.empty();
     }
-
-    <T extends Component> Optional<T> getComponent(ComponentKey<T> key);
 
     float getHealth();
 

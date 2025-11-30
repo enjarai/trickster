@@ -281,6 +281,7 @@ trickster:
     message_listen: Ploy of Receipt
 
     create_ward: Guardian's Ploy
+    bypass_ward: Keyholder's Ploy
 
   fragment:
     trickster:

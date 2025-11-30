@@ -1,11 +1,17 @@
 package dev.enjarai.trickster.spell.ward.action;
 
-import net.minecraft.world.World;
+import dev.enjarai.trickster.spell.Source;
 
-public interface Action<T extends Target> {
-    ActionType<?> type();
+public abstract class Action<T extends Target> {
+    public final Source source;
 
-    T target(World world);
+    public Action(Source source) {
+        this.source = source;
+    }
 
-    float cost(World world);
+    public abstract ActionType<?> type();
+
+    public abstract T target();
+
+    public abstract float cost();
 }
