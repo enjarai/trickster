@@ -27,7 +27,7 @@ public record LineFleck(Vector3fc pos, Vector3fc pos2, float size) implements Fl
         return new LineFleck(
                 pos,
                 pos2,
-                (float)(scale.number())
+                (float) (scale.number())
         );
     }
 }

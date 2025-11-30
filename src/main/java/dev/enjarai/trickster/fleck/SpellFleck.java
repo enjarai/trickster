@@ -42,7 +42,7 @@ public record SpellFleck(Vector3fc pos, Vector3fc facing, SpellPart spell, float
                 pos,
                 facing,
                 spell,
-                (float)(scale.number()),
+                (float) (scale.number()),
                 roll
         );
     }

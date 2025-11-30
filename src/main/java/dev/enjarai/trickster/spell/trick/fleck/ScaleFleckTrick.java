@@ -1,9 +1,7 @@
 package dev.enjarai.trickster.spell.trick.fleck;
 
 import dev.enjarai.trickster.cca.ModEntityComponents;
-import dev.enjarai.trickster.fleck.LineFleck;
 import dev.enjarai.trickster.fleck.ScalableFleck;
-import dev.enjarai.trickster.fleck.SpellFleck;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.NoSuchFleckBlunder;
@@ -11,7 +9,6 @@ import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.type.Signature;
-import net.minecraft.entity.player.PlayerEntity;
 
 import java.util.List;
 import java.util.Optional;
