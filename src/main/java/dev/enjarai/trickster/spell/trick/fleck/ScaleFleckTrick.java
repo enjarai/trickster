@@ -19,11 +19,6 @@ import java.util.Optional;
 public class ScaleFleckTrick extends AbstractFleckTrick<ScaleFleckTrick> {
     public ScaleFleckTrick() {
         super(
-                /*
-                6 7 8
-                3 4 5
-                0 1 2
-                 */
                 Pattern.of(6, 3, 4, 5, 2, 1, 0, 6, 7, 8, 2),
                 Signature.of(FragmentType.NUMBER, FragmentType.NUMBER, FragmentType.ENTITY.variadicOfArg().unpack().optionalOfArg(), ScaleFleckTrick::scaleFleck, FragmentType.NUMBER)
         );
