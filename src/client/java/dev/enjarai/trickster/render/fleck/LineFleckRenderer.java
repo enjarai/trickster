@@ -52,7 +52,7 @@ public class LineFleckRenderer implements FleckRenderer<LineFleck> {
             cur.add(step);
         }
 
-        drawSegment(prev, pos2, LINE_SEGMENT_WIDTH * size, matrices, buffer, argb, LightmapTextureManager.MAX_LIGHT_COORDINATE, camPos, prev.distance(pos2) / LINE_SEGMENT_LENGTH);
+        drawSegment(prev, pos2, LINE_SEGMENT_WIDTH * size, matrices, buffer, argb, LightmapTextureManager.MAX_LIGHT_COORDINATE, camPos, prev.distance(pos2) / LINE_SEGMENT_LENGTH / size);
     }
 
     private static void drawSegment(Vector3fc start, Vector3fc end, float width, MatrixStack matrices, VertexConsumer buffer, int argb, int light, Vector3f camPos, float uvfactor) {
