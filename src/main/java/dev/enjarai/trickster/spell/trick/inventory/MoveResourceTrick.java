@@ -9,7 +9,6 @@ import dev.enjarai.trickster.spell.fragment.slot.*;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.ArgType;
 import dev.enjarai.trickster.spell.type.Signature;
-import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 
@@ -18,12 +17,13 @@ import java.util.Optional;
 
 public class MoveResourceTrick extends Trick<MoveResourceTrick> {
     public MoveResourceTrick() {
-        super(Pattern.of(7, 4, 6, 7, 8, 4, 0, 2, 4), Signature.of(FragmentType.SLOT, FragmentType.SLOT, FragmentType.NUMBER.optionalOfArg(), ArgType.simple(ResourceVariantFragment.class).variadicOfArg().unpack(), MoveResourceTrick::move, FragmentType.NUMBER));
-        overload(Signature.of(FragmentType.CONTAINER, FragmentType.CONTAINER, FragmentType.NUMBER.optionalOfArg(), ArgType.simple(ResourceVariantFragment.class).variadicOfArg().unpack(), MoveResourceTrick::move, FragmentType.NUMBER));
+        super(Pattern.of(7, 4, 6, 7, 8, 4, 0, 2, 4), Signature.of(ArgType.simple(StorageFragment.class), ArgType.simple(StorageFragment.class), FragmentType.NUMBER.optionalOfArg(),
+                ArgType.simple(ResourceVariantFragment.class).variadicOfArg().unpack(), MoveResourceTrick::move, FragmentType.NUMBER));
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    public <T> NumberFragment move(SpellContext ctx, StorageFragment sourceSlot, StorageFragment destinationSlot, Optional<NumberFragment> amount, List<ResourceVariantFragment> resourceTypes) throws BlunderException {
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public <T> NumberFragment move(SpellContext ctx, StorageFragment sourceSlot, StorageFragment destinationSlot, Optional<NumberFragment> amount, List<ResourceVariantFragment> resourceTypes)
+            throws BlunderException {
         if (sourceSlot.equals(destinationSlot)) {
             return new NumberFragment(0);
         }
@@ -35,20 +35,20 @@ public class MoveResourceTrick extends Trick<MoveResourceTrick> {
 
         try (var trans = Transaction.openOuter()) {
             var moved = StorageUtil.move(
-                sourceSlot.getStorage(this, ctx, variantType),
-                destinationSlot.getStorage(this, ctx, variantType),
-                v -> {
-                    if (allowedResources.isEmpty()) return true;
+                    sourceSlot.getStorage(this, ctx, variantType),
+                    destinationSlot.getStorage(this, ctx, variantType),
+                    v -> {
+                        if (allowedResources.isEmpty()) return true;
 
-                    for (var resource : allowedResources) {
-                        if (resource.resourceMatches(this, ctx, v)) {
-                            return true;
+                        for (var resource : allowedResources) {
+                            if (resource.resourceMatches(this, ctx, v)) {
+                                return true;
+                            }
                         }
-                    }
-                    return false;
-                },
-                amount.map(NumberFragment::asLong).orElse(Long.MAX_VALUE),
-                trans
+                        return false;
+                    },
+                    amount.map(NumberFragment::asLong).orElse(Long.MAX_VALUE),
+                    trans
             );
 
             ctx.useMana(this, destinationSlot.getMoveCost(this, ctx, sourceSlot.getSourceOrCasterPos(this, ctx), moved));

@@ -97,8 +97,8 @@ public sealed interface StorageSource {
 
     record Block(BlockPos pos) implements StorageSource {
         public static final StructEndec<Block> ENDEC = StructEndecBuilder.of(
-            MinecraftEndecs.BLOCK_POS.fieldOf("pos", Block::pos),
-            Block::new
+                MinecraftEndecs.BLOCK_POS.fieldOf("pos", Block::pos),
+                Block::new
         );
 
         @Override
@@ -126,8 +126,8 @@ public sealed interface StorageSource {
         @Override
         public Text describe() {
             return Text.translatable(
-                "trickster.storage.block",
-                pos.getX(), pos.getY(), pos.getZ()
+                    "trickster.storage.block",
+                    pos.getX(), pos.getY(), pos.getZ()
             );
         }
 
@@ -139,8 +139,8 @@ public sealed interface StorageSource {
 
     record Entity(UUID uuid) implements StorageSource {
         public static final StructEndec<Entity> ENDEC = StructEndecBuilder.of(
-            EndecTomfoolery.UUID.fieldOf("uuid", Entity::uuid),
-            Entity::new
+                EndecTomfoolery.UUID.fieldOf("uuid", Entity::uuid),
+                Entity::new
         );
 
         @Override
@@ -167,8 +167,8 @@ public sealed interface StorageSource {
         @Override
         public Text describe() {
             return Text.translatable(
-                "trickster.storage.entity",
-                uuid.toString()
+                    "trickster.storage.entity",
+                    uuid.toString()
             );
         }
 
@@ -186,9 +186,9 @@ public sealed interface StorageSource {
 
     record Slot(int slot, StorageSource source) implements StorageSource {
         public static final StructEndec<Slot> ENDEC = StructEndecBuilder.of(
-            Endec.INT.fieldOf("slot", Slot::slot),
-            StorageSource.ENDEC.fieldOf("source", Slot::source),
-            Slot::new
+                Endec.INT.fieldOf("slot", Slot::slot),
+                StorageSource.ENDEC.fieldOf("source", Slot::source),
+                Slot::new
         );
 
         @Override
@@ -218,8 +218,8 @@ public sealed interface StorageSource {
         @Override
         public Text describe() {
             return Text.translatable(
-                "trickster.storage.slot",
-                slot, source.describe()
+                    "trickster.storage.slot",
+                    slot, source.describe()
             );
         }
 
@@ -244,8 +244,8 @@ public sealed interface StorageSource {
 
     record Merged(List<StorageSource> sources) implements StorageSource {
         public static final StructEndec<Merged> ENDEC = StructEndecBuilder.of(
-            StorageSource.ENDEC.listOf().fieldOf("sources", Merged::sources),
-            Merged::new
+                StorageSource.ENDEC.listOf().fieldOf("sources", Merged::sources),
+                Merged::new
         );
 
         @Override
@@ -267,8 +267,8 @@ public sealed interface StorageSource {
         @Override
         public Text describe() {
             return Text.translatable(
-                "trickster.storage.merged",
-                sources.size()
+                    "trickster.storage.merged",
+                    sources.size()
             );
         }
 
