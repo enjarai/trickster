@@ -158,6 +158,7 @@ public class ModItems {
                 entries.add(MODULAR_SPELL_CONSTRUCT_ITEM);
                 entries.add(CHARGING_ARRAY_ITEM);
                 entries.add(INERT_SPAWNER_ITEM);
+                entries.add(COLOR_BLOCK);
                 entries.add(SPELL_CORE);
                 entries.add(RUSTED_SPELL_CORE);
                 entries.add(OMINOUS_SPELL_CORE);
