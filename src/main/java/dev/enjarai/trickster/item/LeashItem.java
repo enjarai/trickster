@@ -32,7 +32,7 @@ public class LeashItem extends Item {
     @Override
     public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
         if (!user.getWorld().isClient() && !stack.contains(ModComponents.COLLAR_LINK)) {
-            var slot = SlotReference.of(entity, "necklace", 0);
+            var slot = SlotReference.of(entity, "collar", 0);
             var collarStack = slot.getStack();
 
             if (!(entity instanceof PlayerEntity)) {
@@ -91,7 +91,7 @@ public class LeashItem extends Item {
         if (linkComponent != null) {
             if (!world.isClient()) {
                 var players = world.getPlayers().stream().filter(p -> {
-                    var collarStack = SlotReference.of(p, "necklace", 0).getStack();
+                    var collarStack = SlotReference.of(p, "collar", 0).getStack();
                     if (collarStack == null) return false;
 
                     var component = collarStack.get(ModComponents.COLLAR_LINK);
