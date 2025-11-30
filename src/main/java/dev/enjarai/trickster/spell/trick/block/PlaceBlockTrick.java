@@ -66,7 +66,12 @@ public class PlaceBlockTrick extends Trick<PlaceBlockTrick> {
                     facing,
                     stack,
                     side
-            );
+            ) {
+                @Override
+                public Direction getPlayerLookDirection() {
+                    return facing;
+                }
+            };
 
             var distance = ctx.source().getPos().distance(pos.vector());
             var mana = Math.max((float) distance, 8f);
