@@ -18,6 +18,8 @@ public interface Ward {
 
     WardType<?> type();
 
+    int color(World world);
+
     void tick(World world);
 
     void drain(World world, float amount);

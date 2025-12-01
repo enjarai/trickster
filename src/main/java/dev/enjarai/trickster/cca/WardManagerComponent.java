@@ -2,6 +2,7 @@ package dev.enjarai.trickster.cca;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -81,6 +82,10 @@ public class WardManagerComponent implements CommonTickingComponent, AutoSyncedC
 
     public Optional<Ward> get(UUID uuid) {
         return Optional.ofNullable(wards.get(uuid));
+    }
+
+    public List<Ward> getRenderWards() {
+        return new ArrayList<>(wards.values());
     }
 
     private ArrayList<Ward> allThatCanCancel(Action<?> action) {

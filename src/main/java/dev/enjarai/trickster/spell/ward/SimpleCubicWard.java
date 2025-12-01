@@ -16,6 +16,8 @@ import io.wispforest.endec.impl.StructEndecBuilder;
 import io.wispforest.owo.serialization.endec.MinecraftEndecs;
 import net.minecraft.world.World;
 
+import static net.minecraft.util.math.ColorHelper.Argb.getArgb;
+
 public class SimpleCubicWard implements Ward {
     public static final StructEndec<SimpleCubicWard> ENDEC = StructEndecBuilder.of(
             SimpleManaPool.ENDEC.fieldOf("buffer", ward -> ward.buffer),
@@ -24,8 +26,9 @@ public class SimpleCubicWard implements Ward {
             SimpleCubicWard::new
     );
 
+    public final BlockBox area;
+
     private final SimpleManaPool buffer;
-    private final BlockBox area;
     private final List<ActionType<?>> actions;
 
     private SimpleCubicWard(SimpleManaPool buffer, BlockBox area, List<ActionType<?>> actions) {
@@ -37,6 +40,19 @@ public class SimpleCubicWard implements Ward {
     @Override
     public WardType<?> type() {
         return WardType.SIMPLE_CUBIC;
+    }
+
+    @Override
+    public int color(World world) {
+        var dimensions = area.getDimensions();
+        float max = buffer.getMax(world);
+        float current = buffer.get(world) - max / 2;
+        int a = (int) (120 * current / max);
+        int r = 255 * dimensions.getX() / dimensions.getY() / dimensions.getZ();
+        int g = 255 * dimensions.getY() / dimensions.getY() / dimensions.getX();
+        int b = 255 * dimensions.getZ() / dimensions.getX() / dimensions.getY();
+
+        return getArgb(a, r, g, b);
     }
 
     @Override
