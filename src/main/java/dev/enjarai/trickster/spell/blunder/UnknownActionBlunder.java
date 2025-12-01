@@ -1,11 +1,15 @@
 package dev.enjarai.trickster.spell.blunder;
 
+import dev.enjarai.trickster.spell.trick.Trick;
 import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
 
-public class UnknownActionBlunder extends BlunderException {
+public class UnknownActionBlunder extends TrickBlunderException {
+    public UnknownActionBlunder(Trick<?> source) {
+        super(source);
+    }
+
     @Override
     public MutableText createMessage() {
-        return Text.literal("Unknown action");
+        return super.createMessage().append("Unknown action");
     }
 }

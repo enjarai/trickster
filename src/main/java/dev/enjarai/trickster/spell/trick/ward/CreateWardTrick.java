@@ -20,8 +20,8 @@ import net.minecraft.util.math.BlockBox;
 
 public class CreateWardTrick extends Trick<CreateWardTrick> {
     public CreateWardTrick() {
-        //TODO: choose a better pattern
-        super(Pattern.of(0, 5, 4), Signature.of(FragmentType.VECTOR, FragmentType.VECTOR, FragmentType.PATTERN.variadicOfArg(), CreateWardTrick::simpleCubic, FragmentType.WARD));
+        super(Pattern.of(4, 7, 2, 5, 8, 4, 6, 1, 0, 3, 4, 1, 2, 4),
+                Signature.of(FragmentType.VECTOR, FragmentType.VECTOR, FragmentType.PATTERN.variadicOfArg(), CreateWardTrick::simpleCubic, FragmentType.WARD));
     }
 
     public WardFragment simpleCubic(SpellContext ctx, VectorFragment pos1, VectorFragment pos2, List<PatternGlyph> patterns) {
@@ -45,7 +45,7 @@ public class CreateWardTrick extends Trick<CreateWardTrick> {
             var action = ActionType.lookup(pattern.pattern());
 
             if (action == null) {
-                throw new UnknownActionBlunder(); //TODO: this blunder is bad
+                throw new UnknownActionBlunder(this); //TODO: could this be clearer?
             }
 
             actions.add(action);

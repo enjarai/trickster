@@ -11,8 +11,7 @@ import dev.enjarai.trickster.spell.type.Signature;
 
 public class BypassWardTrick extends Trick<BypassWardTrick> {
     public BypassWardTrick() {
-        //TODO: choose a better pattern
-        super(Pattern.of(0, 5, 6), Signature.of(FragmentType.WARD, BypassWardTrick::bypass, FragmentType.WARD));
+        super(Pattern.of(6, 5, 8, 6, 4, 7, 6, 3, 4, 1, 0, 3), Signature.of(FragmentType.WARD, BypassWardTrick::bypass, FragmentType.WARD));
     }
 
     public WardFragment bypass(SpellContext ctx, WardFragment ward) {
