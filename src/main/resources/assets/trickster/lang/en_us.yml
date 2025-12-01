@@ -414,6 +414,9 @@ block.trickster:
   charging_array: Charging Array
   inert_spawner: Inert Spawner
 
+entity.trickster:
+  levitating_block: Levitating Block
+
 effect.trickster:
   mana_boost: Mana Hyperflux
   mana_deficiency: Mana Hypoflux
