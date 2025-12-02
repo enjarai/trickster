@@ -32,7 +32,7 @@ public class ColorRenderer implements FragmentRenderer<ColorFragment> {
         int r = getRed(col), g = getGreen(col), b = getBlue(col), a = getAlpha(col);
         matrices.push();
         matrices.translate(x, y, 0);
-        matrices.scale(size, size, size);
+        matrices.scale(size, size, delegator.inUI ? size : -size);
         for (int i = 0; i < 8; i++) {
             var rand = new Random(((int) (time / 5) + i) * 1000);
             var rotv = rand.nextFloat() - 0.5f;
