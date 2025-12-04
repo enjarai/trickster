@@ -22,7 +22,7 @@ public interface StorageFragment extends VariantingFragment {
     default float getMoveCost(Trick<?> trickSource, SpellContext ctx, Vector3dc pos, long amount) throws BlunderException {
         return getSourcePos(trickSource, ctx)
                 .map(sourcePos -> {
-                    var a = variantType().costMultiplier() * amount;
+                    var a = variantType().costMultiplier * amount;
                     return (float) (pos.distance(sourcePos) * a * 0.5);
                 })
                 .orElse(0f);
