@@ -1,7 +1,6 @@
 package dev.enjarai.trickster.fleck;
 
 import dev.enjarai.trickster.spell.SpellPart;
-import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
@@ -26,23 +25,23 @@ public record SpellFleck(Vector3fc pos, Vector3fc facing, SpellPart spell, float
     }
 
     @Override
-    public RollableFleck rollFleck(float roll) {
+    public RollableFleck rollFleck(double roll) {
         return new SpellFleck(
                 pos,
                 facing,
                 spell,
                 size,
-                roll
+                (float) roll
         );
     }
 
     @Override
-    public ScalableFleck scaleFleck(NumberFragment scale) {
+    public ScalableFleck scaleFleck(double scale) {
         return new SpellFleck(
                 pos,
                 facing,
                 spell,
-                (float) (scale.number()),
+                (float) scale,
                 roll
         );
     }

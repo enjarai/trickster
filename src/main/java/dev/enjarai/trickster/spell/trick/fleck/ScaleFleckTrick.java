@@ -30,7 +30,7 @@ public class ScaleFleckTrick extends AbstractFleckTrick<ScaleFleckTrick> {
             }
             var fleck = flecks.get(id.asInt()).fleck();
             if (fleck instanceof ScalableFleck sfleck) {
-                display(ctx, id, sfleck.scaleFleck(size), Optional.of(List.of(EntityFragment.from(player))));
+                display(ctx, id, sfleck.scaleFleck(Math.abs(size.number())), Optional.of(List.of(EntityFragment.from(player))));
             }
         });
 

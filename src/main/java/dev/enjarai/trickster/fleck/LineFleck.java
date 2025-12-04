@@ -1,6 +1,5 @@
 package dev.enjarai.trickster.fleck;
 
-import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
@@ -23,11 +22,11 @@ public record LineFleck(Vector3fc pos, Vector3fc pos2, float size) implements Fl
     }
 
     @Override
-    public ScalableFleck scaleFleck(NumberFragment scale) {
+    public ScalableFleck scaleFleck(double scale) {
         return new LineFleck(
                 pos,
                 pos2,
-                (float) (scale.number())
+                (float) scale
         );
     }
 }

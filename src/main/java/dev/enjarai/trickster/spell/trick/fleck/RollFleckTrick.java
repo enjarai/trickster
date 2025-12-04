@@ -30,7 +30,7 @@ public class RollFleckTrick extends AbstractFleckTrick<RollFleckTrick> {
             }
             var fleck = flecks.get(id.asInt()).fleck();
             if (fleck instanceof RollableFleck rfleck) {
-                display(ctx, id, rfleck.rollFleck((float) (roll.number())), Optional.of(List.of(EntityFragment.from(player))));
+                display(ctx, id, rfleck.rollFleck(roll.number()), Optional.of(List.of(EntityFragment.from(player))));
             }
         });
 
