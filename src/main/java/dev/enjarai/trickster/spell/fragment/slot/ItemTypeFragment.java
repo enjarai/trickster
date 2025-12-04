@@ -40,6 +40,6 @@ public record ItemTypeFragment(Item item) implements Fragment, ResourceVariantFr
 
     @Override
     public boolean resourceMatches(Trick<?> trick, SpellContext ctx, ItemVariant resource) {
-        return resource.getItem() == item;
+        return resource.isOf(item);
     }
 }
