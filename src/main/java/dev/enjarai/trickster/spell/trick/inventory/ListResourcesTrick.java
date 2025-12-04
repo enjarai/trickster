@@ -21,7 +21,7 @@ public class ListResourcesTrick extends Trick<ListResourcesTrick> {
         );
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     private <T> List<ResourceVariantFragment> run(SpellContext ctx, ContainerFragment container) {
         var result = new ArrayList<ResourceVariantFragment>();
 
