@@ -10,7 +10,6 @@ import dev.enjarai.trickster.spell.fragment.slot.VariantType;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.ArgType;
 import dev.enjarai.trickster.spell.type.Signature;
-import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 
 public class CountResourcesTrick extends Trick<CountResourcesTrick> {
     public CountResourcesTrick() {
@@ -20,7 +19,7 @@ public class CountResourcesTrick extends Trick<CountResourcesTrick> {
         );
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     private <T> NumberFragment run(SpellContext ctx, ContainerFragment container, ResourceVariantFragment resource) {
         var variantType = (VariantType<T>) container.variantType();
         resource.assertVariantType(this, variantType);

@@ -1,5 +1,6 @@
 package dev.enjarai.trickster.spell.fragment;
 
+import dev.enjarai.trickster.mixin.accessor.FluidBlockAccessor;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.slot.ResourceVariantFragment;
@@ -10,7 +11,6 @@ import io.wispforest.endec.impl.StructEndecBuilder;
 import io.wispforest.owo.serialization.endec.MinecraftEndecs;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.minecraft.block.Block;
-import net.minecraft.block.FluidBlock;
 import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 
@@ -42,6 +42,6 @@ public record BlockTypeFragment(Block block) implements Fragment, ResourceVarian
 
     @Override
     public boolean resourceMatches(Trick<?> trick, SpellContext ctx, FluidVariant resource) {
-        return block instanceof FluidBlock fluid && resource.getFluid() == fluid;
+        return block instanceof FluidBlockAccessor fluid && resource.getFluid().matchesType(fluid.getFluid());
     }
 }

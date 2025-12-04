@@ -155,7 +155,7 @@ public sealed interface StorageSource {
                 var entity = ctx.source().getWorld().getEntity(uuid);
 
                 if (entity instanceof SlotHolderDuck holder) {
-                    //                    return holder; TODO
+                    return (Storage<T>) holder.trickster$slot_holder$getItemStorage();
                 } else if (entity instanceof Inventory inv) {
                     return (Storage<T>) InventoryStorage.of(inv, null);
                 } else throw new NoInventoryBlunder(trick);
