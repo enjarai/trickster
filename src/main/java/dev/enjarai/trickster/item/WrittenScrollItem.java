@@ -1,20 +1,17 @@
 package dev.enjarai.trickster.item;
 
 import dev.enjarai.trickster.cca.ModEntityComponents;
+import dev.enjarai.trickster.item.component.FragmentComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.screen.ScrollAndQuillScreenHandler;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.execution.SpellQueueResult;
 import dev.enjarai.trickster.spell.mana.SimpleManaPool;
 import io.vavr.collection.HashMap;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.screen.NamedScreenHandlerFactory;
-import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
@@ -24,6 +21,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public class WrittenScrollItem extends Item {
     public WrittenScrollItem(Settings settings) {
@@ -34,7 +32,6 @@ public class WrittenScrollItem extends Item {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         var stack = user.getStackInHand(hand);
         var otherStack = user.getStackInHand(hand == Hand.MAIN_HAND ? Hand.OFF_HAND : Hand.MAIN_HAND);
-        var slot = hand == Hand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
         var meta = stack.get(ModComponents.WRITTEN_SCROLL_META);
 
         if (meta != null && meta.executable()) {
@@ -54,21 +51,14 @@ public class WrittenScrollItem extends Item {
                 return TypedActionResult.pass(stack);
             }
 
-            user.openHandledScreen(new NamedScreenHandlerFactory() {
-                @Override
-                public Text getDisplayName() {
-                    return Text.translatable("trickster.screen.written_scroll");
-                }
-
-                @Override
-                public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-                    return new ScrollAndQuillScreenHandler(
-                            syncId, playerInventory, stack, otherStack, slot,
-                            HashMap.empty(),
-                            false, false
-                    );
-                }
-            });
+            user.openHandledScreen(ScrollAndQuillScreenHandler.factory(
+                Text.translatable("trickster.screen.written_scroll"),
+                new ScrollAndQuillScreenHandler.InitialData(
+                    FragmentComponent.getSpellPart(stack).orElse(new SpellPart()),
+                    false, false, hand, System.identityHashCode(stack), Set.of()
+                ),
+                stack, otherStack, HashMap.empty()
+            ));
         }
 
         return TypedActionResult.success(stack);
