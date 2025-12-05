@@ -6,6 +6,7 @@ import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.EntityInvalidBlunder;
 import dev.enjarai.trickster.spell.blunder.UnknownEntityBlunder;
 import dev.enjarai.trickster.spell.fragment.*;
+import dev.enjarai.trickster.spell.fragment.slot.ItemTypeFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.Signature;
 import net.minecraft.entity.LivingEntity;

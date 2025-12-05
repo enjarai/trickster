@@ -15,6 +15,7 @@
     "LivingEntityMixin",
     "accessor.CropBlockAccessor",
     "accessor.DataPackContentsAccessor",
+    "accessor.FluidBlockAccessor",
     "accessor.StateAccessor",
     "accessor.TagEntryAccessor",
     "accessor.WorldAccessor",
