@@ -59,14 +59,15 @@ public record SpellContext(ExecutionState state, SpellSource source, TickData da
 
         if (optionalSlot.isPresent()) {
             var slot = optionalSlot.get().getStorage(trick, this, VariantType.ITEM);
+            var resource = slot.getResource();
 
-            if (!validator.test(slot.getResource().toStack())) {
+            if (!validator.test(resource.toStack())) {
                 throw new ItemInvalidBlunder(trick);
             }
 
             try (var trans = Transaction.openOuter()) {
-                if (slot.extract(slot.getResource(), 1, trans) == 1) {
-                    result = slot.getResource().toStack();
+                if (slot.extract(resource, 1, trans) == 1) {
+                    result = resource.toStack();
                     trans.commit();
                 }
             }
