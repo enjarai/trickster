@@ -69,11 +69,6 @@ public class MapArgType<K, V> implements ArgType<HashMap<K, V>> {
     }
 
     @Override
-    public ArgType<HashMap<K, V>> wardOf() {
-        return new MapArgType<>(keyType.wardOf(), valueType.wardOf());
-    }
-
-    @Override
     public MutableText asText() {
         return Text.literal("{")
                 .append(keyType.asText())
