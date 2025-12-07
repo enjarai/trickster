@@ -127,3 +127,9 @@ Conjures a permanent light source at the given position.
 <|ploy@trickster:templates|trick-id=trickster:power_resonator,cost=4G|>
 
 Powers the [Spell Resonator](^trickster:items/spell_resonator) at the given position with the given power level, between 0 and 15.
+
+;;;;;
+
+<|ploy@trickster:templates|trick-id=trickster:paint,cost=0G|>
+
+Imbues the given color into the block at the position. Usually only works on magical targets.
