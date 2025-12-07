@@ -28,7 +28,7 @@ Swaps the item stacks within the given slots.
 
 ;;;;;
 
-<|trick@trickster:templates|trick-id=trickster:move_stack|>
+<|trick@trickster:templates|trick-id=trickster:move_resource|>
 
 Moves items from one slot into another, optionally limiting the amount. Can merge and split stacks.
 

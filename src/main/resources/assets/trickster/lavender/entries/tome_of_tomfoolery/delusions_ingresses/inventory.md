@@ -39,8 +39,8 @@ Returns the type of item in the caster's offhand.
 
 ;;;;;
 
-<|page-title@lavender:book_components|title=Note: Slot References|>Item slots may be referenced by spells.
-Creating such a reference comes at no cost. However, using the reference in a way that moves the items within the slot, will incur a move cost.
+<|page-title@lavender:book_components|title=Note: Slot References|>Resource slots may be referenced by spells.
+Creating such a reference comes at no cost. However, using the reference in a way that moves the resources within the slot, will incur a move cost.
 This cost is equivalent to (distance * amount * 0.5G). 
 Slot references either use the position of the caster at the time of move, or the position of their target when calculating cost.
 
@@ -52,13 +52,23 @@ Returns a slot reference of the caster's offhand.
 
 ;;;;;
 
-<|trick@trickster:templates|trick-id=trickster:get_inventory_slot|>
+<|trick@trickster:templates|trick-id=trickster:get_item_container|>
+
+
+
+;;;;;
+
+<|trick@trickster:templates|trick-id=trickster:get_fluid_container|>
+
+;;;;;
+
+<|trick@trickster:templates|trick-id=trickster:get_slot|>
 
 Constructs and returns a slot from an index and an inventory source, using the caster if no source is given.
 
 ;;;;;
 
-<|trick@trickster:templates|trick-id=trickster:get_inventory_slots|>
+<|trick@trickster:templates|trick-id=trickster:get_slots|>
 
 Returns a list of slots from an inventory source.
 
