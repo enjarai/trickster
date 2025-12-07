@@ -4,7 +4,7 @@ import net.minecraft.client.gui.screen.ingame.HandledScreens;
 
 public class ModHandledScreens {
     public static void register() {
-        HandledScreens.register(ModScreenHandlers.SCROLL_AND_QUILL, ScrollAndQuillScreen::new);
+        HandledScreens.register(ModScreenHandlers.SCROLL_AND_QUILL, ScrollAndQuillScreen::create);
         HandledScreens.register(ModScreenHandlers.SCROLL_CONTAINER, ScrollContainerScreen::new);
     }
 }
