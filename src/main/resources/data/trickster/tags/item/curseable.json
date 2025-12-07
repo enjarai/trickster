@@ -1,9 +1,10 @@
 {
   "values": [
-    "trickster:warding_charm",
     "#trickster:holdable_hat",
-    "trickster:amethyst_whorl",
     "#trickster:collars",
-    "trickster:macro_ring"
+    "trickster:amethyst_whorl",
+    "trickster:macro_ring",
+    "trickster:torment_on_a_chain",
+    "trickster:monocle"
   ]
 }
