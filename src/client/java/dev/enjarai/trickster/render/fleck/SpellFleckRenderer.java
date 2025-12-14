@@ -26,15 +26,18 @@ public class SpellFleckRenderer implements FleckRenderer<SpellFleck> {
         var facing = fleck.facing();
         var spell = fleck.spell();
         var size = fleck.size();
+        var roll = fleck.roll();
 
         var oldPosition = fleck.pos();
         var oldFacing = fleck.facing();
         var oldSize = fleck.size();
+        var oldRoll = fleck.roll();
 
         if (lastFleck != null) {
             oldPosition = lastFleck.pos();
             oldFacing = lastFleck.facing();
             oldSize = lastFleck.size();
+            oldRoll = lastFleck.roll();
         }
 
         //only lerp if change is small?
@@ -43,6 +46,7 @@ public class SpellFleckRenderer implements FleckRenderer<SpellFleck> {
         var targetPosition = oldPosition.lerp(position, tickDelta, new Vector3f()).sub(context.camera().getPos().toVector3f());
         var targetFacing = oldFacing.lerp(facing, tickDelta, new Vector3f()).normalize();
         var targetSize = MathHelper.lerp(tickDelta, oldSize, size);
+        var targetRoll = MathHelper.lerp(tickDelta, oldRoll, roll);
 
         var yaw = (float) Math.atan2(targetFacing.x(), targetFacing.z());
         var pitch = (float) (Math.asin(-targetFacing.y()) + Math.PI);
@@ -50,6 +54,7 @@ public class SpellFleckRenderer implements FleckRenderer<SpellFleck> {
         matrices.translate(targetPosition.x(), targetPosition.y(), targetPosition.z()); //translate over to the position of the spellfleck.
         matrices.multiply(RotationAxis.POSITIVE_Y.rotation(yaw));
         matrices.multiply(RotationAxis.POSITIVE_X.rotation(pitch));
+        matrices.multiply(RotationAxis.POSITIVE_Z.rotation(targetRoll));
 
         renderer.renderCircle(
             matrices,
