@@ -1,0 +1,71 @@
+package dev.enjarai.trickster.mixin.client;
+
+import dev.enjarai.trickster.item.LeftClickItem;
+import dev.enjarai.trickster.net.ModNetworking;
+import dev.enjarai.trickster.net.LeftClickItemPacket;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.network.ClientPlayerInteractionManager;
+import net.minecraft.util.Hand;
+import net.minecraft.world.GameMode;
+import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+@Mixin(MinecraftClient.class)
+public class MinecraftClientMixin {
+
+    @Shadow
+    public ClientPlayerEntity player;
+
+    @Shadow
+    private int itemUseCooldown;
+
+    @Shadow
+    @Nullable
+    public ClientPlayerInteractionManager interactionManager;
+
+    // Cast the wand on left-click this allows for spamming left click which is the same as using an item normally.
+    @Inject(method = "doAttack", at = @At(value = "HEAD"), cancellable = true)
+    private void itemLeftClickDetection(CallbackInfoReturnable<Boolean> cir) {
+        Hand hand = getHand();
+        if (player.getStackInHand(hand).getItem() instanceof LeftClickItem) {
+            cir.setReturnValue(true);
+            useItem(hand);
+        }
+    }
+
+    // Cast the wand when holding left-click uses the same cooldown as using an item normally
+    @Inject(method = "handleBlockBreaking", at = @At(value = "HEAD"), cancellable = true)
+    private void itemLeftClickHoldDetection(boolean breaking, CallbackInfo ci) {
+        if (!breaking) {
+            return;
+        }
+        Hand hand = getHand();
+        if (player.getStackInHand(hand).getItem() instanceof LeftClickItem) {
+            ci.cancel();
+            if (itemUseCooldown == 0) {
+                useItem(hand);
+            }
+        }
+    }
+
+    @Unique
+    private Hand getHand() {
+        return player.getMainHandStack().isEmpty() ? Hand.OFF_HAND : Hand.MAIN_HAND;
+    }
+
+    @Unique
+    private void useItem(Hand hand) {
+        if (this.interactionManager.getCurrentGameMode() != GameMode.SPECTATOR) {
+            itemUseCooldown = 4;
+            player.swingHand(hand);
+            ModNetworking.CHANNEL.clientHandle().send(new LeftClickItemPacket(hand));
+        }
+    }
+}
