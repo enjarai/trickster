@@ -13,7 +13,9 @@ import org.jetbrains.annotations.Nullable;
 
 public class ColorBlockEntity extends BlockEntity implements SpellColoredBlockEntity, RenderDataBlockEntity {
 
-    public int[] colors = new int[] { -6182991 };
+    public static final int DEFAULT_COLOR = 0xFFA1A7B1;
+
+    public int[] colors = new int[] { DEFAULT_COLOR };
 
     public ColorBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlocks.COLOR_BLOCK_ENTITY, pos, state);
@@ -47,7 +49,7 @@ public class ColorBlockEntity extends BlockEntity implements SpellColoredBlockEn
     protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         colors = nbt.getIntArray("colors");
         if (colors.length == 0) {
-            colors = new int[] { -6182991 };
+            colors = new int[] { DEFAULT_COLOR };
         }
         if (world != null) {
             world.updateListeners(pos, getCachedState(), getCachedState(), 0);

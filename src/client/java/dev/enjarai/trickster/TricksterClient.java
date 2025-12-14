@@ -1,5 +1,6 @@
 package dev.enjarai.trickster;
 
+import dev.enjarai.trickster.block.ColorBlockEntity;
 import dev.enjarai.trickster.block.ModBlocks;
 import dev.enjarai.trickster.coleus.ColeusIntegration;
 import dev.enjarai.trickster.entity.ModEntities;
@@ -147,12 +148,12 @@ public class TricksterClient implements ClientModInitializer {
 
         ColorProviderRegistry.BLOCK.register((state, world, pos, index) -> {
             if (world == null || pos == null) {
-                return -6182991;
+                return ColorBlockEntity.DEFAULT_COLOR;
             }
             if (world.getBlockEntityRenderData(pos) instanceof Integer color) {
                 return color;
             }
-            return -6182991;
+            return ColorBlockEntity.DEFAULT_COLOR;
         }, ModBlocks.COLOR_BLOCK);
 
     }

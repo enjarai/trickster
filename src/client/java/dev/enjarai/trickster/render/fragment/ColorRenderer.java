@@ -27,7 +27,6 @@ public class ColorRenderer implements FragmentRenderer<ColorFragment> {
             SpellCircleRenderer delegator) {
         var col = fragment.color();
         float time = System.currentTimeMillis() % 1048576 / 50f;
-        System.out.println(time);
         size /= 4;
         int r = getRed(col), g = getGreen(col), b = getBlue(col), a = getAlpha(col);
         matrices.push();

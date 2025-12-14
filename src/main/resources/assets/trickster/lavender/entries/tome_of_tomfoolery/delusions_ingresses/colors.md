@@ -18,7 +18,7 @@ They are {#aa4444}Addable{}, {#aa4444}Multiplicable{}, {#aa4444}Roundable{}, and
 
 Addition mixes colors through an operation know as "Screen".
 Multiplication simply mixes multiplicatively.
-Averaging mixes colors as I would with leather equipment.
+Averaging mixes colors as one would with leather equipment.
 Flooring and Ceiling coerce colors to the nearest result of Pigment and Vibrant Ingress, respectively. Rounding coerces to the nearest of either.
 
 ;;;;;

@@ -8,7 +8,7 @@ import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
-public class ColorBlock extends BlockWithEntity implements Stainable {
+public class ColorBlock extends BlockWithEntity {
 
     protected ColorBlock() {
         super(Settings.create().sounds(BlockSoundGroup.DECORATED_POT));
@@ -31,8 +31,4 @@ public class ColorBlock extends BlockWithEntity implements Stainable {
         return new ColorBlockEntity(pos, state);
     }
 
-    @Override
-    public DyeColor getColor() {
-        return DyeColor.GRAY;
-    }
 }

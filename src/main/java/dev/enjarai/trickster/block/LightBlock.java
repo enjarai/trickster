@@ -12,6 +12,7 @@ import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
@@ -22,7 +23,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 
-public class LightBlock extends BlockWithEntity implements Waterloggable {
+public class LightBlock extends BlockWithEntity implements Waterloggable, Stainable {
     public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 
     public static final VoxelShape SHAPE = createCuboidShape(5, 5, 5, 11, 11, 11);
@@ -101,5 +102,11 @@ public class LightBlock extends BlockWithEntity implements Waterloggable {
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
         return new LightBlockEntity(pos, state);
+    }
+
+    @Override
+    public DyeColor getColor() {
+        //fake value, overridden in the mixin
+        return DyeColor.WHITE;
     }
 }

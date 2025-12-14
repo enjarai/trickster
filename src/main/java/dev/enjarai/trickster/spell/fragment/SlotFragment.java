@@ -264,7 +264,9 @@ public record SlotFragment(int slot, Optional<Either<BlockPos, UUID>> source) im
     }
 
     private float getMoveCost(Trick<?> trickSource, SpellContext ctx, Vector3dc pos, int amount) throws BlunderException {
-        return 0f;
+        return getSourcePos(trickSource, ctx)
+                .map(sourcePos -> (float) (pos.distance(sourcePos) * amount * 0.5))
+                .orElse(0f);
     }
 
     private record BridgedSlotHolder(Inventory inv) implements SlotHolderDuck {
