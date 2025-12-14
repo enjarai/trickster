@@ -4,7 +4,6 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 

@@ -3,7 +3,6 @@ package dev.enjarai.trickster.mixin;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
-import dev.enjarai.trickster.block.ColorBlockEntity;
 import dev.enjarai.trickster.block.LightBlockEntity;
 import net.minecraft.block.entity.BeaconBlockEntity;
 import net.minecraft.util.DyeColor;

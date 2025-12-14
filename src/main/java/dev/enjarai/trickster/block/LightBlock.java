@@ -38,10 +38,10 @@ public class LightBlock extends BlockWithEntity implements Waterloggable, Staina
     }
 
     // TODO decide if we can make this work?
-//    @Override
-//    protected BlockRenderType getRenderType(BlockState state) {
-//        return BlockRenderType.MODEL;
-//    }
+    //    @Override
+    //    protected BlockRenderType getRenderType(BlockState state) {
+    //        return BlockRenderType.MODEL;
+    //    }
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {

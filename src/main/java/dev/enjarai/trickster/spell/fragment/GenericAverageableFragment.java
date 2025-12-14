@@ -16,13 +16,13 @@ public interface GenericAverageableFragment extends AddableFragment, DivisibleFr
                 result = res;
             } else {
                 other.addFirst(this);
-                throw new InvalidInputsBlunder(Tricks.AVG, (List<Fragment>)(Object) other); //TODO: blunder properly
+                throw new InvalidInputsBlunder(Tricks.AVG, (List<Fragment>) (Object) other); //TODO: blunder properly
             }
         }
         if (result.divide(new NumberFragment(other.size() + 1)) instanceof AverageableFragment average) {
             return average;
         }
         other.addFirst(this);
-        throw new InvalidInputsBlunder(Tricks.AVG, (List<Fragment>)(Object) other); //TODO: blunder properly
+        throw new InvalidInputsBlunder(Tricks.AVG, (List<Fragment>) (Object) other); //TODO: blunder properly
     }
 }
