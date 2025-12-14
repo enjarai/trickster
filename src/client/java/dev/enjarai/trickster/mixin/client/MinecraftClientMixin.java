@@ -1,6 +1,6 @@
 package dev.enjarai.trickster.mixin.client;
 
-import dev.enjarai.trickster.item.ModItems;
+import dev.enjarai.trickster.item.LeftClickItem;
 import dev.enjarai.trickster.net.ModNetworking;
 import dev.enjarai.trickster.net.LeftClickItemPacket;
 import net.minecraft.client.MinecraftClient;
@@ -34,7 +34,7 @@ public class MinecraftClientMixin {
     @Inject(method = "doAttack", at = @At(value = "HEAD"), cancellable = true)
     private void itemLeftClickDetection(CallbackInfoReturnable<Boolean> cir) {
         Hand hand = getHand();
-        if (player.getStackInHand(hand).isIn(ModItems.LEFT_CLICK_USE)) {
+        if (player.getStackInHand(hand).getItem() instanceof LeftClickItem) {
             cir.setReturnValue(true);
             useItem(hand);
         }
@@ -47,7 +47,7 @@ public class MinecraftClientMixin {
             return;
         }
         Hand hand = getHand();
-        if (player.getStackInHand(hand).isIn(ModItems.LEFT_CLICK_USE)) {
+        if (player.getStackInHand(hand).getItem() instanceof LeftClickItem) {
             ci.cancel();
             if (itemUseCooldown == 0) {
                 useItem(hand);

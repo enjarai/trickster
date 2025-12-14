@@ -11,8 +11,6 @@ public record LeftClickItemPacket(Hand hand) {
         var stack = user.getStackInHand(hand);
         if (stack.getItem() instanceof LeftClickItem leftClickItem) {
             leftClickItem.use(user.getWorld(), user, hand, false);
-        } else {
-            stack.use(user.getWorld(), user, hand);
         }
     }
 }
