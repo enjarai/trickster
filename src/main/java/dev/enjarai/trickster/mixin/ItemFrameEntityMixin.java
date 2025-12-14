@@ -1,5 +1,10 @@
 package dev.enjarai.trickster.mixin;
 
+import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventory;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
@@ -26,28 +31,66 @@ public abstract class ItemFrameEntityMixin extends AbstractDecorationEntity impl
     protected abstract void removeFromFrame(ItemStack stack);
 
     @Override
-    public int trickster$slot_holder$size() {
-        return 1;
-    }
+    public Storage<ItemVariant> trickster$slot_holder$getItemStorage() {
+        return InventoryStorage.of(new Inventory() {
 
-    @Override
-    public ItemStack trickster$slot_holder$getStack(int slot) {
-        return getHeldItemStack();
-    }
+            @Override
+            public void clear() {
+                var currentStack = getHeldItemStack();
+                setHeldItemStack(ItemStack.EMPTY);
+                removeFromFrame(currentStack);
+            }
 
-    @Override
-    public boolean trickster$slot_holder$setStack(int slot, ItemStack stack) {
-        var currentStack = getHeldItemStack();
-        setHeldItemStack(stack);
-        removeFromFrame(currentStack);
-        return true;
-    }
+            @Override
+            public int size() {
+                return 1;
+            }
 
-    @Override
-    public ItemStack trickster$slot_holder$takeFromSlot(int slot, int amount) {
-        var stack = getHeldItemStack();
-        setHeldItemStack(ItemStack.EMPTY);
-        removeFromFrame(stack);
-        return stack;
+            @Override
+            public boolean isEmpty() {
+                return getHeldItemStack().isEmpty();
+            }
+
+            @Override
+            public ItemStack getStack(int slot) {
+                return getHeldItemStack();
+            }
+
+            @Override
+            public ItemStack removeStack(int slot, int amount) {
+                var currentStack = getHeldItemStack();
+                var newStack = currentStack.split(amount);
+                setHeldItemStack(currentStack);
+                if (currentStack.isEmpty()) {
+                    removeFromFrame(currentStack);
+                }
+                return newStack;
+            }
+
+            @Override
+            public ItemStack removeStack(int slot) {
+                var currentStack = getHeldItemStack();
+                setHeldItemStack(ItemStack.EMPTY);
+                removeFromFrame(currentStack);
+                return currentStack;
+            }
+
+            @Override
+            public void setStack(int slot, ItemStack stack) {
+                var currentStack = getHeldItemStack();
+                setHeldItemStack(stack);
+                removeFromFrame(currentStack);
+            }
+
+            @Override
+            public void markDirty() {
+                setHeldItemStack(getHeldItemStack());
+            }
+
+            @Override
+            public boolean canPlayerUse(PlayerEntity player) {
+                return false;
+            }
+        }, null);
     }
 }

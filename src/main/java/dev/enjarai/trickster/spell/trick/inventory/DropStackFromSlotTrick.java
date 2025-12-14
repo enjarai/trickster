@@ -2,10 +2,14 @@ package dev.enjarai.trickster.spell.trick.inventory;
 
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
+import dev.enjarai.trickster.spell.blunder.ItemInvalidBlunder;
 import dev.enjarai.trickster.spell.blunder.NumberTooSmallBlunder;
 import dev.enjarai.trickster.spell.fragment.*;
+import dev.enjarai.trickster.spell.fragment.slot.SlotFragment;
+import dev.enjarai.trickster.spell.fragment.slot.VariantType;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.Signature;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.entity.ItemEntity;
 
 import java.util.Optional;
@@ -23,12 +27,30 @@ public class DropStackFromSlotTrick extends Trick<DropStackFromSlotTrick> {
             throw new NumberTooSmallBlunder(this, 1);
         }
 
-        var stack = slot.move(this, ctx, (int) Math.round(amount), vector);
-        var world = ctx.source().getWorld();
-        var entity = new ItemEntity(world, vector.x(), vector.y(), vector.z(), stack);
-        entity.setPickupDelay(10);
+        var storage = slot.getStorage(this, ctx, VariantType.ITEM);
+        var resource = storage.getResource();
 
-        world.spawnEntity(entity);
-        return new EntityFragment(entity.getUuid(), entity.getName());
+        if (resource.isBlank()) {
+            throw new ItemInvalidBlunder(this);
+        }
+
+        try (var trans = Transaction.openOuter()) {
+            var extracted = storage.extract(resource, Math.min(Math.round(amount), resource.getItem().getMaxCount()), trans);
+            if (extracted <= 0) {
+                throw new ItemInvalidBlunder(this);
+            }
+
+            slot.incurCost(this, ctx, vector, extracted);
+
+            var stack = resource.toStack((int) extracted);
+            var world = ctx.source().getWorld();
+            var entity = new ItemEntity(world, vector.x(), vector.y(), vector.z(), stack);
+            entity.setPickupDelay(10);
+
+            trans.commit();
+
+            world.spawnEntity(entity);
+            return new EntityFragment(entity.getUuid(), entity.getName());
+        }
     }
 }
