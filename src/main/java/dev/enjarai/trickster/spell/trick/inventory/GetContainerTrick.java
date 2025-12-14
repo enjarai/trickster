@@ -7,6 +7,7 @@ import dev.enjarai.trickster.spell.fragment.EntityFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.fragment.slot.ContainerFragment;
+import dev.enjarai.trickster.spell.fragment.slot.SlotFragment;
 import dev.enjarai.trickster.spell.fragment.slot.StorageSource;
 import dev.enjarai.trickster.spell.fragment.slot.VariantType;
 import dev.enjarai.trickster.spell.trick.Trick;
@@ -20,6 +21,7 @@ public class GetContainerTrick extends Trick<GetContainerTrick> {
         this.variantType = variantType;
         overload(Signature.of(FragmentType.VECTOR, GetContainerTrick::fromVector, FragmentType.CONTAINER));
         overload(Signature.of(FragmentType.ENTITY, GetContainerTrick::fromEntity, FragmentType.CONTAINER));
+        overload(Signature.of(FragmentType.SLOT, GetContainerTrick::fromSlot, FragmentType.CONTAINER));
     }
 
     public GetContainerTrick(Pattern pattern, VariantType<?> variantType, boolean allowEntities) {
@@ -28,6 +30,7 @@ public class GetContainerTrick extends Trick<GetContainerTrick> {
         if (allowEntities) {
             overload(Signature.of(FragmentType.ENTITY, GetContainerTrick::fromEntity, FragmentType.CONTAINER));
         }
+        overload(Signature.of(FragmentType.SLOT, GetContainerTrick::fromSlot, FragmentType.CONTAINER));
     }
 
     public ContainerFragment fromCaster(SpellContext ctx) {
@@ -40,5 +43,9 @@ public class GetContainerTrick extends Trick<GetContainerTrick> {
 
     public ContainerFragment fromEntity(SpellContext ctx, EntityFragment entity) {
         return new ContainerFragment(new StorageSource.Entity(entity.getEntity(ctx).orElseThrow(() -> new UnknownEntityBlunder(this)).getUuid()), variantType);
+    }
+
+    public ContainerFragment fromSlot(SpellContext ctx, SlotFragment slot) {
+        return new ContainerFragment(slot.slot(), variantType);
     }
 }
