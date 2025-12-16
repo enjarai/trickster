@@ -250,6 +250,8 @@ trickster:
     item_from_block: Pickup Distortion
     get_max_count: Distortion of Breadth
     get_equipment: Investigative Ingress
+    list_resources: Ingress of Inventory
+    count_resources: Ingress of Stockkeeping
 
     type_fragment: Argumentative Distortion
     hash_values: Decaying Distortion
