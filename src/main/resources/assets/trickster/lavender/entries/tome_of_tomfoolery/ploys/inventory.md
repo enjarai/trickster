@@ -22,15 +22,19 @@ Drops items from the given slot at a position, returning their entity. Optionall
 
 ;;;;;
 
-<|trick@trickster:templates|trick-id=trickster:swap_slot|>
+<|trick@trickster:templates|trick-id=trickster:move_resource|>
 
-Swaps the item stacks within the given slots.
+Moves resources from one storage into another.
 
 ;;;;;
 
-<|trick@trickster:templates|trick-id=trickster:move_resource|>
+A number can be provided to limit the amount transfered, and a resource type or list of such can be provided as a filter.
 
-Moves items from one slot into another, optionally limiting the amount. Can merge and split stacks.
+;;;;;
+
+<|trick@trickster:templates|trick-id=trickster:swap_slot|>
+
+Swaps the item stacks within the given slots.
 
 ;;;;;
 
