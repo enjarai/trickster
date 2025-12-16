@@ -76,19 +76,19 @@ Returns a list of slots from a container. Blunders if the container has no slott
 
 ;;;;;
 
+A resource type or list of them may be passed as a filter to get only relevant slots from the container.
+
+;;;;;
+
 <|trick@trickster:templates|trick-id=trickster:list_resources|>
 
-Resturns a list of resource types in the container.
+Returns a list of resource types in the container.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:count_resources|>
 
-Resturns the amount of that resource type in the container.
-
-;;;;;
-
-A resource type or list of them may be passed as a filter to get only relevant slots from the container.
+Returns the amount of that resource type in the container.
 
 ;;;;;
 
