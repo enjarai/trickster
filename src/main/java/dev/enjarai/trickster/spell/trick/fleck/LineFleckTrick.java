@@ -20,6 +20,6 @@ public class LineFleckTrick extends AbstractFleckTrick<LineFleckTrick> {
     }
 
     public NumberFragment run(SpellContext ctx, NumberFragment id, VectorFragment pos1, VectorFragment pos2, Optional<List<EntityFragment>> targets) {
-        return display(ctx, id, new LineFleck(pos1.vector().get(new Vector3f()), pos2.vector().get(new Vector3f())), targets);
+        return display(ctx, id, new LineFleck(pos1.vector().get(new Vector3f()), pos2.vector().get(new Vector3f()), 1f), targets);
     }
 }

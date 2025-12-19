@@ -11,10 +11,7 @@ import dev.enjarai.trickster.spell.trick.debug.DebugLogTrick;
 import dev.enjarai.trickster.spell.trick.dimension.GetDimensionTrick;
 import dev.enjarai.trickster.spell.trick.entity.*;
 import dev.enjarai.trickster.spell.trick.entity.query.*;
-import dev.enjarai.trickster.spell.trick.fleck.DeleteFleckTrick;
-import dev.enjarai.trickster.spell.trick.fleck.GetFlecksTrick;
-import dev.enjarai.trickster.spell.trick.fleck.LineFleckTrick;
-import dev.enjarai.trickster.spell.trick.fleck.SpellFleckTrick;
+import dev.enjarai.trickster.spell.trick.fleck.*;
 import dev.enjarai.trickster.spell.trick.func.*;
 import dev.enjarai.trickster.spell.trick.inventory.*;
 import dev.enjarai.trickster.spell.trick.list.*;
@@ -287,6 +284,9 @@ public class Tricks {
     public static final SpellFleckTrick DRAW_SPELL = register("draw_spell", new SpellFleckTrick());
     public static final GetFlecksTrick GET_FLECKS = register("get_flecks", new GetFlecksTrick());
     public static final DeleteFleckTrick DELETE_FLECK = register("delete_fleck", new DeleteFleckTrick());
+
+    public static final ScaleFleckTrick SCALE_FLECK = register("scale_fleck", new ScaleFleckTrick());
+    public static final RollFleckTrick ROLL_FLECK = register("roll_fleck", new RollFleckTrick());
 
     // Misc
     public static final TypeFragmentTrick TYPE_FRAGMENT = register("type_fragment", new TypeFragmentTrick());
