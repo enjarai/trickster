@@ -1,7 +1,7 @@
 plugins {
-    id 'fabric-loom' version '1.7-SNAPSHOT'
+    id 'fabric-loom' version '1.14-SNAPSHOT'
     id 'maven-publish'
-    id 'me.fallenbreath.yamlang' version '1.3.1'
+    id 'me.fallenbreath.yamlang' version '1.5.0'
     id "me.modmuss50.mod-publish-plugin" version "0.4.4"
     id "com.diffplug.spotless" version "7.0.2"
 }
@@ -37,6 +37,10 @@ repositories {
     }
 }
 
+build {
+    System.out.println("Meow Meow Meow")
+}
+
 loom {
     accessWidenerPath.set(file("src/main/resources/trickster.accesswidener"))
     splitEnvironmentSourceSets()
@@ -65,8 +69,14 @@ loom {
                             .first()
 
                     if (mixin != null) {
-                        def mixinPath = this.configurations.compileClasspath.files(mixinDep).first().path;
-
+                        var mixinPath = this.configurations.compileClasspath.getIncoming().artifactView { id ->
+                            if (id instanceof ModuleComponentIdentifier) {
+                                    return id.moduleIdentifier.group == mixin.group
+                                            && id.moduleIdentifier.name == mixin.name
+                                            && id.version == mixin.version;
+                            }
+                            return false;
+                        }.files.first()
                         println(mixinPath)
 
                         vmArg("-javaagent:\"${mixinPath}\"")
@@ -195,7 +205,7 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             groupId = group
-            artifactId = archivesBaseName
+            artifactId = archives_base_name
             version = version
 
             from components.java
