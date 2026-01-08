@@ -8,16 +8,18 @@ import net.minecraft.text.Text;
 
 public class OverweightFragmentBlunder extends TrickBlunderException {
     public final Fragment found;
+    public final int size;
 
-    public OverweightFragmentBlunder(Trick<?> source, Fragment found) {
+    public OverweightFragmentBlunder(Trick<?> source, Fragment found, int size) {
         super(source);
         this.found = found;
+        this.size = size;
     }
 
     @Override
     public MutableText createMessage() {
         return source.getName()
-            .append(": ")
-            .append(Text.translatable(Trickster.MOD_ID + ".blunder.overweight_fragment", found.asFormattedText()));
+                .append(": ")
+                .append(Text.translatable(Trickster.MOD_ID + ".blunder.overweight_fragment", found.asFormattedText(), size, Fragment.MAX_WEIGHT));
     }
 }
