@@ -52,7 +52,7 @@ public record PatternGlyph(Pattern pattern) implements Fragment, AddableFragment
         var result = trick.activate(ctx, fragments);
 
         if (result instanceof Fragment fragment && fragment.getWeight() > Fragment.MAX_WEIGHT) {
-            throw new OverweightFragmentBlunder(trick, fragment);
+            throw new OverweightFragmentBlunder(trick, fragment, fragment.getWeight());
         }
 
         return result;
