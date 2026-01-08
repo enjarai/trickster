@@ -2,7 +2,7 @@
 {
   "title": "Spell-Scribing",
   "icon": "trickster:scroll_and_quill",
-  "ordinal": 1
+  "ordinal": 10
 }
 ```
 
