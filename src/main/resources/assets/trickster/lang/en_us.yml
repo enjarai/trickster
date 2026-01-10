@@ -330,6 +330,7 @@ trickster:
 
   blunder:
     overweight_fragment: Result fragment is overweight, result is %s
+    expected_overweight_fragment: Result fragment is overweight (%d/%d)
     missing_fragment: Missing at index %d, expected %s
 
 item.trickster:
