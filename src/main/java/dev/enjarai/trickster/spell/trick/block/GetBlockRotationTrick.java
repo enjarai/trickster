@@ -24,27 +24,18 @@ import java.util.Optional;
 public class GetBlockRotationTrick extends Trick<GetBlockRotationTrick> {
     private static final HashMap<String, Vector3d> NAME_DIRECTION = new HashMap<>(Map.of(
             "x", new Vector3d(1, 0, 0), "y", new Vector3d(0, 1, 0), "z", new Vector3d(0, 0, 1),
-            "north", new Vector3d(0, 0, -1), "east", new Vector3d(1, 0, 0), "south", new Vector3d(0, 0, 1), "west", new Vector3d(-1, 0, 0)
+            "north_south", new Vector3d(0, 0, 1), "east_west", new Vector3d(1, 0, 0),
+            "ascending_east", new Vector3d(1, 1, 0), "ascending_west", new Vector3d(-1, 1, 0), "ascending_north", new Vector3d(0, 1, -1), "ascending_north", new Vector3d(0, 1, 1)
     ));
+    static {
+        NAME_DIRECTION.put("south_east", new Vector3d(1, 0, 1));
+        NAME_DIRECTION.put("south_west", new Vector3d(-1, 0, 1));
+        NAME_DIRECTION.put("north_west", new Vector3d(1, 0, -1));
+        NAME_DIRECTION.put("north_east", new Vector3d(-1, 0, -1));
+    }
 
     public GetBlockRotationTrick() {
         super(Pattern.of(3, 4, 5), Signature.of(FragmentType.VECTOR, GetBlockRotationTrick::get, FragmentType.VECTOR.or(FragmentType.NUMBER).optionalOfRet()));
-    }
-
-    private VectorFragment railToVector(RailShape railShape) {
-        if (railShape == RailShape.NORTH_SOUTH) {
-            return new VectorFragment(new Vector3d(0, 0, 1));
-        } else if (railShape == RailShape.EAST_WEST) {
-            return new VectorFragment(new Vector3d(1, 0, 0));
-        } else {
-            var vec = railShape.isAscending() ? new Vector3d(0, 1, 0) : new Vector3d(0, 0, 0);
-            for (String str : railShape.getName().split("_")) {
-                if (NAME_DIRECTION.get(str) != null) {
-                    vec.add(NAME_DIRECTION.get(str));
-                }
-            }
-            return new VectorFragment(vec);
-        }
     }
 
     public Optional<Either<VectorFragment, NumberFragment>> get(SpellContext ctx, VectorFragment pos) {
@@ -52,8 +43,6 @@ public class GetBlockRotationTrick extends Trick<GetBlockRotationTrick> {
         expectLoaded(ctx, blockPos);
 
         var state = ctx.source().getWorld().getBlockState(blockPos);
-
-        Trickster.LOGGER.info(state.getProperties().toString());
 
         for (Property property : state.getProperties()) {
             if (property instanceof DirectionProperty directionProperty) {
@@ -65,7 +54,7 @@ public class GetBlockRotationTrick extends Trick<GetBlockRotationTrick> {
                 var rotation = orientation.getRotation().getVector();
                 return Optional.of(Either.left(VectorFragment.of(new Vec3i(rotation.getX(), 0, rotation.getZ()).add(orientation.getFacing().getVector()))));
             } else if (property == Properties.RAIL_SHAPE || property == Properties.STRAIGHT_RAIL_SHAPE) {
-                return Optional.of(Either.left(railToVector((RailShape) state.get(property))));
+                return Optional.of(Either.left(new VectorFragment(NAME_DIRECTION.get(((RailShape) state.get(property)).getName()))));
             } else if (property == Properties.ROTATION) {
                 return Optional.of(Either.right(new NumberFragment(state.get(Properties.ROTATION))));
             }
