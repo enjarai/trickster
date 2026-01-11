@@ -66,11 +66,6 @@ public class ListArgType<T> implements ArgType<List<T>> {
     }
 
     @Override
-    public ArgType<List<T>> wardOf() {
-        return new ListArgType<>(type.wardOf());
-    }
-
-    @Override
     public MutableText asText() {
         return Text.literal("[").append(type.asText()).append("]");
     }
