@@ -1,6 +1,5 @@
 package dev.enjarai.trickster.spell.trick.block;
 
-import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
@@ -25,7 +24,7 @@ public class GetBlockRotationTrick extends Trick<GetBlockRotationTrick> {
     private static final HashMap<String, Vector3d> NAME_DIRECTION = new HashMap<>(Map.of(
             "x", new Vector3d(1, 0, 0), "y", new Vector3d(0, 1, 0), "z", new Vector3d(0, 0, 1),
             "north_south", new Vector3d(0, 0, 1), "east_west", new Vector3d(1, 0, 0),
-            "ascending_east", new Vector3d(1, 1, 0), "ascending_west", new Vector3d(-1, 1, 0), "ascending_north", new Vector3d(0, 1, -1), "ascending_north", new Vector3d(0, 1, 1)
+            "ascending_east", new Vector3d(1, 1, 0), "ascending_west", new Vector3d(-1, 1, 0), "ascending_north", new Vector3d(0, 1, -1), "ascending_south", new Vector3d(0, 1, 1)
     ));
     static {
         NAME_DIRECTION.put("south_east", new Vector3d(1, 0, 1));
@@ -35,7 +34,7 @@ public class GetBlockRotationTrick extends Trick<GetBlockRotationTrick> {
     }
 
     public GetBlockRotationTrick() {
-        super(Pattern.of(3, 4, 5), Signature.of(FragmentType.VECTOR, GetBlockRotationTrick::get, FragmentType.VECTOR.or(FragmentType.NUMBER).optionalOfRet()));
+        super(Pattern.of(6, 7, 8, 5, 2, 1, 3, 0, 1), Signature.of(FragmentType.VECTOR, GetBlockRotationTrick::get, FragmentType.VECTOR.or(FragmentType.NUMBER).optionalOfRet()));
     }
 
     public Optional<Either<VectorFragment, NumberFragment>> get(SpellContext ctx, VectorFragment pos) {
@@ -61,6 +60,5 @@ public class GetBlockRotationTrick extends Trick<GetBlockRotationTrick> {
         }
 
         return Optional.empty();
-
     }
 }
