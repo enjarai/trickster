@@ -14,7 +14,7 @@ import net.minecraft.text.Text;
 
 import java.util.Objects;
 
-public final class NumberFragment implements AddableFragment, SubtractableFragment, MultiplicableFragment, DivisibleFragment, RoundableFragment {
+public final class NumberFragment implements AddableFragment, SubtractableFragment, MultiplicableFragment, DivisibleFragment, RoundableFragment, GenericAverageableFragment {
     public static final StructEndec<NumberFragment> ENDEC = StructEndecBuilder.of(
             Endec.DOUBLE.fieldOf("number", NumberFragment::number),
             NumberFragment::new
@@ -153,4 +153,5 @@ public final class NumberFragment implements AddableFragment, SubtractableFragme
     public String toString() {
         return "NumberFragment[" + "number=" + number + "]";
     }
+
 }
