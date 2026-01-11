@@ -2,7 +2,6 @@ package dev.enjarai.trickster.render;
 
 import dev.enjarai.trickster.block.SpellConstructBlock;
 import dev.enjarai.trickster.block.SpellConstructBlockEntity;
-import dev.enjarai.trickster.item.component.ModComponents;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
@@ -14,11 +13,11 @@ import net.minecraft.util.math.Vec3d;
 import org.joml.Vector3f;
 
 public class SpellConstructBlockEntityRenderer implements BlockEntityRenderer<SpellConstructBlockEntity> {
-    private final SpellCircleRenderer renderer;
+    private final CircleRenderer renderer;
     private final ItemRenderer itemRenderer;
 
     public SpellConstructBlockEntityRenderer(BlockEntityRendererFactory.Context ctx) {
-        this.renderer = new SpellCircleRenderer(false, 1);
+        this.renderer = new CircleRenderer(false, false, 4);
         this.itemRenderer = ctx.getItemRenderer();
     }
 
@@ -40,9 +39,9 @@ public class SpellConstructBlockEntityRenderer implements BlockEntityRenderer<Sp
             matrices.multiply(RotationAxis.POSITIVE_Y.rotation((entity.age + tickDelta) * 0.1f));
 
             itemRenderer.renderItem(
-                    knotStack, ModelTransformationMode.FIXED,
-                    light, overlay, matrices, vertexConsumers,
-                    entity.getWorld(), 0
+                knotStack, ModelTransformationMode.FIXED,
+                light, overlay, matrices, vertexConsumers,
+                entity.getWorld(), 0
             );
 
             matrices.pop();
@@ -63,18 +62,19 @@ public class SpellConstructBlockEntityRenderer implements BlockEntityRenderer<Sp
         float age = entity.age + tickDelta + (entity.getPos().getX() + entity.getPos().getY() + entity.getPos().getZ()) * 999;
         matrices.multiply(RotationAxis.POSITIVE_Z.rotation(age / 10));
         matrices.translate(
-                0, 0,
-                (float) Math.sin(age * 0.14f) * 0.02f
+            0, 0,
+            (float) Math.sin(age * 0.14f) * 0.02f
         );
 
         var normal = new Vec3d(new Vector3f(0, 0, -1));
 
         if (entity.executor != null) {
-            this.renderer.renderPart(
-                    matrices, vertexConsumers, entity.executor.spell(),
-                    0, 0, 0.5f, 0,
-                    tickDelta, size -> 1f, normal
+            this.renderer.renderCircle(
+                matrices, entity.executor.spell(),
+                0, 0, 0.5f, 0,
+                tickDelta, 1, normal, null
             );
+            CircleRenderer.VERTEX_CONSUMERS.draw();
         }
         matrices.pop();
     }

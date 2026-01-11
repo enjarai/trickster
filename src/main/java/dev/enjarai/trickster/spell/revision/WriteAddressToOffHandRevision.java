@@ -1,6 +1,8 @@
-package dev.enjarai.trickster.revision;
+package dev.enjarai.trickster.spell.revision;
 
+import dev.enjarai.trickster.item.component.FragmentComponent;
 import dev.enjarai.trickster.spell.Fragment;
+import dev.enjarai.trickster.spell.SpellView;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.fragment.ListFragment;
@@ -9,6 +11,7 @@ import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public class WriteAddressToOffHandRevision implements Revision {
     @Override
@@ -17,15 +20,21 @@ public class WriteAddressToOffHandRevision implements Revision {
     }
 
     @Override
-    public SpellPart apply(RevisionContext ctx, SpellPart root, SpellPart drawingPart) {
-        var address = getAddress(root, drawingPart);
+    public void apply(RevisionContext ctx, SpellView view) {
+        ctx.delegateToServer(this, view, p -> {});
+    }
 
-        if (address.isPresent()) {
+    @Override
+    public void applyServer(RevisionContext ctx, SpellView view, Consumer<SpellPart> callback) {
+        var address = getAddress(view.getUpperParent().part, view.part);
+        var stack = ctx.getOtherHandStack();
+
+        if (address.isPresent() && stack != null && !stack.isEmpty()) {
             var addressFragment = new ListFragment(address.get().stream().map(num -> (Fragment) new NumberFragment(num)).toList());
-            ctx.updateOffHandSpell(new SpellPart(addressFragment, List.of()));
+            FragmentComponent.write(stack, addressFragment);
         }
 
-        return root;
+        callback.accept(new SpellPart());
     }
 
     private static Optional<List<Integer>> getAddress(SpellPart node, SpellPart target) {
