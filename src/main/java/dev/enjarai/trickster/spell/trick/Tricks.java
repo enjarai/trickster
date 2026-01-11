@@ -239,6 +239,7 @@ public class Tricks {
     public static final CanPlaceTrick CAN_PLACE_BLOCK = register("can_place_block", new CanPlaceTrick());
     public static final GetBlockHardnessTrick GET_BLOCK_HARDNESS = register("get_block_hardness", new GetBlockHardnessTrick());
     public static final GetLightLevelTrick GET_LIGHT_LEVEL = register("light_level", new GetLightLevelTrick());
+    public static final GetBlockRotationTrick GET_BLOCK_ROTATION = register("get_block_rotation", new GetBlockRotationTrick());
     public static final PowerResonatorTrick POWER_RESONATOR = register("power_resonator", new PowerResonatorTrick());
     public static final CheckResonatorTrick CHECK_RESONATOR = register("check_resonator", new CheckResonatorTrick());
     public static final GetRedstonePowerTrick GET_REDSTONE_POWER = register("get_redstone_power", new GetRedstonePowerTrick());

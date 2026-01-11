@@ -224,6 +224,7 @@ trickster:
     erode: Ploy of Attrition
 
     get_block_hardness: Ingress of Hardness
+    get_block_rotation: Ingress of Rotation
     check_block: Ingress of Validation
     can_place_block: Ingress of Suitability
     check_resonator: Ingress of Resonance
