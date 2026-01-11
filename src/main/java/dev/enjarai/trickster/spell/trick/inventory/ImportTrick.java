@@ -3,7 +3,7 @@ package dev.enjarai.trickster.spell.trick.inventory;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.*;
 import dev.enjarai.trickster.spell.blunder.MissingItemBlunder;
-import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
+import dev.enjarai.trickster.spell.blunder.NoInventoryBlunder;
 import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.ItemTypeFragment;
@@ -23,8 +23,7 @@ public class ImportTrick extends Trick<ImportTrick> {
     public SpellExecutor run(SpellContext ctx, ItemTypeFragment itemType, List<Fragment> args) {
         ItemStack importStack = null;
 
-        var player = ctx.source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(this));
-        var inventory = player.getInventory();
+        var inventory = ctx.source().getInventory().orElseThrow(() -> new NoInventoryBlunder(this));
 
         for (int i = 0; i < inventory.size(); i++) {
             var stack = inventory.getStack(i);
