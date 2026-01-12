@@ -59,6 +59,24 @@ public class EndecTomfoolery {
         );
     }
 
+    public static <T> StructEndec<T> backwardsCompat(StructEndec<T> primary, StructEndec<T> alternative) {
+        return new StructEndec<T>() {
+            @Override
+            public void encodeStruct(SerializationContext ctx, Serializer<?> serializer, Serializer.Struct struct, T value) {
+                primary.encodeStruct(ctx, serializer, struct, value);
+            }
+
+            @Override
+            public T decodeStruct(SerializationContext ctx, Deserializer<?> deserializer, Deserializer.Struct struct) {
+                try {
+                    return primary.decodeStruct(ctx, deserializer, struct);
+                } catch (Exception e) {
+                    return alternative.decodeStruct(ctx, deserializer, struct);
+                }
+            }
+        };
+    }
+
     public static <T> Endec<Optional<T>> forcedSafeOptionalOf(Endec<T> endec) {
         return Endec.of(
                 (ctx, serializer, value) -> {

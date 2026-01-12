@@ -140,6 +140,10 @@ public final class NumberFragment implements AddableFragment, SubtractableFragme
         return (int) Math.floor(number);
     }
 
+    public long asLong() {
+        return (long) Math.floor(number);
+    }
+
     public double number() {
         return number;
     }
