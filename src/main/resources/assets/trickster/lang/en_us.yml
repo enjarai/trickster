@@ -78,7 +78,7 @@ trickster:
     arctan: Tertiary Inverse Distortion of Geometry
     arctan2: Cartesian Angle Distortion
 
-    if_else: Decision Distortion
+    if_else: Decision Stratagem
     equals: Parity Stratagem
     not_equals: Disparity Stratagem
     all: Stratagem Bar None
