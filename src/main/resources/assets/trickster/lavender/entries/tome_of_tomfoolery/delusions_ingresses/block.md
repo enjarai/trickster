@@ -52,6 +52,12 @@ Blunders if no resonator is present.
 
 ;;;;;
 
+<|trick@trickster:templates|trick-id=trickster:get_block_rotation|>
+
+Returns the rotation of the block at the given position.
+
+;;;;;
+
 <|trick@trickster:templates|trick-id=trickster:light_level|>
 
 Returns the light level at the given position. 
