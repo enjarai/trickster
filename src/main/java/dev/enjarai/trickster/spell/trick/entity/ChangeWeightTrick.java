@@ -75,7 +75,7 @@ public class ChangeWeightTrick extends Trick<ChangeWeightTrick> {
         ctx.useMana(this, 10 + (float) (30 * (1 - weight)));
 
         var levitatingBlock = LevitatingBlockEntity.spawnFromBlock(
-                ctx.source().getWorld(), target.toBlockPos(), state, (float) weight
+                ctx.source().getWorld(), target.toBlockPos(), state, (float) weight, ctx.source().getCaster().orElse(null)
         );
         ModEntityComponents.GRACE.get(levitatingBlock).triggerGrace("weight", 20);
 
