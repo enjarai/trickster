@@ -37,11 +37,6 @@ public class Tuple2ArgType<T1, T2> implements ArgType<Tuple2<T1, T2>> {
     }
 
     @Override
-    public ArgType<Tuple2<T1, T2>> wardOf() {
-        return new Tuple2ArgType<>(arg1.wardOf(), arg2.wardOf());
-    }
-
-    @Override
     public MutableText asText() {
         return Text.literal("(").append(arg1.asText()).append(", ").append(arg2.asText()).append(")");
     }

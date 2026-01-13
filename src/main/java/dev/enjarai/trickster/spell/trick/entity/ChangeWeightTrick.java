@@ -18,7 +18,7 @@ import net.minecraft.entity.LivingEntity;
 
 public class ChangeWeightTrick extends Trick<ChangeWeightTrick> {
     public ChangeWeightTrick() {
-        super(Pattern.of(0, 3, 6, 7, 4, 1, 2, 5, 8), Signature.of(FragmentType.ENTITY.wardOf(), FragmentType.NUMBER, ChangeWeightTrick::change, FragmentType.ENTITY));
+        super(Pattern.of(0, 3, 6, 7, 4, 1, 2, 5, 8), Signature.of(FragmentType.ENTITY, FragmentType.NUMBER, ChangeWeightTrick::change, FragmentType.ENTITY));
         overload(Signature.of(FragmentType.VECTOR, FragmentType.NUMBER, ChangeWeightTrick::change, FragmentType.ENTITY));
     }
 
