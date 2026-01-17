@@ -25,21 +25,21 @@ import org.joml.Vector2d;
 
 public final class SpellPart implements Fragment {
     public static final StructEndec<SpellPart> ENDEC = EndecTomfoolery.recursiveStruct(
-            self -> StructEndecBuilder.of(
-                    Fragment.ENDEC.fieldOf("glyph", SpellPart::getGlyph),
-                    EndecTomfoolery.protocolVersionAlternatives(
-                            Map.of(
-                                    (byte) 1, self.listOf()
-                            ),
-                            EndecTomfoolery.withAlternative(
-                                    SpellInstruction.STACK_ENDEC.xmap(
-                                            instructions -> SpellUtils.decodeInstructions(instructions, new Stack<>(), new Stack<>(), Optional.empty()),
-                                            SpellUtils::flattenNode
-                                    ), self
-                            ).listOf()
-                    ).fieldOf("sub_parts", SpellPart::getSubParts),
-                    SpellPart::new
-            )
+        self -> StructEndecBuilder.of(
+            Fragment.ENDEC.fieldOf("glyph", SpellPart::getGlyph),
+            EndecTomfoolery.protocolVersionAlternatives(
+                Map.of(
+                    (byte) 1, self.listOf()
+                ),
+                EndecTomfoolery.withAlternative(
+                    SpellInstruction.STACK_ENDEC.xmap(
+                        instructions -> SpellUtils.decodeInstructions(instructions, new Stack<>(), new Stack<>(), Optional.empty()),
+                        SpellUtils::flattenNode
+                    ), self
+                ).listOf()
+            ).fieldOf("sub_parts", SpellPart::getSubParts),
+            SpellPart::new
+        )
     );
 
     public Fragment glyph;
@@ -73,8 +73,8 @@ public final class SpellPart implements Fragment {
     @Override
     public SpellPart applyEphemeral() {
         return new SpellPart(
-                glyph.applyEphemeral(), subParts.stream()
-                        .map(SpellPart::applyEphemeral).toList()
+            glyph.applyEphemeral(), subParts.stream()
+                .map(SpellPart::applyEphemeral).toList()
         );
     }
 
@@ -187,7 +187,7 @@ public final class SpellPart implements Fragment {
 
         if (obj instanceof SpellPart that) {
             return Objects.equals(this.glyph, that.glyph)
-                    && Objects.equals(this.subParts, that.subParts);
+                && Objects.equals(this.subParts, that.subParts);
         }
 
         return false;
@@ -204,7 +204,7 @@ public final class SpellPart implements Fragment {
 
         if (other instanceof SpellPart that) {
             return this.glyph.fuzzyEquals(that.glyph)
-                    && FuzzyUtils.fuzzyEquals(this.subParts, that.subParts);
+                && FuzzyUtils.fuzzyEquals(this.subParts, that.subParts);
         }
 
         return false;
@@ -218,8 +218,8 @@ public final class SpellPart implements Fragment {
     @Override
     public String toString() {
         return "SpellPart[" +
-                "glyph=" + glyph + ", " +
-                "subParts=" + subParts + ']';
+            "glyph=" + glyph + ", " +
+            "subParts=" + subParts + ']';
     }
 
     @Override
@@ -254,8 +254,8 @@ public final class SpellPart implements Fragment {
         var glyph = this.glyph instanceof SpellPart spell ? spell.deepClone() : this.glyph;
 
         return new SpellPart(
-                glyph, subParts.stream()
-                        .map(SpellPart::deepClone).collect(Collectors.toList())
+            glyph, subParts.stream()
+                .map(SpellPart::deepClone).collect(Collectors.toList())
         );
     }
 
@@ -263,11 +263,11 @@ public final class SpellPart implements Fragment {
         SpellPart result;
         try {
             result = ENDEC.decode(
-                    SerializationContext.empty().withAttributes(
-                            EndecTomfoolery.UBER_COMPACT_ATTRIBUTE,
-                            EndecTomfoolery.PROTOCOL_VERSION_ATTRIBUTE.instance(protocolVersion)
-                    ),
-                    ByteBufDeserializer.of(buf)
+                SerializationContext.empty().withAttributes(
+                    EndecTomfoolery.UBER_COMPACT_ATTRIBUTE,
+                    EndecTomfoolery.PROTOCOL_VERSION_ATTRIBUTE.instance(protocolVersion)
+                ),
+                ByteBufDeserializer.of(buf)
             );
         } finally {
             buf.release();
@@ -284,8 +284,16 @@ public final class SpellPart implements Fragment {
         return Math.min(radius / 2, radius / (double) ((this.partCount() + 1) / 2));
     }
 
+    public double superRadius(double childRadius) {
+        return Math.max(childRadius * 2, childRadius * (double) ((this.partCount() + 1) / 2));
+    }
+
     public double subAngle(int index, double angleOffset) {
         return angleOffset + (2 * Math.PI) / this.partCount() * index - (Math.PI / 2);
+    }
+
+    public double superAngle(int index, double childAngleOffset) {
+        return childAngleOffset - (2 * Math.PI) / this.partCount() * index + (Math.PI / 2);
     }
 
     public Vector2d subPosition(int index, double radius, double angleOffset) {
