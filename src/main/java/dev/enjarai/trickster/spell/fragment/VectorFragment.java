@@ -21,7 +21,7 @@ import java.util.Objects;
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
 
-public class VectorFragment implements AddableFragment, SubtractableFragment, MultiplicableFragment, DivisibleFragment, RoundableFragment {
+public class VectorFragment implements AddableFragment, SubtractableFragment, MultiplicableFragment, DivisibleFragment, RoundableFragment, GenericAverageableFragment {
     public static final StructEndec<VectorFragment> ENDEC = StructEndecBuilder.of(
             EndecTomfoolery.<Double, Vector3dc>vectorEndec(Endec.DOUBLE, Vector3d::new, Vector3dc::x, Vector3dc::y, Vector3dc::z)
                     .fieldOf("vector", VectorFragment::vector),
