@@ -9,6 +9,7 @@ import net.minecraft.world.World;
 
 public class ModDamageTypes {
     public static final RegistryKey<DamageType> MANA_OVERFLUX = register("mana_overflux");
+    public static final RegistryKey<DamageType> LEVITATING_BLOCK = register("levitating_block");
 
     public static DamageSource of(World world, RegistryKey<DamageType> key) {
         return new DamageSource(world.getRegistryManager().get(RegistryKeys.DAMAGE_TYPE).entryOf(key));
