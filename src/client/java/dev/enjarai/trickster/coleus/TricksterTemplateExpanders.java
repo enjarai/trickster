@@ -142,7 +142,7 @@ public class TricksterTemplateExpanders {
         var urlEncodedSpellString = URLEncoder.encode(spellString, StandardCharsets.UTF_8);
 
         return div().withClass("spell-preview").with(
-                iframe().withSrc("https://trickster-studio.maplesyrum.me/viewer/?fixed=false&spell=" + urlEncodedSpellString)
+                iframe().withSrc("https://trickster-studio.maplesyrum.me/viewer/?transparent=true&fixed=false&spell=" + urlEncodedSpellString)
                         .attr("allowtransparency", "true")
                         .withClass("spell-preview-iframe"),
                 script(new UnescapedText(
