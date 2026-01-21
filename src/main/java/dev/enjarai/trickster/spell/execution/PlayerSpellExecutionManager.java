@@ -23,9 +23,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class PlayerSpellExecutionManager implements SpellExecutionManager {
     public static final StructEndec<PlayerSpellExecutionManager> ENDEC = StructEndecBuilder.of(
-            Endec.INT.optionalFieldOf("capacity", e -> e.capacity, 5),
-            Endec.map(Object::toString, Integer::parseInt, SpellExecutor.ENDEC).fieldOf("spells", e -> e.spells),
-            PlayerSpellExecutionManager::new
+        Endec.INT.optionalFieldOf("capacity", e -> e.capacity, 5),
+        Endec.map(Object::toString, Integer::parseInt, SpellExecutor.ENDEC).fieldOf("spells", e -> e.spells),
+        PlayerSpellExecutionManager::new
     );
 
     // NOT final, we want to be able to change this perchance
@@ -52,16 +52,16 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
                 if (entry.getValue() == executor) {
                     AtomicBoolean isDone = new AtomicBoolean(true);
                     tryRun(
-                            source, entry.getIntKey(), entry.getValue(),
-                            (index, executor1) -> isDone.set(false),
-                            (index, executor2) -> iterator.remove(),
-                            (index, executor3) -> {}
+                        source, entry.getIntKey(), entry.getValue(),
+                        (index, executor1) -> isDone.set(false),
+                        (index, executor2, result) -> iterator.remove(),
+                        (index, executor3) -> {}
                     );
                     return new SpellQueueResult(
-                            isDone.get()
-                                    ? SpellQueueResult.Type.QUEUED_DONE
-                                    : SpellQueueResult.Type.QUEUED_STILL_RUNNING,
-                            executor.getDeepestState()
+                        isDone.get()
+                            ? SpellQueueResult.Type.QUEUED_DONE
+                            : SpellQueueResult.Type.QUEUED_STILL_RUNNING,
+                        executor.getDeepestState()
                     );
                 }
             }
@@ -88,7 +88,7 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
         return Optional.empty();
     }
 
-    public void tick(SpellSource source, ExecutorCallback tickCallback, ExecutorCallback completeCallback, ExecutorCallback errorCallback) {
+    public void tick(SpellSource source, ExecutorCallback tickCallback, ExecutorSpellCallback completeCallback, ExecutorCallback errorCallback) {
         for (int i = 0; i < capacity; i++) {
             var spell = spells.get(i);
 
@@ -97,8 +97,8 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
             }
 
             final int i2 = i;
-            tryRun(source, i, spell, tickCallback, (index, executor) -> {
-                completeCallback.callTheBack(index, executor);
+            tryRun(source, i, spell, tickCallback, (index, executor, result) -> {
+                completeCallback.callTheBack(index, executor, result);
                 spells.remove(i2);
             }, errorCallback);
         }
@@ -113,18 +113,19 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
      * @param errorCallback TODO
      * @return whether the spell has finished running or not. Blunders and normal completion return true, otherwise returns false.
      */
-    private boolean tryRun(SpellSource source, int key, SpellExecutor executor, ExecutorCallback tickCallback, ExecutorCallback completeCallback, ExecutorCallback errorCallback) {
+    private boolean tryRun(SpellSource source, int key, SpellExecutor executor, ExecutorCallback tickCallback, ExecutorSpellCallback completeCallback, ExecutorCallback errorCallback) {
         try {
-            if (executor.run(source, new TickData().withSlot(key)).isEmpty()) {
+            var result = executor.run(source, new TickData().withSlot(key));
+            if (result.isEmpty()) {
                 tickCallback.callTheBack(key, executor);
                 return false;
             } else {
-                completeCallback.callTheBack(key, executor);
+                completeCallback.callTheBack(key, executor, result.get());
                 return true;
             }
         } catch (BlunderException blunder) {
             var message = blunder.createMessage()
-                    .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")");
+                .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")");
 
             if (blunder instanceof NaNBlunder)
                 source.getPlayer().ifPresent(ModCriteria.NAN_NUMBER::trigger);
@@ -134,7 +135,7 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
             errorCallback.callTheBack(key, executor);
         } catch (Throwable e) {
             var message = Text.literal("Uncaught exception in spell: " + e.getMessage())
-                    .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")");
+                .append(" (").append(executor.getDeepestState().formatStackTrace()).append(")");
 
             Trickster.LOGGER.error("Uncaught error in spell:", e);
 
@@ -156,7 +157,7 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
 
     @Override
     public Optional<SpellPart> getSpell(int index) {
-        return getSpellExecutor(index).map(executor -> executor.spell());
+        return getSpellExecutor(index).map(SpellExecutor::spell);
     }
 
     @Override
@@ -172,5 +173,13 @@ public class PlayerSpellExecutionManager implements SpellExecutionManager {
         }
 
         return false;
+    }
+
+    public interface ExecutorCallback {
+        void callTheBack(int index, SpellExecutor executor);
+    }
+
+    public interface ExecutorSpellCallback {
+        void callTheBack(int index, SpellExecutor executor, Fragment result);
     }
 }
