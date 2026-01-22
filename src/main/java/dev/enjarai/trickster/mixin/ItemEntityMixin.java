@@ -5,9 +5,14 @@ import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.ManaComponent;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.pond.SlotHolderDuck;
+import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
@@ -55,25 +60,55 @@ public abstract class ItemEntityMixin extends Entity implements SlotHolderDuck {
     }
 
     @Override
-    public int trickster$slot_holder$size() {
-        return 1;
-    }
+    public Storage<ItemVariant> trickster$slot_holder$getItemStorage() {
+        return InventoryStorage.of(new Inventory() {
 
-    @Override
-    public ItemStack trickster$slot_holder$getStack(int slot) {
-        return getStack();
-    }
+            @Override
+            public void clear() {
+                ItemEntityMixin.this.setStack(ItemStack.EMPTY);
+            }
 
-    @Override
-    public boolean trickster$slot_holder$setStack(int slot, ItemStack stack) {
-        setStack(stack);
-        return true;
-    }
+            @Override
+            public int size() {
+                return 1;
+            }
 
-    @Override
-    public ItemStack trickster$slot_holder$takeFromSlot(int slot, int amount) {
-        var stack = getStack().copyWithCount(amount);
-        getStack().decrement(amount);
-        return stack;
+            @Override
+            public boolean isEmpty() {
+                return ItemEntityMixin.this.getStack().isEmpty();
+            }
+
+            @Override
+            public ItemStack getStack(int slot) {
+                return ItemEntityMixin.this.getStack();
+            }
+
+            @Override
+            public ItemStack removeStack(int slot, int amount) {
+                return ItemEntityMixin.this.getStack().split(amount);
+            }
+
+            @Override
+            public ItemStack removeStack(int slot) {
+                var stack = ItemEntityMixin.this.getStack();
+                ItemEntityMixin.this.setStack(ItemStack.EMPTY);
+                return stack;
+            }
+
+            @Override
+            public void setStack(int slot, ItemStack stack) {
+                ItemEntityMixin.this.setStack(stack);
+            }
+
+            @Override
+            public void markDirty() {
+                ItemEntityMixin.this.setStack(ItemEntityMixin.this.getStack());
+            }
+
+            @Override
+            public boolean canPlayerUse(PlayerEntity player) {
+                return false;
+            }
+        }, null);
     }
 }

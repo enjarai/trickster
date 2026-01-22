@@ -1,10 +1,8 @@
 package dev.enjarai.trickster.pond;
 
-import net.minecraft.item.ItemStack;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 
 public interface SlotHolderDuck {
-    int trickster$slot_holder$size();
-    ItemStack trickster$slot_holder$getStack(int slot);
-    boolean trickster$slot_holder$setStack(int slot, ItemStack stack) throws UnsupportedOperationException;
-    ItemStack trickster$slot_holder$takeFromSlot(int slot, int amount);
+    Storage<ItemVariant> trickster$slot_holder$getItemStorage();
 }
