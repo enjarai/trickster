@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class SpellView {
     public final SpellPart part;
@@ -15,6 +16,8 @@ public class SpellView {
     public boolean isInner = false;
     public boolean beingReplaced = false;
     public boolean loading = false;
+
+    public UUID uuid = UUID.randomUUID();
 
     public Runnable updateListener;
 

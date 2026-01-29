@@ -24,6 +24,7 @@ public class ScrollAndQuillScreen extends BraidScreen implements ScreenHandlerPr
         var y = 0d;
         var radius = 80d;
         var angle = 0d;
+        var centerOffset = 0d;
 
         if (position != null) {
             var loaded = view.traverseTo(position.path);
@@ -33,12 +34,13 @@ public class ScrollAndQuillScreen extends BraidScreen implements ScreenHandlerPr
                 y = position.y;
                 radius = position.radius;
                 angle = position.angle;
+                centerOffset = position.centerOffset;
             }
         }
 
         return new ScrollAndQuillScreen(new CircleSoupWidget(
             view, handler, handler.initialData.mutable(), handler.initialData.allowEval(),
-            x, y, radius, angle, savePosition(handler)
+            x, y, radius, angle, centerOffset, savePosition(handler)
         ), handler);
     }
 
@@ -87,7 +89,7 @@ public class ScrollAndQuillScreen extends BraidScreen implements ScreenHandlerPr
     }
 
     private static CircleSoupWidget.DisposeCallback savePosition(ScrollAndQuillScreenHandler handler) {
-        return (view, x, y, radius, angle) -> {
+        return (view, x, y, radius, angle, centerOffset) -> {
             positions.removeIf(m -> m.hash() == handler.initialData.hash());
 
             while (positions.size() > 10) {
@@ -96,7 +98,7 @@ public class ScrollAndQuillScreen extends BraidScreen implements ScreenHandlerPr
 
             positions.add(new PositionMemory(
                 handler.initialData.hash(),
-                view.getPath(), x, y, radius, angle
+                view.getPath(), x, y, radius, angle, centerOffset
             ));
         };
     }
@@ -107,6 +109,7 @@ public class ScrollAndQuillScreen extends BraidScreen implements ScreenHandlerPr
         double x,
         double y,
         double radius,
-        double angle) {
+        double angle,
+        double centerOffset) {
     }
 }

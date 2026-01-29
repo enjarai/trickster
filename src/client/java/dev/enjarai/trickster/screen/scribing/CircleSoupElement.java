@@ -39,22 +39,30 @@ public class CircleSoupElement extends AutomaticallyAnimatedWidget {
     public static class State extends AutomaticallyAnimatedWidget.State<CircleSoupElement> {
         private DoubleLerp x;
         private DoubleLerp y;
+        private DoubleLerp angle;
         private DoubleLerp radius;
+        private DoubleLerp centerOffset;
 
         @Override
         protected void updateLerps() {
             var c = widget().circleState;
             x = visitLerp(x, c.x + widget().soupConstraints.maxWidth() / 2, DoubleLerp::new);
             y = visitLerp(y, c.y + widget().soupConstraints.maxHeight() / 2, DoubleLerp::new);
+            angle = visitLerp(angle, c.angle, DoubleLerp::new);
             radius = visitLerp(radius, c.radius, DoubleLerp::new);
+            centerOffset = visitLerp(centerOffset, c.centerOffset, DoubleLerp::new);
         }
 
         @Override
         public Widget build(BuildContext context) {
             var c = widget().circleState;
             var radius = this.radius.compute(animationValue());
+            var angle = this.angle.compute(animationValue());
+            var centerOffset = this.centerOffset.compute(animationValue());
+            var drawX = x.compute(animationValue()) + (centerOffset * Math.cos(angle));
+            var drawY = y.compute(animationValue()) + (centerOffset * Math.sin(angle));
             return new DragArenaElement(
-                x.compute(animationValue()), y.compute(animationValue()),
+                drawX, drawY,
                 new Transform(
                     new Matrix4f()
                         .translate(-RADIUS, -RADIUS, 0)
@@ -63,7 +71,7 @@ public class CircleSoupElement extends AutomaticallyAnimatedWidget {
                     new CircleWidget(
                         widget().renderer,
                         radius,
-                        c.startingAngle,
+                        c.angle,
                         c.partView,
                         c::updatePattern,
                         widget().mutable,

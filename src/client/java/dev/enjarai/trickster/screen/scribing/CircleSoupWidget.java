@@ -45,13 +45,16 @@ public class CircleSoupWidget extends StatefulWidget {
     private final double y;
     private final double radius;
     private final double angle;
+    private final double centerOffset;
     private final DisposeCallback disposeCallback;
 
     public CircleSoupWidget(SpellView view, RevisionContext revisionContext, boolean mutable, boolean allowsEval) {
-        this(view, revisionContext, mutable, allowsEval, 0, 0, 80, 0, (v, x, y, r, a) -> {});
+        this(view, revisionContext, mutable, allowsEval, 0, 0, 80, 0, 0, (v, x, y, r, a, o) -> {});
     }
 
-    public CircleSoupWidget(SpellView view, RevisionContext revisionContext, boolean mutable, boolean allowsEval, double x, double y, double radius, double angle, DisposeCallback disposeCallback) {
+    public CircleSoupWidget(SpellView view, RevisionContext revisionContext, boolean mutable, boolean allowsEval,
+        double x, double y, double radius, double angle, double centerOffset,
+        DisposeCallback disposeCallback) {
         this.view = view;
         this.revisionContext = revisionContext;
         this.mutable = mutable;
@@ -60,6 +63,7 @@ public class CircleSoupWidget extends StatefulWidget {
         this.y = y;
         this.radius = radius;
         this.angle = angle;
+        this.centerOffset = centerOffset;
         this.disposeCallback = disposeCallback;
     }
 
@@ -84,7 +88,9 @@ public class CircleSoupWidget extends StatefulWidget {
                 widget().y,
                 widget().radius,
                 widget().angle,
-                widget().view
+                widget().centerOffset,
+                widget().view,
+                io.vavr.collection.List.ofAll(widget().view.getPath())
             ));
         }
 
@@ -94,9 +100,9 @@ public class CircleSoupWidget extends StatefulWidget {
             var closestDistance = Double.MAX_VALUE;
 
             for (var state : circles.values()) {
-                var x = state.x - widget().x;
-                var y = state.y - widget().y;
-                var radius = state.radius - widget().radius;
+                var x = state.x;
+                var y = state.y;
+                var radius = state.radius - 80;
                 var cubedDistance = x * x + y * y + radius * radius;
                 if (cubedDistance < closestDistance) {
                     closestDistance = cubedDistance;
@@ -107,7 +113,7 @@ public class CircleSoupWidget extends StatefulWidget {
             if (closestState != null) {
                 widget().disposeCallback.dispose(
                     closestState.partView, closestState.x, closestState.y,
-                    closestState.radius, closestState.startingAngle
+                    closestState.radius, closestState.angle, closestState.centerOffset
                 );
             }
         }
@@ -140,7 +146,7 @@ public class CircleSoupWidget extends StatefulWidget {
                                     widget().mutable,
                                     widget().allowsEval
                                 ).key(
-                                    Key.of(String.valueOf(c.partView.hashCode()))
+                                    Key.of(c.partView.uuid.toString())
                                 )).toList());
                             })
                         );
@@ -250,15 +256,18 @@ public class CircleSoupWidget extends StatefulWidget {
             @Nullable
             private CircleState parentCircle = null;
             private final List<CircleState> childCircles = new ArrayList<>();
-            double x, y, radius, startingAngle;
+            double x, y, radius, angle, centerOffset;
             final SpellView partView;
+            final io.vavr.collection.List<Integer> path;
 
-            private CircleState(double x, double y, double radius, double startingAngle, SpellView partView) {
+            private CircleState(double x, double y, double radius, double angle, double centerOffset, SpellView partView, io.vavr.collection.List<Integer> path) {
                 this.x = x;
                 this.y = y;
                 this.radius = radius;
-                this.startingAngle = startingAngle;
+                this.angle = angle;
+                this.centerOffset = centerOffset;
                 this.partView = partView;
+                this.path = path;
                 // When part view makes changes and we're visible, rebuild all children.
                 partView.updateListener = () -> {
                     List.copyOf(childCircles).forEach(CircleState::discardChildren);
@@ -281,13 +290,13 @@ public class CircleSoupWidget extends StatefulWidget {
 
                 int i = 0;
                 for (var child : partView.children) {
-                    var angle = partView.part.subAngle(i, startingAngle);
-                    var subX = x + (radius * Math.cos(angle));
-                    var subY = y + (radius * Math.sin(angle));
+                    var angle = partView.part.subAngle(i, this.angle);
+                    var subX = x + (centerOffset * Math.cos(this.angle));
+                    var subY = y + (centerOffset * Math.sin(this.angle));
 
                     var circle = new CircleState(
                         subX, subY, partView.part.subRadius(radius),
-                        angle, child
+                        angle, radius, child, path.push(i)
                     );
                     circle.parentCircle = this;
 
@@ -298,9 +307,12 @@ public class CircleSoupWidget extends StatefulWidget {
                 }
 
                 if (partView.inner != null) {
+                    var subX = x + (centerOffset * Math.cos(angle));
+                    var subY = y + (centerOffset * Math.sin(angle));
+
                     var circle = new CircleState(
-                        x, y, radius / 3,
-                        startingAngle, partView.inner
+                        subX, subY, radius / 3,
+                        angle, 0, partView.inner, path.push(-1)
                     );
                     circle.parentCircle = this;
 
@@ -313,22 +325,27 @@ public class CircleSoupWidget extends StatefulWidget {
                 if (parentCircle != null || partView.parent == null) return;
 
                 if (partView.isInner) {
+                    var parentRadius = partView.parent.part.superRadius(radius);
+                    var parentX = x - (parentRadius * Math.cos(angle));
+                    var parentY = y - (parentRadius * Math.sin(angle));
+
                     var circle = new CircleState(
-                        x, y, radius * 3,
-                        startingAngle, partView.parent
+                        parentX, parentY, radius * 3,
+                        angle, parentRadius, partView.parent, path.pop()
                     );
 
                     relinkChildren(circle);
                     addCircle(circle);
                 } else if (!partView.parent.children.isEmpty()) {
-                    var parentAngle = partView.parent.part.superAngle(partView.getOwnIndex(), startingAngle);
+                    var parentAngle = partView.parent.part.superAngle(partView.getOwnIndex(), angle);
                     var parentRadius = partView.parent.part.superRadius(radius);
-                    var parentX = x - (parentRadius * Math.cos(startingAngle));
-                    var parentY = y - (parentRadius * Math.sin(startingAngle));
+                    var parentParentRadius = partView.parent.parent != null ? partView.parent.parent.part.superRadius(parentRadius) : 0;
+                    var parentX = x - (parentParentRadius * Math.cos(parentAngle));
+                    var parentY = y - (parentParentRadius * Math.sin(parentAngle));
 
                     var circle = new CircleState(
                         parentX, parentY, parentRadius,
-                        parentAngle, partView.parent
+                        parentAngle, parentParentRadius, partView.parent, path.pop()
                     );
 
                     relinkChildren(circle);
@@ -354,22 +371,24 @@ public class CircleSoupWidget extends StatefulWidget {
 
             public void zoom(double mouseX, double mouseY, double amount) {
                 var newRadius = radius + amount * radius * ZOOM_SPEED;
+                var newOffset = centerOffset + amount * centerOffset * ZOOM_SPEED;
 
                 var newX = x + (x - mouseX) * amount * ZOOM_SPEED;
                 var newY = y + (y - mouseY) * amount * ZOOM_SPEED;
 
-                updatePosition(newX, newY, newRadius);
+                updatePosition(newX, newY, newRadius, newOffset);
             }
 
             public void drag(double deltaX, double deltaY) {
-                updatePosition(x + deltaX, y + deltaY, radius);
+                updatePosition(x + deltaX, y + deltaY, radius, centerOffset);
             }
 
-            public void updatePosition(double x, double y, double radius) {
+            public void updatePosition(double x, double y, double radius, double centerOffset) {
                 this.x = x;
                 this.y = y;
                 var oldRadius = this.radius;
                 this.radius = radius;
+                this.centerOffset = centerOffset;
                 if (radius > FORK_THRESHOLD_FORWARDS && oldRadius < FORK_THRESHOLD_FORWARDS) {
                     fork();
                 }
@@ -427,10 +446,19 @@ public class CircleSoupWidget extends StatefulWidget {
             private void dropChild(CircleState circle) {
                 childCircles.remove(circle);
             }
+
+            public String getKey() {
+                var builder = new StringBuilder();
+                for (var i : path) {
+                    builder.append(i);
+                    builder.append(",");
+                }
+                return builder.toString();
+            }
         }
     }
 
     public interface DisposeCallback {
-        void dispose(SpellView closestView, double x, double y, double radius, double angle);
+        void dispose(SpellView closestView, double x, double y, double radius, double angle, double centerOffset);
     }
 }
