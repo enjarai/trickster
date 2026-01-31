@@ -331,6 +331,7 @@ trickster:
   blunder:
     overweight_fragment: Result fragment is overweight, result is %s
     missing_fragment: Missing at index %d, expected %s
+    unknown_trick: Pattern is not a known trick
 
 item.trickster:
   tome_of_tomfoolery: Tome of Tomfoolery
