@@ -110,7 +110,7 @@ public class SpellView {
         return current;
     }
 
-    public void delete() {
+    public void comeOutAsTrans() {
         if (parent != null) {
             if (isInner) {
                 parent.inner = null;
@@ -139,6 +139,32 @@ public class SpellView {
         triggerRebuild();
     }
 
+    public void addChild(int position, SpellPart child) {
+        var childView = index(child);
+        childView.parent = this;
+        this.part.subParts.add(position, child);
+        this.children.add(position, childView);
+        triggerRebuild();
+    }
+
+    /**
+     * Given view must not already be parented
+     */
+    public void addChild(int position, SpellView child) {
+        child.parent = this;
+        this.part.subParts.add(position, child.part);
+        this.children.add(position, child);
+        triggerRebuild();
+    }
+
+    public SpellView removeChild(int position) {
+        this.part.subParts.remove(position);
+        var oldChild = this.children.remove(position);
+        oldChild.parent = null;
+        triggerRebuild();
+        return oldChild;
+    }
+
     public void replaceGlyph(Fragment glyph) {
         var oldGlyph = part.glyph;
         part.glyph = glyph;
@@ -157,9 +183,47 @@ public class SpellView {
         }
     }
 
+    /**
+     * Given view must not already be parented
+     */
+    public SpellView replaceInner(SpellView inner) {
+        SpellView oldInner = null;
+        if (this.inner != null) {
+            oldInner = this.inner;
+            oldInner.comeOutAsTrans();
+        }
+
+        inner.parent = this;
+        inner.isInner = true;
+        this.part.glyph = inner.part;
+        this.inner = inner;
+        triggerRebuild();
+
+        return oldInner;
+    }
+
     public void replace(SpellPart newPart) {
         replaceGlyph(newPart.glyph);
         replaceChildren(newPart.subParts);
+    }
+
+    /**
+     * Only use if replacement isn't to be used anywhere else
+     */
+    public void replace(SpellView replacement) {
+        if (parent != null) {
+            if (isInner) {
+                parent.inner = replacement;
+                parent.part.glyph = replacement.part;
+            } else {
+                var i = parent.children.indexOf(this);
+                parent.children.set(i, replacement);
+                parent.part.subParts.set(i, replacement.part);
+            }
+            parent.triggerRebuild();
+            parent = null;
+            isInner = false;
+        }
     }
 
     public void triggerRebuild() {

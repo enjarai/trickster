@@ -15,7 +15,7 @@ public class DeleteBranchRevision implements Revision {
     @Override
     public void apply(RevisionContext ctx, SpellView view) {
         if (view.parent != null) {
-            view.delete();
+            view.comeOutAsTrans();
         } else {
             view.replaceGlyph(new PatternGlyph());
             view.replaceChildren(List.of());

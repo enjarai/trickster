@@ -3,8 +3,6 @@ package dev.enjarai.trickster.spell.revision;
 import dev.enjarai.trickster.spell.SpellView;
 import dev.enjarai.trickster.spell.Pattern;
 
-import java.util.ArrayList;
-
 public class ShiftSubcircleBackwardsRevision implements Revision {
     @Override
     public Pattern pattern() {
@@ -13,10 +11,9 @@ public class ShiftSubcircleBackwardsRevision implements Revision {
 
     @Override
     public void apply(RevisionContext ctx, SpellView view) {
-        if (!view.part.isEmpty()) {
-            var children = new ArrayList<>(view.part.subParts);
-            children.add(children.removeFirst());
-            view.replaceChildren(children);
+        if (view.part.subParts.size() > 1) {
+            var child = view.removeChild(0);
+            view.addChild(view.children.size(), child);
         }
     }
 }

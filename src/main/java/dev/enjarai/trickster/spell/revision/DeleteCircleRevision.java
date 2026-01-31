@@ -16,14 +16,14 @@ public class DeleteCircleRevision implements Revision {
     public void apply(RevisionContext ctx, SpellView view) {
         if (view.children.isEmpty()) {
             if (view.parent != null) {
-                view.delete();
+                view.comeOutAsTrans();
             } else {
                 view.replaceGlyph(new PatternGlyph());
                 view.replaceChildren(List.of());
             }
         } else {
             var firstChild = view.children.getFirst();
-            view.replace(firstChild.part);
+            view.replace(firstChild);
         }
     }
 }

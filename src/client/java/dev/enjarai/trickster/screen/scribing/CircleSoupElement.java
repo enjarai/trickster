@@ -39,7 +39,7 @@ public class CircleSoupElement extends AutomaticallyAnimatedWidget {
     public static class State extends AutomaticallyAnimatedWidget.State<CircleSoupElement> {
         private DoubleLerp x;
         private DoubleLerp y;
-        private DoubleLerp angle;
+        private AngleLerp angle;
         private DoubleLerp radius;
         private DoubleLerp centerOffset;
 
@@ -48,7 +48,7 @@ public class CircleSoupElement extends AutomaticallyAnimatedWidget {
             var c = widget().circleState;
             x = visitLerp(x, c.x + widget().soupConstraints.maxWidth() / 2, DoubleLerp::new);
             y = visitLerp(y, c.y + widget().soupConstraints.maxHeight() / 2, DoubleLerp::new);
-            angle = visitLerp(angle, c.angle, DoubleLerp::new);
+            angle = visitLerp(angle, c.angle, AngleLerp::new);
             radius = visitLerp(radius, c.radius, DoubleLerp::new);
             centerOffset = visitLerp(centerOffset, c.centerOffset, DoubleLerp::new);
         }

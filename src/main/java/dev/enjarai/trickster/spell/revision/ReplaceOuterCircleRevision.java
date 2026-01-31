@@ -12,7 +12,7 @@ public class ReplaceOuterCircleRevision implements Revision {
     @Override
     public void apply(RevisionContext ctx, SpellView view) {
         if (view.parent != null) {
-            view.parent.replace(view.part);
+            view.parent.replace(view);
         }
     }
 }
