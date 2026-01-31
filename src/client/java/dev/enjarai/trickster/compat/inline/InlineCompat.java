@@ -8,7 +8,6 @@ import com.samsthenerd.inline.api.matching.InlineMatch;
 import com.samsthenerd.inline.api.matching.MatcherInfo;
 import com.samsthenerd.inline.api.matching.RegexMatcher;
 import dev.enjarai.trickster.Trickster;
-import dev.enjarai.trickster.compat.inline.PatternData;
 import dev.enjarai.trickster.render.SpellCircleRenderer;
 import dev.enjarai.trickster.render.fragment.PatternRenderer;
 import dev.enjarai.trickster.spell.Pattern;

@@ -42,18 +42,18 @@ public record PatternGlyph(Pattern pattern) implements Fragment, AddableFragment
         var trick = Tricks.lookup(pattern);
 
         if (trick == null) {
-            throw new UnknownTrickBlunder();
+            throw new UnknownTrickBlunder(pattern);
         }
 
         var restricted = trick.restricted();
         if (restricted != null && !FabricLoader.getInstance().isDevelopmentEnvironment() && ctx.source().getPlayer().map(p -> !restricted.contains(p.getUuid())).orElse(true)) {
-            throw new UnknownTrickBlunder();
+            throw new UnknownTrickBlunder(pattern);
         }
 
         var result = trick.activate(ctx, fragments);
 
         if (result instanceof Fragment fragment && fragment.getWeight() > Fragment.MAX_WEIGHT) {
-            throw new OverweightFragmentBlunder(trick, fragment);
+            throw new OverweightFragmentBlunder(trick, fragment, fragment.getWeight());
         }
 
         return result;
