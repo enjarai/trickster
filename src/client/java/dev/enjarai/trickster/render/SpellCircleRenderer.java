@@ -69,10 +69,14 @@ public class SpellCircleRenderer {
     private boolean recurse;
 
     public SpellCircleRenderer(Boolean inUI, double precisionOffset) {
+        this(inUI, precisionOffset, true);
+    }
+
+    public SpellCircleRenderer(Boolean inUI, double precisionOffset, boolean animated) {
         this.inUI = inUI;
         this.inEditor = false;
         this.precisionOffset = precisionOffset;
-        this.animated = true;
+        this.animated = animated;
     }
 
     public SpellCircleRenderer(Supplier<SpellPart> drawingPartGetter, Supplier<List<Byte>> drawingPatternGetter, double precisionOffset, boolean animated) {
@@ -343,12 +347,17 @@ public class SpellCircleRenderer {
 
     public static void drawGlyphLine(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Vector2f last, Vector2f now, float pixelSize, boolean isDrawing, float tone, float r, float g,
         float b, float opacity, boolean animated) {
+        drawGlyphLine(matrices, vertexConsumers, last, now, pixelSize, 0.5f, 3f, isDrawing, tone, r, g, b, opacity, animated);
+    }
+
+    public static void drawGlyphLine(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Vector2f last, Vector2f now, float pixelSize, float width, float height, boolean isDrawing,
+        float tone, float r, float g, float b, float opacity, boolean animated) {
         if (last.distance(now) < pixelSize * 6) {
             return;
         }
 
-        var parallelVec = new Vector2f(last.y - now.y, now.x - last.x).normalize().mul(pixelSize / 2);
-        var directionVec = new Vector2f(last.x - now.x, last.y - now.y).normalize().mul(pixelSize * 3);
+        var parallelVec = new Vector2f(last.y - now.y, now.x - last.x).normalize().mul(pixelSize * width);
+        var directionVec = new Vector2f(last.x - now.x, last.y - now.y).normalize().mul(pixelSize * height);
 
         if (animated && Trickster.CONFIG.animateLines()) {
             var lineStart = new Vector2f(last.x - directionVec.x, last.y - directionVec.y);
