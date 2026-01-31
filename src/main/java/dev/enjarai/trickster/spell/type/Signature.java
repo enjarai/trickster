@@ -32,7 +32,7 @@ public interface Signature<T extends Trick<T>> {
 
             @Override
             public MutableText asText() {
-                return Text.literal("-> ").append(retType.asText());
+                return Text.literal("→ ").append(retType.asText());
             }
         };
     }
@@ -64,7 +64,7 @@ public interface Signature<T extends Trick<T>> {
 
                 text = text.append(t1.asText());
 
-                text = text.append(" -> ");
+                text = text.append(" → ");
                 text = text.append(retType.asText());
 
                 return text;
@@ -110,7 +110,7 @@ public interface Signature<T extends Trick<T>> {
                 text = text.append(", ");
                 text = text.append(t2.asText());
 
-                text = text.append(" -> ");
+                text = text.append(" → ");
                 text = text.append(retType.asText());
 
                 return text;
@@ -167,7 +167,7 @@ public interface Signature<T extends Trick<T>> {
                 text = text.append(", ");
                 text = text.append(t3.asText());
 
-                text = text.append(" -> ");
+                text = text.append(" → ");
                 text = text.append(retType.asText());
 
                 return text;
@@ -236,7 +236,7 @@ public interface Signature<T extends Trick<T>> {
                 text = text.append(", ");
                 text = text.append(t4.asText());
 
-                text = text.append(" -> ");
+                text = text.append(" → ");
                 text = text.append(retType.asText());
 
                 return text;
@@ -316,7 +316,7 @@ public interface Signature<T extends Trick<T>> {
                 text = text.append(", ");
                 text = text.append(t5.asText());
 
-                text = text.append(" -> ");
+                text = text.append(" → ");
                 text = text.append(retType.asText());
 
                 return text;
@@ -407,7 +407,7 @@ public interface Signature<T extends Trick<T>> {
                 text = text.append(", ");
                 text = text.append(t6.asText());
 
-                text = text.append(" -> ");
+                text = text.append(" → ");
                 text = text.append(retType.asText());
 
                 return text;
