@@ -3,6 +3,8 @@ package dev.enjarai.trickster.spell.trick;
 import dev.enjarai.trickster.Trickster;
 import dev.enjarai.trickster.advancement.criterion.ModCriteria;
 import dev.enjarai.trickster.cca.ModEntityComponents;
+import dev.enjarai.trickster.compat.ModCompat;
+import dev.enjarai.trickster.compat.inline.PatternData;
 import dev.enjarai.trickster.item.component.FragmentComponent;
 import dev.enjarai.trickster.spell.EvaluationResult;
 import dev.enjarai.trickster.spell.Fragment;
@@ -18,6 +20,7 @@ import dev.enjarai.trickster.spell.fragment.ListFragment;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.type.*;
 import io.vavr.collection.HashMap;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.MutableText;
@@ -133,6 +136,13 @@ public abstract class Trick<T extends Trick<T>> {
                 Text.translatable(Trickster.MOD_ID + ".trick." + id.getNamespace() + "." + id.getPath())
                         .withColor(FragmentType.PATTERN.color().getAsInt())
         );
+    }
+
+    public MutableText getIconAndName() {
+        if (!ModCompat.INLINE_LOADED) return getName();
+        var id = Tricks.REGISTRY.getId(this);
+        return Text.empty().append(PatternData.make(pattern, PatternData.getStyle(pattern, false).withColor(FragmentType.PATTERN.color().getAsInt())).append(" ")
+                .append(id == null ? Text.literal("Unregistered") : Text.translatable(Trickster.MOD_ID + ".trick." + id.getNamespace() + "." + id.getPath())));
     }
 
     public List<Signature<T>> getSignatures() {
