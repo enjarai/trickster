@@ -220,6 +220,8 @@ public class SpellView {
                 parent.children.set(i, replacement);
                 parent.part.subParts.set(i, replacement.part);
             }
+            replacement.parent = parent;
+
             parent.triggerRebuild();
             parent = null;
             isInner = false;

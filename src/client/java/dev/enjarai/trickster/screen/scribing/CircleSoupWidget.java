@@ -78,6 +78,7 @@ public class CircleSoupWidget extends StatefulWidget {
         private Constraints arenaConstraints;
         private final Map<SpellView, CircleState> circles = new IdentityHashMap<>();
         private SpellView rootView;
+        private boolean initialBuild = true;
 
         @Override
         public void init() {
@@ -144,7 +145,8 @@ public class CircleSoupWidget extends StatefulWidget {
                                     widget().renderer,
                                     c, constraints,
                                     widget().mutable,
-                                    widget().allowsEval
+                                    widget().allowsEval,
+                                    !initialBuild
                                 ).key(
                                     Key.of(c.partView.uuid.toString())
                                 )).toList());
@@ -254,7 +256,7 @@ public class CircleSoupWidget extends StatefulWidget {
 
         class CircleState {
             @Nullable
-            private CircleState parentCircle = null;
+            CircleState parentCircle = null;
             private final List<CircleState> childCircles = new ArrayList<>();
             double x, y, radius, angle, centerOffset;
             final SpellView partView;
@@ -270,6 +272,7 @@ public class CircleSoupWidget extends StatefulWidget {
                 this.path = path;
                 // When part view makes changes and we're visible, rebuild all children.
                 partView.updateListener = () -> {
+                    initialBuild = false;
                     List.copyOf(childCircles).forEach(CircleState::discardChildren);
                     this.initialize();
                 };

@@ -1,6 +1,7 @@
 package dev.enjarai.trickster.screen.scribing;
 
 import dev.enjarai.trickster.render.CircleRenderer;
+import io.wispforest.owo.braid.animation.Animation;
 import io.wispforest.owo.braid.animation.AutomaticallyAnimatedWidget;
 import io.wispforest.owo.braid.animation.DoubleLerp;
 import io.wispforest.owo.braid.animation.Easing;
@@ -21,14 +22,17 @@ public class CircleSoupElement extends AutomaticallyAnimatedWidget {
     private final Constraints soupConstraints;
     private final boolean mutable;
     private final boolean allowsEval;
+    private final boolean animateIn;
 
-    CircleSoupElement(Duration duration, Easing easing, CircleRenderer renderer, CircleSoupWidget.State.CircleState circleState, Constraints soupConstraints, boolean mutable, boolean allowsEval) {
+    CircleSoupElement(Duration duration, Easing easing, CircleRenderer renderer, CircleSoupWidget.State.CircleState circleState, Constraints soupConstraints, boolean mutable, boolean allowsEval,
+        boolean animateIn) {
         super(duration, easing);
         this.renderer = renderer;
         this.circleState = circleState;
         this.soupConstraints = soupConstraints;
         this.mutable = mutable;
         this.allowsEval = allowsEval;
+        this.animateIn = animateIn;
     }
 
     @Override
@@ -59,8 +63,12 @@ public class CircleSoupElement extends AutomaticallyAnimatedWidget {
             var radius = this.radius.compute(animationValue());
             var angle = this.angle.compute(animationValue());
             var centerOffset = this.centerOffset.compute(animationValue());
-            var drawX = x.compute(animationValue()) + (centerOffset * Math.cos(angle));
-            var drawY = y.compute(animationValue()) + (centerOffset * Math.sin(angle));
+
+            var x = this.x.compute(animationValue());
+            var y = this.y.compute(animationValue());
+
+            var drawX = x + (centerOffset * Math.cos(angle));
+            var drawY = y + (centerOffset * Math.sin(angle));
             return new DragArenaElement(
                 drawX, drawY,
                 new Transform(
@@ -68,14 +76,19 @@ public class CircleSoupElement extends AutomaticallyAnimatedWidget {
                         .translate(-RADIUS, -RADIUS, 0)
                         .scale((float) (double) radius / RADIUS)
                         .translate(0, 0, 1f / (float) (double) radius),
-                    new CircleWidget(
-                        widget().renderer,
-                        radius,
-                        c.angle,
-                        c.partView,
-                        c::updatePattern,
-                        widget().mutable,
-                        widget().allowsEval ? c::triggerEval : null
+                    new ScaleInOutWidget(
+                        true,
+                        widget().animateIn ? Animation.Target.START : Animation.Target.END,
+                        (t) -> {},
+                        new CircleWidget(
+                            widget().renderer,
+                            radius,
+                            c.angle,
+                            c.partView,
+                            c::updatePattern,
+                            widget().mutable,
+                            widget().allowsEval ? c::triggerEval : null
+                        )
                     )
                 )
             );

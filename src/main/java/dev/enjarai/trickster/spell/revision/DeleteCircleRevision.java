@@ -22,7 +22,7 @@ public class DeleteCircleRevision implements Revision {
                 view.replaceChildren(List.of());
             }
         } else {
-            var firstChild = view.children.getFirst();
+            var firstChild = view.removeChild(0);
             view.replace(firstChild);
         }
     }

@@ -10,7 +10,7 @@ public class AngleLerp extends Lerp<Double> {
 
     @Override
     protected Double at(double t) {
-        if (start - end > Math.PI) {
+        if (start - end >= Math.PI) {
             return MathHelper.lerp(t, start, end + Math.PI * 2) % (Math.PI * 2);
         } else if (end - start > Math.PI) {
             return MathHelper.lerp(t, start + Math.PI * 2, end) % (Math.PI * 2);
