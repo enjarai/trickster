@@ -30,14 +30,14 @@ public class CircleSoupElement extends AutomaticallyAnimatedWidget {
     private final boolean positioned;
 
     CircleSoupElement(Duration duration, Easing easing, CircleRenderer renderer,
-                      CircleSoupWidget.State.CircleState circleState, Constraints soupConstraints,
-                      boolean mutable, boolean allowsEval, boolean animateIn) {
+        CircleSoupWidget.State.CircleState circleState, Constraints soupConstraints,
+        boolean mutable, boolean allowsEval, boolean animateIn) {
         this(duration, easing, renderer, circleState, soupConstraints, mutable, allowsEval, animateIn, false);
     }
 
     CircleSoupElement(Duration duration, Easing easing, CircleRenderer renderer,
-                      CircleSoupWidget.State.CircleState circleState, Constraints soupConstraints,
-                      boolean mutable, boolean allowsEval, boolean animateIn, boolean positioned) {
+        CircleSoupWidget.State.CircleState circleState, Constraints soupConstraints,
+        boolean mutable, boolean allowsEval, boolean animateIn, boolean positioned) {
         super(duration, easing);
         this.renderer = renderer;
         this.circleState = circleState;
