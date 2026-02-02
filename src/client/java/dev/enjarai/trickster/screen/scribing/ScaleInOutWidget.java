@@ -44,7 +44,7 @@ public class ScaleInOutWidget extends StatefulWidget {
         public void init() {
             animation = new Animation(
                 Easing.OUT_EXPO,
-                Duration.ofMillis(350),
+                Duration.ofMillis(1000),
                 this::scheduleAnimationCallback,
                 this::callback,
                 this::finish,

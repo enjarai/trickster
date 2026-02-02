@@ -8,6 +8,7 @@ import dev.enjarai.trickster.spell.revision.Revisions;
 import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.PatternGlyph;
 import io.wispforest.owo.braid.animation.Easing;
+import io.wispforest.owo.braid.core.Alignment;
 import io.wispforest.owo.braid.core.Constraints;
 import io.wispforest.owo.braid.core.KeyModifiers;
 import io.wispforest.owo.braid.framework.BuildContext;
@@ -16,9 +17,9 @@ import io.wispforest.owo.braid.framework.widget.Key;
 import io.wispforest.owo.braid.framework.widget.StatefulWidget;
 import io.wispforest.owo.braid.framework.widget.Widget;
 import io.wispforest.owo.braid.widgets.basic.*;
-import io.wispforest.owo.braid.widgets.drag.DragArena;
 import io.wispforest.owo.braid.widgets.focus.Focusable;
 import io.wispforest.owo.braid.widgets.sharedstate.SharedState;
+import io.wispforest.owo.braid.widgets.stack.Stack;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
@@ -139,20 +140,23 @@ public class CircleSoupWidget extends StatefulWidget {
                                 .dragEndCallback(endDragging(state)),
                             new LayoutBuilder((context2, constraints) -> {
                                 arenaConstraints = constraints;
-                                return new DragArena(circles.values().stream()
-                                    .filter(c -> c.parentCircle == null)
-                                    .map(c -> new CircleSoupElement(
-                                        Duration.ofMillis(250),
-                                        Easing.OUT_EXPO,
-                                        widget().renderer,
-                                        c, constraints,
-                                        widget().mutable,
-                                        widget().allowsEval,
-                                        !initialBuild
-                                    ).key(
-                                        Key.of(c.partView.uuid.toString())
-                                    ))
-                                    .toList()
+                                return new Align(
+                                    Alignment.TOP_LEFT,
+                                    new Stack(circles.values().stream()
+                                        .filter(c -> c.parentCircle == null)
+                                        .map(c -> new CircleSoupElement(
+                                            Duration.ofMillis(250),
+                                            Easing.OUT_EXPO,
+                                            widget().renderer,
+                                            c, constraints,
+                                            widget().mutable,
+                                            widget().allowsEval,
+                                            !initialBuild
+                                        ).key(
+                                            Key.of(c.partView.uuid.toString())
+                                        ))
+                                        .toList()
+                                    )
                                 );
                             })
                         );

@@ -10,12 +10,11 @@ import io.wispforest.owo.braid.framework.BuildContext;
 import io.wispforest.owo.braid.framework.widget.Key;
 import io.wispforest.owo.braid.framework.widget.Widget;
 import io.wispforest.owo.braid.widgets.basic.Transform;
-import io.wispforest.owo.braid.widgets.drag.DragArena;
-import io.wispforest.owo.braid.widgets.drag.DragArenaElement;
 import io.wispforest.owo.braid.widgets.stack.Stack;
 import org.joml.Matrix4f;
 
 import java.time.Duration;
+import java.util.stream.Stream;
 
 import static dev.enjarai.trickster.screen.scribing.CircleWidget.RADIUS;
 
@@ -87,41 +86,44 @@ public class CircleSoupElement extends AutomaticallyAnimatedWidget {
 
             var drawX = x + (centerOffset * Math.cos(angle));
             var drawY = y + (centerOffset * Math.sin(angle));
-            return new DragArenaElement(
-                drawX, drawY,
+            return new Transform(
+                new Matrix4f()
+                    .translate((float) drawX, (float) drawY, 0),
                 new Stack(
-                    new Transform(
-                        new Matrix4f()
-                            .translate(-RADIUS, -RADIUS, 0)
-                            .scale((float) (double) radius / RADIUS)
-                            .translate(0, 0, 1f / (float) (double) radius),
-                        new ScaleInOutWidget(
-                            true,
-                            widget().animateIn ? Animation.Target.START : Animation.Target.END,
-                            (t) -> {},
-                            new CircleWidget(
-                                widget().renderer,
-                                radius,
-                                c.angle,
-                                c.partView,
-                                c::updatePattern,
-                                widget().mutable,
-                                widget().allowsEval ? c::triggerEval : null
+                    Stream.concat(
+                        Stream.of(new Transform(
+                            new Matrix4f()
+                                .translate(-RADIUS, -RADIUS, 0)
+                                .scale((float) (double) radius / RADIUS)
+                                .translate(0, 0, 1f / (float) (double) radius),
+                            new ScaleInOutWidget(
+                                true,
+                                widget().animateIn ? Animation.Target.START : Animation.Target.END,
+                                (t) -> {},
+                                new CircleWidget(
+                                    widget().renderer,
+                                    radius,
+                                    c.angle,
+                                    c.partView,
+                                    c::updatePattern,
+                                    widget().mutable,
+                                    widget().allowsEval ? c::triggerEval : null
+                                )
                             )
-                        )
-                    ),
-                    new DragArena(c.childCircles.stream().map(c2 -> new CircleSoupElement(
-                        Duration.ofMillis(250),
-                        Easing.OUT_EXPO,
-                        widget().renderer,
-                        c2, widget().soupConstraints,
-                        widget().mutable,
-                        widget().allowsEval,
-                        widget().animateIn,
-                        true
-                    ).key(
-                        Key.of(c2.partView.uuid.toString())
-                    )).toList())
+                        )),
+                        c.childCircles.stream().map(c2 -> new CircleSoupElement(
+                            Duration.ofMillis(250),
+                            Easing.OUT_EXPO,
+                            widget().renderer,
+                            c2, widget().soupConstraints,
+                            widget().mutable,
+                            widget().allowsEval,
+                            widget().animateIn,
+                            true
+                        ).key(
+                            Key.of(c2.partView.uuid.toString())
+                        ))
+                    ).toList()
                 )
             );
         }
