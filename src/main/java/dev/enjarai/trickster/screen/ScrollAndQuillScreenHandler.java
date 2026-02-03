@@ -1,168 +1,128 @@
 package dev.enjarai.trickster.screen;
 
-import dev.enjarai.trickster.EndecTomfoolery;
-import dev.enjarai.trickster.ModSounds;
-import dev.enjarai.trickster.advancement.criterion.ModCriteria;
-import dev.enjarai.trickster.item.ModItems;
+import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.component.FragmentComponent;
-import dev.enjarai.trickster.revision.RevisionContext;
+import dev.enjarai.trickster.spell.revision.Revision;
+import dev.enjarai.trickster.spell.revision.RevisionContext;
 import dev.enjarai.trickster.spell.*;
-import dev.enjarai.trickster.spell.execution.ExecutionState;
-import dev.enjarai.trickster.spell.execution.TickData;
-import dev.enjarai.trickster.spell.execution.executor.DefaultSpellExecutor;
-import dev.enjarai.trickster.spell.execution.source.PlayerSpellSource;
-import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.fragment.VoidFragment;
-import dev.enjarai.trickster.spell.blunder.BlunderException;
-import dev.enjarai.trickster.spell.blunder.NaNBlunder;
+import dev.enjarai.trickster.spell.revision.Revisions;
 import io.vavr.collection.HashMap;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.impl.StructEndecBuilder;
-import io.wispforest.owo.client.screens.SyncedProperty;
-import net.minecraft.entity.EquipmentSlot;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Consumer;
 
 public class ScrollAndQuillScreenHandler extends ScreenHandler implements RevisionContext {
-    private final ItemStack scrollStack;
-    private final ItemStack otherHandStack;
+    // Common fields
+    public final InitialData initialData;
 
-    public final SyncedProperty<SpellPart> spell = createProperty(SpellPart.class, SpellPart.ENDEC, new SpellPart());
-    public final SyncedProperty<SpellPart> otherHandSpell = createProperty(SpellPart.class, SpellPart.ENDEC, new SpellPart());
-    public final SyncedProperty<Boolean> isMutable = createProperty(Boolean.class, true);
-    public final SyncedProperty<HashMap<Pattern, SpellPart>> macros = createProperty(null, EndecTomfoolery.hamt(Pattern.ENDEC, SpellPart.ENDEC), HashMap.empty());
+    // Client fields
+    private final Int2ObjectMap<Consumer<Optional<SpellPart>>> syncedReplacements = new Int2ObjectOpenHashMap<>();
 
-    public Consumer<Fragment> replacerCallback;
-    public Consumer<Optional<SpellPart>> updateDrawingPartCallback;
+    // Server fields
+    private ItemStack scrollStack;
+    private ItemStack otherHandStack;
+    private SpellPart currentSpellPart;
+    private HashMap<Pattern, SpellPart> macros;
 
-    public final EquipmentSlot slot;
-    public final boolean greedyEvaluation;
+    // Client constructor
+    public ScrollAndQuillScreenHandler(int syncId, PlayerInventory playerInventory, InitialData initialData) {
+        super(ModScreenHandlers.SCROLL_AND_QUILL, syncId);
+        this.initialData = initialData;
 
-    public ScrollAndQuillScreenHandler(int syncId, PlayerInventory playerInventory) {
-        this(syncId, playerInventory, null, null, null, null, false, true);
+        addServerboundMessage(SpellMessage.class, SpellMessage.ENDEC, msg -> updateSpell(msg.spell()));
+        addServerboundMessage(DelegateRevisionToServer.class, DelegateRevisionToServer.ENDEC, msg -> {
+            var view = SpellView.index(currentSpellPart).traverseTo(msg.path());
+            if (view != null) {
+                delegateToServer(msg.sync(), msg.revision(), view, null);
+            }
+        });
+
+        addClientboundMessage(ReplyToClient.class, ReplyToClient.ENDEC, msg -> {
+            var handler = syncedReplacements.get(msg.sync());
+            if (handler != null) {
+                syncedReplacements.remove(msg.sync());
+                handler.accept(msg.replacement());
+            }
+        });
     }
 
-    public ScrollAndQuillScreenHandler(int syncId, PlayerInventory playerInventory, ItemStack scrollStack, ItemStack otherHandStack, EquipmentSlot slot, HashMap<Pattern, SpellPart> macros, boolean greedyEvaluation, boolean isMutable) {
-        super(ModScreenHandlers.SCROLL_AND_QUILL, syncId);
+    // Server constructor
+    public ScrollAndQuillScreenHandler(int syncId, PlayerInventory playerInventory, InitialData initialData, ItemStack scrollStack, ItemStack otherHandStack, HashMap<Pattern, SpellPart> macros) {
+        this(syncId, playerInventory, initialData);
 
         this.scrollStack = scrollStack;
         this.otherHandStack = otherHandStack;
-
-        this.slot = slot;
-        this.greedyEvaluation = greedyEvaluation;
-
-        if (macros != null) {
-            this.macros.set(macros);
-        }
-
-        if (scrollStack != null) {
-            FragmentComponent.getSpellPart(scrollStack).ifPresent(this.spell::set);
-        }
-
-        if (otherHandStack != null) {
-            FragmentComponent.getSpellPart(otherHandStack).ifPresent(this.otherHandSpell::set);
-        }
-
-        this.isMutable.set(isMutable);
-
-        addServerboundMessage(SpellMessage.class, SpellMessage.ENDEC, msg -> updateSpell(msg.spell()));
-        addServerboundMessage(OtherHandSpellMessage.class, OtherHandSpellMessage.ENDEC, msg -> updateOffHandSpell(msg.spell()));
-        addServerboundMessage(UpdateSpellWithSpellMessage.class, UpdateSpellWithSpellMessage.ENDEC, msg -> updateSpellWithSpell(msg.drawingPart, msg.spell));
-
-        addServerboundMessage(ExecuteOffhand.class, msg -> executeOffhand());
-        addClientboundMessage(UpdateDrawingPartMessage.class, UpdateDrawingPartMessage.ENDEC, msg -> {
-            if (updateDrawingPartCallback != null) {
-                updateDrawingPartCallback.accept(msg.spell);
-            }
-        });
-        addClientboundMessage(Replace.class, Replace.ENDEC, msg -> {
-            if (replacerCallback != null) {
-                replacerCallback.accept(msg.fragment());
-            }
-        });
+        this.currentSpellPart = initialData.spell;
+        this.macros = macros;
     }
 
-    @Override
-    public void updateSpellWithSpell(SpellPart drawingPart, SpellPart spell) {
-        if (isMutable.get()) {
-            if (scrollStack != null) {
-                var server = player().getServer();
-                if (server != null) {
-                    server.execute(() -> {
-                        var executionState = new ExecutionState(List.of(drawingPart));
-                        Fragment result = null;
-                        try {
-                            result = new DefaultSpellExecutor(spell, executionState).singleTickRun(new PlayerSpellSource((ServerPlayerEntity) player()));
-                        } catch (BlunderException e) {
-                            if (e instanceof NaNBlunder)
-                                ModCriteria.NAN_NUMBER.trigger((ServerPlayerEntity) player());
-
-                            player().sendMessage(e.createMessage().append(" (").append(executionState.formatStackTrace()).append(")"));
-                        } catch (Exception e) {
-                            player().sendMessage(Text.literal("Uncaught exception in spell: " + e.getMessage())
-                                    .append(" (").append(executionState.formatStackTrace()).append(")"));
-                        }
-
-                        if (result instanceof SpellPart spellResult) {
-                            sendMessage(new UpdateDrawingPartMessage(Optional.of(spellResult)));
-
-                            ModCriteria.USE_MACRO.trigger((ServerPlayerEntity) player());
-                        } else if (result == null) {
-                            sendMessage(new UpdateDrawingPartMessage(Optional.empty()));
-                        } else {
-                            player().sendMessage(Text.literal("Macro expansion failed: Macro must return a ").append(FragmentType.SPELL_PART.getName()
-                                    .append(" but it returned ").append(result.asFormattedText())));
-                            sendMessage(new UpdateDrawingPartMessage(Optional.empty()));
-                        }
-                    });
-                }
-            } else {
-                sendMessage(new UpdateSpellWithSpellMessage(drawingPart, spell));
+    public static ExtendedScreenHandlerFactory<InitialData> factory(Text name, InitialData initialData, ItemStack mainStack, ItemStack otherHandStack, HashMap<Pattern, SpellPart> macros) {
+        return new ExtendedScreenHandlerFactory<>() {
+            @Override
+            public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+                return new ScrollAndQuillScreenHandler(
+                    syncId, playerInventory, initialData, mainStack, otherHandStack, macros
+                );
             }
-        }
+
+            @Override
+            public Text getDisplayName() {
+                return name;
+            }
+
+            @Override
+            public InitialData getScreenOpeningData(ServerPlayerEntity player) {
+                return initialData;
+            }
+        };
     }
 
     public void updateSpell(SpellPart spell) {
-        if (isMutable.get()) {
+        if (initialData.mutable()) {
             if (scrollStack != null) {
                 var server = player().getServer();
                 if (server != null) {
                     server.execute(() -> {
-                        var spell2 = spell;
+                        currentSpellPart = spell;
 
-                        if (greedyEvaluation) {
-                            var executionState = new ExecutionState(List.of());
-                            try {
-                                spell2.destructiveRun(new SpellContext(executionState, new PlayerSpellSource((ServerPlayerEntity) player()), new TickData()));
-                                this.spell.set(spell2);
-                            } catch (BlunderException e) {
-                                if (e instanceof NaNBlunder)
-                                    ModCriteria.NAN_NUMBER.trigger((ServerPlayerEntity) player());
+                        //                        if (false) { // greedy
+                        //                            var executionState = new ExecutionState(List.of());
+                        //                            try {
+                        //                                spell2.destructiveRun(new SpellContext(executionState, new PlayerSpellSource((ServerPlayerEntity) player()), new TickData()));
+                        //                                //                                this.spell.set(spell2);
+                        //                            } catch (BlunderException e) {
+                        //                                if (e instanceof NaNBlunder)
+                        //                                    ModCriteria.NAN_NUMBER.trigger((ServerPlayerEntity) player());
+                        //
+                        //                                player().sendMessage(e.createMessage().append(" (").append(executionState.formatStackTrace()).append(")"));
+                        //                            } catch (Exception e) {
+                        //                                player().sendMessage(Text.literal("Uncaught exception in spell: " + e.getMessage())
+                        //                                    .append(" (").append(executionState.formatStackTrace()).append(")"));
+                        //                            }
+                        //
+                        //                            ((ServerPlayerEntity) player()).getServerWorld().playSoundFromEntity(
+                        //                                null, player(), ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f));
+                        //                        } else {
+                        //                            spell2 = spell.applyEphemeral();
+                        //                            //                            this.spell.set(spell2);
+                        //                        }
 
-                                player().sendMessage(e.createMessage().append(" (").append(executionState.formatStackTrace()).append(")"));
-                            } catch (Exception e) {
-                                player().sendMessage(Text.literal("Uncaught exception in spell: " + e.getMessage())
-                                        .append(" (").append(executionState.formatStackTrace()).append(")"));
-                            }
-
-                            ((ServerPlayerEntity) player()).getServerWorld().playSoundFromEntity(
-                                    null, player(), ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f));
-                        } else {
-                            spell2 = spell.applyEphemeral();
-                            this.spell.set(spell2);
-                        }
-
-                        FragmentComponent.setValue(scrollStack, spell2, Optional.empty(), false);
+                        FragmentComponent.setValue(scrollStack, currentSpellPart.applyEphemeral(), Optional.empty(), false);
                     });
                 }
             } else {
@@ -171,72 +131,75 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
         }
     }
 
-    public void updateOffHandSpell(SpellPart spell) {
-        if (isOffhand()) {
-            updateSpell(spell); //TODO: doesn't appear to actually update, but at least doesn't delete the stack
-        } else {
-            if (isMutable.get()) {
-                if (otherHandStack != null) {
-                    if (!otherHandStack.isEmpty()) {
-                        var server = player().getServer();
-                        if (server != null) {
-                            server.execute(() -> {
-                                var updated = FragmentComponent.write(otherHandStack, spell);
-                                player().setStackInHand(Hand.OFF_HAND, updated.orElse(otherHandStack)); // does nothing on fail
-                                otherHandSpell.set(spell);
-                            });
-                        }
-                    }
-                } else {
-                    sendMessage(new OtherHandSpellMessage(spell));
-                }
-            }
-        }
+    @Override
+    public void delegateToServer(Revision revision, SpellView view, Consumer<SpellPart> responseHandler) {
+        delegateToServer(revision.pattern(), view, responseHandler);
     }
 
     @Override
-    public SpellPart getOtherHandSpell() {
-        return otherHandSpell.get();
+    public void delegateToServer(Pattern revision, SpellView view, Consumer<SpellPart> responseHandler) {
+        delegateToServer(player().getRandom().nextInt(), revision, view, responseHandler);
     }
 
-    @Override
-    public HashMap<Pattern, SpellPart> getMacros() {
-        return macros.get();
-    }
-
-    public boolean isOffhand() {
-        return slot == EquipmentSlot.OFFHAND;
-    }
-
-    public void executeOffhand() {
+    private void delegateToServer(int sync, Pattern revision, SpellView view, Consumer<SpellPart> responseHandler) {
         var server = player().getServer();
         if (server != null) {
             server.execute(() -> {
-                if (player().getInventory().contains(ModItems.CAN_EVALUATE_DYNAMICALLY)) {
-                    var spell = new DefaultSpellExecutor(otherHandSpell.get(), List.of());
-                    Fragment result = VoidFragment.INSTANCE;
-
-                    try {
-                        result = spell.singleTickRun(new PlayerSpellSource((ServerPlayerEntity) player()));
-                    } catch (BlunderException blunder) {
-                        if (blunder instanceof NaNBlunder)
-                            ModCriteria.NAN_NUMBER.trigger((ServerPlayerEntity) player());
-
-                        player().sendMessage(blunder.createMessage()
-                                .append(" (").append(spell.getDeepestState().formatStackTrace()).append(")"));
-                    } catch (Exception e) {
-                        player().sendMessage(Text.literal("Uncaught exception in spell: " + e.getMessage())
-                                .append(" (").append(spell.getDeepestState().formatStackTrace()).append(")"));
-                    }
-
-                    sendMessage(new Replace(result));
-                    ((ServerPlayerEntity) player()).getServerWorld().playSoundFromEntity(
-                            null, player(), ModSounds.CAST, SoundCategory.PLAYERS, 1f, ModSounds.randomPitch(0.8f, 0.2f));
+                if (revision.isEmpty() && initialData.allowEval()) {
+                    ModEntityComponents.CASTER.get(player())
+                        .queueMacroSpell(view.part, List.of(), result -> {
+                            sendMessage(new ReplyToClient(sync, result.map(SpellPart::new)));
+                        });
+                    return;
                 }
+
+                var macro = macros.get(revision);
+                if (macro.isDefined()) {
+                    ModEntityComponents.CASTER.get(player())
+                        .queueMacroSpell(macro.get(), List.of(view.part), result -> {
+                            sendMessage(new ReplyToClient(sync, result.map(f -> {
+                                var part = f instanceof SpellPart p ? p : null;
+                                if (part == null) {
+                                    view.replaceGlyph(f);
+                                    part = view.part;
+                                }
+                                return part;
+                            })));
+                        });
+                    return;
+                }
+
+                Revisions.lookup(revision).ifPresent(r -> {
+                    r.applyServer(this, view, part -> sendMessage(new ReplyToClient(sync, Optional.of(part))));
+                });
             });
         } else {
-            sendMessage(new ExecuteOffhand());
+            // TODO figure out how to run multiple server revisions in parallel
+            if (!syncedReplacements.isEmpty()) return;
+
+            syncedReplacements.put(sync, part -> {
+                if (view.beingReplaced) {
+                    view.beingReplaced = false;
+                    view.loading = false;
+                    part.ifPresent(p -> {
+                        responseHandler.accept(p);
+                        updateSpell(view.getUpperParent().part);
+                    });
+                }
+            });
+            view.beingReplaced = true;
+            sendMessage(new DelegateRevisionToServer(sync, revision, view.getPath()));
         }
+    }
+
+    @Override
+    public Set<Pattern> getMacros() {
+        return initialData.macros;
+    }
+
+    @Override
+    public @Nullable ItemStack getOtherHandStack() {
+        return otherHandStack;
     }
 
     @Override
@@ -249,31 +212,40 @@ public class ScrollAndQuillScreenHandler extends ScreenHandler implements Revisi
         return true;
     }
 
+    public boolean isOffhand() {
+        return initialData.hand == Hand.OFF_HAND;
+    }
+
     public record SpellMessage(SpellPart spell) {
         public static final Endec<SpellMessage> ENDEC = SpellPart.ENDEC.xmap(SpellMessage::new, SpellMessage::spell);
     }
 
-    public record UpdateSpellWithSpellMessage(SpellPart drawingPart, SpellPart spell) {
-        public static final Endec<UpdateSpellWithSpellMessage> ENDEC = StructEndecBuilder.of(
-                SpellPart.ENDEC.fieldOf("drawing_part", UpdateSpellWithSpellMessage::drawingPart),
-                SpellPart.ENDEC.fieldOf("spell", UpdateSpellWithSpellMessage::spell),
-                UpdateSpellWithSpellMessage::new
+    public record DelegateRevisionToServer(int sync, Pattern revision, List<Integer> path) {
+        public static final Endec<DelegateRevisionToServer> ENDEC = StructEndecBuilder.of(
+            Endec.INT.fieldOf("sync", DelegateRevisionToServer::sync),
+            Pattern.ENDEC.fieldOf("revision", DelegateRevisionToServer::revision),
+            Endec.INT.listOf().fieldOf("path", DelegateRevisionToServer::path),
+            DelegateRevisionToServer::new
         );
     }
 
-    public record OtherHandSpellMessage(SpellPart spell) {
-        public static final Endec<OtherHandSpellMessage> ENDEC = SpellPart.ENDEC.xmap(OtherHandSpellMessage::new, OtherHandSpellMessage::spell);
+    public record ReplyToClient(int sync, Optional<SpellPart> replacement) {
+        public static final Endec<ReplyToClient> ENDEC = StructEndecBuilder.of(
+            Endec.INT.fieldOf("sync", ReplyToClient::sync),
+            SpellPart.ENDEC.optionalOf().fieldOf("replacement", ReplyToClient::replacement),
+            ReplyToClient::new
+        );
     }
 
-    public record ExecuteOffhand() {
-    }
-
-    public record Replace(Fragment fragment) {
-        public static final Endec<Replace> ENDEC = Fragment.ENDEC.xmap(Replace::new, Replace::fragment);
-    }
-
-    private record UpdateDrawingPartMessage(Optional<SpellPart> spell) {
-        public static final Endec<UpdateDrawingPartMessage> ENDEC = SpellPart.ENDEC.optionalOf().xmap(UpdateDrawingPartMessage::new, UpdateDrawingPartMessage::spell);
-
+    public record InitialData(SpellPart spell, boolean mutable, boolean allowEval, Hand hand, int hash, Set<Pattern> macros) {
+        public static final Endec<InitialData> ENDEC = StructEndecBuilder.of(
+            SpellPart.ENDEC.fieldOf("spell", InitialData::spell),
+            Endec.BOOLEAN.fieldOf("mutable", InitialData::mutable),
+            Endec.BOOLEAN.fieldOf("allowEval", InitialData::allowEval),
+            Endec.forEnum(Hand.class).fieldOf("hand", InitialData::hand),
+            Endec.INT.fieldOf("hash", InitialData::hash),
+            Pattern.ENDEC.setOf().fieldOf("macros", InitialData::macros),
+            InitialData::new
+        );
     }
 }

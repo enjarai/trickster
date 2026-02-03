@@ -8,7 +8,7 @@ import com.samsthenerd.inline.api.matching.InlineMatch;
 import com.samsthenerd.inline.api.matching.MatcherInfo;
 import com.samsthenerd.inline.api.matching.RegexMatcher;
 import dev.enjarai.trickster.Trickster;
-import dev.enjarai.trickster.render.SpellCircleRenderer;
+import dev.enjarai.trickster.render.CircleRenderer;
 import dev.enjarai.trickster.render.fragment.PatternRenderer;
 import dev.enjarai.trickster.spell.Pattern;
 import net.fabricmc.loader.api.FabricLoader;
@@ -47,7 +47,7 @@ public class InlineCompat {
             return new InlineMatch.DataMatch(new PatternData(p), PatternData.getStyle(p, true));
         }, MatcherInfo.fromId(Trickster.id("pattern/index"))));
         InlineClientAPI.INSTANCE.addRenderer(new InlineRenderer<PatternData>() {
-            private static final SpellCircleRenderer delegate = new SpellCircleRenderer(false, 0, false);
+            private static final CircleRenderer delegate = new CircleRenderer(false, false, 0);
 
             @Override
             public Identifier getId() {
@@ -62,7 +62,7 @@ public class InlineCompat {
                 var color = style.getColor();
                 if (color != null)
                     delegate.setColor((color.getRgb() >> 16 & 255) / 255f * trContext.brightnessMultiplier(), (color.getRgb() >> 8 & 255) / 255f * trContext.brightnessMultiplier(),
-                            (color.getRgb() & 255) / 255f * trContext.brightnessMultiplier());
+                        (color.getRgb() & 255) / 255f * trContext.brightnessMultiplier());
                 else
                     delegate.setColor(trContext.red(), trContext.green(), trContext.blue());
                 if (trContext.isGlowy())

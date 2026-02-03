@@ -1,16 +1,12 @@
 package dev.enjarai.trickster.net;
 
-import dev.enjarai.trickster.item.ModItems;
 import dev.enjarai.trickster.item.component.FragmentComponent;
 import dev.enjarai.trickster.screen.ScrollAndQuillScreenHandler;
+import dev.enjarai.trickster.spell.SpellPart;
 import io.vavr.collection.HashMap;
 import io.wispforest.owo.network.ServerAccess;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.screen.NamedScreenHandlerFactory;
-import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
+import net.minecraft.util.Hand;
 
 public record SpellEditPacket() {
     public void handleServer(ServerAccess access) {
@@ -24,19 +20,13 @@ public record SpellEditPacket() {
 
         var mergedMap = FragmentComponent.getUserMergedMap(player, "ring", HashMap::empty);
 
-        player.openHandledScreen(new NamedScreenHandlerFactory() {
-            @Override
-            public Text getDisplayName() {
-                return Text.translatable("trickster.screen.scroll_and_quill");
-            }
-
-            @Override
-            public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-                return new ScrollAndQuillScreenHandler(
-                        syncId, playerInventory, stack, player.getOffHandStack(), EquipmentSlot.MAINHAND,
-                        mergedMap, stack.isOf(ModItems.MIRROR_OF_EVALUATION), true
-                );
-            }
-        });
+        player.openHandledScreen(ScrollAndQuillScreenHandler.factory(
+            Text.translatable("trickster.screen.scroll_and_quill"),
+            new ScrollAndQuillScreenHandler.InitialData(
+                FragmentComponent.getSpellPart(stack).orElse(new SpellPart()),
+                true, true, Hand.MAIN_HAND, System.identityHashCode(stack), mergedMap.keySet().toJavaSet()
+            ),
+            stack, player.getOffHandStack(), mergedMap
+        ));
     }
 }

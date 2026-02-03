@@ -111,8 +111,8 @@ public abstract class Trick<T extends Trick<T>> {
             ModCriteria.TRIGGER_WARD.trigger(player);
 
             var sourceFragment = triggerCaster
-                    .<Fragment>map(EntityFragment::from)
-                    .orElse(new VectorFragment(triggerCtx.source().getPos()));
+                .<Fragment>map(EntityFragment::from)
+                .orElse(new VectorFragment(triggerCtx.source().getPos()));
             var charmMap = FragmentComponent.getUserMergedMap(player, "charm", HashMap::empty);
             var spell = charmMap.get(getPattern());
             var caster = ModEntityComponents.CASTER.get(player);
@@ -132,8 +132,8 @@ public abstract class Trick<T extends Trick<T>> {
         }
 
         return Text.literal("").append(
-                Text.translatable(Trickster.MOD_ID + ".trick." + id.getNamespace() + "." + id.getPath())
-                        .withColor(FragmentType.PATTERN.color().getAsInt())
+            Text.translatable(Trickster.MOD_ID + ".trick." + id.getNamespace() + "." + id.getPath())
+                .withColor(FragmentType.PATTERN.color().getAsInt())
         );
     }
 
@@ -141,7 +141,7 @@ public abstract class Trick<T extends Trick<T>> {
         if (!ModCompat.INLINE_LOADED) return getName();
         var id = Tricks.REGISTRY.getId(this);
         return Text.empty().append(PatternData.make(pattern, PatternData.getStyle(pattern, false).withColor(FragmentType.PATTERN.color().getAsInt())).append(" ")
-                .append(id == null ? Text.literal("Unregistered") : Text.translatable(Trickster.MOD_ID + ".trick." + id.getNamespace() + "." + id.getPath())));
+            .append(id == null ? Text.literal("Unregistered") : Text.translatable(Trickster.MOD_ID + ".trick." + id.getNamespace() + "." + id.getPath())));
     }
 
     public List<Signature<T>> getSignatures() {

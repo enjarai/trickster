@@ -66,7 +66,7 @@ public class TricksterClient implements ClientModInitializer {
 
         BlockEntityRendererFactories.register(ModBlocks.SPELL_CONSTRUCT_ENTITY, SpellConstructBlockEntityRenderer::new);
         BlockEntityRendererFactories.register(ModBlocks.MODULAR_SPELL_CONSTRUCT_ENTITY,
-                ModularSpellConstructBlockEntityRenderer::new);
+            ModularSpellConstructBlockEntityRenderer::new);
         BlockEntityRendererFactories.register(ModBlocks.SCROLL_SHELF_ENTITY, ScrollShelfBlockEntityRenderer::new);
         BlockEntityRendererFactories.register(ModBlocks.CHARGING_ARRAY_ENTITY, ChargingArrayBlockEntityRenderer::new);
 
@@ -79,10 +79,10 @@ public class TricksterClient implements ClientModInitializer {
         UIParsing.registerFactory(Trickster.id("item-tag"), ItemTagComponent::parse);
 
         LavenderBookScreen.registerFeatureFactory(Trickster.id("tome_of_tomfoolery"),
-                componentSource -> List.of(new ObfuscatedFeature()));
+            componentSource -> List.of(new ObfuscatedFeature()));
 
         ParticleFactoryRegistry.getInstance().register(ModParticles.PROTECTED_BLOCK,
-                ProtectedBlockParticle.Factory::new);
+            ProtectedBlockParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(ModParticles.SPELL, SpellParticle.Factory::new);
 
         AccessoriesRendererRegistry.registerRenderer(ModItems.TOP_HAT, HoldableHatRenderer::new);
@@ -104,17 +104,17 @@ public class TricksterClient implements ClientModInitializer {
 
                 if (editing != serverEditing) {
                     ModNetworking.CHANNEL.clientHandle()
-                            .send(new IsEditingScrollPacket(editing, editing
-                                    ? ((ScrollAndQuillScreen) client.currentScreen).getScreenHandler().isOffhand()
-                                    : false));
+                        .send(new IsEditingScrollPacket(editing, editing
+                            ? ((ScrollAndQuillScreen) client.currentScreen).getScreenHandler().isOffhand()
+                            : false));
                 }
             }
         });
         ClientTickEvents.END_CLIENT_TICK.register(merlinKeeperTracker::tick);
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (client.world != null && client.world.getTime() % 20 == 0
-                    && client.player != null
-                    && (client.player.getMainHandStack().isIn(ModItems.TICK_TOCK) || client.player.getOffHandStack().isIn(ModItems.TICK_TOCK))) {
+                && client.player != null
+                && (client.player.getMainHandStack().isIn(ModItems.TICK_TOCK) || client.player.getOffHandStack().isIn(ModItems.TICK_TOCK))) {
                 client.player.playSound(SoundEvents.BLOCK_COMPARATOR_CLICK, 0.1f, client.world.getTime() % 40 == 0 ? 2 : 1.7f);
             }
         });
@@ -130,9 +130,9 @@ public class TricksterClient implements ClientModInitializer {
 
             float poolMax = manaComponent.pool().getMax(MinecraftClient.getInstance().world);
             return poolMax == 0 ? 0
-                    : MathHelper.clamp(
-                            Math.round(manaComponent.pool().get(MinecraftClient.getInstance().world) * 13.0F / poolMax),
-                            0, 13);
+                : MathHelper.clamp(
+                    Math.round(manaComponent.pool().get(MinecraftClient.getInstance().world) * 13.0F / poolMax),
+                    0, 13);
         };
 
         WorldRenderEvents.AFTER_ENTITIES.register(FlecksRenderer::render);
@@ -141,9 +141,9 @@ public class TricksterClient implements ClientModInitializer {
         HudRenderCallback.EVENT.register(SpellConstructErrorRenderer::render);
 
         EntityModelLayerRegistry.registerModelLayer(ScrollShelfBlockEntityRenderer.MODEL_LAYER,
-                ScrollShelfBlockEntityRenderer::getTexturedModelData);
+            ScrollShelfBlockEntityRenderer::getTexturedModelData);
         EntityModelLayerRegistry.registerModelLayer(ModularSpellConstructBlockEntityRenderer.MODEL_LAYER,
-                ModularSpellConstructBlockEntityRenderer::getTexturedModelData);
+            ModularSpellConstructBlockEntityRenderer::getTexturedModelData);
 
         if (ModCompat.INLINE_LOADED) InlineCompat.register();
         if (FabricLoader.getInstance().isModLoaded("coleus")) {

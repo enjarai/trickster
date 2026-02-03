@@ -17,8 +17,8 @@ import java.util.stream.Stream;
 
 public record PatternGlyph(Pattern pattern) implements Fragment, AddableFragment, SubtractableFragment {
     public static final StructEndec<PatternGlyph> ENDEC = StructEndecBuilder.of(
-            Pattern.ENDEC.fieldOf("pattern", PatternGlyph::pattern),
-            PatternGlyph::new
+        Pattern.ENDEC.fieldOf("pattern", PatternGlyph::pattern),
+        PatternGlyph::new
     );
 
     public PatternGlyph() {
