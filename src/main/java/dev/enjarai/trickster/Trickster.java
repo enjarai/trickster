@@ -55,9 +55,9 @@ public class Trickster implements ModInitializer, CicadaEntrypoint {
     public static final Logger LOGGER = ProperLogger.getLogger(MOD_ID);
 
     public static final Set<UUID> THE_MAKERS_OF_KIBTY = Set.of(
-            UUID.fromString("ffa85ed0-9178-4b48-9b96-73b13d6f258e"),
-            UUID.fromString("7ae9dffd-5669-4922-b6d6-f2d7d0045fc7"),
-            UUID.fromString("5421f63a-e698-4391-a18e-412a390b002c")
+        UUID.fromString("ffa85ed0-9178-4b48-9b96-73b13d6f258e"),
+        UUID.fromString("7ae9dffd-5669-4922-b6d6-f2d7d0045fc7"),
+        UUID.fromString("5421f63a-e698-4391-a18e-412a390b002c")
     );
 
     public static final Identifier SPELL_CIRCLE_ATTRIBUTE = id("spell_circle");
@@ -123,9 +123,9 @@ public class Trickster implements ModInitializer, CicadaEntrypoint {
     @Override
     public void registerConversations(ConversationManager conversationManager) {
         conversationManager.registerSource(
-                JsonSource.fromUrl("https://raw.githubusercontent.com/enjarai/trickster/master/src/main/resources/cicada/trickster/conversations.json")
-                        .or(JsonSource.fromResource("cicada/trickster/conversations.json")),
-                LOGGER::info
+            JsonSource.fromUrl("https://raw.githubusercontent.com/enjarai/trickster/master/src/main/resources/cicada/trickster/conversations.json")
+                .or(JsonSource.fromResource("cicada/trickster/conversations.json")),
+            LOGGER::info
         );
     }
 

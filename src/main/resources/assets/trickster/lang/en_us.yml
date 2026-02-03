@@ -283,10 +283,7 @@ trickster:
     message_send: Dispatch Ploy
     message_listen: Ploy of Receipt
 
-  revision:
-  - text: (Scribing Pattern)
-    italic: true
-    color: dark_gray
+  revision: (Scribing Pattern)
   revision.trickster:
     add_subcircle: Extensive Revision
     add_inner_circle: Inner Revision
