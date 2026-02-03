@@ -24,6 +24,7 @@ import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.mana.ManaPoolType;
 import dev.enjarai.trickster.spell.mana.generation.ManaHandlerType;
+import dev.enjarai.trickster.spell.revision.Revisions;
 import dev.enjarai.trickster.spell.trick.Tricks;
 import net.fabricmc.api.ModInitializer;
 
@@ -43,6 +44,7 @@ import nl.enjarai.cicada.api.util.JsonSource;
 import nl.enjarai.cicada.api.util.ProperLogger;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -86,6 +88,7 @@ public class Trickster implements ModInitializer, CicadaEntrypoint {
         ModLoot.register();
         ModEntities.register();
         Tricks.register();
+        Objects.requireNonNull(Revisions.REGISTRY);
         FragmentType.register();
         ManaPoolType.register();
         ManaHandlerType.register();
