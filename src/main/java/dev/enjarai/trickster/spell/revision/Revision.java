@@ -3,6 +3,9 @@ package dev.enjarai.trickster.spell.revision;
 import dev.enjarai.trickster.spell.SpellPart;
 import dev.enjarai.trickster.spell.SpellView;
 import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.fragment.FragmentType;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
 
 import java.util.function.Consumer;
 
@@ -21,4 +24,8 @@ public interface Revision {
     void apply(RevisionContext ctx, SpellView view);
 
     default void applyServer(RevisionContext ctx, SpellView view, Consumer<SpellPart> callback) {}
+
+    default MutableText getName() {
+        return Text.empty().append(Text.translatable(Revisions.REGISTRY.getId(this).toTranslationKey("trickster.revision")).withColor(FragmentType.PATTERN.color().getAsInt()));
+    }
 }
