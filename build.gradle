@@ -35,6 +35,13 @@ repositories {
     maven {
         url "https://maven.enjarai.dev/mirrors"
     }
+
+    maven {
+        url 'https://maven.blamejared.com'
+        content {
+            includeGroup 'com.samsthenerd.inline'
+        }
+    }
 }
 
 loom {
@@ -118,6 +125,8 @@ dependencies {
     modClientCompileOnly modLocalRuntime("maven.modrinth:sodium:${property('deps.sodium')}")
 
     modApi("io.wispforest:accessories-fabric:${property('deps.accessories')}")
+
+    modApi "com.samsthenerd.inline:inline-fabric:${property 'deps.inline'}"
 
     // Optional compat
     modCompileOnly modLocalRuntime("maven.modrinth:transmog:${property('deps.transmog')}")
