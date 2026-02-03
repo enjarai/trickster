@@ -9,6 +9,7 @@
     "Ingress of Suitability",
     "Ingress of Logic",
     "Ingress of Resonance",
+    "Ingress of Rotation",
     "Ingress of Luminance"
   ]
 }
