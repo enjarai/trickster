@@ -1,7 +1,6 @@
 package dev.enjarai.trickster.screen.scribing;
 
 import dev.enjarai.trickster.render.CircleRenderer;
-import io.wispforest.owo.braid.animation.Animation;
 import io.wispforest.owo.braid.animation.AutomaticallyAnimatedWidget;
 import io.wispforest.owo.braid.animation.DoubleLerp;
 import io.wispforest.owo.braid.animation.Easing;
@@ -96,23 +95,24 @@ public class CircleSoupElement extends AutomaticallyAnimatedWidget {
                                 .translate(-RADIUS, -RADIUS, 0)
                                 .scale((float) (double) radius / RADIUS)
                                 .translate(0, 0, 1f / (float) (double) radius),
-                            new ScaleInOutWidget(
-                                true,
-                                widget().animateIn ? Animation.Target.START : Animation.Target.END,
-                                (t) -> {},
-                                new CircleWidget(
-                                    widget().renderer,
-                                    radius,
-                                    c.angle,
-                                    c.partView,
-                                    c::updatePattern,
-                                    widget().mutable,
-                                    widget().allowsEval ? c::triggerEval : null
-                                )
+                            new CircleWidget(
+                                widget().renderer,
+                                radius,
+                                c.angle,
+                                c.partView,
+                                c::updatePattern,
+                                widget().mutable,
+                                widget().allowsEval ? c::triggerEval : null
                             )
+                        // TODO:
+                        //    new ScaleInOutWidget(
+                        //        true,
+                        //        widget().animateIn ? Animation.Target.START : Animation.Target.END,
+                        //        (t) -> {},
                         )),
                         c.childCircles.stream().map(c2 -> new CircleSoupElement(
-                            Duration.ofMillis(250),
+                            // Duration.ofMillis(250), TODO as well
+                            Duration.ofMillis(0),
                             Easing.OUT_EXPO,
                             widget().renderer,
                             c2, widget().soupConstraints,

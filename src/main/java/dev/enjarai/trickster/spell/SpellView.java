@@ -16,6 +16,7 @@ public class SpellView {
     public boolean isInner = false;
     public boolean beingReplaced = false;
     public boolean loading = false;
+    public boolean shadowParent = false;
 
     public UUID uuid = UUID.randomUUID();
 
@@ -23,6 +24,16 @@ public class SpellView {
 
     private SpellView(SpellPart part) {
         this.part = part;
+    }
+
+    public static SpellView shadowParent(SpellView view) {
+        var shadow = new SpellView(new SpellPart());
+        shadow.shadowParent = true;
+
+        view.comeOutAsTrans();
+        shadow.addChild(0, view);
+
+        return shadow;
     }
 
     public static SpellView index(SpellPart part) {
@@ -65,7 +76,7 @@ public class SpellView {
         var path = new ArrayList<Integer>();
 
         var current = this;
-        while (current.parent != null) {
+        while (current.parent != null && !current.parent.shadowParent) {
             if (current.isInner) {
                 path.addFirst(-1);
             } else {
@@ -80,6 +91,10 @@ public class SpellView {
     @Nullable
     public SpellView traverseTo(List<Integer> path) {
         var current = this;
+
+        while (current.shadowParent) {
+            current = current.children.getFirst();
+        }
 
         for (var i : path) {
             if (current == null) {
@@ -116,8 +131,9 @@ public class SpellView {
                 parent.inner = null;
                 parent.part.glyph = new PatternGlyph();
             } else {
-                parent.children.remove(this);
-                parent.part.subParts.remove(this.part);
+                var i = parent.children.indexOf(this);
+                parent.children.remove(i);
+                parent.part.subParts.remove(i);
             }
             parent.triggerRebuild();
             parent = null;
@@ -161,6 +177,11 @@ public class SpellView {
         this.part.subParts.remove(position);
         var oldChild = this.children.remove(position);
         oldChild.parent = null;
+
+        if (shadowParent) {
+            addChild(position, new SpellPart());
+        }
+
         triggerRebuild();
         return oldChild;
     }
@@ -215,10 +236,12 @@ public class SpellView {
             if (isInner) {
                 parent.inner = replacement;
                 parent.part.glyph = replacement.part;
+                replacement.isInner = true;
             } else {
                 var i = parent.children.indexOf(this);
                 parent.children.set(i, replacement);
                 parent.part.subParts.set(i, replacement.part);
+                replacement.isInner = false;
             }
             replacement.parent = parent;
 

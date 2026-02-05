@@ -78,12 +78,14 @@ public class CircleSoupWidget extends StatefulWidget {
         private int zoomering;
         private Constraints arenaConstraints;
         private final Map<SpellView, CircleState> circles = new IdentityHashMap<>();
-        private SpellView rootView;
+        // The real root view is stored as the first subcircle of this.
+        // This makes revisions truly generic
+        private SpellView shadowParentView;
         private boolean initialBuild = true;
 
         @Override
         public void init() {
-            rootView = widget().view.getUpperParent();
+            shadowParentView = SpellView.shadowParent(widget().view.getUpperParent());
             circles.clear();
             addCircle(new CircleState(
                 widget().x,
@@ -145,7 +147,8 @@ public class CircleSoupWidget extends StatefulWidget {
                                     new Stack(circles.values().stream()
                                         .filter(c -> c.parentCircle == null)
                                         .map(c -> new CircleSoupElement(
-                                            Duration.ofMillis(250),
+                                            // Duration.ofMillis(250), TODO: add back when animationes
+                                            Duration.ofMillis(0),
                                             Easing.OUT_EXPO,
                                             widget().renderer,
                                             c, constraints,
@@ -333,7 +336,8 @@ public class CircleSoupWidget extends StatefulWidget {
             }
 
             private void backtrack() {
-                if (parentCircle != null || partView.parent == null) return;
+                // Make sure to also exclude the shadow parent
+                if (parentCircle != null || partView.parent == null || partView.parent == shadowParentView) return;
 
                 if (partView.isInner) {
                     var parentRadius = partView.parent.part.superRadius(radius);
@@ -419,12 +423,16 @@ public class CircleSoupWidget extends StatefulWidget {
 
                 var rev = Revisions.lookup(pattern);
                 if (rev.isPresent()) {
-                    rev.get().apply(widget().revisionContext, partView);
+                    try {
+                        rev.get().apply(widget().revisionContext, partView);
+                    } catch (RuntimeException e) {
+                        Trickster.LOGGER.error("Exception thrown in revision!", e);
+                    }
                 } else {
                     partView.replaceGlyph(new PatternGlyph(pattern));
                 }
 
-                widget().revisionContext.updateSpell(rootView.part);
+                widget().revisionContext.updateSpell(shadowParentView.children.getFirst().part);
             }
 
             public void triggerEval() {
@@ -456,15 +464,6 @@ public class CircleSoupWidget extends StatefulWidget {
 
             private void dropChild(CircleState circle) {
                 childCircles.remove(circle);
-            }
-
-            public String getKey() {
-                var builder = new StringBuilder();
-                for (var i : path) {
-                    builder.append(i);
-                    builder.append(",");
-                }
-                return builder.toString();
             }
         }
     }
