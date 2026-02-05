@@ -2,8 +2,7 @@ package dev.enjarai.trickster.render.fragment;
 
 import dev.enjarai.trickster.render.CircleRenderer;
 import dev.enjarai.trickster.spell.Fragment;
-import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.fragment.ListFragment;
+import dev.enjarai.trickster.spell.fragment.*;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
@@ -14,7 +13,7 @@ import org.joml.Quaternionf;
 import static dev.enjarai.trickster.render.CircleRenderer.GLYPH_LAYER;
 
 public class ListRenderer implements FragmentRenderer<ListFragment> {
-    private static float SPACING = 0.1f;
+    private final static float SPACING = 0.1f;
 
     @Override
     public void render(ListFragment fragment, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float radius, float alpha, Vec3d normal, float tickDelta,
@@ -22,6 +21,7 @@ public class ListRenderer implements FragmentRenderer<ListFragment> {
         var fragments = fragment.fragments();
         var layout = calculateLayout(fragment);
         var height = layout.height();
+        var width = layout.width();
         var scale = layout.scale();
 
         matrices.push();
@@ -49,12 +49,11 @@ public class ListRenderer implements FragmentRenderer<ListFragment> {
 
         matrices.pop();
 
-        var bracketHeight = Math.max(height + 0.15f, 0.5f);
-        renderBracket(matrices, vertexConsumers, 0, 1f, 0, bracketHeight, alpha);
-        renderBracket(matrices, vertexConsumers, (float) Math.PI, -1f, 0, bracketHeight, alpha);
+        var bracketHeight = Math.max(height + 0.2f, 0.5f);
+        renderBracket(matrices, vertexConsumers, 0, width * 0.5f, 0, bracketHeight, alpha);
+        renderBracket(matrices, vertexConsumers, (float) Math.PI, -width * 0.5f, 0, bracketHeight, alpha);
 
         matrices.pop();
-
     }
 
     private void renderBracket(MatrixStack matrices, VertexConsumerProvider vertexConsumers, float rotation, float x, float y, float height, float alpha) {
@@ -101,19 +100,27 @@ public class ListRenderer implements FragmentRenderer<ListFragment> {
         return layout.height() * layout.scale();
     }
 
+    @Override
+    public float getProportionalWidth(ListFragment fragment) {
+        var layout = calculateLayout(fragment);
+        return layout.width() * layout.scale();
+    }
+
     private static Layout calculateLayout(ListFragment fragment) {
         var fragments = fragment.fragments();
 
         float height = 0.0f;
-
+        float maxElementWidth = 0.0f;
         for (Fragment element : fragments) {
+            maxElementWidth = Math.max(maxElementWidth, FragmentRenderer.getFragmentProportionalWidth(element));
             height += FragmentRenderer.getFragmentProportionalHeight(element) + SPACING;
         }
+        float width = maxElementWidth + 0.5f;
 
         float scale = Math.min(0.6f, 1.0f / height);
-        return new Layout(height, scale);
+        return new Layout(height, width, scale);
     }
 
-    private record Layout(float height, float scale) {
+    private record Layout(float height, float width, float scale) {
     }
 }

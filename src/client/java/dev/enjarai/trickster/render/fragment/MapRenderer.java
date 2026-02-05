@@ -17,14 +17,17 @@ import org.joml.Quaternionf;
 import static dev.enjarai.trickster.render.CircleRenderer.GLYPH_LAYER;
 
 public class MapRenderer implements FragmentRenderer<MapFragment> {
-    private static float SPACING = 0.1f;
+    private final static float VERTICAL_SPACING = 0.1f;
+    private final static float HORIZONTAL_SPACING = 0.6f;
 
     @Override
     public void render(MapFragment fragment, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float radius, float alpha, Vec3d normal, float tickDelta,
         CircleRenderer delegator) {
+
         var map = fragment.map();
         var layout = calculateLayout(fragment);
         var height = layout.height();
+        var elementWidth = layout.elementWidth();
         var scale = layout.scale();
 
         matrices.push();
@@ -38,35 +41,35 @@ public class MapRenderer implements FragmentRenderer<MapFragment> {
         var offsetAcc = 0.0f;
         for (var entry : map) {
             var entryHeight = Math.max(FragmentRenderer.getFragmentProportionalHeight(entry._1()), FragmentRenderer.getFragmentProportionalHeight(entry._2()));
-            var offset = offsetAcc + (SPACING + entryHeight) / 2;
+            var offset = offsetAcc + (VERTICAL_SPACING + entryHeight) / 2;
 
             var key = entry._1();
             var val = entry._2;
 
             FragmentRenderer keyRenderer = FragmentRenderer.REGISTRY.get(FragmentType.REGISTRY.getId(key.type()));
             if (keyRenderer != null) {
-                keyRenderer.render(key, matrices, vertexConsumers, -1.2f, offset, 1.0f, alpha, normal, tickDelta, delegator);
+                keyRenderer.render(key, matrices, vertexConsumers, -(elementWidth + HORIZONTAL_SPACING) * 0.5f, offset, 1.0f, alpha, normal, tickDelta, delegator);
             } else {
-                FragmentRenderer.renderAsText(key, matrices, vertexConsumers, -1.2f, offset, 1.0f, alpha);
+                FragmentRenderer.renderAsText(key, matrices, vertexConsumers, -(elementWidth + HORIZONTAL_SPACING) * 0.5f, offset, 1.0f, alpha);
             }
 
             renderArrow(matrices, vertexConsumers, 0, offset, 0.04f, alpha);
 
             FragmentRenderer valRenderer = FragmentRenderer.REGISTRY.get(FragmentType.REGISTRY.getId(val.type()));
             if (valRenderer != null) {
-                valRenderer.render(val, matrices, vertexConsumers, 1.2f, offset, 1.0f, alpha, normal, tickDelta, delegator);
+                valRenderer.render(val, matrices, vertexConsumers, (elementWidth + HORIZONTAL_SPACING) * 0.5f, offset, 1.0f, alpha, normal, tickDelta, delegator);
             } else {
-                FragmentRenderer.renderAsText(val, matrices, vertexConsumers, 1.2f, offset, 1.0f, alpha);
+                FragmentRenderer.renderAsText(val, matrices, vertexConsumers, (elementWidth + HORIZONTAL_SPACING) * 0.5f, offset, 1.0f, alpha);
             }
 
-            offsetAcc += (SPACING + entryHeight);
+            offsetAcc += (VERTICAL_SPACING + entryHeight);
         }
 
         matrices.pop();
 
         var bracketHeight = Math.max(height + 0.15f, 0.5f);
-        renderBrace(matrices, vertexConsumers, 0, 2.2f, 0, bracketHeight, alpha);
-        renderBrace(matrices, vertexConsumers, (float) Math.PI, -2.2f, 0, bracketHeight, alpha);
+        renderBrace(matrices, vertexConsumers, 0, elementWidth + HORIZONTAL_SPACING, 0, bracketHeight, alpha);
+        renderBrace(matrices, vertexConsumers, (float) Math.PI, -elementWidth - HORIZONTAL_SPACING, 0, bracketHeight, alpha);
 
         matrices.pop();
     }
@@ -150,18 +153,28 @@ public class MapRenderer implements FragmentRenderer<MapFragment> {
         return layout.height() * layout.scale();
     }
 
+    @Override
+    public float getProportionalWidth(MapFragment fragment) {
+        var layout = calculateLayout(fragment);
+        return (layout.elementWidth * 2 + HORIZONTAL_SPACING * 3) * layout.scale();
+    }
+
     private static Layout calculateLayout(MapFragment fragment) {
         var map = fragment.map();
 
         float height = 0.0f;
+        float maxElementWidth = 0.0f;
         for (var entry : map) {
-            height += Math.max(FragmentRenderer.getFragmentProportionalHeight(entry._1()), FragmentRenderer.getFragmentProportionalHeight(entry._2())) + SPACING;
+            height += Math.max(FragmentRenderer.getFragmentProportionalHeight(entry._1()), FragmentRenderer.getFragmentProportionalHeight(entry._2())) + VERTICAL_SPACING;
+            var width = Math.max(FragmentRenderer.getFragmentProportionalWidth(entry._1()), FragmentRenderer.getFragmentProportionalWidth(entry._2())) + VERTICAL_SPACING;
+            maxElementWidth = Math.max(maxElementWidth, width);
+
         }
 
-        var scale = Math.min(0.2f, 1.0f / height);
-        return new Layout(height, scale);
+        float scale = Math.min(0.2f, 1.0f / height);
+        return new Layout(height, maxElementWidth, scale);
     }
 
-    private record Layout(float height, float scale) {
+    private record Layout(float height, float elementWidth, float scale) {
     }
 }

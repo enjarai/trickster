@@ -37,4 +37,5 @@ public class BlockTypeRenderer implements FragmentRenderer<BlockTypeFragment> {
             return FragmentRenderer.TEXT_PROPORTIONAL_HEIGHT;
         }
     }
+
 }

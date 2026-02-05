@@ -27,7 +27,6 @@ public interface FragmentRenderer<T extends Fragment> {
     ListRenderer LIST = register(FragmentType.LIST, new ListRenderer());
     MapRenderer MAP = register(FragmentType.MAP, new MapRenderer());
     SpellPartRenderer SPELL_PART = register(FragmentType.SPELL_PART, new SpellPartRenderer());
-    EntityRenderer ENTITY = register(FragmentType.ENTITY, new EntityRenderer());
 
     float TEXT_PROPORTIONAL_HEIGHT = 0.3f;
 
@@ -66,6 +65,10 @@ public interface FragmentRenderer<T extends Fragment> {
 
     float getProportionalHeight(T fragment);
 
+    default float getProportionalWidth(T fragment) {
+        return getProportionalHeight(fragment);
+    };
+
     default boolean renderRedrawDots() {
         return true;
     }
@@ -75,7 +78,6 @@ public interface FragmentRenderer<T extends Fragment> {
     }
 
     static float getFragmentProportionalHeight(Fragment fragment) {
-
         FragmentRenderer renderer = FragmentRenderer.REGISTRY.get(FragmentType.REGISTRY.getId(fragment.type()));
         if (renderer != null) {
             return renderer.getProportionalHeight(fragment);
@@ -83,5 +85,14 @@ public interface FragmentRenderer<T extends Fragment> {
             return TEXT_PROPORTIONAL_HEIGHT;
         }
 
+    }
+
+    static float getFragmentProportionalWidth(Fragment fragment) {
+        FragmentRenderer renderer = FragmentRenderer.REGISTRY.get(FragmentType.REGISTRY.getId(fragment.type()));
+        if (renderer != null) {
+            return renderer.getProportionalWidth(fragment);
+        } else {
+            return 1.0f;
+        }
     }
 }
