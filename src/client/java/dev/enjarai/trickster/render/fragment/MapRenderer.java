@@ -17,17 +17,15 @@ import org.joml.Quaternionf;
 import static dev.enjarai.trickster.render.CircleRenderer.GLYPH_LAYER;
 
 public class MapRenderer implements FragmentRenderer<MapFragment> {
+    private static float SPACING = 0.1f;
+
     @Override
     public void render(MapFragment fragment, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float radius, float alpha, Vec3d normal, float tickDelta,
         CircleRenderer delegator) {
         var map = fragment.map();
-        var spacing = 0.1f;
-        var height = 0.0f;
-        for (var entry : map) {
-            height += Math.max(FragmentRenderer.getFragmentProportionalHeight(entry._1()), FragmentRenderer.getFragmentProportionalHeight(entry._2())) + spacing;
-        }
-
-        var scale = Math.min(0.3f, 1.0f / height);
+        var layout = calculateLayout(fragment);
+        var height = layout.height();
+        var scale = layout.scale();
 
         matrices.push();
         matrices.translate(x, y, 0);
@@ -40,7 +38,7 @@ public class MapRenderer implements FragmentRenderer<MapFragment> {
         var offsetAcc = 0.0f;
         for (var entry : map) {
             var entryHeight = Math.max(FragmentRenderer.getFragmentProportionalHeight(entry._1()), FragmentRenderer.getFragmentProportionalHeight(entry._2()));
-            var offset = offsetAcc + (spacing + entryHeight) / 2;
+            var offset = offsetAcc + (SPACING + entryHeight) / 2;
 
             var key = entry._1();
             var val = entry._2;
@@ -61,7 +59,7 @@ public class MapRenderer implements FragmentRenderer<MapFragment> {
                 FragmentRenderer.renderAsText(val, matrices, vertexConsumers, 0.8f, offset, 1.0f, alpha);
             }
 
-            offsetAcc += (spacing + entryHeight);
+            offsetAcc += (SPACING + entryHeight);
         }
 
         matrices.pop();
@@ -98,6 +96,7 @@ public class MapRenderer implements FragmentRenderer<MapFragment> {
 
     private void renderBrace(MatrixStack matrices, VertexConsumerProvider vertexConsumers, float rotation, float x, float y, float height, float alpha) {
         float lineWidth = 0.1f;
+        height = Math.max(lineWidth * 7, height - height % lineWidth);
 
         float top = height * 0.5f;
         float bottom = -height * 0.5f;
@@ -147,6 +146,22 @@ public class MapRenderer implements FragmentRenderer<MapFragment> {
 
     @Override
     public float getProportionalHeight(MapFragment fragment) {
-        return 1.0f;
+        var layout = calculateLayout(fragment);
+        return layout.height() * layout.scale();
+    }
+
+    private static Layout calculateLayout(MapFragment fragment) {
+        var map = fragment.map();
+
+        float height = 0.0f;
+        for (var entry : map) {
+            height += Math.max(FragmentRenderer.getFragmentProportionalHeight(entry._1()), FragmentRenderer.getFragmentProportionalHeight(entry._2())) + SPACING;
+        }
+
+        var scale = Math.min(0.3f, 1.0f / height);
+        return new Layout(height, scale);
+    }
+
+    private record Layout(float height, float scale) {
     }
 }
