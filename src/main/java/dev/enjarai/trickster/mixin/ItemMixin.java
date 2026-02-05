@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipData;
 import net.minecraft.item.tooltip.TooltipType;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,8 +36,16 @@ public abstract class ItemMixin {
         method = "appendTooltip", at = @At("HEAD")
     )
     private void addGarble(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType type, CallbackInfo ci) {
+        var fragmentComponent = stack.get(ModComponents.FRAGMENT);
         var manaComponent = stack.get(ModComponents.MANA);
         var collarComponent = stack.get(ModComponents.COLLAR_LINK);
+
+        if (fragmentComponent != null) {
+            if (fragmentComponent.closed()) {
+                tooltip.add(fragmentComponent.name()
+                    .orElse(Text.literal("Mortal eyes upon my carvings").setStyle(Style.EMPTY.withObfuscated(true))));
+            }
+        }
 
         if (manaComponent != null) {
             if (Trickster.merlinTooltipAppender != null) {

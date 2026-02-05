@@ -20,26 +20,38 @@ public class FragmentTooltipComponent implements TooltipComponent {
 
     private final float size;
 
+    private final FragmentRenderer fragmentRenderer;
+
     public FragmentTooltipComponent(Fragment fragment) {
         this.fragment = fragment;
         this.renderer = new CircleRenderer(true, false, 4);
-
+        this.fragmentRenderer = FragmentRenderer.REGISTRY.get(FragmentType.REGISTRY.getId(fragment.type()));
         this.size = 50.0f;
     }
 
     @Override
     public int getHeight() {
-        return (int) (FragmentRenderer.get_fragment_proportional_height(fragment) * size) + 30;
+        if (fragmentRenderer != null) {
+            return (int) (FragmentRenderer.get_fragment_proportional_height(fragment) * size) + 30;
+        } else {
+            return 10;
+        }
     }
 
     @Override
     public int getWidth(TextRenderer textRenderer) {
-        return (int) size + 10;
+        if (fragmentRenderer != null) {
+            return (int) size + 10;
+        } else {
+            return textRenderer.getWidth(fragment.asFormattedText());
+        }
     }
 
     @Override
     public void drawText(TextRenderer textRenderer, int x, int y, Matrix4f matrix, VertexConsumerProvider.Immediate vertexConsumers) {
-
+        if (fragmentRenderer == null) {
+            textRenderer.draw(fragment.asFormattedText(), (float) x, (float) y, -1, true, matrix, vertexConsumers, TextRenderer.TextLayerType.NORMAL, 0, 15728880);
+        }
     }
 
     @Override
@@ -52,15 +64,8 @@ public class FragmentTooltipComponent implements TooltipComponent {
         }
 
         matrices.push();
-        //        renderer.renderCircle(
-        //            matrices, spell, x + getWidth(textRenderer) / 2, y + getHeight() / 2, size,
-        //            0.0, delta, 1, new Vec3d(0, 0, -1), null
-        //        );
-        FragmentRenderer fragmentRenderer = FragmentRenderer.REGISTRY.get(FragmentType.REGISTRY.getId(fragment.type()));
         if (fragmentRenderer != null) {
             fragmentRenderer.render(fragment, matrices, context.getVertexConsumers(), x + getWidth(textRenderer) / 2f, y + getHeight() / 2f, radius, 1, new Vec3d(0, 0, -1), delta, renderer);
-        } else {
-            FragmentRenderer.renderAsText(fragment, matrices, context.getVertexConsumers(), x + getWidth(textRenderer) / 2f, y + getHeight() / 2f, radius, 1);
         }
 
         CircleRenderer.VERTEX_CONSUMERS.draw();
