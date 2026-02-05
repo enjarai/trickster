@@ -51,8 +51,8 @@ public class ListRenderer implements FragmentRenderer<ListFragment> {
         matrices.pop();
 
         var bracket_height = Math.max(height, 0.5f);
-        render_bracket(matrices, vertexConsumers, 0, 0.5f, 0, bracket_height, alpha);
-        render_bracket(matrices, vertexConsumers, (float) Math.PI, -0.5f, 0, bracket_height, alpha);
+        render_bracket(matrices, vertexConsumers, 0, element_radius * 0.55f, 0, bracket_height, alpha);
+        render_bracket(matrices, vertexConsumers, (float) Math.PI, -element_radius * 0.55f, 0, bracket_height, alpha);
 
         matrices.pop();
 
