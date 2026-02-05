@@ -18,6 +18,11 @@ public class PatternRenderer implements FragmentRenderer<PatternGlyph> {
         renderPattern(fragment.pattern(), matrices, vertexConsumers, x, y, size / PATTERN_TO_PART_RATIO, alpha, delegator);
     }
 
+    @Override
+    public float get_proportional_height(PatternGlyph fragment) {
+        return 0.7f;
+    }
+
     public static void renderPattern(
         Pattern pattern, MatrixStack matrices, VertexConsumerProvider vertexConsumers,
         float x, float y, float size, float alpha, CircleRenderer delegator

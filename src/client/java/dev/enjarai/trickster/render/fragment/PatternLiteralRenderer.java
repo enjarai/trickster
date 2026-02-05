@@ -30,6 +30,11 @@ public class PatternLiteralRenderer implements FragmentRenderer<Pattern> {
     }
 
     @Override
+    public float get_proportional_height(Pattern fragment) {
+        return 0;
+    }
+
+    @Override
     public boolean renderRedrawDots() {
         return false;
     }

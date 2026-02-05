@@ -74,4 +74,9 @@ public class MapRenderer implements FragmentRenderer<MapFragment> {
 
         matrices.pop();
     }
+
+    @Override
+    public float get_proportional_height(MapFragment fragment) {
+        return 0;
+    }
 }

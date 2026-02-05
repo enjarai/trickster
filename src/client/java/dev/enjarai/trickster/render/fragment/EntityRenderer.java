@@ -33,6 +33,11 @@ public class EntityRenderer implements FragmentRenderer<EntityFragment> {
     }
 
     @Override
+    public float get_proportional_height(EntityFragment fragment) {
+        return 0;
+    }
+
+    @Override
     public boolean doubleSided() {
         return false;
     }
