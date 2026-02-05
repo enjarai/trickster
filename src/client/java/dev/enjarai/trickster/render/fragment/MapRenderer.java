@@ -1,76 +1,145 @@
 package dev.enjarai.trickster.render.fragment;
 
 import dev.enjarai.trickster.render.CircleRenderer;
+import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.MapFragment;
-import io.vavr.Tuple;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.Vec3d;
+import org.joml.Matrix4f;
+import org.joml.Quaternionf;
+
+import static dev.enjarai.trickster.render.CircleRenderer.GLYPH_LAYER;
 
 public class MapRenderer implements FragmentRenderer<MapFragment> {
     @Override
     public void render(MapFragment fragment, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float radius, float alpha, Vec3d normal, float tickDelta,
         CircleRenderer delegator) {
-        var textRenderer = MinecraftClient.getInstance().textRenderer;
-        var texts = fragment.map().map((k, v) -> Tuple.of(k.asFormattedText(), v.asFormattedText()));
+        var map = fragment.map();
+        var spacing = 0.1f;
+        var height = 0.0f;
+        for (var entry : map) {
+            height += Math.max(FragmentRenderer.get_fragment_proportional_height(entry._1()), FragmentRenderer.get_fragment_proportional_height(entry._2())) + spacing;
+        }
+
+        var scale = Math.min(0.3f, 1.0f / height);
 
         matrices.push();
         matrices.translate(x, y, 0);
-        matrices.scale(radius / 20, radius / 20, 1);
+        matrices.scale(radius, radius, 1);
+        matrices.scale(scale, scale, 1);
+
+        matrices.push();
+        matrices.translate(0, -0.5 * height, 0);
+
+        var offset_acc = 0.0f;
+        for (var entry : map) {
+            var entry_height = Math.max(FragmentRenderer.get_fragment_proportional_height(entry._1()), FragmentRenderer.get_fragment_proportional_height(entry._2()));
+            var offset = offset_acc + (spacing + entry_height) / 2;
+
+            var key = entry._1();
+            var val = entry._2;
+
+            FragmentRenderer key_renderer = FragmentRenderer.REGISTRY.get(FragmentType.REGISTRY.getId(key.type()));
+            if (key_renderer != null) {
+                key_renderer.render(key, matrices, vertexConsumers, -0.8f, offset, 1.0f, alpha, normal, tickDelta, delegator);
+            } else {
+                FragmentRenderer.renderAsText(key, matrices, vertexConsumers, -0.8f, offset, 1.0f, alpha);
+            }
+
+            render_arrow(matrices, vertexConsumers, 0, offset, 0.04f, alpha);
+
+            FragmentRenderer val_renderer = FragmentRenderer.REGISTRY.get(FragmentType.REGISTRY.getId(val.type()));
+            if (val_renderer != null) {
+                val_renderer.render(val, matrices, vertexConsumers, 0.8f, offset, 1.0f, alpha, normal, tickDelta, delegator);
+            } else {
+                FragmentRenderer.renderAsText(val, matrices, vertexConsumers, 0.8f, offset, 1.0f, alpha);
+            }
+
+            offset_acc += (spacing + entry_height);
+        }
+
+        matrices.pop();
+
+        var bracket_height = Math.max(height + 0.15f, 0.5f);
+        render_brace(matrices, vertexConsumers, 0, 1.4f, 0, bracket_height, alpha);
+        render_brace(matrices, vertexConsumers, (float) Math.PI, -1.4f, 0, bracket_height, alpha);
+
+        matrices.pop();
+    }
+
+    private void render_arrow(MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float radius, float alpha) {
+        var textRenderer = MinecraftClient.getInstance().textRenderer;
+        var text = Text.literal("->");
+        var height = 7;
+        var width = textRenderer.getWidth(text);
+
+        matrices.push();
+        matrices.translate(x, y, 0);
+        matrices.scale(radius, radius, 1);
 
         var color = ColorHelper.Argb.withAlpha((int) (alpha * 0xff), 0xffffff);
 
         textRenderer.draw(
-            "{",
-            -14, -3.5f, color, false,
-            matrices.peek().getPositionMatrix(),
-            vertexConsumers, TextRenderer.TextLayerType.NORMAL,
-            0, 0xf000f0
-        );
-
-        textRenderer.draw(
-            "}",
-            11.5f, -3.5f, color, false,
+            text,
+            -(width - 1f) / 2f, -height / 2f, color, false,
             matrices.peek().getPositionMatrix(),
             vertexConsumers, TextRenderer.TextLayerType.NORMAL,
             0, 0xf000f0
         );
 
         matrices.pop();
+    }
 
-        var i = 0;
+    private void render_brace(MatrixStack matrices, VertexConsumerProvider vertexConsumers, float rotation, float x, float y, float height, float alpha) {
+        float lineWidth = 0.1f;
 
-        var maxWidth = 1;
-        for (var text : texts) {
-            var size = textRenderer.getWidth(text._1()) + textRenderer.getWidth(text._2());
-            if (size > maxWidth) {
-                maxWidth = size;
-            }
-        }
-        var maxHeight = 10 * texts.size();
-        var maxSize = Math.max(maxWidth, maxHeight);
+        float top = height * 0.5f;
+        float bottom = -height * 0.5f;
+        float left = -lineWidth * 0.5f;
+        float right = lineWidth * 0.5f;
 
         matrices.push();
+
         matrices.translate(x, y, 0);
-        matrices.scale(radius / maxSize, radius / maxSize, 1);
+        matrices.multiply(new Quaternionf().rotateZ(rotation));
 
-        for (var text : texts) {
-            var width = textRenderer.getWidth(text._1()) + textRenderer.getWidth(text._2());
+        Matrix4f m = matrices.peek().getPositionMatrix();
+        VertexConsumer vc = vertexConsumers.getBuffer(GLYPH_LAYER);
 
-            textRenderer.draw(
-                text._1().copy().append(Text.literal(": ").withColor(0xffffff)).append(text._2()),
-                -(width - 1f) / 2f, -maxHeight / 2f + i * 10f, 0xffffffff, false,
-                matrices.peek().getPositionMatrix(),
-                vertexConsumers, TextRenderer.TextLayerType.NORMAL,
-                0, 0xf000f0
-            );
+        // upper spine
+        vc.vertex(m, left, lineWidth * 0.5f, 0).color(1f, 1f, 1f, alpha);
+        vc.vertex(m, right, lineWidth * 0.5f, 0).color(1f, 1f, 1f, alpha);
+        vc.vertex(m, right, top - lineWidth, 0).color(1f, 1f, 1f, alpha);
+        vc.vertex(m, left, top - lineWidth, 0).color(1f, 1f, 1f, alpha);
 
-            i++;
-        }
+        // lower spine
+        vc.vertex(m, left, bottom + lineWidth, 0).color(1f, 1f, 1f, alpha);
+        vc.vertex(m, right, bottom + lineWidth, 0).color(1f, 1f, 1f, alpha);
+        vc.vertex(m, right, -lineWidth * 0.5f, 0).color(1f, 1f, 1f, alpha);
+        vc.vertex(m, left, -lineWidth * 0.5f, 0).color(1f, 1f, 1f, alpha);
+
+        vc.vertex(m, right, lineWidth * 0.5f, 0).color(1f, 1f, 1f, alpha);
+        vc.vertex(m, right + lineWidth, lineWidth * 0.5f, 0).color(1f, 1f, 1f, alpha);
+        vc.vertex(m, right + lineWidth, -lineWidth * 0.5f, 0).color(1f, 1f, 1f, alpha);
+        vc.vertex(m, right, -lineWidth * 0.5f, 0).color(1f, 1f, 1f, alpha);
+
+        // top
+        vc.vertex(m, -lineWidth * 1.5f, top - lineWidth, 0).color(1f, 1f, 1f, alpha);
+        vc.vertex(m, -lineWidth * 0.5f, top - lineWidth, 0).color(1f, 1f, 1f, alpha);
+        vc.vertex(m, -lineWidth * 0.5f, top, 0).color(1f, 1f, 1f, alpha);
+        vc.vertex(m, -lineWidth * 1.5f, top, 0).color(1f, 1f, 1f, alpha);
+
+        // bottom
+        vc.vertex(m, -lineWidth * 1.5f, bottom, 0).color(1f, 1f, 1f, alpha);
+        vc.vertex(m, -lineWidth * 0.5f, bottom, 0).color(1f, 1f, 1f, alpha);
+        vc.vertex(m, -lineWidth * 0.5f, bottom + lineWidth, 0).color(1f, 1f, 1f, alpha);
+        vc.vertex(m, -lineWidth * 1.5f, bottom + lineWidth, 0).color(1f, 1f, 1f, alpha);
 
         matrices.pop();
     }

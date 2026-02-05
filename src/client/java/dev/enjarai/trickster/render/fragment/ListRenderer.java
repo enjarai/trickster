@@ -24,7 +24,7 @@ public class ListRenderer implements FragmentRenderer<ListFragment> {
             height += FragmentRenderer.get_fragment_proportional_height(element) + spacing;
         }
 
-        var scale = Math.min(0.6f, 1.4f / height);
+        var scale = Math.min(0.6f, 1.0f / height);
 
         matrices.push();
         matrices.translate(x, y, 0);
@@ -52,16 +52,16 @@ public class ListRenderer implements FragmentRenderer<ListFragment> {
         matrices.pop();
 
         var bracket_height = Math.max(height + 0.15f, 0.5f);
-        render_bracket(matrices, vertexConsumers, 0, 0.55f, 0, bracket_height, alpha);
-        render_bracket(matrices, vertexConsumers, (float) Math.PI, -0.55f, 0, bracket_height, alpha);
+        render_bracket(matrices, vertexConsumers, 0, 0.6f, 0, bracket_height, alpha);
+        render_bracket(matrices, vertexConsumers, (float) Math.PI, -0.6f, 0, bracket_height, alpha);
 
         matrices.pop();
 
     }
 
     private void render_bracket(MatrixStack matrices, VertexConsumerProvider vertexConsumers, float rotation, float x, float y, float height, float alpha) {
-        float lineWidth = 0.06f;
-        float legLength = 0.15f;
+        float lineWidth = 0.1f;
+        float legLength = 0.2f;
 
         float top = height * 0.5f;
         float bottom = -height * 0.5f;
