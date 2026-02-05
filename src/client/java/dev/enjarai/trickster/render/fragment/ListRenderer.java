@@ -14,17 +14,15 @@ import org.joml.Quaternionf;
 import static dev.enjarai.trickster.render.CircleRenderer.GLYPH_LAYER;
 
 public class ListRenderer implements FragmentRenderer<ListFragment> {
+    private static float SPACING = 0.1f;
+
     @Override
     public void render(ListFragment fragment, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float radius, float alpha, Vec3d normal, float tickDelta,
         CircleRenderer delegator) {
         var fragments = fragment.fragments();
-        var spacing = 0.1f;
-        var height = 0.0f;
-        for (Fragment element : fragments) {
-            height += FragmentRenderer.get_fragment_proportional_height(element) + spacing;
-        }
-
-        var scale = Math.min(0.6f, 1.0f / height);
+        var layout = calculateLayout(fragment);
+        var height = layout.height();
+        var scale = layout.scale();
 
         matrices.push();
         matrices.translate(x, y, 0);
@@ -34,10 +32,10 @@ public class ListRenderer implements FragmentRenderer<ListFragment> {
         matrices.push();
         matrices.translate(0, -0.5 * height, 0);
 
-        var offset_acc = 0.0f;
+        var offsetAcc = 0.0f;
         for (Fragment element : fragments) {
-            var element_height = FragmentRenderer.get_fragment_proportional_height(element);
-            var offset = offset_acc + (spacing + element_height) / 2;
+            var elementHeight = FragmentRenderer.getFragmentProportionalHeight(element);
+            var offset = offsetAcc + (SPACING + elementHeight) / 2;
 
             FragmentRenderer renderer = FragmentRenderer.REGISTRY.get(FragmentType.REGISTRY.getId(element.type()));
             if (renderer != null) {
@@ -46,20 +44,20 @@ public class ListRenderer implements FragmentRenderer<ListFragment> {
                 FragmentRenderer.renderAsText(element, matrices, vertexConsumers, 0, offset, 1.0f, alpha);
             }
 
-            offset_acc += (spacing + element_height);
+            offsetAcc += (SPACING + elementHeight);
         }
 
         matrices.pop();
 
-        var bracket_height = Math.max(height + 0.15f, 0.5f);
-        render_bracket(matrices, vertexConsumers, 0, 0.6f, 0, bracket_height, alpha);
-        render_bracket(matrices, vertexConsumers, (float) Math.PI, -0.6f, 0, bracket_height, alpha);
+        var bracketHeight = Math.max(height + 0.15f, 0.5f);
+        renderBracket(matrices, vertexConsumers, 0, 0.6f, 0, bracketHeight, alpha);
+        renderBracket(matrices, vertexConsumers, (float) Math.PI, -0.6f, 0, bracketHeight, alpha);
 
         matrices.pop();
 
     }
 
-    private void render_bracket(MatrixStack matrices, VertexConsumerProvider vertexConsumers, float rotation, float x, float y, float height, float alpha) {
+    private void renderBracket(MatrixStack matrices, VertexConsumerProvider vertexConsumers, float rotation, float x, float y, float height, float alpha) {
         float lineWidth = 0.1f;
         float legLength = 0.2f;
 
@@ -98,7 +96,24 @@ public class ListRenderer implements FragmentRenderer<ListFragment> {
     }
 
     @Override
-    public float get_proportional_height(ListFragment fragment) {
-        return 1.0f;
+    public float getProportionalHeight(ListFragment fragment) {
+        var layout = calculateLayout(fragment);
+        return layout.height() * layout.scale();
+    }
+
+    private static Layout calculateLayout(ListFragment fragment) {
+        var fragments = fragment.fragments();
+
+        float height = 0.0f;
+
+        for (Fragment element : fragments) {
+            height += FragmentRenderer.getFragmentProportionalHeight(element) + SPACING;
+        }
+
+        float scale = Math.min(0.6f, 1.0f / height);
+        return new Layout(height, scale);
+    }
+
+    private record Layout(float height, float scale) {
     }
 }

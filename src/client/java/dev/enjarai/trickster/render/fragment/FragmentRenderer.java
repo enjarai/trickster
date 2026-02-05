@@ -63,7 +63,7 @@ public interface FragmentRenderer<T extends Fragment> {
 
     void render(T fragment, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float radius, float alpha, Vec3d normal, float tickDelta, CircleRenderer delegator);
 
-    float get_proportional_height(T fragment);
+    float getProportionalHeight(T fragment);
 
     default boolean renderRedrawDots() {
         return true;
@@ -73,11 +73,11 @@ public interface FragmentRenderer<T extends Fragment> {
         return true;
     }
 
-    static float get_fragment_proportional_height(Fragment fragment) {
+    static float getFragmentProportionalHeight(Fragment fragment) {
 
         FragmentRenderer renderer = FragmentRenderer.REGISTRY.get(FragmentType.REGISTRY.getId(fragment.type()));
         if (renderer != null) {
-            return renderer.get_proportional_height(fragment);
+            return renderer.getProportionalHeight(fragment);
         } else {
             return TEXT_PROPORTIONAL_HEIGHT;
         }

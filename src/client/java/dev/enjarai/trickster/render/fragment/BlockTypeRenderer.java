@@ -23,7 +23,7 @@ public class BlockTypeRenderer implements FragmentRenderer<BlockTypeFragment> {
     }
 
     @Override
-    public float get_proportional_height(BlockTypeFragment fragment) {
+    public float getProportionalHeight(BlockTypeFragment fragment) {
         var block = fragment.block();
 
         if (Item.BLOCK_ITEMS.containsKey(block)) {

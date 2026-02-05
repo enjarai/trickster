@@ -24,7 +24,7 @@ public class MapRenderer implements FragmentRenderer<MapFragment> {
         var spacing = 0.1f;
         var height = 0.0f;
         for (var entry : map) {
-            height += Math.max(FragmentRenderer.get_fragment_proportional_height(entry._1()), FragmentRenderer.get_fragment_proportional_height(entry._2())) + spacing;
+            height += Math.max(FragmentRenderer.getFragmentProportionalHeight(entry._1()), FragmentRenderer.getFragmentProportionalHeight(entry._2())) + spacing;
         }
 
         var scale = Math.min(0.3f, 1.0f / height);
@@ -37,43 +37,43 @@ public class MapRenderer implements FragmentRenderer<MapFragment> {
         matrices.push();
         matrices.translate(0, -0.5 * height, 0);
 
-        var offset_acc = 0.0f;
+        var offsetAcc = 0.0f;
         for (var entry : map) {
-            var entry_height = Math.max(FragmentRenderer.get_fragment_proportional_height(entry._1()), FragmentRenderer.get_fragment_proportional_height(entry._2()));
-            var offset = offset_acc + (spacing + entry_height) / 2;
+            var entryHeight = Math.max(FragmentRenderer.getFragmentProportionalHeight(entry._1()), FragmentRenderer.getFragmentProportionalHeight(entry._2()));
+            var offset = offsetAcc + (spacing + entryHeight) / 2;
 
             var key = entry._1();
             var val = entry._2;
 
-            FragmentRenderer key_renderer = FragmentRenderer.REGISTRY.get(FragmentType.REGISTRY.getId(key.type()));
-            if (key_renderer != null) {
-                key_renderer.render(key, matrices, vertexConsumers, -0.8f, offset, 1.0f, alpha, normal, tickDelta, delegator);
+            FragmentRenderer keyRenderer = FragmentRenderer.REGISTRY.get(FragmentType.REGISTRY.getId(key.type()));
+            if (keyRenderer != null) {
+                keyRenderer.render(key, matrices, vertexConsumers, -0.8f, offset, 1.0f, alpha, normal, tickDelta, delegator);
             } else {
                 FragmentRenderer.renderAsText(key, matrices, vertexConsumers, -0.8f, offset, 1.0f, alpha);
             }
 
-            render_arrow(matrices, vertexConsumers, 0, offset, 0.04f, alpha);
+            renderArrow(matrices, vertexConsumers, 0, offset, 0.04f, alpha);
 
-            FragmentRenderer val_renderer = FragmentRenderer.REGISTRY.get(FragmentType.REGISTRY.getId(val.type()));
-            if (val_renderer != null) {
-                val_renderer.render(val, matrices, vertexConsumers, 0.8f, offset, 1.0f, alpha, normal, tickDelta, delegator);
+            FragmentRenderer valRenderer = FragmentRenderer.REGISTRY.get(FragmentType.REGISTRY.getId(val.type()));
+            if (valRenderer != null) {
+                valRenderer.render(val, matrices, vertexConsumers, 0.8f, offset, 1.0f, alpha, normal, tickDelta, delegator);
             } else {
                 FragmentRenderer.renderAsText(val, matrices, vertexConsumers, 0.8f, offset, 1.0f, alpha);
             }
 
-            offset_acc += (spacing + entry_height);
+            offsetAcc += (spacing + entryHeight);
         }
 
         matrices.pop();
 
-        var bracket_height = Math.max(height + 0.15f, 0.5f);
-        render_brace(matrices, vertexConsumers, 0, 1.4f, 0, bracket_height, alpha);
-        render_brace(matrices, vertexConsumers, (float) Math.PI, -1.4f, 0, bracket_height, alpha);
+        var bracketHeight = Math.max(height + 0.15f, 0.5f);
+        renderBrace(matrices, vertexConsumers, 0, 1.4f, 0, bracketHeight, alpha);
+        renderBrace(matrices, vertexConsumers, (float) Math.PI, -1.4f, 0, bracketHeight, alpha);
 
         matrices.pop();
     }
 
-    private void render_arrow(MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float radius, float alpha) {
+    private void renderArrow(MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float radius, float alpha) {
         var textRenderer = MinecraftClient.getInstance().textRenderer;
         var text = Text.literal("->");
         var height = 7;
@@ -96,7 +96,7 @@ public class MapRenderer implements FragmentRenderer<MapFragment> {
         matrices.pop();
     }
 
-    private void render_brace(MatrixStack matrices, VertexConsumerProvider vertexConsumers, float rotation, float x, float y, float height, float alpha) {
+    private void renderBrace(MatrixStack matrices, VertexConsumerProvider vertexConsumers, float rotation, float x, float y, float height, float alpha) {
         float lineWidth = 0.1f;
 
         float top = height * 0.5f;
@@ -124,6 +124,7 @@ public class MapRenderer implements FragmentRenderer<MapFragment> {
         vc.vertex(m, right, -lineWidth * 0.5f, 0).color(1f, 1f, 1f, alpha);
         vc.vertex(m, left, -lineWidth * 0.5f, 0).color(1f, 1f, 1f, alpha);
 
+        // middle
         vc.vertex(m, right, lineWidth * 0.5f, 0).color(1f, 1f, 1f, alpha);
         vc.vertex(m, right + lineWidth, lineWidth * 0.5f, 0).color(1f, 1f, 1f, alpha);
         vc.vertex(m, right + lineWidth, -lineWidth * 0.5f, 0).color(1f, 1f, 1f, alpha);
@@ -145,7 +146,7 @@ public class MapRenderer implements FragmentRenderer<MapFragment> {
     }
 
     @Override
-    public float get_proportional_height(MapFragment fragment) {
-        return 0;
+    public float getProportionalHeight(MapFragment fragment) {
+        return 1.0f;
     }
 }

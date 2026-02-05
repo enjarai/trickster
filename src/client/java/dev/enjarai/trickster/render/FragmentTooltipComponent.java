@@ -26,13 +26,17 @@ public class FragmentTooltipComponent implements TooltipComponent {
         this.fragment = fragment;
         this.renderer = new CircleRenderer(true, false, 4);
         this.fragmentRenderer = FragmentRenderer.REGISTRY.get(FragmentType.REGISTRY.getId(fragment.type()));
-        this.size = 50.0f;
+        if (fragment instanceof SpellPart) {
+            this.size = 100.0f;
+        } else {
+            this.size = 50.0f;
+        }
     }
 
     @Override
     public int getHeight() {
         if (fragmentRenderer != null) {
-            return (int) (FragmentRenderer.get_fragment_proportional_height(fragment) * size) + 30;
+            return (int) (FragmentRenderer.getFragmentProportionalHeight(fragment) * size) + 30;
         } else {
             return 10;
         }
@@ -60,7 +64,7 @@ public class FragmentTooltipComponent implements TooltipComponent {
         var delta = 0;
         var radius = size;
         if (fragment instanceof SpellPart spell && spell.subParts.isEmpty()) {
-            radius = size * 2;
+            radius = size * 1.8f;
         }
 
         matrices.push();

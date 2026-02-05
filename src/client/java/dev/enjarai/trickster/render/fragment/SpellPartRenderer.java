@@ -16,7 +16,7 @@ public class SpellPartRenderer implements FragmentRenderer<SpellPart> {
     }
 
     @Override
-    public float get_proportional_height(SpellPart fragment) {
+    public float getProportionalHeight(SpellPart fragment) {
         return 0.75f;
     }
 }

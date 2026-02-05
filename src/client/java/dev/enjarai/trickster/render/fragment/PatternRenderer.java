@@ -19,7 +19,7 @@ public class PatternRenderer implements FragmentRenderer<PatternGlyph> {
     }
 
     @Override
-    public float get_proportional_height(PatternGlyph fragment) {
+    public float getProportionalHeight(PatternGlyph fragment) {
         return 0.7f;
     }
 

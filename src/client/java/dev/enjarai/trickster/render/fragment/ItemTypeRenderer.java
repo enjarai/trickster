@@ -22,7 +22,7 @@ public class ItemTypeRenderer implements FragmentRenderer<ItemTypeFragment> {
     }
 
     @Override
-    public float get_proportional_height(ItemTypeFragment fragment) {
+    public float getProportionalHeight(ItemTypeFragment fragment) {
         return 0;
     }
 
