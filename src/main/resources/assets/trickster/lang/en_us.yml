@@ -9,6 +9,11 @@ trickster:
   text:
     value_truncated: Value truncated
     disconnect_with_caution: DISCONNECT WITH CAUTION
+    command:
+      showPattern:
+        no_trick: Trick '%s' does not exist
+        missing_book: The Tome of Tomfoolery is missing (this should never happen!)
+        undocumented: No documentation found for %s
 
   widget:
     scroll_name: Scroll Name...
