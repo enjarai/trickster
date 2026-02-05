@@ -18,17 +18,18 @@ public class ListRenderer implements FragmentRenderer<ListFragment> {
     public void render(ListFragment fragment, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float radius, float alpha, Vec3d normal, float tickDelta,
         CircleRenderer delegator) {
         var fragments = fragment.fragments();
-        var spacing = 0.2f;
+        var spacing = 0.1f;
         var height = 0.0f;
         for (Fragment element : fragments) {
             height += FragmentRenderer.get_fragment_proportional_height(element) + spacing;
         }
 
-        var element_radius = Math.min(1.0f, radius / height);
+        var scale = Math.min(0.6f, 1.4f / height);
 
         matrices.push();
         matrices.translate(x, y, 0);
-        matrices.scale(radius * 0.7f, radius * 0.7f, 1);
+        matrices.scale(radius, radius, 1);
+        matrices.scale(scale, scale, 1);
 
         matrices.push();
         matrices.translate(0, -0.5 * height, 0);
@@ -40,19 +41,19 @@ public class ListRenderer implements FragmentRenderer<ListFragment> {
 
             FragmentRenderer renderer = FragmentRenderer.REGISTRY.get(FragmentType.REGISTRY.getId(element.type()));
             if (renderer != null) {
-                renderer.render(element, matrices, vertexConsumers, 0, offset, element_radius, alpha, normal, tickDelta, delegator);
+                renderer.render(element, matrices, vertexConsumers, 0, offset, 1.0f, alpha, normal, tickDelta, delegator);
             } else {
-                FragmentRenderer.renderAsText(element, matrices, vertexConsumers, 0, offset, element_radius, alpha);
+                FragmentRenderer.renderAsText(element, matrices, vertexConsumers, 0, offset, 1.0f, alpha);
             }
 
-            offset_acc += spacing + element_height;
+            offset_acc += (spacing + element_height);
         }
 
         matrices.pop();
 
-        var bracket_height = Math.max(height, 0.5f);
-        render_bracket(matrices, vertexConsumers, 0, element_radius * 0.55f, 0, bracket_height, alpha);
-        render_bracket(matrices, vertexConsumers, (float) Math.PI, -element_radius * 0.55f, 0, bracket_height, alpha);
+        var bracket_height = Math.max(height + 0.15f, 0.5f);
+        render_bracket(matrices, vertexConsumers, 0, 0.55f, 0, bracket_height, alpha);
+        render_bracket(matrices, vertexConsumers, (float) Math.PI, -0.55f, 0, bracket_height, alpha);
 
         matrices.pop();
 
