@@ -23,18 +23,18 @@ public class BlockTypeRenderer implements FragmentRenderer<BlockTypeFragment> {
     }
 
     @Override
+    public boolean doubleSided() {
+        return false;
+    }
+
+    @Override
     public float getProportionalHeight(BlockTypeFragment fragment) {
         var block = fragment.block();
 
         if (Item.BLOCK_ITEMS.containsKey(block)) {
-            return 0.5f;
+            return 0.8f;
         } else {
             return FragmentRenderer.TEXT_PROPORTIONAL_HEIGHT;
         }
-    }
-
-    @Override
-    public boolean doubleSided() {
-        return false;
     }
 }

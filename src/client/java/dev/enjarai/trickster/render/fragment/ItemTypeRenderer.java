@@ -21,11 +21,6 @@ public class ItemTypeRenderer implements FragmentRenderer<ItemTypeFragment> {
         renderItem(stack, ModelTransformationMode.GUI, matrices, vertexConsumers, x, y, size, delegator, 14, false);
     }
 
-    @Override
-    public float getProportionalHeight(ItemTypeFragment fragment) {
-        return 0;
-    }
-
     public static void renderItem(ItemStack stack, ModelTransformationMode transformationMode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float size,
         CircleRenderer delegator, int light, boolean alwaysFlatLight) {
         var bakedModel = MinecraftClient.getInstance().getItemRenderer().getModel(
@@ -66,6 +61,11 @@ public class ItemTypeRenderer implements FragmentRenderer<ItemTypeFragment> {
         }
 
         matrices.pop();
+    }
+
+    @Override
+    public float getProportionalHeight(ItemTypeFragment fragment) {
+        return 0.8f;
     }
 
     @Override

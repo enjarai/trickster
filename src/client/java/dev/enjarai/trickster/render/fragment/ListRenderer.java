@@ -50,8 +50,8 @@ public class ListRenderer implements FragmentRenderer<ListFragment> {
         matrices.pop();
 
         var bracketHeight = Math.max(height + 0.15f, 0.5f);
-        renderBracket(matrices, vertexConsumers, 0, 0.6f, 0, bracketHeight, alpha);
-        renderBracket(matrices, vertexConsumers, (float) Math.PI, -0.6f, 0, bracketHeight, alpha);
+        renderBracket(matrices, vertexConsumers, 0, 1f, 0, bracketHeight, alpha);
+        renderBracket(matrices, vertexConsumers, (float) Math.PI, -1f, 0, bracketHeight, alpha);
 
         matrices.pop();
 

@@ -45,18 +45,18 @@ public class MapRenderer implements FragmentRenderer<MapFragment> {
 
             FragmentRenderer keyRenderer = FragmentRenderer.REGISTRY.get(FragmentType.REGISTRY.getId(key.type()));
             if (keyRenderer != null) {
-                keyRenderer.render(key, matrices, vertexConsumers, -0.8f, offset, 1.0f, alpha, normal, tickDelta, delegator);
+                keyRenderer.render(key, matrices, vertexConsumers, -1.2f, offset, 1.0f, alpha, normal, tickDelta, delegator);
             } else {
-                FragmentRenderer.renderAsText(key, matrices, vertexConsumers, -0.8f, offset, 1.0f, alpha);
+                FragmentRenderer.renderAsText(key, matrices, vertexConsumers, -1.2f, offset, 1.0f, alpha);
             }
 
             renderArrow(matrices, vertexConsumers, 0, offset, 0.04f, alpha);
 
             FragmentRenderer valRenderer = FragmentRenderer.REGISTRY.get(FragmentType.REGISTRY.getId(val.type()));
             if (valRenderer != null) {
-                valRenderer.render(val, matrices, vertexConsumers, 0.8f, offset, 1.0f, alpha, normal, tickDelta, delegator);
+                valRenderer.render(val, matrices, vertexConsumers, 1.2f, offset, 1.0f, alpha, normal, tickDelta, delegator);
             } else {
-                FragmentRenderer.renderAsText(val, matrices, vertexConsumers, 0.8f, offset, 1.0f, alpha);
+                FragmentRenderer.renderAsText(val, matrices, vertexConsumers, 1.2f, offset, 1.0f, alpha);
             }
 
             offsetAcc += (SPACING + entryHeight);
@@ -65,8 +65,8 @@ public class MapRenderer implements FragmentRenderer<MapFragment> {
         matrices.pop();
 
         var bracketHeight = Math.max(height + 0.15f, 0.5f);
-        renderBrace(matrices, vertexConsumers, 0, 1.4f, 0, bracketHeight, alpha);
-        renderBrace(matrices, vertexConsumers, (float) Math.PI, -1.4f, 0, bracketHeight, alpha);
+        renderBrace(matrices, vertexConsumers, 0, 2.2f, 0, bracketHeight, alpha);
+        renderBrace(matrices, vertexConsumers, (float) Math.PI, -2.2f, 0, bracketHeight, alpha);
 
         matrices.pop();
     }
@@ -158,7 +158,7 @@ public class MapRenderer implements FragmentRenderer<MapFragment> {
             height += Math.max(FragmentRenderer.getFragmentProportionalHeight(entry._1()), FragmentRenderer.getFragmentProportionalHeight(entry._2())) + SPACING;
         }
 
-        var scale = Math.min(0.3f, 1.0f / height);
+        var scale = Math.min(0.2f, 1.0f / height);
         return new Layout(height, scale);
     }
 
