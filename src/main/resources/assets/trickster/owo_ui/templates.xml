@@ -10,7 +10,7 @@
             </trickster.trick-overview>
         </template>
         <template name="revision">
-            <trickster.trick-overview texture="{{book-texture}}" pattern="{{pattern}}" title="{{title}}" content="(Scribing Pattern)">
+            <trickster.trick-overview texture="{{book-texture}}" revision-id="{{revision-id}}">
             </trickster.trick-overview>
         </template>
         <template name="glyph">
