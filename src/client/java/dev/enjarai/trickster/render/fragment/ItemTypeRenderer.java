@@ -66,6 +66,11 @@ public class ItemTypeRenderer implements FragmentRenderer<ItemTypeFragment> {
     }
 
     @Override
+    public boolean doubleSided() {
+        return false;
+    }
+
+    @Override
     public float getProportionalHeight(ItemTypeFragment fragment) {
         return HEIGHT;
     }

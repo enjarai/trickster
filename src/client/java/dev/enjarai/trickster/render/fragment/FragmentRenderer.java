@@ -45,8 +45,7 @@ public interface FragmentRenderer<T extends Fragment> {
 
         matrices.push();
         matrices.translate(x, y, 0);
-        matrices.scale(radius, radius, 1);
-        matrices.scale(1f / 1.3f / width, 1f / 1.3f / width, 1);
+        matrices.scale(radius / 1.3f / width, radius / 1.3f / width, 1);
 
         var color = ColorHelper.Argb.withAlpha((int) (alpha * 0xff), 0xffffff);
 

@@ -327,11 +327,11 @@ public class CircleElement implements Element, Drawable, Selectable {
     }
 
     public double getAnimatedX() {
-        return canonicalX; //animate(canonicalX, animationX);
+        return animate(canonicalX, animationX);
     }
 
     public double getAnimatedY() {
-        return canonicalY; //animate(canonicalY, animationY) + Math.sin(screen.getCurrentTime() / 1000d);
+        return animate(canonicalY, animationY) + Math.sin(screen.getCurrentTime() / 1000d);
     }
 
     public double getAnimatedRadius() {
