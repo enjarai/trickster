@@ -31,7 +31,7 @@ public class PatternLiteralRenderer implements FragmentRenderer<Pattern> {
 
     @Override
     public float getProportionalHeight(Pattern fragment) {
-        return 2.0f;
+        return 42f / 48f;
     }
 
     @Override

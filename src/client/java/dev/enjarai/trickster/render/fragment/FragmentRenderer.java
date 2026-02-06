@@ -12,6 +12,7 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.Vec3d;
 
@@ -27,8 +28,6 @@ public interface FragmentRenderer<T extends Fragment> {
     ListRenderer LIST = register(FragmentType.LIST, new ListRenderer());
     MapRenderer MAP = register(FragmentType.MAP, new MapRenderer());
     SpellPartRenderer SPELL_PART = register(FragmentType.SPELL_PART, new SpellPartRenderer());
-
-    float TEXT_PROPORTIONAL_HEIGHT = 0.3f;
 
     static <T extends FragmentRenderer<F>, F extends Fragment> T register(FragmentType<F> type, T renderer) {
         return Registry.register(REGISTRY, FragmentType.REGISTRY.getId(type), renderer);
@@ -46,7 +45,8 @@ public interface FragmentRenderer<T extends Fragment> {
 
         matrices.push();
         matrices.translate(x, y, 0);
-        matrices.scale(radius / 1.3f / width, radius / 1.3f / width, 1);
+        matrices.scale(radius, radius, 1);
+        matrices.scale(1f / 1.3f / width, 1f / 1.3f / width, 1);
 
         var color = ColorHelper.Argb.withAlpha((int) (alpha * 0xff), 0xffffff);
 
@@ -82,9 +82,13 @@ public interface FragmentRenderer<T extends Fragment> {
         if (renderer != null) {
             return renderer.getProportionalHeight(fragment);
         } else {
-            return TEXT_PROPORTIONAL_HEIGHT;
+            return getTextProportionalHeight(fragment.asFormattedText());
         }
+    }
 
+    static float getTextProportionalHeight(Text text) {
+        var textRenderer = MinecraftClient.getInstance().textRenderer;
+        return 2.8f / textRenderer.getWidth(text);
     }
 
     static float getFragmentProportionalWidth(Fragment fragment) {
@@ -92,7 +96,11 @@ public interface FragmentRenderer<T extends Fragment> {
         if (renderer != null) {
             return renderer.getProportionalWidth(fragment);
         } else {
-            return 1.0f;
+            return getTextProportionalWidth();
         }
+    }
+
+    static float getTextProportionalWidth() {
+        return 0.4f;
     }
 }

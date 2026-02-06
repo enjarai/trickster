@@ -13,8 +13,6 @@ import org.joml.Quaternionf;
 import static dev.enjarai.trickster.render.CircleRenderer.GLYPH_LAYER;
 
 public class ListRenderer implements FragmentRenderer<ListFragment> {
-    private final static float SPACING = 0.1f;
-
     @Override
     public void render(ListFragment fragment, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float radius, float alpha, Vec3d normal, float tickDelta,
         CircleRenderer delegator) {
@@ -26,7 +24,7 @@ public class ListRenderer implements FragmentRenderer<ListFragment> {
 
         matrices.push();
         matrices.translate(x, y, 0);
-        matrices.scale(radius, radius, 1);
+        matrices.scale(radius * 2, radius * 2, 1);
         matrices.scale(scale, scale, 1);
 
         matrices.push();
@@ -35,35 +33,35 @@ public class ListRenderer implements FragmentRenderer<ListFragment> {
         var offsetAcc = 0.0f;
         for (Fragment element : fragments) {
             var elementHeight = FragmentRenderer.getFragmentProportionalHeight(element);
-            var offset = offsetAcc + (SPACING + elementHeight) / 2;
+            var offset = offsetAcc + elementHeight / 2;
 
             FragmentRenderer renderer = FragmentRenderer.REGISTRY.get(FragmentType.REGISTRY.getId(element.type()));
             if (renderer != null) {
-                renderer.render(element, matrices, vertexConsumers, 0, offset, 1.0f, alpha, normal, tickDelta, delegator);
+                renderer.render(element, matrices, vertexConsumers, 0, offset, 0.4f, alpha, normal, tickDelta, delegator);
             } else {
-                FragmentRenderer.renderAsText(element, matrices, vertexConsumers, 0, offset, 1.0f, alpha);
+                FragmentRenderer.renderAsText(element, matrices, vertexConsumers, 0, offset, 0.4f, alpha);
             }
 
-            offsetAcc += (SPACING + elementHeight);
+            offsetAcc += elementHeight;
         }
 
         matrices.pop();
 
-        var bracketHeight = Math.max(height + 0.2f, 0.5f);
-        renderBracket(matrices, vertexConsumers, 0, width * 0.5f, 0, bracketHeight, alpha);
-        renderBracket(matrices, vertexConsumers, (float) Math.PI, -width * 0.5f, 0, bracketHeight, alpha);
+        float lineWidth = 0.025f;
+        float bracketHeight = Math.max(height, 0.1f);
+        renderBracket(matrices, vertexConsumers, 0, width * 0.5f, 0, bracketHeight, alpha, lineWidth);
+        renderBracket(matrices, vertexConsumers, (float) Math.PI, -width * 0.5f, 0, bracketHeight, alpha, lineWidth);
 
         matrices.pop();
     }
 
-    private void renderBracket(MatrixStack matrices, VertexConsumerProvider vertexConsumers, float rotation, float x, float y, float height, float alpha) {
-        float lineWidth = 0.1f;
-        float legLength = 0.2f;
+    private void renderBracket(MatrixStack matrices, VertexConsumerProvider vertexConsumers, float rotation, float x, float y, float height, float alpha, float lineWidth) {
+        float legLength = 2 * lineWidth;
 
-        float top = height * 0.5f;
-        float bottom = -height * 0.5f;
-        float left = -lineWidth * 0.5f;
-        float right = lineWidth * 0.5f;
+        float top = -height * 0.5f;
+        float bottom = height * 0.5f;
+        float left = -lineWidth;
+        float right = 0.0f;
 
         matrices.push();
 
@@ -73,23 +71,23 @@ public class ListRenderer implements FragmentRenderer<ListFragment> {
         Matrix4f m = matrices.peek().getPositionMatrix();
         VertexConsumer vc = vertexConsumers.getBuffer(GLYPH_LAYER);
 
+        // top leg
+        vc.vertex(m, -legLength - lineWidth, top + lineWidth, 0).color(1f, 1f, 1f, alpha);
+        vc.vertex(m, -lineWidth, top + lineWidth, 0).color(1f, 1f, 1f, alpha);
+        vc.vertex(m, -lineWidth, top, 0).color(1f, 1f, 1f, alpha);
+        vc.vertex(m, -legLength - lineWidth, top, 0).color(1f, 1f, 1f, alpha);
+
         // spine
         vc.vertex(m, left, bottom, 0).color(1f, 1f, 1f, alpha);
         vc.vertex(m, right, bottom, 0).color(1f, 1f, 1f, alpha);
         vc.vertex(m, right, top, 0).color(1f, 1f, 1f, alpha);
         vc.vertex(m, left, top, 0).color(1f, 1f, 1f, alpha);
 
-        // top leg
-        vc.vertex(m, -legLength, top - lineWidth, 0).color(1f, 1f, 1f, alpha);
-        vc.vertex(m, -lineWidth * 0.5f, top - lineWidth, 0).color(1f, 1f, 1f, alpha);
-        vc.vertex(m, -lineWidth * 0.5f, top, 0).color(1f, 1f, 1f, alpha);
-        vc.vertex(m, -legLength, top, 0).color(1f, 1f, 1f, alpha);
-
         // bottom leg
-        vc.vertex(m, -legLength, bottom, 0).color(1f, 1f, 1f, alpha);
-        vc.vertex(m, -lineWidth * 0.5f, bottom, 0).color(1f, 1f, 1f, alpha);
-        vc.vertex(m, -lineWidth * 0.5f, bottom + lineWidth, 0).color(1f, 1f, 1f, alpha);
-        vc.vertex(m, -legLength, bottom + lineWidth, 0).color(1f, 1f, 1f, alpha);
+        vc.vertex(m, -legLength - lineWidth, bottom, 0).color(1f, 1f, 1f, alpha);
+        vc.vertex(m, -lineWidth, bottom, 0).color(1f, 1f, 1f, alpha);
+        vc.vertex(m, -lineWidth, bottom - lineWidth, 0).color(1f, 1f, 1f, alpha);
+        vc.vertex(m, -legLength - lineWidth, bottom - lineWidth, 0).color(1f, 1f, 1f, alpha);
 
         matrices.pop();
     }
@@ -113,11 +111,13 @@ public class ListRenderer implements FragmentRenderer<ListFragment> {
         float maxElementWidth = 0.0f;
         for (Fragment element : fragments) {
             maxElementWidth = Math.max(maxElementWidth, FragmentRenderer.getFragmentProportionalWidth(element));
-            height += FragmentRenderer.getFragmentProportionalHeight(element) + SPACING;
+            height += FragmentRenderer.getFragmentProportionalHeight(element);
         }
-        float width = maxElementWidth + 0.5f;
+        float width = maxElementWidth + 0.1f;
 
-        float scale = Math.min(0.6f, 1.0f / height);
+        float diagonal = (float) Math.sqrt(width * width + height * height);
+
+        float scale = 0.45f / diagonal;
         return new Layout(height, width, scale);
     }
 

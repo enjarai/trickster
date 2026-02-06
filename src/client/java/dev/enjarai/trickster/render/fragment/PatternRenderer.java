@@ -20,7 +20,9 @@ public class PatternRenderer implements FragmentRenderer<PatternGlyph> {
 
     @Override
     public float getProportionalHeight(PatternGlyph fragment) {
-        return 0.7f;
+        float height = 1f / PATTERN_TO_PART_RATIO;
+        float dotHeight = 1f / PART_PIXEL_RADIUS / PATTERN_TO_PART_RATIO;
+        return height + dotHeight;
     }
 
     public static void renderPattern(

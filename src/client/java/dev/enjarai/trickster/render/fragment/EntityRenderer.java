@@ -34,7 +34,7 @@ public class EntityRenderer implements FragmentRenderer<EntityFragment> {
 
     @Override
     public float getProportionalHeight(EntityFragment fragment) {
-        return 1.5f;
+        return 1.0f;
     }
 
     @Override

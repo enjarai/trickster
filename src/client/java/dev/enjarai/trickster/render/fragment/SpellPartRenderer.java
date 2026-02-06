@@ -17,6 +17,15 @@ public class SpellPartRenderer implements FragmentRenderer<SpellPart> {
 
     @Override
     public float getProportionalHeight(SpellPart fragment) {
-        return 0.75f;
+        if (fragment.getSubParts().isEmpty()) {
+            // depth of 0
+            return 0.25f;
+        } else if (fragment.getSubParts().stream().allMatch(x -> x.getSubParts().isEmpty())) {
+            // depth of 1
+            return 0.25f + 0.25f / 2f;
+        } else {
+            // anything deeper is roughly this size
+            return 0.5f;
+        }
     }
 }
