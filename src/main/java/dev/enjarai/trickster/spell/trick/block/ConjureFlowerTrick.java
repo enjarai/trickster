@@ -23,7 +23,7 @@ public class ConjureFlowerTrick extends Trick<ConjureFlowerTrick> {
         var world = ctx.source().getWorld();
         expectCanBuild(ctx, blockPos);
 
-        if (!world.getBlockState(blockPos).isAir()) {
+        if (!world.getBlockState(blockPos).isReplaceable()) {
             throw new BlockOccupiedBlunder(this, pos);
         }
         if (!world.getBlockState(blockPos.down()).isSideSolidFullSquare(world, blockPos.down(), Direction.UP)) {
@@ -38,8 +38,8 @@ public class ConjureFlowerTrick extends Trick<ConjureFlowerTrick> {
 
         var particlePos = blockPos.toCenterPos();
         world.spawnParticles(
-                ModParticles.PROTECTED_BLOCK, particlePos.x, particlePos.y, particlePos.z,
-                1, 0, 0, 0, 0
+            ModParticles.PROTECTED_BLOCK, particlePos.x, particlePos.y, particlePos.z,
+            1, 0, 0, 0, 0
         );
 
         return pos;

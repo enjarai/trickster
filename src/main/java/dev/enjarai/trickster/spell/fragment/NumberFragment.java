@@ -16,9 +16,10 @@ import java.util.Objects;
 
 public final class NumberFragment implements AddableFragment, SubtractableFragment, MultiplicableFragment, DivisibleFragment, RoundableFragment {
     public static final StructEndec<NumberFragment> ENDEC = StructEndecBuilder.of(
-            Endec.DOUBLE.fieldOf("number", NumberFragment::number),
-            NumberFragment::new
+        Endec.DOUBLE.fieldOf("number", NumberFragment::number),
+        NumberFragment::new
     );
+    public static final int WEIGHT = 8;
 
     private final double number;
 
@@ -41,7 +42,7 @@ public final class NumberFragment implements AddableFragment, SubtractableFragme
 
     @Override
     public int getWeight() {
-        return 8;
+        return WEIGHT;
     }
 
     @Override

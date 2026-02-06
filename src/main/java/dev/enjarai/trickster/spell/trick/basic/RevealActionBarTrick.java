@@ -14,22 +14,20 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
 import java.util.List;
-import java.util.Optional;
 
 public class RevealActionBarTrick extends Trick<RevealActionBarTrick> {
     public RevealActionBarTrick() {
-        super(Pattern.of(6, 4, 8, 5, 4, 3, 6, 7, 8), Signature.of(ArgType.ANY.variadicOfArg().optionalOfArg(), RevealActionBarTrick::reveal, RetType.ANY));
+        super(Pattern.of(6, 4, 8, 5, 4, 3, 6, 7, 8), Signature.of(ArgType.ANY.variadicOfArg(), RevealActionBarTrick::reveal, RetType.ANY));
     }
 
-    public Fragment reveal(SpellContext ctx, Optional<List<Fragment>> optionalFragments) throws BlunderException {
+    public Fragment reveal(SpellContext ctx, List<Fragment> fragments) throws BlunderException {
         ServerPlayerEntity playerEntity = ctx.source().getPlayer().orElseThrow((() -> new NoPlayerBlunder(this)));
 
-        if (optionalFragments.isEmpty()) {
+        if (fragments.isEmpty()) {
             playerEntity.sendMessage(Text.empty(), true);
             return VoidFragment.INSTANCE;
         }
 
-        List<Fragment> fragments = optionalFragments.get();
         var first = fragments.getFirst();
         var result = first.asFormattedText();
 
