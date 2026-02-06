@@ -8,13 +8,16 @@ import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.Signature;
 import io.vavr.control.Either;
+import net.minecraft.block.enums.DoorHinge;
 import net.minecraft.block.enums.RailShape;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.state.property.Property;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import org.joml.Vector3d;
+import org.joml.Vector3f;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,7 +48,12 @@ public class GetBlockRotationTrick extends Trick<GetBlockRotationTrick> {
 
         for (Property property : state.getProperties()) {
             if (property instanceof DirectionProperty directionProperty) {
-                return Optional.of(Either.left(VectorFragment.of(state.get(directionProperty).getVector())));
+                Vector3f direction = state.get(directionProperty).getUnitVector();
+                if (state.getProperties().contains(Properties.DOOR_HINGE)) {
+                    var hinge = new Vector3f(0, 0.5f, 0).cross(direction);
+                    direction = direction.add((state.get(Properties.DOOR_HINGE) == DoorHinge.RIGHT) ? hinge.negate() : hinge);
+                }
+                return Optional.of(Either.left(VectorFragment.of(new Vec3d(direction.x, direction.y, direction.z))));
             } else if (property == Properties.AXIS || property == Properties.HORIZONTAL_AXIS) {
                 return Optional.of(Either.left(new VectorFragment(NAME_DIRECTION.get(((Direction.Axis) state.get(property)).getName()))));
             } else if (property == Properties.ORIENTATION) {
