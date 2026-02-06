@@ -155,6 +155,7 @@ public class TricksterClient implements ClientModInitializer {
             }
             return ColorBlockEntity.DEFAULT_COLOR;
         }, ModBlocks.COLOR_BLOCK);
-
+        ColorProviderRegistry.ITEM.register(
+                (stack, tintIndex) -> ColorBlockEntity.DEFAULT_COLOR, ModItems.COLOR_BLOCK);
     }
 }
