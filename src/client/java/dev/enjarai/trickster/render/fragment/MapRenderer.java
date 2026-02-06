@@ -172,7 +172,7 @@ public class MapRenderer implements FragmentRenderer<MapFragment> {
         float width = maxElementWidth * 2 + HORIZONTAL_SPACING * 2;
         float diagonal = (float) Math.sqrt(width * width + height * height);
 
-        float scale = 0.45f / diagonal;
+        float scale = 0.5f / diagonal;
         return new Layout(height, width, maxElementWidth, scale);
     }
 

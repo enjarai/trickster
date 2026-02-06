@@ -117,7 +117,7 @@ public class ListRenderer implements FragmentRenderer<ListFragment> {
 
         float diagonal = (float) Math.sqrt(width * width + height * height);
 
-        float scale = 0.45f / diagonal;
+        float scale = 0.5f / diagonal;
         return new Layout(height, width, scale);
     }
 
