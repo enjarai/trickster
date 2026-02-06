@@ -14,6 +14,8 @@ import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
 
 public class ItemTypeRenderer implements FragmentRenderer<ItemTypeFragment> {
+    static float HEIGHT = 0.4f;
+
     @Override
     public void render(ItemTypeFragment fragment, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float size, float alpha, Vec3d normal, float tickDelta,
         CircleRenderer delegator) {
@@ -66,5 +68,10 @@ public class ItemTypeRenderer implements FragmentRenderer<ItemTypeFragment> {
     @Override
     public boolean doubleSided() {
         return false;
+    }
+
+    @Override
+    public float getProportionalHeight(ItemTypeFragment fragment) {
+        return HEIGHT;
     }
 }

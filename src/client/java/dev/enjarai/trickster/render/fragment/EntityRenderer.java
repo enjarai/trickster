@@ -22,7 +22,7 @@ public class EntityRenderer implements FragmentRenderer<EntityFragment> {
             matrices.scale(0.8f, 0.8f, 0.8f);
 
             MinecraftClient.getInstance().getEntityRenderDispatcher().render(
-                entity.get(), 0, 0, 0, 0, tickDelta,
+                entity.get(), 0, -1, 0, 0, tickDelta,
                 matrices, vertexConsumers, LightmapTextureManager.pack(0, 15)
             );
 
@@ -30,6 +30,11 @@ public class EntityRenderer implements FragmentRenderer<EntityFragment> {
         } else {
             FragmentRenderer.renderAsText(fragment, matrices, vertexConsumers, x, y, size, alpha);
         }
+    }
+
+    @Override
+    public float getProportionalHeight(EntityFragment fragment) {
+        return 1.0f;
     }
 
     @Override
