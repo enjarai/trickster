@@ -52,7 +52,6 @@ public class FragmentType<T extends Fragment> implements RetType<T>, ArgType<T> 
             put(-2055360237, Trickster.id("void"));
             put(-2055663587, Trickster.id("list"));
             put(-1994273881, Trickster.id("boolean"));
-            put(-782132154, Trickster.id("color"));
         }
     };
     public static final Int2ObjectMap<Identifier> INT_ID_LOOKUP = new Int2ObjectOpenHashMap<>();

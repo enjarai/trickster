@@ -9,17 +9,38 @@
   ]
 }
 ```
-These tricks give access to color information.
 
+*"I kept a bullet in the chamber for a rainy day."*
+
+
+*"But what's the point in planning for it anyway?"*
+
+
+*"I've got too many colors for a shade of gray."*
+
+
+*"And I can make it autumn every single day."*
+
+;;;;;
+
+These tricks give access to color information.
 Color fragments can represent any color along with translucency. 
+
+
 They are {#aa4444}Addable{}, {#aa4444}Multiplicable{}, {#aa4444}Roundable{}, and {#aa4444}Averageable{}, but not {#aa4444}Subtractable{} or {#aa4444}Divisible{}
 
 ;;;;;
 
-Addition mixes colors through an operation know as "Screen".
+Addition mixes colors through an operation known as "screen."
+
+
 Multiplication simply mixes multiplicatively.
+
+
 Averaging mixes colors as one would with leather equipment.
-Flooring and Ceiling coerce colors to the nearest result of Pigment and Vibrant Ingress, respectively. Rounding coerces to the nearest of either.
+
+
+Flooring and ceiling a color coerces it to the nearest result of Pigment and Vibrant Ingress, respectively. Rounding coerces to the nearest of either.
 
 ;;;;;
 
@@ -28,7 +49,11 @@ Flooring and Ceiling coerce colors to the nearest result of Pigment and Vibrant 
 ;;;;;
 
 Given a dye item type, returns the color that the dye applies to leather armor.
+
+
 Given glass, returns a fully transparent color.
+
+
 Given a vector, gets the color that has been imbued into the block at that position.
 
 ;;;;;
@@ -37,4 +62,5 @@ Given a vector, gets the color that has been imbued into the block at that posit
 
 ;;;;;
 
-Functions identically, except for the case of dye item types. The colors produced are much more intense, similar to the result of mixing glow ink with the dye.
+Functions identically, except for the case of dye item types. 
+The colors produced are much more intense, similar to the result of mixing glow ink with the dye.

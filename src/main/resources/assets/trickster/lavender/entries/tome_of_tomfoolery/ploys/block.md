@@ -130,6 +130,6 @@ Powers the [Spell Resonator](^trickster:items/spell_resonator) at the given posi
 
 ;;;;;
 
-<|ploy@trickster:templates|trick-id=trickster:paint,cost=0G|>
+<|trick@trickster:templates|trick-id=trickster:paint|>
 
 Imbues the given color into the block at the position. Usually only works on magical targets.

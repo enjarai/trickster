@@ -13,7 +13,6 @@ public class ColorBlock extends BlockWithEntity {
         super(Settings.create().sounds(BlockSoundGroup.DECORATED_POT));
     }
 
-    // TODO decide if we can make this work?
     @Override
     protected BlockRenderType getRenderType(BlockState state) {
         return BlockRenderType.MODEL;
