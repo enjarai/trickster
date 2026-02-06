@@ -20,6 +20,7 @@ import dev.enjarai.trickster.spell.type.*;
 import io.vavr.collection.HashMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.ClickEvent;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -109,8 +110,8 @@ public abstract class Trick<T extends Trick<T>> {
             ModCriteria.TRIGGER_WARD.trigger(player);
 
             var sourceFragment = triggerCaster
-                    .<Fragment>map(EntityFragment::from)
-                    .orElse(new VectorFragment(triggerCtx.source().getPos()));
+                .<Fragment>map(EntityFragment::from)
+                .orElse(new VectorFragment(triggerCtx.source().getPos()));
             var charmMap = FragmentComponent.getUserMergedMap(player, "charm", HashMap::empty);
             var spell = charmMap.get(getPattern());
             var caster = ModEntityComponents.CASTER.get(player);
@@ -130,8 +131,8 @@ public abstract class Trick<T extends Trick<T>> {
         }
 
         return Text.literal("").append(
-                Text.translatable(Trickster.MOD_ID + ".trick." + id.getNamespace() + "." + id.getPath())
-                        .withColor(FragmentType.PATTERN.color().getAsInt())
+            Text.translatable(Trickster.MOD_ID + ".trick." + id.getNamespace() + "." + id.getPath())
+                .styled(s -> s.withColor(FragmentType.PATTERN.color().getAsInt()).withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tricksterc showPattern " + id)))
         );
     }
 
