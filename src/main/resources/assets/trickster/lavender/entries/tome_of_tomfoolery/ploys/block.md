@@ -14,7 +14,8 @@
     "Floral Ploy",
     "Aquatic Ploy",
     "Illumination Ploy",
-    "Resonance Ploy"
+    "Resonance Ploy",
+    "Ploy of Pigmentation"
   ]
 }
 ```
