@@ -7,7 +7,8 @@ import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.blunder.NoPlayerBlunder;
 import dev.enjarai.trickster.spell.blunder.OutOfRangeBlunder;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.fragment.SlotFragment;
+import dev.enjarai.trickster.spell.fragment.slot.SlotFragment;
+import dev.enjarai.trickster.spell.fragment.slot.VariantType;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.RetType;
 import dev.enjarai.trickster.spell.type.Signature;
@@ -27,6 +28,6 @@ public class ReadSpellTrick extends Trick<ReadSpellTrick> {
             throw new OutOfRangeBlunder(this, 16.0, range);
         }
 
-        return FragmentComponent.getFragment(slot.reference(this, ctx));
+        return FragmentComponent.getFragment(slot.getResource(this, ctx, VariantType.ITEM).toStack());
     }
 }
