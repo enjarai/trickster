@@ -3,6 +3,8 @@ package dev.enjarai.trickster.spell.revision;
 import dev.enjarai.trickster.spell.SpellView;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.trick.Tricks;
+import net.minecraft.text.MutableText;
 
 public class ConstantRevision implements Revision {
     private final Pattern pattern;
@@ -21,5 +23,10 @@ public class ConstantRevision implements Revision {
     @Override
     public void apply(RevisionContext ctx, SpellView view) {
         view.replaceGlyph(fragment);
+    }
+
+    @Override
+    public MutableText getName() {
+        return Tricks.lookup(pattern).getName();
     }
 }

@@ -1,6 +1,8 @@
 package dev.enjarai.trickster.screen.owo;
 
 import dev.enjarai.trickster.spell.Pattern;
+import dev.enjarai.trickster.spell.revision.Revision;
+import dev.enjarai.trickster.spell.revision.Revisions;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.trick.Tricks;
 import io.wispforest.owo.ui.component.Components;
@@ -15,8 +17,6 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.Element;
-
-import java.util.Arrays;
 
 public class TrickOverviewComponent extends FlowLayout {
 
@@ -38,6 +38,15 @@ public class TrickOverviewComponent extends FlowLayout {
         return new TrickOverviewComponent(pattern, name, signatures, costCalculation, bookTexture);
     }
 
+    public static TrickOverviewComponent of(Revision rev, Identifier bookTexture) {
+        var pattern = rev.pattern();
+
+        var name = Text.empty();
+        rev.getName().getSiblings().forEach(s -> name.append(s.copy().formatted(Formatting.DARK_GRAY)));
+
+        return new TrickOverviewComponent(pattern, name, Text.translatable("trickster.revision"), null, bookTexture);
+    }
+
     public static TrickOverviewComponent of(Pattern pattern, Text title, MutableText content, @Nullable String costCalculation, Identifier bookTexture) {
         return new TrickOverviewComponent(pattern, title, content, costCalculation, bookTexture);
 
@@ -48,27 +57,27 @@ public class TrickOverviewComponent extends FlowLayout {
         alignment(HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
         child(Components.label(title)
-                .color(Color.ofFormatting(Formatting.DARK_GRAY))
-                .horizontalTextAlignment(HorizontalAlignment.CENTER)
-                .margins(Insets.of(2, 2, 0, 0))
-                .sizing(Sizing.fill(100), Sizing.content())
+            .color(Color.ofFormatting(Formatting.DARK_GRAY))
+            .horizontalTextAlignment(HorizontalAlignment.CENTER)
+            .margins(Insets.of(2, 2, 0, 0))
+            .sizing(Sizing.fill(100), Sizing.content())
         );
         child(new GlyphComponent(pattern, 50));
 
         child(Components.label(content.styled(s -> s
-                .withFormatting(Formatting.DARK_GRAY)
-                .withFont(MinecraftClient.UNICODE_FONT_ID)))
-                .horizontalTextAlignment(HorizontalAlignment.LEFT)
-                .horizontalSizing(Sizing.fill(100))
-                .margins(Insets.of(0, 5, 3, 3)));
+            .withFormatting(Formatting.DARK_GRAY)
+            .withFont(MinecraftClient.UNICODE_FONT_ID)))
+            .horizontalTextAlignment(HorizontalAlignment.LEFT)
+            .horizontalSizing(Sizing.fill(100))
+            .margins(Insets.of(0, 5, 3, 3)));
 
         if (costCalculation != null) {
             child(new ManaCostComponent(costCalculation, bookTexture));
         } else {
             child(Components.texture(
-                    bookTexture, 54, 183, 109,
-                    3, 512, 256)
-                    .blend(true)
+                bookTexture, 54, 183, 109,
+                3, 512, 256)
+                .blend(true)
             );
         }
 
@@ -81,7 +90,8 @@ public class TrickOverviewComponent extends FlowLayout {
 
         var trickIdAttribute = element.getAttributeNode("trick-id");
         if (trickIdAttribute != null) {
-            var trickId = UIParsing.parseIdentifier(element.getAttributeNode("trick-id"));
+            UIParsing.expectAttributes(element, "cost");
+            var trickId = UIParsing.parseIdentifier(trickIdAttribute);
             var trick = Tricks.REGISTRY.get(trickId);
 
             if (trick == null) {
@@ -94,17 +104,20 @@ public class TrickOverviewComponent extends FlowLayout {
             }
 
             return TrickOverviewComponent.of(trick, costCalculation, texture);
-        } else {
-            UIParsing.expectAttributes(element, "pattern", "title");
-            var title = Text.literal(element.getAttributeNode("title").getTextContent());
-            var patternString = element.getAttributeNode("pattern").getTextContent();
-            var pattern = Pattern.from(
-                    Arrays.stream(patternString.split(","))
-                            .map(s -> Byte.valueOf(s, 10)).toList()
-            );
-            var content = Text.literal(element.getAttributeNode("content").getTextContent());
-
-            return TrickOverviewComponent.of(pattern, title, content, null, texture);
         }
+
+        var revisionIdAttribute = element.getAttributeNode("revision-id");
+        if (revisionIdAttribute != null) {
+            var revisionId = UIParsing.parseIdentifier(revisionIdAttribute);
+            var revision = Revisions.REGISTRY.get(revisionId);
+
+            if (revision == null) {
+                throw new UIModelParsingException("Not a valid revision: " + revisionId);
+            }
+
+            return TrickOverviewComponent.of(revision, texture);
+        }
+
+        throw new UIModelParsingException("trick-overview needs either trick-id or revision-id set");
     }
 }

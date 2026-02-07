@@ -283,6 +283,26 @@ trickster:
     message_send: Dispatch Ploy
     message_listen: Ploy of Receipt
 
+  revision: (Scribing Pattern)
+  revision.trickster:
+    add_subcircle: Extensive Revision
+    add_inner_circle: Inner Revision
+    to_subcircle: Split Revision
+    to_inner_circle: Growth Revision
+    remove_self: Grafting Revision
+    remove_self_recursive: Pruning Revision
+    remove_outer: Ascension Revision
+    add_outer_subcircle: Devotion Revision
+    rotate_cw: Shifting Revision
+    rotate_ccw: Reverse Shifting Revision
+    swap: Shuffling Revision
+    splice: Notulist's Revision
+    splice_inner: Inner Notulist's Revision
+    splice_evaluate: Grand Revision
+    write: Plagiarist's Revision
+    quote_pattern: Interpretation Revision
+    write_path: Address Revision
+
   fragment:
     trickster:
       type: Type
