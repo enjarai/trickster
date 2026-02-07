@@ -1,73 +1,61 @@
 package dev.enjarai.trickster.screen;
 
-import dev.enjarai.trickster.Trickster;
+import dev.enjarai.trickster.spell.SpellView;
 import dev.enjarai.trickster.item.ModItems;
-import dev.enjarai.trickster.spell.SpellPart;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
+import dev.enjarai.trickster.screen.scribing.CircleSoupWidget;
+import io.wispforest.owo.braid.core.BraidScreen;
 import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
-import org.joml.Vector2d;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvider<ScrollAndQuillScreenHandler> {
-    private static final ArrayList<PositionMemory> storedPositions = new ArrayList<>(5);
+public class ScrollAndQuillScreen extends BraidScreen implements ScreenHandlerProvider<ScrollAndQuillScreenHandler> {
+    public static final List<PositionMemory> positions = new ArrayList<>();
 
     protected final ScrollAndQuillScreenHandler handler;
 
-    public SpellPartWidget partWidget;
+    public static ScrollAndQuillScreen create(ScrollAndQuillScreenHandler handler, PlayerInventory playerInventory, Text title) {
+        var position = loadPosition(handler.initialData.hash());
+        var view = SpellView.index(handler.initialData.spell());
+        var x = 0d;
+        var y = 0d;
+        var radius = 80d;
+        var angle = 0d;
+        var centerOffset = 0d;
 
-    private boolean hasLoaded = false;
+        if (position != null) {
+            var loaded = view.traverseTo(position.path);
+            if (loaded != null) {
+                view = loaded;
+                x = position.x;
+                y = position.y;
+                radius = position.radius;
+                angle = position.angle;
+                centerOffset = position.centerOffset;
+            }
+        }
 
-    private double inputZ = 0;
+        return new ScrollAndQuillScreen(new CircleSoupWidget(
+            view, handler, handler.initialData.mutable(), handler.initialData.allowEval(),
+            x, y, radius, angle, centerOffset, savePosition(handler)
+        ), handler);
+    }
 
-    public ScrollAndQuillScreen(ScrollAndQuillScreenHandler handler, PlayerInventory playerInventory, Text title) {
-        super(title);
+    private ScrollAndQuillScreen(CircleSoupWidget widget, ScrollAndQuillScreenHandler handler) {
+        super(widget);
         this.handler = handler;
     }
 
     @Override
-    protected void init() {
-        super.init();
-        partWidget = new SpellPartWidget(handler.spell.get(), width / 2d, height / 2d, 64, handler, true);
-        handler.replacerCallback = frag -> partWidget.replaceCallback(frag);
-        handler.updateDrawingPartCallback = spell -> partWidget.updateDrawingPartCallback(spell);
-
-        addDrawableChild(partWidget);
-
-        this.handler.spell.observe(spell -> {
-            var spellHash = spell.hashCode();
-
-            if (!hasLoaded) {
-                for (var position : storedPositions) {
-                    if (position.spellHash == spellHash) {
-                        partWidget.load(position);
-                        break;
-                    }
-                }
-            }
-
-            partWidget.setSpell(spell);
-            hasLoaded = true;
-        });
-        this.handler.isMutable.observe(mutable -> partWidget.setMutable(mutable));
-    }
-
-    @Override
     public void close() {
+        // TODO
         // First cancel drawing a pattern if applicable
-        if (partWidget.cancelDrawing()) {
-            return;
-        }
-
-        var saved = partWidget.saveAndClose();
-        storedPositions.removeIf(position -> position.spellHash == saved.spellHash);
-        storedPositions.add(saved);
-        if (storedPositions.size() >= 5) {
-            storedPositions.removeFirst();
-        }
+        //        if (rootWidget.cancelDrawing()) {
+        //            return;
+        //        }
 
         //noinspection DataFlowIssue
         this.client.player.closeHandledScreen();
@@ -77,64 +65,6 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
     @Override
     public boolean shouldPause() {
         return false;
-    }
-
-    @Override
-    public void mouseMoved(double mouseX, double mouseY) {
-        partWidget.mouseMoved(mouseX, mouseY);
-    }
-
-    @Override
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-        return super.mouseDragged(mouseX, mouseY, 0, deltaX, deltaY);
-    }
-
-    @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        this.setDragging(true);
-        return super.mouseClicked(mouseX, mouseY, button);
-    }
-
-    @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        if (this.isDragging()) this.setDragging(false);
-        return super.mouseReleased(mouseX, mouseY, button);
-    }
-
-    @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta);
-
-        if (inputZ != 0.0) {
-            partWidget.zoom(mouseX, mouseY, inputZ * Trickster.CONFIG.keyZoomSpeed() * delta);
-        }
-    }
-
-    @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (this.client.options.inventoryKey.matchesKey(keyCode, scanCode)) {
-            this.close();
-            return true;
-        } else if (this.client.options.forwardKey.matchesKey(keyCode, scanCode)) {
-            inputZ = 1.0;
-            return true;
-        } else if (this.client.options.backKey.matchesKey(keyCode, scanCode)) {
-            inputZ = -1.0;
-            return true;
-        }
-        return super.keyPressed(keyCode, scanCode, modifiers);
-    }
-
-    @Override
-    public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
-        if (this.client.options.forwardKey.matchesKey(keyCode, scanCode)) {
-            inputZ = 0.0;
-            return true;
-        } else if (this.client.options.backKey.matchesKey(keyCode, scanCode)) {
-            inputZ = 0.0;
-            return true;
-        }
-        return super.keyReleased(keyCode, scanCode, modifiers);
     }
 
     @Override
@@ -150,12 +80,36 @@ public class ScrollAndQuillScreen extends Screen implements ScreenHandlerProvide
         }
     }
 
-    public record PositionMemory(int spellHash,
-            Vector2d position,
-            double radius,
-            SpellPart rootSpellPart,
-            SpellPart spellPart,
-            ArrayList<SpellPart> parents,
-            ArrayList<Double> angleOffsets) {
+    @Nullable
+    private static PositionMemory loadPosition(int hash) {
+        return positions.stream()
+            .filter(position -> position.hash == hash)
+            .findFirst()
+            .orElse(null);
+    }
+
+    private static CircleSoupWidget.DisposeCallback savePosition(ScrollAndQuillScreenHandler handler) {
+        return (view, x, y, radius, angle, centerOffset) -> {
+            positions.removeIf(m -> m.hash() == handler.initialData.hash());
+
+            while (positions.size() > 10) {
+                positions.removeFirst();
+            }
+
+            positions.add(new PositionMemory(
+                handler.initialData.hash(),
+                view.getPath(), x, y, radius, angle, centerOffset
+            ));
+        };
+    }
+
+    public record PositionMemory(
+        int hash,
+        List<Integer> path,
+        double x,
+        double y,
+        double radius,
+        double angle,
+        double centerOffset) {
     }
 }

@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static dev.enjarai.trickster.render.SpellCircleRenderer.*;
+import static dev.enjarai.trickster.render.CircleRenderer.*;
 
 public class GlyphComponent extends BaseComponent {
     protected Pattern pattern;
@@ -31,11 +31,11 @@ public class GlyphComponent extends BaseComponent {
         this.pattern = pattern;
         this.size = size;
         this.patternList = pattern
-                .entries().stream()
-                .flatMapToInt(e -> IntStream.of(e.p1(), e.p2()))
-                .distinct()
-                .boxed()
-                .toList();
+            .entries().stream()
+            .flatMapToInt(e -> IntStream.of(e.p1(), e.p2()))
+            .distinct()
+            .boxed()
+            .toList();
     }
 
     @Override
@@ -61,17 +61,21 @@ public class GlyphComponent extends BaseComponent {
             }
 
             drawFlatPolygon(context.getMatrices(), context.getVertexConsumers(),
-                    pos.x - dotSize, pos.y - dotSize,
-                    pos.x - dotSize, pos.y + dotSize,
-                    pos.x + dotSize, pos.y + dotSize,
-                    pos.x + dotSize, pos.y - dotSize,
-                    0, r, g, b, isLinked ? 0.9f : 0.5f);
+                pos.x - dotSize, pos.y - dotSize,
+                pos.x - dotSize, pos.y + dotSize,
+                pos.x + dotSize, pos.y + dotSize,
+                pos.x + dotSize, pos.y - dotSize,
+                0, r, g, b, isLinked ? 0.9f : 0.5f);
         }
 
         for (var line : pattern.entries()) {
             var now = getPatternDotPosition(x + patternSize + 4, y + patternSize + 4, line.p1(), patternSize);
             var last = getPatternDotPosition(x + patternSize + 4, y + patternSize + 4, line.p2(), patternSize);
-            drawGlyphLine(context.getMatrices(), context.getVertexConsumers(), last, now, 1, false, 0, 1f, 1f, 1f, 0.9f, false);
+            drawGlyphLine(
+                context.getMatrices(), context.getVertexConsumers(), last, now,
+                1, false, 0, 1f, 1f, 1f, 0.9f,
+                false, 0
+            );
         }
     }
 
@@ -108,8 +112,8 @@ public class GlyphComponent extends BaseComponent {
         var patternString = element.getAttributeNode("pattern").getTextContent();
 
         var pattern = Pattern.from(
-                Arrays.stream(patternString.split(","))
-                        .map(s -> Byte.valueOf(s, 10)).toList()
+            Arrays.stream(patternString.split(","))
+                .map(s -> Byte.valueOf(s, 10)).toList()
         );
 
         var size = UIParsing.parseUnsignedInt(element.getAttributeNode("size"));

@@ -38,8 +38,8 @@ public class ConjureFlowerTrick extends Trick<ConjureFlowerTrick> {
 
         var particlePos = blockPos.toCenterPos();
         world.spawnParticles(
-                ModParticles.PROTECTED_BLOCK, particlePos.x, particlePos.y, particlePos.z,
-                1, 0, 0, 0, 0
+            ModParticles.PROTECTED_BLOCK, particlePos.x, particlePos.y, particlePos.z,
+            1, 0, 0, 0, 0
         );
 
         return pos;

@@ -17,7 +17,7 @@ public class ExpectedOverweightFragmentBlunder extends TrickBlunderException {
     @Override
     public MutableText createMessage() {
         return source.getName()
-                .append(": ")
-                .append(Text.translatable(Trickster.MOD_ID + ".blunder.expected_overweight_fragment", weight, Fragment.MAX_WEIGHT));
+            .append(": ")
+            .append(Text.translatable(Trickster.MOD_ID + ".blunder.expected_overweight_fragment", weight, Fragment.MAX_WEIGHT));
     }
 }

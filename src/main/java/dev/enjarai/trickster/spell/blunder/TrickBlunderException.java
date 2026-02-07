@@ -12,6 +12,6 @@ public abstract class TrickBlunderException extends BlunderException {
     }
 
     public MutableText createMessage() {
-        return source.getName().append(": ");
+        return source.getIconAndName().append(": ");
     }
 }

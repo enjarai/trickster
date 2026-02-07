@@ -60,30 +60,30 @@ public class TricksterTemplateExpanders {
         Pattern pattern = Pattern.from(Arrays.stream(properties.get("pattern").split(",")).map(s -> Byte.valueOf(s, 10)).toList());
 
         context.addSearchEntry(new SearchEntry(
-                title,
-                "",
-                context.getBookDir().relativize(context.getPagePath()) + "#" + id,
-                List.of()
+            title,
+            "",
+            context.getBookDir().relativize(context.getPagePath()) + "#" + id,
+            List.of()
         ));
 
         var trickContainer = div().withClass("trick").withId(id)
-                .with(
-                        h2(title),
-                        Components.pattern(pattern, 400),
-                        span("(Scribing Pattern)").withClass("gray")
-                );
+            .with(
+                h2(title),
+                Components.pattern(pattern, 400),
+                span("(Scribing Pattern)").withClass("gray")
+            );
 
         var manaCostContainer = div().withClass("cost-rule embedded-component-container");
         var texture = properties.getOrDefault("texture", properties.get("book-texture"));
 
         TextureComponent component = texture(
-                Identifier.of(texture), 54, 183, 109,
-                3, 512, 256)
-                .blend(true);
+            Identifier.of(texture), 54, 183, 109,
+            3, 512, 256)
+            .blend(true);
         manaCostContainer.with(
-                owo(Containers.verticalFlow(Sizing.fixed(112), Sizing.fixed(8)).child(component).padding(Insets.of(2, 0, 0, 0)),
-                        context.getPagePath(), context.getAssetsDir().resolve(id + "-mana-cost.png"),
-                        500, 2).withClass("embedded-component")
+            owo(Containers.verticalFlow(Sizing.fixed(112), Sizing.fixed(8)).child(component).padding(Insets.of(2, 0, 0, 0)),
+                context.getPagePath(), context.getAssetsDir().resolve(id + "-mana-cost.png"),
+                500, 2).withClass("embedded-component")
         );
         trickContainer.with(manaCostContainer);
 
@@ -95,15 +95,15 @@ public class TricksterTemplateExpanders {
         Trick<?> trick = Tricks.REGISTRY.get(trickId);
 
         context.addSearchEntry(new SearchEntry(
-                trick.getName().getString(),
-                trick.getSignatures().stream().map((signature) -> signature.asText().getString()).collect(Collectors.joining("\n")),
-                context.getBookDir().relativize(context.getPagePath()) + "#" + trickId,
-                List.of()
+            trick.getName().getString(),
+            trick.getSignatures().stream().map((signature) -> signature.asText().getString()).collect(Collectors.joining("\n")),
+            context.getBookDir().relativize(context.getPagePath()) + "#" + trickId,
+            List.of()
         ));
 
         var trickContainer = div().withClass("trick").withId(trickId.toString())
-                .with(h2(trick.getName().getString()), Components.pattern(trick.getPattern(), 400))
-                .with(trick.getSignatures().stream().flatMap(signature -> Arrays.stream(new DomContent[] { br(), br(), Components.signature(signature).withClass("signature") })));
+            .with(h2(trick.getName().getString()), Components.pattern(trick.getPattern(), 400))
+            .with(trick.getSignatures().stream().flatMap(signature -> Arrays.stream(new DomContent[] { br(), br(), Components.signature(signature).withClass("signature") })));
 
         var manaCostContainer = div().withClass("cost-rule embedded-component-container");
         var texture = properties.getOrDefault("texture", properties.get("book-texture"));
@@ -111,23 +111,23 @@ public class TricksterTemplateExpanders {
         if (hasCost) {
             FlowLayout component = new ManaCostComponent(properties.get("cost"), Identifier.of(texture));
             manaCostContainer.with(
-                    owo(Containers.verticalFlow(Sizing.fixed(112), Sizing.fixed(8)).child(component).padding(Insets.of(2, 0, 0, 0)),
-                            context.getPagePath(), context.getAssetsDir().resolve(trickId.getNamespace()).resolve(trickId.getPath() + "-mana-cost.png"),
-                            500, 2).withClass("embedded-component"),
-                    tooltip(component.childById(Component.class, "cost-texture").tooltip(),
-                            context.getPagePath(), context.getAssetsDir().resolve(trickId.getNamespace()).resolve(trickId.getPath() + "-mana-cost-tooltip.png"),
-                            2).withClass("embedded-component-tooltip")
+                owo(Containers.verticalFlow(Sizing.fixed(112), Sizing.fixed(8)).child(component).padding(Insets.of(2, 0, 0, 0)),
+                    context.getPagePath(), context.getAssetsDir().resolve(trickId.getNamespace()).resolve(trickId.getPath() + "-mana-cost.png"),
+                    500, 2).withClass("embedded-component"),
+                tooltip(component.childById(Component.class, "cost-texture").tooltip(),
+                    context.getPagePath(), context.getAssetsDir().resolve(trickId.getNamespace()).resolve(trickId.getPath() + "-mana-cost-tooltip.png"),
+                    2).withClass("embedded-component-tooltip")
             );
         } else {
             TextureComponent component = texture(
-                    Identifier.of(texture), 54, 183, 109,
-                    3, 512, 256)
-                    .blend(true);
+                Identifier.of(texture), 54, 183, 109,
+                3, 512, 256)
+                .blend(true);
 
             manaCostContainer.with(
-                    owo(Containers.verticalFlow(Sizing.fixed(112), Sizing.fixed(8)).child(component).padding(Insets.of(2, 0, 0, 0)),
-                            context.getPagePath(), context.getAssetsDir().resolve(trickId.getNamespace()).resolve(trickId.getPath() + "-mana-cost.png"),
-                            500, 2).withClass("embedded-component")
+                owo(Containers.verticalFlow(Sizing.fixed(112), Sizing.fixed(8)).child(component).padding(Insets.of(2, 0, 0, 0)),
+                    context.getPagePath(), context.getAssetsDir().resolve(trickId.getNamespace()).resolve(trickId.getPath() + "-mana-cost.png"),
+                    500, 2).withClass("embedded-component")
             );
         }
         trickContainer.with(manaCostContainer);
@@ -142,28 +142,28 @@ public class TricksterTemplateExpanders {
         var urlEncodedSpellString = URLEncoder.encode(spellString, StandardCharsets.UTF_8);
 
         return div().withClass("spell-preview").with(
-                iframe().withSrc("https://trickster-studio.maplesyrum.me/viewer/?transparent=true&fixed=false&spell=" + urlEncodedSpellString)
-                        .attr("allowtransparency", "true")
-                        .withClass("spell-preview-iframe"),
-                script(new UnescapedText(
-                        """
-                                (() => {
-                                    const currentScript = document.currentScript;
-                                    const parent = currentScript.parentElement;
-                                    const iframeElement = parent.querySelector(".spell-preview-iframe");
-                                    const pageElement = document.getElementById("page");
+            iframe().withSrc("https://trickster-studio.maplesyrum.me/viewer/?transparent=true&fixed=false&spell=" + urlEncodedSpellString)
+                .attr("allowtransparency", "true")
+                .withClass("spell-preview-iframe"),
+            script(new UnescapedText(
+                """
+                    (() => {
+                        const currentScript = document.currentScript;
+                        const parent = currentScript.parentElement;
+                        const iframeElement = parent.querySelector(".spell-preview-iframe");
+                        const pageElement = document.getElementById("page");
 
-                                    iframeElement.addEventListener("mouseenter", () => {
-                                      pageElement.dataset.originalOverflow = pageElement.style.overflow;
-                                      pageElement.style.overflow = "hidden";
-                                    });
+                        iframeElement.addEventListener("mouseenter", () => {
+                          pageElement.dataset.originalOverflow = pageElement.style.overflow;
+                          pageElement.style.overflow = "hidden";
+                        });
 
-                                    iframeElement.addEventListener("mouseleave", () => {
-                                      pageElement.style.overflow = pageElement.dataset.originalOverflow || "";
-                                    });
-                                })()
-                                """
-                ))
+                        iframeElement.addEventListener("mouseleave", () => {
+                          pageElement.style.overflow = pageElement.dataset.originalOverflow || "";
+                        });
+                    })()
+                    """
+            ))
         );
     }
 

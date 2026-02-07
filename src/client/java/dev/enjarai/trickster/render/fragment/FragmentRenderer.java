@@ -2,7 +2,7 @@ package dev.enjarai.trickster.render.fragment;
 
 import dev.enjarai.trickster.Trickster;
 
-import dev.enjarai.trickster.render.SpellCircleRenderer;
+import dev.enjarai.trickster.render.CircleRenderer;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
@@ -48,17 +48,17 @@ public interface FragmentRenderer<T extends Fragment> {
         var color = ColorHelper.Argb.withAlpha((int) (alpha * 0xff), 0xffffff);
 
         textRenderer.draw(
-                text,
-                -(width - 1f) / 2f, -height / 2f, color, false,
-                matrices.peek().getPositionMatrix(),
-                vertexConsumers, TextRenderer.TextLayerType.NORMAL,
-                0, 0xf000f0
+            text,
+            -(width - 1f) / 2f, -height / 2f, color, false,
+            matrices.peek().getPositionMatrix(),
+            vertexConsumers, TextRenderer.TextLayerType.NORMAL,
+            0, 0xf000f0
         );
 
         matrices.pop();
     }
 
-    void render(T fragment, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float radius, float alpha, Vec3d normal, float tickDelta, SpellCircleRenderer delegator);
+    void render(T fragment, MatrixStack matrices, VertexConsumerProvider vertexConsumers, float x, float y, float radius, float alpha, Vec3d normal, float tickDelta, CircleRenderer delegator);
 
     default boolean renderRedrawDots() {
         return true;
