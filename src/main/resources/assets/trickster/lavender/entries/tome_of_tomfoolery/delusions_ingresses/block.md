@@ -9,6 +9,7 @@
     "Ingress of Suitability",
     "Ingress of Logic",
     "Ingress of Resonance",
+    "Ingress of Rotation",
     "Ingress of Luminance"
   ]
 }
@@ -49,6 +50,12 @@ Returns the redstone power level inputted into the given block position.
 
 Returns the power level of the [Spell Resonator](^trickster:items/spell_resonator) at the given position.
 Blunders if no resonator is present.
+
+;;;;;
+
+<|trick@trickster:templates|trick-id=trickster:get_block_rotation|>
+
+Returns the rotation of the block at the given position.
 
 ;;;;;
 
