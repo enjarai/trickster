@@ -5,7 +5,9 @@
   "plugin": "dev.enjarai.trickster.ConditionalMixins",
   "mixins": [
     "AbstractFurnaceBlockEntityMixin",
+    "AllayEntityMixin",
     "AnvilScreenHandlerMixin",
+    "ArmorStandEntityMixin",
     "DataPackContentsMixin",
     "EntityMixin",
     "FallingBlockEntityMixin",
