@@ -15,7 +15,7 @@ import net.minecraft.util.math.MathHelper;
 
 public class SetScaleTrick extends Trick<SetScaleTrick> {
     public SetScaleTrick() {
-        super(Pattern.of(7, 6, 0, 1, 2, 8, 7, 4), Signature.of(FragmentType.ENTITY.wardOf(), FragmentType.NUMBER, SetScaleTrick::set, FragmentType.ENTITY));
+        super(Pattern.of(7, 6, 0, 1, 2, 8, 7, 4), Signature.of(FragmentType.ENTITY, FragmentType.NUMBER, SetScaleTrick::set, FragmentType.ENTITY));
     }
 
     public EntityFragment set(SpellContext ctx, EntityFragment entity, NumberFragment scaleFragment) {

@@ -48,11 +48,6 @@ public class OptionalArgType<T> implements ArgType<Optional<T>> {
     }
 
     @Override
-    public ArgType<Optional<T>> wardOf() {
-        return new OptionalArgType<>(type.wardOf());
-    }
-
-    @Override
     public MutableText asText() {
         return type.asText().append("?");
     }

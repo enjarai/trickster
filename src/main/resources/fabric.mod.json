@@ -38,6 +38,9 @@
         "cardinal-components-entity": [
           "dev.enjarai.trickster.cca.ModEntityComponents"
         ],
+        "cardinal-components-block": [
+            "dev.enjarai.trickster.cca.ModBlockComponents"
+        ],
         "cicada": [
             "dev.enjarai.trickster.Trickster"
         ]
@@ -59,7 +62,9 @@
             "trickster:weight",
             "trickster:scale",
             "trickster:displacement",
-            "trickster:curse"
+            "trickster:curse",
+            "trickster:ward_manager",
+            "trickster:ward_bypass"
         ]
     },
     "mixins": [

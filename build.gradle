@@ -123,6 +123,7 @@ dependencies {
     include modApi("org.ladysnake.cardinal-components-api:cardinal-components-world:${property('deps.cardinal-components-api')}")
     include modApi("org.ladysnake.cardinal-components-api:cardinal-components-scoreboard:${property('deps.cardinal-components-api')}")
     include modApi("org.ladysnake.cardinal-components-api:cardinal-components-entity:${property('deps.cardinal-components-api')}")
+    include modApi("org.ladysnake.cardinal-components-api:cardinal-components-block:${property('deps.cardinal-components-api')}")
 
     modCompileOnly modLocalRuntime("com.terraformersmc:modmenu:${property('deps.modmenu')}")
     modClientCompileOnly modLocalRuntime("maven.modrinth:sodium:${property('deps.sodium')}")

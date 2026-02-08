@@ -113,6 +113,8 @@ public abstract class KnotItem extends Item {
         }
 
         public EvaluationResult messageListenBehavior(Trick<?> trickSource, SpellContext ctx, ItemStack stack, Optional<Integer> timeout) {
+            // the time of day is actually the age of the world, including time skipped by sleeping and is affected by commands which mess with time
+            // (why is it named time of day, guh) -- Aurora Dawn
             return new ListFragment(List.of(new NumberFragment(ctx.source().getWorld().getTimeOfDay())));
         }
 

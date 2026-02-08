@@ -88,6 +88,7 @@ public class FragmentType<T extends Fragment> implements RetType<T>, ArgType<T> 
     public static final FragmentType<BlockTypeFragment> BLOCK_TYPE = register("block_type", BlockTypeFragment.ENDEC, 0x44aa33);
     public static final FragmentType<EntityTypeFragment> ENTITY_TYPE = register("entity_type", EntityTypeFragment.ENDEC, 0x8877bb);
     public static final FragmentType<DimensionFragment> DIMENSION = register("dimension", DimensionFragment.ENDEC, 0xdd55bb);
+    public static final FragmentType<WardFragment> WARD = register("ward", WardFragment.ENDEC, 0xdd55bb);
     public static final FragmentType<StringFragment> STRING = register("string", StringFragment.ENDEC, 0xaabb77);
     public static final FragmentType<MapFragment> MAP = register("map", MapFragment.ENDEC);
     public static final FragmentType<BooleanFragment> BOOLEAN = Registry.register(REGISTRY, Trickster.id("boolean"), new FragmentType<>(BooleanFragment.ENDEC, OptionalInt.of(0xaa3355)) {
@@ -175,42 +176,6 @@ public class FragmentType<T extends Fragment> implements RetType<T>, ArgType<T> 
     @Override
     public boolean match(List<Fragment> fragments) {
         return fragments.getFirst().type() == this;
-    }
-
-    @Override
-    public ArgType<T> wardOf() {
-        return new ArgType<>() {
-            @Override
-            public int argc(List<Fragment> fragments) {
-                return FragmentType.this.argc(fragments);
-            }
-
-            @Override
-            public T compose(Trick<?> trick, SpellContext ctx, List<Fragment> fragments) {
-                var result = FragmentType.this.compose(trick, ctx, fragments);
-
-                if (result instanceof EntityFragment entity) {
-                    ArgType.tryWard(trick, ctx, entity, fragments);
-                }
-
-                return result;
-            }
-
-            @Override
-            public boolean match(List<Fragment> fragments) {
-                return FragmentType.this.match(fragments);
-            }
-
-            @Override
-            public ArgType<T> wardOf() {
-                return this;
-            }
-
-            @Override
-            public MutableText asText() {
-                return FragmentType.this.asText();
-            }
-        };
     }
 
     public StructEndec<T> endec() {

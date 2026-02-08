@@ -21,7 +21,7 @@ public class AddVelocityTrick extends Trick<AddVelocityTrick> {
     public AddVelocityTrick() {
         super(
                 Pattern.of(4, 6, 0, 1, 2, 8, 4),
-                Signature.of(FragmentType.ENTITY.wardOf(), FragmentType.VECTOR, AddVelocityTrick::run, FragmentType.ENTITY)
+                Signature.of(FragmentType.ENTITY, FragmentType.VECTOR, AddVelocityTrick::run, FragmentType.ENTITY)
         );
     }
 
