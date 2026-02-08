@@ -11,6 +11,7 @@
     "DataPackContentsMixin",
     "EntityMixin",
     "FallingBlockEntityMixin",
+    "FoxEntityMixin",
     "ItemEntityMixin",
     "ItemFrameEntityMixin",
     "ItemMixin",
