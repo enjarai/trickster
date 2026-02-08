@@ -1,4 +1,4 @@
-package dev.enjarai.trickster.mixin;
+package dev.enjarai.trickster.mixin.slot;
 
 import com.google.common.collect.Iterables;
 import dev.enjarai.trickster.pond.SlotHolderDuck;

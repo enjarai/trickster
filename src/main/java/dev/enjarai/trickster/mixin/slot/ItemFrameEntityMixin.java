@@ -1,4 +1,4 @@
-package dev.enjarai.trickster.mixin;
+package dev.enjarai.trickster.mixin.slot;
 
 import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
