@@ -29,7 +29,7 @@ public abstract class AllayEntityMixin extends PathAwareEntity implements SlotHo
 
     @Override
     public Storage<ItemVariant> trickster$slot_holder$getItemStorage() {
-        // slot 0: held item. slot 1: inventory (size of 1)
+        // slot 0: held item. slot 1: inventory
         return InventoryStorage.of(new Inventory() {
             @Override
             public void clear() {
@@ -54,20 +54,13 @@ public abstract class AllayEntityMixin extends PathAwareEntity implements SlotHo
 
             @Override
             public ItemStack removeStack(int slot, int amount) {
-                var stack = (slot == 0) ? AllayEntityMixin.this.getEquippedStack(EquipmentSlot.MAINHAND) : inventory.getStack(0);
-                return stack.split(amount);
+                return getStack(slot).split(amount);
             }
 
             @Override
             public ItemStack removeStack(int slot) {
-                ItemStack stack;
-                if (slot == 0) {
-                    stack = AllayEntityMixin.this.getEquippedStack(EquipmentSlot.MAINHAND);
-                    AllayEntityMixin.this.equipStack(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
-                } else {
-                    stack = inventory.getStack(0);
-                    inventory.setStack(0, ItemStack.EMPTY);
-                }
+                var stack = getStack(slot);
+                setStack(slot, ItemStack.EMPTY);
                 return stack;
             }
 

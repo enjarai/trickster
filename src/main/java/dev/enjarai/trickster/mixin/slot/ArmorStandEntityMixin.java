@@ -36,15 +36,6 @@ public class ArmorStandEntityMixin implements SlotHolderDuck {
     @Unique
     private static final List<EquipmentSlot> equipmentSlots = Arrays.stream(EquipmentSlot.values()).toList();
 
-    @Unique
-    private ItemStack getItemStack(int slot) {
-        if (slot < 2) {
-            return heldItems.get(slot);
-        } else {
-            return armorItems.get(slot - 2);
-        }
-    }
-
     @Override
     public Storage<ItemVariant> trickster$slot_holder$getItemStorage() {
         return InventoryStorage.of(new Inventory() {
@@ -66,20 +57,24 @@ public class ArmorStandEntityMixin implements SlotHolderDuck {
 
             @Override
             public ItemStack getStack(int slot) {
-                return getItemStack(slot);
+                if (slot < 2) {
+                    return heldItems.get(slot);
+                } else {
+                    return armorItems.get(slot - 2);
+                }
             }
 
             @Override
             public ItemStack removeStack(int slot, int amount) {
-                var currentStack = getItemStack(slot);
-                var newStack = getItemStack(slot).split(amount);
+                var currentStack = getStack(slot);
+                var newStack = getStack(slot).split(amount);
                 equipStack(equipmentSlots.get(slot), currentStack);
                 return newStack;
             }
 
             @Override
             public ItemStack removeStack(int slot) {
-                var currentStack = getItemStack(slot);
+                var currentStack = getStack(slot);
                 equipStack(equipmentSlots.get(slot), ItemStack.EMPTY);
                 return currentStack;
             }
