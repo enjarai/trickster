@@ -34,7 +34,7 @@ public abstract class AllayEntityMixin extends PathAwareEntity implements SlotHo
             @Override
             public void clear() {
                 AllayEntityMixin.this.equipStack(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
-                inventory.setStack(0, ItemStack.EMPTY);
+                inventory.clear();
             }
 
             @Override
