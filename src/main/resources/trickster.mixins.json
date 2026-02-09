@@ -26,11 +26,14 @@
     "curse.LivingEntityMixin",
     "event.ServerPlayerEntityMixin",
     "event.ServerPlayerInteractionManagerMixin",
+    "slot.AbstractHorseEntityMixin",
     "slot.AllayEntityMixin",
     "slot.ArmorStandEntityMixin",
     "slot.FoxEntityMixin",
+    "slot.HorseEntityMixin",
     "slot.ItemEntityMixin",
-    "slot.ItemFrameEntityMixin"
+    "slot.ItemFrameEntityMixin",
+    "slot.LlamaEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1
