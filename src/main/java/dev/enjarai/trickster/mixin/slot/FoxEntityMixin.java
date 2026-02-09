@@ -25,7 +25,7 @@ public abstract class FoxEntityMixin extends AnimalEntity implements SlotHolderD
         return InventoryStorage.of(new Inventory() {
             @Override
             public void clear() {
-                FoxEntityMixin.this.equipStack(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+                setStack(0, ItemStack.EMPTY);
             }
 
             @Override
@@ -35,7 +35,7 @@ public abstract class FoxEntityMixin extends AnimalEntity implements SlotHolderD
 
             @Override
             public boolean isEmpty() {
-                return FoxEntityMixin.this.getEquippedStack(EquipmentSlot.MAINHAND).isEmpty();
+                return getStack(0).isEmpty();
             }
 
             @Override
@@ -45,13 +45,13 @@ public abstract class FoxEntityMixin extends AnimalEntity implements SlotHolderD
 
             @Override
             public ItemStack removeStack(int slot, int amount) {
-                return FoxEntityMixin.this.getEquippedStack(EquipmentSlot.MAINHAND).split(amount);
+                return getStack(slot).split(amount);
             }
 
             @Override
             public ItemStack removeStack(int slot) {
-                var stack = FoxEntityMixin.this.getEquippedStack(EquipmentSlot.MAINHAND);
-                FoxEntityMixin.this.equipStack(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+                var stack = getStack(slot);
+                setStack(slot, ItemStack.EMPTY);
                 return stack;
             }
 
