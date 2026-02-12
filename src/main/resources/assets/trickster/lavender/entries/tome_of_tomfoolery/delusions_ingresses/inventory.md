@@ -7,13 +7,15 @@
     "Fence's Ingress",
     "Juggling Delusion",
     "Catch Delusion",
+    "Stockpile Ingress",
+    "Basin Ingress",
     "Intrusive Ingress",
+    "Collector's Ingress",
+    "Ingress of Inventory",
     "Cranium Delusion",
     "Ingress of Authority",
     "Crowning Ingress",
     "Ingress of Plenitude",
-    "Collector's Ingress",
-    "Ingress of Extent",
     "Investigative Ingress"
   ]
 }
@@ -21,9 +23,6 @@
 
 These are tricks that pull information from an inventory.
 This can either be the caster's own, or an external block or entity.
-
-
-It is not possible to interact with the slots of players that are not the caster.
 
 ;;;;;
 
@@ -42,7 +41,13 @@ Returns the type of item in the caster's offhand.
 <|page-title@lavender:book_components|title=Note: Slot References|>Resource slots may be referenced by spells.
 Creating such a reference comes at no cost. However, using the reference in a way that moves the resources within the slot, will incur a move cost.
 This cost is equivalent to (distance * amount * 0.5G).
+
+;;;;;
+
 Slot references either use the position of the caster at the time of move, or the position of their target when calculating cost.
+
+
+It is not possible to interact with the slots of players that are not the caster.
 
 ;;;;;
 
@@ -53,6 +58,8 @@ Returns a slot reference of the caster's offhand.
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:get_item_container|>
+
+;;;;;
 
 Returns a reference to the item container of the passed value, or of the caster.
 
@@ -88,7 +95,7 @@ Returns a list of resource types in the container.
 
 <|trick@trickster:templates|trick-id=trickster:count_resources|>
 
-Returns the amount of that resource type in the container.
+Returns the amount of the given resource type in the container.
 
 ;;;;;
 

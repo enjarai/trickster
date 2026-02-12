@@ -27,17 +27,17 @@ public class SwapSlotTrick extends Trick<SwapSlotTrick> {
             var variant1 = storage1.getResource();
             var variant2 = storage2.getResource();
 
-            var extracted1 = storage1.extract(variant1, storage2.getCapacity(), trans);
-            var extracted2 = storage2.extract(variant2, storage1.getCapacity(), trans);
+            var extracted1 = storage1.isResourceBlank() ? 0 : storage1.extract(variant1, storage2.getCapacity(), trans);
+            var extracted2 = storage2.isResourceBlank() ? 0 : storage2.extract(variant2, storage1.getCapacity(), trans);
 
-            var inserted1 = storage2.insert(variant1, extracted1, trans);
-            var inserted2 = storage1.insert(variant2, extracted2, trans);
+            var inserted1 = extracted1 == 0 ? 0 : storage2.insert(variant1, extracted1, trans);
+            var inserted2 = extracted2 == 0 ? 0 : storage1.insert(variant2, extracted2, trans);
 
             if (inserted1 != extracted1 || inserted2 != extracted2) {
                 throw new ItemInvalidBlunder(this);
             }
 
-            trans.commit(); // TODO double check this
+            trans.commit();
         }
 
         return VoidFragment.INSTANCE;

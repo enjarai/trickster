@@ -5,14 +5,20 @@
   "category": "trickster:ploys",
   "additional_search_terms": [
     "Ploy of Offering",
-    "Swindler's Ploy",
     "Organizer's Ploy",
+    "Swindler's Ploy",
     "Cranial Shift Ploy"
   ]
 }
 ```
 
-Listed here are ploys that interact with inventory slots or other inventory features.
+*"Note that inventory ploys are heavily restricted in almost all jurisdictions."*
+
+
+*"Not because they're very dangerous mind you, it's just that humans collectively have a strange obsession with this thing they call 'personal property.'"*
+
+
+-- An excerpt from a lecture by Prof. Dr. Gerune.
 
 ;;;;;
 
@@ -28,13 +34,13 @@ Moves resources from one storage into another.
 
 ;;;;;
 
-A number can be provided to limit the amount transfered, and a resource type or list of such can be provided as a filter.
+A number can be provided to limit the amount transferred, and a resource type or list of such can be provided as a filter.
 
 ;;;;;
 
 <|trick@trickster:templates|trick-id=trickster:swap_slot|>
 
-Swaps the item stacks within the given slots.
+Swaps the resources within the given slots.
 
 ;;;;;
 
