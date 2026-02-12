@@ -5,13 +5,8 @@ import dev.enjarai.trickster.fleck.*;
 import dev.enjarai.trickster.render.fleck.*;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.util.math.ColorHelper;
-import net.minecraft.util.math.random.LocalRandom;
-import net.minecraft.util.math.random.Random;
 
 public class FlecksRenderer {
-    private static final Random colorsRandom = new LocalRandom(0xba115);
-
     public static void render(WorldRenderContext worldRenderContext) {
         var player = MinecraftClient.getInstance().player;
         if (player == null) {
@@ -34,9 +29,10 @@ public class FlecksRenderer {
                 throw new IllegalStateException("Missing renderer for fleck " + fleckId + "!");
             }
 
-            colorsRandom.setSeed(flecks.id());
-            var color = ColorHelper.Argb.fromFloats(1f, colorsRandom.nextFloat(), colorsRandom.nextFloat(), colorsRandom.nextFloat());
-
+            int color = 0;
+            if (fleck instanceof PaintableFleck paintable) {
+                color = paintable.getColor();
+            }
             //noinspection unchecked
             renderer.render(
                     fleck,

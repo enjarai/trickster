@@ -8,6 +8,7 @@ import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.type.Signature;
+import net.minecraft.util.math.ColorHelper;
 import org.joml.Vector3f;
 
 import java.util.List;
@@ -20,6 +21,9 @@ public class LineFleckTrick extends AbstractFleckTrick<LineFleckTrick> {
     }
 
     public NumberFragment run(SpellContext ctx, NumberFragment id, VectorFragment pos1, VectorFragment pos2, Optional<List<EntityFragment>> targets) {
-        return display(ctx, id, new LineFleck(pos1.vector().get(new Vector3f()), pos2.vector().get(new Vector3f()), 1f), targets);
+        var rand = LineFleck.colorsRandom;
+        rand.setSeed(id.asInt());
+        var color = ColorHelper.Argb.fromFloats(1f, rand.nextFloat(), rand.nextFloat(), rand.nextFloat());
+        return display(ctx, id, new LineFleck(pos1.vector().get(new Vector3f()), pos2.vector().get(new Vector3f()), 1f, color), targets);
     }
 }
