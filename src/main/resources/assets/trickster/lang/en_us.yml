@@ -264,6 +264,9 @@ trickster:
     get_flecks: Observer's Ingress
     delete_fleck: Orwell's Ploy
 
+    scale_fleck: Ploy of Obstruction
+    roll_fleck: Peppy's Ploy
+
     get_scale: Ingress of Occupation
     set_scale: Ploy of Occupation
 
@@ -332,7 +335,8 @@ trickster:
       EntityTypeFragment: EntityType
 
   blunder:
-    overweight_fragment: Result fragment is overweight, result is %s
+    overweight_fragment: Resulting fragment is overweight (%2$s/%3$s), result is %1$s
+    expected_overweight_fragment: Result fragment is overweight (%d/%d)
     missing_fragment: Missing at index %d, expected %s
 
 item.trickster:
@@ -416,6 +420,9 @@ block.trickster:
   charging_array: Charging Array
   inert_spawner: Inert Spawner
   color_block: Infused Ceramic
+
+entity.trickster:
+  levitating_block: Levitating Block
 
 effect.trickster:
   mana_boost: Mana Hyperflux

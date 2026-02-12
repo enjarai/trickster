@@ -8,6 +8,7 @@ import dev.enjarai.trickster.spell.blunder.BlunderException;
 import dev.enjarai.trickster.spell.blunder.UnknownTrickBlunder;
 import io.wispforest.endec.StructEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.text.Text;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -45,14 +46,14 @@ public record PatternGlyph(Pattern pattern) implements Fragment, AddableFragment
         }
 
         var restricted = trick.restricted();
-        if (restricted != null && ctx.source().getPlayer().map(p -> !restricted.contains(p.getUuid())).orElse(true)) {
+        if (restricted != null && !FabricLoader.getInstance().isDevelopmentEnvironment() && ctx.source().getPlayer().map(p -> !restricted.contains(p.getUuid())).orElse(true)) {
             throw new UnknownTrickBlunder();
         }
 
         var result = trick.activate(ctx, fragments);
 
         if (result instanceof Fragment fragment && fragment.getWeight() > Fragment.MAX_WEIGHT) {
-            throw new OverweightFragmentBlunder(trick, fragment);
+            throw new OverweightFragmentBlunder(trick, fragment, fragment.getWeight());
         }
 
         return result;
