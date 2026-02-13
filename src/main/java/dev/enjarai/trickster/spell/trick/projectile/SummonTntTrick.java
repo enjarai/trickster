@@ -9,6 +9,7 @@ import dev.enjarai.trickster.spell.fragment.SlotFragment;
 import dev.enjarai.trickster.spell.fragment.VectorFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.Signature;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.TntEntity;
 import net.minecraft.item.Items;
 
@@ -26,7 +27,12 @@ public class SummonTntTrick extends Trick<SummonTntTrick> {
         try {
             ctx.useMana(this, cost(ctx.source().getPos().distance(pos.vector())));
 
-            var projectile = new TntEntity(world, pos.x(), pos.y(), pos.z(), null);
+            TntEntity projectile;
+            if (ctx.source().getCaster().orElse(null) instanceof LivingEntity livingEntity) {
+                projectile = new TntEntity(world, pos.x(), pos.y(), pos.z(), livingEntity);
+            } else {
+                projectile = new TntEntity(world, pos.x(), pos.y(), pos.z(), null);
+            }
 
             world.spawnEntity(projectile);
             return EntityFragment.from(projectile);
