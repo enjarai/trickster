@@ -9,6 +9,13 @@
 
 [//]: # ([<img alt="fabric-api" height="56" src="https://i.enjarai.dev/u/fHOUib.png">]&#40;https://modrinth.com/mod/owo-lib&#41;)
 
+> [!WARNING]
+> Like some of my other projects, this repository has been migrated to Codeberg.
+> Any new issues or pull requests here will be ignored, please create them over at the new repository.
+> 
+> New repository:
+> https://codeberg.org/trans-fish/trickster
+
 Trickster is a magician-themed esolang-based magic mod loosely inspired by [Hex Casting](https://modrinth.com/mod/hex-casting).
 It lets you draw infinitely nested spell circles and glyphs to combine tricks and create magical effects as simple or complex as you want.
 
