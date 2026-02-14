@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "c": {
+      "item": "minecraft:clay_ball"
+    },
+    "g": {
+      "item": "minecraft:glass_pane"
+    },
+    "i": {
+      "item": "trickster:spell_ink"
+    }
+  },
+  "pattern": [
+    "cgc",
+    "gig",
+    "cgc"
+  ],
+  "result": {
+    "count": 8,
+    "id": "trickster:color_block"
+  }
+}

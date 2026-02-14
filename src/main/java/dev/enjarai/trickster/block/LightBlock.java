@@ -13,6 +13,7 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
@@ -25,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.ToIntFunction;
 
-public class LightBlock extends BlockWithEntity implements Waterloggable {
+public class LightBlock extends BlockWithEntity implements Waterloggable, Stainable {
     public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
     public static final IntProperty LIGHT_LEVEL = Properties.LEVEL_15;
     public static final ToIntFunction<BlockState> STATE_TO_LUMINANCE = state -> (Integer) state.get(LIGHT_LEVEL);
@@ -42,10 +43,10 @@ public class LightBlock extends BlockWithEntity implements Waterloggable {
     }
 
     // TODO decide if we can make this work?
-//    @Override
-//    protected BlockRenderType getRenderType(BlockState state) {
-//        return BlockRenderType.MODEL;
-//    }
+    //    @Override
+    //    protected BlockRenderType getRenderType(BlockState state) {
+    //        return BlockRenderType.MODEL;
+    //    }
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
@@ -106,5 +107,11 @@ public class LightBlock extends BlockWithEntity implements Waterloggable {
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
         return new LightBlockEntity(pos, state);
+    }
+
+    @Override
+    public DyeColor getColor() {
+        //fake value, overridden in the mixin
+        return DyeColor.WHITE;
     }
 }
