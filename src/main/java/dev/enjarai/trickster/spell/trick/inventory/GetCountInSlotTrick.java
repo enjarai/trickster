@@ -4,7 +4,7 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
-import dev.enjarai.trickster.spell.fragment.SlotFragment;
+import dev.enjarai.trickster.spell.fragment.slot.SlotFragment;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.Signature;
 
@@ -14,6 +14,6 @@ public class GetCountInSlotTrick extends Trick<GetCountInSlotTrick> {
     }
 
     public NumberFragment run(SpellContext ctx, SlotFragment slot) {
-        return new NumberFragment(slot.reference(this, ctx).getCount());
+        return new NumberFragment(slot.getAmount(this, ctx));
     }
 }

@@ -4,11 +4,13 @@ import dev.enjarai.trickster.ModAttachments;
 import dev.enjarai.trickster.cca.ModEntityComponents;
 import dev.enjarai.trickster.item.component.ModComponents;
 import dev.enjarai.trickster.spell.CrowMindAttachment;
+import dev.enjarai.trickster.spell.fragment.slot.StorageSource;
+import dev.enjarai.trickster.spell.fragment.slot.VariantType;
 import dev.enjarai.trickster.spell.mana.PlayerManaPool;
 import net.minecraft.util.math.BlockPos;
 import dev.enjarai.trickster.spell.Fragment;
 import dev.enjarai.trickster.spell.execution.SpellExecutionManager;
-import dev.enjarai.trickster.spell.fragment.SlotFragment;
+import dev.enjarai.trickster.spell.fragment.slot.SlotFragment;
 import dev.enjarai.trickster.spell.fragment.VoidFragment;
 import dev.enjarai.trickster.spell.mana.MutableManaPool;
 import dev.enjarai.trickster.spell.mana.generation.ManaHandler;
@@ -81,9 +83,15 @@ public class PlayerSpellSource implements SpellSource {
     @Override
     public Optional<SlotFragment> getOtherHandSlot() {
         if (slot == EquipmentSlot.MAINHAND) {
-            return Optional.of(new SlotFragment(PlayerInventory.OFF_HAND_SLOT, Optional.empty()));
+            return Optional.of(new SlotFragment(
+                    new StorageSource.Slot(PlayerInventory.OFF_HAND_SLOT, StorageSource.Caster.INSTANCE),
+                    VariantType.ITEM
+            ));
         } else if (slot == EquipmentSlot.OFFHAND) {
-            return Optional.of(new SlotFragment(player.getInventory().selectedSlot, Optional.empty()));
+            return Optional.of(new SlotFragment(
+                    new StorageSource.Slot(player.getInventory().selectedSlot, StorageSource.Caster.INSTANCE),
+                    VariantType.ITEM
+            ));
         } else {
             return Optional.empty();
         }

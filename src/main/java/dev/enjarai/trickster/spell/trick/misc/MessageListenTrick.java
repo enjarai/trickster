@@ -10,7 +10,8 @@ import dev.enjarai.trickster.spell.blunder.OutOfRangeBlunder;
 import dev.enjarai.trickster.spell.execution.executor.MessageListenerSpellExecutor;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
-import dev.enjarai.trickster.spell.fragment.SlotFragment;
+import dev.enjarai.trickster.spell.fragment.slot.SlotFragment;
+import dev.enjarai.trickster.spell.fragment.slot.VariantType;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.RetType;
 import dev.enjarai.trickster.spell.type.Signature;
@@ -26,11 +27,11 @@ public class MessageListenTrick extends Trick<MessageListenTrick> {
 
     //TODO: how should we stop this from running in single-tick mode
     public SpellExecutor run(SpellContext ctx, Optional<NumberFragment> timeout) {
-        return new MessageListenerSpellExecutor(ctx.state(), timeout.map(n -> n.asInt()), Optional.empty());
+        return new MessageListenerSpellExecutor(ctx.state(), timeout.map(NumberFragment::asInt), Optional.empty());
     }
 
     public EvaluationResult runWithChannel(SpellContext ctx, Optional<NumberFragment> timeout, SlotFragment slot) {
-        var stack = slot.reference(this, ctx);
+        var stack = slot.getResource(this, ctx, VariantType.ITEM).toStack();
         var range = ctx.source().getPos().distance(slot.getSourceOrCasterPos(this, ctx));
         var item = stack.getItem();
 
@@ -39,7 +40,7 @@ public class MessageListenTrick extends Trick<MessageListenTrick> {
                 throw new OutOfRangeBlunder(this, channelItem.getRange(), range);
             }
 
-            return channelItem.messageListenBehavior(this, ctx, stack, timeout.map(n -> n.asInt()));
+            return channelItem.messageListenBehavior(this, ctx, stack, timeout.map(NumberFragment::asInt));
         }
 
         throw new ItemInvalidBlunder(this);

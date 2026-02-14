@@ -6,7 +6,8 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.BooleanFragment;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
-import dev.enjarai.trickster.spell.fragment.SlotFragment;
+import dev.enjarai.trickster.spell.fragment.slot.SlotFragment;
+import dev.enjarai.trickster.spell.fragment.slot.VariantType;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.Signature;
 
@@ -16,14 +17,17 @@ public class RemoveTransmogTrick extends Trick<RemoveTransmogTrick> {
     }
 
     public BooleanFragment remove(SpellContext ctx, SlotFragment slot) {
-        var stack = slot.reference(this, ctx);
+        var resource = slot.getResource(this, ctx, VariantType.ITEM);
 
-        if (!TransmogUtils.isItemStackTransmogged(stack)) {
+        if (!TransmogUtils.isItemStackTransmogged(resource.toStack())) {
             return BooleanFragment.FALSE;
         }
 
         ctx.useMana(this, 10);
-        stack.remove(ModDataComponents.TRANSMOG_APPEARANCE_ITEM.get());
+        slot.applyItemModifier(this, ctx, stack -> {
+            stack.remove(ModDataComponents.TRANSMOG_APPEARANCE_ITEM.get());
+            return stack;
+        });
 
         return BooleanFragment.TRUE;
     }

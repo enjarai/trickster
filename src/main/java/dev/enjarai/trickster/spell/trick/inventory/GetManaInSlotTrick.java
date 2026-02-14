@@ -5,7 +5,8 @@ import dev.enjarai.trickster.spell.Pattern;
 import dev.enjarai.trickster.spell.SpellContext;
 import dev.enjarai.trickster.spell.fragment.FragmentType;
 import dev.enjarai.trickster.spell.fragment.NumberFragment;
-import dev.enjarai.trickster.spell.fragment.SlotFragment;
+import dev.enjarai.trickster.spell.fragment.slot.SlotFragment;
+import dev.enjarai.trickster.spell.fragment.slot.VariantType;
 import dev.enjarai.trickster.spell.mana.SharedManaPool;
 import dev.enjarai.trickster.spell.trick.Trick;
 import dev.enjarai.trickster.spell.type.Signature;
@@ -24,7 +25,7 @@ public class GetManaInSlotTrick extends Trick<GetManaInSlotTrick> {
         var identifiedKnots = new ArrayList<UUID>();
 
         for (var slot : slots) {
-            var stack = slot.reference(this, ctx);
+            var stack = slot.getResource(this, ctx, VariantType.ITEM).toStack();
             var comp = stack.get(ModComponents.MANA);
 
             if (comp == null) {

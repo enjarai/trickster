@@ -10,11 +10,11 @@
     "EntityMixin",
     "FallingBlockEntityMixin",
     "ItemEntityMixin",
-    "ItemFrameEntityMixin",
     "ItemMixin",
     "LivingEntityMixin",
     "accessor.CropBlockAccessor",
     "accessor.DataPackContentsAccessor",
+    "accessor.FluidBlockAccessor",
     "accessor.StateAccessor",
     "accessor.TagEntryAccessor",
     "accessor.WorldAccessor",
@@ -25,7 +25,15 @@
     "curse.LimbAnimatorMixin",
     "curse.LivingEntityMixin",
     "event.ServerPlayerEntityMixin",
-    "event.ServerPlayerInteractionManagerMixin"
+    "event.ServerPlayerInteractionManagerMixin",
+    "slot.AbstractHorseEntityMixin",
+    "slot.AllayEntityMixin",
+    "slot.ArmorStandEntityMixin",
+    "slot.FoxEntityMixin",
+    "slot.HorseEntityMixin",
+    "slot.ItemEntityMixin",
+    "slot.ItemFrameEntityMixin",
+    "slot.LlamaEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

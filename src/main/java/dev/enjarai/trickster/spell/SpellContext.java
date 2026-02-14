@@ -5,9 +5,13 @@ import dev.enjarai.trickster.spell.blunder.*;
 import dev.enjarai.trickster.spell.execution.ExecutionState;
 import dev.enjarai.trickster.spell.execution.TickData;
 import dev.enjarai.trickster.spell.execution.source.SpellSource;
-import dev.enjarai.trickster.spell.fragment.SlotFragment;
+import dev.enjarai.trickster.spell.fragment.slot.SlotFragment;
+import dev.enjarai.trickster.spell.fragment.slot.StorageSource;
+import dev.enjarai.trickster.spell.fragment.slot.VariantType;
 import dev.enjarai.trickster.spell.mana.MutableManaPool;
 import dev.enjarai.trickster.spell.trick.Trick;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import java.util.Optional;
@@ -50,17 +54,25 @@ public record SpellContext(ExecutionState state, SpellSource source, TickData da
 
     // I am disappointed in myself for having written this.
     // Maybe I'll clean it up one day. -- Aurora D.
-    public Optional<ItemStack> getStack(Trick<?> trickSource, Optional<SlotFragment> optionalSlot, Predicate<ItemStack> validator) throws BlunderException {
+    public Optional<ItemStack> getStack(Trick<?> trick, Optional<SlotFragment> optionalSlot, Predicate<ItemStack> validator) throws BlunderException {
         ItemStack result = null;
 
         if (optionalSlot.isPresent()) {
-            if (!validator.test(optionalSlot.get().reference(trickSource, this))) {
-                throw new ItemInvalidBlunder(trickSource);
+            var slot = optionalSlot.get().getStorage(trick, this, VariantType.ITEM);
+            var resource = slot.getResource();
+
+            if (!validator.test(resource.toStack())) {
+                throw new ItemInvalidBlunder(trick);
             }
 
-            result = optionalSlot.get().move(trickSource, this, 1);
+            try (var trans = Transaction.openOuter()) {
+                if (slot.extract(resource, 1, trans) == 1) {
+                    result = resource.toStack();
+                    trans.commit();
+                }
+            }
         } else {
-            var player = source.getPlayer().orElseThrow(() -> new NoPlayerBlunder(trickSource));
+            var player = source.getPlayer().orElseThrow(() -> new NoPlayerBlunder(trick));
             var inventory = player.getInventory();
 
             for (int i = 0; i < inventory.size(); i++) {
@@ -75,5 +87,20 @@ public record SpellContext(ExecutionState state, SpellSource source, TickData da
         }
 
         return Optional.ofNullable(result);
+    }
+
+    public SlotFragment findSlotOnPlayer(Trick<?> trick, Item type) {
+        var player = source().getPlayer().orElseThrow(() -> new NoPlayerBlunder(trick));
+        var inventory = player.getInventory();
+
+        for (int i = 0; i < inventory.size(); i++) {
+            var stack = inventory.getStack(i);
+
+            if (stack.isOf(type)) {
+                return new SlotFragment(new StorageSource.Slot(i, StorageSource.Caster.INSTANCE), VariantType.ITEM);
+            }
+        }
+
+        throw new MissingItemBlunder(trick);
     }
 }

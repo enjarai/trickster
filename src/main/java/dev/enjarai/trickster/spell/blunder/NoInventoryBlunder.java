@@ -10,6 +10,6 @@ public class NoInventoryBlunder extends TrickBlunderException {
 
     @Override
     public MutableText createMessage() {
-        return super.createMessage().append("No caster inventory available");
+        return super.createMessage().append("No inventory available");
     }
 }
