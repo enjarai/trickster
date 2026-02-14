@@ -47,7 +47,8 @@ This cost is equivalent to (distance * amount * 0.5G).
 Slot references either use the position of the caster at the time of move, or the position of their target when calculating cost.
 
 
-It is not possible to interact with the slots of players that are not the caster.
+Many entities, like dropped items, minecarts, and donkeys can be interacted with using slots. 
+This is not the case for players that are not the caster.
 
 ;;;;;
 
